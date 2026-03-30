@@ -1,0 +1,70 @@
+# ── Dependencies ───────────────────────────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+
+# ── Build outputs ──────────────────────────────────────────────────────────────
+dist/
+build/
+out/
+.next/
+.vercel/
+*.tsbuildinfo
+
+# ── TypeScript cache ───────────────────────────────────────────────────────────
+tsconfig.tsbuildinfo
+
+# ── Vite ───────────────────────────────────────────────────────────────────────
+.vite/
+
+# ── Next.js ────────────────────────────────────────────────────────────────────
+.next/
+next-env.d.ts
+
+# ── Environment / secrets ──────────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+
+# ── OS artefacts ───────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+desktop.ini
+
+# ── Editor / IDE ───────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ── Logs ───────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ── Coverage / test output ─────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ── Supabase local ────────────────────────────────────────────────────────────
+supabase/.branches/
+supabase/.temp/
+
+# ── AI tool workspaces (transient, user-local) ────────────────────────────────
+.agent/
+.opencode/
+.roo/
+.windsurf/
+
+# ── Misc ───────────────────────────────────────────────────────────────────────
+.turbo/
+*.local

@@ -1,0 +1,387 @@
+/*
+ * travisjames.ai — color usage (brand)
+ * - Primary (ember): CTAs, active states, focus rings only — use sparingly.
+ * - 90%+ of UI surface should stay on the neutral ramp (background, card, muted, border).
+ * - No pure black (#000) or pure white (#fff) as full-page backgrounds; use designated off-tones.
+ * - Do not use ember as large surface fills (banners, whole cards).
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-display: "Space Grotesk", ui-sans-serif, sans-serif;
+  --font-ui: "Inter", ui-sans-serif, sans-serif;
+  --font-body: "Roboto", ui-sans-serif, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: var(--font-ui);
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: light;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-ui: "Inter", sans-serif;
+  --font-body: "Roboto", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Neutrals — light */
+  --background: 247 247 248;
+  --foreground: 11 15 20;
+  --card: 255 255 255;
+  --card-foreground: 11 15 20;
+  --popover: 255 255 255;
+  --popover-foreground: 11 15 20;
+  --muted: 238 240 243;
+  --muted-foreground: 75 85 99;
+  --border: 216 222 230;
+  --input: 216 222 230;
+  --ring: 224 78 40;
+
+  /* Brand — light */
+  --primary: 224 78 40;
+  --primary-foreground: 255 255 255;
+  --secondary: 17 24 39;
+  --secondary-foreground: 255 255 255;
+  --accent: 242 214 207;
+  --accent-foreground: 59 20 16;
+
+  /* Semantic — light */
+  --destructive: 220 38 38;
+  --destructive-foreground: 255 255 255;
+  --success: 22 163 74;
+  --success-foreground: 255 255 255;
+  --warning: 217 119 6;
+  --warning-foreground: 255 255 255;
+  --info: 37 99 235;
+  --info-foreground: 255 255 255;
+
+  /* Charts — light */
+  --chart-1: 224 78 40;
+  --chart-2: 17 24 39;
+  --chart-3: 37 99 235;
+  --chart-4: 22 163 74;
+  --chart-5: 75 85 99;
+
+  /* Sidebar — light */
+  --sidebar: 255 255 255;
+  --sidebar-foreground: 11 15 20;
+  --sidebar-primary: 224 78 40;
+  --sidebar-primary-foreground: 255 255 255;
+  --sidebar-accent: 242 214 207;
+  --sidebar-accent-foreground: 59 20 16;
+  --sidebar-border: 216 222 230;
+  --sidebar-ring: 224 78 40;
+
+  --radius: 0.625rem;
+
+  /* Legacy vite example tokens (light) — maps to brand ramp */
+  --color-background: rgb(247 247 248);
+  --color-surface: rgb(255 255 255);
+  --color-surface-2: rgb(238 240 243);
+  --color-surface-3: rgb(228 231 236);
+  --color-border: rgb(216 222 230);
+  --color-border-subtle: rgb(238 240 243);
+  --color-ember: rgb(224 78 40);
+  --color-ember-dim: rgb(201 66 32);
+  --color-ember-glow: rgba(224 78 40 0.12);
+  --color-text-primary: rgb(11 15 20);
+  --color-text-secondary: rgb(107 114 128);
+  --color-text-muted: rgb(75 85 99);
+  --color-success: rgb(34 197 94);
+  --color-warning: rgb(245 158 11);
+  --color-danger: rgb(239 68 68);
+  --color-info: rgb(96 165 250);
+}
+
+.dark {
+  color-scheme: dark;
+  --background: 11 15 20;
+  --foreground: 232 237 243;
+  --card: 15 22 32;
+  --card-foreground: 232 237 243;
+  --popover: 15 22 32;
+  --popover-foreground: 232 237 243;
+  --muted: 20 28 38;
+  --muted-foreground: 167 176 188;
+  --border: 35 48 65;
+  --input: 35 48 65;
+  --ring: 255 106 61;
+
+  --primary: 255 106 61;
+  --primary-foreground: 11 15 20;
+  --secondary: 26 36 50;
+  --secondary-foreground: 232 237 243;
+  --accent: 42 27 23;
+  --accent-foreground: 255 177 153;
+
+  --destructive: 239 68 68;
+  --destructive-foreground: 11 15 20;
+  --success: 34 197 94;
+  --success-foreground: 11 15 20;
+  --warning: 245 158 11;
+  --warning-foreground: 11 15 20;
+  --info: 96 165 250;
+  --info-foreground: 11 15 20;
+
+  --chart-1: 255 106 61;
+  --chart-2: 167 176 188;
+  --chart-3: 96 165 250;
+  --chart-4: 34 197 94;
+  --chart-5: 35 48 65;
+
+  --sidebar: 15 22 32;
+  --sidebar-foreground: 232 237 243;
+  --sidebar-primary: 255 106 61;
+  --sidebar-primary-foreground: 11 15 20;
+  --sidebar-accent: 42 27 23;
+  --sidebar-accent-foreground: 255 177 153;
+  --sidebar-border: 35 48 65;
+  --sidebar-ring: 255 106 61;
+
+  --color-background: rgb(11 15 20);
+  --color-surface: rgb(15 22 32);
+  --color-surface-2: rgb(20 28 38);
+  --color-surface-3: rgb(26 36 50);
+  --color-border: rgb(35 48 65);
+  --color-border-subtle: rgb(26 36 50);
+  --color-ember: rgb(255 106 61);
+  --color-ember-dim: rgb(224 78 40);
+  --color-ember-glow: rgba(255 106 61 0.15);
+  --color-text-primary: rgb(232 237 243);
+  --color-text-secondary: rgb(167 176 188);
+  --color-text-muted: rgb(107 116 128);
+  --color-success: rgb(34 197 94);
+  --color-warning: rgb(245 158 11);
+  --color-danger: rgb(239 68 68);
+  --color-info: rgb(96 165 250);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--border));
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--muted-foreground));
+}
+
+::selection {
+  background: color-mix(in srgb, rgb(var(--primary)) 18%, transparent);
+  color: rgb(var(--foreground));
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes pulse-ember {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, rgb(var(--primary)) 25%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 6px transparent;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+.animate-slide-right {
+  animation: slideInRight 0.25s ease-out;
+}
+
+@theme inline {
+  --font-heading: var(--font-display);
+  --color-sidebar-ring: rgb(var(--sidebar-ring));
+  --color-sidebar-border: rgb(var(--sidebar-border));
+  --color-sidebar-accent-foreground: rgb(var(--sidebar-accent-foreground));
+  --color-sidebar-accent: rgb(var(--sidebar-accent));
+  --color-sidebar-primary-foreground: rgb(var(--sidebar-primary-foreground));
+  --color-sidebar-primary: rgb(var(--sidebar-primary));
+  --color-sidebar-foreground: rgb(var(--sidebar-foreground));
+  --color-sidebar: rgb(var(--sidebar));
+  --color-chart-5: rgb(var(--chart-5));
+  --color-chart-4: rgb(var(--chart-4));
+  --color-chart-3: rgb(var(--chart-3));
+  --color-chart-2: rgb(var(--chart-2));
+  --color-chart-1: rgb(var(--chart-1));
+  --color-success: rgb(var(--success));
+  --color-success-foreground: rgb(var(--success-foreground));
+  --color-warning: rgb(var(--warning));
+  --color-warning-foreground: rgb(var(--warning-foreground));
+  --color-info: rgb(var(--info));
+  --color-info-foreground: rgb(var(--info-foreground));
+  --color-ring: rgb(var(--ring));
+  --color-input: rgb(var(--input));
+  --color-border: rgb(var(--border));
+  --color-destructive: rgb(var(--destructive));
+  --color-destructive-foreground: rgb(var(--destructive-foreground));
+  --color-accent-foreground: rgb(var(--accent-foreground));
+  --color-accent: rgb(var(--accent));
+  --color-muted-foreground: rgb(var(--muted-foreground));
+  --color-muted: rgb(var(--muted));
+  --color-secondary-foreground: rgb(var(--secondary-foreground));
+  --color-secondary: rgb(var(--secondary));
+  --color-primary-foreground: rgb(var(--primary-foreground));
+  --color-primary: rgb(var(--primary));
+  --color-popover-foreground: rgb(var(--popover-foreground));
+  --color-popover: rgb(var(--popover));
+  --color-card-foreground: rgb(var(--card-foreground));
+  --color-card: rgb(var(--card));
+  --color-foreground: rgb(var(--foreground));
+  --color-background: rgb(var(--background));
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply bg-background text-foreground antialiased;
+  }
+  body {
+    @apply bg-background text-foreground font-body;
+    line-height: 1.7;
+  }
+  button,
+  input,
+  select,
+  textarea,
+  label {
+    font-family: var(--font-ui);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+  }
+  h1 {
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+  h2 {
+    letter-spacing: -0.03em;
+  }
+  h3,
+  h4 {
+    letter-spacing: -0.02em;
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--font-mono);
+  }
+}
+
+/* travisjames.ai — typography utilities */
+.tj-type-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.tj-type-ui {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  line-height: 1.5;
+}
+.tj-type-body {
+  font-family: var(--font-body);
+  line-height: 1.75;
+  max-width: 65ch;
+}
+.tj-type-mono {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+}
+.tj-type-overline {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(var(--primary));
+}
+
+/* App shell main — subtle ember washes + grid (brand template hero language, toned down for data UI) */
+.tj-app-main {
+  background-color: rgb(var(--background));
+  background-image:
+    radial-gradient(ellipse 85% 55% at 12% 8%, color-mix(in srgb, rgb(var(--primary)) 10%, transparent) 0%, transparent 58%),
+    radial-gradient(ellipse 70% 45% at 92% 96%, color-mix(in srgb, rgb(var(--primary)) 6%, transparent) 0%, transparent 52%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23D8DEE6' stroke-width='.5'%3E%3Cpath d='M0 30h60M30 0v60'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: auto, auto, 60px 60px;
+  background-position: 0 0, 0 0, 0 0;
+}
+
+.dark .tj-app-main {
+  background-image:
+    radial-gradient(ellipse 85% 55% at 12% 8%, color-mix(in srgb, rgb(var(--primary)) 14%, transparent) 0%, transparent 58%),
+    radial-gradient(ellipse 70% 45% at 92% 96%, color-mix(in srgb, rgb(var(--primary)) 9%, transparent) 0%, transparent 52%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%2345566b' stroke-width='.4'%3E%3Cpath d='M0 30h60M30 0v60'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: auto, auto, 60px 60px;
+}

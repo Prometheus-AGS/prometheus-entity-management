@@ -1,0 +1,325 @@
+/*
+ * travisjames.ai — color usage (brand)
+ * - Primary (ember): CTAs, active states, focus rings only — use sparingly.
+ * - 90%+ of UI surface should stay on the neutral ramp (background, card, muted, border).
+ * - No pure black (#000) or pure white (#fff) as full-page backgrounds; use designated off-tones.
+ * - Do not use ember as large surface fills (banners, whole cards).
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-display: "Space Grotesk", ui-sans-serif, sans-serif;
+  --font-ui: "Inter", ui-sans-serif, sans-serif;
+  --font-body: "Roboto", ui-sans-serif, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: var(--font-ui);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --font-display: "Space Grotesk", sans-serif;
+  --font-ui: "Inter", sans-serif;
+  --font-body: "Roboto", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --background: 247 247 248;
+  --foreground: 11 15 20;
+  --card: 255 255 255;
+  --card-foreground: 11 15 20;
+  --popover: 255 255 255;
+  --popover-foreground: 11 15 20;
+  --muted: 238 240 243;
+  --muted-foreground: 75 85 99;
+  --border: 216 222 230;
+  --input: 216 222 230;
+  --ring: 224 78 40;
+
+  --primary: 224 78 40;
+  --primary-foreground: 255 255 255;
+  --secondary: 17 24 39;
+  --secondary-foreground: 255 255 255;
+  --accent: 242 214 207;
+  --accent-foreground: 59 20 16;
+
+  --destructive: 220 38 38;
+  --destructive-foreground: 255 255 255;
+  --success: 22 163 74;
+  --success-foreground: 255 255 255;
+  --warning: 217 119 6;
+  --warning-foreground: 255 255 255;
+  --info: 37 99 235;
+  --info-foreground: 255 255 255;
+
+  --chart-1: 224 78 40;
+  --chart-2: 17 24 39;
+  --chart-3: 37 99 235;
+  --chart-4: 22 163 74;
+  --chart-5: 75 85 99;
+
+  --sidebar: 255 255 255;
+  --sidebar-foreground: 11 15 20;
+  --sidebar-primary: 224 78 40;
+  --sidebar-primary-foreground: 255 255 255;
+  --sidebar-accent: 242 214 207;
+  --sidebar-accent-foreground: 59 20 16;
+  --sidebar-border: 216 222 230;
+  --sidebar-ring: 224 78 40;
+
+  --radius: 0.625rem;
+
+  /* Legacy example page tokens — ProductsClient / Badges (light) */
+  --color-canvas: rgb(var(--background));
+  --color-surface: rgb(var(--card));
+  --color-surface-2: rgb(var(--muted));
+  --color-surface-3: rgb(228 231 236);
+  --color-border: rgb(var(--border));
+  --color-ink: rgb(var(--foreground));
+  --color-ink-2: rgb(55 65 81);
+  --color-ink-3: rgb(var(--muted-foreground));
+  --color-fire: rgb(var(--primary));
+  --color-fire-dim: rgb(201 66 32);
+  --color-fire-wash: color-mix(in srgb, rgb(var(--primary)) 8%, transparent);
+  --color-emerald: rgb(5 150 105);
+  --color-amber: rgb(217 119 6);
+  --color-crimson: rgb(220 38 38);
+  --color-indigo: rgb(79 70 229);
+}
+
+.dark {
+  --background: 11 15 20;
+  --foreground: 232 237 243;
+  --card: 15 22 32;
+  --card-foreground: 232 237 243;
+  --popover: 15 22 32;
+  --popover-foreground: 232 237 243;
+  --muted: 20 28 38;
+  --muted-foreground: 167 176 188;
+  --border: 35 48 65;
+  --input: 35 48 65;
+  --ring: 255 106 61;
+
+  --primary: 255 106 61;
+  --primary-foreground: 11 15 20;
+  --secondary: 26 36 50;
+  --secondary-foreground: 232 237 243;
+  --accent: 42 27 23;
+  --accent-foreground: 255 177 153;
+
+  --destructive: 239 68 68;
+  --destructive-foreground: 11 15 20;
+  --success: 34 197 94;
+  --success-foreground: 11 15 20;
+  --warning: 245 158 11;
+  --warning-foreground: 11 15 20;
+  --info: 96 165 250;
+  --info-foreground: 11 15 20;
+
+  --chart-1: 255 106 61;
+  --chart-2: 167 176 188;
+  --chart-3: 96 165 250;
+  --chart-4: 34 197 94;
+  --chart-5: 35 48 65;
+
+  --sidebar: 15 22 32;
+  --sidebar-foreground: 232 237 243;
+  --sidebar-primary: 255 106 61;
+  --sidebar-primary-foreground: 11 15 20;
+  --sidebar-accent: 42 27 23;
+  --sidebar-accent-foreground: 255 177 153;
+  --sidebar-border: 35 48 65;
+  --sidebar-ring: 255 106 61;
+
+  --color-surface-3: rgb(26 36 50);
+  --color-ink-2: rgb(156 163 175);
+  --color-fire-dim: rgb(224 78 40);
+  --color-fire-wash: color-mix(in srgb, rgb(var(--primary)) 10%, transparent);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--border));
+  border-radius: 3px;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.25s ease-out;
+}
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-2) 25%,
+    var(--color-surface-3) 50%,
+    var(--color-surface-2) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@theme inline {
+  --font-heading: var(--font-display);
+  --color-sidebar-ring: rgb(var(--sidebar-ring));
+  --color-sidebar-border: rgb(var(--sidebar-border));
+  --color-sidebar-accent-foreground: rgb(var(--sidebar-accent-foreground));
+  --color-sidebar-accent: rgb(var(--sidebar-accent));
+  --color-sidebar-primary-foreground: rgb(var(--sidebar-primary-foreground));
+  --color-sidebar-primary: rgb(var(--sidebar-primary));
+  --color-sidebar-foreground: rgb(var(--sidebar-foreground));
+  --color-sidebar: rgb(var(--sidebar));
+  --color-chart-5: rgb(var(--chart-5));
+  --color-chart-4: rgb(var(--chart-4));
+  --color-chart-3: rgb(var(--chart-3));
+  --color-chart-2: rgb(var(--chart-2));
+  --color-chart-1: rgb(var(--chart-1));
+  --color-success: rgb(var(--success));
+  --color-success-foreground: rgb(var(--success-foreground));
+  --color-warning: rgb(var(--warning));
+  --color-warning-foreground: rgb(var(--warning-foreground));
+  --color-info: rgb(var(--info));
+  --color-info-foreground: rgb(var(--info-foreground));
+  --color-ring: rgb(var(--ring));
+  --color-input: rgb(var(--input));
+  --color-border: rgb(var(--border));
+  --color-destructive: rgb(var(--destructive));
+  --color-destructive-foreground: rgb(var(--destructive-foreground));
+  --color-accent-foreground: rgb(var(--accent-foreground));
+  --color-accent: rgb(var(--accent));
+  --color-muted-foreground: rgb(var(--muted-foreground));
+  --color-muted: rgb(var(--muted));
+  --color-secondary-foreground: rgb(var(--secondary-foreground));
+  --color-secondary: rgb(var(--secondary));
+  --color-primary-foreground: rgb(var(--primary-foreground));
+  --color-primary: rgb(var(--primary));
+  --color-popover-foreground: rgb(var(--popover-foreground));
+  --color-popover: rgb(var(--popover));
+  --color-card-foreground: rgb(var(--card-foreground));
+  --color-card: rgb(var(--card));
+  --color-foreground: rgb(var(--foreground));
+  --color-background: rgb(var(--background));
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply bg-background text-foreground antialiased;
+  }
+  body {
+    @apply bg-background text-foreground font-body;
+    line-height: 1.7;
+  }
+  button,
+  input,
+  select,
+  textarea,
+  label {
+    font-family: var(--font-ui);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+  }
+  h1 {
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+  h2 {
+    letter-spacing: -0.03em;
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--font-mono);
+  }
+}
+
+/* travisjames.ai — typography utilities */
+.tj-type-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.tj-type-ui {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  line-height: 1.5;
+}
+.tj-type-body {
+  font-family: var(--font-body);
+  line-height: 1.75;
+  max-width: 65ch;
+}
+.tj-type-mono {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+}
+.tj-type-overline {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(var(--primary));
+}

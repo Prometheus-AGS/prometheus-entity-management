@@ -1,0 +1,3 @@
+packages:
+  - "examples/vite-app"
+  - "examples/nextjs-app"
