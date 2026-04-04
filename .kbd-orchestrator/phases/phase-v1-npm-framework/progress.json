@@ -2,7 +2,9 @@
   "phase": "phase-v1-npm-framework",
   "assessment_complete": true,
   "plan_complete": true,
-  "last_updated": "2026-04-04T22:30:00.000Z",
-  "last_updated_by": "cursor-agent",
-  "notes": "KBD execute 2026-04-04: full verify + pnpm publish --dry-run PASS. execution.md lists manual npm login/publish/tag. Pending: maintainer live publish."
+  "execution_complete": true,
+  "npm_publish_complete": true,
+  "last_updated": "2026-04-04T23:00:00.000Z",
+  "last_updated_by": "maintainer+cursor-agent",
+  "notes": "Live publish: @prometheus-ags/prometheus-entity-management@1.0.0 to npm registry (2026-04-04). prepublishOnly (typecheck, build, test, verify:skills) passed. OpenSpec tasks + verification-checklist updated. .npmrc provenance=false for local publish. Follow-up: confirm git tag v1.0.0 pushed to origin if not already."
 }

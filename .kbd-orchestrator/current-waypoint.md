@@ -2,24 +2,23 @@
 
 | Field | Value |
 |-------|--------|
-| **Phase** | `phase-v1-npm-framework` |
-| **Orchestration** | **KBD + OpenSpec** |
-| **Execution** | [`.kbd-orchestrator/phases/phase-v1-npm-framework/execution.md`](phases/phase-v1-npm-framework/execution.md) |
+| **Previous phase** | `phase-v1-npm-framework` — **reflected** ([`reflection.md`](phases/phase-v1-npm-framework/reflection.md)) |
+| **Active phase** | *None selected* — run **`/kbd-assess`** to define the next milestone |
+| **OpenSpec** | Umbrella [`openspec/changes/prometheus-v1-0-release`](../../openspec/changes/prometheus-v1-0-release) — **archive** when ready (`/opsx:archive` or your workflow) |
 
 ## Status
 
-- **Automated:** Full verify (typecheck, build, test, `verify:skills`, example typechecks) + **`pnpm publish --dry-run`** — **passed** (see `execution.md` evidence).
-- **Pending (you):** **Live npm publish** + **git tag `v1.0.0`** — requires **npm login** / **2FA**; agent cannot authenticate.
+- **Registry:** `@prometheus-ags/prometheus-entity-management@1.0.0` **published** (2026-04-04).
+- **KBD:** Reflect phase **complete** for `phase-v1-npm-framework`.
 
-## Exact next command (human)
+## Exact next command
 
-Read **[execution.md — Your steps (outside agent scope)](phases/phase-v1-npm-framework/execution.md#your-steps-outside-agent-scope--publish-to-npm)**, then:
-
-```bash
-npm login
-pnpm publish --access public
-git tag -a v1.0.0 -m "@prometheus-ags/prometheus-entity-management 1.0.0"
-git push origin main && git push origin v1.0.0
+```text
+/kbd-assess
 ```
 
-Tick [verification-checklist.md](../../openspec/changes/prometheus-v1-0-release/verification-checklist.md) and [tasks.md](../../openspec/changes/prometheus-v1-0-release/tasks.md) when done.
+(Optional: name a focus, e.g. post-release archive + CI publish, or doc consistency pass.)
+
+## Trigger
+
+`[kbd] Reflection complete — advance to next phase with /kbd-new-phase` *(or `/kbd-assess` as above).*

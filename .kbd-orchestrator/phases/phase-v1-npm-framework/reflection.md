@@ -1,31 +1,103 @@
-# Reflection: `phase-v1-npm-framework`
+# Phase Reflection: `phase-v1-npm-framework`
 
+**Project:** prometheus-entity-management (`@prometheus-ags/prometheus-entity-management` on npm)  
 **Date:** 2026-04-04  
-**Orchestration:** KBD + OpenSpec (`openspec/specs/v1-0.md`, umbrella change `prometheus-v1-0-release`)
+**Phase completion:** **~95%** (registry and verification done; OpenSpec umbrella archive optional follow-up)  
+**Changes completed:** Core release track **complete**; OpenSpec **`/opsx:archive`** not run in this session
 
-## Goal
+---
 
-Ship **`@prometheus-ags/prometheus-entity-management@1.0.0`** as a production-credible npm package: tests, CI, accurate docs, TanStack coexistence story, skills ↔ runtime exports enforcement, Zustand-only integration guidance (no Redux as a graph backend).
+## Goals
 
-## Outcomes achieved (codebase)
+| Goal | Status | Notes |
+|------|--------|--------|
+| Ship **`@prometheus-ags/prometheus-entity-management@1.0.0`** as a production-credible npm package | **MET** | Published to public registry **2026-04-04**; `prepublishOnly` ran typecheck, build, test, `verify:skills`. |
+| Tests + CI gate quality | **MET** | Vitest smoke tests; GitHub Actions CI for library + example typechecks. |
+| Docs + examples aligned to spec | **MET** | README, CLAUDE/AGENTS, `docs/*`, RELEASING, CHANGELOG; Vite + Next examples; TanStack bridge demo. |
+| Skills ↔ runtime exports enforcement | **MET** | `library-exports.json` + `verify:skills` in CI and `prepublishOnly`. |
+| Scoped package + distribution (`exports`, tsup `index.js` / `index.mjs`) | **MET** | `@prometheus-ags/prometheus-entity-management`; `.npmrc` set `provenance=false` for successful **local** publish (provenance requires CI OIDC). |
+| OpenSpec umbrella change fully closed | **PARTIAL** | Manual verification checklist and `tasks.md` updated; change still under `openspec/changes/prometheus-v1-0-release/` — **archive when ready** (`/opsx:archive` or manual move to `openspec/changes/archive/`). |
+| Git tag **`v1.0.0`** on remote | **PARTIAL / verify** | Maintainer should confirm `git tag` + `git push origin v1.0.0` on the release commit. |
+
+**Overall:** Immutable **npm** outcome **MET**. Process closure **PARTIAL** until optional OpenSpec archive and remote tag are confirmed.
+
+---
+
+## Delivered Changes
+
+- **`prometheus-v1-0-release` (OpenSpec umbrella)** — v1.0 spec, proposal, tasks, verification checklist; manual sign-off **2026-04-04** (by: maintainer + Cursor Agent). *Archive step pending.*
+- **Scoped npm package** — `package.json` name, `exports`, `tsup` CJS/ESM outputs; examples + docs imports (by: Cursor Agent + maintainer).
+- **`.npmrc`** — `provenance=false` so local `pnpm publish` does not fail with `provider: null` (by: Cursor Agent).
+- **KBD artifacts** — `progress.json`, `current-waypoint.md`, execution/plan/assessment alignment (by: Cursor Agent + maintainer).
+
+---
+
+## Technical Debt
+
+- **OpenSpec:** Umbrella change **not archived**; keeps `openspec/changes/` “open” until maintainers run their archive workflow.
+- **Provenance:** Registry publishes from **laptop** have **no** npm provenance attestation; future **GitHub Actions** release job could use `npm publish --provenance` + `id-token: write` if desired (`RELEASING.md` notes this).
+- **Assessment table (historical):** Older rows mentioned “publish pending” / doc contradictions (Suspense, GC); **spot-check** that `CLAUDE.md` / `AGENTS.md` limitation bullets match current `src/` (optional cleanup PR).
+- **Entity graph GC / Suspense:** Library may expose more than early “limitations” lines stated — **docs debt** if still inconsistent (see assessment §implementation status).
+
+*(No intentional architecture violations introduced for graph layering in this phase.)*
+
+---
+
+## Architecture Integrity
+
+- **AGENTS.md violations:** **NONE** observed for this phase’s edits (components → hooks → stores layering preserved in examples).
+- **Constraint violations:** **N/A** — `.kbd-orchestrator/constraints.md` not present; rules taken from `AGENTS.md` / `CLAUDE.md`.
+
+---
+
+## Cross-Tool Coordination Notes
+
+- **Progress tracking:** **RELIABLE** — `progress.json` updated through publish and post-publish doc ticks.
+- **Handoff quality:** **CLEAR** — `execution.md` and `current-waypoint.md` separated automatable gates from maintainer npm auth.
+- **Recommendations:** After each release, **commit** KBD + OpenSpec markdown in the same PR as version bump to avoid drift; run **`/opsx:archive`** when the team agrees the umbrella change is closed.
+
+---
+
+## Lessons Learned
+
+- **`pnpm publish` + `provenance=true` in `.npmrc`** breaks **local** publishes (`Automatic provenance generation not supported for provider: null`); scope provenance to **CI** or set `provenance=false` for developer machines.
+- **`ERR_PNPM_GIT_UNCLEAN`** is a feature — commit release artifacts before publish so the tag matches tarball contents.
+- **Scoped package** requires updating **path aliases, plugin keywords, and every doc import example** — worth a single scripted grep or CI check for stray unscoped names.
+- **`verify:skills` in `prepublishOnly`** catches export drift before anything hits the registry.
+
+---
+
+## Next Phase Focus
+
+**Suggested phase name:** `phase-v1-post-release-hardening` *(or run `/kbd-assess` without a preset name)*  
+
+**Top priorities:**
+
+1. **OpenSpec:** Archive **`prometheus-v1-0-release`** when policy allows; sync specs if your workflow uses delta → main promotion.
+2. **Git:** Ensure **`v1.0.0`** tag exists on **`origin`** at the published commit.
+3. **Optional:** Add **`npm publish` in GitHub Actions** (OIDC) with **provenance**; keep local `.npmrc` safe for maintainers.
+4. **Optional:** **Bundle/size** guardrail (`size-limit` or similar), broader tests (pagination, realtime, SSR), ElectricSQL doc pins per assessment seeds.
+
+---
+
+## Context for Next Phase
+
+Use this file as prior context for the next **`/kbd-assess`** invocation.
+
+**Trigger (per KBD skill):** `[kbd] Reflection complete — advance to next phase with /kbd-new-phase` *(or `/kbd-assess` to define the next milestone).*
+
+---
+
+## Historical narrative (retained)
+
+### Outcomes achieved (codebase)
 
 - Vitest smoke tests; GitHub Actions CI (typecheck, build, test, `verify:skills`, example typechecks).
 - Canonical docs (README map, bundle methodology, `docs/tanstack-query-and-table.md`, `docs/advanced.md`, `RELEASING.md`, `CHANGELOG` **[1.0.0]**).
 - Vite **`/tanstack-bridge`** demo (TanStack Query → `upsertEntity`); example READMEs.
-- **`skills/_shared/references/library-exports.json`** + `verify:skills` / `refresh:exports`; immutable rule in `AGENTS.md` / `CLAUDE.md`; PR template checklist.
-- KBD **`plan.md`** Round 5 notes and **assessment** interoperability section updated for **Zustand-only** + hooks layering; Redux only as **migration source** in skills, not as a supported backend.
-- OpenSpec **manual** verification checklist: [`openspec/changes/prometheus-v1-0-release/verification-checklist.md`](../../../openspec/changes/prometheus-v1-0-release/verification-checklist.md).
+- **`skills/_shared/references/library-exports.json`** + `verify:skills` / `refresh:exports`; immutable rule in `AGENTS.md` / `CLAUDE.md`.
+- KBD **plan** / **assessment** updated for Zustand-only graph and migration framing.
 
-## Outstanding (maintainer)
+### Registry release
 
-- **`npm publish`** to the public registry and git tag **`v1.0.0`** (requires npm credentials; not automatable in this workspace).
-
-## Seeds for the next phase
-
-- Optional: bundle budget CI (`size-limit`) as a guardrail, not a substitute for tests.
-- Optional: pin ElectricSQL adapter docs to tested upstream versions.
-- Broader test matrix (pagination + realtime, SSR edge cases) as coverage expands.
-
-## KBD phase status
-
-**Execution complete** for all items that do not require registry publish. Close the phase after **npm publish** when the team accepts the immutable outcome.
+- **`@prometheus-ags/prometheus-entity-management@1.0.0`** published to the public npm registry (**2026-04-04**).
