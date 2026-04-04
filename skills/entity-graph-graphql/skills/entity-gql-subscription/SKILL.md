@@ -32,7 +32,7 @@ type WsClient = {
 
 ## Path B — RealtimeManager adapter
 
-1. Import `createGraphQLSubscriptionAdapter` from `prometheus-entity-management`.
+1. Import `createGraphQLSubscriptionAdapter` from `@prometheus-ags/prometheus-entity-management`.
 2. Configure `subscriptions: [{ type, document, variables, getPayload }]`.
 3. `getPayload(data)` returns `GQLPayload | GQLPayload[] | null` where each payload has:
    - `type`: `"created" | "updated" | "deleted"` (or default upsert behavior per adapter)

@@ -1,11 +1,11 @@
 ---
 name: entity-graph-init
-description: Bootstrap prometheus-entity-management in a React app—install dependency, configureEngine, optional schema registration stubs, and a minimal useEntity/useEntityList proof while enforcing Components → Hooks → Graph layering.
+description: "Bootstrap @prometheus-ags/prometheus-entity-management in a React app—install dependency, configureEngine, optional schema registration stubs, and a minimal useEntity/useEntityList proof while enforcing Components → Hooks → Graph layering."
 ---
 
 # entity-graph-init
 
-First-time **initialization** of prometheus-entity-management in a **React** (Vite or Next.js) codebase.
+First-time **initialization** of @prometheus-ags/prometheus-entity-management in a **React** (Vite or Next.js) codebase.
 
 ## When to use
 
@@ -19,7 +19,7 @@ First-time **initialization** of prometheus-entity-management in a **React** (Vi
 
 ## Workflow
 
-1. **Install** `prometheus-entity-management` (or path alias in this monorepo).
+1. **Install** `@prometheus-ags/prometheus-entity-management` (or path alias in this monorepo).
 2. **Create** `configureEngine` module using the project’s HTTP client for auth/base URL.
 3. **Call** `configureEngine` once at app bootstrap (client entry or `use client` provider).
 4. **Add** `registerSchema` stubs for entities touched in the proof (relations optional).

@@ -1,0 +1,11 @@
+{
+  "name": "prometheus-entity-management",
+  "description": "Normalized entity graph store for React (Zustand) — view-model layer for cross-view entity consistency and realtime updates.",
+  "spec_paths": ["README.md", "AGENTS.md", "CLAUDE.md", "openspec/specs/v1-0.md"],
+  "openspec": {
+    "config": "openspec/config.yaml",
+    "umbrella_change": "openspec/changes/prometheus-v1-0-release"
+  },
+  "source_roots": ["src"],
+  "stack": "typescript-react-zustand"
+}

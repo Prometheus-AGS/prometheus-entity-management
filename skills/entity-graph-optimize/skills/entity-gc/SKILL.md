@@ -1,7 +1,7 @@
 ---
 name: entity-gc
 description: >
-  Slash command /entity-gc — design application-level eviction for prometheus-entity-management:
+  Slash command /entity-gc — design application-level eviction for @prometheus-ags/prometheus-entity-management:
   removeEntity for stale entities, clearPatch for UI overlays, list refresh after bulk delete,
   route-based cleanup, and policies for long-lived sessions. Notes library has no automatic GC yet.
 ---
@@ -10,7 +10,7 @@ description: >
 
 ## Current library state
 
-prometheus-entity-management **does not** ship automatic entity garbage collection (see root `CLAUDE.md` limitations). All “GC” is **explicit application policy**.
+@prometheus-ags/prometheus-entity-management **does not** ship automatic entity garbage collection (see root `CLAUDE.md` limitations). All “GC” is **explicit application policy**.
 
 ## APIs to use
 

@@ -5,6 +5,25 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.0.0] — 2026-04-04
+
+Production-ready semantic version with CI, tests, documentation, and skills export verification.
+
+### Added
+
+- Vitest smoke tests for `graph`, `engine`, and `RealtimeManager`.
+- `pnpm run test`, `refresh:exports`, `verify:skills` scripts; `prepublishOnly` runs typecheck, build, test, and skills verification.
+- `skills/_shared/references/library-exports.json` ledger (generated from `dist/index.mjs`) for agent skill ↔ runtime export alignment.
+- GitHub Actions workflow: install, typecheck, build, test, verify:skills, typecheck for Vite and Next.js examples.
+- Docs: `docs/tanstack-query-and-table.md`, `docs/advanced.md`, `RELEASING.md`; README documentation map and honest bundle-size guidance.
+- Vite example route `/tanstack-bridge`: TanStack Query + sync into `upsertEntity`; example READMEs for Vite and Next.js.
+
+### Changed
+
+- README comparison table: bundle size row points to measured guidance instead of a fixed “~15KB” claim.
+
+---
+
 ## [0.1.0] — 2025-01-15
 
 Initial release.

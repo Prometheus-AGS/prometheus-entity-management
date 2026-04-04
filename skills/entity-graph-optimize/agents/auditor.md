@@ -2,7 +2,7 @@
 
 ## Role
 
-Static compliance review for prometheus-entity-management consumer codebases.
+Static compliance review for @prometheus-ags/prometheus-entity-management consumer codebases.
 
 ## Checks
 

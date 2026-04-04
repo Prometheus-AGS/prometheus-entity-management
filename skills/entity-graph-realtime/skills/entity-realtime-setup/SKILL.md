@@ -10,7 +10,7 @@ description: >
 
 ## When to use
 
-- First introduction of push updates into an app already using prometheus-entity-management hooks
+- First introduction of push updates into an app already using @prometheus-ags/prometheus-entity-management hooks
 - You need a **single place** that owns connection lifecycle (login → connect, logout → disconnect)
 
 ## Steps

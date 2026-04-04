@@ -4,7 +4,7 @@ Instructions for AI agents using the **entity-graph-realtime** skill package (ag
 
 ## Mission
 
-Integrate **push-based** updates into the **prometheus-entity-management** graph using **`RealtimeManager`** and the official adapter factories under **`src/adapters/`**. UI layers continue to consume data through **hooks**, not raw store subscriptions.
+Integrate **push-based** updates into the **@prometheus-ags/prometheus-entity-management** graph using **`RealtimeManager`** and the official adapter factories under **`src/adapters/`**. UI layers continue to consume data through **hooks**, not raw store subscriptions.
 
 ## Read order
 

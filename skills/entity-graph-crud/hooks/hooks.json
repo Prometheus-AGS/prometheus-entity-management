@@ -17,7 +17,7 @@
       "entity graph",
       "EntityTable",
       "EntityFormSheet",
-      "prometheus-entity-management",
+      "@prometheus-ags/prometheus-entity-management",
       "cascadeInvalidation"
     ]
   }

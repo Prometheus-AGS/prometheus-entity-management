@@ -3,7 +3,7 @@ name: entity-gql-hooks
 description: >
   Slash command /entity-gql-hooks — produce typed useGQLEntity, useGQLList, useGQLMutation wrappers
   for concrete GraphQL documents; wire queryKey, getItems, getPagination, sideDescriptors, and
-  invalidateLists for prometheus-entity-management.
+  invalidateLists for @prometheus-ags/prometheus-entity-management.
 ---
 
 # /entity-gql-hooks
@@ -36,10 +36,10 @@ User has (or will have) `GQLClient` + descriptors and needs **React hook wrapper
    - Library hooks use `useRef` for options; wrappers should pass stable `client` reference.
 
 6. **List invalidation after mutations**
-   - `invalidateLists` expects the same string key the list hook uses internally: `serializeKey(queryKey)` from `prometheus-entity-management` (see `src/engine.ts`). Example:
+   - `invalidateLists` expects the same string key the list hook uses internally: `serializeKey(queryKey)` from `@prometheus-ags/prometheus-entity-management` (see `src/engine.ts`). Example:
 
 ```typescript
-import { serializeKey } from "prometheus-entity-management";
+import { serializeKey } from "@prometheus-ags/prometheus-entity-management";
 
 const LIST_KEY = ["Post", "list", "dashboard"] as const;
 

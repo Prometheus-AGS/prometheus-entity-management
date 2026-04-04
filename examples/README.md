@@ -1,6 +1,6 @@
 # Examples Workspace
 
-This workspace contains all runnable demo applications for `prometheus-entity-management`.
+This workspace contains all runnable demo applications for `@prometheus-ags/prometheus-entity-management`.
 
 ## Shared Demo Infrastructure
 

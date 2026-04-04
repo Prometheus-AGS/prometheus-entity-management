@@ -1,0 +1,11 @@
+{
+  "phase": "phase-v1-npm-framework",
+  "label": "v1.0.0 closure: manual npm publish + git tag remaining",
+  "next_pending_change": "v1-npm-publish-and-tag",
+  "exact_next_command": "Maintainer: npm login && pnpm publish --access public && git tag v1.0.0 && git push origin v1.0.0 — see .kbd-orchestrator/phases/phase-v1-npm-framework/execution.md",
+  "plan_complete": true,
+  "execution_path": ".kbd-orchestrator/phases/phase-v1-npm-framework/execution.md",
+  "plan_path": ".kbd-orchestrator/phases/phase-v1-npm-framework/plan.md",
+  "openspec_umbrella": "openspec/changes/prometheus-v1-0-release",
+  "updated_at": "2026-04-04T23:00:00.000Z"
+}

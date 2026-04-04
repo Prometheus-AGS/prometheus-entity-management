@@ -1,6 +1,6 @@
 # Common EntityDescriptor patterns
 
-Patterns for **prometheus-entity-management** GraphQL integration.
+Patterns for **@prometheus-ags/prometheus-entity-management** GraphQL integration.
 
 ## 1. Relay connection with `edges`
 

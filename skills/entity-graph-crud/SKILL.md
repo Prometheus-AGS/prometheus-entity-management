@@ -1,7 +1,7 @@
 ---
 name: entity-graph-crud
 description: >
-  Generate complete CRUD screens for any entity type using prometheus-entity-management hooks and UI components.
+  Generate complete CRUD screens for any entity type using @prometheus-ags/prometheus-entity-management hooks and UI components.
   Analyzes entity shape, produces column definitions (TanStack Table + entityMeta), FieldDescriptor-based forms,
   EntityDetailSheet / EntityFormSheet wiring, and registerSchema + cascade invalidation—all strictly following
   Components → Hooks → Stores → APIs data flow.
@@ -11,7 +11,7 @@ description: >
 
 ## Purpose
 
-Deliver production-ready CRUD surfaces (list, create, edit, detail, delete) for entities backed by **prometheus-entity-management**. The graph is the single source of truth; lists hold **IDs only**; mutations flow through hooks and callbacks so every view stays globally reactive.
+Deliver production-ready CRUD surfaces (list, create, edit, detail, delete) for entities backed by **@prometheus-ags/prometheus-entity-management**. The graph is the single source of truth; lists hold **IDs only**; mutations flow through hooks and callbacks so every view stays globally reactive.
 
 ## When to use
 

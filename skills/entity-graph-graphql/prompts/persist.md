@@ -8,7 +8,7 @@
 
 ## Team knowledge
 
-- [ ] Short ADR or wiki: “GraphQL uses prometheus-entity-management `GQLClient`; descriptors live in `…`.”
+- [ ] Short ADR or wiki: “GraphQL uses @prometheus-ags/prometheus-entity-management `GQLClient`; descriptors live in `…`.”
 - [ ] On-call note: where `onError` logs go.
 
 ## Optional automation

@@ -2,7 +2,7 @@
 
 ## Mission
 
-Map **Prisma models** to **prometheus-entity-management** entity types, REST endpoints, and relation schemas — without leaking Prisma into the client.
+Map **Prisma models** to **@prometheus-ags/prometheus-entity-management** entity types, REST endpoints, and relation schemas — without leaking Prisma into the client.
 
 ## Workflow
 

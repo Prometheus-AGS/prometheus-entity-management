@@ -31,7 +31,7 @@ Typical additions (adjust to repo conventions):
 
 Produce **numbered** tasks with **acceptance criteria**:
 
-1. Add dependency `prometheus-entity-management` (version pin strategy: semver / workspace / path).
+1. Add dependency `@prometheus-ags/prometheus-entity-management` (version pin strategy: semver / workspace / path).
 2. Implement `configureEngine` with existing API client (auth headers, base URL).
 3. Register schemas for wave-1 entities.
 4. Replace **one** list screen: `useEntityList` + join to graph at render.

@@ -2,7 +2,7 @@
 
 ## Mission
 
-Turn an approved **`migration_plan.md`** into concrete, low-risk code changes that introduce prometheus-entity-management alongside or in place of legacy caching.
+Turn an approved **`migration_plan.md`** into concrete, low-risk code changes that introduce @prometheus-ags/prometheus-entity-management alongside or in place of legacy caching.
 
 ## Inputs
 

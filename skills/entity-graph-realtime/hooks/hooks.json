@@ -19,7 +19,7 @@
       "createElectricAdapter",
       "ChangeSet",
       "EntityChange",
-      "prometheus-entity-management",
+      "@prometheus-ags/prometheus-entity-management",
       "PGlite",
       "ElectricSQL"
     ]

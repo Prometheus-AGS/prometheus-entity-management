@@ -1,6 +1,6 @@
 # CLAUDE.md — Entity Graph GraphQL
 
-Rules and patterns for implementing GraphQL on **prometheus-entity-management**.
+Rules and patterns for implementing GraphQL on **@prometheus-ags/prometheus-entity-management**.
 
 ## EntityDescriptor contract
 

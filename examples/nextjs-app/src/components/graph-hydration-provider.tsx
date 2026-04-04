@@ -25,7 +25,7 @@ import { useRef } from "react";
  * before any child component renders. It is NOT a UI component and does not
  * violate the "Components never touch stores directly" rule from CLAUDE.md.
  */
-import { useGraphStore } from "prometheus-entity-management";
+import { useGraphStore } from "@prometheus-ags/prometheus-entity-management";
 
 export interface InitialEntity {
   type: string;

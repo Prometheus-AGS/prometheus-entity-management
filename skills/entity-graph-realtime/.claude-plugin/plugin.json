@@ -11,7 +11,7 @@
     "skills/entity-graph-realtime/skills/entity-realtime-local-first/SKILL.md"
   ],
   "keywords": [
-    "prometheus-entity-management",
+    "@prometheus-ags/prometheus-entity-management",
     "realtime",
     "websocket",
     "supabase",

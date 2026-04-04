@@ -52,7 +52,7 @@ When you must select multiple fields as an object, use `useShallow` from `zustan
 
 ```typescript
 import { useShallow } from "zustand/react/shallow";
-import { useGraphStore } from "prometheus-entity-management";
+import { useGraphStore } from "@prometheus-ags/prometheus-entity-management";
 
 // Advanced / non-hook access — prefer library hooks first
 const { ids, isFetching } = useGraphStore(

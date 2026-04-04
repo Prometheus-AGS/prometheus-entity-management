@@ -16,8 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "prometheus-entity-management": ["../../src/index.ts"],
-      "prometheus-entity-management/*": ["../../src/*"]
+      "@prometheus-ags/prometheus-entity-management": ["../../src/index.ts"],
+      "@prometheus-ags/prometheus-entity-management/*": ["../../src/*"]
     }
   },
   "include": ["src"],

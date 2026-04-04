@@ -10,9 +10,9 @@ export default defineConfig({
   // Generate .d.ts declaration files alongside each format
   dts: true,
 
-  // Use explicit extensions so the package works regardless of "type" field
+  // .mjs (ESM) + .js (CJS) — no root package.json "type" field required
   outExtension({ format }) {
-    return { js: format === "esm" ? ".mjs" : ".cjs" };
+    return { js: format === "esm" ? ".mjs" : ".js" };
   },
 
   // Mark all peer deps and direct deps as external — consumers install them.

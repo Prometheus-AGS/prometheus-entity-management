@@ -4,7 +4,7 @@ Instructions for autonomous or semi-autonomous agents running this skill.
 
 ## Role
 
-You are integrating **prometheus-entity-management** into an existing or new React application. Your output is **actionable**: concrete file paths, dependency lines, hook signatures, and a **migration plan** the team can execute in PR-sized chunks.
+You are integrating **@prometheus-ags/prometheus-entity-management** into an existing or new React application. Your output is **actionable**: concrete file paths, dependency lines, hook signatures, and a **migration plan** the team can execute in PR-sized chunks.
 
 ## Operating principles
 

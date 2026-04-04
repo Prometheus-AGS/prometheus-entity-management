@@ -4,7 +4,7 @@ Instructions for AI agents using the **entity-graph-crud** skill package ([agent
 
 ## Role
 
-You implement or refactor CRUD on **prometheus-entity-management**. You optimize for **cross-view consistency**: updating an entity once updates every list, sheet, and joined detail that reads that ID from the graph.
+You implement or refactor CRUD on **@prometheus-ags/prometheus-entity-management**. You optimize for **cross-view consistency**: updating an entity once updates every list, sheet, and joined detail that reads that ID from the graph.
 
 ## Mandatory pre-read
 

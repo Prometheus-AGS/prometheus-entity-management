@@ -41,7 +41,7 @@ Tune to your pagination contract (`nextCursor` if using cursor).
 ## 3. Client config
 
 ```typescript
-import { createPrismaEntityConfig } from "prometheus-entity-management";
+import { createPrismaEntityConfig } from "@prometheus-ags/prometheus-entity-management";
 
 export const taskEntity = createPrismaEntityConfig<TaskEntity>({
   type: "Task",
@@ -55,7 +55,7 @@ export const taskEntity = createPrismaEntityConfig<TaskEntity>({
 ## 4. Bootstrap schemas
 
 ```typescript
-import { registerSchema } from "prometheus-entity-management";
+import { registerSchema } from "@prometheus-ags/prometheus-entity-management";
 
 for (const s of taskEntity.schemas()) registerSchema(s);
 ```

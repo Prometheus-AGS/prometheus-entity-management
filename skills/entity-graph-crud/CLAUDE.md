@@ -1,6 +1,6 @@
 # CLAUDE.md — entity-graph-crud
 
-Architecture rules for code generated or edited under this skill. **Do not violate these rules** when implementing CRUD for prometheus-entity-management.
+Architecture rules for code generated or edited under this skill. **Do not violate these rules** when implementing CRUD for `@prometheus-ags/prometheus-entity-management`.
 
 ## Layering (strict)
 

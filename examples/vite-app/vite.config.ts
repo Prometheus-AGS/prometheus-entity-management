@@ -8,7 +8,10 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "prometheus-entity-management": path.resolve(__dirname, "../../src/index.ts"),
+      "@prometheus-ags/prometheus-entity-management": path.resolve(
+        __dirname,
+        "../../src/index.ts",
+      ),
     },
   },
   server: {

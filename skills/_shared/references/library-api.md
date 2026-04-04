@@ -1,6 +1,8 @@
-# prometheus-entity-management — public API reference
+# @prometheus-ags/prometheus-entity-management — public API reference
 
 Generated from `src/index.ts`. Use this when scaffolding imports or explaining capabilities. Types are TypeScript-only unless noted.
+
+**Runtime exports ledger:** Agent skills that must match shipped code should align with `library-exports.json` (129+ export names from the built ESM bundle). After changing `src/index.ts` exports, run `pnpm run refresh:exports` at the repo root and commit `skills/_shared/references/library-exports.json`. CI runs `pnpm run verify:skills`.
 
 ---
 
@@ -219,7 +221,7 @@ import {
   useEntityView,
   registerSchema,
   // …
-} from "prometheus-entity-management";
+} from "@prometheus-ags/prometheus-entity-management";
 ```
 
 In this monorepo’s examples, the package may resolve via TypeScript path alias to `src/index.ts` during development.

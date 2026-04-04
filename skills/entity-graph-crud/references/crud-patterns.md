@@ -1,4 +1,4 @@
-# CRUD patterns — prometheus-entity-management
+# CRUD patterns — @prometheus-ags/prometheus-entity-management
 
 ## Pattern A — Single hook owns the surface
 

@@ -1,6 +1,6 @@
 # CLAUDE.md — entity-graph-realtime
 
-Rules for adding realtime to prometheus-entity-management.
+Rules for adding realtime to `@prometheus-ags/prometheus-entity-management`.
 
 ## Adapter boundary
 

@@ -1,4 +1,4 @@
-# Contributing to prometheus-entity-management
+# Contributing to @prometheus-ags/prometheus-entity-management
 
 ## Setup
 
@@ -22,7 +22,7 @@ examples/      Demo applications — illustrate the API in action
 
 ## Library Development Workflow
 
-The examples resolve `"prometheus-entity-management"` directly to `../../src/index.ts`
+The examples resolve `"@prometheus-ags/prometheus-entity-management"` directly to `../../src/index.ts`
 via `tsconfig.json` path aliases and `vite.config.ts` aliases. There is no build step
 during development — TypeScript compilation is handled by the app bundlers.
 

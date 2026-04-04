@@ -15,6 +15,7 @@ import { RealtimePage } from "./pages/realtime/realtime-page";
 import { SettingsPage } from "./pages/settings/settings-page";
 import { UIDemoPage } from "./pages/ui-demo/ui-demo-page";
 import { PureDemoPage } from "./pages/pure-demo/pure-demo-page";
+import { TanStackBridgePage } from "./pages/tanstack-bridge/tanstack-bridge-page";
 import { AlertTriangle, RefreshCcw } from "lucide-react";
 
 const rootRoute = createRootRoute({
@@ -114,6 +115,12 @@ const pureDemoRoute = createRoute({
   component: PureDemoPage,
 });
 
+const tanstackBridgeRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/tanstack-bridge",
+  component: TanStackBridgePage,
+});
+
 export const routeTree = rootRoute.addChildren([
   indexRoute,
   dashboardRoute,
@@ -124,4 +131,5 @@ export const routeTree = rootRoute.addChildren([
   settingsRoute,
   uiDemoRoute,
   pureDemoRoute,
+  tanstackBridgeRoute,
 ]);

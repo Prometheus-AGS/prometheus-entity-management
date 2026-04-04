@@ -2,7 +2,7 @@
 name: entity-prisma-migrate
 description: >
   Slash command /entity-prisma-migrate — refactor existing manual Prisma + fetch + useState patterns
-  to prometheus-entity-management hooks driven by createPrismaEntityConfig, registerSchema, and
+  to @prometheus-ags/prometheus-entity-management hooks driven by createPrismaEntityConfig, registerSchema, and
   useEntityView/useEntityCRUD while preserving API routes and auth.
 ---
 

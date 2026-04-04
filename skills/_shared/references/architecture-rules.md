@@ -1,4 +1,4 @@
-# prometheus-entity-management — architecture rules (agent reference)
+# @prometheus-ags/prometheus-entity-management — architecture rules (agent reference)
 
 Non-negotiable constraints distilled from `CLAUDE.md` / `AGENTS.md`. Violating these breaks cross-view reactivity and the purpose of the normalized graph.
 
@@ -18,7 +18,7 @@ Sideways data flow between components (duplicated caches, prop-drilled copies) i
 
 - Do **not** import or subscribe to `useGraphStore` inside **component** files.
 - Components use **`useEntity`**, **`useEntityList`**, **`useEntityView`**, **`useEntityCRUD`**, GraphQL hooks, etc.
-- `useGraphStore.getState()` is allowed **inside** engine code, adapters, CRUD internals, and other non-component modules—not in presentational components.
+- `useGraphStore.getState()` is allowed **inside** engine code, adapters, CRUD internals, **custom app hooks** (e.g. syncing TanStack Query results into the graph), effects, workers, and other **non-component** modules—not in presentational `*.tsx` components.
 
 ## Entities live exactly once (normalized cache)
 

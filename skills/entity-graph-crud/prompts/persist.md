@@ -29,7 +29,7 @@ Write 3–6 bullets for the human maintainer:
 - Entity type + list key shape
 - API base paths
 - Relation schemas registered (or explicit “none”)
-- Known limitations (no GC, partial list rows, etc.)
+- Known limitations (e.g. partial list rows if list fetch omits fields — use `detailFetch` or `useEntity` as needed; engine GC is configurable — see library `configureEngine`.)
 
 ## 4. Orchestrator follow-up (optional)
 

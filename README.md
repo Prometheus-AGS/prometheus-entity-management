@@ -1,8 +1,17 @@
-# prometheus-entity-management
+# @prometheus-ags/prometheus-entity-management
 
 **Normalized, globally-reactive entity graph store for React**
 
 Update a post in one screen and every list row, detail panel, and badge that reads that entity updates automatically—without hand-maintained query keys. Normalization is built around your `type` + `id` + `normalize` function, not a separate cache product. The same graph holds data from **REST**, **GraphQL**, **WebSocket / Supabase / Convex**, **Prisma-shaped APIs**, and **ElectricSQL + PGlite** local-first sync.
+
+### Documentation map
+
+| Doc | Purpose |
+|-----|---------|
+| [docs/tanstack-query-and-table.md](docs/tanstack-query-and-table.md) | How this library fits with TanStack Query and TanStack Table |
+| [docs/advanced.md](docs/advanced.md) | Engine, GC, Suspense, DevTools, SSR, testing |
+| [RELEASING.md](RELEASING.md) | Versioning, `prepublishOnly`, npm publish |
+| [CHANGELOG.md](CHANGELOG.md) | Release history |
 
 ---
 
@@ -11,7 +20,7 @@ Update a post in one screen and every list row, detail panel, and badge that rea
 ### 1. Install
 
 ```bash
-npm install prometheus-entity-management zustand immer
+npm install @prometheus-ags/prometheus-entity-management zustand immer
 ```
 
 (`pnpm` and `yarn` work the same way for app dependencies.)
@@ -25,7 +34,7 @@ type Post = { id: string; title: string; status: string };
 ### 3. Fetch and render
 
 ```tsx
-import { useEntity } from "prometheus-entity-management";
+import { useEntity } from "@prometheus-ags/prometheus-entity-management";
 
 export function PostCard({ postId }: { postId: string }) {
   const { data, isLoading, error } = useEntity<Post, Post>({
@@ -91,8 +100,8 @@ Data flows **up** into the graph; UI reads **down** through hooks (see [Architec
 
 ## Feature comparison
 
-| Feature | prometheus-entity-management | TanStack Query | Apollo Client | SWR |
-|--------|------------------------------|----------------|---------------|-----|
+| Feature | `@prometheus-ags/prometheus-entity-management` | TanStack Query | Apollo Client | SWR |
+|--------|--------------------------------------------------|----------------|---------------|-----|
 | Normalized cache | Yes (automatic) | No (manual) | Yes (manual config) | No |
 | Cross-view reactivity | Yes | No | Partial | No |
 | REST support | Yes | Yes | No | Yes |
@@ -105,9 +114,21 @@ Data flows **up** into the graph; UI reads **down** through hooks (see [Architec
 | Suspense hooks | Yes | Yes | Yes | Yes |
 | SSR hydration | Yes | Yes | Yes | Yes |
 | Garbage collection | Yes (automatic, configurable) | Yes | Yes | No |
-| Bundle size | ~15KB | ~39KB | ~130KB | ~4KB |
+| Bundle size | See [Bundle size](#bundle-size) | ~39KB | ~130KB | ~4KB |
 
-Approximate min+gzip-style figures; peer deps (`react`, `zustand`, `immer`) excluded where noted for this library.
+Peer dependencies (`react`, `react-dom`, optional `@tanstack/react-table`) are **not** included in any column. Published `dist` sizes change with each release—measure before quoting numbers in docs or talks.
+
+### Bundle size
+
+The npm package ships a **single large entry** (`dist/index.mjs`) that re-exports the full surface (hooks, GraphQL, CRUD, view, UI, adapters). **Your** app’s gzipped cost depends on **tree-shaking**, **minification**, and **which imports you use**.
+
+**Maintainers:** after `pnpm run build`, a rough gzip size of the ESM bundle is:
+
+```bash
+gzip -c dist/index.mjs | wc -c
+```
+
+Compare against peers only when measurement methodology matches (minified vs unminified, gzip vs brotli, ESM vs CJS).
 
 ---
 
@@ -283,7 +304,7 @@ const mutation = useMutation({
 **After**
 
 ```tsx
-import { serializeKey, useEntityMutation } from "prometheus-entity-management";
+import { serializeKey, useEntityMutation } from "@prometheus-ags/prometheus-entity-management";
 
 const { mutate } = useEntityMutation<string, Post, Post>({
   type: "Post",
@@ -380,7 +401,7 @@ import {
   registerSchema,
   useEntity,
   useEntityList,
-} from "prometheus-entity-management";
+} from "@prometheus-ags/prometheus-entity-management";
 
 type Post = { id: string; title: string; authorId: string };
 
@@ -428,8 +449,8 @@ Use `Posts.crud()` with `useEntityCRUD` when you want the full list + detail + f
 
 | Example | Path | What it demonstrates |
 |--------|------|---------------------|
-| **Vite app** | [`examples/vite-app/`](examples/vite-app/) | Full CRUD, realtime adapters, settings, `EntityTable` / sheets, mock API with latency |
-| **Next.js app** | [`examples/nextjs-app/`](examples/nextjs-app/) | SSR hydration via `GraphHydrationProvider`, products CRUD, Suspense-oriented flows |
+| **Vite app** | [`examples/vite-app/`](examples/vite-app/) | Full CRUD, realtime adapters, **TanStack Query → graph bridge** (`/tanstack-bridge`), `EntityTable` / sheets, mock API with latency |
+| **Next.js app** | [`examples/nextjs-app/`](examples/nextjs-app/) | Same feature set as the Vite example (Project/Task/User CRUD, realtime, engine settings, pure list view, TanStack Query → graph bridge). **SSR:** `GraphHydrationProvider` seeds the client graph from the shared demo data on first load |
 
 From the repo root (this monorepo uses **pnpm**):
 

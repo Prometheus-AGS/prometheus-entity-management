@@ -28,7 +28,7 @@ Emit TypeScript `EntityDescriptor` definitions consistent with `normalizeGQLResp
 ## Template
 
 ```typescript
-import type { EntityDescriptor } from "prometheus-entity-management";
+import type { EntityDescriptor } from "@prometheus-ags/prometheus-entity-management";
 
 export const postDescriptor: EntityDescriptor<GqlPost, PostEntity> = {
   type: "Post",

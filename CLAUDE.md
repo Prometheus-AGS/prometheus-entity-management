@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-prometheus-entity-management is a **normalized, globally-reactive entity graph store for React** built on Zustand. It solves the data siloing problem inherent in TanStack Query's query-owns-data model by maintaining a single application-wide entity graph where updating an entity in one place instantly updates all views displaying that entity.
+`@prometheus-ags/prometheus-entity-management` is a **normalized, globally-reactive entity graph store for React** built on Zustand. It solves the data siloing problem inherent in TanStack Query's query-owns-data model by maintaining a single application-wide entity graph where updating an entity in one place instantly updates all views displaying that entity.
 
 **Core Philosophy**: Queries are instructions to populate the graph. The graph is the single source of truth. Lists store ordered arrays of entity IDs — never copies of data.
 
@@ -66,7 +66,7 @@ pnpm run build:next
 pnpm run clean          # Remove all node_modules and build artifacts
 ```
 
-**Important**: There is NO build step during development. Examples resolve `"prometheus-entity-management"` directly to `../../src/index.ts` via tsconfig path aliases. TypeScript compilation is handled by the example app bundlers (Vite/Next.js).
+**Important**: There is NO build step during development. Examples resolve `"@prometheus-ags/prometheus-entity-management"` directly to `../../src/index.ts` via tsconfig path aliases. TypeScript compilation is handled by the example app bundlers (Vite/Next.js).
 
 ## Architecture: The Three-Layer Model
 
@@ -254,10 +254,11 @@ examples/
 
 ## Important Constraints
 
-- **No test framework**: No tests exist yet. Verify changes manually via example apps.
-- **No DevTools**: Unlike TanStack Query, no dedicated DevTools UI exists. Use `useGraphStore.getState()` for debugging.
-- **No GC yet**: Entities accumulate for session lifetime. Long-lived apps with very large datasets may need manual eviction.
-- **No Suspense yet**: No `useSuspenseEntity` hook. Planned but not implemented.
+- **Tests**: The library includes Vitest smoke tests (`pnpm run test`). Expand coverage for risky changes; example apps remain useful for manual verification.
+- **DevTools**: `useGraphDevTools` is available for lightweight graph inspection. For ad-hoc debugging you can also use `useGraphStore.getState()`.
+- **Garbage collection**: Configurable via `configureEngine` (`defaultGcTime`, `gcInterval`) and `startGarbageCollector` / `stopGarbageCollector`. Entities with no subscribers can be evicted after `defaultGcTime`.
+- **Suspense**: `useSuspenseEntity` and `useSuspenseEntityList` are implemented for Suspense boundaries (non-null entity id required where applicable).
+- **Skills ↔ code sync (immutable)**: Any change to public exports in `src/index.ts` or to architecture rules here must update `skills/_shared/references/library-exports.json` (run `pnpm run refresh:exports`) and related skill docs so `pnpm run verify:skills` passes in CI. PR checklist: `.github/pull_request_template.md`.
 
 ## Where to Start When Reading Code
 

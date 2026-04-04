@@ -3,7 +3,7 @@ name: entity-perf
 description: >
   Slash command /entity-perf — analyze re-render patterns, Zustand selector granularity, duplicate
   fetches (dedupe keys), realtime flush settings, and list virtualization opportunities for
-  prometheus-entity-management apps.
+  @prometheus-ags/prometheus-entity-management apps.
 ---
 
 # /entity-perf

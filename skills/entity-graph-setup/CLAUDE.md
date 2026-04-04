@@ -22,7 +22,7 @@ Skill-specific rules for Claude Code (and compatible agents) when executing **en
 
 ## Monorepo note
 
-When the workspace **is** prometheus-entity-management, examples consume the library via path alias—**do not** add a redundant npm publish step for local verification.
+When the workspace **is** @prometheus-ags/prometheus-entity-management, examples consume the library via path alias—**do not** add a redundant npm publish step for local verification.
 
 ## References
 

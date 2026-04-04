@@ -1,6 +1,6 @@
 # GraphQL normalization into the entity graph
 
-This document describes runtime behavior of `normalizeGQLResponse` in **prometheus-entity-management** (`src/graphql/client.ts`).
+This document describes runtime behavior of `normalizeGQLResponse` in **@prometheus-ags/prometheus-entity-management** (`src/graphql/client.ts`).
 
 ## Entry
 

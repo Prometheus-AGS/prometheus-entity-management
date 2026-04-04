@@ -3,7 +3,7 @@ name: entity-gql-setup
 description: >
   Slash command /entity-gql-setup — scaffold createGQLClient (GQLClientConfig), authentication headers,
   and EntityDescriptor sets from GraphQL SDL or introspection. Aligns paths and extractId with
-  normalizeGQLResponse behavior in prometheus-entity-management.
+  normalizeGQLResponse behavior in `@prometheus-ags/prometheus-entity-management`.
 ---
 
 # /entity-gql-setup

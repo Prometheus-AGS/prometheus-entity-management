@@ -1,7 +1,7 @@
 ---
 name: entity-graph-realtime
 description: >
-  Add realtime synchronization to an existing prometheus-entity-management setup: detect the push source
+  Add realtime synchronization to an existing @prometheus-ags/prometheus-entity-management setup: detect the push source
   (WebSocket, Supabase Realtime, Convex, GraphQL subscriptions, ElectricSQL+PGlite), configure RealtimeManager,
   normalize inbound traffic to ChangeSet/EntityChange, tune the 16ms coalescing window or flushInterval 0,
   and wire channel subscriptions with correct cleanup and list invalidation.

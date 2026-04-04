@@ -22,7 +22,7 @@ This file provides guidance to coding agents working anywhere in this repository
 
 ## Project Overview
 
-`prometheus-entity-management` is a normalized, globally reactive entity graph store for React built on Zustand.
+`@prometheus-ags/prometheus-entity-management` is a normalized, globally reactive entity graph store for React built on Zustand.
 
 It solves the data siloing problem created by query-owns-data approaches by keeping a single application-wide entity graph. Updating one entity in one place should immediately update every view that reads that entity.
 
@@ -96,7 +96,7 @@ pnpm run build:next
 pnpm run clean
 ```
 
-**Important:** there is no standalone library build step during development. The examples resolve `prometheus-entity-management` directly to `../../src/index.ts` through TypeScript path aliases. Vite and Next.js handle compilation during development.
+**Important:** there is no standalone library build step during development. The examples resolve `@prometheus-ags/prometheus-entity-management` directly to `../../src/index.ts` through TypeScript path aliases. Vite and Next.js handle compilation during development.
 
 ## Architecture: Three-Layer Model
 
@@ -325,13 +325,11 @@ examples/
 
 ## Important Constraints
 
-- There is currently no automated test framework in this repository.
-- Verify behavior manually through the example applications.
-- There is no dedicated DevTools UI.
-- Use `useGraphStore.getState()` for debugging when needed.
-- There is no entity garbage collection yet.
-- Entities currently accumulate for the lifetime of the session.
-- There is no Suspense hook such as `useSuspenseEntity` yet.
+- **Tests**: Vitest smoke tests run in CI (`pnpm run test`). Use example apps for deeper manual checks when changing behavior.
+- **DevTools**: `useGraphDevTools` is available; `useGraphStore.getState()` remains valid for debugging outside React.
+- **Garbage collection**: Engine supports GC via `configureEngine` and `startGarbageCollector` (see `src/engine.ts`).
+- **Suspense**: `useSuspenseEntity` and `useSuspenseEntityList` are implemented.
+- **Skills ↔ code sync (immutable)**: Any PR that changes public exports in `src/index.ts` or architecture rules documented here must update `skills/_shared/references/library-exports.json` (and related skill docs) so CI (`pnpm run verify:skills`) passes. Use the PR template checklist (`.github/pull_request_template.md`).
 
 ## Where to Start When Reading Code
 

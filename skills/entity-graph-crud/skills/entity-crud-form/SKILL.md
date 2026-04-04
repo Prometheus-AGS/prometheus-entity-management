@@ -13,7 +13,7 @@ description: >
 - Replacing ad-hoc forms with declarative **`FieldDescriptor<T>[]`**
 - Adding **custom controls** (FK pickers, rich text) via `editControl` / `render`
 
-## Core types (`prometheus-entity-management`)
+## Core types (`@prometheus-ags/prometheus-entity-management`)
 
 - **`FieldType`**: `text` | `textarea` | `number` | `email` | `url` | `date` | `boolean` | `enum` | `custom`
 - **`FieldDescriptor<TEntity>`**: `field`, `label`, `type`, optional `required`, `placeholder`, `options`, `hint`, `render`, `editControl`, `hideOnCreate`, `hideOnEdit`, `readonlyOnEdit`

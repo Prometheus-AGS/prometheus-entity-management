@@ -1,15 +1,15 @@
 ---
 name: entity-graph-setup
-description: Analyze a React/Vite/Next.js codebase and introduce prometheus-entity-management from scratch—detect legacy data layers, infer entity types, emit schema registrations, and produce phased migration plans without breaking architecture rules.
+description: "Analyze a React/Vite/Next.js codebase and introduce @prometheus-ags/prometheus-entity-management from scratch—detect legacy data layers, infer entity types, emit schema registrations, and produce phased migration plans without breaking architecture rules."
 ---
 
 # entity-graph-setup
 
-Analyze a target **React / Vite / Next.js** codebase and set up **prometheus-entity-management** from scratch. Detects existing data layers (TanStack Query, Apollo Client, Redux, SWR, raw `fetch`), maps **entity types** from API responses or GraphQL schemas, generates **`registerSchema`** registrations and hook wiring, and produces **migration plans** that preserve behavior while moving canonical state into the normalized graph.
+Analyze a target **React / Vite / Next.js** codebase and set up **@prometheus-ags/prometheus-entity-management** from scratch. Detects existing data layers (TanStack Query, Apollo Client, Redux, SWR, raw `fetch`), maps **entity types** from API responses or GraphQL schemas, generates **`registerSchema`** registrations and hook wiring, and produces **migration plans** that preserve behavior while moving canonical state into the normalized graph.
 
 ## When to use
 
-- Greenfield integration of prometheus-entity-management into an app.
+- Greenfield integration of @prometheus-ags/prometheus-entity-management into an app.
 - Incremental migration off **TanStack Query**, **Apollo Client**, **Redux**, **SWR**, or ad-hoc fetch logic.
 - Inferring **entity types** and relations from REST routes, OpenAPI, Prisma models, or GraphQL SDL.
 - Aligning a team on **Components → Hooks → Graph** before deeper CRUD/realtime work.
@@ -42,7 +42,7 @@ Emits JSON flags for **KBD** (`.kbd-orchestrator/project.json`), **Evolver** (`.
 
 ## Shared references (library monorepo)
 
-When this skill runs inside **prometheus-entity-management**, prefer:
+When this skill runs inside **@prometheus-ags/prometheus-entity-management**, prefer:
 
 - `skills/_shared/references/library-api.md`
 - `skills/_shared/references/architecture-rules.md`

@@ -13,7 +13,7 @@ Inputs: approved `migration_plan.md`, `setup_spec`, optional `entity_manifest`.
 Add:
 
 ```text
-prometheus-entity-management
+@prometheus-ags/prometheus-entity-management
 ```
 
 If the workspace is the **library monorepo** itself, wire the app via **tsconfig paths** (no duplicate install).

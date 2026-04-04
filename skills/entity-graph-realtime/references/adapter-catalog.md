@@ -1,4 +1,4 @@
-# Adapter catalog — prometheus-entity-management
+# Adapter catalog — @prometheus-ags/prometheus-entity-management
 
 Source: **`src/adapters/types.ts`**, **`src/adapters/realtime-adapters.ts`**, **`src/adapters/electricsql.ts`**, **`src/adapters/realtime-manager.ts`**. All factories are re-exported from the **package root** (`src/index.ts`).
 
@@ -100,7 +100,7 @@ import {
   getRealtimeManager,
   createWebSocketAdapter,
   type ChannelConfig,
-} from "prometheus-entity-management";
+} from "@prometheus-ags/prometheus-entity-management";
 
 const manager = getRealtimeManager({ flushInterval: 16 });
 const ws = createWebSocketAdapter({

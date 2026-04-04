@@ -1,14 +1,14 @@
 ---
 name: entity-graph-optimize
 description: >
-  Audit existing prometheus-entity-management integrations for architectural violations (components→hooks→stores),
+  Audit existing @prometheus-ags/prometheus-entity-management integrations for architectural violations (components→hooks→stores),
   performance issues (Zustand selectors, subscription churn), missing cascade/schema registration, and memory growth.
   Sub-skills: full CLAUDE.md audit, render/subscriber analysis, and eviction/GC strategies using graph APIs.
 ---
 
 # Entity Graph — Optimize
 
-Use this skill when an app **already** uses prometheus-entity-management (or is mid-migration) and needs structured review plus targeted fixes.
+Use this skill when an app **already** uses @prometheus-ags/prometheus-entity-management (or is mid-migration) and needs structured review plus targeted fixes.
 
 ## Scope
 

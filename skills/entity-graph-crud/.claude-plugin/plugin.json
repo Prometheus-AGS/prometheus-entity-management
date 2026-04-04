@@ -12,7 +12,7 @@
     "skills/entity-graph-crud/skills/entity-crud-relations/SKILL.md"
   ],
   "keywords": [
-    "prometheus-entity-management",
+    "@prometheus-ags/prometheus-entity-management",
     "entity-graph",
     "crud",
     "react",

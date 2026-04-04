@@ -1,7 +1,7 @@
 ---
 name: entity-graph-prisma
 description: >
-  Analyze schema.prisma and integrate Prisma-backed APIs with prometheus-entity-management:
+  Analyze schema.prisma and integrate Prisma-backed APIs with @prometheus-ags/prometheus-entity-management:
   TypeScript entity shapes, registerSchema relation graphs, createPrismaEntityConfig for REST list/detail/CRUD,
   toPrismaWhere/toPrismaOrderBy from FilterSpec, Next.js App Router CRUD routes, and migration from ad-hoc
   Prisma calls to the library’s adapter patterns. Optional prisma-entity-graph-generator for codegen.

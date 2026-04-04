@@ -1,7 +1,7 @@
 ---
 name: entity-graph-graphql
 description: >
-  Set up the GraphQL layer for prometheus-entity-management: GQLClient, EntityDescriptor trees,
+  Set up the GraphQL layer for @prometheus-ags/prometheus-entity-management: GQLClient, EntityDescriptor trees,
   response normalization into the Zustand entity graph, and typed hooks (useGQLEntity, useGQLList,
   useGQLMutation, useGQLSubscription). Supports schema-driven descriptor generation from .graphql
   files or introspection of a running endpoint. Sub-skills cover setup, hook codegen patterns,
@@ -10,7 +10,7 @@ description: >
 
 # Entity Graph — GraphQL
 
-This skill guides integration of **prometheus-entity-management** GraphQL APIs with the shared entity graph. Queries and mutations normalize through `EntityDescriptor` definitions; results coexist with REST-loaded entities so `Post:123` updates every subscriber regardless of transport.
+This skill guides integration of **@prometheus-ags/prometheus-entity-management** GraphQL APIs with the shared entity graph. Queries and mutations normalize through `EntityDescriptor` definitions; results coexist with REST-loaded entities so `Post:123` updates every subscriber regardless of transport.
 
 ## When to use
 

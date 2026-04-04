@@ -1,6 +1,6 @@
 # Migration patterns — legacy cache → entity graph
 
-Patterns for moving from TanStack Query, Apollo, Redux, or SWR to **prometheus-entity-management** without breaking production.
+Patterns for moving from TanStack Query, Apollo, Redux, or SWR to **@prometheus-ags/prometheus-entity-management** without breaking production.
 
 ## 1. Parallel run (feature flag)
 

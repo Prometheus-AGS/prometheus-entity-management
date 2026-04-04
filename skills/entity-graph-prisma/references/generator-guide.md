@@ -41,7 +41,7 @@ generator entityGraph {
 
 ## Integration with this monorepo
 
-Point generator output at the **application** repo, not `prometheus-entity-management` core `src/`, unless you are developing the generator itself.
+Point generator output at the **application** repo, not `@prometheus-ags/prometheus-entity-management` core `src/`, unless you are developing the generator itself.
 
 ## Verification
 

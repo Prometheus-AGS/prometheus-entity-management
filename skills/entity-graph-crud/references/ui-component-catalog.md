@@ -1,6 +1,6 @@
-# UI component catalog — prometheus-entity-management
+# UI component catalog — @prometheus-ags/prometheus-entity-management
 
-Public exports from **`prometheus-entity-management`** for CRUD UIs. Import from the package name or tsconfig path alias used by your app.
+Public exports from **`@prometheus-ags/prometheus-entity-management`** for CRUD UIs. Import from the package name or tsconfig path alias used by your app.
 
 ---
 

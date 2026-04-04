@@ -11,7 +11,7 @@
     "../skills/entity-gql-subscription/SKILL.md"
   ],
   "keywords": [
-    "prometheus-entity-management",
+    "@prometheus-ags/prometheus-entity-management",
     "entity-management",
     "zustand",
     "react",
