@@ -3,8 +3,11 @@
   "assessment_complete": true,
   "plan_complete": true,
   "execution_complete": true,
+  "reflection_complete": true,
   "npm_publish_complete": true,
-  "last_updated": "2026-04-04T23:00:00.000Z",
+  "kbd_process_status": "closed",
+  "phase_closed_at": "2026-04-04T23:59:00.000Z",
+  "last_updated": "2026-04-04T23:59:00.000Z",
   "last_updated_by": "maintainer+cursor-agent",
-  "notes": "Live publish: @prometheus-ags/prometheus-entity-management@1.0.0 to npm registry (2026-04-04). prepublishOnly (typecheck, build, test, verify:skills) passed. OpenSpec tasks + verification-checklist updated. .npmrc provenance=false for local publish. Follow-up: confirm git tag v1.0.0 pushed to origin if not already."
+  "notes": "Live publish: @prometheus-ags/prometheus-entity-management@1.0.0 to npm registry (2026-04-04). prepublishOnly (typecheck, build, test, verify:skills) passed. OpenSpec umbrella archived: openspec/changes/archive/2026-04-04-prometheus-v1-0-release. KBD cycle formally closed. Optional follow-up: confirm git tag v1.0.0 pushed to origin."
 }

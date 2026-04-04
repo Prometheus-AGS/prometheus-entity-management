@@ -100,3 +100,9 @@ Use this file as prior context for the next **`/kbd-assess`** invocation.
 ### Registry release
 
 - **`@prometheus-ags/prometheus-entity-management@1.0.0`** published to the public npm registry (**2026-04-04**).
+
+---
+
+## Formal KBD process closure
+
+**Closed:** 2026-04-04 — `progress.json` sets `kbd_process_status: closed` and `phase_closed_at`. Waypoint (`current-waypoint.json`) sets `kbd_process_state: idle`. No further KBD actions are required for this phase until a new cycle is started with **`/kbd-assess`**.

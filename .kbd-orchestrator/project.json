@@ -6,6 +6,11 @@
     "config": "openspec/config.yaml",
     "umbrella_change": "openspec/changes/archive/2026-04-04-prometheus-v1-0-release"
   },
+  "kbd": {
+    "process_state": "idle",
+    "last_closed_phase": "phase-v1-npm-framework",
+    "last_closure_at": "2026-04-04T23:59:00.000Z"
+  },
   "source_roots": ["src"],
   "stack": "typescript-react-zustand"
 }

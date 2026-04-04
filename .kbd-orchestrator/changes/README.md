@@ -1,23 +1,25 @@
 # KBD changes — v1.0.0 track
 
-Source of truth for ordered work: [../phases/phase-v1-npm-framework/plan.md](../phases/phase-v1-npm-framework/plan.md).
+**Status:** **Closed** (2026-04-04). The v1.0 npm release phase is complete. Canonical narrative: [`../phases/phase-v1-npm-framework/reflection.md`](../phases/phase-v1-npm-framework/reflection.md).
 
-**OpenSpec:** umbrella change + `openspec/specs/v1-0.md` defines v1.0 functional completeness; KBD items map to OpenSpec tasks.
+Historical source of truth for ordered work: [`../phases/phase-v1-npm-framework/plan.md`](../phases/phase-v1-npm-framework/plan.md).
 
-Each subdirectory holds `change.md` (goal + acceptance criteria) for cross-tool handoff.
+**OpenSpec:** Umbrella change archived at [`../../openspec/changes/archive/2026-04-04-prometheus-v1-0-release`](../../openspec/changes/archive/2026-04-04-prometheus-v1-0-release); main spec remains [`../../openspec/specs/v1-0.md`](../../openspec/specs/v1-0.md).
 
-| ID | Status |
+Subdirectories under `changes/` were scaffolding for cross-tool handoff; delivery was tracked primarily in the phase plan + OpenSpec tasks.
+
+| ID | Outcome |
 |----|--------|
-| openspec-v1-spec-and-change | pending |
-| v1-docs-canonical-alignment | pending |
-| v1-docs-bundle-and-size-transparency | pending |
-| v1-tests-vitest-smoke | pending |
-| v1-ci-github-actions | pending |
-| v1-docs-tanstack-coexistence | pending |
-| v1-docs-publishing-and-releasing | pending |
-| v1-example-tanstack-query-bridge | pending |
-| v1-examples-realworld-polish | pending |
-| v1-docs-advanced-recipes | pending |
-| v1-skills-library-v1-alignment | pending |
-| v1-skills-sync-enforcement | pending |
-| v1-release-1-0-0 | pending |
+| openspec-v1-spec-and-change | **Done** (see archive + `openspec/specs/v1-0.md`) |
+| v1-docs-canonical-alignment | **Done** |
+| v1-docs-bundle-and-size-transparency | **Done** |
+| v1-tests-vitest-smoke | **Done** |
+| v1-ci-github-actions | **Done** |
+| v1-docs-tanstack-coexistence | **Done** |
+| v1-docs-publishing-and-releasing | **Done** |
+| v1-example-tanstack-query-bridge | **Done** |
+| v1-examples-realworld-polish | **Done** |
+| v1-docs-advanced-recipes | **Done** |
+| v1-skills-library-v1-alignment | **Done** |
+| v1-skills-sync-enforcement | **Done** |
+| v1-release-1-0-0 | **Done** (npm + archive) |

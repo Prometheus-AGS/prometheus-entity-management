@@ -1,13 +1,14 @@
 {
   "previous_phase": "phase-v1-npm-framework",
   "active_phase": null,
-  "label": "phase-v1-npm-framework reflected — choose next milestone",
+  "kbd_process_state": "idle",
+  "label": "KBD closed — v1.0 npm release track complete; no active phase",
   "next_pending_change": null,
-  "exact_next_command": "/kbd-assess (define next phase; e.g. OpenSpec archive, post-release CI, tag verification)",
-  "plan_complete": false,
+  "exact_next_command": "Run /kbd-assess when you start the next roadmap initiative.",
+  "plan_complete": true,
   "execution_path": null,
   "plan_path": null,
   "openspec_umbrella": "openspec/changes/archive/2026-04-04-prometheus-v1-0-release",
   "openspec_archive_recommended": false,
-  "updated_at": "2026-04-04T23:45:00.000Z"
+  "updated_at": "2026-04-04T23:59:00.000Z"
 }
