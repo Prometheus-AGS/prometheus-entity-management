@@ -30,6 +30,8 @@ Commit `skills/_shared/references/library-exports.json` when it changes.
 2. Commit and tag (`v1.0.0`, etc.).
 3. `pnpm publish --access public` (maintainers only; requires npm auth).
 
+**Provenance:** The repo [`.npmrc`](./.npmrc) sets `provenance=false` so **local** publishes succeed (npm cannot generate OIDC provenance outside CI). To publish **with** provenance, use a GitHub Actions job with `permissions: id-token: write` and `npm publish --provenance`, or run `pnpm publish --access public --provenance` only in that environment.
+
 ## Post-release
 
 - Push tags to the remote.
