@@ -2,8 +2,8 @@
 
 **Project:** prometheus-entity-management (`@prometheus-ags/prometheus-entity-management` on npm)  
 **Date:** 2026-04-04  
-**Phase completion:** **~95%** (registry and verification done; OpenSpec umbrella archive optional follow-up)  
-**Changes completed:** Core release track **complete**; OpenSpec **`/opsx:archive`** not run in this session
+**Phase completion:** **~98%** (registry, verification, and OpenSpec umbrella archive done)  
+**Changes completed:** Core release track **complete**; OpenSpec **`/opsx:archive`** run **2026-04-04**
 
 ---
 
@@ -16,16 +16,16 @@
 | Docs + examples aligned to spec | **MET** | README, CLAUDE/AGENTS, `docs/*`, RELEASING, CHANGELOG; Vite + Next examples; TanStack bridge demo. |
 | Skills ↔ runtime exports enforcement | **MET** | `library-exports.json` + `verify:skills` in CI and `prepublishOnly`. |
 | Scoped package + distribution (`exports`, tsup `index.js` / `index.mjs`) | **MET** | `@prometheus-ags/prometheus-entity-management`; `.npmrc` set `provenance=false` for successful **local** publish (provenance requires CI OIDC). |
-| OpenSpec umbrella change fully closed | **PARTIAL** | Manual verification checklist and `tasks.md` updated; change still under `openspec/changes/prometheus-v1-0-release/` — **archive when ready** (`/opsx:archive` or manual move to `openspec/changes/archive/`). |
+| OpenSpec umbrella change fully closed | **MET** | `prometheus-v1-0-release` moved to `openspec/changes/archive/2026-04-04-prometheus-v1-0-release/` (`/opsx:archive`, **2026-04-04**). |
 | Git tag **`v1.0.0`** on remote | **PARTIAL / verify** | Maintainer should confirm `git tag` + `git push origin v1.0.0` on the release commit. |
 
-**Overall:** Immutable **npm** outcome **MET**. Process closure **PARTIAL** until optional OpenSpec archive and remote tag are confirmed.
+**Overall:** Immutable **npm** outcome **MET**. OpenSpec archive **MET**. Remote tag **PARTIAL** until maintainer confirms `v1.0.0` on `origin`.
 
 ---
 
 ## Delivered Changes
 
-- **`prometheus-v1-0-release` (OpenSpec umbrella)** — v1.0 spec, proposal, tasks, verification checklist; manual sign-off **2026-04-04** (by: maintainer + Cursor Agent). *Archive step pending.*
+- **`prometheus-v1-0-release` (OpenSpec umbrella)** — v1.0 spec, proposal, tasks, verification checklist; manual sign-off **2026-04-04**; **archived** same day under `openspec/changes/archive/2026-04-04-prometheus-v1-0-release/`.
 - **Scoped npm package** — `package.json` name, `exports`, `tsup` CJS/ESM outputs; examples + docs imports (by: Cursor Agent + maintainer).
 - **`.npmrc`** — `provenance=false` so local `pnpm publish` does not fail with `provider: null` (by: Cursor Agent).
 - **KBD artifacts** — `progress.json`, `current-waypoint.md`, execution/plan/assessment alignment (by: Cursor Agent + maintainer).
@@ -34,7 +34,7 @@
 
 ## Technical Debt
 
-- **OpenSpec:** Umbrella change **not archived**; keeps `openspec/changes/` “open” until maintainers run their archive workflow.
+- **OpenSpec:** *(resolved)* Umbrella change **archived** — no active change under `openspec/changes/` for v1.0 umbrella.
 - **Provenance:** Registry publishes from **laptop** have **no** npm provenance attestation; future **GitHub Actions** release job could use `npm publish --provenance` + `id-token: write` if desired (`RELEASING.md` notes this).
 - **Assessment table (historical):** Older rows mentioned “publish pending” / doc contradictions (Suspense, GC); **spot-check** that `CLAUDE.md` / `AGENTS.md` limitation bullets match current `src/` (optional cleanup PR).
 - **Entity graph GC / Suspense:** Library may expose more than early “limitations” lines stated — **docs debt** if still inconsistent (see assessment §implementation status).
@@ -54,7 +54,7 @@
 
 - **Progress tracking:** **RELIABLE** — `progress.json` updated through publish and post-publish doc ticks.
 - **Handoff quality:** **CLEAR** — `execution.md` and `current-waypoint.md` separated automatable gates from maintainer npm auth.
-- **Recommendations:** After each release, **commit** KBD + OpenSpec markdown in the same PR as version bump to avoid drift; run **`/opsx:archive`** when the team agrees the umbrella change is closed.
+- **Recommendations:** After each release, **commit** KBD + OpenSpec markdown in the same PR as version bump to avoid drift; run **`/opsx:archive`** when the umbrella change is complete.
 
 ---
 
@@ -73,10 +73,9 @@
 
 **Top priorities:**
 
-1. **OpenSpec:** Archive **`prometheus-v1-0-release`** when policy allows; sync specs if your workflow uses delta → main promotion.
-2. **Git:** Ensure **`v1.0.0`** tag exists on **`origin`** at the published commit.
-3. **Optional:** Add **`npm publish` in GitHub Actions** (OIDC) with **provenance**; keep local `.npmrc` safe for maintainers.
-4. **Optional:** **Bundle/size** guardrail (`size-limit` or similar), broader tests (pagination, realtime, SSR), ElectricSQL doc pins per assessment seeds.
+1. **Git:** Ensure **`v1.0.0`** tag exists on **`origin`** at the published commit.
+2. **Optional:** Add **`npm publish` in GitHub Actions** (OIDC) with **provenance**; keep local `.npmrc` safe for maintainers.
+3. **Optional:** **Bundle/size** guardrail (`size-limit` or similar), broader tests (pagination, realtime, SSR), ElectricSQL doc pins per assessment seeds.
 
 ---
 

@@ -4,7 +4,7 @@
   "spec_paths": ["README.md", "AGENTS.md", "CLAUDE.md", "openspec/specs/v1-0.md"],
   "openspec": {
     "config": "openspec/config.yaml",
-    "umbrella_change": "openspec/changes/prometheus-v1-0-release"
+    "umbrella_change": "openspec/changes/archive/2026-04-04-prometheus-v1-0-release"
   },
   "source_roots": ["src"],
   "stack": "typescript-react-zustand"

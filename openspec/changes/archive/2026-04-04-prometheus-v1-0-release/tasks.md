@@ -13,4 +13,4 @@ Linked to [`openspec/specs/v1-0.md`](../../specs/v1-0.md) and [`.kbd-orchestrato
 - [x] Example READMEs
 - [x] Skills alignment + `library-exports.json` + verify script
 - [x] Version **1.0.0** in `package.json` / `CHANGELOG`
-- [ ] `npm publish` + git tag `v1.0.0` (maintainer)
+- [x] `npm publish` + git tag `v1.0.0` (maintainer) — **registry:** `@prometheus-ags/prometheus-entity-management@1.0.0` published **2026-04-04**. **Tag:** create and push `v1.0.0` on the release commit if not already on `origin` (see `RELEASING.md`).

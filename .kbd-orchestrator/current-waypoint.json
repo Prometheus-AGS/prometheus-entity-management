@@ -7,7 +7,7 @@
   "plan_complete": false,
   "execution_path": null,
   "plan_path": null,
-  "openspec_umbrella": "openspec/changes/prometheus-v1-0-release",
-  "openspec_archive_recommended": true,
-  "updated_at": "2026-04-04T23:30:00.000Z"
+  "openspec_umbrella": "openspec/changes/archive/2026-04-04-prometheus-v1-0-release",
+  "openspec_archive_recommended": false,
+  "updated_at": "2026-04-04T23:45:00.000Z"
 }

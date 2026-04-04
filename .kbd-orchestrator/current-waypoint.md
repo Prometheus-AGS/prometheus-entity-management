@@ -4,7 +4,7 @@
 |-------|--------|
 | **Previous phase** | `phase-v1-npm-framework` — **reflected** ([`reflection.md`](phases/phase-v1-npm-framework/reflection.md)) |
 | **Active phase** | *None selected* — run **`/kbd-assess`** to define the next milestone |
-| **OpenSpec** | Umbrella [`openspec/changes/prometheus-v1-0-release`](../../openspec/changes/prometheus-v1-0-release) — **archive** when ready (`/opsx:archive` or your workflow) |
+| **OpenSpec** | Umbrella **archived** → [`openspec/changes/archive/2026-04-04-prometheus-v1-0-release`](../../openspec/changes/archive/2026-04-04-prometheus-v1-0-release) |
 
 ## Status
 

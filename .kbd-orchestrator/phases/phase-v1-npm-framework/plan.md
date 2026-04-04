@@ -2,8 +2,8 @@
 
 **Project:** @prometheus-ags/prometheus-entity-management  
 **Plan refreshed:** 2026-04-04 (KBD **Plan** phase — closure path to **fully published v1.0**)  
-**OpenSpec available:** **YES** (`openspec/`, umbrella [`openspec/changes/prometheus-v1-0-release`](../../../openspec/changes/prometheus-v1-0-release))  
-**Orchestration:** **KBD + OpenSpec** — canonical requirements in [`openspec/specs/v1-0.md`](../../../openspec/specs/v1-0.md); execution tracked here, in [`tasks.md`](../../../openspec/changes/prometheus-v1-0-release/tasks.md), and [`verification-checklist.md`](../../../openspec/changes/prometheus-v1-0-release/verification-checklist.md).
+**OpenSpec available:** **YES** (`openspec/`, umbrella [`openspec/changes/archive/2026-04-04-prometheus-v1-0-release`](../../../openspec/changes/archive/2026-04-04-prometheus-v1-0-release))  
+**Orchestration:** **KBD + OpenSpec** — canonical requirements in [`openspec/specs/v1-0.md`](../../../openspec/specs/v1-0.md); execution tracked here, in [`tasks.md`](../../../openspec/changes/archive/2026-04-04-prometheus-v1-0-release/tasks.md), and [`verification-checklist.md`](../../../openspec/changes/archive/2026-04-04-prometheus-v1-0-release/verification-checklist.md).
 
 **Immutable completion:** **`@prometheus-ags/prometheus-entity-management@1.0.0`** installable from the **public npm registry** for **production** use, **functionally complete** per the locked **v1.0 spec**, with **skills ↔ runtime exports** enforced in CI.
 
@@ -28,7 +28,7 @@ The **only remaining work** to reach the immutable outcome is **release verifica
 - **Recommended agent:** **Manual** (maintainer) or Cursor Agent (checklist walk)  
 - **Est. complexity:** **S**  
 - **Customer value:** **HIGH** — proves “functionally complete to v1.0 spec” before registry push  
-- **Details:** Complete every item in [`openspec/changes/prometheus-v1-0-release/verification-checklist.md`](../../../openspec/changes/prometheus-v1-0-release/verification-checklist.md). If the OpenSpec CLI `verify-change` is available, run it; otherwise the checklist **is** the gate. Update [`tasks.md`](../../../openspec/changes/prometheus-v1-0-release/tasks.md) if any box reveals a gap (then fix code/docs and re-verify).
+- **Details:** Complete every item in [`openspec/changes/archive/2026-04-04-prometheus-v1-0-release/verification-checklist.md`](../../../openspec/changes/archive/2026-04-04-prometheus-v1-0-release/verification-checklist.md). If the OpenSpec CLI `verify-change` is available, run it; otherwise the checklist **is** the gate. Update [`tasks.md`](../../../openspec/changes/archive/2026-04-04-prometheus-v1-0-release/tasks.md) if any box reveals a gap (then fix code/docs and re-verify).
 
 ### 2. `v1-npm-publish-dry-run`
 
@@ -46,7 +46,7 @@ The **only remaining work** to reach the immutable outcome is **release verifica
 - **Recommended agent:** **Manual** (npm OTP / org policy)  
 - **Est. complexity:** **S**  
 - **Customer value:** **HIGH** — delivers the immutable outcome  
-- **Details:** `pnpm publish --access public` (or org-equivalent). Tag **`v1.0.0`**, push tag to remote. Mark OpenSpec task “npm publish” complete in [`tasks.md`](../../../openspec/changes/prometheus-v1-0-release/tasks.md). Update [reflection.md](./reflection.md) if needed.
+- **Details:** `pnpm publish --access public` (or org-equivalent). Tag **`v1.0.0`**, push tag to remote. Mark OpenSpec task “npm publish” complete in [`tasks.md`](../../../openspec/changes/archive/2026-04-04-prometheus-v1-0-release/tasks.md). Update [reflection.md](./reflection.md) if needed.
 
 ### 4. `v1-post-publish-consumer-smoke` *(optional)*
 
@@ -81,7 +81,7 @@ pnpm run typecheck && pnpm run build && pnpm run test && pnpm run verify:skills
 pnpm run typecheck:vite && pnpm run typecheck:next
 ```
 
-**OpenSpec:** Walk [`openspec/changes/prometheus-v1-0-release/verification-checklist.md`](../../../openspec/changes/prometheus-v1-0-release/verification-checklist.md). Use `openspec verify-change` **if** your CLI provides it for this change.
+**OpenSpec:** Walk [`openspec/changes/archive/2026-04-04-prometheus-v1-0-release/verification-checklist.md`](../../../openspec/changes/archive/2026-04-04-prometheus-v1-0-release/verification-checklist.md). Use `openspec verify-change` **if** your CLI provides it for this change.
 
 **Publish:**
 
@@ -132,4 +132,4 @@ These were the implementation backlog for v1.0; they are **done** in tree (see a
 
 ## PLAN COMPLETE
 
-**Next pending change:** **`v1-openspec-verify-manual`** — complete [`verification-checklist.md`](../../../openspec/changes/prometheus-v1-0-release/verification-checklist.md), then **`v1-npm-publish-dry-run`**, then **`v1-npm-publish-and-tag`**.
+**Next pending change:** **`v1-openspec-verify-manual`** — complete [`verification-checklist.md`](../../../openspec/changes/archive/2026-04-04-prometheus-v1-0-release/verification-checklist.md), then **`v1-npm-publish-dry-run`**, then **`v1-npm-publish-and-tag`**.

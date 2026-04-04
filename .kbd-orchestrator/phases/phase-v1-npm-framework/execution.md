@@ -14,7 +14,7 @@
 
 | Change ID | Status | Notes |
 |-----------|--------|--------|
-| `v1-openspec-verify-manual` | **Partial (automated sub-gates)** | Spec **§2.2** + **Commands** block executed locally; see **Evidence** below. Maintainer should tick [verification-checklist.md](../../../openspec/changes/prometheus-v1-0-release/verification-checklist.md) for **§2.1, 2.3–2.5** (doc/consistency review). |
+| `v1-openspec-verify-manual` | **Partial (automated sub-gates)** | Spec **§2.2** + **Commands** block executed locally; see **Evidence** below. Maintainer should tick [verification-checklist.md](../../../openspec/changes/archive/2026-04-04-prometheus-v1-0-release/verification-checklist.md) for **§2.1, 2.3–2.5** (doc/consistency review). |
 | `v1-npm-publish-dry-run` | **Done** | `pnpm publish --dry-run --no-git-checks` exit **0** (2026-04-04). Tarball ~455 kB; `prepublishOnly` ran successfully. |
 | `v1-npm-publish-and-tag` | **Pending — MANUAL** | See **Your steps (outside agent scope)** below. |
 | `v1-post-publish-consumer-smoke` | **Optional / Manual** | After live publish. |
@@ -45,7 +45,7 @@ pnpm publish --dry-run --no-git-checks
 ### OpenSpec / KBD
 
 - **Progress file:** [`.kbd-orchestrator/phases/phase-v1-npm-framework/progress.json`](./progress.json)  
-- **Handoff:** After **live publish**, maintainer updates [`openspec/changes/prometheus-v1-0-release/tasks.md`](../../../openspec/changes/prometheus-v1-0-release/tasks.md) (check `npm publish` task), [reflection.md](./reflection.md) if desired, and commits any doc tweaks.
+- **Handoff:** After **live publish**, maintainer updates [`openspec/changes/archive/2026-04-04-prometheus-v1-0-release/tasks.md`](../../../openspec/changes/archive/2026-04-04-prometheus-v1-0-release/tasks.md) (check `npm publish` task), [reflection.md](./reflection.md) if desired, and commits any doc tweaks.
 
 ### Manual (maintainer)
 
