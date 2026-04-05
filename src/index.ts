@@ -1,6 +1,26 @@
 // ── Core graph ────────────────────────────────────────────────────────────
 export { useGraphStore } from "./graph";
-export type { GraphState, EntityState, ListState, EntityType, EntityId } from "./graph";
+export type {
+  GraphState,
+  EntityState,
+  ListState,
+  EntityType,
+  EntityId,
+  EntitySyncMetadata,
+  EntitySnapshot,
+  QueryKey,
+  SyncOrigin,
+} from "./graph";
+
+// ── Graph runtime extensions ──────────────────────────────────────────────
+export { queryOnce, selectGraph } from "./graph-query";
+export type { GraphQueryOptions, GraphIncludeMap, GraphIncludeRelation } from "./graph-query";
+export { createGraphTransaction, createGraphAction } from "./graph-actions";
+export type { GraphTransaction, GraphActionOptions } from "./graph-actions";
+export { createGraphEffect } from "./graph-effects";
+export type { GraphEffectHandle, GraphEffectOptions, GraphEffectEvent } from "./graph-effects";
+export { createGraphTool, exportGraphSnapshot } from "./ai-interop";
+export type { GraphSnapshotExportOptions, GraphToolContext } from "./ai-interop";
 
 // ── Engine ────────────────────────────────────────────────────────────────
 export {

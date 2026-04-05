@@ -5,6 +5,27 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.1.0] — 2026-04-05
+
+Graph-runtime expansion release focused on TanStack DB comparison gaps without changing the library’s core React entity-graph architecture.
+
+### Added
+
+- Graph runtime snapshot helpers: `queryOnce(...)` and `selectGraph(...)`.
+- Nested graph projection support via graph-native `include` definitions.
+- Explicit optimistic write primitives: `createGraphTransaction(...)` and `createGraphAction(...)`.
+- Graph workflow/effect helper: `createGraphEffect(...)`.
+- Per-entity sync/provenance metadata exposed through snapshot reads: `$synced`, `$origin`, `$updatedAt`.
+- AI interoperability helpers: `createGraphTool(...)` and `exportGraphSnapshot(...)`.
+- Vitest coverage for graph runtime querying, actions, rollback, effects, and AI helpers.
+- New comparison documentation: `docs/tanstack-comparison.md`.
+
+### Changed
+
+- Core read paths now resolve sync-aware snapshots rather than base-entity-plus-patch merges alone.
+- Optimistic mutation and CRUD flows now track sync metadata and restore it correctly on rollback.
+- Top-level docs now describe the graph runtime surface and the library’s positioning relative to TanStack DB, Query, Table, AI, and Intent.
+
 ## [1.0.0] — 2026-04-04
 
 Production-ready semantic version with CI, tests, documentation, and skills export verification.

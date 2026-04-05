@@ -13,9 +13,37 @@ Generated from `src/index.ts`. Use this when scaffolding imports or explaining c
 | `useGraphStore` | hook/store | Zustand store for the normalized graph: `entities`, `patches`, `lists`, `entityStates`, and mutation actions. Prefer hooks in components; `getState()` in non-React code. |
 | `GraphState` | type | Full store shape: canonical entities, UI patches, per-entity fetch state, list slots keyed by query key. |
 | `EntityState` | type | Per-entity cache metadata: `isFetching`, `lastFetched`, `error`, `stale`. |
+| `EntitySyncMetadata` | type | Optional sync/provenance metadata stored beside canonical rows (`synced`, `origin`, `updatedAt`). |
+| `EntitySnapshot` | type | Sync-aware entity view returned by snapshot reads and graph query helpers (`$synced`, `$origin`, `$updatedAt`). |
 | `ListState` | type | List slot: ordered **`ids`** only (not row copies), pagination cursors, `total`, fetch flags, page metadata. |
 | `EntityType` | type | String key partitioning the graph (e.g. `"Post"`). |
 | `EntityId` | type | Primary key string for an entity within its `EntityType`. |
+| `QueryKey` | type | Stable string key used for list slots. |
+| `SyncOrigin` | type | Provenance enum for sync metadata: `server`, `client`, or `optimistic`. |
+
+---
+
+## Graph runtime extensions
+
+| Export | Kind | Description |
+|--------|------|-------------|
+| `queryOnce` | function | One-shot graph query helper: single row or list snapshot with local filter/sort/include support. |
+| `selectGraph` | function | Alias for `queryOnce` when using the API as a projection helper. |
+| `createGraphTransaction` | function | Explicit optimistic graph write transaction with rollback/commit semantics. |
+| `createGraphAction` | function | Wraps optimistic transaction + async execution into one reusable mutation action. |
+| `createGraphEffect` | function | Lightweight enter/update/exit workflow helper driven by graph query results. |
+| `createGraphTool` | function | Small AI-facing helper that injects graph query/export context into a typed function. |
+| `exportGraphSnapshot` | function | Serialize graph data for prompt/context building or external workflows. |
+| `GraphQueryOptions` | type | Options for `queryOnce`: `type`, ids/list key, local predicates, includes, and projections. |
+| `GraphIncludeMap` | type | Nested include/projection map for graph snapshot expansion. |
+| `GraphIncludeRelation` | type | Relation resolver for snapshot includes (`field`, `array`, `list`, `resolver`). |
+| `GraphTransaction` | type | Transaction surface for graph write orchestration. |
+| `GraphActionOptions` | type | Async action config wrapping optimistic writes, success, and rollback behavior. |
+| `GraphEffectHandle` | type | Disposable handle returned by `createGraphEffect`. |
+| `GraphEffectOptions` | type | Enter/update/exit effect configuration over graph query results. |
+| `GraphEffectEvent` | type | Update payload for graph effects. |
+| `GraphSnapshotExportOptions` | type | Serialization options for `exportGraphSnapshot`. |
+| `GraphToolContext` | type | Helper context injected into `createGraphTool` handlers. |
 
 ---
 

@@ -31,9 +31,7 @@ export function useGQLEntity<TData, TEntity extends Record<string, unknown>>(opt
 
   const data = useStore(useGraphStore, useShallow((s) => {
     if (!id) return null;
-    const base = s.entities[type]?.[id]; if (!base) return null;
-    const patch = s.patches[type]?.[id];
-    return (patch ? { ...base, ...patch } : base) as TEntity;
+    return s.readEntitySnapshot<TEntity>(type, id) as TEntity | null;
   }));
 
   const entityState = useStore(useGraphStore, useCallback((s): EntityState =>
@@ -91,12 +89,9 @@ export function useGQLList<TData, TEntity extends Record<string, unknown>>(opts:
     useGraphStore,
     useShallow((s) => {
       const ids = s.lists[key]?.ids ?? EMPTY_IDS;
-      return ids.map((id) => {
-        const base = s.entities[type]?.[id];
-        if (!base) return null;
-        const p = s.patches[type]?.[id];
-        return (p ? { ...base, ...p } : base) as TEntity;
-      }).filter((x): x is TEntity => x !== null);
+      return ids
+        .map((id) => s.readEntitySnapshot<TEntity>(type, id))
+        .filter((x) => x !== null) as TEntity[];
     }),
   );
 

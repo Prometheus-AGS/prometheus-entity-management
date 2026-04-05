@@ -2,6 +2,8 @@
 
 Concise reference for engine tuning, garbage collection, Suspense, and developer tooling.
 
+For positioning against TanStack products, see [Detailed comparison with TanStack libraries](./tanstack-comparison.md).
+
 ## Engine (`configureEngine` / `getEngineOptions`)
 
 - **`defaultStaleTime`** — After this age, subscribed entities are candidates for background refetch (still showing cached data).
@@ -17,6 +19,33 @@ Concise reference for engine tuning, garbage collection, Suspense, and developer
 ## Suspense
 
 `useSuspenseEntity` and `useSuspenseEntityList` throw a promise while loading (non-null `id` required where applicable). Use within a React `Suspense` boundary and error boundaries as usual.
+
+## Graph runtime helpers
+
+The graph now exposes a small set of non-hook runtime helpers for loader, workflow, and orchestration use cases:
+
+- `queryOnce(...)` / `selectGraph(...)` for one-shot graph snapshots without a live subscription
+- `createGraphTransaction(...)` / `createGraphAction(...)` for explicit optimistic graph write flows with rollback
+- `createGraphEffect(...)` for graph-driven enter/update/exit reactions over arbitrary query results
+
+These helpers are graph-native. They do **not** turn the library into a collection query engine or replace the standard `Component → hook → store` layering for normal UI code.
+
+## Sync metadata
+
+Sync/provenance metadata is stored beside canonical entities and exposed through snapshot reads:
+
+- `$synced` — whether the current row is confirmed or still optimistic/local
+- `$origin` — where the latest known state came from (`server`, `client`, `optimistic`)
+- `$updatedAt` — metadata timestamp for the latest sync-state change
+
+The canonical entity payload in `entities[type][id]` remains server-shaped data. Sync state lives outside it and is layered in by snapshot helpers.
+
+## AI interoperability
+
+The package intentionally does **not** ship an AI runtime. Instead it provides lightweight graph-facing helpers for AI workflows:
+
+- `exportGraphSnapshot(...)` to serialize graph data for prompts/context building
+- `createGraphTool(...)` to build typed helpers around graph reads without taking ownership of chat transport, tool execution, or model adapters
 
 ## DevTools
 

@@ -9,6 +9,7 @@ Update a post in one screen and every list row, detail panel, and badge that rea
 | Doc | Purpose |
 |-----|---------|
 | [docs/tanstack-query-and-table.md](docs/tanstack-query-and-table.md) | How this library fits with TanStack Query and TanStack Table |
+| [docs/tanstack-comparison.md](docs/tanstack-comparison.md) | Detailed comparison against TanStack DB, Query, Table, AI, and Intent |
 | [docs/advanced.md](docs/advanced.md) | Engine, GC, Suspense, DevTools, SSR, testing |
 | [RELEASING.md](RELEASING.md) | Versioning, `prepublishOnly`, npm publish |
 | [CHANGELOG.md](CHANGELOG.md) | Release history |
@@ -20,10 +21,10 @@ Update a post in one screen and every list row, detail panel, and badge that rea
 ### 1. Install
 
 ```bash
-npm install @prometheus-ags/prometheus-entity-management zustand immer
+pnpm add @prometheus-ags/prometheus-entity-management zustand immer
 ```
 
-(`pnpm` and `yarn` work the same way for app dependencies.)
+(`npm install` works for consumers too; this repository itself is `pnpm`-only.)
 
 ### 2. Define an entity type
 
@@ -98,6 +99,21 @@ Data flows **up** into the graph; UI reads **down** through hooks (see [Architec
 
 ---
 
+## New in v1.1
+
+The graph runtime now exposes a focused set of non-hook helpers for loaders, workflows, and orchestration:
+
+- `queryOnce(...)` / `selectGraph(...)` for one-shot graph snapshots without a live subscription
+- nested `include` projections over normalized graph data
+- `createGraphTransaction(...)` / `createGraphAction(...)` for explicit optimistic graph writes with rollback
+- sync-aware snapshot metadata: `$synced`, `$origin`, `$updatedAt`
+- `createGraphEffect(...)` for enter/update/exit reactions over graph query results
+- `createGraphTool(...)` / `exportGraphSnapshot(...)` for AI interoperability without bundling an AI runtime
+
+These additions are intentionally graph-native. They extend the entity graph for orchestration use cases without changing the core `Components → Hooks → Stores → APIs/Realtime` architecture.
+
+---
+
 ## Feature comparison
 
 | Feature | `@prometheus-ags/prometheus-entity-management` | TanStack Query | Apollo Client | SWR |
@@ -146,6 +162,17 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | `fetchList` | Imperative list fetch with dedupe and graph write. |
 | `dedupe` | Process-global in-flight promise deduplication helper. |
 | `startGarbageCollector` / `stopGarbageCollector` | Periodic eviction of unsubscribed, stale entities (also started via `configureEngine`). |
+
+### Graph runtime
+
+| Export | Description |
+|--------|-------------|
+| `queryOnce` / `selectGraph` | One-shot graph snapshot queries with local filtering, sorting, and nested includes. |
+| `createGraphTransaction` | Explicit graph write transaction with commit / rollback. |
+| `createGraphAction` | Higher-level optimistic action wrapper around graph transactions. |
+| `createGraphEffect` | Subscribe to graph query results with `onEnter`, `onUpdate`, and `onExit`. |
+| `createGraphTool` | Typed graph-backed helper for AI or workflow integrations. |
+| `exportGraphSnapshot` | Serialize graph data for prompts, exports, and non-React workflows. |
 
 ### Hooks (REST-oriented)
 
@@ -232,7 +259,7 @@ Compare against peers only when measurement methodology matches (minified vs unm
 
 ### Types (high level)
 
-`GraphState`, `EntityState`, `ListState`, `EntityType`, `EntityId`, `EngineOptions`, `EntityQueryOptions`, `ListQueryOptions`, `ViewDescriptor`, `EntitySchema`, `RelationDescriptor`, realtime adapter types, GraphQL types, CRUD types, column meta types — all exported from the package entry.
+`GraphState`, `EntityState`, `ListState`, `EntityType`, `EntityId`, `EntitySyncMetadata`, `EntitySnapshot`, `EngineOptions`, `EntityQueryOptions`, `ListQueryOptions`, `ViewDescriptor`, `EntitySchema`, `RelationDescriptor`, realtime adapter types, GraphQL types, CRUD types, and column meta types are all exported from the package entry.
 
 ---
 
@@ -475,6 +502,7 @@ pnpm run dev:next   # http://localhost:3000
 1. **`entities`** — Canonical server-shaped records per `(type, id)`.
 2. **`patches`** — Local-only overlays (`_selected`, `_loading`, …) merged at read time.
 3. **`lists`** — Ordered `ids[]`, pagination, and fetch flags — **not** duplicated row payloads.
+4. **`syncMetadata`** — Per-entity sync/provenance state layered into snapshot reads as `$synced`, `$origin`, and `$updatedAt`.
 
 ### Engine (`src/engine.ts`)
 

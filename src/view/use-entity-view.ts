@@ -105,12 +105,7 @@ export function useEntityView<TEntity extends Record<string, unknown>>(opts: Use
         completenessMode !== "remote" && remoteResultKey
           ? (state.lists[remoteResultKey]?.ids ?? EMPTY_IDS)
           : list.ids;
-      const getEntity = (id: EntityId): Record<string, unknown> | null => {
-        const base = state.entities[type]?.[id];
-        if (!base) return null;
-        const patch = state.patches[type]?.[id];
-        return patch ? { ...base, ...patch } : base;
-      };
+      const getEntity = (id: EntityId): Record<string, unknown> | null => state.readEntitySnapshot(type, id);
       return applyView(
         sourceIds,
         getEntity,
@@ -126,13 +121,8 @@ export function useEntityView<TEntity extends Record<string, unknown>>(opts: Use
     useGraphStore,
     useShallow((state): TEntity[] =>
       localViewIds
-        .map((id) => {
-          const base = state.entities[type]?.[id];
-          if (!base) return null;
-          const patch = state.patches[type]?.[id];
-          return (patch ? { ...base, ...patch } : base) as TEntity;
-        })
-        .filter((item): item is TEntity => item !== null),
+        .map((id) => state.readEntitySnapshot<TEntity>(type, id))
+        .filter((item) => item !== null) as TEntity[],
     ),
   );
   const fireRemoteFetch = useCallback(async (view: ViewDescriptor, cursor?: string) => {
@@ -167,10 +157,11 @@ export function useEntityView<TEntity extends Record<string, unknown>>(opts: Use
       const view = liveViewRef.current; const store = useGraphStore.getState(); const list = store.lists[baseKey]; if (!list) return;
       for (const id of new Set([...Object.keys(newEntities), ...Object.keys(prevEntities)])) {
         const isPresent = id in newEntities; if (!isPresent) continue;
-        const entity = newEntities[id] as Record<string, unknown>; const patch = store.patches[type]?.[id]; const merged = patch ? { ...entity, ...patch } : entity;
+        const entity = newEntities[id] as Record<string, unknown>;
+        const merged = store.readEntitySnapshot(type, id) ?? entity;
         const matches = (!view.filter || matchesFilter(merged, view.filter)) && (!view.search?.query || matchesSearch(merged, view.search.query, view.search.fields));
         if (matches && !list.ids.includes(id)) {
-          if (view.sort && view.sort.length > 0) { const idx = findInsertionIndex(merged, list.ids, (eid) => { const b = store.entities[type]?.[eid]; if (!b) return null; const p = store.patches[type]?.[eid]; return p ? { ...b, ...p } : b; }, view.sort); store.insertIdInList(baseKey, id, idx); }
+          if (view.sort && view.sort.length > 0) { const idx = findInsertionIndex(merged, list.ids, (eid) => store.readEntitySnapshot(type, eid), view.sort); store.insertIdInList(baseKey, id, idx); }
           else store.insertIdInList(baseKey, id, "start");
         }
       }

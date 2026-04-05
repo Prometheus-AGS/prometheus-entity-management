@@ -41,9 +41,7 @@ export function useEntity<TRaw, TEntity extends Record<string, unknown>>(opts: E
   const normalizeRef = useRef(opts.normalize); normalizeRef.current = opts.normalize;
   const data = useStore(useGraphStore, useShallow((state) => {
     if (!id) return null;
-    const base = state.entities[type]?.[id]; if (!base) return null;
-    const patch = state.patches[type]?.[id];
-    return (patch ? { ...base, ...patch } : base) as TEntity;
+    return state.readEntitySnapshot<TEntity>(type, id) as TEntity | null;
   }));
   const entityState = useStore(useGraphStore, useCallback((state): EntityState =>
     state.entityStates[`${type}:${id}`] ?? EMPTY_ENTITY_STATE,
@@ -104,12 +102,9 @@ export function useEntityList<TRaw, TEntity extends Record<string, unknown>>(opt
     useGraphStore,
     useShallow((state) => {
       const ids = state.lists[key]?.ids ?? EMPTY_IDS;
-      return ids.map((id) => {
-        const base = state.entities[type]?.[id];
-        if (!base) return null;
-        const patch = state.patches[type]?.[id];
-        return (patch ? { ...base, ...patch } : base) as TEntity;
-      }).filter((x): x is TEntity => x !== null);
+      return ids
+        .map((id) => state.readEntitySnapshot<TEntity>(type, id))
+        .filter((x) => x !== null) as TEntity[];
     }),
   );
   const doFetch = useCallback((params: ListFetchParams = {}) => {
@@ -173,16 +168,26 @@ export function useEntityMutation<TInput, TRaw, TEntity extends Record<string, u
       if (opt) {
         const { id, patch } = opt; const store = useGraphStore.getState();
         const previous = { ...store.patches[type]?.[id] };
+        const previousSync = store.syncMetadata[`${type}:${id}`];
         store.patchEntity(type, id, patch as Record<string, unknown>);
-        rollback = () => Object.keys(previous).length > 0 ? useGraphStore.getState().patchEntity(type, id, previous) : useGraphStore.getState().clearPatch(type, id);
+        store.setEntitySyncMetadata(type, id, { synced: false, origin: "optimistic", updatedAt: Date.now() });
+        rollback = () => {
+          const currentStore = useGraphStore.getState();
+          if (Object.keys(previous).length > 0) currentStore.patchEntity(type, id, previous);
+          else currentStore.clearPatch(type, id);
+          if (previousSync) currentStore.setEntitySyncMetadata(type, id, previousSync);
+          else currentStore.clearEntitySyncMetadata(type, id);
+        };
       }
     }
     try {
       const result = await apiFn(input);
       if (normalize) {
         const { id, data } = normalize(result, input);
-        useGraphStore.getState().upsertEntity(type, id, data);
-        if (optimistic) { const opt = optimistic(input); if (opt) useGraphStore.getState().clearPatch(type, opt.id); }
+        const store = useGraphStore.getState();
+        store.upsertEntity(type, id, data);
+        store.setEntitySyncMetadata(type, id, { synced: true, origin: "server", updatedAt: Date.now() });
+        if (optimistic) { const opt = optimistic(input); if (opt) store.clearPatch(type, opt.id); }
       }
       if (invalidateLists) for (const k of invalidateLists) useGraphStore.getState().invalidateLists(k);
       if (invalidateEntities) for (const { type: t, id } of invalidateEntities) useGraphStore.getState().invalidateEntity(t, id);

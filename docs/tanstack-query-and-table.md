@@ -2,6 +2,8 @@
 
 This document is the **authoritative** mental model for using `@prometheus-ags/prometheus-entity-management` alongside TanStack’s data and table libraries.
 
+For a broader product comparison, including TanStack DB, AI, and Intent, see [Detailed comparison with TanStack libraries](./tanstack-comparison.md).
+
 ## Roles (do not collapse them)
 
 | Layer | Responsibility | Owns |
@@ -22,9 +24,26 @@ TanStack Query’s cache is **query-key scoped**. Two screens with different key
 - **Sorting/filtering in the table header** is UI; **remote** sort/filter still compiles to your API via `FilterSpec` / `SortSpec` and `useEntityView` when you need server-backed lists.
 - Optional **column helpers** in `src/ui/columns.tsx` attach `meta.entityMeta` so toolbars can render the right filter controls.
 
-## TanStack DB (optional comparison)
+## TanStack DB (current comparison)
 
-[TanStack DB](https://tanstack.com/db) targets **collections**, sync, and incremental updates in a different product space. This library is a **React entity graph** on Zustand with the same “normalized + reactive” goal but a **smaller, hook-first** surface and first-class **REST / GraphQL / realtime / Electric** patterns. They can be **complementary** (e.g. DB or Query as ingress, graph as app SOT) if you design a single writer path.
+[TanStack DB](https://tanstack.com/db) goes further on the **client query/runtime** axis: collection-native live queries, explicit transaction/action primitives, one-shot query execution, durable persistence/offline support, hierarchical includes, reactive effects, and sync-aware row metadata.
+
+`@prometheus-ags/prometheus-entity-management` intentionally stays a **React-first entity graph** with a hook-driven mental model. It now adds graph-native runtime helpers inspired by that gap:
+
+- `queryOnce(...)` / `selectGraph(...)` for one-shot graph snapshots
+- nested graph `include` projections over normalized entity data
+- `createGraphTransaction(...)` / `createGraphAction(...)` for explicit optimistic graph mutations
+- sync metadata surfaced through snapshot reads (`$synced`, `$origin`, `$updatedAt`)
+- `createGraphEffect(...)` for lightweight workflow hooks over graph query results
+- small AI interoperability helpers (`createGraphTool(...)`, `exportGraphSnapshot(...)`)
+
+That still does **not** make this library a TanStack DB clone. The intended positioning is:
+
+- **TanStack Query** owns request lifecycle and fetch cache
+- **TanStack DB** owns client-side collection/query runtime when you need that model
+- **This library** owns normalized application-wide entity truth for React and can sit beside either one as the graph/system-of-record layer
+
+If you combine them, keep a **single writer path** into the graph to avoid dueling client stores.
 
 ## Diagram
 

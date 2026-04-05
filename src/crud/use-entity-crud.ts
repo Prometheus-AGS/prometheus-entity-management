@@ -88,21 +88,32 @@ export function useEntityCRUD<TEntity extends Record<string, unknown>>(opts: CRU
   }, [editBuffer, detail]);
   const startEdit = useCallback((id?: EntityId) => { const targetId = id ?? selectedId; if (targetId) { setSelectedId(targetId); const entity = useGraphStore.getState().readEntity<TEntity>(type, targetId); setEditBuffer(entity ? { ...entity } : {}); } setMode("edit"); }, [selectedId, type]);
   const cancelEdit = useCallback(() => { resetBuffer(); setMode(selectedId ? "detail" : "list"); setSaveError(null); }, [resetBuffer, selectedId]);
-  const applyOptimistic = useCallback(() => { if (!selectedId) return; useGraphStore.getState().patchEntity(type, selectedId, editBuffer as Record<string, unknown>); }, [type, selectedId, editBuffer]);
+  const applyOptimistic = useCallback(() => {
+    if (!selectedId) return;
+    const store = useGraphStore.getState();
+    store.patchEntity(type, selectedId, editBuffer as Record<string, unknown>);
+    store.setEntitySyncMetadata(type, selectedId, { synced: false, origin: "optimistic", updatedAt: Date.now() });
+  }, [type, selectedId, editBuffer]);
   const save = useCallback(async (): Promise<TEntity | null> => {
     if (!selectedId || !onUpdate) return null;
     setIsSaving(true); setSaveError(null);
-    const previous = useGraphStore.getState().readEntity<TEntity>(type, selectedId);
-    useGraphStore.getState().upsertEntity(type, selectedId, editBuffer as Record<string, unknown>);
+    const store = useGraphStore.getState();
+    const previous = store.readEntity<TEntity>(type, selectedId);
+    const previousSync = store.syncMetadata[`${type}:${selectedId}`];
+    store.upsertEntity(type, selectedId, editBuffer as Record<string, unknown>);
+    store.setEntitySyncMetadata(type, selectedId, { synced: false, origin: "optimistic", updatedAt: Date.now() });
     try {
       const result = await onUpdate(selectedId, editBuffer);
       const { id, data } = normalize(result);
-      useGraphStore.getState().replaceEntity(type, id, data as Record<string, unknown>);
-      useGraphStore.getState().clearPatch(type, id);
+      store.replaceEntity(type, id, data as Record<string, unknown>);
+      store.clearPatch(type, id);
+      store.setEntitySyncMetadata(type, id, { synced: true, origin: "server", updatedAt: Date.now() });
       cascadeInvalidation({ type, id: selectedId, previous: previous as Record<string, unknown> | null, next: data as Record<string, unknown>, op: "update" });
       setMode("detail"); optsRef.current.onUpdateSuccess?.(result); return result;
     } catch (err) {
-      if (previous) useGraphStore.getState().replaceEntity(type, selectedId, previous as Record<string, unknown>);
+      if (previous) store.replaceEntity(type, selectedId, previous as Record<string, unknown>);
+      if (previousSync) store.setEntitySyncMetadata(type, selectedId, previousSync);
+      else store.clearEntitySyncMetadata(type, selectedId);
       const error = err instanceof Error ? err : new Error(String(err)); setSaveError(error.message); optsRef.current.onError?.("update", error); return null;
     } finally { setIsSaving(false); }
   }, [selectedId, type, editBuffer, normalize]);
@@ -118,21 +129,23 @@ export function useEntityCRUD<TEntity extends Record<string, unknown>>(opts: CRU
     setIsCreating(true); setCreateError(null);
     const tempId = `__temp__${Date.now()}`;
     const optimisticData = { ...createBuffer, id: tempId, _optimistic: true };
-    useGraphStore.getState().upsertEntity(type, tempId, optimisticData as Record<string, unknown>);
-    useGraphStore.getState().insertIdInList(serializeKey(listQueryKey), tempId, "start");
+    const store = useGraphStore.getState();
+    store.upsertEntity(type, tempId, optimisticData as Record<string, unknown>);
+    store.setEntitySyncMetadata(type, tempId, { synced: false, origin: "optimistic", updatedAt: Date.now() });
+    store.insertIdInList(serializeKey(listQueryKey), tempId, "start");
     try {
       const result = await onCreate(createBuffer);
       const { id: realId, data } = normalize(result);
-      useGraphStore.getState().removeEntity(type, tempId);
-      useGraphStore.getState().upsertEntity(type, realId, data as Record<string, unknown>);
-      useGraphStore.getState().setEntityFetched(type, realId);
-      const store = useGraphStore.getState();
+      store.removeEntity(type, tempId);
+      store.upsertEntity(type, realId, data as Record<string, unknown>);
+      store.setEntityFetched(type, realId);
+      store.setEntitySyncMetadata(type, realId, { synced: true, origin: "server", updatedAt: Date.now() });
       for (const key of Object.keys(store.lists)) { const list = store.lists[key]; const idx = list.ids.indexOf(tempId); if (idx !== -1) { store.removeIdFromAllLists(type, tempId); store.insertIdInList(key, realId, idx); } }
       cascadeInvalidation({ type, id: realId, previous: null, next: data as Record<string, unknown>, op: "create" });
       if (selectAfterCreate) { setSelectedId(realId); setMode("detail"); } else setMode("list");
       resetCreateBuffer(); optsRef.current.onCreateSuccess?.(result); return result;
     } catch (err) {
-      useGraphStore.getState().removeEntity(type, tempId); useGraphStore.getState().removeIdFromAllLists(type, tempId);
+      store.removeEntity(type, tempId); store.removeIdFromAllLists(type, tempId);
       const error = err instanceof Error ? err : new Error(String(err)); setCreateError(error.message); optsRef.current.onError?.("create", error); return null;
     } finally { setIsCreating(false); }
   }, [type, createBuffer, normalize, listQueryKey, selectAfterCreate, resetCreateBuffer]);

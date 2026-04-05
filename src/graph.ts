@@ -8,6 +8,22 @@ export type EntityType = string;
 export type EntityId = string;
 /** Stable string key for a list query (often `JSON.stringify`-shaped). Lists store IDs only under this key. */
 export type QueryKey = string;
+/** Provenance of the latest known entity state. */
+export type SyncOrigin = "server" | "client" | "optimistic";
+
+/** Optional sync-facing metadata kept outside canonical entity payloads. */
+export interface EntitySyncMetadata {
+  synced: boolean;
+  origin: SyncOrigin;
+  updatedAt: number | null;
+}
+
+/** Snapshot shape returned by sync-aware reads and graph-native query helpers. */
+export type EntitySnapshot<T extends Record<string, unknown>> = T & {
+  $synced: boolean;
+  $origin: SyncOrigin;
+  $updatedAt: number | null;
+};
 
 /**
  * Fetch/cache metadata for a single entity instance (`type:id`).
@@ -54,6 +70,12 @@ export const EMPTY_ENTITY_STATE: EntityState = {
   stale: false,
 };
 
+export const EMPTY_SYNC_METADATA: EntitySyncMetadata = {
+  synced: true,
+  origin: "server",
+  updatedAt: null,
+};
+
 export const EMPTY_LIST_STATE: ListState = {
   ids: EMPTY_IDS,
   total: null,
@@ -81,6 +103,8 @@ export interface GraphState {
   patches: Record<EntityType, Record<EntityId, Record<string, unknown>>>;
   /** Per-entity fetch lifecycle keyed as `${type}:${id}`. */
   entityStates: Record<string, EntityState>;
+  /** Optional sync/provenance state layered beside the canonical entity payload. */
+  syncMetadata: Record<string, EntitySyncMetadata>;
   /** List slots keyed by serialized query keys. Values hold id arrays and pagination — not entity clones. */
   lists: Record<QueryKey, ListState>;
   /**
@@ -118,6 +142,10 @@ export interface GraphState {
   setEntityFetched: (type: EntityType, id: EntityId) => void;
   /** Drive background revalidation: when true, hooks refetch while still showing cached `readEntity` data. */
   setEntityStale: (type: EntityType, id: EntityId, stale: boolean) => void;
+  /** Merge sync metadata for one entity without polluting canonical server fields. */
+  setEntitySyncMetadata: (type: EntityType, id: EntityId, metadata: Partial<EntitySyncMetadata>) => void;
+  /** Clear sync metadata for one entity. */
+  clearEntitySyncMetadata: (type: EntityType, id: EntityId) => void;
   /**
    * Replace list ids and merge pagination meta after a primary list fetch (not load-more).
    * Resets fetching flags and clears list error on success path (engine calls this after normalize).
@@ -158,10 +186,18 @@ export interface GraphState {
    * @returns Merged view suitable for rendering; not a deep clone
    */
   readEntity: <T = Record<string, unknown>>(type: EntityType, id: EntityId) => T | null;
+  /**
+   * Sync-aware read path: canonical entity + patches + virtual sync metadata (`$synced`, `$origin`, `$updatedAt`).
+   */
+  readEntitySnapshot: <T = Record<string, unknown>>(type: EntityType, id: EntityId) => EntitySnapshot<T & Record<string, unknown>> | null;
 }
 
 function defaultEntityState(): EntityState {
   return { ...EMPTY_ENTITY_STATE };
+}
+
+function defaultSyncMetadata(): EntitySyncMetadata {
+  return { ...EMPTY_SYNC_METADATA };
 }
 
 function defaultListState(): ListState {
@@ -177,25 +213,33 @@ function ek(type: EntityType, id: EntityId) { return `${type}:${id}`; }
 export const useGraphStore = create<GraphState>()(
   subscribeWithSelector(
     immer((set, get) => ({
-      entities: {}, patches: {}, entityStates: {}, lists: {},
+      entities: {}, patches: {}, entityStates: {}, syncMetadata: {}, lists: {},
 
       upsertEntity: (type, id, data) => set((s) => {
         if (!s.entities[type]) s.entities[type] = {};
         s.entities[type][id] = { ...(s.entities[type][id] ?? {}), ...data };
+        const key = ek(type, id);
+        if (!s.syncMetadata[key]) s.syncMetadata[key] = defaultSyncMetadata();
       }),
       upsertEntities: (type, entries) => set((s) => {
         if (!s.entities[type]) s.entities[type] = {};
-        for (const { id, data } of entries)
+        for (const { id, data } of entries) {
           s.entities[type][id] = { ...(s.entities[type][id] ?? {}), ...data };
+          const key = ek(type, id);
+          if (!s.syncMetadata[key]) s.syncMetadata[key] = defaultSyncMetadata();
+        }
       }),
       replaceEntity: (type, id, data) => set((s) => {
         if (!s.entities[type]) s.entities[type] = {};
         s.entities[type][id] = data;
+        const key = ek(type, id);
+        if (!s.syncMetadata[key]) s.syncMetadata[key] = defaultSyncMetadata();
       }),
       removeEntity: (type, id) => set((s) => {
         delete s.entities[type]?.[id];
         delete s.patches[type]?.[id];
         delete s.entityStates[ek(type, id)];
+        delete s.syncMetadata[ek(type, id)];
       }),
       patchEntity: (type, id, patch) => set((s) => {
         if (!s.patches[type]) s.patches[type] = {};
@@ -222,11 +266,19 @@ export const useGraphStore = create<GraphState>()(
         s.entityStates[k].lastFetched = Date.now();
         s.entityStates[k].isFetching = false;
         s.entityStates[k].error = null; s.entityStates[k].stale = false;
+        s.syncMetadata[k] = { ...(s.syncMetadata[k] ?? defaultSyncMetadata()), synced: true, origin: "server", updatedAt: Date.now() };
       }),
       setEntityStale: (type, id, stale) => set((s) => {
         const k = ek(type, id);
         if (!s.entityStates[k]) s.entityStates[k] = defaultEntityState();
         s.entityStates[k].stale = stale;
+      }),
+      setEntitySyncMetadata: (type, id, metadata) => set((s) => {
+        const k = ek(type, id);
+        s.syncMetadata[k] = { ...(s.syncMetadata[k] ?? defaultSyncMetadata()), ...metadata };
+      }),
+      clearEntitySyncMetadata: (type, id) => set((s) => {
+        delete s.syncMetadata[ek(type, id)];
       }),
       setListResult: (key, ids, meta) => set((s) => {
         const ex = s.lists[key] ?? defaultListState();
@@ -283,6 +335,19 @@ export const useGraphStore = create<GraphState>()(
         const s = get(); const base = s.entities[type]?.[id]; if (!base) return null;
         const patch = s.patches[type]?.[id];
         return (patch ? { ...base, ...patch } : base) as T;
+      },
+      readEntitySnapshot: <T>(type: EntityType, id: EntityId): EntitySnapshot<T & Record<string, unknown>> | null => {
+        const s = get();
+        const base = s.entities[type]?.[id];
+        if (!base) return null;
+        const patch = s.patches[type]?.[id];
+        const metadata = s.syncMetadata[ek(type, id)] ?? EMPTY_SYNC_METADATA;
+        return {
+          ...(patch ? { ...base, ...patch } : base),
+          $synced: metadata.synced,
+          $origin: metadata.origin,
+          $updatedAt: metadata.updatedAt,
+        } as EntitySnapshot<T & Record<string, unknown>>;
       },
     }))
   )
