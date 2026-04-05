@@ -61,6 +61,7 @@ supabase/.temp/
 
 # ── AI tool workspaces (transient, user-local) ────────────────────────────────
 .agent/
+.agents/
 .opencode/
 .roo/
 .windsurf/
