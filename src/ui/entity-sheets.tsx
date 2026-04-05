@@ -8,14 +8,16 @@ import React from "react";
 import { X, Loader2, Pencil, Trash2 } from "lucide-react";
 import { cn } from "./utils";
 import type { CRUDState } from "../crud/use-entity-crud";
+import { getValueAtPath } from "../object-path";
+import { MarkdownFieldEditor, MarkdownFieldRenderer } from "../schema";
 
 // ---------------------------------------------------------------------------
 // Field descriptors
 // ---------------------------------------------------------------------------
-export type FieldType = "text" | "textarea" | "number" | "email" | "url" | "date" | "boolean" | "enum" | "custom";
+export type FieldType = "text" | "textarea" | "number" | "email" | "url" | "date" | "boolean" | "enum" | "json" | "markdown" | "custom";
 
 export interface FieldDescriptor<TEntity> {
-  field: keyof TEntity & string;
+  field: string;
   label: string;
   type: FieldType;
   required?: boolean;
@@ -72,6 +74,8 @@ function FieldControl<TEntity extends Record<string, unknown>>({ descriptor, val
       return <input type="number" value={String(value ?? "")} onChange={e => onChange(e.target.valueAsNumber)} placeholder={descriptor.placeholder} className={base} />;
     case "textarea":
       return <textarea value={String(value ?? "")} onChange={e => onChange(e.target.value)} placeholder={descriptor.placeholder} className="w-full min-h-[80px] rounded-md border bg-muted/50 px-3 py-2 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-ring transition-colors" />;
+    case "markdown":
+      return <MarkdownFieldEditor value={String(value ?? "")} onChange={(nextValue) => onChange(nextValue)} placeholder={descriptor.placeholder} />;
     case "date":
       return <input type="date" value={value ? new Date(value as string).toISOString().split("T")[0] : ""} onChange={e => onChange(e.target.value ? new Date(e.target.value).toISOString() : null)} className={base} />;
     case "boolean":
@@ -88,9 +92,32 @@ function FieldControl<TEntity extends Record<string, unknown>>({ descriptor, val
           {(descriptor.options ?? []).map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
       );
+    case "json":
+      return (
+        <textarea
+          value={value != null ? JSON.stringify(value, null, 2) : ""}
+          onChange={(event) => {
+            const nextValue = event.target.value;
+            try {
+              onChange(nextValue ? JSON.parse(nextValue) : null);
+            } catch {
+              onChange(nextValue);
+            }
+          }}
+          placeholder={descriptor.placeholder}
+          className="w-full min-h-[120px] rounded-md border bg-muted/50 px-3 py-2 text-sm font-mono resize-y focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
+        />
+      );
     default:
       return <input value={String(value ?? "")} onChange={e => onChange(e.target.value)} className={base} />;
   }
+}
+
+function FieldReadonlyValue<TEntity extends Record<string, unknown>>({ descriptor, value, entity }: { descriptor: FieldDescriptor<TEntity>; value: unknown; entity: TEntity }) {
+  if (descriptor.render) return <>{descriptor.render(value, entity)}</>;
+  if (descriptor.type === "markdown") return <MarkdownFieldRenderer value={String(value ?? "")} className="prose prose-sm max-w-none py-1" />;
+  if (descriptor.type === "json") return <pre className="text-xs py-1 whitespace-pre-wrap break-words">{JSON.stringify(value ?? null, null, 2)}</pre>;
+  return <p className="text-sm py-1">{value != null && value !== "" ? String(value) : "—"}</p>;
 }
 
 // ---------------------------------------------------------------------------
@@ -121,7 +148,7 @@ export function EntityDetailSheet<TEntity extends Record<string, unknown>>({ cru
           {fields.map(f => (
             <div key={f.field}>
               <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide mb-1">{f.label}</p>
-              <FieldControl descriptor={f} value={entity[f.field]} onChange={() => {}} entity={entity} readonly />
+              <FieldReadonlyValue descriptor={f} value={getValueAtPath(entity, f.field)} entity={entity} />
             </div>
           ))}
           {children && (<><div className="border-t my-1" />{children(entity, crud)}</>)}
@@ -177,14 +204,15 @@ export function EntityFormSheet<TEntity extends Record<string, unknown>>({ crud,
       <div className="flex flex-col gap-4">
         {error && <div className="px-3 py-2 rounded-md bg-destructive/10 border border-destructive/20 text-xs text-destructive">{error}</div>}
         {visibleFields.map(f => {
-          const isDirty = !isCreate && crud.dirty.changed.has(f.field as keyof TEntity);
+          const isDirty = !isCreate && crud.dirty.changed.has(f.field);
+          const currentValue = getValueAtPath(buf, f.field);
           return (
             <div key={f.field} className="flex flex-col gap-1.5">
               <label className={cn("text-xs font-medium", isDirty ? "text-primary" : "text-muted-foreground")}>
                 {f.label}{f.required && <span className="text-destructive ml-0.5">*</span>}
                 {isDirty && <span className="ml-1.5 text-[10px] font-normal opacity-70">modified</span>}
               </label>
-              <FieldControl descriptor={f} value={buf[f.field]} onChange={v => setField(f.field as keyof TEntity, v as TEntity[keyof TEntity])} entity={buf} readonly={f.readonlyOnEdit && isEdit} />
+              <FieldControl descriptor={f} value={currentValue} onChange={v => setField(f.field, v)} entity={buf} readonly={f.readonlyOnEdit && isEdit} />
               {f.hint && <p className="text-[10px] text-muted-foreground">{f.hint}</p>}
             </div>
           );

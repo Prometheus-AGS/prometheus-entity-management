@@ -1,5 +1,6 @@
 import { useGraphStore } from "./graph";
 import { queryOnce } from "./graph-query";
+import { exportGraphSnapshotWithSchemas, getEntityJsonSchema } from "./schema";
 
 export interface GraphSnapshotExportOptions {
   scope: string;
@@ -11,6 +12,11 @@ export interface GraphToolContext {
   store: ReturnType<typeof useGraphStore.getState>;
   queryOnce: typeof queryOnce;
   exportGraphSnapshot: typeof exportGraphSnapshot;
+}
+
+export interface SchemaGraphToolContext extends GraphToolContext {
+  getEntityJsonSchema: typeof getEntityJsonSchema;
+  exportGraphSnapshotWithSchemas: typeof exportGraphSnapshotWithSchemas;
 }
 
 export function exportGraphSnapshot(opts: GraphSnapshotExportOptions): string {
@@ -30,5 +36,18 @@ export function createGraphTool<TInput, TResult>(
       store: useGraphStore.getState(),
       queryOnce,
       exportGraphSnapshot,
+    });
+}
+
+export function createSchemaGraphTool<TInput, TResult>(
+  handler: (input: TInput, ctx: SchemaGraphToolContext) => Promise<TResult> | TResult,
+) {
+  return (input: TInput) =>
+    handler(input, {
+      store: useGraphStore.getState(),
+      queryOnce,
+      exportGraphSnapshot,
+      getEntityJsonSchema,
+      exportGraphSnapshotWithSchemas,
     });
 }

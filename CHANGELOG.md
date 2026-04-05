@@ -5,6 +5,25 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.2.0] — 2026-04-05
+
+PWA/local-first and schema-driven entity release focused on dynamic JSON-column UI, markdown-aware rendering, and IPC-safe graph persistence.
+
+### Added
+
+- Local-first runtime helpers: `startLocalFirstGraph(...)`, `hydrateGraphFromStorage(...)`, `persistGraphToStorage(...)`, and `useGraphSyncStatus()`.
+- Serializable pending graph action records and replay hooks for persisted optimistic workflows.
+- JSON Schema registry APIs: `registerEntityJsonSchema(...)`, `registerRuntimeSchema(...)`, `getEntityJsonSchema(...)`, `buildEntityFieldsFromSchema(...)`, and `useSchemaEntityFields(...)`.
+- Built-in markdown support with `MarkdownFieldRenderer`, `MarkdownFieldEditor`, and schema-driven `format: "markdown"` field generation.
+- Schema-aware AI helpers: `createSchemaGraphTool(...)` and `exportGraphSnapshotWithSchemas(...)`.
+- Vitest coverage for persisted graph hydration, pending action replay, schema-driven field generation, runtime schema replacement, and safe markdown rendering.
+
+### Changed
+
+- `EntityFormSheet` and related CRUD state now support dotted field paths for nested JSON-column editing.
+- `FieldType` now includes `json` and `markdown`.
+- Public docs and API references now describe the local-first runtime and schema/A2UI-oriented dynamic entity surface.
+
 ## [1.1.0] — 2026-04-05
 
 Graph-runtime expansion release focused on TanStack DB comparison gaps without changing the library’s core React entity-graph architecture.

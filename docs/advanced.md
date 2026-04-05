@@ -46,6 +46,7 @@ The package intentionally does **not** ship an AI runtime. Instead it provides l
 
 - `exportGraphSnapshot(...)` to serialize graph data for prompts/context building
 - `createGraphTool(...)` to build typed helpers around graph reads without taking ownership of chat transport, tool execution, or model adapters
+- `exportGraphSnapshotWithSchemas(...)` and `createSchemaGraphTool(...)` for workflows that need graph data plus runtime JSON Schema / A2UI context
 
 ## DevTools
 
@@ -54,6 +55,27 @@ The package intentionally does **not** ship an AI runtime. Instead it provides l
 ## SSR
 
 See the Next.js example (`GraphHydrationProvider`) for seeding the graph from server-rendered data so the client hydrates without refetch gaps.
+
+## PWA and local-first runtime
+
+For browser/PWA use cases, the package now exposes a small persistence runtime above the existing ElectricSQL/PGlite adapter:
+
+- `persistGraphToStorage(...)` stores `entities`, `lists`, `syncMetadata`, and pending action metadata through a host-provided storage adapter
+- `hydrateGraphFromStorage(...)` restores that snapshot into the graph on startup
+- `startLocalFirstGraph(...)` coordinates hydration, persistence, pending action replay, and online/offline phase tracking
+- `useGraphSyncStatus()` exposes serializable status (`hydrating`, `syncing`, `ready`, `offline`, `error`) without assuming a browser-only environment
+
+The storage contract is intentionally IPC-friendly so a future Tauri host or plugin can map onto the same JS runtime surface.
+
+## Schema-driven entities and markdown
+
+The package now supports entity JSON Schemas alongside relation schemas:
+
+- `registerEntityJsonSchema(...)` / `registerRuntimeSchema(...)` register static or AI-generated schemas
+- `buildEntityFieldsFromSchema(...)` and `useSchemaEntityFields(...)` generate dynamic field descriptors for JSON-column-backed entity views and editors
+- built-in markdown handling is enabled for string fields marked with `format: "markdown"` or matching schema extensions
+
+This is designed for runtime-generated schemas, JSON metadata columns, and A2UI-style component/view definitions without requiring a separate form engine.
 
 ## Testing
 

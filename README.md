@@ -99,7 +99,7 @@ Data flows **up** into the graph; UI reads **down** through hooks (see [Architec
 
 ---
 
-## New in v1.1
+## New in v1.2
 
 The graph runtime now exposes a focused set of non-hook helpers for loaders, workflows, and orchestration:
 
@@ -109,6 +109,9 @@ The graph runtime now exposes a focused set of non-hook helpers for loaders, wor
 - sync-aware snapshot metadata: `$synced`, `$origin`, `$updatedAt`
 - `createGraphEffect(...)` for enter/update/exit reactions over graph query results
 - `createGraphTool(...)` / `exportGraphSnapshot(...)` for AI interoperability without bundling an AI runtime
+- `startLocalFirstGraph(...)`, `hydrateGraphFromStorage(...)`, and `persistGraphToStorage(...)` for PWA/PGlite-friendly graph persistence and replay
+- schema-driven entity rendering via `registerEntityJsonSchema(...)`, `buildEntityFieldsFromSchema(...)`, and `useSchemaEntityFields(...)`
+- built-in markdown-aware schema fields plus schema-aware graph export helpers for A2UI/runtime-generated entity models
 
 These additions are intentionally graph-native. They extend the entity graph for orchestration use cases without changing the core `Components → Hooks → Stores → APIs/Realtime` architecture.
 
@@ -172,7 +175,28 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | `createGraphAction` | Higher-level optimistic action wrapper around graph transactions. |
 | `createGraphEffect` | Subscribe to graph query results with `onEnter`, `onUpdate`, and `onExit`. |
 | `createGraphTool` | Typed graph-backed helper for AI or workflow integrations. |
+| `createSchemaGraphTool` | Schema-aware graph tool helper for AI workflows built around dynamic entity schemas. |
 | `exportGraphSnapshot` | Serialize graph data for prompts, exports, and non-React workflows. |
+
+### Schema-driven entities
+
+| Export | Description |
+|--------|-------------|
+| `registerEntityJsonSchema` / `registerRuntimeSchema` | Register static or runtime-generated JSON Schemas for an entity type or JSON column. |
+| `getEntityJsonSchema` | Resolve the active schema by entity type, schema id, or field. |
+| `buildEntityFieldsFromSchema` | Generate entity field descriptors from JSON Schema for dynamic forms and detail views. |
+| `useSchemaEntityFields` | Hook that resolves a registered schema and returns generated field descriptors. |
+| `MarkdownFieldRenderer` / `MarkdownFieldEditor` | Built-in markdown-aware schema field renderer and editor. |
+| `exportGraphSnapshotWithSchemas` | Serialize graph data together with resolved entity schemas. |
+
+### Local-first runtime
+
+| Export | Description |
+|--------|-------------|
+| `startLocalFirstGraph` | Starts a higher-level local-first runtime for graph hydration, persistence, action replay, and sync status. |
+| `hydrateGraphFromStorage` | Restore graph state from a storage adapter using a JSON-serializable snapshot payload. |
+| `persistGraphToStorage` | Persist graph state and pending action metadata through a storage adapter. |
+| `useGraphSyncStatus` | Hook exposing online/offline/hydrating/syncing/ready state for PWAs and IPC-safe hosts. |
 
 ### Hooks (REST-oriented)
 

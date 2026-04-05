@@ -33,7 +33,10 @@ Generated from `src/index.ts`. Use this when scaffolding imports or explaining c
 | `createGraphAction` | function | Wraps optimistic transaction + async execution into one reusable mutation action. |
 | `createGraphEffect` | function | Lightweight enter/update/exit workflow helper driven by graph query results. |
 | `createGraphTool` | function | Small AI-facing helper that injects graph query/export context into a typed function. |
+| `createSchemaGraphTool` | function | Schema-aware graph tool helper that injects schema lookup and schema-aware export helpers. |
 | `exportGraphSnapshot` | function | Serialize graph data for prompt/context building or external workflows. |
+| `GraphActionRecord` | type | Serializable pending action record (`id`, `key`, `input`, `enqueuedAt`). |
+| `GraphActionEvent` | type | Event union emitted when graph actions are enqueued or settled. |
 | `GraphQueryOptions` | type | Options for `queryOnce`: `type`, ids/list key, local predicates, includes, and projections. |
 | `GraphIncludeMap` | type | Nested include/projection map for graph snapshot expansion. |
 | `GraphIncludeRelation` | type | Relation resolver for snapshot includes (`field`, `array`, `list`, `resolver`). |
@@ -44,6 +47,45 @@ Generated from `src/index.ts`. Use this when scaffolding imports or explaining c
 | `GraphEffectEvent` | type | Update payload for graph effects. |
 | `GraphSnapshotExportOptions` | type | Serialization options for `exportGraphSnapshot`. |
 | `GraphToolContext` | type | Helper context injected into `createGraphTool` handlers. |
+| `SchemaGraphToolContext` | type | Extended tool context with schema lookup and schema-aware export functions. |
+
+---
+
+## Schema-driven entities and markdown
+
+| Export | Kind | Description |
+|--------|------|-------------|
+| `registerEntityJsonSchema` | function | Register a JSON Schema for an entity type and optional JSON column / schema id. |
+| `registerRuntimeSchema` | function | Register or replace a runtime-generated schema (for AI/A2UI or other dynamic metadata). |
+| `getEntityJsonSchema` | function | Resolve the active schema by `entityType`, `field`, or `schemaId`. |
+| `buildEntityFieldsFromSchema` | function | Generate entity field descriptors from JSON Schema for dynamic views and editors. |
+| `useSchemaEntityFields` | hook | Resolve registered schema config and memoize generated field descriptors. |
+| `exportGraphSnapshotWithSchemas` | function | Serialize graph data with schema metadata for AI or external consumers. |
+| `MarkdownFieldRenderer` | component | Built-in safe markdown renderer for schema-driven or manual field descriptors. |
+| `MarkdownFieldEditor` | component | Built-in markdown editor with preview for schema-driven fields. |
+| `renderMarkdownToHtml` | function | Escapes and renders a constrained markdown subset to HTML. |
+| `JsonSchemaObject` | type | Lightweight JSON Schema shape used by the schema registry and generators. |
+| `EntityJsonSchemaConfig` | type | Registration shape for static/runtime schemas. |
+| `SchemaFieldDescriptor` | type | Schema-derived field descriptor compatible with entity sheets. |
+| `BuildEntityFieldsFromSchemaOptions` | type | Input options for field generation (`schema`, optional `rootField`). |
+| `GraphSnapshotWithSchemasOptions` | type | Serialization options for graph export with schemas. |
+
+---
+
+## Local-first runtime
+
+| Export | Kind | Description |
+|--------|------|-------------|
+| `startLocalFirstGraph` | function | Starts graph hydration, persistence, pending action replay, and sync-status tracking over a host storage adapter. |
+| `hydrateGraphFromStorage` | function | Restore a persisted graph snapshot into the Zustand graph. |
+| `persistGraphToStorage` | function | Persist the current graph snapshot plus pending action metadata. |
+| `useGraphSyncStatus` | hook | Read serializable sync status for browser/PWA/Tauri-style hosts. |
+| `GraphPersistenceAdapter` | type | Storage adapter contract: `get`, `set`, optional `remove`. |
+| `PersistedGraphActionRecord` | type | Re-exported persisted action metadata shape used by the local-first runtime. |
+| `GraphSyncStatus` | type | Status payload: phase, online state, sync state, pending count, hydration/persistence timestamps, error. |
+| `GraphSnapshotPayload` | type | Persisted JSON payload containing graph snapshot and pending actions. |
+| `StartLocalFirstGraphOptions` | type | Runtime bootstrap options for storage, replay, and online-source integration. |
+| `LocalFirstGraphRuntime` | type | Returned runtime handle with `ready`, `persistNow`, `hydrate`, `dispose`, and `getStatus`. |
 
 ---
 
@@ -234,8 +276,8 @@ Generated from `src/index.ts`. Use this when scaffolding imports or explaining c
 | `EntityColumnMeta` | type | Metadata for filters and entity-aware table features. |
 | `ColumnFilterType` | type | Drives toolbar filter control selection. |
 | `ActionItem` | type | Declarative row action definition. |
-| `FieldDescriptor` | type | Describes one form field for `EntityFormSheet`. |
-| `FieldType` | type | Field editor type enum / union. |
+| `FieldDescriptor` | type | Describes one form field for `EntityFormSheet`; now supports dotted field paths for JSON-column-backed editors. |
+| `FieldType` | type | Field editor type enum / union, including `json` and `markdown`. |
 
 ---
 

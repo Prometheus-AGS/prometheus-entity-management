@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/prometheus-entity-management",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Normalized, globally-reactive entity graph store for React — replaces TanStack Query's per-view cache model with a single application-wide entity graph built on Zustand.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",

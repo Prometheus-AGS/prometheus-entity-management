@@ -26,11 +26,26 @@ export interface GraphTransaction {
 }
 
 export interface GraphActionOptions<TInput, TResult> {
+  key?: string;
   optimistic?: (tx: GraphTransaction, input: TInput) => void;
   run: (tx: GraphTransaction, input: TInput) => Promise<TResult> | TResult;
   onSuccess?: (result: TResult, input: TInput, tx: GraphTransaction) => void;
   onError?: (error: Error, input: TInput) => void;
 }
+
+export interface GraphActionRecord {
+  id: string;
+  key: string;
+  input: unknown;
+  enqueuedAt: string;
+}
+
+export type GraphActionEvent =
+  | { type: "enqueued"; record: GraphActionRecord }
+  | { type: "settled"; record: GraphActionRecord };
+
+const graphActionListeners = new Set<(event: GraphActionEvent) => void>();
+const graphActionReplayers = new Map<string, (record: GraphActionRecord) => Promise<unknown>>();
 
 export function createGraphTransaction(): GraphTransaction {
   const baseline = cloneGraphData();
@@ -102,21 +117,58 @@ export function createGraphTransaction(): GraphTransaction {
 }
 
 export function createGraphAction<TInput, TResult>(opts: GraphActionOptions<TInput, TResult>) {
+  if (opts.key) {
+    graphActionReplayers.set(opts.key, async (record) => {
+      const tx = createGraphTransaction();
+      try {
+        const result = await opts.run(tx, record.input as TInput);
+        tx.commit();
+        return result;
+      } catch (error) {
+        tx.rollback();
+        throw error;
+      }
+    });
+  }
+
   return async (input: TInput): Promise<TResult> => {
     const tx = createGraphTransaction();
+    const record = opts.key
+      ? {
+          id: `${opts.key}:${Date.now()}`,
+          key: opts.key,
+          input: structuredClone(input),
+          enqueuedAt: new Date().toISOString(),
+        }
+      : null;
+
     try {
+      if (record) emitGraphActionEvent({ type: "enqueued", record });
       opts.optimistic?.(tx, input);
       const result = await opts.run(tx, input);
       opts.onSuccess?.(result, input, tx);
       tx.commit();
+      if (record) emitGraphActionEvent({ type: "settled", record });
       return result;
     } catch (error) {
       tx.rollback();
       const normalized = error instanceof Error ? error : new Error(String(error));
+      if (record) emitGraphActionEvent({ type: "settled", record });
       opts.onError?.(normalized, input);
       throw normalized;
     }
   };
+}
+
+export function subscribeGraphActionEvents(listener: (event: GraphActionEvent) => void) {
+  graphActionListeners.add(listener);
+  return () => graphActionListeners.delete(listener);
+}
+
+export async function replayRegisteredGraphAction(record: GraphActionRecord) {
+  const replayer = graphActionReplayers.get(record.key);
+  if (!replayer) throw new Error(`No graph action registered for key "${record.key}"`);
+  return replayer(record);
 }
 
 function cloneGraphData(
@@ -129,4 +181,8 @@ function cloneGraphData(
     syncMetadata: structuredClone(source.syncMetadata),
     lists: structuredClone(source.lists),
   };
+}
+
+function emitGraphActionEvent(event: GraphActionEvent) {
+  for (const listener of graphActionListeners) listener(event);
 }

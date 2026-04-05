@@ -9,6 +9,7 @@ import type { EntityType, EntityId } from "../graph";
 import type { UseEntityViewResult, ViewFetchParams } from "../view/use-entity-view";
 import type { ListResponse } from "../engine";
 import type { ViewDescriptor, FilterSpec, SortSpec } from "../view/types";
+import { collectDirtyPaths, setValueAtPath } from "../object-path";
 
 /** UI mode for a single CRUD surface: drives which panels/forms are active without scattering boolean flags. */
 export type CRUDMode = "list" | "detail" | "edit" | "create";
@@ -31,8 +32,14 @@ export interface CRUDOptions<TEntity extends Record<string, unknown>> {
   selectAfterCreate?: boolean; clearSelectionAfterDelete?: boolean;
 }
 
+/** Public field input for CRUD setters: supports classic `keyof T` calls and dotted nested paths for JSON-backed forms. */
+export type EntityFieldPath<TEntity extends Record<string, unknown>> = keyof TEntity | string;
+
 /** Tracks which fields diverge from loaded detail — edit buffer stays in React state so other views keep showing canonical graph data until save. */
-export interface DirtyFields<TEntity> { changed: Set<keyof TEntity>; isDirty: boolean; }
+export interface DirtyFields<TEntity extends Record<string, unknown>> {
+  changed: ReadonlySet<EntityFieldPath<TEntity>>;
+  isDirty: boolean;
+}
 
 /**
  * Everything a CRUD screen needs: composed `list` view, selection, detail subscription, relation joins, edit/create buffers, and mutating actions.
@@ -43,10 +50,10 @@ export interface CRUDState<TEntity extends Record<string, unknown>> {
   selectedId: EntityId | null; select: (id: EntityId | null) => void; openDetail: (id: EntityId) => void;
   detail: TEntity | null; detailIsLoading: boolean; detailError: string | null;
   relations: Record<string, unknown>; editBuffer: Partial<TEntity>;
-  setField: <K extends keyof TEntity>(field: K, value: TEntity[K]) => void; setFields: (fields: Partial<TEntity>) => void;
+  setField: (field: EntityFieldPath<TEntity>, value: unknown) => void; setFields: (fields: Partial<TEntity>) => void;
   resetBuffer: () => void; dirty: DirtyFields<TEntity>; startEdit: (id?: EntityId) => void; cancelEdit: () => void;
   save: () => Promise<TEntity | null>; isSaving: boolean; saveError: string | null; applyOptimistic: () => void;
-  createBuffer: Partial<TEntity>; setCreateField: <K extends keyof TEntity>(field: K, value: TEntity[K]) => void;
+  createBuffer: Partial<TEntity>; setCreateField: (field: EntityFieldPath<TEntity>, value: unknown) => void;
   setCreateFields: (fields: Partial<TEntity>) => void; resetCreateBuffer: () => void;
   startCreate: () => void; cancelCreate: () => void; create: () => Promise<TEntity | null>;
   isCreating: boolean; createError: string | null; deleteEntity: (id?: EntityId) => Promise<void>;
@@ -77,14 +84,13 @@ export function useEntityCRUD<TEntity extends Record<string, unknown>>(opts: CRU
   const [editBuffer, setEditBuffer] = useState<Partial<TEntity>>({});
   const [isSaving, setIsSaving] = useState(false); const [saveError, setSaveError] = useState<string | null>(null);
   useEffect(() => { if (detail) setEditBuffer({ ...detail }); }, [selectedId]); // eslint-disable-line
-  const setField = useCallback(<K extends keyof TEntity>(field: K, value: TEntity[K]) => setEditBuffer((prev) => ({ ...prev, [field]: value })), []);
+  const setField = useCallback((field: EntityFieldPath<TEntity>, value: unknown) => setEditBuffer((prev) => setValueAtPath(prev as Record<string, unknown>, String(field), value) as Partial<TEntity>), []);
   const setFields = useCallback((fields: Partial<TEntity>) => setEditBuffer((prev) => ({ ...prev, ...fields })), []);
   const resetBuffer = useCallback(() => { const current = selectedId ? useGraphStore.getState().readEntity<TEntity>(type, selectedId) : null; setEditBuffer(current ? { ...current } : {}); }, [type, selectedId]);
   const dirty = useMemo((): DirtyFields<TEntity> => {
     if (!detail) return { changed: new Set(), isDirty: false };
-    const changed = new Set<keyof TEntity>();
-    for (const key of Object.keys(editBuffer) as (keyof TEntity)[]) { if (JSON.stringify(editBuffer[key]) !== JSON.stringify(detail[key])) changed.add(key); }
-    return { changed, isDirty: changed.size > 0 };
+    const changed = collectDirtyPaths(editBuffer, detail);
+    return { changed: changed as ReadonlySet<EntityFieldPath<TEntity>>, isDirty: changed.size > 0 };
   }, [editBuffer, detail]);
   const startEdit = useCallback((id?: EntityId) => { const targetId = id ?? selectedId; if (targetId) { setSelectedId(targetId); const entity = useGraphStore.getState().readEntity<TEntity>(type, targetId); setEditBuffer(entity ? { ...entity } : {}); } setMode("edit"); }, [selectedId, type]);
   const cancelEdit = useCallback(() => { resetBuffer(); setMode(selectedId ? "detail" : "list"); setSaveError(null); }, [resetBuffer, selectedId]);
@@ -119,7 +125,7 @@ export function useEntityCRUD<TEntity extends Record<string, unknown>>(opts: CRU
   }, [selectedId, type, editBuffer, normalize]);
   const [createBuffer, setCreateBuffer] = useState<Partial<TEntity>>({ ...createDefaults });
   const [isCreating, setIsCreating] = useState(false); const [createError, setCreateError] = useState<string | null>(null);
-  const setCreateField = useCallback(<K extends keyof TEntity>(field: K, value: TEntity[K]) => setCreateBuffer((prev) => ({ ...prev, [field]: value })), []);
+  const setCreateField = useCallback((field: EntityFieldPath<TEntity>, value: unknown) => setCreateBuffer((prev) => setValueAtPath(prev as Record<string, unknown>, String(field), value) as Partial<TEntity>), []);
   const setCreateFields = useCallback((fields: Partial<TEntity>) => setCreateBuffer((prev) => ({ ...prev, ...fields })), []);
   const resetCreateBuffer = useCallback(() => setCreateBuffer({ ...(optsRef.current.createDefaults ?? {}) } as Partial<TEntity>), []);
   const startCreate = useCallback(() => { resetCreateBuffer(); setCreateError(null); setMode("create"); }, [resetCreateBuffer]);

@@ -16,11 +16,47 @@ export type {
 export { queryOnce, selectGraph } from "./graph-query";
 export type { GraphQueryOptions, GraphIncludeMap, GraphIncludeRelation } from "./graph-query";
 export { createGraphTransaction, createGraphAction } from "./graph-actions";
-export type { GraphTransaction, GraphActionOptions } from "./graph-actions";
+export type { GraphTransaction, GraphActionOptions, GraphActionRecord, GraphActionEvent } from "./graph-actions";
 export { createGraphEffect } from "./graph-effects";
 export type { GraphEffectHandle, GraphEffectOptions, GraphEffectEvent } from "./graph-effects";
-export { createGraphTool, exportGraphSnapshot } from "./ai-interop";
-export type { GraphSnapshotExportOptions, GraphToolContext } from "./ai-interop";
+export { createGraphTool, createSchemaGraphTool, exportGraphSnapshot } from "./ai-interop";
+export type { GraphSnapshotExportOptions, GraphToolContext, SchemaGraphToolContext } from "./ai-interop";
+
+// ── Schema-driven entities and markdown ───────────────────────────────────
+export {
+  registerEntityJsonSchema,
+  registerRuntimeSchema,
+  getEntityJsonSchema,
+  buildEntityFieldsFromSchema,
+  useSchemaEntityFields,
+  exportGraphSnapshotWithSchemas,
+  MarkdownFieldRenderer,
+  MarkdownFieldEditor,
+  renderMarkdownToHtml,
+} from "./schema";
+export type {
+  JsonSchemaObject,
+  EntityJsonSchemaConfig,
+  SchemaFieldDescriptor,
+  BuildEntityFieldsFromSchemaOptions,
+  GraphSnapshotWithSchemasOptions,
+} from "./schema";
+
+// ── Local-first runtime ───────────────────────────────────────────────────
+export {
+  startLocalFirstGraph,
+  hydrateGraphFromStorage,
+  persistGraphToStorage,
+  useGraphSyncStatus,
+} from "./local-first-runtime";
+export type {
+  GraphPersistenceAdapter,
+  GraphActionRecord as PersistedGraphActionRecord,
+  GraphSyncStatus,
+  GraphSnapshotPayload,
+  StartLocalFirstGraphOptions,
+  LocalFirstGraphRuntime,
+} from "./local-first-runtime";
 
 // ── Engine ────────────────────────────────────────────────────────────────
 export {
