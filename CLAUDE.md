@@ -258,7 +258,7 @@ examples/
 - **DevTools**: `useGraphDevTools` is available for lightweight graph inspection. For ad-hoc debugging you can also use `useGraphStore.getState()`.
 - **Garbage collection**: Configurable via `configureEngine` (`defaultGcTime`, `gcInterval`) and `startGarbageCollector` / `stopGarbageCollector`. Entities with no subscribers can be evicted after `defaultGcTime`.
 - **Suspense**: `useSuspenseEntity` and `useSuspenseEntityList` are implemented for Suspense boundaries (non-null entity id required where applicable).
-- **Skills ↔ code sync (immutable)**: Any change to public exports in `src/index.ts` or to architecture rules here must update `skills/_shared/references/library-exports.json` (run `pnpm run refresh:exports`) and related skill docs so `pnpm run verify:skills` passes in CI. PR checklist: `.github/pull_request_template.md`.
+- **Skills ↔ code sync (immutable)**: Any change to public exports in `src/index.ts` or to architecture rules here must update `prometheus-entity-skills/_shared/references/library-exports.json` (run `pnpm run refresh:exports`) and related skill docs so `pnpm run verify:skills` passes in CI. PR checklist: `.github/pull_request_template.md`.
 
 ## Where to Start When Reading Code
 

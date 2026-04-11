@@ -329,7 +329,7 @@ examples/
 - **DevTools**: `useGraphDevTools` is available; `useGraphStore.getState()` remains valid for debugging outside React.
 - **Garbage collection**: Engine supports GC via `configureEngine` and `startGarbageCollector` (see `src/engine.ts`).
 - **Suspense**: `useSuspenseEntity` and `useSuspenseEntityList` are implemented.
-- **Skills ↔ code sync (immutable)**: Any PR that changes public exports in `src/index.ts` or architecture rules documented here must update `skills/_shared/references/library-exports.json` (and related skill docs) so CI (`pnpm run verify:skills`) passes. Use the PR template checklist (`.github/pull_request_template.md`).
+- **Skills ↔ code sync (immutable)**: Any PR that changes public exports in `src/index.ts` or architecture rules documented here must update `prometheus-entity-skills/_shared/references/library-exports.json` (and related skill docs) so CI (`pnpm run verify:skills`) passes. Use the PR template checklist (`.github/pull_request_template.md`).
 
 ## Where to Start When Reading Code
 

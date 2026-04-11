@@ -13,7 +13,7 @@ From the repository root:
 2. `pnpm run typecheck`
 3. `pnpm run build`
 4. `pnpm run test`
-5. `pnpm run verify:skills` (requires `dist/` from step 3; compares runtime exports to `skills/_shared/references/library-exports.json`)
+5. `pnpm run verify:skills` (requires `dist/` from step 3; compares runtime exports to `prometheus-entity-skills/_shared/references/library-exports.json`)
 6. `pnpm run typecheck:vite` and `pnpm run typecheck:next`
 
 `prepublishOnly` runs typecheck, build, test, and `verify:skills` automatically; keep the skills ledger in sync when the public export surface changes:
@@ -22,7 +22,7 @@ From the repository root:
 pnpm run refresh:exports
 ```
 
-Commit `skills/_shared/references/library-exports.json` when it changes.
+Commit `prometheus-entity-skills/_shared/references/library-exports.json` when it changes.
 
 ## Publishing to npm
 

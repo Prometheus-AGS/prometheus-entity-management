@@ -5,7 +5,7 @@
 ## Checklist
 
 - [ ] `pnpm run typecheck` passes (library)
-- [ ] If **`src/index.ts`** public exports or **architecture rules** in `AGENTS.md` / `CLAUDE.md` changed: updated `skills/_shared/references/` (e.g. `library-api.md`) and ran `pnpm run refresh:exports` so `pnpm run verify:skills` passes
+- [ ] If **`src/index.ts`** public exports or **architecture rules** in `AGENTS.md` / `CLAUDE.md` changed: updated `prometheus-entity-skills/_shared/references/` (e.g. `library-api.md`) and ran `pnpm run refresh:exports` so `pnpm run verify:skills` passes
 - [ ] Example apps: `pnpm run typecheck:vite` / `typecheck:next` if relevant to the change
 
 ## Skills ↔ code (immutable)

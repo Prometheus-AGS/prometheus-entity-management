@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Fails if dist/index.mjs export names differ from skills/_shared/references/library-exports.json
+ * Fails if dist/index.mjs export names differ from
+ * prometheus-entity-skills/_shared/references/library-exports.json
  */
 import fs from "fs";
 import path from "path";
@@ -8,7 +9,13 @@ import { pathToFileURL } from "url";
 
 const root = path.resolve(import.meta.dirname, "..");
 const dist = path.join(root, "dist", "index.mjs");
-const ledgerPath = path.join(root, "skills", "_shared", "references", "library-exports.json");
+const ledgerPath = path.join(
+  root,
+  "prometheus-entity-skills",
+  "_shared",
+  "references",
+  "library-exports.json"
+);
 
 if (!fs.existsSync(dist)) {
   console.error("Missing dist/index.mjs — run `pnpm run build` first.");
