@@ -1,10 +1,9 @@
 {
   "name": "@prometheus-ags/prometheus-entity-management",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Normalized, globally-reactive entity graph store for React — replaces TanStack Query's per-view cache model with a single application-wide entity graph built on Zustand.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
-
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -24,12 +23,10 @@
     "CHANGELOG.md"
   ],
   "sideEffects": false,
-
   "workspaces": [
     "examples/vite-app",
     "examples/nextjs-app"
   ],
-
   "scripts": {
     "build": "tsup",
     "build:watch": "tsup --watch",
@@ -47,7 +44,6 @@
     "typecheck:next": "tsc --noEmit -p examples/nextjs-app/tsconfig.json",
     "clean": "find . -name 'node_modules' -type d -not -path '*/\\.*' | xargs rm -rf && find . -name 'dist' -o -name '.next' | xargs rm -rf"
   },
-
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
@@ -58,7 +54,6 @@
       "optional": true
     }
   },
-
   "dependencies": {
     "clsx": "^2.1.1",
     "immer": "^11.1.4",
@@ -66,7 +61,6 @@
     "tailwind-merge": "^3.5.0",
     "zustand": "^5.0.12"
   },
-
   "devDependencies": {
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
@@ -74,7 +68,6 @@
     "typescript": "^6.0.2",
     "vitest": "^3.2.4"
   },
-
   "keywords": [
     "react",
     "state-management",

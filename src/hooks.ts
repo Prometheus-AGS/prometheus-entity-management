@@ -39,10 +39,11 @@ export function useEntity<TRaw, TEntity extends Record<string, unknown>>(opts: E
   ensureListeners();
   const fetchRef = useRef(opts.fetch); fetchRef.current = opts.fetch;
   const normalizeRef = useRef(opts.normalize); normalizeRef.current = opts.normalize;
-  const data = useStore(useGraphStore, useShallow((state) => {
+  const dataSelector = useCallback((state: ReturnType<typeof useGraphStore.getState>) => {
     if (!id) return null;
     return state.readEntitySnapshot<TEntity>(type, id) as TEntity | null;
-  }));
+  }, [id, type]);
+  const data = useStore(useGraphStore, useShallow(dataSelector));
   const entityState = useStore(useGraphStore, useCallback((state): EntityState =>
     state.entityStates[`${type}:${id}`] ?? EMPTY_ENTITY_STATE,
   [type, id]));
@@ -98,15 +99,13 @@ export function useEntityList<TRaw, TEntity extends Record<string, unknown>>(opt
   const fetchRef = useRef(opts.fetch); fetchRef.current = opts.fetch;
   const normalizeRef = useRef(opts.normalize); normalizeRef.current = opts.normalize;
   const listState = useStore(useGraphStore, useCallback((state): ListState => state.lists[key] ?? EMPTY_LIST_STATE, [key]));
-  const items = useStore(
-    useGraphStore,
-    useShallow((state) => {
-      const ids = state.lists[key]?.ids ?? EMPTY_IDS;
-      return ids
-        .map((id) => state.readEntitySnapshot<TEntity>(type, id))
-        .filter((x) => x !== null) as TEntity[];
-    }),
-  );
+  const itemsSelector = useCallback((state: ReturnType<typeof useGraphStore.getState>) => {
+    const ids = state.lists[key]?.ids ?? EMPTY_IDS;
+    return ids
+      .map((id) => state.readEntitySnapshot<TEntity>(type, id))
+      .filter((x) => x !== null) as TEntity[];
+  }, [key, type]);
+  const items = useStore(useGraphStore, useShallow(itemsSelector));
   const doFetch = useCallback((params: ListFetchParams = {}) => {
     if (!enabled) return;
     fetchList({ type, queryKey, mode, fetch: fetchRef.current, normalize: normalizeRef.current }, params, getEngineOptions(), false);
