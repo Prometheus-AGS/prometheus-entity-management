@@ -117,13 +117,12 @@ export function useEntityView<TEntity extends Record<string, unknown>>(opts: Use
       );
     }),
   );
-  const items = useStore(
-    useGraphStore,
-    useShallow((state): TEntity[] =>
+  const items = useMemo(
+    () =>
       localViewIds
-        .map((id) => state.readEntitySnapshot<TEntity>(type, id))
+        .map((id) => useGraphStore.getState().readEntitySnapshot<TEntity>(type, id))
         .filter((item) => item !== null) as TEntity[],
-    ),
+    [localViewIds, type],
   );
   const fireRemoteFetch = useCallback(async (view: ViewDescriptor, cursor?: string) => {
     const { remoteFetch: rf, normalize: norm, baseQueryKey: bqk } = optsRef.current; if (!rf) return;
