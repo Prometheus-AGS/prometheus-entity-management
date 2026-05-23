@@ -99,6 +99,21 @@ Data flows **up** into the graph; UI reads **down** through hooks (see [Architec
 
 ---
 
+## v1.3 additions
+
+Five focused upstream features added for tenant-scoped, PGlite-backed
+local-first apps. All backward compatible; no new runtime dependencies.
+
+| API | File | Purpose |
+|-----|------|---------|
+| `createPGlitePersistenceAdapter(pglite, options?)` | `src/adapters/pglite-persistence.ts` | `GraphPersistenceAdapter` that stores the snapshot in a PGlite table (`_graph_snapshot` by default) |
+| `createTenantScopedElectricAdapter(opts)` | `src/adapters/electricsql-tenant.ts` | Refuses to attach Electric shapes that lack a `tenantColumn`; builds the `WHERE` from a validated `{ companyId }` claim so shape predicates can never widen past RLS |
+| `registerEntityFromSql({ entityType, createTableSql, overrides })` | `src/schema-from-sql.ts` | Generates and registers a JSON Schema from a Postgres `CREATE TABLE` block |
+| `useEntityListAsTable(opts)` | `src/table/use-entity-list-as-table.ts` | Shapes `useEntityList` for TanStack Table with a stable `data` array reference (no TanStack Table dep) |
+| `startLocalFirstGraph({ ..., retryPolicy })` | `src/local-first-runtime.ts` | Retry-with-backoff for pending offline action replay, plus an opt-in `poisonHandler` |
+
+---
+
 ## New in v1.2
 
 The graph runtime now exposes a focused set of non-hook helpers for loaders, workflows, and orchestration:

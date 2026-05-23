@@ -49,6 +49,27 @@ export interface HydrateGraphFromStorageOptions {
   key: string;
 }
 
+/**
+ * Retry-with-backoff policy for replaying pending offline actions.
+ *
+ * The replay loop tracks per-action attempt counts. After `maxAttempts`
+ * failed attempts the action is considered "poisoned" — it is removed from
+ * the in-memory pending queue (so it won't block other actions) and the
+ * optional `poisonHandler` is invoked. Consumers typically log the action,
+ * surface a UI prompt, or persist it to a dead-letter store.
+ *
+ * Defaults: 5 attempts, starting at 500ms, doubling up to 30s, with
+ * "equal" jitter (random in `[delay/2, delay]`).
+ */
+export interface ReplayRetryPolicy {
+  maxAttempts?: number;
+  initialDelayMs?: number;
+  maxDelayMs?: number;
+  backoffFactor?: number;
+  jitter?: "full" | "equal" | "none";
+  poisonHandler?: (action: GraphActionRecord, error: unknown) => void | Promise<void>;
+}
+
 export interface StartLocalFirstGraphOptions {
   storage: GraphPersistenceAdapter;
   key?: string;
@@ -58,6 +79,8 @@ export interface StartLocalFirstGraphOptions {
     subscribe: (listener: (online: boolean) => void) => () => void;
   };
   persistDebounceMs?: number;
+  /** Retry-with-backoff policy for offline action replay. */
+  retryPolicy?: ReplayRetryPolicy;
 }
 
 export interface LocalFirstGraphRuntime {
@@ -217,8 +240,11 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
         phase: "syncing",
         isSynced: false,
       });
+      const policy = resolveRetryPolicy(opts.retryPolicy);
       for (const action of Array.from(pendingActions.values())) {
-        await replayRegisteredGraphAction(action);
+        await replayActionWithRetry(action, policy);
+        // Whether it succeeded or was poisoned, remove from pending — the
+        // poison handler (if any) owns escalation from here.
         pendingActions.delete(action.id);
       }
       await persistGraphToStorage({ storage: opts.storage, key });
@@ -262,6 +288,76 @@ function cloneGraphSnapshot() {
     syncMetadata: structuredClone(state.syncMetadata),
     lists: structuredClone(state.lists),
   };
+}
+
+interface ResolvedRetryPolicy {
+  maxAttempts: number;
+  initialDelayMs: number;
+  maxDelayMs: number;
+  backoffFactor: number;
+  jitter: "full" | "equal" | "none";
+  poisonHandler?: (action: GraphActionRecord, error: unknown) => void | Promise<void>;
+}
+
+function resolveRetryPolicy(policy?: ReplayRetryPolicy): ResolvedRetryPolicy {
+  return {
+    maxAttempts: policy?.maxAttempts ?? 5,
+    initialDelayMs: policy?.initialDelayMs ?? 500,
+    maxDelayMs: policy?.maxDelayMs ?? 30_000,
+    backoffFactor: policy?.backoffFactor ?? 2,
+    jitter: policy?.jitter ?? "equal",
+    poisonHandler: policy?.poisonHandler,
+  };
+}
+
+function computeDelay(policy: ResolvedRetryPolicy, attempt: number): number {
+  const base = Math.min(
+    policy.initialDelayMs * Math.pow(policy.backoffFactor, Math.max(0, attempt - 1)),
+    policy.maxDelayMs,
+  );
+  switch (policy.jitter) {
+    case "none":
+      return base;
+    case "full":
+      return Math.random() * base;
+    case "equal":
+    default:
+      return base / 2 + Math.random() * (base / 2);
+  }
+}
+
+/** Internal — sleep helper that respects test environments. */
+function sleep(ms: number): Promise<void> {
+  if (ms <= 0) return Promise.resolve();
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+/**
+ * Attempt to replay an action up to `maxAttempts` times. On exhaustion the
+ * action goes to "poison" — the optional handler is invoked and the function
+ * resolves. Exposed for unit testing.
+ */
+export async function replayActionWithRetry(
+  action: GraphActionRecord,
+  policy: ResolvedRetryPolicy,
+): Promise<{ ok: true } | { ok: false; poisoned: true; error: unknown }> {
+  let lastError: unknown = null;
+  for (let attempt = 1; attempt <= policy.maxAttempts; attempt++) {
+    try {
+      await replayRegisteredGraphAction(action);
+      return { ok: true };
+    } catch (error) {
+      lastError = error;
+      if (attempt >= policy.maxAttempts) break;
+      await sleep(computeDelay(policy, attempt));
+    }
+  }
+  try {
+    await policy.poisonHandler?.(action, lastError);
+  } catch {
+    /* swallow handler failures — they must not block the queue */
+  }
+  return { ok: false, poisoned: true, error: lastError };
 }
 
 function getDefaultOnlineSource() {

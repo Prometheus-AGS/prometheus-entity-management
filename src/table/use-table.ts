@@ -285,7 +285,7 @@ function buildHeaderGroups<TData>(
 // ---------------------------------------------------------------------------
 // useTable hook
 // ---------------------------------------------------------------------------
-export function useTable<TData extends Record<string, unknown>>(
+export function useTable<TData extends object>(
   options: TableOptions<TData>,
 ): TableInstance<TData> {
   const { data, columns: columnDefs } = options;

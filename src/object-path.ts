@@ -13,7 +13,7 @@ export function getValueAtPath<T = unknown>(source: unknown, path: string): T | 
   return current as T | undefined;
 }
 
-export function setValueAtPath<T extends Record<string, unknown>>(source: T, path: string, value: unknown): T {
+export function setValueAtPath<T extends object>(source: T, path: string, value: unknown): T {
   const segments = path.split(".").filter(Boolean);
   if (segments.length === 0) return source;
 

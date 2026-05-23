@@ -5,6 +5,49 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.3.0] — 2026-05-23
+
+Upstream features driven by the `hotseaters-pglite-port` phase — every
+consumer of the library benefits from these primitives, but the focal use
+case is a tenant-scoped, PGlite-backed local-first React app talking to a
+self-hosted Supabase + ElectricSQL stack.
+
+### Added
+
+- **`createPGlitePersistenceAdapter(pglite, options?)`** in
+  `src/adapters/pglite-persistence.ts` — a `GraphPersistenceAdapter` that
+  stores the local-first runtime's graph snapshot in a PGlite table
+  (`_graph_snapshot` by default), instead of `localStorage`/`IndexedDB`.
+- **`createTenantScopedElectricAdapter(opts)`** in
+  `src/adapters/electricsql-tenant.ts` — Electric adapter wrapper that
+  refuses to attach a shape unless it declares a `tenantColumn` (string or
+  explicit `null` for the tenant root). Builds the `WHERE` clause from a
+  validated `{ companyId }` claim so shape predicates can never widen past
+  RLS by accident. Implements RULE 5 (shape predicates ⊆ RLS) and the
+  auth-claim-aware shape registration helper (Change 13 item 11).
+- **`registerEntityFromSql({ entityType, createTableSql, overrides })`** in
+  `src/schema-from-sql.ts` — generates and registers a JSON Schema directly
+  from a Postgres `CREATE TABLE` block, removing the need to hand-maintain
+  TypeScript schema duplicates.
+- **`useEntityListAsTable(opts)`** in `src/table/use-entity-list-as-table.ts`
+  — wraps `useEntityList` and returns a referentially-stable `data` array
+  suitable for TanStack Table's `data` prop. Does not pull
+  `@tanstack/react-table` as a dep.
+- **Retry-with-backoff replay** for pending offline actions in
+  `startLocalFirstGraph(...)` via a new `retryPolicy` option
+  (`{ maxAttempts, initialDelayMs, maxDelayMs, backoffFactor, jitter, poisonHandler }`).
+  Exhausted actions go to a poison handler instead of looping forever.
+
+### Notes
+
+- No new runtime dependencies. PGlite and ElectricSQL are still consumed
+  through minimal structural types, exactly like the existing
+  `adapters/electricsql.ts`.
+- Backward compatible: every existing export remains. Consumers can adopt
+  the new APIs incrementally.
+
+---
+
 ## [1.2.0] — 2026-04-05
 
 PWA/local-first and schema-driven entity release focused on dynamic JSON-column UI, markdown-aware rendering, and IPC-safe graph persistence.

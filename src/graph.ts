@@ -19,7 +19,7 @@ export interface EntitySyncMetadata {
 }
 
 /** Snapshot shape returned by sync-aware reads and graph-native query helpers. */
-export type EntitySnapshot<T extends Record<string, unknown>> = T & {
+export type EntitySnapshot<T extends object> = T & {
   $synced: boolean;
   $origin: SyncOrigin;
   $updatedAt: number | null;

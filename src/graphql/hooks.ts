@@ -16,7 +16,7 @@ import type { EntityType, EntityId, EntityState, ListState } from "../graph";
 // ---------------------------------------------------------------------------
 // useGQLEntity
 // ---------------------------------------------------------------------------
-export interface GQLEntityOptions<TData, TEntity extends Record<string, unknown>> {
+export interface GQLEntityOptions<TData, TEntity extends object> {
   client: GQLClient; document: string; variables?: Record<string, unknown>;
   type: EntityType; id: EntityId | null | undefined;
   descriptor: EntityDescriptor<unknown, TEntity>;
@@ -25,7 +25,7 @@ export interface GQLEntityOptions<TData, TEntity extends Record<string, unknown>
   onSuccess?: (data: TData) => void; onError?: (err: Error) => void;
 }
 
-export function useGQLEntity<TData, TEntity extends Record<string, unknown>>(opts: GQLEntityOptions<TData, TEntity>) {
+export function useGQLEntity<TData, TEntity extends object>(opts: GQLEntityOptions<TData, TEntity>) {
   const { type, id, staleTime = getEngineOptions().defaultStaleTime, enabled = true } = opts;
   const optsRef = useRef(opts); optsRef.current = opts;
 
@@ -68,7 +68,7 @@ export function useGQLEntity<TData, TEntity extends Record<string, unknown>>(opt
 // ---------------------------------------------------------------------------
 // useGQLList
 // ---------------------------------------------------------------------------
-export interface GQLListOptions<TData, TEntity extends Record<string, unknown>> {
+export interface GQLListOptions<TData, TEntity extends object> {
   client: GQLClient; document: string; variables?: Record<string, unknown>;
   type: EntityType; queryKey: unknown[];
   descriptor: EntityDescriptor<unknown, TEntity>;
@@ -78,7 +78,7 @@ export interface GQLListOptions<TData, TEntity extends Record<string, unknown>> 
   mode?: "replace" | "append"; staleTime?: number; enabled?: boolean;
 }
 
-export function useGQLList<TData, TEntity extends Record<string, unknown>>(opts: GQLListOptions<TData, TEntity>) {
+export function useGQLList<TData, TEntity extends object>(opts: GQLListOptions<TData, TEntity>) {
   const { type, queryKey, staleTime = getEngineOptions().defaultStaleTime, enabled = true, mode = "replace" } = opts;
   const optsRef = useRef(opts); optsRef.current = opts;
   const key = useMemo(() => serializeKey(queryKey), [queryKey]);
@@ -132,7 +132,7 @@ export function useGQLList<TData, TEntity extends Record<string, unknown>>(opts:
 // ---------------------------------------------------------------------------
 // useGQLMutation
 // ---------------------------------------------------------------------------
-export function useGQLMutation<TData, TEntity extends Record<string, unknown>>(opts: {
+export function useGQLMutation<TData, TEntity extends object>(opts: {
   client: GQLClient; document: string; type: string;
   descriptors?: EntityDescriptor<unknown, TEntity>[];
   optimistic?: (variables: Record<string, unknown>) => void;

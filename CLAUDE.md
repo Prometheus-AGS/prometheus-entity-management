@@ -268,6 +268,18 @@ examples/
 4. **Understanding CRUD**: Read `src/crud/relations.ts` (schemas) → `src/crud/useEntityCRUD.ts` (lifecycle management)
 5. **Understanding SSR**: Read `examples/nextjs-app/src/components/GraphHydrationProvider.tsx` (SSR → graph pattern)
 
+## v1.3 — Upstream features (Change 13)
+
+| API | File | Plan item |
+|-----|------|-----------|
+| `createPGlitePersistenceAdapter` | `src/adapters/pglite-persistence.ts` | 13.1 |
+| `createTenantScopedElectricAdapter` | `src/adapters/electricsql-tenant.ts` | 13.2 — also fulfils **13.11** (auth-claim-aware shape registration): the `tenantClaim: { companyId }` is the typed seam where authn meets shape registration. Refusing unscoped shapes is the runtime enforcement of RULE 5. |
+| `registerEntityFromSql` | `src/schema-from-sql.ts` | 13.3 |
+| `startLocalFirstGraph({ retryPolicy })` + `replayActionWithRetry` | `src/local-first-runtime.ts` | 13.6 |
+| `useEntityListAsTable` | `src/table/use-entity-list-as-table.ts` | 13.7 |
+
+Items 13.4, 13.5, 13.8, 13.9, 13.10 are deferred to a follow-up release.
+
 ## Dependencies
 
 Core library (`src/`) only requires:

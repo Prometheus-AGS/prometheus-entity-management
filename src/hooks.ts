@@ -34,7 +34,7 @@ export interface UseEntityResult<T> {
  * });
  * ```
  */
-export function useEntity<TRaw, TEntity extends Record<string, unknown>>(opts: EntityQueryOptions<TRaw, TEntity>): UseEntityResult<TEntity> {
+export function useEntity<TRaw, TEntity extends object>(opts: EntityQueryOptions<TRaw, TEntity>): UseEntityResult<TEntity> {
   const { type, id, staleTime = getEngineOptions().defaultStaleTime, enabled = true } = opts;
   ensureListeners();
   const fetchRef = useRef(opts.fetch); fetchRef.current = opts.fetch;
@@ -92,7 +92,7 @@ export interface UseEntityListResult<TEntity> {
  * });
  * ```
  */
-export function useEntityList<TRaw, TEntity extends Record<string, unknown>>(opts: ListQueryOptions<TRaw, TEntity>): UseEntityListResult<TEntity> {
+export function useEntityList<TRaw, TEntity extends object>(opts: ListQueryOptions<TRaw, TEntity>): UseEntityListResult<TEntity> {
   const { type, queryKey, staleTime = getEngineOptions().defaultStaleTime, enabled = true, mode = "replace" } = opts;
   ensureListeners();
   const key = useMemo(() => serializeKey(queryKey), [queryKey]);
@@ -128,7 +128,7 @@ export function useEntityList<TRaw, TEntity extends Record<string, unknown>>(opt
  * Options for graph-aware mutations: API call + optional normalization into `entities`, optimistic patches, and targeted invalidation.
  * Prefer `invalidateLists` prefixes / `invalidateEntities` over ad-hoc store calls so list UIs stay coherent.
  */
-export interface MutationOptions<TInput, TRaw, TEntity extends Record<string, unknown>> {
+export interface MutationOptions<TInput, TRaw, TEntity extends object> {
   type: EntityType; mutate: (input: TInput) => Promise<TRaw>;
   normalize?: (raw: TRaw, input: TInput) => { id: EntityId; data: TEntity };
   optimistic?: (input: TInput) => { id: EntityId; patch: Partial<TEntity> } | null;
@@ -155,7 +155,7 @@ export interface UseMutationResult<TInput, TRaw> {
  * });
  * ```
  */
-export function useEntityMutation<TInput, TRaw, TEntity extends Record<string, unknown>>(opts: MutationOptions<TInput, TRaw, TEntity>): UseMutationResult<TInput, TRaw> {
+export function useEntityMutation<TInput, TRaw, TEntity extends object>(opts: MutationOptions<TInput, TRaw, TEntity>): UseMutationResult<TInput, TRaw> {
   const [state, setState] = useState({ isPending: false, isSuccess: false, isError: false, error: null as string | null });
   const optsRef = useRef(opts); optsRef.current = opts;
   const mutate = useCallback(async (input: TInput): Promise<TRaw | null> => {
@@ -184,7 +184,7 @@ export function useEntityMutation<TInput, TRaw, TEntity extends Record<string, u
       if (normalize) {
         const { id, data } = normalize(result, input);
         const store = useGraphStore.getState();
-        store.upsertEntity(type, id, data);
+        store.upsertEntity(type, id, data as Record<string, unknown>);
         store.setEntitySyncMetadata(type, id, { synced: true, origin: "server", updatedAt: Date.now() });
         if (optimistic) { const opt = optimistic(input); if (opt) store.clearPatch(type, opt.id); }
       }
@@ -212,7 +212,7 @@ export function useEntityMutation<TInput, TRaw, TEntity extends Record<string, u
  * @param id - Entity id (no-ops when null/undefined)
  * @returns Current patch slice and helpers `augment` / `unaugment` / `clear`
  */
-export function useEntityAugment<TEntity extends Record<string, unknown>>(type: EntityType, id: EntityId | null | undefined) {
+export function useEntityAugment<TEntity extends object>(type: EntityType, id: EntityId | null | undefined) {
   const patch = useStore(useGraphStore, useCallback((state) => id ? ((state.patches[type]?.[id] as Partial<TEntity>) ?? null) : null, [type, id]));
   const augment = useCallback((fields: Partial<TEntity>) => { if (!id) return; useGraphStore.getState().patchEntity(type, id, fields as Record<string, unknown>); }, [type, id]);
   const unaugment = useCallback((keys: (keyof TEntity)[]) => { if (!id) return; useGraphStore.getState().unpatchEntity(type, id, keys as string[]); }, [type, id]);
@@ -309,7 +309,7 @@ function getListSuspensePromise(listKey: string): Promise<void> {
  * @throws Promise while loading (caught by the nearest Suspense boundary)
  * @throws Error if the fetch fails with no data, if `id` is missing when required, or if the entity never resolves
  */
-export function useSuspenseEntity<TRaw, TEntity extends Record<string, unknown>>(
+export function useSuspenseEntity<TRaw, TEntity extends object>(
   opts: EntityQueryOptions<TRaw, TEntity>
 ): { data: TEntity; isFetching: boolean; isStale: boolean; refetch: () => void } {
   const result = useEntity(opts);
@@ -345,7 +345,7 @@ export function useSuspenseEntity<TRaw, TEntity extends Record<string, unknown>>
  * @throws Promise while initially loading (caught by the nearest Suspense boundary)
  * @throws Error if the fetch fails while the list is still empty
  */
-export function useSuspenseEntityList<TRaw, TEntity extends Record<string, unknown>>(
+export function useSuspenseEntityList<TRaw, TEntity extends object>(
   opts: ListQueryOptions<TRaw, TEntity>
 ): Omit<UseEntityListResult<TEntity>, "isLoading"> {
   const key = useMemo(() => serializeKey(opts.queryKey), [opts.queryKey]);

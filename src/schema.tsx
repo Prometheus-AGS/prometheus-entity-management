@@ -8,11 +8,12 @@ export interface JsonSchemaObject {
   description?: string;
   type?: string | string[];
   format?: string;
-  enum?: unknown[];
+  enum?: readonly unknown[];
   default?: unknown;
   properties?: Record<string, JsonSchemaObject>;
   items?: JsonSchemaObject;
   required?: string[];
+  additionalProperties?: boolean | JsonSchemaObject;
   ["x-a2ui-component"]?: string;
   ["x-display-order"]?: number;
   ["x-field-type"]?: string;
@@ -34,7 +35,7 @@ export interface GetEntityJsonSchemaOptions {
   field?: string;
 }
 
-export interface SchemaFieldDescriptor<TEntity extends Record<string, unknown> = Record<string, unknown>>
+export interface SchemaFieldDescriptor<TEntity extends object = Record<string, unknown>>
   extends FieldDescriptor<TEntity> {
   schemaPath: string;
   schema: JsonSchemaObject;
@@ -85,7 +86,7 @@ export function getEntityJsonSchema(opts: GetEntityJsonSchemaOptions): EntityJso
   return null;
 }
 
-export function useSchemaEntityFields<TEntity extends Record<string, unknown> = Record<string, unknown>>(
+export function useSchemaEntityFields<TEntity extends object = Record<string, unknown>>(
   opts: GetEntityJsonSchemaOptions & { schema?: JsonSchemaObject; rootField?: string },
 ) {
   return useMemo(() => {
@@ -95,7 +96,7 @@ export function useSchemaEntityFields<TEntity extends Record<string, unknown> = 
   }, [opts.entityType, opts.field, opts.rootField, opts.schemaId, opts.schema]);
 }
 
-export function buildEntityFieldsFromSchema<TEntity extends Record<string, unknown> = Record<string, unknown>>(
+export function buildEntityFieldsFromSchema<TEntity extends object = Record<string, unknown>>(
   opts: BuildEntityFieldsFromSchemaOptions,
 ): SchemaFieldDescriptor<TEntity>[] {
   return buildSchemaFields<TEntity>(opts.schema, opts.rootField ?? "", "");
@@ -162,13 +163,13 @@ export function MarkdownFieldEditor({
   );
 }
 
-export function createMarkdownDetailRenderer<TEntity extends Record<string, unknown>>(field: string) {
+export function createMarkdownDetailRenderer<TEntity extends object>(field: string) {
   return (value: unknown, entity: TEntity) => (
     <MarkdownFieldRenderer value={String(value ?? getValueAtPath(entity, field) ?? "")} className="prose prose-sm max-w-none" />
   );
 }
 
-function buildSchemaFields<TEntity extends Record<string, unknown>>(
+function buildSchemaFields<TEntity extends object>(
   schema: JsonSchemaObject,
   pathPrefix: string,
   schemaPathPrefix: string,
@@ -194,7 +195,7 @@ function buildSchemaFields<TEntity extends Record<string, unknown>>(
   return [];
 }
 
-function schemaField<TEntity extends Record<string, unknown>>(
+function schemaField<TEntity extends object>(
   field: string,
   schemaPath: string,
   schema: JsonSchemaObject,

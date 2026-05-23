@@ -179,7 +179,7 @@ export function InlineCellEditor<TData>({
 // ---------------------------------------------------------------------------
 // InlineItemEditor — expand-in-place form for gallery/list items
 // ---------------------------------------------------------------------------
-interface InlineItemEditorProps<TData extends Record<string, unknown>> {
+interface InlineItemEditorProps<TData extends object> {
   item: TData;
   columns: ColumnDef<TData>[];
   itemDescriptor?: ItemDescriptor<TData>;
@@ -188,7 +188,7 @@ interface InlineItemEditorProps<TData extends Record<string, unknown>> {
   className?: string;
 }
 
-export function InlineItemEditor<TData extends Record<string, unknown>>({
+export function InlineItemEditor<TData extends object>({
   item,
   columns,
   itemDescriptor: _itemDescriptor,
@@ -226,7 +226,7 @@ export function InlineItemEditor<TData extends Record<string, unknown>>({
         const key = col.accessorKey as string;
         const label =
           typeof col.header === "string" ? col.header : key;
-        const currentValue = key in editValues ? editValues[key] : item[key];
+        const currentValue = key in editValues ? editValues[key] : (item as Record<string, unknown>)[key];
         const fieldId = `${baseId}-${key}`;
 
         return (

@@ -20,7 +20,7 @@ import { ActionButtonRow } from "./action-column";
 import { InlineItemEditor } from "./inline-editor";
 import { cn } from "./utils";
 
-interface ListViewProps<TData extends Record<string, unknown>> {
+interface ListViewProps<TData extends object> {
   rows: Row<TData>[];
   columns: ColumnDef<TData>[];
   itemDescriptor?: ItemDescriptor<TData>;
@@ -34,7 +34,7 @@ interface ListViewProps<TData extends Record<string, unknown>> {
   className?: string;
 }
 
-export function ListView<TData extends Record<string, unknown>>({
+export function ListView<TData extends object>({
   rows,
   columns,
   itemDescriptor,
@@ -84,7 +84,7 @@ export function ListView<TData extends Record<string, unknown>>({
 // ---------------------------------------------------------------------------
 // List item
 // ---------------------------------------------------------------------------
-interface ListItemProps<TData extends Record<string, unknown>> {
+interface ListItemProps<TData extends object> {
   row: Row<TData>;
   itemId: string;
   columns: ColumnDef<TData>[];
@@ -100,7 +100,7 @@ interface ListItemProps<TData extends Record<string, unknown>> {
   enableMultiSelect?: boolean;
 }
 
-function ListItem<TData extends Record<string, unknown>>({
+function ListItem<TData extends object>({
   row,
   itemId,
   columns,
@@ -215,7 +215,7 @@ function ListItem<TData extends Record<string, unknown>>({
 // ---------------------------------------------------------------------------
 // Default list item content
 // ---------------------------------------------------------------------------
-function DefaultListItemContent<TData extends Record<string, unknown>>({
+function DefaultListItemContent<TData extends object>({
   item,
   descriptor,
 }: {
@@ -223,15 +223,16 @@ function DefaultListItemContent<TData extends Record<string, unknown>>({
   descriptor?: ItemDescriptor<TData>;
 }) {
   if (!descriptor) {
-    const keys = Object.keys(item);
+    const rec = item as Record<string, unknown>;
+    const keys = Object.keys(rec);
     return (
       <div className="flex-1 min-w-0">
         <p className="truncate text-sm font-medium">
-          {String(item[keys[0]] ?? "")}
+          {String(rec[keys[0]] ?? "")}
         </p>
         {keys[1] && (
           <p className="truncate text-xs text-muted-foreground">
-            {String(item[keys[1]] ?? "")}
+            {String(rec[keys[1]] ?? "")}
           </p>
         )}
       </div>

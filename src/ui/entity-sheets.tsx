@@ -62,7 +62,7 @@ export function Sheet({ open, onClose, title, subtitle, children, footer, width 
 // ---------------------------------------------------------------------------
 // Generic field control
 // ---------------------------------------------------------------------------
-function FieldControl<TEntity extends Record<string, unknown>>({ descriptor, value, onChange, entity, readonly }: { descriptor: FieldDescriptor<TEntity>; value: unknown; onChange: (v: unknown) => void; entity: Partial<TEntity>; readonly?: boolean }) {
+function FieldControl<TEntity extends object>({ descriptor, value, onChange, entity, readonly }: { descriptor: FieldDescriptor<TEntity>; value: unknown; onChange: (v: unknown) => void; entity: Partial<TEntity>; readonly?: boolean }) {
   if (descriptor.editControl && !readonly) return <>{descriptor.editControl(value, onChange, entity)}</>;
   if (readonly && descriptor.render) return <>{descriptor.render(value, entity as TEntity)}</>;
   if (readonly) return <p className="text-sm py-1">{value != null && value !== "" ? String(value) : "—"}</p>;
@@ -113,7 +113,7 @@ function FieldControl<TEntity extends Record<string, unknown>>({ descriptor, val
   }
 }
 
-function FieldReadonlyValue<TEntity extends Record<string, unknown>>({ descriptor, value, entity }: { descriptor: FieldDescriptor<TEntity>; value: unknown; entity: TEntity }) {
+function FieldReadonlyValue<TEntity extends object>({ descriptor, value, entity }: { descriptor: FieldDescriptor<TEntity>; value: unknown; entity: TEntity }) {
   if (descriptor.render) return <>{descriptor.render(value, entity)}</>;
   if (descriptor.type === "markdown") return <MarkdownFieldRenderer value={String(value ?? "")} className="prose prose-sm max-w-none py-1" />;
   if (descriptor.type === "json") return <pre className="text-xs py-1 whitespace-pre-wrap break-words">{JSON.stringify(value ?? null, null, 2)}</pre>;
@@ -123,7 +123,7 @@ function FieldReadonlyValue<TEntity extends Record<string, unknown>>({ descripto
 // ---------------------------------------------------------------------------
 // EntityDetailSheet
 // ---------------------------------------------------------------------------
-export function EntityDetailSheet<TEntity extends Record<string, unknown>>({ crud, fields, title = "Details", description, children, showEditButton = true, showDeleteButton = true, deleteConfirmMessage = "This action cannot be undone." }: {
+export function EntityDetailSheet<TEntity extends object>({ crud, fields, title = "Details", description, children, showEditButton = true, showDeleteButton = true, deleteConfirmMessage = "This action cannot be undone." }: {
   crud: CRUDState<TEntity>; fields: FieldDescriptor<TEntity>[];
   title?: string | ((e: TEntity) => string);
   description?: string | ((e: TEntity) => string);
@@ -177,7 +177,7 @@ export function EntityDetailSheet<TEntity extends Record<string, unknown>>({ cru
 // ---------------------------------------------------------------------------
 // EntityFormSheet
 // ---------------------------------------------------------------------------
-export function EntityFormSheet<TEntity extends Record<string, unknown>>({ crud, fields, createTitle = "Create", editTitle = "Edit" }: {
+export function EntityFormSheet<TEntity extends object>({ crud, fields, createTitle = "Create", editTitle = "Edit" }: {
   crud: CRUDState<TEntity>; fields: FieldDescriptor<TEntity>[];
   createTitle?: string; editTitle?: string | ((e: TEntity) => string);
 }) {

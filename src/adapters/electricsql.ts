@@ -21,7 +21,7 @@ import type { EntityType, EntityId } from "../graph";
 // ---------------------------------------------------------------------------
 interface PGlite {
   query<T = Record<string, unknown>>(sql: string, params?: unknown[]): Promise<{ rows: T[] }>;
-  exec(sql: string): Promise<void>;
+  exec(sql: string): Promise<unknown>;
   listen(channel: string, handler: (payload: string) => void): Promise<() => void>;
 }
 interface ShapeMessage<T = Record<string, unknown>> {
@@ -36,7 +36,7 @@ interface ShapeStream<T = Record<string, unknown>> {
 // ---------------------------------------------------------------------------
 // Config
 // ---------------------------------------------------------------------------
-export interface ElectricTableConfig<T extends Record<string, unknown>> {
+export interface ElectricTableConfig<T extends object> {
   type: EntityType; table: string; where?: string; idColumn?: string;
   normalize?: (row: T) => Record<string, unknown>;
   shapeStream: ShapeStream<T>;
@@ -62,9 +62,9 @@ export function createElectricAdapter(opts: ElectricAdapterOptions): SyncAdapter
     if (tables.every((t) => syncedTables.has(t.table))) { onSynced?.(); for (const cb of syncedCbs) cb(); }
   }
 
-  function toChange<T extends Record<string, unknown>>(tc: ElectricTableConfig<T>, msg: ShapeMessage<T>): EntityChange | null {
+  function toChange<T extends object>(tc: ElectricTableConfig<T>, msg: ShapeMessage<T>): EntityChange | null {
     const { type, idColumn = "id", normalize } = tc; const op = msg.headers.operation;
-    const raw = msg.value; const id = String(raw[idColumn]); if (!id) return null;
+    const raw = msg.value; const id = String((raw as Record<string, unknown>)[idColumn]); if (!id) return null;
     const data = normalize ? normalize(raw) : (raw as Record<string, unknown>);
     if (op === "delete") return { op: "delete", type, id };
     return { op: op === "insert" ? "insert" : "upsert", type, id, data };
@@ -135,7 +135,7 @@ export function useLocalFirst(adapter: SyncAdapter): UseLocalFirstResult {
 // ---------------------------------------------------------------------------
 // usePGliteQuery — run raw SQL, populate graph
 // ---------------------------------------------------------------------------
-export function usePGliteQuery<T extends Record<string, unknown>>(opts: {
+export function usePGliteQuery<T extends object>(opts: {
   adapter: SyncAdapter; type: EntityType; sql: string; params?: unknown[];
   idColumn?: string; normalize?: (row: T) => Record<string, unknown>; deps?: unknown[];
 }) {
@@ -147,8 +147,8 @@ export function usePGliteQuery<T extends Record<string, unknown>>(opts: {
     adapter.query<T>(sql, params).then((r) => {
       if (cancelled) return;
       const store = useGraphStore.getState();
-      store.upsertEntities(type, r.rows.map((row) => ({ id: String(row[idColumn]), data: normalize ? normalize(row) : (row as Record<string, unknown>) })));
-      for (const row of r.rows) store.setEntityFetched(type, String(row[idColumn]));
+      store.upsertEntities(type, r.rows.map((row) => ({ id: String((row as Record<string, unknown>)[idColumn]), data: normalize ? normalize(row) : (row as Record<string, unknown>) })));
+      for (const row of r.rows) store.setEntityFetched(type, String((row as Record<string, unknown>)[idColumn]));
       setIsLoading(false); setError(null);
     }).catch((e) => { if (!cancelled) { setError(String(e)); setIsLoading(false); } });
     return () => { cancelled = true; };

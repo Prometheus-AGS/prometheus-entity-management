@@ -23,7 +23,7 @@ import { InlineCellEditor } from "./inline-editor";
 import { ActionDropdown } from "./action-column";
 import { cn } from "./utils";
 
-interface DataTableProps<TData extends Record<string, unknown>> {
+interface DataTableProps<TData extends object> {
   table: TableInstance<TData>;
   actions?: ActionDef<TData>[];
   enableInlineEdit?: boolean;
@@ -34,7 +34,7 @@ interface DataTableProps<TData extends Record<string, unknown>> {
   className?: string;
 }
 
-export function DataTable<TData extends Record<string, unknown>>({
+export function DataTable<TData extends object>({
   table,
   actions,
   enableInlineEdit,
@@ -152,7 +152,7 @@ export function DataTable<TData extends Record<string, unknown>>({
 // ---------------------------------------------------------------------------
 // DataTableRow
 // ---------------------------------------------------------------------------
-interface DataTableRowProps<TData extends Record<string, unknown>> {
+interface DataTableRowProps<TData extends object> {
   row: Row<TData>;
   table: TableInstance<TData>;
   actions?: ActionDef<TData>[];
@@ -165,7 +165,7 @@ interface DataTableRowProps<TData extends Record<string, unknown>> {
   onCancelEdit: () => void;
 }
 
-function DataTableRow<TData extends Record<string, unknown>>({
+function DataTableRow<TData extends object>({
   row,
   table: _table,
   actions,
@@ -251,7 +251,7 @@ function CellRenderer<TData>({ cell }: { cell: { column: { columnDef: ColumnDef<
 // ---------------------------------------------------------------------------
 // Checkbox components
 // ---------------------------------------------------------------------------
-function SelectAllCheckbox<TData extends Record<string, unknown>>({
+function SelectAllCheckbox<TData extends object>({
   table,
   store,
   getRowId,

@@ -21,7 +21,7 @@ import { ActionButtonRow } from "./action-column";
 import { InlineItemEditor } from "./inline-editor";
 import { cn } from "./utils";
 
-interface GalleryViewProps<TData extends Record<string, unknown>> {
+interface GalleryViewProps<TData extends object> {
   rows: Row<TData>[];
   columns: ColumnDef<TData>[];
   itemDescriptor?: ItemDescriptor<TData>;
@@ -36,7 +36,7 @@ interface GalleryViewProps<TData extends Record<string, unknown>> {
   className?: string;
 }
 
-export function GalleryView<TData extends Record<string, unknown>>({
+export function GalleryView<TData extends object>({
   rows,
   columns,
   itemDescriptor,
@@ -98,7 +98,7 @@ export function GalleryView<TData extends Record<string, unknown>>({
 // ---------------------------------------------------------------------------
 // Gallery card
 // ---------------------------------------------------------------------------
-interface GalleryCardProps<TData extends Record<string, unknown>> {
+interface GalleryCardProps<TData extends object> {
   row: Row<TData>;
   itemId: string;
   columns: ColumnDef<TData>[];
@@ -114,7 +114,7 @@ interface GalleryCardProps<TData extends Record<string, unknown>> {
   enableMultiSelect?: boolean;
 }
 
-function GalleryCard<TData extends Record<string, unknown>>({
+function GalleryCard<TData extends object>({
   row,
   itemId,
   columns,

@@ -18,7 +18,7 @@ export type CRUDMode = "list" | "detail" | "edit" | "create";
  * Wire one entity type into list+detail+forms: remote list via `useEntityView`, optional detail fetch, and create/update/delete callbacks.
  * Mutations call `cascadeInvalidation` on success so related lists/entities refresh per registered schemas.
  */
-export interface CRUDOptions<TEntity extends Record<string, unknown>> {
+export interface CRUDOptions<TEntity extends object> {
   type: EntityType; listQueryKey: unknown[];
   listFetch: (params: ViewFetchParams) => Promise<ListResponse<TEntity>>;
   normalize: (raw: TEntity) => { id: EntityId; data: TEntity };
@@ -33,10 +33,10 @@ export interface CRUDOptions<TEntity extends Record<string, unknown>> {
 }
 
 /** Public field input for CRUD setters: supports classic `keyof T` calls and dotted nested paths for JSON-backed forms. */
-export type EntityFieldPath<TEntity extends Record<string, unknown>> = keyof TEntity | string;
+export type EntityFieldPath<TEntity extends object> = keyof TEntity | string;
 
 /** Tracks which fields diverge from loaded detail — edit buffer stays in React state so other views keep showing canonical graph data until save. */
-export interface DirtyFields<TEntity extends Record<string, unknown>> {
+export interface DirtyFields<TEntity extends object> {
   changed: ReadonlySet<EntityFieldPath<TEntity>>;
   isDirty: boolean;
 }
@@ -45,7 +45,7 @@ export interface DirtyFields<TEntity extends Record<string, unknown>> {
  * Everything a CRUD screen needs: composed `list` view, selection, detail subscription, relation joins, edit/create buffers, and mutating actions.
  * `applyOptimistic` is the escape hatch to mirror the buffer into `patches` for instant sliders/toggles without committing `save` yet.
  */
-export interface CRUDState<TEntity extends Record<string, unknown>> {
+export interface CRUDState<TEntity extends object> {
   mode: CRUDMode; setMode: (mode: CRUDMode) => void; list: UseEntityViewResult<TEntity>;
   selectedId: EntityId | null; select: (id: EntityId | null) => void; openDetail: (id: EntityId) => void;
   detail: TEntity | null; detailIsLoading: boolean; detailError: string | null;
@@ -67,7 +67,7 @@ export interface CRUDState<TEntity extends Record<string, unknown>> {
  * @param opts - `CRUDOptions` for type, list key/fetch, normalization, lifecycle callbacks
  * @returns `CRUDState` with list/detail/edit/create controls
  */
-export function useEntityCRUD<TEntity extends Record<string, unknown>>(opts: CRUDOptions<TEntity>): CRUDState<TEntity> {
+export function useEntityCRUD<TEntity extends object>(opts: CRUDOptions<TEntity>): CRUDState<TEntity> {
   const { type, listQueryKey, listFetch, normalize, detailFetch, onCreate, onUpdate, onDelete, createDefaults = {} as Partial<TEntity>, initialView = {}, selectAfterCreate = true, clearSelectionAfterDelete = true } = opts;
   const optsRef = useRef(opts); optsRef.current = opts;
   const [mode, setMode] = useState<CRUDMode>("list");

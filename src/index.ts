@@ -48,6 +48,7 @@ export {
   hydrateGraphFromStorage,
   persistGraphToStorage,
   useGraphSyncStatus,
+  replayActionWithRetry,
 } from "./local-first-runtime";
 export type {
   GraphPersistenceAdapter,
@@ -56,6 +57,7 @@ export type {
   GraphSnapshotPayload,
   StartLocalFirstGraphOptions,
   LocalFirstGraphRuntime,
+  ReplayRetryPolicy,
 } from "./local-first-runtime";
 
 // ── Engine ────────────────────────────────────────────────────────────────
@@ -199,6 +201,45 @@ export type {
   ElectricTableConfig,
   UseLocalFirstResult,
 } from "./adapters/electricsql";
+
+// ── Tenant-scoped Electric adapter (v1.3) ─────────────────────────────────
+export {
+  createTenantScopedElectricAdapter,
+  buildTenantWhere,
+} from "./adapters/electricsql-tenant";
+export type {
+  TenantClaim,
+  TenantScopedAdapterOptions,
+  TenantScopedTableConfig,
+} from "./adapters/electricsql-tenant";
+
+// ── PGlite persistence adapter (v1.3) ─────────────────────────────────────
+export {
+  createPGlitePersistenceAdapter,
+} from "./adapters/pglite-persistence";
+export type {
+  PGlitePersistenceClient,
+  CreatePGlitePersistenceAdapterOptions,
+} from "./adapters/pglite-persistence";
+
+// ── Schema generation from SQL (v1.3) ─────────────────────────────────────
+export {
+  registerEntityFromSql,
+  parseCreateTable,
+  sqlTypeToJsonSchema,
+} from "./schema-from-sql";
+export type {
+  RegisterEntityFromSqlOptions,
+} from "./schema-from-sql";
+
+// ── TanStack-Table adapter helper (v1.3) ──────────────────────────────────
+export {
+  useEntityListAsTable,
+} from "./table/use-entity-list-as-table";
+export type {
+  UseEntityListAsTableOptions,
+  UseEntityListAsTableResult,
+} from "./table/use-entity-list-as-table";
 
 // ── GraphQL ───────────────────────────────────────────────────────────────
 export {

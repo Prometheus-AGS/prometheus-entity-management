@@ -30,7 +30,7 @@ export type GraphIncludeRelation =
       include?: GraphIncludeMap;
     };
 
-export interface GraphQueryOptions<TEntity extends Record<string, unknown>> {
+export interface GraphQueryOptions<TEntity extends object> {
   type: EntityType;
   id?: EntityId;
   ids?: EntityId[];
@@ -43,13 +43,13 @@ export interface GraphQueryOptions<TEntity extends Record<string, unknown>> {
 
 type ProjectedRow = Record<string, unknown>;
 
-export function queryOnce<TEntity extends Record<string, unknown>>(
+export function queryOnce<TEntity extends object>(
   opts: GraphQueryOptions<TEntity> & { id: EntityId },
 ): ProjectedRow | null;
-export function queryOnce<TEntity extends Record<string, unknown>>(
+export function queryOnce<TEntity extends object>(
   opts: GraphQueryOptions<TEntity>,
 ): ProjectedRow[];
-export function queryOnce<TEntity extends Record<string, unknown>>(
+export function queryOnce<TEntity extends object>(
   opts: GraphQueryOptions<TEntity>,
 ): ProjectedRow[] | ProjectedRow | null {
   const store = useGraphStore.getState();
@@ -68,7 +68,7 @@ export function queryOnce<TEntity extends Record<string, unknown>>(
 
 export const selectGraph = queryOnce;
 
-function resolveCandidateIds<TEntity extends Record<string, unknown>>(store: GraphStore, opts: GraphQueryOptions<TEntity>): EntityId[] {
+function resolveCandidateIds<TEntity extends object>(store: GraphStore, opts: GraphQueryOptions<TEntity>): EntityId[] {
   if (opts.id) return [opts.id];
   if (opts.ids) return opts.ids;
   if (opts.listKey) return store.lists[opts.listKey]?.ids ?? [];

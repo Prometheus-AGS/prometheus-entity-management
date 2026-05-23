@@ -27,7 +27,7 @@ export function InlineCellEditor({ initialValue, onCommit, onCancel, className }
 // ---------------------------------------------------------------------------
 // EntityTable
 // ---------------------------------------------------------------------------
-export interface EntityTableProps<T extends Record<string, unknown>> {
+export interface EntityTableProps<T extends object> {
   viewResult: UseEntityViewResult<T>;
   columns: ColumnDef<T>[];
   getRowId?: (row: T) => string;
@@ -45,7 +45,7 @@ export interface EntityTableProps<T extends Record<string, unknown>> {
   className?: string;
 }
 
-export function EntityTable<T extends Record<string, unknown>>({ viewResult, columns, getRowId = r => String(r.id), selectedId, onRowClick, onCellEdit, onBulkAction, paginationMode = "loadMore", pageSize = 50, searchPlaceholder = "Search…", searchFields, toolbarChildren, showToolbar = true, emptyState, className }: EntityTableProps<T>) {
+export function EntityTable<T extends object>({ viewResult, columns, getRowId = r => String((r as Record<string, unknown>).id), selectedId, onRowClick, onCellEdit, onBulkAction, paginationMode = "loadMore", pageSize = 50, searchPlaceholder = "Search…", searchFields, toolbarChildren, showToolbar = true, emptyState, className }: EntityTableProps<T>) {
   const { items, isLoading, isFetching, isRemoteFetching, isShowingLocalPending, hasNextPage, fetchNextPage, isFetchingMore, viewTotal, setSort, setSearch, refetch } = viewResult;
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});

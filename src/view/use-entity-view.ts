@@ -18,10 +18,10 @@ export interface ViewFetchParams { rest: Record<string, string>; graphql: Return
  * Configure a **live view** over a base list: filter/sort/search in JS when data is complete, or compile the same spec to remote params when not.
  * `baseQueryKey` identifies the underlying id list in the graph; the hook may create additional keys for remote result sets.
  */
-export interface UseEntityViewOptions<TEntity extends Record<string, unknown>> {
+export interface UseEntityViewOptions<TEntity extends object> {
   type: EntityType; baseQueryKey: unknown[]; view: ViewDescriptor; mode?: CompletenessMode;
   remoteFetch?: (params: ViewFetchParams) => Promise<ListResponse<TEntity>>;
-  normalize?: (raw: TEntity) => { id: EntityId; data: Record<string, unknown> };
+  normalize?: (raw: TEntity) => { id: EntityId; data: TEntity };
   remoteDebounce?: number; staleTime?: number; enabled?: boolean;
   /** SSR-seeded ids written once into `lists[baseKey]` to avoid empty-state flash before hydration fetch. */
   initialIds?: EntityId[];
@@ -63,7 +63,7 @@ const EMPTY_ENTITY_BUCKET: Record<EntityId, Record<string, unknown>> = {};
  * });
  * ```
  */
-export function useEntityView<TEntity extends Record<string, unknown>>(opts: UseEntityViewOptions<TEntity>): UseEntityViewResult<TEntity> {
+export function useEntityView<TEntity extends object>(opts: UseEntityViewOptions<TEntity>): UseEntityViewResult<TEntity> {
   const { type, baseQueryKey, mode: forcedMode, remoteFetch, remoteDebounce = 300, staleTime = getEngineOptions().defaultStaleTime, enabled = true, initialIds, initialTotal } = opts;
   const optsRef = useRef(opts); optsRef.current = opts;
   const [liveView, setLiveView] = useState<ViewDescriptor>(opts.view);
@@ -132,8 +132,8 @@ export function useEntityView<TEntity extends Record<string, unknown>>(opts: Use
     const store = useGraphStore.getState(); store.setListFetching(rKey, true);
     try {
       const response = await rf(params);
-      const normalized = norm ? response.items.map(norm) : response.items.map((item) => ({ id: String((item as Record<string, unknown>).id), data: item as Record<string, unknown> }));
-      store.upsertEntities(type, normalized); for (const { id } of normalized) store.setEntityFetched(type, id);
+      const normalized = norm ? response.items.map(norm) : response.items.map((item) => ({ id: String((item as Record<string, unknown>).id), data: item }));
+      store.upsertEntities(type, normalized.map(({ id, data }) => ({ id, data: data as Record<string, unknown> }))); for (const { id } of normalized) store.setEntityFetched(type, id);
       store.setListResult(rKey, normalized.map(({ id }) => id), { total: response.total ?? null, nextCursor: response.nextCursor ?? null, hasNextPage: response.hasNextPage ?? !!response.nextCursor });
     } catch (err) { const msg = err instanceof Error ? err.message : String(err); setRemoteError(msg); store.setListError(rKey, msg); }
     finally { setIsRemoteFetching(false); }

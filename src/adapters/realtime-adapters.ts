@@ -213,7 +213,7 @@ interface ConvexClient {
   ): UnsubscribeFn;
 }
 
-export interface ConvexChannelConfig<T extends Record<string, unknown>> {
+export interface ConvexChannelConfig<T extends object> {
   type: string;
   query: unknown;
   args?: Record<string, unknown>;
@@ -221,7 +221,7 @@ export interface ConvexChannelConfig<T extends Record<string, unknown>> {
   normalize?: (record: T) => Record<string, unknown>;
 }
 
-export function createConvexAdapter<T extends Record<string, unknown>>(opts: {
+export function createConvexAdapter<T extends object>(opts: {
   client: ConvexClient;
   channels: ConvexChannelConfig<T>[];
 }): RealtimeAdapter {
@@ -309,7 +309,7 @@ interface GQLWsClient {
   ): UnsubscribeFn;
 }
 
-export interface GQLSubscriptionConfig<T extends Record<string, unknown>> {
+export interface GQLSubscriptionConfig<T extends object> {
   type: string;
   document: string;
   variables?: Record<string, unknown>;
@@ -324,7 +324,7 @@ interface GQLPayload {
   id?: string;
 }
 
-export function createGraphQLSubscriptionAdapter<T extends Record<string, unknown>>(opts: {
+export function createGraphQLSubscriptionAdapter<T extends object>(opts: {
   client: GQLWsClient;
   subscriptions: GQLSubscriptionConfig<T>[];
   extractId?: (node: Record<string, unknown>, type: string) => string;

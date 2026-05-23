@@ -46,7 +46,7 @@ import { FilterPresetDialog } from "./filter-preset-dialog";
 import { ColumnPresetDialog } from "./column-preset-dialog";
 import { cn } from "./utils";
 
-export interface EntityListViewProps<TData extends Record<string, unknown>> {
+export interface EntityListViewProps<TData extends object> {
   data?: TData[];
   viewResult?: { items: TData[]; isFetching?: boolean; total?: number };
 
@@ -91,7 +91,7 @@ export interface EntityListViewProps<TData extends Record<string, unknown>> {
   className?: string;
 }
 
-export function EntityListView<TData extends Record<string, unknown>>(
+export function EntityListView<TData extends object>(
   props: EntityListViewProps<TData>,
 ) {
   const {

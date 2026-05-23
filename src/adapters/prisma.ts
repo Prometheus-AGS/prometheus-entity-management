@@ -17,7 +17,7 @@ export { toPrismaWhere, toPrismaOrderBy } from "../view/prisma-compile";
 /**
  * Options for {@link createPrismaEntityConfig}: one REST-backed resource aligned with Prisma-style `where` / `orderBy` / `include` payloads.
  */
-export interface PrismaEntityConfigOptions<TEntity extends Record<string, unknown>> {
+export interface PrismaEntityConfigOptions<TEntity extends object> {
   /** Graph entity type key (e.g. `"Task"`). */
   type: string;
   /** Base REST URL for the collection (list) and detail as `${endpoint}/:id`. */
@@ -51,7 +51,7 @@ function joinEndpoint(base: string, ...segments: string[]) {
   return u;
 }
 
-function defaultNormalize<TEntity extends Record<string, unknown>>(
+function defaultNormalize<TEntity extends object>(
   raw: TEntity,
   idField: string
 ): { id: EntityId; data: TEntity } {
@@ -165,7 +165,7 @@ export function prismaRelationsToSchema(
  * - {@link PrismaEntityConfigOptions.endpoint `endpoint`} — GET list; GET `${endpoint}/:id` for detail.
  * - List/CRUD fetchers send `where` and `orderBy` as JSON query strings unless you override via {@link ListFetchParams.params}.
  */
-export function createPrismaEntityConfig<TEntity extends Record<string, unknown>>(
+export function createPrismaEntityConfig<TEntity extends object>(
   config: PrismaEntityConfigOptions<TEntity>
 ) {
   const { type, endpoint, idField = "id", relations } = config;

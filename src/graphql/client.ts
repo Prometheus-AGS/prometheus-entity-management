@@ -28,7 +28,7 @@ export interface GQLError {
 
 export interface GQLResponse<T> { data: T | null; errors?: GQLError[]; }
 
-export interface EntityDescriptor<TNode, TEntity extends Record<string, unknown>> {
+export interface EntityDescriptor<TNode, TEntity extends object> {
   type: EntityType;
   path: string;
   extractId?: (node: TNode) => EntityId;
@@ -86,7 +86,7 @@ export function normalizeGQLResponse<T>(data: T, descriptors: EntityDescriptor<u
 export class GQLClient {
   constructor(private cfg: GQLClientConfig) {}
 
-  async query<TData, TEntity extends Record<string, unknown>>(opts: {
+  async query<TData, TEntity extends object>(opts: {
     document: string; variables?: Record<string, unknown>;
     descriptors: EntityDescriptor<unknown, TEntity>[];
     cacheKey?: string;
@@ -99,7 +99,7 @@ export class GQLClient {
     });
   }
 
-  async mutate<TData, TEntity extends Record<string, unknown>>(opts: {
+  async mutate<TData, TEntity extends object>(opts: {
     document: string; variables?: Record<string, unknown>;
     descriptors?: EntityDescriptor<unknown, TEntity>[];
     optimistic?: () => void;

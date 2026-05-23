@@ -21,7 +21,7 @@ export interface EngineOptions {
  * Declarative **instruction** for loading one entity: wire transport (`fetch`), normalization, and graph writes.
  * Hooks pass this to `fetchEntity`; the graph remains source of truth after success.
  */
-export interface EntityQueryOptions<TRaw, TEntity extends Record<string, unknown>> {
+export interface EntityQueryOptions<TRaw, TEntity extends object> {
   type: EntityType;
   id: EntityId | null | undefined;
   fetch: (id: EntityId) => Promise<TRaw>;
@@ -47,8 +47,8 @@ export interface ListFetchParams {
  */
 export interface ListResponse<T> {
   items: T[];
-  total?: number;
-  nextCursor?: string;
+  total?: number | null;
+  nextCursor?: string | null;
   prevCursor?: string;
   hasNextPage?: boolean;
   hasPrevPage?: boolean;
@@ -60,7 +60,7 @@ export interface ListResponse<T> {
  * Declarative **instruction** for a collection query: stable `queryKey`, fetcher, and per-row normalization into the graph.
  * `mode` controls whether a fetch replaces ids or appends (infinite scroll) when used with load-more.
  */
-export interface ListQueryOptions<TRaw, TEntity extends Record<string, unknown>> {
+export interface ListQueryOptions<TRaw, TEntity extends object> {
   type: EntityType;
   queryKey: unknown[];
   fetch: (params: ListFetchParams) => Promise<ListResponse<TRaw>>;
@@ -225,7 +225,7 @@ export function getEngineOptions() { return engineOptions; }
  * Run a single-entity fetch with dedupe, retries, normalization, and graph updates.
  * Call from hooks/adapters — not from presentational components.
  */
-export async function fetchEntity<TRaw, TEntity extends Record<string, unknown>>(
+export async function fetchEntity<TRaw, TEntity extends object>(
   opts: EntityQueryOptions<TRaw, TEntity>, engineOpts: Required<EngineOptions>
 ) {
   const { type, id, fetch, normalize, sideEffects, idField = "id" } = opts;
@@ -236,7 +236,7 @@ export async function fetchEntity<TRaw, TEntity extends Record<string, unknown>>
       const raw = await fetch(id);
       const normalized = normalize(raw);
       const resolvedId = (normalized as Record<string, unknown>)[idField] as EntityId ?? id;
-      useGraphStore.getState().upsertEntity(type, resolvedId, normalized);
+      useGraphStore.getState().upsertEntity(type, resolvedId, normalized as Record<string, unknown>);
       useGraphStore.getState().setEntityFetched(type, resolvedId);
       if (sideEffects) sideEffects(raw, useGraphStore);
       opts.onSuccess?.(normalized);
@@ -254,7 +254,7 @@ export async function fetchEntity<TRaw, TEntity extends Record<string, unknown>>
  * Fetch a list page: upserts all rows, writes ids to the list key, supports append mode for pagination.
  * @param isLoadMore - When true, uses a separate dedupe key and `appendListResult` / `setListFetchingMore`.
  */
-export async function fetchList<TRaw, TEntity extends Record<string, unknown>>(
+export async function fetchList<TRaw, TEntity extends object>(
   opts: ListQueryOptions<TRaw, TEntity>, params: ListFetchParams, engineOpts: Required<EngineOptions>, isLoadMore = false
 ) {
   const { type, queryKey, fetch, normalize, sideEffects, mode = "replace" } = opts;
@@ -266,7 +266,7 @@ export async function fetchList<TRaw, TEntity extends Record<string, unknown>>(
     try {
       const response = await fetch(params);
       const normalized = response.items.map(normalize);
-      useGraphStore.getState().upsertEntities(type, normalized.map(({ id, data }) => ({ id, data })));
+      useGraphStore.getState().upsertEntities(type, normalized.map(({ id, data }) => ({ id, data: data as Record<string, unknown> })));
       for (const { id } of normalized) useGraphStore.getState().setEntityFetched(type, id);
       const ids = normalized.map(({ id }) => id);
       const meta = { total: response.total ?? null, nextCursor: response.nextCursor ?? null, prevCursor: response.prevCursor ?? null, hasNextPage: response.hasNextPage ?? !!response.nextCursor, hasPrevPage: response.hasPrevPage ?? !!response.prevCursor, currentPage: response.page ?? null, pageSize: response.pageSize ?? null };
