@@ -5,6 +5,30 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.3.1] — 2026-05-25
+
+### Fixed
+
+- **`useEntityList` no longer triggers React 19's "The result of
+  getSnapshot should be cached to avoid an infinite loop" warning.**
+  The hook's return shape was a fresh object literal on every render,
+  which `useSyncExternalStore` (via Zustand's `useStore`) interpreted
+  as a changed snapshot. Wrapping the return in `useMemo` keyed on
+  `[items, listState, fetchNextPage, doFetch]` stabilises the
+  identity. `items` was already identity-stable via the
+  `useShallow(itemsSelector)` call on the `useStore` read; this fix
+  closes the gap for the outer shape consumers depend on (e.g. hook
+  composition chains like `useTeam` → `useQuickStats` → widget).
+  See [pmndrs/zustand discussion #1936](https://github.com/pmndrs/zustand/discussions/1936)
+  and [React's `useSyncExternalStore` docs](https://react.dev/reference/react/useSyncExternalStore)
+  for the contract being honoured.
+- Downstream effect: consumers stuck at first commit because of the
+  warning-loop guard now hydrate normally, so Tier-A and hybrid list
+  views render data on first paint instead of showing perpetual
+  loading skeletons.
+
+---
+
 ## [1.3.0] — 2026-05-23
 
 Upstream features driven by the `hotseaters-pglite-port` phase — every

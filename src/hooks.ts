@@ -121,7 +121,35 @@ export function useEntityList<TRaw, TEntity extends object>(opts: ListQueryOptio
     if (!existing || isStale) doFetch({ page: 1, pageSize: listState.pageSize ?? undefined });
   }, [key, enabled, staleTime, doFetch, listState.pageSize]);
   useEffect(() => { if (listState.stale && enabled && !listState.isFetching) doFetch(); }, [listState.stale, enabled, listState.isFetching, doFetch]);
-  return { items, ids: listState.ids, isLoading: listState.ids.length === 0 && listState.isFetching, isFetching: listState.isFetching, isFetchingMore: listState.isFetchingMore, error: listState.error, hasNextPage: listState.hasNextPage, hasPrevPage: listState.hasPrevPage, total: listState.total, currentPage: listState.currentPage, fetchNextPage, refetch: doFetch };
+  // Stabilize the returned object identity. React 19's
+  // `useSyncExternalStore` (which Zustand's `useStore` reads above)
+  // warns "The result of getSnapshot should be cached to avoid an
+  // infinite loop" whenever consumers see a fresh object identity per
+  // render. The `useShallow(itemsSelector)` above keeps `items` stable
+  // across no-op renders, and the `listState` selector already returns
+  // a referentially-stable slice from the Zustand store; this useMemo
+  // ensures the outer result shape consumers (e.g. `useTeam` →
+  // `useQuickStats` → `KpiOutstanding`) read is also identity-stable.
+  // See https://github.com/pmndrs/zustand/discussions/1936 and
+  // https://react.dev/reference/react/useSyncExternalStore for the
+  // contract being honoured here.
+  return useMemo(
+    () => ({
+      items,
+      ids: listState.ids,
+      isLoading: listState.ids.length === 0 && listState.isFetching,
+      isFetching: listState.isFetching,
+      isFetchingMore: listState.isFetchingMore,
+      error: listState.error,
+      hasNextPage: listState.hasNextPage,
+      hasPrevPage: listState.hasPrevPage,
+      total: listState.total,
+      currentPage: listState.currentPage,
+      fetchNextPage,
+      refetch: doFetch,
+    }),
+    [items, listState, fetchNextPage, doFetch],
+  );
 }
 
 /**
