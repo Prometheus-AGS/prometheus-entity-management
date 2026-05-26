@@ -58,7 +58,7 @@ See the Next.js example (`GraphHydrationProvider`) for seeding the graph from se
 
 ## PWA and local-first runtime
 
-For browser/PWA use cases, the package now exposes a small persistence runtime above the existing ElectricSQL/PGlite adapter:
+For browser/PWA use cases, the package exposes a persistence runtime above the existing ElectricSQL/PGlite adapter:
 
 - `persistGraphToStorage(...)` stores `entities`, `lists`, `syncMetadata`, and pending action metadata through a host-provided storage adapter
 - `hydrateGraphFromStorage(...)` restores that snapshot into the graph on startup
@@ -67,15 +67,157 @@ For browser/PWA use cases, the package now exposes a small persistence runtime a
 
 The storage contract is intentionally IPC-friendly so a future Tauri host or plugin can map onto the same JS runtime surface.
 
+### PGlite persistence adapter (v1.3)
+
+`createPGlitePersistenceAdapter(pglite)` returns a `GraphPersistenceAdapter` that stores
+the graph snapshot in a PGlite table (`_graph_snapshot` by default), keeping graph state
+co-located with synced entity data.
+
+```ts
+import { PGlite } from "@electric-sql/pglite";
+import {
+  startLocalFirstGraph,
+  createPGlitePersistenceAdapter,
+} from "@prometheus-ags/prometheus-entity-management";
+
+const pglite = await PGlite.create("idb://my-app");
+const storage = await createPGlitePersistenceAdapter(pglite);
+const runtime = startLocalFirstGraph({ storage, key: "tenant:graph" });
+```
+
+### Retry policy for offline action replay (v1.3)
+
+`startLocalFirstGraph` accepts an optional `retryPolicy` for replaying pending offline
+actions after reconnect. Exhausted actions go to an optional `poisonHandler` so they
+never loop forever.
+
+```ts
+startLocalFirstGraph({
+  storage,
+  key: "tenant:graph",
+  retryPolicy: {
+    maxAttempts: 5,
+    initialDelayMs: 500,
+    maxDelayMs: 30_000,
+    backoffFactor: 2,
+    jitter: "equal",          // "full" | "equal" | "none"
+    poisonHandler: (action, error) => {
+      console.error("Action replay exhausted", action.id, error);
+    },
+  },
+});
+```
+
+### Tenant-scoped Electric adapter (v1.3)
+
+`createTenantScopedElectricAdapter` is a validation gate that prevents attaching an
+Electric shape unless it declares a `tenantColumn`. This enforces the invariant that
+shape predicates can never widen past server-side RLS.
+
+```ts
+import { createTenantScopedElectricAdapter } from "@prometheus-ags/prometheus-entity-management";
+
+createTenantScopedElectricAdapter({
+  pglite,
+  tenantClaim: { companyId: "uuid-here" },
+  tables: [
+    { type: "Client", table: "client", tenantColumn: "company_id", shapeStreamFactory: ... },
+    // explicit null = table IS the tenant root, filtered by id
+    { type: "Company", table: "company", tenantColumn: null, shapeStreamFactory: ... },
+    // undefined tenantColumn → throws at registration time (safety gate)
+  ],
+  onSynced: () => console.log("initial sync complete"),
+});
+```
+
 ## Schema-driven entities and markdown
 
-The package now supports entity JSON Schemas alongside relation schemas:
+The package supports entity JSON Schemas alongside relation schemas:
 
 - `registerEntityJsonSchema(...)` / `registerRuntimeSchema(...)` register static or AI-generated schemas
 - `buildEntityFieldsFromSchema(...)` and `useSchemaEntityFields(...)` generate dynamic field descriptors for JSON-column-backed entity views and editors
 - built-in markdown handling is enabled for string fields marked with `format: "markdown"` or matching schema extensions
 
 This is designed for runtime-generated schemas, JSON metadata columns, and A2UI-style component/view definitions without requiring a separate form engine.
+
+### Schema from SQL (v1.3)
+
+`registerEntityFromSql` generates and registers a JSON Schema directly from a Postgres
+`CREATE TABLE` statement. Use this when your canonical schema is in SQL migrations to
+avoid maintaining a parallel TypeScript copy.
+
+```ts
+import { registerEntityFromSql } from "@prometheus-ags/prometheus-entity-management";
+
+registerEntityFromSql({
+  entityType: "Client",
+  createTableSql: `
+    CREATE TABLE client (
+      id         uuid PRIMARY KEY,
+      name       text NOT NULL,
+      company_id uuid NOT NULL REFERENCES company(id),
+      status     text NOT NULL DEFAULT 'active',
+      created_at timestamptz NOT NULL DEFAULT now()
+    )
+  `,
+  overrides: {
+    // optional: augment generated schema with UI hints not inferrable from DDL
+    status: { enum: ["active", "inactive", "prospect"] },
+  },
+});
+```
+
+## Error handling (`isError`, v1.3.2)
+
+Both `useEntityList` and `useEntityView` now return `isError: boolean` as a convenience
+alias for `error !== null`, matching TanStack Query's hook ergonomics.
+
+```tsx
+const { items, isLoading, isError, error } = useEntityList<Post, Post>({ ... });
+
+if (isError) return <ErrorBanner message={error ?? "Unknown error"} />;
+```
+
+Note: there is deliberately no `onError` callback option. Per-query callbacks fire once
+per observer, so N components calling the same hook produce N notifications for a single
+failure. Read `isError` / `error` from the return value instead and decide your display
+strategy at the component level.
+
+## TanStack Table integration (`useEntityListAsTable`, v1.3)
+
+`useEntityListAsTable` wraps `useEntityList` with a referentially-stable `data` array for
+TanStack Table. TanStack Table treats `data` by identity for row-model memoization—a
+fresh array reference on every render blows away row state (selection, expansion). This
+hook prevents that by replacing the array reference only when items actually change.
+
+```tsx
+import {
+  useEntityListAsTable,
+} from "@prometheus-ags/prometheus-entity-management";
+import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
+
+function PostsTable() {
+  const { data, rowCount, isLoading, isError } = useEntityListAsTable<Post, Post>({
+    type: "Post",
+    fetch: (p) => api.posts.list(p),
+    normalize: (row) => ({ id: row.id, data: row }),
+  });
+
+  const table = useReactTable({
+    data,
+    rowCount,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  if (isLoading) return <Skeleton />;
+  if (isError) return <ErrorState />;
+  return <DataTable table={table} />;
+}
+```
+
+The hook does not pull `@tanstack/react-table` as a dependency — `data` and `rowCount`
+are plain values that work with any table library.
 
 ## Testing
 
