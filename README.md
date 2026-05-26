@@ -101,16 +101,40 @@ Data flows **up** into the graph; UI reads **down** through hooks (see [Architec
 
 ## v1.3 additions
 
-Five focused upstream features added for tenant-scoped, PGlite-backed
-local-first apps. All backward compatible; no new runtime dependencies.
+Eight focused additions across three patch releases for tenant-scoped,
+PGlite-backed local-first apps. All backward compatible; no new runtime
+dependencies.
+
+### v1.3.0 — new APIs
 
 | API | File | Purpose |
 |-----|------|---------|
 | `createPGlitePersistenceAdapter(pglite, options?)` | `src/adapters/pglite-persistence.ts` | `GraphPersistenceAdapter` that stores the snapshot in a PGlite table (`_graph_snapshot` by default) |
 | `createTenantScopedElectricAdapter(opts)` | `src/adapters/electricsql-tenant.ts` | Refuses to attach Electric shapes that lack a `tenantColumn`; builds the `WHERE` from a validated `{ companyId }` claim so shape predicates can never widen past RLS |
-| `registerEntityFromSql({ entityType, createTableSql, overrides })` | `src/schema-from-sql.ts` | Generates and registers a JSON Schema from a Postgres `CREATE TABLE` block |
-| `useEntityListAsTable(opts)` | `src/table/use-entity-list-as-table.ts` | Shapes `useEntityList` for TanStack Table with a stable `data` array reference (no TanStack Table dep) |
-| `startLocalFirstGraph({ ..., retryPolicy })` | `src/local-first-runtime.ts` | Retry-with-backoff for pending offline action replay, plus an opt-in `poisonHandler` |
+| `registerEntityFromSql({ entityType, createTableSql, overrides })` | `src/schema-from-sql.ts` | Generates and registers a JSON Schema directly from a Postgres `CREATE TABLE` block — no hand-maintained TypeScript schema duplicates |
+| `useEntityListAsTable(opts)` | `src/table/use-entity-list-as-table.ts` | Wraps `useEntityList` for TanStack Table — returns a referentially-stable `data` array and `rowCount`; no TanStack Table dep required |
+| `startLocalFirstGraph({ ..., retryPolicy })` | `src/local-first-runtime.ts` | Retry-with-backoff for pending offline action replay; exhausted actions go to an opt-in `poisonHandler` instead of looping forever |
+
+### v1.3.1 — stability fix
+
+- **`useEntityList`** return shape is now `useMemo`-stabilised. React 19's
+  `useSyncExternalStore` was detecting a fresh object on every render and
+  emitting an infinite-loop warning. Identity-stable `items` + stable
+  pagination state means no more perpetual loading skeletons from hook
+  composition chains.
+
+### v1.3.2 — error handling
+
+- **`isError: boolean`** added to both `UseEntityListResult` and
+  `UseEntityViewResult` as a convenience alias for `error !== null`,
+  matching TanStack Query's hook ergonomics.
+- **`setListError`** now stamps `lastFetched` and clears `stale`, closing
+  a terminal-error retry loop where a 404 on a missing table triggered an
+  infinite refetch storm.
+- **`useEntityView`** writes errors to the base key (the one `isLoading`
+  reads from) and defaults `isLoading` to `false` when no list state
+  exists, so a failed first fetch no longer leaves consumers stuck in a
+  perpetual loading state.
 
 ---
 
@@ -198,6 +222,7 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | Export | Description |
 |--------|-------------|
 | `registerEntityJsonSchema` / `registerRuntimeSchema` | Register static or runtime-generated JSON Schemas for an entity type or JSON column. |
+| `registerEntityFromSql` | Generate and register a JSON Schema from a Postgres `CREATE TABLE` block — eliminates hand-maintained TypeScript schema duplicates. |
 | `getEntityJsonSchema` | Resolve the active schema by entity type, schema id, or field. |
 | `buildEntityFieldsFromSchema` | Generate entity field descriptors from JSON Schema for dynamic forms and detail views. |
 | `useSchemaEntityFields` | Hook that resolves a registered schema and returns generated field descriptors. |
@@ -208,19 +233,23 @@ Compare against peers only when measurement methodology matches (minified vs unm
 
 | Export | Description |
 |--------|-------------|
-| `startLocalFirstGraph` | Starts a higher-level local-first runtime for graph hydration, persistence, action replay, and sync status. |
+| `startLocalFirstGraph` | Starts a higher-level local-first runtime for graph hydration, persistence, action replay, and sync status. Accepts optional `retryPolicy` for offline action replay. |
 | `hydrateGraphFromStorage` | Restore graph state from a storage adapter using a JSON-serializable snapshot payload. |
 | `persistGraphToStorage` | Persist graph state and pending action metadata through a storage adapter. |
 | `useGraphSyncStatus` | Hook exposing online/offline/hydrating/syncing/ready state for PWAs and IPC-safe hosts. |
+| `replayActionWithRetry` | Replay a single pending action with configurable exponential-backoff retry. |
+| `createPGlitePersistenceAdapter` | PGlite-backed `GraphPersistenceAdapter`; stores the snapshot in a PGlite table alongside synced data. |
 
 ### Hooks (REST-oriented)
 
 | Export | Description |
 |--------|-------------|
-| `useEntity` | Subscribe to one entity; fetch/normalize into graph; SWR + subscriber-aware refetch. |
-| `useEntityList` | Subscribe to a list query key; stores IDs; merges row data from graph. |
+| `useEntity` | Subscribe to one entity; fetch/normalize into graph; SWR + subscriber-aware refetch. Returns `{ data, isLoading, isError, error, refetch }`. |
+| `useEntityList` | Subscribe to a list query key; stores IDs; merges row data from graph. Returns `{ items, isLoading, isError, error, isFetching, fetchNextPage, refetch }`. |
+| `useEntityView` | Filter/sort/search with local/remote/hybrid completeness modes. Returns `{ items, isLoading, isError, error, setFilter, setSort, setSearch }`. |
 | `useEntityMutation` | Mutate with optional optimistic updates and list invalidation hooks. |
 | `useEntityAugment` | Patch UI-only fields merged at read time across all subscribers. |
+| `useEntityListAsTable` | Wraps `useEntityList` with a referentially-stable `data` array + `rowCount` for TanStack Table. |
 | `useSuspenseEntity` | Suspense variant of `useEntity` (non-null `id` required). |
 | `useSuspenseEntityList` | Suspense variant of `useEntityList`. |
 
@@ -228,7 +257,6 @@ Compare against peers only when measurement methodology matches (minified vs unm
 
 | Export | Description |
 |--------|-------------|
-| `useEntityView` | Filter/sort/search with `local` / `remote` / `hybrid` completeness modes. |
 | `FilterSpec`, `SortSpec` | Transport-agnostic filter and sort AST types. |
 | `toRestParams` | Compile view → REST query params. |
 | `toSQLClauses` | Compile view → SQL-style WHERE / ORDER BY fragments. |
@@ -274,11 +302,12 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | `prismaRelationsToSchema` | Convert Prisma-style relation map → `EntitySchema` for `registerSchema`. |
 | `toPrismaInclude` | Build an `include` map from relation descriptors. |
 
-### Local-first
+### Local-first adapters
 
 | Export | Description |
 |--------|-------------|
-| `createElectricAdapter` | ElectricSQL / PGlite changes → graph. |
+| `createElectricAdapter` | ElectricSQL / PGlite shape changes → graph. |
+| `createTenantScopedElectricAdapter` | Safety wrapper: refuses to attach a shape unless it declares a `tenantColumn`; builds the `WHERE` clause from a validated `{ companyId }` claim. |
 | `useLocalFirst` | Hook for local-first workflows with the adapter. |
 | `usePGliteQuery` | Run queries against PGlite in sync with the graph story. |
 
@@ -351,6 +380,41 @@ const { items, isLoading } = useEntityList<Post, Post>({
 ```
 
 **Difference:** the list stores **IDs**; row objects are always read through the normalized `Post` map, so updates propagate everywhere.
+
+### TanStack Table: `useQuery` data prop → `useEntityListAsTable`
+
+If you wire `useEntityList` directly into TanStack Table's `data` prop, the table treats a
+new array reference as new data on every render. Use `useEntityListAsTable` instead—it
+returns a referentially-stable `data` array that only changes when the underlying items
+actually change.
+
+**Before**
+
+```tsx
+const { data = [] } = useQuery<Post[]>({
+  queryKey: ["posts"],
+  queryFn: () => api.posts.list(),
+});
+const table = useReactTable({ data, columns, getCoreRowModel: getCoreRowModel() });
+```
+
+**After**
+
+```tsx
+import { useEntityListAsTable } from "@prometheus-ags/prometheus-entity-management";
+
+const { data, rowCount, isLoading, isError, error } = useEntityListAsTable<Post, Post>({
+  type: "Post",
+  fetch: (p) => api.posts.list(p),
+  normalize: (row) => ({ id: row.id, data: row }),
+});
+
+const table = useReactTable({ data, rowCount, columns, getCoreRowModel: getCoreRowModel() });
+```
+
+**Difference:** `data` identity is stable across renders where items haven't changed, so
+TanStack Table's memoization works correctly and row state (selection, expansion) is
+preserved between refetches.
 
 ### Mutations: `useMutation` → `useEntityMutation`
 
