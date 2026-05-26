@@ -70,7 +70,15 @@ export function useEntity<TRaw, TEntity extends object>(opts: EntityQueryOptions
  */
 export interface UseEntityListResult<TEntity> {
   items: TEntity[]; ids: EntityId[]; isLoading: boolean; isFetching: boolean; isFetchingMore: boolean;
-  error: string | null; hasNextPage: boolean; hasPrevPage: boolean; total: number | null; currentPage: number | null;
+  /**
+   * Last error message from the underlying fetcher, or `null` when
+   * the latest attempt succeeded / no attempt has been made.
+   * Combined with `isError` for TanStack-Query-style ergonomics.
+   */
+  error: string | null;
+  /** Convenience for `error !== null`. TanStack-Query-style. */
+  isError: boolean;
+  hasNextPage: boolean; hasPrevPage: boolean; total: number | null; currentPage: number | null;
   fetchNextPage: () => void; refetch: () => void;
 }
 
@@ -141,6 +149,7 @@ export function useEntityList<TRaw, TEntity extends object>(opts: ListQueryOptio
       isFetching: listState.isFetching,
       isFetchingMore: listState.isFetchingMore,
       error: listState.error,
+      isError: listState.error !== null,
       hasNextPage: listState.hasNextPage,
       hasPrevPage: listState.hasPrevPage,
       total: listState.total,

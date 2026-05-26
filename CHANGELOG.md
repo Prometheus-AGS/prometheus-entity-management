@@ -5,6 +5,58 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.3.2] — 2026-05-25
+
+### Fixed
+
+- **`setListError` now stamps `lastFetched` and clears `stale`.**
+  Previously, a failed list fetch only set `error` + cleared
+  `isFetching` — leaving `lastFetched: null`. Every consumer hook's
+  SWR staleness check
+  (`Date.now() - (lastFetched ?? 0) > staleTime`) then returned
+  `true` on the very next render, refiring the fetcher in an
+  infinite loop. A 404 on a missing table (e.g. against a schema
+  that hasn't been migrated yet) became a perpetual retry storm.
+  After this fix, a terminal failure is treated as a completed
+  attempt: consumers see a stable `error` and `isFetching: false`,
+  and the fetcher runs once. Manual `refetch()` is still available
+  for explicit retries.
+- **`useEntityView` writes errors to the BASE key**, not just to
+  the remote-result key. The base key is the one
+  `isLoading` / `isStale` read from — without this, the staleness
+  check kept refiring even after the catch. Combined with the
+  `setListError` fix, this closes the terminal-error trap for
+  `useEntityView` consumers (Quick Stats, Active Trial Performance,
+  Revenue Trend, Recent Activity, etc.).
+- **`useEntityView`'s `isLoading` no longer defaults to `true` when
+  there is no list state.** The previous `listState?.isFetching ??
+  true` was the actual symptom of the trap: when no list state
+  existed (because the failed fetch never seeded the base key), the
+  `?? true` kept `isLoading` at `true` forever. Changed to `?? false`
+  to match `useEntityList`'s symmetric behaviour (it reads
+  `EMPTY_LIST_STATE` which has `isFetching: false` by default).
+
+### Added
+
+- **`isError: boolean`** added to both `UseEntityViewResult` and
+  `UseEntityListResult`. Convenience for `error !== null`,
+  matching TanStack Query's hook ergonomics. Purely additive on
+  the return — no breaking API change.
+
+### Notes
+
+- This release does NOT add an `onError` callback option to either
+  hook. The decision is deliberate: TanStack Query deprecated
+  per-query `onError` callbacks in v5 because they fire per
+  observer (calling the same hook from N components produces N
+  notifications on a single failure). Consumers should read
+  `error` / `isError` from the hook return and decide their own
+  display strategy. See
+  https://tkdodo.eu/blog/react-query-error-handling for the
+  research that drove this decision.
+
+---
+
 ## [1.3.1] — 2026-05-25
 
 ### Fixed

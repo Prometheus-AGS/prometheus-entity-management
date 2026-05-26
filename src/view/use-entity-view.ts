@@ -36,7 +36,15 @@ export interface UseEntityViewOptions<TEntity extends object> {
 export interface UseEntityViewResult<TEntity> {
   items: TEntity[]; viewIds: EntityId[]; viewTotal: number | null;
   isLoading: boolean; isFetching: boolean; isRemoteFetching: boolean; isShowingLocalPending: boolean;
-  error: string | null; hasNextPage: boolean; fetchNextPage: () => void;
+  /**
+   * Last error message from the remote fetcher (or the cached base
+   * list state). `null` when the latest attempt succeeded or no
+   * attempt has been made.
+   */
+  error: string | null;
+  /** Convenience for `error !== null`. TanStack-Query-style. */
+  isError: boolean;
+  hasNextPage: boolean; fetchNextPage: () => void;
   isLocallyComplete: boolean; completenessMode: CompletenessMode;
   setView: (v: Partial<ViewDescriptor>) => void; setFilter: (f: FilterSpec | null) => void;
   setSort: (s: SortSpec | null) => void; setSearch: (q: string) => void; clearView: () => void; refetch: () => void;
@@ -130,12 +138,31 @@ export function useEntityView<TEntity extends object>(opts: UseEntityViewOptions
     const rKey = serializeKey([...bqk, "__view__", view, cursor]);
     setRemoteResultKey(rKey); setIsRemoteFetching(true); setRemoteError(null);
     const store = useGraphStore.getState(); store.setListFetching(rKey, true);
+    const baseKeyStr = serializeKey(bqk);
     try {
       const response = await rf(params);
       const normalized = norm ? response.items.map(norm) : response.items.map((item) => ({ id: String((item as Record<string, unknown>).id), data: item }));
       store.upsertEntities(type, normalized.map(({ id, data }) => ({ id, data: data as Record<string, unknown> }))); for (const { id } of normalized) store.setEntityFetched(type, id);
       store.setListResult(rKey, normalized.map(({ id }) => id), { total: response.total ?? null, nextCursor: response.nextCursor ?? null, hasNextPage: response.hasNextPage ?? !!response.nextCursor });
-    } catch (err) { const msg = err instanceof Error ? err.message : String(err); setRemoteError(msg); store.setListError(rKey, msg); }
+      // Mark the base key as freshly fetched (even if its ids list is
+      // empty / unchanged). This stops the staleness re-trigger in the
+      // mount effect below — a successful remote fetch counts as a base
+      // refresh even when no ids land in the base list.
+      store.setListFetching(baseKeyStr, false);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setRemoteError(msg);
+      // Stamp BOTH keys with the error:
+      //  - rKey so consumers reading remote-result state see it,
+      //  - baseKey so the SWR staleness check in the mount effect
+      //    stops refiring (terminal-error trap fix). `setListError`
+      //    now also stamps `lastFetched` so this is sufficient to
+      //    prevent the retry loop on permanent errors like 404 from a
+      //    missing table. Consumers can manually `refetch()` to
+      //    re-attempt.
+      store.setListError(rKey, msg);
+      store.setListError(baseKeyStr, msg);
+    }
     finally { setIsRemoteFetching(false); }
   }, [type]);
   useEffect(() => {
@@ -175,11 +202,28 @@ export function useEntityView<TEntity extends object>(opts: UseEntityViewOptions
   const fetchNextPage = useCallback(() => { if (completenessMode === "local" || isRemoteFetching) return; fireRemoteFetch(liveViewRef.current, remoteListState?.nextCursor ?? undefined); }, [completenessMode, isRemoteFetching, remoteListState?.nextCursor, fireRemoteFetch]);
   const refetch = useCallback(() => fireRemoteFetch(liveViewRef.current), [fireRemoteFetch]);
   const viewTotal = remoteListState?.total ?? (isComplete ? localViewIds.length : listState?.total ?? null);
+  // Fixed: `listState?.isFetching ?? true` was the terminal-error
+  // trap — when no list state existed (because a remote fetch failed
+  // before seeding the base key, OR because the base key was never
+  // primed), the `?? true` kept isLoading at true forever. The new
+  // default of `?? false` matches `useEntityList`'s symmetric
+  // behaviour (it reads from EMPTY_LIST_STATE which has
+  // `isFetching: false`). `isRemoteFetching` still gates the spinner
+  // during the actual round-trip.
+  const error: string | null = remoteError ?? listState?.error ?? null;
   return {
-    items, viewIds: localViewIds, viewTotal, isLoading: items.length === 0 && (listState?.isFetching ?? true) && !isRemoteFetching,
-    isFetching: (listState?.isFetching ?? false) || isRemoteFetching, isRemoteFetching,
+    items,
+    viewIds: localViewIds,
+    viewTotal,
+    isLoading:
+      items.length === 0 &&
+      ((listState?.isFetching ?? false) || isRemoteFetching),
+    isFetching: (listState?.isFetching ?? false) || isRemoteFetching,
+    isRemoteFetching,
     isShowingLocalPending: completenessMode === "hybrid" && isRemoteFetching && items.length > 0,
-    error: remoteError ?? listState?.error ?? null, hasNextPage: completenessMode === "local" ? false : (remoteListState?.hasNextPage ?? listState?.hasNextPage ?? false),
+    error,
+    isError: error !== null,
+    hasNextPage: completenessMode === "local" ? false : (remoteListState?.hasNextPage ?? listState?.hasNextPage ?? false),
     fetchNextPage, isLocallyComplete: isComplete, completenessMode, setView, setFilter, setSort, setSearch, clearView, refetch,
     isFetchingMore: remoteListState?.isFetching ?? false,
   };

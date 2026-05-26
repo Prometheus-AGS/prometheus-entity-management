@@ -206,6 +206,44 @@ function defaultListState(): ListState {
 
 function ek(type: EntityType, id: EntityId) { return `${type}:${id}`; }
 
+interface SnapshotCacheEntry {
+  base: Record<string, unknown>;
+  patch: Record<string, unknown> | undefined;
+  metadata: EntitySyncMetadata;
+  snapshot: EntitySnapshot<Record<string, unknown>>;
+}
+
+const snapshotCache = new Map<string, SnapshotCacheEntry>();
+
+function readCachedEntitySnapshot<T extends Record<string, unknown>>(
+  type: EntityType,
+  id: EntityId,
+  base: Record<string, unknown>,
+  patch: Record<string, unknown> | undefined,
+  metadata: EntitySyncMetadata,
+): EntitySnapshot<T> {
+  const key = ek(type, id);
+  const cached = snapshotCache.get(key);
+  if (
+    cached &&
+    cached.base === base &&
+    cached.patch === patch &&
+    cached.metadata === metadata
+  ) {
+    return cached.snapshot as EntitySnapshot<T>;
+  }
+
+  const snapshot = {
+    ...(patch ? { ...base, ...patch } : base),
+    $synced: metadata.synced,
+    $origin: metadata.origin,
+    $updatedAt: metadata.updatedAt,
+  } as EntitySnapshot<T>;
+
+  snapshotCache.set(key, { base, patch, metadata, snapshot });
+  return snapshot;
+}
+
 /**
  * Global entity graph store (Zustand + Immer). **Components should not subscribe directly** — use hooks so layering stays `Component → hook → store`.
  * `getState()` is intended for non-React code paths (engine, adapters, mutations) that must write or read the graph synchronously.
@@ -316,7 +354,20 @@ export const useGraphStore = create<GraphState>()(
       }),
       setListError: (key, error) => set((s) => {
         if (!s.lists[key]) s.lists[key] = defaultListState();
-        s.lists[key].error = error; s.lists[key].isFetching = false; s.lists[key].isFetchingMore = false;
+        s.lists[key].error = error;
+        s.lists[key].isFetching = false;
+        s.lists[key].isFetchingMore = false;
+        // Stamp lastFetched on failure too. Without this, the SWR
+        // staleness check (`Date.now() - (lastFetched ?? 0) > staleTime`)
+        // would return true on the next render and refire the fetcher
+        // immediately — a 404/permanent error becomes an infinite
+        // retry loop. With lastFetched stamped, the failure is treated
+        // as a complete attempt and consumers see a stable `error` +
+        // `isFetching: false`. They can manually `refetch()` if they
+        // want to retry. Clearing `stale` also makes invalidateLists
+        // the explicit retry mechanism, which is the contract we want.
+        s.lists[key].lastFetched = Date.now();
+        s.lists[key].stale = false;
       }),
       setListStale: (key, stale) => set((s) => {
         if (!s.lists[key]) s.lists[key] = defaultListState();
@@ -339,15 +390,19 @@ export const useGraphStore = create<GraphState>()(
       readEntitySnapshot: <T>(type: EntityType, id: EntityId): EntitySnapshot<T & Record<string, unknown>> | null => {
         const s = get();
         const base = s.entities[type]?.[id];
-        if (!base) return null;
+        if (!base) {
+          snapshotCache.delete(ek(type, id));
+          return null;
+        }
         const patch = s.patches[type]?.[id];
         const metadata = s.syncMetadata[ek(type, id)] ?? EMPTY_SYNC_METADATA;
-        return {
-          ...(patch ? { ...base, ...patch } : base),
-          $synced: metadata.synced,
-          $origin: metadata.origin,
-          $updatedAt: metadata.updatedAt,
-        } as EntitySnapshot<T & Record<string, unknown>>;
+        return readCachedEntitySnapshot<T & Record<string, unknown>>(
+          type,
+          id,
+          base,
+          patch,
+          metadata,
+        );
       },
     }))
   )
