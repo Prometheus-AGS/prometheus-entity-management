@@ -100,7 +100,18 @@ export interface UseEntityListResult<TEntity> {
  * });
  * ```
  */
+/**
+ * @deprecated Use `useEntities` from `"@prometheus-ags/prometheus-entity-management"` instead.
+ * Register a transport: `registerEntityTransport("Foo", makeRestTransport({ supabase, table: "foo" }))`
+ * Then consume: `const { items } = useEntities<Foo>("Foo")`.
+ * `useEntityList` will be removed in a future major version.
+ */
 export function useEntityList<TRaw, TEntity extends object>(opts: ListQueryOptions<TRaw, TEntity>): UseEntityListResult<TEntity> {
+  console.warn(
+    `[entity-management] useEntityList("${String(opts.type)}") is deprecated in 2.0.\n` +
+    `Register a transport at boot: registerEntityTransport("${String(opts.type)}", makeRestTransport(...))\n` +
+    `Then replace this call with: useEntities<T>("${String(opts.type)}")`,
+  );
   const { type, queryKey, staleTime = getEngineOptions().defaultStaleTime, enabled = true, mode = "replace" } = opts;
   ensureListeners();
   const key = useMemo(() => serializeKey(queryKey), [queryKey]);

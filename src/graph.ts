@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
+import type { EntityError } from "./errors";
 
 /** Logical entity kind (e.g. `"Post"`). Used to partition the normalized graph. */
 export type EntityType = string;
@@ -50,6 +51,14 @@ export interface ListState {
   isFetching: boolean;
   isFetchingMore: boolean;
   error: string | null;
+  /**
+   * Typed error instance for 2.0 hooks (`useEntities`, `useEntityQuery`).
+   * Carries `TerminalError` / `TransientError` so consumers can
+   * `instanceof`-check the failure mode without parsing the string in
+   * `error`. Both fields are written together by `setListError`; the
+   * string `error` field remains for back-compat with 1.x consumers.
+   */
+  lastError: EntityError | null;
   lastFetched: number | null;
   stale: boolean;
   currentPage: number | null;
@@ -86,6 +95,7 @@ export const EMPTY_LIST_STATE: ListState = {
   isFetching: false,
   isFetchingMore: false,
   error: null,
+  lastError: null,
   lastFetched: null,
   stale: false,
   currentPage: null,
@@ -166,8 +176,13 @@ export interface GraphState {
   setListFetching: (key: QueryKey, fetching: boolean) => void;
   /** Pagination / “load more” in progress for the same list key. */
   setListFetchingMore: (key: QueryKey, fetchingMore: boolean) => void;
-  /** Record list fetch failure; clears both fetching flags. */
-  setListError: (key: QueryKey, error: string | null) => void;
+  /**
+   * Record list fetch failure; clears both fetching flags.
+   * The optional `typed` argument is the typed `EntityError` instance
+   * (used by 2.0 hooks); when omitted only the string `error` field is
+   * populated (back-compat with 1.x callers).
+   */
+  setListError: (key: QueryKey, error: string | null, typed?: EntityError | null) => void;
   /** Mark a list query stale so hooks can refetch without discarding current ids (stale-while-revalidate). */
   setListStale: (key: QueryKey, stale: boolean) => void;
   /**
@@ -320,15 +335,15 @@ export const useGraphStore = create<GraphState>()(
       }),
       setListResult: (key, ids, meta) => set((s) => {
         const ex = s.lists[key] ?? defaultListState();
-        s.lists[key] = { ...ex, ...meta, ids, isFetching: false, isFetchingMore: false, error: null, stale: false, lastFetched: Date.now() };
+        s.lists[key] = { ...ex, ...meta, ids, isFetching: false, isFetchingMore: false, error: null, lastError: null, stale: false, lastFetched: Date.now() };
       }),
       appendListResult: (key, ids, meta) => set((s) => {
         const ex = s.lists[key] ?? defaultListState();
-        s.lists[key] = { ...ex, ...meta, ids: Array.from(new Set([...ex.ids, ...ids])), isFetching: false, isFetchingMore: false, error: null, stale: false, lastFetched: Date.now() };
+        s.lists[key] = { ...ex, ...meta, ids: Array.from(new Set([...ex.ids, ...ids])), isFetching: false, isFetchingMore: false, error: null, lastError: null, stale: false, lastFetched: Date.now() };
       }),
       prependListResult: (key, ids, meta) => set((s) => {
         const ex = s.lists[key] ?? defaultListState();
-        s.lists[key] = { ...ex, ...(meta ?? {}), ids: Array.from(new Set([...ids, ...ex.ids])), isFetching: false, isFetchingMore: false, error: null, stale: false, lastFetched: Date.now() };
+        s.lists[key] = { ...ex, ...(meta ?? {}), ids: Array.from(new Set([...ids, ...ex.ids])), isFetching: false, isFetchingMore: false, error: null, lastError: null, stale: false, lastFetched: Date.now() };
       }),
       removeIdFromAllLists: (_type, id) => set((s) => {
         for (const key of Object.keys(s.lists)) {
@@ -352,9 +367,10 @@ export const useGraphStore = create<GraphState>()(
         if (!s.lists[key]) s.lists[key] = defaultListState();
         s.lists[key].isFetchingMore = fetchingMore;
       }),
-      setListError: (key, error) => set((s) => {
+      setListError: (key, error, typed) => set((s) => {
         if (!s.lists[key]) s.lists[key] = defaultListState();
         s.lists[key].error = error;
+        s.lists[key].lastError = typed ?? (error === null ? null : s.lists[key].lastError);
         s.lists[key].isFetching = false;
         s.lists[key].isFetchingMore = false;
         // Stamp lastFetched on failure too. Without this, the SWR

@@ -71,7 +71,18 @@ const EMPTY_ENTITY_BUCKET: Record<EntityId, Record<string, unknown>> = {};
  * });
  * ```
  */
+/**
+ * @deprecated Use `useEntityQuery` from `"@prometheus-ags/prometheus-entity-management"` instead.
+ * Register a transport: `registerEntityTransport("Foo", makeRestTransport({ supabase, table: "foo" }))`
+ * Then consume: `const { items, setFilter, setSort } = useEntityQuery<Foo>("Foo", { view })`
+ * `useEntityView` will be removed in a future major version.
+ */
 export function useEntityView<TEntity extends object>(opts: UseEntityViewOptions<TEntity>): UseEntityViewResult<TEntity> {
+  console.warn(
+    `[entity-management] useEntityView("${String(opts.type)}") is deprecated in 2.0.\n` +
+    `Register a transport at boot: registerEntityTransport("${String(opts.type)}", makeRestTransport(...))\n` +
+    `Then replace this call with: useEntityQuery<T>("${String(opts.type)}", { view })`,
+  );
   const { type, baseQueryKey, mode: forcedMode, remoteFetch, remoteDebounce = 300, staleTime = getEngineOptions().defaultStaleTime, enabled = true, initialIds, initialTotal } = opts;
   const optsRef = useRef(opts); optsRef.current = opts;
   const [liveView, setLiveView] = useState<ViewDescriptor>(opts.view);

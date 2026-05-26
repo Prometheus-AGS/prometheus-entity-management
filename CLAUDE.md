@@ -68,7 +68,7 @@ pnpm run clean          # Remove all node_modules and build artifacts
 
 **Important**: There is NO build step during development. Examples resolve `"@prometheus-ags/prometheus-entity-management"` directly to `../../src/index.ts` via tsconfig path aliases. TypeScript compilation is handled by the example app bundlers (Vite/Next.js).
 
-## Architecture: The Three-Layer Model
+## Architecture: The Three-Layer Model (2.0)
 
 Understanding the layer separation is critical for making changes:
 
@@ -79,9 +79,16 @@ Understanding the layer separation is critical for making changes:
 │  EntityTable · EntityDetailSheet · EntityFormSheet · columns │
 ├─────────────────────────────────────────────────────────────┤
 │  Layer 2: Access Patterns (hooks - how components read data) │
-│  src/hooks.ts, src/graphql/hooks.ts, src/crud/              │
-│  useEntity · useEntityList · useEntityView · useEntityCRUD   │
-│  useGQLEntity · useEntityMutation · useEntityAugment         │
+│  src/hooks/use-entities.ts    → useEntities (thin, 2.0)      │
+│  src/hooks/use-entity-query.ts → useEntityQuery (rich, 2.0)  │
+│  src/hooks.ts                  → useEntityList (deprecated)  │
+│  src/view/use-entity-view.ts   → useEntityView (deprecated)  │
+│  src/graphql/hooks.ts, src/crud/ → useGQLEntity, useEntityCRUD│
+├─────────────────────────────────────────────────────────────┤
+│  Transport Registry (2.0 — ONE implementation per entity)    │
+│  src/transport/registry.ts   registerEntityTransport         │
+│  src/transport/types.ts      EntityTransport<T>              │
+│  src/transport/rest.ts       makeRestTransport               │
 ├─────────────────────────────────────────────────────────────┤
 │  Layer 1: Entity Graph (Zustand store - canonical data)      │
 │  src/graph.ts                                                 │
@@ -92,6 +99,49 @@ Understanding the layer separation is critical for making changes:
 ```
 
 **Data flow is strictly upward**: All data flows UP into Layer 1 (the graph). Components read DOWN from the graph. There is no sideways data flow between components.
+
+### 2.0 Transport Registry Pattern
+
+**Problem**: 1.x hooks accepted inline `remoteFetch`, `normalize`, `queryKey`,
+and error-handling strategy at every call site. Each call site could (and did)
+introduce subtle variations of the same retry-loop bug.
+
+**Solution**: Register ONE transport per entity type at app boot:
+
+```ts
+// src/shared/db/entity-transports.ts  (call once at boot)
+registerEntityTransport("Invoice", makeRestTransport({ supabase, table: "invoice" }));
+registerEntityTransport("Client",  makeRestTransport({ supabase, table: "client" }));
+```
+
+Hooks thereafter look up the transport by entity type:
+
+```ts
+// Simple list (5-field return):
+const { items, isLoading, isError, error, refetch } = useEntities<Invoice>("Invoice", {
+  filter: { field: "company_id", op: "eq", value: companyId },
+  enabled: !!companyId,
+});
+
+// Rich view with toolbar:
+const { items, setFilter, setSort, fetchNextPage } = useEntityQuery<Client>("Client", {
+  view: { filter, sort },
+});
+```
+
+### 2.0 Typed Errors
+
+```ts
+// instanceof-checkable — no string parsing required
+if (error instanceof TerminalError) {
+  // 4xx: don't offer a retry button — the request is structurally wrong
+} else if (error instanceof TransientError) {
+  // 5xx/network: show retry button — the server had a bad day
+}
+```
+
+- `TerminalError` (`kind: "terminal"`) — 4xx, permanent. Engine: 0 retries.
+- `TransientError` (`kind: "transient"`) — 5xx / network. Engine: up to `maxRetries` with exponential backoff.
 
 ## The Entity Graph (src/graph.ts)
 

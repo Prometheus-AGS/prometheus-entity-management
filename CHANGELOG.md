@@ -5,6 +5,150 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.0.0] — 2026-05-25 — BREAKING
+
+### Overview
+
+2.0 eliminates the **"transport leak"** — the 1.x pattern where every
+`useEntityView` / `useEntityList` call accepted its own `remoteFetch`,
+`normalize`, `queryKey`, `enabled`, and error-handling strategy. Each
+call site reinvented the same retry-loop bug in subtly different ways.
+
+The new model: register ONE transport per entity type at app boot.
+Every hook thereafter looks it up by name. Error handling, retry policy,
+AbortController threading, and SWR staleness are enforced once, in the
+library, not at every call site.
+
+### BREAKING CHANGES
+
+#### Removed (runtime-warning shims remain — they log a migration message and continue working)
+
+- `useEntityList(opts)` — inline `fetch`/`normalize` closure form
+- `useEntityView(opts)` — inline `remoteFetch`/`normalize` closure form
+
+Both names still export. Calling them logs:
+```
+[entity-management] useEntityView("Foo") is deprecated in 2.0.
+Register a transport: registerEntityTransport("Foo", makeRestTransport(...))
+Then replace this call with: useEntityQuery<T>("Foo", { view })
+```
+
+TypeScript types remain unchanged — existing consumers compile without
+modification. Runtime behavior is identical. The warning is the only
+observable change for existing call sites.
+
+#### Migration guide
+
+**Step 1 — Register transports at app boot (once per entity type):**
+
+```ts
+import { registerEntityTransport, makeRestTransport } from "@prometheus-ags/prometheus-entity-management";
+import { supabase } from "@/shared/db/supabase";
+
+registerEntityTransport("Invoice", makeRestTransport({
+  supabase,
+  table: "invoice",
+  authoritative: false,
+}));
+```
+
+**Step 2a — Simple lists: replace `useEntityList` with `useEntities`:**
+
+```ts
+// BEFORE
+const { items, isLoading, error } = useEntityList({
+  type: "Invoice",
+  queryKey: ["Invoice", companyId],
+  fetch: () => supabase.from("invoice").select("*"),
+  normalize: (raw) => ({ id: String(raw.id), data: raw }),
+  enabled: !!companyId,
+});
+
+// AFTER
+const { items, isLoading, error } = useEntities<Invoice>("Invoice", {
+  filter: { field: "company_id", op: "eq", value: companyId },
+  enabled: !!companyId,
+});
+// error is now TerminalError | TransientError | null (instanceof-checkable)
+```
+
+**Step 2b — Rich views with toolbars: replace `useEntityView` with `useEntityQuery`:**
+
+```ts
+// BEFORE
+const { items, setFilter, setSort } = useEntityView({
+  type: "Client",
+  baseQueryKey: ["clients", workspaceId],
+  view: { filter, sort },
+  remoteFetch: (params) => api.clients(params.rest),
+  normalize: (raw) => ({ id: raw.id, data: raw }),
+});
+
+// AFTER
+const { items, setFilter, setSort } = useEntityQuery<Client>("Client", { view: { filter, sort } });
+```
+
+### Added
+
+- **`TerminalError`** — 4xx / permanent failures. `instanceof`-checkable.
+  `kind: "terminal"`, optional `status: number`.
+  Engine does NOT retry on TerminalError.
+
+- **`TransientError`** — 5xx / network failures. `instanceof`-checkable.
+  `kind: "transient"`, optional `status: number`.
+  Engine retries with exponential backoff (up to `maxRetries`, default 3).
+
+- **`toEntityError(err)`** — Converts unknown thrown values to
+  `TerminalError | TransientError`:
+  - 4xx status → TerminalError
+  - AbortError → TerminalError
+  - 5xx / network → TransientError
+  - Plain Error → TransientError
+
+- **`EntityTransport<T>` interface** — One implementation per entity type:
+  ```ts
+  interface EntityTransport<T extends object> {
+    identify: (row: T) => string;
+    authoritative: boolean;
+    staleTime?: number;
+    list: (q: ListQuery) => Promise<ListResult<T>>;
+    get?: (id: string, signal?: AbortSignal) => Promise<T | null>;
+    subscribe?: (onChange: (ev: ChangeEvent<T>) => void) => () => void;
+  }
+  ```
+
+- **`registerEntityTransport(type, transport)`** — Register at app boot.
+  Re-registering replaces (useful in tests).
+
+- **`getEntityTransport<T>(type)`** — Look up registered transport.
+  Throws `TerminalError` if not found.
+
+- **`makeRestTransport(opts)`** — PostgREST/Supabase transport builder.
+  Maps `ListQuery` → query params, parses `Content-Range` for total,
+  maps 4xx → TerminalError, 5xx/network → TransientError, threads signal.
+
+- **`useEntities<T>(type, opts)`** — Thin replacement for `useEntityList`.
+  5-field return: `{ items, isLoading, isError, error, refetch }`.
+  - `error` is typed `TerminalError | TransientError | null`.
+  - `isLoading` is `lastFetched === null && isFetching` — never stuck at true.
+  - AbortController per fetch; aborts on unmount/key-change/refetch.
+  - 4xx → TerminalError, no retry.
+  - 5xx → TransientError, retry with exponential backoff.
+
+- **`useEntityQuery<T>(type, opts)`** — Rich replacement for `useEntityView`.
+  Full toolbar API: `setFilter`, `setSort`, `setSearch`, `fetchNextPage`,
+  `setView`, `clearView`, `refetch`. Transport looked up from registry
+  (no inline closure). `error` is typed.
+
+### Fixed (preserved from 1.3.2)
+
+- `setListError` stamps `lastFetched` — terminal failures no longer cause
+  infinite retry loops.
+- `useEntityView` writes errors to the base key — closes the Quick Stats
+  staleness trap.
+
+---
+
 ## [1.3.2] — 2026-05-25
 
 ### Fixed

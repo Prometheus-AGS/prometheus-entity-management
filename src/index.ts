@@ -1,3 +1,39 @@
+// ── 2.0 Typed errors ─────────────────────────────────────────────────────
+export { TerminalError, TransientError, toEntityError } from "./errors";
+export type { EntityError, EntityErrorOptions } from "./errors";
+
+// ── 2.0 Transport registry + types ───────────────────────────────────────
+export {
+  registerEntityTransport,
+  getEntityTransport,
+  getRegisteredEntityTypes,
+  __resetEntityTransports,
+} from "./transport/registry";
+export type {
+  EntityTransport,
+  ListQuery,
+  ListResult,
+  ChangeEvent,
+  ChangeOp,
+} from "./transport/types";
+export {
+  makeRestTransport,
+} from "./transport/rest";
+export type {
+  MakeRestTransportOptions,
+  SupabaseLike,
+  SupabaseQueryBuilderLike,
+} from "./transport/rest";
+
+// ── 2.0 Hooks (transport-registry-backed) ────────────────────────────────
+export { useEntities } from "./hooks/use-entities";
+export type { UseEntitiesOptions, UseEntitiesResult } from "./hooks/use-entities";
+export { useEntityQuery } from "./hooks/use-entity-query";
+export type {
+  UseEntityQueryOptions,
+  UseEntityQueryResult,
+} from "./hooks/use-entity-query";
+
 // ── Core graph ────────────────────────────────────────────────────────────
 export { useGraphStore } from "./graph";
 export type {
