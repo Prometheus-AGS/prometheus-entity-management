@@ -116,6 +116,8 @@ export type {
 
 // ── DevTools ─────────────────────────────────────────────────────────────
 export { useGraphDevTools } from "./devtools";
+export { subscribeDevtoolsEvent } from "./engine";
+export type { DevtoolsEvent } from "./engine";
 
 // ── Hooks (REST) ──────────────────────────────────────────────────────────
 export {
