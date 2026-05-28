@@ -116,6 +116,8 @@ export type {
 
 // ── DevTools ─────────────────────────────────────────────────────────────
 export { useGraphDevTools } from "./devtools";
+export { subscribeDevtoolsEvent } from "./engine";
+export type { DevtoolsEvent } from "./engine";
 
 // ── Hooks (REST) ──────────────────────────────────────────────────────────
 export {
@@ -237,6 +239,16 @@ export type {
   ElectricTableConfig,
   UseLocalFirstResult,
 } from "./adapters/electricsql";
+
+// ── Surreal live (realtime) ───────────────────────────────────────────────
+export { createSurrealLiveAdapter } from "./adapters/surreal-live";
+export type {
+  SurrealLike,
+  SurrealLiveAction,
+  SurrealCheckpointStore,
+  SurrealTableConfig,
+  SurrealLiveAdapterOptions,
+} from "./adapters/surreal-live";
 
 // ── Tenant-scoped Electric adapter (v1.3) ─────────────────────────────────
 export {

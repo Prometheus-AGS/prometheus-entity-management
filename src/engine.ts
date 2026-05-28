@@ -152,6 +152,77 @@ export function getActiveSubscriberCount(): number {
   return n;
 }
 
+// ── DevtoolsEvent + tap (W3 — entity-engine-devtools-tap capability) ────────
+//
+// In-process push stream of mutating graph events for dev tooling. The
+// Entity Explorer (W5+) subscribes here for its Events tab and to keep the
+// Tree tab live without polling.
+//
+// Hot-path is a no-op when no subscribers are registered. Op-site calls in
+// graph-actions.ts are wrapped in `process.env.NODE_ENV !== "production"`
+// so esbuild DCE elides them from prod bundles.
+
+/**
+ * Discriminated union of devtools events.
+ *
+ * - `upsert`, `patch`, `clearPatch` are emitted from `graph-actions.ts` ops.
+ * - `unpatch` and `list` are forward-compatible kinds reserved for future
+ *   instrumentation (W5+ event bus / W6+ panel). Consumers MUST handle them
+ *   in exhaustive `switch`/`if` chains today, even though no op-site emits
+ *   them in this change.
+ */
+export type DevtoolsEvent =
+  | { kind: "upsert"; type: EntityType; id: EntityId; data: Record<string, unknown>; at: string }
+  | { kind: "patch"; type: EntityType; id: EntityId; patch: Record<string, unknown>; at: string }
+  | { kind: "unpatch"; type: EntityType; id: EntityId; keys: string[]; at: string }
+  | { kind: "clearPatch"; type: EntityType; id: EntityId; at: string }
+  | { kind: "list"; key: string; idCount: number; at: string };
+
+type DevtoolsListener = (event: DevtoolsEvent) => void;
+
+const devtoolsSubscribers = new Set<DevtoolsListener>();
+
+/**
+ * Subscribe to the devtools event stream.
+ *
+ * - Returns an `UnsubscribeFn` that removes this listener.
+ * - Idempotent: subscribing the same function reference twice tracks it once
+ *   (Set semantics).
+ * - Throwing listeners do NOT block delivery to other listeners; the error is
+ *   logged via `console.warn` and dispatch continues.
+ * - Re-entrancy safe: listeners that subscribe/unsubscribe during dispatch
+ *   affect future events only, not the in-flight one.
+ */
+export function subscribeDevtoolsEvent(cb: DevtoolsListener): () => void {
+  devtoolsSubscribers.add(cb);
+  return () => {
+    devtoolsSubscribers.delete(cb);
+  };
+}
+
+/**
+ * Internal — called from `graph-actions.ts` at every mutating op site.
+ *
+ * Hot-path no-op when no subscribers registered. Snapshot iteration for
+ * re-entrancy safety. Per-subscriber `try/catch` so a throwing listener
+ * doesn't break delivery to siblings.
+ *
+ * NOT re-exported from `src/index.ts` — the public surface is
+ * `subscribeDevtoolsEvent` only.
+ */
+export function notifyDevtools(event: DevtoolsEvent): void {
+  if (devtoolsSubscribers.size === 0) return;
+  const listeners = [...devtoolsSubscribers];
+  for (const cb of listeners) {
+    try {
+      cb(event);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn("[engine] devtools subscriber threw:", err);
+    }
+  }
+}
+
 let gcIntervalId: ReturnType<typeof setInterval> | null = null;
 
 /**

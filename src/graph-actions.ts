@@ -1,5 +1,12 @@
 import { useGraphStore } from "./graph";
 import type { EntityId, EntitySyncMetadata, EntityType, QueryKey, SyncOrigin } from "./graph";
+import { notifyDevtools } from "./engine";
+
+// Local type declaration so we can reference `process.env.NODE_ENV` without
+// pulling in @types/node (the package targets browser bundles too). Consumer
+// bundlers (Vite/Webpack/esbuild) replace this literal at build time so the
+// devtools notify call-sites tree-shake out of production builds.
+declare const process: { env: { NODE_ENV?: string } } | undefined;
 
 interface GraphDataSnapshot {
   entities: ReturnType<typeof useGraphStore.getState>["entities"];
@@ -54,6 +61,9 @@ export function createGraphTransaction(): GraphTransaction {
   const tx: GraphTransaction = {
     upsertEntity(type, id, data) {
       useGraphStore.getState().upsertEntity(type, id, data);
+      if (typeof process === "undefined" || process.env.NODE_ENV !== "production") {
+        notifyDevtools({ kind: "upsert", type, id, data, at: new Date().toISOString() });
+      }
       return tx;
     },
     replaceEntity(type, id, data) {
@@ -66,10 +76,16 @@ export function createGraphTransaction(): GraphTransaction {
     },
     patchEntity(type, id, patch) {
       useGraphStore.getState().patchEntity(type, id, patch);
+      if (typeof process === "undefined" || process.env.NODE_ENV !== "production") {
+        notifyDevtools({ kind: "patch", type, id, patch, at: new Date().toISOString() });
+      }
       return tx;
     },
     clearPatch(type, id) {
       useGraphStore.getState().clearPatch(type, id);
+      if (typeof process === "undefined" || process.env.NODE_ENV !== "production") {
+        notifyDevtools({ kind: "clearPatch", type, id, at: new Date().toISOString() });
+      }
       return tx;
     },
     insertIdInList(key, id, position) {
