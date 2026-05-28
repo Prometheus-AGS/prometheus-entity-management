@@ -107,11 +107,16 @@ export interface UseEntityListResult<TEntity> {
  * `useEntityList` will be removed in a future major version.
  */
 export function useEntityList<TRaw, TEntity extends object>(opts: ListQueryOptions<TRaw, TEntity>): UseEntityListResult<TEntity> {
-  console.warn(
-    `[entity-management] useEntityList("${String(opts.type)}") is deprecated in 2.0.\n` +
-    `Register a transport at boot: registerEntityTransport("${String(opts.type)}", makeRestTransport(...))\n` +
-    `Then replace this call with: useEntities<T>("${String(opts.type)}")`,
-  );
+  // Only warn when an inline fetch closure is supplied (the deprecated REST form).
+  // Pure graph subscriptions (Tier-A PGlite/Electric entities) pass no fetch
+  // callback and should NOT produce noise — they are the intended long-term pattern.
+  if (opts.fetch) {
+    console.warn(
+      `[entity-management] useEntityList("${String(opts.type)}") is deprecated in 2.0.\n` +
+      `Register a transport at boot: registerEntityTransport("${String(opts.type)}", makeRestTransport(...))\n` +
+      `Then replace this call with: useEntities<T>("${String(opts.type)}")`,
+    );
+  }
   const { type, queryKey, staleTime = getEngineOptions().defaultStaleTime, enabled = true, mode = "replace" } = opts;
   ensureListeners();
   const key = useMemo(() => serializeKey(queryKey), [queryKey]);

@@ -78,11 +78,15 @@ const EMPTY_ENTITY_BUCKET: Record<EntityId, Record<string, unknown>> = {};
  * `useEntityView` will be removed in a future major version.
  */
 export function useEntityView<TEntity extends object>(opts: UseEntityViewOptions<TEntity>): UseEntityViewResult<TEntity> {
-  console.warn(
-    `[entity-management] useEntityView("${String(opts.type)}") is deprecated in 2.0.\n` +
-    `Register a transport at boot: registerEntityTransport("${String(opts.type)}", makeRestTransport(...))\n` +
-    `Then replace this call with: useEntityQuery<T>("${String(opts.type)}", { view })`,
-  );
+  // Only warn when an inline remoteFetch closure is supplied (the deprecated transport form).
+  // Graph-only views pass no remoteFetch and should not produce console noise.
+  if (opts.remoteFetch) {
+    console.warn(
+      `[entity-management] useEntityView("${String(opts.type)}") is deprecated in 2.0.\n` +
+      `Register a transport at boot: registerEntityTransport("${String(opts.type)}", makeRestTransport(...))\n` +
+      `Then replace this call with: useEntityQuery<T>("${String(opts.type)}", { view })`,
+    );
+  }
   const { type, baseQueryKey, mode: forcedMode, remoteFetch, remoteDebounce = 300, staleTime = getEngineOptions().defaultStaleTime, enabled = true, initialIds, initialTotal } = opts;
   const optsRef = useRef(opts); optsRef.current = opts;
   const [liveView, setLiveView] = useState<ViewDescriptor>(opts.view);
