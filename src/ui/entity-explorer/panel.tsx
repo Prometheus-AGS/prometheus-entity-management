@@ -76,18 +76,27 @@ function TabBar() {
   );
 }
 
-export function EntityExplorerPanel() {
+interface EntityExplorerPanelProps {
+  /**
+   * When true, render the panel inline (no portal) and always visible.
+   * Used by the Chrome MV3 extension where the panel IS the DevTools page.
+   */
+  forceOpen?: boolean;
+}
+
+export function EntityExplorerPanel({ forceOpen = false }: EntityExplorerPanelProps) {
   const { state } = useEntityExplorer();
   // Track first open so we mount tabs once and keep them mounted (display:none when inactive)
-  const [everOpened, setEverOpened] = useState(state.open);
-  useEffect(() => { if (state.open) setEverOpened(true); }, [state.open]);
+  const [everOpened, setEverOpened] = useState(state.open || forceOpen);
+  useEffect(() => { if (state.open || forceOpen) setEverOpened(true); }, [state.open, forceOpen]);
 
+  const visible = forceOpen || state.open;
   const panel = (
     <div
       className="ee-root ee-panel"
       role="region"
       aria-label="Entity Explorer"
-      style={{ display: (state.open || everOpened) ? (state.open ? undefined : "none") : "none" }}
+      style={{ display: (visible || everOpened) ? (visible ? undefined : "none") : "none" }}
     >
       <TabBar />
       <div className="ee-tabcontent">
@@ -112,5 +121,7 @@ export function EntityExplorerPanel() {
   );
 
   if (typeof document === "undefined") return null;
+  // In forceOpen mode (e.g. Chrome extension panel), render inline — no portal needed.
+  if (forceOpen) return panel;
   return ReactDOM.createPortal(panel, document.body);
 }

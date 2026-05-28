@@ -62,6 +62,12 @@ const EntityExplorerContext = createContext<EntityExplorerContextValue | null>(n
 
 interface EntityExplorerProviderProps {
   children: ReactNode;
+  /**
+   * Supply a pre-constructed bus (e.g. `createExtensionBus()` in the Chrome
+   * extension panel). When provided, `busOptions` is ignored and the bus is
+   * NOT destroyed on provider unmount (the caller owns lifecycle).
+   */
+  bus?: DevtoolsEventBus;
   busOptions?: Parameters<typeof createDevtoolsEventBus>[0];
   /**
    * When true, each DevtoolsEvent is re-broadcast via `window.postMessage`
@@ -72,14 +78,15 @@ interface EntityExplorerProviderProps {
   enableWindowBridge?: boolean;
 }
 
-export function EntityExplorerProvider({ children, busOptions, enableWindowBridge }: EntityExplorerProviderProps) {
+export function EntityExplorerProvider({ children, bus: externalBus, busOptions, enableWindowBridge }: EntityExplorerProviderProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Create bus once; destroy on unmount
-  const busRef = useRef<DevtoolsEventBus | null>(null);
+  // Create bus once; destroy on unmount (only if we own it)
+  const busRef = useRef<DevtoolsEventBus | null>(externalBus ?? null);
   if (!busRef.current) {
     busRef.current = createDevtoolsEventBus(busOptions ?? { bufferSize: 500, coalesceBurstThreshold: 10 });
   }
+  const ownsbus = !externalBus;
 
   // Keyboard shortcut: Alt+Shift+E
   useEffect(() => {
@@ -101,11 +108,13 @@ export function EntityExplorerProvider({ children, busOptions, enableWindowBridg
     return unsubscribe;
   }, [enableWindowBridge]);
 
-  // Destroy bus on unmount
+  // Destroy bus on unmount (only if we created it)
   useEffect(() => {
+    if (!ownsbus) return;
     return () => {
       busRef.current?.destroy();
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

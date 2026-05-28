@@ -30,6 +30,12 @@ export interface DevtoolsEventBus {
   flush(): void;
   /** Release engine-tap, clear all subscribers, cascade inactive to registry. */
   destroy(): void;
+  /**
+   * Inject a synthetic `DevtoolsEvent` directly into the bus, bypassing the
+   * engine tap. Used by the Chrome MV3 extension panel to feed events arriving
+   * over the port-messaging bridge into the local bus instance.
+   */
+  inject(event: DevtoolsEvent): void;
 }
 
 /** Matches the signature of `subscribeDevtoolsEvent` — used for external sources. */
@@ -180,6 +186,10 @@ export function createDevtoolsEventBus(opts?: DevtoolsEventBusOptions): Devtools
 
     getBuffer,
     flush,
+
+    inject(event: DevtoolsEvent): void {
+      handleEngineEvent(event);
+    },
 
     destroy() {
       if (destroyed) return;
