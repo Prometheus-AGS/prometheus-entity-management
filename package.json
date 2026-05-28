@@ -34,7 +34,8 @@
     "test:watch": "vitest",
     "refresh:exports": "pnpm run build && node scripts/refresh-exports-ledger.mjs",
     "verify:skills": "node scripts/verify-skills-exports.mjs",
-    "prepublishOnly": "pnpm run typecheck && pnpm run build && pnpm run test && pnpm run verify:skills",
+    "check:treeshake": "node -e \"const s=require('fs').readFileSync('src/graph-actions.ts','utf8');if(!s.includes('process.env.NODE_ENV !=='))throw new Error('devtools leak detected: NODE_ENV guard missing in graph-actions.ts');console.log('treeshake gate: OK');\"",
+    "prepublishOnly": "pnpm run check:treeshake && pnpm run typecheck && pnpm run build && pnpm run test && pnpm run verify:skills",
     "dev:vite": "pnpm --filter prometheus-entity-management-vite dev",
     "dev:next": "pnpm --filter prometheus-entity-management-nextjs dev",
     "build:vite": "pnpm --filter prometheus-entity-management-vite build",
@@ -45,9 +46,9 @@
     "clean": "find . -name 'node_modules' -type d -not -path '*/\\.*' | xargs rm -rf && find . -name 'dist' -o -name '.next' | xargs rm -rf"
   },
   "peerDependencies": {
+    "@tanstack/react-table": ">=8.0.0",
     "react": ">=18.0.0",
-    "react-dom": ">=18.0.0",
-    "@tanstack/react-table": ">=8.0.0"
+    "react-dom": ">=18.0.0"
   },
   "peerDependenciesMeta": {
     "@tanstack/react-table": {
@@ -55,6 +56,7 @@
     }
   },
   "dependencies": {
+    "@tanstack/react-virtual": "^3.13.26",
     "clsx": ">=2",
     "immer": ">=11",
     "lucide-react": ">=1",
@@ -62,8 +64,12 @@
     "zustand": ">=5"
   },
   "devDependencies": {
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": ">=19",
     "@types/react-dom": ">=19",
+    "@vitest/browser": "^4.1.7",
+    "jsdom": "^29.1.1",
     "tsup": ">=8",
     "typescript": ">=6",
     "vitest": ">=4"

@@ -118,6 +118,9 @@ export type {
 export { useGraphDevTools } from "./devtools";
 export { subscribeDevtoolsEvent } from "./engine";
 export type { DevtoolsEvent } from "./engine";
+export { createDevtoolsEventBus, registerStore, getRegisteredStores } from "./devtools-event-bus";
+export type { DevtoolsEventBusOptions, DevtoolsEventBus, DevtoolsSourceFn, RegisteredStore } from "./devtools-event-bus";
+export { EntityExplorerFAB, EntityExplorerPanel, EntityExplorerProvider } from "./ui/entity-explorer";
 
 // ── Hooks (REST) ──────────────────────────────────────────────────────────
 export {
