@@ -238,6 +238,16 @@ export type {
   UseLocalFirstResult,
 } from "./adapters/electricsql";
 
+// ── Surreal live (realtime) ───────────────────────────────────────────────
+export { createSurrealLiveAdapter } from "./adapters/surreal-live";
+export type {
+  SurrealLike,
+  SurrealLiveAction,
+  SurrealCheckpointStore,
+  SurrealTableConfig,
+  SurrealLiveAdapterOptions,
+} from "./adapters/surreal-live";
+
 // ── Tenant-scoped Electric adapter (v1.3) ─────────────────────────────────
 export {
   createTenantScopedElectricAdapter,
