@@ -63,9 +63,16 @@ const EntityExplorerContext = createContext<EntityExplorerContextValue | null>(n
 interface EntityExplorerProviderProps {
   children: ReactNode;
   busOptions?: Parameters<typeof createDevtoolsEventBus>[0];
+  /**
+   * When true, each DevtoolsEvent is re-broadcast via `window.postMessage`
+   * with `{ type: "__entity_explorer_event__", payload: event }`.
+   * Enables the Chrome MV3 extension content-script bridge without requiring
+   * MAIN-world script injection from the extension side.
+   */
+  enableWindowBridge?: boolean;
 }
 
-export function EntityExplorerProvider({ children, busOptions }: EntityExplorerProviderProps) {
+export function EntityExplorerProvider({ children, busOptions, enableWindowBridge }: EntityExplorerProviderProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   // Create bus once; destroy on unmount
@@ -84,6 +91,15 @@ export function EntityExplorerProvider({ children, busOptions }: EntityExplorerP
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
+
+  // Optional window.postMessage bridge for Chrome MV3 extension content-script relay
+  useEffect(() => {
+    if (!enableWindowBridge || !busRef.current) return;
+    const unsubscribe = busRef.current.subscribe((event) => {
+      window.postMessage({ type: "__entity_explorer_event__", payload: event }, "*");
+    });
+    return unsubscribe;
+  }, [enableWindowBridge]);
 
   // Destroy bus on unmount
   useEffect(() => {
