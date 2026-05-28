@@ -1,0 +1,240 @@
+/* Entity Explorer — design system (W4 palette, W6 implementation) */
+/* All custom properties are prefixed --ee- to avoid collision with host app. */
+
+.ee-root,
+.ee-fab,
+.ee-panel {
+  /* ── Palette ── */
+  --ee-bg-shell: #0d1117;
+  --ee-bg-surface: #161b22;
+  --ee-bg-elevated: #1c2333;
+  --ee-text-primary: #e6edf3;
+  --ee-text-muted: #8b949e;
+  --ee-text-code: #cdd9e5;
+  --ee-accent: #f0a500;
+  --ee-border: #30363d;
+  --ee-ring: #f0a500;
+  --ee-semantic-add: #3fb950;
+  --ee-semantic-mod: #d29922;
+  --ee-semantic-del: #f85149;
+
+  /* ── Typography ── */
+  --ee-font-ui: "IBM Plex Sans", system-ui, sans-serif;
+  --ee-font-mono: "Geist Mono", "JetBrains Mono", "Fira Code", monospace;
+  --ee-font-size-sm: 11px;
+  --ee-font-size-base: 13px;
+  --ee-line-height: 1.5;
+
+  /* ── Spacing ── */
+  --ee-space-1: 4px;
+  --ee-space-2: 8px;
+  --ee-space-3: 12px;
+  --ee-space-4: 16px;
+  --ee-space-6: 24px;
+
+  /* ── Z-index ── */
+  --entity-explorer-z: 2147483600;
+
+  box-sizing: border-box;
+  font-family: var(--ee-font-ui);
+  font-size: var(--ee-font-size-base);
+  color: var(--ee-text-primary);
+  line-height: var(--ee-line-height);
+}
+
+/* ── FAB ──────────────────────────────────────────────────────────────────── */
+
+.ee-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: var(--entity-explorer-z);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--ee-accent);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+  color: #000;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.ee-fab:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+.ee-fab:focus-visible {
+  outline: 2px solid var(--ee-ring);
+  outline-offset: 3px;
+}
+
+/* ── Panel ────────────────────────────────────────────────────────────────── */
+
+@keyframes ee-slide-up {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.ee-panel {
+  position: fixed;
+  bottom: 88px;
+  right: 24px;
+  z-index: var(--entity-explorer-z);
+  width: 480px;
+  height: 560px;
+  background: var(--ee-bg-shell);
+  border: 1px solid var(--ee-border);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: ee-slide-up 200ms ease-out both;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Tab bar ──────────────────────────────────────────────────────────────── */
+
+.ee-tablist {
+  display: flex;
+  background: var(--ee-bg-surface);
+  border-bottom: 1px solid var(--ee-border);
+  flex-shrink: 0;
+}
+
+.ee-tab {
+  padding: 8px 14px;
+  font-size: var(--ee-font-size-sm);
+  font-family: var(--ee-font-ui);
+  color: var(--ee-text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 80ms, border-color 80ms;
+}
+
+.ee-tab[aria-selected="true"] {
+  color: var(--ee-text-primary);
+  border-bottom-color: var(--ee-accent);
+}
+
+.ee-tab:focus-visible {
+  outline: 2px solid var(--ee-ring);
+  outline-offset: -2px;
+}
+
+/* ── Tab content ──────────────────────────────────────────────────────────── */
+
+.ee-tabcontent {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.ee-tabpanel {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  padding: var(--ee-space-2);
+  background: var(--ee-bg-surface);
+}
+
+.ee-tabpanel[data-hidden="true"] {
+  display: none;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────────────── */
+
+.ee-tabpanel::-webkit-scrollbar { width: 6px; }
+.ee-tabpanel::-webkit-scrollbar-track { background: transparent; }
+.ee-tabpanel::-webkit-scrollbar-thumb { background: var(--ee-border); border-radius: 3px; }
+
+/* ── Entity rows ──────────────────────────────────────────────────────────── */
+
+.ee-entity-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ee-space-2);
+  padding: 5px var(--ee-space-3);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--ee-font-mono);
+  font-size: var(--ee-font-size-sm);
+  color: var(--ee-text-code);
+}
+
+.ee-entity-row:hover { background: var(--ee-bg-elevated); }
+.ee-entity-row[aria-selected="true"] { background: var(--ee-bg-elevated); border-left: 2px solid var(--ee-accent); }
+
+/* ── Event stream ─────────────────────────────────────────────────────────── */
+
+.ee-event-row {
+  display: flex;
+  gap: var(--ee-space-2);
+  padding: 3px var(--ee-space-2);
+  font-family: var(--ee-font-mono);
+  font-size: var(--ee-font-size-sm);
+  border-bottom: 1px solid var(--ee-border);
+  color: var(--ee-text-code);
+}
+
+.ee-event-kind { font-weight: 600; }
+.ee-event-kind[data-kind="upsert"] { color: var(--ee-semantic-add); }
+.ee-event-kind[data-kind="patch"] { color: var(--ee-semantic-mod); }
+.ee-event-kind[data-kind="clearPatch"] { color: var(--ee-semantic-del); }
+.ee-event-kind[data-kind="list"] { color: var(--ee-text-muted); }
+
+.ee-resume-banner {
+  position: sticky;
+  top: 0;
+  background: var(--ee-accent);
+  color: #000;
+  font-size: var(--ee-font-size-sm);
+  font-weight: 600;
+  text-align: center;
+  padding: 4px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+/* ── Detail pane ──────────────────────────────────────────────────────────── */
+
+.ee-detail-pane {
+  position: absolute;
+  inset: 0;
+  background: var(--ee-bg-elevated);
+  border-left: 1px solid var(--ee-border);
+  overflow-y: auto;
+  padding: var(--ee-space-3);
+  font-family: var(--ee-font-mono);
+  font-size: var(--ee-font-size-sm);
+  color: var(--ee-text-code);
+}
+
+/* ── Patch diff ───────────────────────────────────────────────────────────── */
+
+.ee-diff-add { color: var(--ee-semantic-add); }
+.ee-diff-del { color: var(--ee-semantic-del); }
+
+/* ── Performance ──────────────────────────────────────────────────────────── */
+
+.ee-perf-metric {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ee-space-1);
+  padding: var(--ee-space-3);
+  background: var(--ee-bg-elevated);
+  border-radius: 6px;
+  margin-bottom: var(--ee-space-2);
+}
+
+.ee-perf-label { font-size: var(--ee-font-size-sm); color: var(--ee-text-muted); }
+.ee-perf-value { font-size: 24px; font-weight: 700; color: var(--ee-accent); font-family: var(--ee-font-mono); }
