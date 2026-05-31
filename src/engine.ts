@@ -63,8 +63,15 @@ export interface ListResponse<T> {
 export interface ListQueryOptions<TRaw, TEntity extends object> {
   type: EntityType;
   queryKey: unknown[];
-  fetch: (params: ListFetchParams) => Promise<ListResponse<TRaw>>;
-  normalize: (raw: TRaw) => { id: EntityId; data: TEntity };
+  /**
+   * Inline fetcher (deprecated 1.x REST form). Optional in 2.0: pure graph
+   * subscriptions for Tier-A PGlite/Electric entities pass no fetcher — the
+   * graph is hydrated out-of-band and the hook only joins ids → entities.
+   * When omitted, `fetchList` is a no-op and the hook is read-only.
+   */
+  fetch?: (params: ListFetchParams) => Promise<ListResponse<TRaw>>;
+  /** Row normalizer. Optional alongside `fetch` (graph-only callers omit both). */
+  normalize?: (raw: TRaw) => { id: EntityId; data: TEntity };
   sideEffects?: (items: TRaw[], store: typeof useGraphStore) => void;
   mode?: "replace" | "append";
   staleTime?: number;
@@ -331,6 +338,9 @@ export async function fetchList<TRaw, TEntity extends object>(
   const { type, queryKey, fetch, normalize, sideEffects, mode = "replace" } = opts;
   const key = serializeKey(queryKey);
   const store = useGraphStore.getState();
+  // Graph-only subscription (Tier-A PGlite/Electric): no inline fetcher. The
+  // graph is hydrated out-of-band, so there is nothing to fetch here.
+  if (!fetch || !normalize) return;
   if (isLoadMore) store.setListFetchingMore(key, true);
   else store.setListFetching(key, true);
   const attempt = async (retries: number): Promise<void> => {
