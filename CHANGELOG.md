@@ -5,6 +5,44 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.1.0] — 2026-05-31
+
+Additive, fully backward-compatible with 2.0. No API removals. Brings the
+v1.3.x local-first work and the new devtools/explorer/realtime surfaces onto
+the 2.0 transport-registry baseline.
+
+### Added
+
+- **DevTools event bus** — `createDevtoolsEventBus`, `registerStore`,
+  `getRegisteredStores`, plus `subscribeDevtoolsEvent` / `DevtoolsEvent` from
+  the engine. A multi-store registry with a push stream and per-operation tap
+  for inspecting graph activity. Guarded behind `process.env.NODE_ENV` so it
+  tree-shakes out of production builds (enforced by the `check:treeshake` gate).
+- **Entity Explorer UI** — `EntityExplorerFAB`, `EntityExplorerPanel`,
+  `EntityExplorerProvider`. A drop-in floating inspector (FAB + 4-tab panel)
+  for browsing entities, patches, lists, and events at runtime.
+- **SurrealDB realtime adapter** — `createSurrealLiveAdapter` (SurrealDB
+  `LIVE SELECT`), with `SurrealLike`, `SurrealLiveAction`,
+  `SurrealCheckpointStore`, `SurrealTableConfig`, and
+  `SurrealLiveAdapterOptions` types.
+
+### Fixed
+
+- **DTS build** — `ListQueryOptions.fetch` / `normalize` are now optional,
+  matching the documented 2.0 graph-only usage (Tier-A PGlite/Electric entities
+  hydrated out-of-band pass no `fetch`/`normalize`). The type previously lagged
+  the runtime behavior, which made `tsup`'s DTS step fail (TS2774) and shipped a
+  package with no type declarations. `fetchList()` early-returns on the
+  graph-only no-op path.
+- Deprecation warning is no longer logged for graph-only `useEntityList` /
+  `useEntityView` callers (2.0.1).
+
+### Internal
+
+- Skills exports ledger refreshed to the current public surface (176 exports).
+
+---
+
 ## [2.0.0] — 2026-05-25 — BREAKING
 
 ### Overview
