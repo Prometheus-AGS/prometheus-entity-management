@@ -45,6 +45,10 @@ export {
 } from "./merge";
 export type { MergeStrategy, MergeContext } from "./merge";
 
+// ── Lint: Component→Hook→Store layering rule (copyable flat-config) ───────
+export { prometheusEntityLayeringRule } from "./lint/layering-rule";
+export type { LayeringRuleOptions, FlatConfigEntry } from "./lint/layering-rule";
+
 // ── Core graph ────────────────────────────────────────────────────────────
 export { useGraphStore } from "./graph";
 export type {
@@ -283,6 +287,15 @@ export type {
   PGlitePersistenceClient,
   CreatePGlitePersistenceAdapterOptions,
 } from "./adapters/pglite-persistence";
+
+// ── Tauri SQLite persistence adapter (v2.0) ───────────────────────────────
+export {
+  createTauriSqlPersistenceAdapter,
+} from "./adapters/tauri-sql-persistence";
+export type {
+  TauriSqlClient,
+  CreateTauriSqlPersistenceAdapterOptions,
+} from "./adapters/tauri-sql-persistence";
 
 // ── Schema generation from SQL (v1.3) ─────────────────────────────────────
 export {

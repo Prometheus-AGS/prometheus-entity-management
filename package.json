@@ -47,12 +47,16 @@
   },
   "peerDependencies": {
     "@tanstack/react-table": ">=8.0.0",
+    "@tauri-apps/plugin-sql": ">=2.0.0",
     "loro-crdt": ">=1.0.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
   },
   "peerDependenciesMeta": {
     "@tanstack/react-table": {
+      "optional": true
+    },
+    "@tauri-apps/plugin-sql": {
       "optional": true
     },
     "loro-crdt": {
