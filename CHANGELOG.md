@@ -5,7 +5,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [Unreleased] — v2.0 Realtime Fabric Parity
+## [2.2.0] — 2026-06-21 — Realtime Fabric Parity
 
 Additive, backward-compatible. Evolves the library toward a best-in-class,
 ecosystem-agnostic entity-state layer for realtime + agentic applications. All
