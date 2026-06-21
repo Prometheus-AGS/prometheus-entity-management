@@ -69,8 +69,11 @@ describe("merge strategy port", () => {
     expect(getMergeStrategy("MWidget")).toBe(perType);
   });
 
-  it("createLoroMergeStrategy throws a clear error when loro-crdt is absent", async () => {
-    // loro-crdt is an optional peer not installed in this repo's devDeps.
-    await expect(createLoroMergeStrategy()).rejects.toThrow(/loro-crdt/);
+  it("createLoroMergeStrategy resolves a strategy when loro-crdt is installed", async () => {
+    // loro-crdt is now a devDependency (G2 parity proof), so this resolves.
+    // The missing-peer guard's error path is exercised structurally; real
+    // convergence is proven in loro-real.test.ts.
+    const strategy = await createLoroMergeStrategy();
+    expect(typeof strategy).toBe("function");
   });
 });

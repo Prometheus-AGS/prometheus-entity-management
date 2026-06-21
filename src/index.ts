@@ -151,6 +151,18 @@ export { createDevtoolsEventBus, registerStore, getRegisteredStores } from "./de
 export type { DevtoolsEventBusOptions, DevtoolsEventBus, DevtoolsSourceFn, RegisteredStore } from "./devtools-event-bus";
 export { EntityExplorerFAB, EntityExplorerPanel, EntityExplorerProvider } from "./ui/entity-explorer";
 
+// ── True time-travel (rewind/replay the live graph) ──────────────────────
+export {
+  recordGraphSnapshot,
+  restoreGraphSnapshot,
+  restoreGraphSnapshotBySeq,
+  stepTimeTravel,
+  getTimeTravelState,
+  subscribeTimeTravel,
+  configureTimeTravel,
+} from "./devtools-time-travel";
+export type { TimeTravelSnapshot, TimeTravelState } from "./devtools-time-travel";
+
 // ── Hooks (REST) ──────────────────────────────────────────────────────────
 export {
   useEntity,
@@ -170,6 +182,8 @@ export {
   matchesSearch,
   checkCompleteness,
 } from "./view/evaluator";
+export { IncrementalView } from "./view/incremental";
+export type { IncrementalViewOptions } from "./view/incremental";
 export {
   toRestParams,
   toSQLClauses,

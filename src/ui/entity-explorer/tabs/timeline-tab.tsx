@@ -3,6 +3,7 @@ import { useEntityExplorer } from "../context";
 import { type DevtoolsEvent } from "../../../engine";
 import { useGraphStore } from "../../../graph";
 import { exportGraphSnapshot } from "../../../ai-interop";
+import { recordGraphSnapshot, restoreGraphSnapshotBySeq } from "../../../devtools-time-travel";
 
 /**
  * Timeline tab (change C5) — time-travel-style inspection of the entity graph.
@@ -25,6 +26,8 @@ const MAX_TIMELINE = 500;
 interface TimelineEntry {
   event: DevtoolsEvent;
   seq: number;
+  /** Time-travel snapshot seq captured at this point (for rewind). */
+  snapshotSeq: number;
 }
 
 function describePayload(event: DevtoolsEvent): string {
@@ -47,13 +50,20 @@ export function TimelineTab() {
 
   useEffect(() => {
     const unsub = bus.subscribe((event) => {
+      // Capture a true-time-travel snapshot at each mutation so the row can
+      // rewind the LIVE graph to this point (not just inspect a log).
+      const snapshotSeq = recordGraphSnapshot(event.kind);
       setEntries((prev) => {
-        const next = [{ event, seq: seqRef.current++ }, ...prev];
+        const next = [{ event, seq: seqRef.current++, snapshotSeq }, ...prev];
         return next.length > MAX_TIMELINE ? next.slice(0, MAX_TIMELINE) : next;
       });
     });
     return unsub;
   }, [bus]);
+
+  function handleRewind(snapshotSeq: number) {
+    restoreGraphSnapshotBySeq(snapshotSeq);
+  }
 
   function handleExport() {
     const s = useGraphStore.getState();
@@ -118,7 +128,15 @@ export function TimelineTab() {
             <span className="ee-event-kind" data-kind={entry.event.kind}>{entry.event.kind}</span>
             {"type" in entry.event && <span style={{ color: "var(--ee-text-muted)" }}>{entry.event.type}</span>}
             {"id" in entry.event && <span>{entry.event.id}</span>}
-            <span style={{ marginLeft: "auto", color: "var(--ee-text-muted)", fontSize: 10 }}>
+            <button
+              className="ee-tab"
+              style={{ marginLeft: "auto", fontSize: 10, padding: "1px 6px" }}
+              title="Rewind the live graph to this state"
+              onClick={(e) => { e.stopPropagation(); handleRewind(entry.snapshotSeq); }}
+            >
+              ⏮ rewind
+            </button>
+            <span style={{ color: "var(--ee-text-muted)", fontSize: 10 }}>
               {new Date(entry.event.at).toLocaleTimeString()}
             </span>
           </div>

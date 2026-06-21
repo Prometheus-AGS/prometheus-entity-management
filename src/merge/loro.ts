@@ -54,10 +54,12 @@ function ek(type: string, id: string): string {
 export async function createLoroMergeStrategy(): Promise<MergeStrategy> {
   let mod: LoroModuleLike;
   try {
-    // `loro-crdt` is an OPTIONAL peer — it is intentionally NOT in this package's
-    // dependencies, so TS cannot resolve the specifier at build time. The runtime
-    // try/catch below is the real guard; suppress only the module-resolution error.
-    // @ts-expect-error optional peer dependency, resolved at runtime
+    // `loro-crdt` is an OPTIONAL peer dependency for consumers. It is present as a
+    // devDependency here (so CI can prove the merge math), but a consumer may not
+    // install it — the runtime try/catch below is the real guard. `@ts-ignore`
+    // (not `@ts-expect-error`) so this stays valid whether or not the module
+    // resolves at type-check time in a given install.
+    // @ts-ignore optional peer dependency, resolved at runtime
     mod = (await import(/* @vite-ignore */ "loro-crdt")) as unknown as LoroModuleLike;
   } catch (cause) {
     throw new Error(
