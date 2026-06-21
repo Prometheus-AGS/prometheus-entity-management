@@ -1,15 +1,17 @@
 {
   "previous_phase": "phase-v1-npm-framework",
   "active_phase": "phase-v2-realtime-fabric-parity",
-  "kbd_process_state": "execution-ready",
-  "label": "v2 realtime-fabric-parity — execution dispatched; backend=openspec via /kbd-apply, 8 changes PENDING",
-  "next_pending_change": "v2-crdt-merge-strategy-port",
-  "exact_next_command": "/kbd-apply v2-crdt-merge-strategy-port  (Round 1 foundation; create feat/v2-realtime-fabric-parity branch first — BRANCH GATE).",
+  "kbd_process_state": "implemented",
+  "label": "v2 realtime-fabric-parity — all 8 changes IMPLEMENTED on feat/v2-realtime-fabric-parity; 201 tests pass, verify:skills green",
+  "next_pending_change": null,
+  "exact_next_command": "Run /kbd-reflect for a true delivery reflection (8/8 done), then /opsx:verify + /opsx:archive per change and open a PR for feat/v2-realtime-fabric-parity.",
   "plan_complete": true,
   "execution_dispatched": true,
+  "implementation_complete": true,
+  "branch": "feat/v2-realtime-fabric-parity",
   "execution_path": ".kbd-orchestrator/phases/phase-v2-realtime-fabric-parity/execution.md",
   "plan_path": ".kbd-orchestrator/phases/phase-v2-realtime-fabric-parity/plan.md",
   "openspec_umbrella": "openspec/changes/v2-0-realtime-fabric-parity",
-  "openspec_archive_recommended": false,
-  "updated_at": "2026-06-21T01:30:00.000Z"
+  "openspec_archive_recommended": true,
+  "updated_at": "2026-06-21T03:00:00.000Z"
 }

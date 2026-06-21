@@ -2,23 +2,34 @@
 
 **Active phase:** `phase-v2-realtime-fabric-parity`
 **Previous phase:** `phase-v1-npm-framework`
-**KBD process state:** `execution-ready`
+**KBD process state:** `implemented`
 **Updated:** 2026-06-21
 
 ## Status
 
-v2 Realtime Fabric Parity — **execution dispatched**. Backend = OpenSpec, driven task-by-task via `/kbd-apply`. 8 changes PENDING with per-change model routing. Scope: all four tracks in v2.0 (user-confirmed). No code written yet — this is the dispatch contract.
+v2 Realtime Fabric Parity — **all 8 changes IMPLEMENTED** on branch `feat/v2-realtime-fabric-parity`. Gates: typecheck ✓, 201 tests pass, verify:skills ✓ (189 exports), treeshake ✓. 4 commits (317c572, bebad5f, bf1d005, 3bfecf2).
 
-## Next pending change
+| Change | Status | Commit |
+|---|---|---|
+| C1 CRDT MergeStrategy port + Loro | DONE | 317c572 |
+| C4 Tauri/SQLite persistence | DONE | bebad5f |
+| C8 ESLint layering rule | DONE | bebad5f |
+| C5 time-travel DevTools | DONE | bf1d005 |
+| C6 graph-viz DevTools | DONE | bf1d005 |
+| C2 AG-UI ingestion bridge | DONE | 3bfecf2 |
+| C3 Flint adapter | DONE | 3bfecf2 |
+| C7 incremental spike (ceiling-doc) | DONE | 3bfecf2 |
 
-`v2-crdt-merge-strategy-port` (foundation — unblocks the AG-UI bridge and Flint adapter)
+## Carried-forward note
+
+- **C3 Flint live test deferred** until `@prometheusags/frf-sdk` is published/linkable (built against the minimal-surface facade + optional peer; unit-tested with a fake client).
 
 ## Exact next command
 
 ```
-/kbd-apply v2-crdt-merge-strategy-port
+/kbd-reflect
 ```
-**BRANCH GATE first:** create `feat/v2-realtime-fabric-parity` before `/kbd-apply` writes code (currently on `main`). Then Round 2 (`v2-agui-ingestion-bridge`, `v2-flint-realtime-adapter`) unblocks once C1 is DONE.
+Then `/opsx:verify` + `/opsx:archive` per change and open a PR for `feat/v2-realtime-fabric-parity`.
 
 ## Execution rounds
 

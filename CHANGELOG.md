@@ -5,6 +5,47 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [Unreleased] — v2.0 Realtime Fabric Parity
+
+Additive, backward-compatible. Evolves the library toward a best-in-class,
+ecosystem-agnostic entity-state layer for realtime + agentic applications. All
+new integrations ship as **optional peer dependencies**; the core bundle stays
+`zustand + immer`.
+
+### Added
+
+- **Pluggable conflict resolution (CRDT)** — `registerMergeStrategy`,
+  `setDefaultMergeStrategy`, `getMergeStrategy`, `hasMergeStrategy`,
+  `lwwStrategy` (default, identical to prior shallow-merge), and
+  `createLoroMergeStrategy` (optional `loro-crdt` CRDT, lazy-imported). The graph
+  write path (`upsertEntity`/`upsertEntities`) routes through the resolved
+  strategy. `MergeStrategy` / `MergeContext` types exported.
+- **AG-UI agent-state ingestion** — `applyAgUiSnapshot` / `applyAgUiDelta` ingest
+  AG-UI `STATE_SNAPSHOT` / `STATE_DELTA` (RFC-6902 JSON Patch) into the entity
+  graph via a JSON-Pointer→entity mapping. Includes a dependency-free RFC-6902
+  applier (`applyJsonPatch`). `@ag-ui/core` is an optional peer.
+- **Flint Realtime Fabric adapter** — `createFlintAdapter` bridges the Flint
+  `frf-entity-management` `watchEntities()` stream into the graph via the
+  `RealtimeAdapter` contract, with offset↔checkpoint resume; `publishFlintMutation`
+  helper. `@prometheusags/frf-sdk` is an optional peer.
+- **Tauri SQLite persistence** — `createTauriSqlPersistenceAdapter`, a
+  `GraphPersistenceAdapter` over `@tauri-apps/plugin-sql` for desktop local-first
+  (pairs with the existing PGlite browser adapter). Optional peer.
+- **Time-travel + graph DevTools** — EntityExplorer gains a **Timeline** tab
+  (mutation history, changed-field summary, snapshot export/import) and a
+  **Graph** tab (SVG relationship visualization from the relations registry).
+- **Layering enforcement** — `prometheusEntityLayeringRule`, a copyable ESLint
+  flat-config banning direct `useGraphStore`/graph-module imports in components
+  (Component → Hook → Store). See `docs/eslint-layering.md`.
+
+### Notes
+
+- Incremental/differential query evaluation (d2ts/TanStack DB) was evaluated and
+  **deferred** to a v2.x spike; v2.0 ships a documented scale ceiling +
+  virtualization guidance — see `docs/incremental-query-ceiling.md`.
+
+---
+
 ## [2.1.0] — 2026-05-31
 
 Additive, fully backward-compatible with 2.0. No API removals. Brings the

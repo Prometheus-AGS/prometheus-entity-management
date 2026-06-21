@@ -1,6 +1,6 @@
 {
   "phase": "phase-v2-realtime-fabric-parity",
-  "last_updated": "2026-06-21T01:30:00.000Z",
+  "last_updated": "2026-06-21T03:00:00.000Z",
   "last_updated_by": "claude-code",
   "assessment_complete": true,
   "analyze_complete": true,
@@ -9,103 +9,68 @@
   "reflection_complete": false,
   "umbrella_change": "v2-0-realtime-fabric-parity",
   "backend": "openspec",
+  "branch": "feat/v2-realtime-fabric-parity",
   "changes_total": 8,
-  "changes_completed": 0,
-  "first_change_to_apply": "v2-crdt-merge-strategy-port",
-  "assessment_path": ".kbd-orchestrator/phases/phase-v2-realtime-fabric-parity/assessment.md",
-  "analysis_path": ".kbd-orchestrator/phases/phase-v2-realtime-fabric-parity/analysis.md",
-  "library_candidates_path": ".kbd-orchestrator/phases/phase-v2-realtime-fabric-parity/library-candidates.json",
-  "plan_path": ".kbd-orchestrator/phases/phase-v2-realtime-fabric-parity/plan.md",
-  "execution_path": ".kbd-orchestrator/phases/phase-v2-realtime-fabric-parity/execution.md",
+  "changes_completed": 8,
+  "verification": {
+    "typecheck": "pass",
+    "tests": "201 passed, 1 todo",
+    "verify_skills": "pass (189 exports)",
+    "treeshake": "pass"
+  },
   "changes": {
     "v2-crdt-merge-strategy-port": {
-      "status": "PENDING",
-      "tasks_total": 10,
-      "tasks_done": 0,
-      "last_task_completed": null,
-      "next_task_pending": "Define MergeStrategy interface + MergeContext in src/merge/types.ts",
-      "started_by": null,
-      "model_class": "frontier",
-      "depends_on": [],
-      "round": 1
+      "status": "DONE", "tasks_total": 10, "tasks_done": 10,
+      "started_by": "claude-code", "completed_by": "claude-code",
+      "commit": "317c572", "model_class": "frontier", "round": 1,
+      "last_task_completed": "verify:skills + typecheck + tests green"
     },
     "v2-tauri-sqlite-persistence": {
-      "status": "PENDING",
-      "tasks_total": 9,
-      "tasks_done": 0,
-      "last_task_completed": null,
-      "next_task_pending": "Define minimal Tauri-SQL client surface to avoid hard dep",
-      "started_by": null,
-      "model_class": "medium",
-      "depends_on": [],
-      "round": 1
+      "status": "DONE", "tasks_total": 9, "tasks_done": 9,
+      "started_by": "claude-code", "completed_by": "claude-code",
+      "commit": "bebad5f", "model_class": "medium", "round": 1,
+      "last_task_completed": "7 tests pass; ledger updated"
     },
     "v2-devtools-time-travel": {
-      "status": "PENDING",
-      "tasks_total": 8,
-      "tasks_done": 0,
-      "last_task_completed": null,
-      "next_task_pending": "Add Timeline tab to EntityExplorer panel + tab registry",
-      "started_by": null,
-      "model_class": "frontier",
-      "depends_on": [],
-      "round": 1
+      "status": "DONE", "tasks_total": 8, "tasks_done": 8,
+      "started_by": "claude-code", "completed_by": "claude-code",
+      "commit": "bf1d005", "model_class": "frontier", "round": 1,
+      "last_task_completed": "Timeline tab + export/import; tab tests updated"
     },
     "v2-incremental-query-spike": {
-      "status": "PENDING",
-      "tasks_total": 8,
-      "tasks_done": 0,
-      "last_task_completed": null,
-      "next_task_pending": "Build benchmark harness: filter+sort + single-row update at 1k/10k/100k",
-      "started_by": null,
-      "model_class": "frontier",
-      "depends_on": [],
-      "round": 1,
-      "gated": true
+      "status": "DONE", "tasks_total": 8, "tasks_done": 8,
+      "started_by": "claude-code", "completed_by": "claude-code",
+      "commit": "3bfecf2", "model_class": "frontier", "round": 1, "gated": true,
+      "decision": "ceiling-doc (defer d2ts to v2.x)",
+      "last_task_completed": "benchmark + docs/incremental-query-ceiling.md"
     },
     "v2-eslint-layering-rule": {
-      "status": "PENDING",
-      "tasks_total": 5,
-      "tasks_done": 0,
-      "last_task_completed": null,
-      "next_task_pending": "Author no-restricted-imports config banning ./graph / useGraphStore in component files",
-      "started_by": null,
-      "model_class": "small",
-      "depends_on": [],
-      "round": 1
+      "status": "DONE", "tasks_total": 5, "tasks_done": 5,
+      "started_by": "claude-code", "completed_by": "claude-code",
+      "commit": "bebad5f", "model_class": "small", "round": 1,
+      "last_task_completed": "rule helper + docs + 4 tests"
     },
     "v2-agui-ingestion-bridge": {
-      "status": "PENDING",
-      "tasks_total": 10,
-      "tasks_done": 0,
-      "last_task_completed": null,
-      "next_task_pending": "Decide JSON-Patch applier: reuse @ag-ui/client's vs add fast-json-patch",
-      "started_by": null,
-      "model_class": "frontier",
+      "status": "DONE", "tasks_total": 10, "tasks_done": 10,
+      "started_by": "claude-code", "completed_by": "claude-code",
+      "commit": "3bfecf2", "model_class": "frontier", "round": 2,
       "depends_on": ["v2-crdt-merge-strategy-port"],
-      "round": 2
+      "last_task_completed": "applyAgUiSnapshot/Delta + RFC-6902 applier; 14 tests"
     },
     "v2-flint-realtime-adapter": {
-      "status": "PENDING",
-      "tasks_total": 10,
-      "tasks_done": 0,
-      "last_task_completed": null,
-      "next_task_pending": "Define minimal-surface Flint types to avoid hard frf-sdk dep",
-      "started_by": null,
-      "model_class": "frontier",
+      "status": "DONE", "tasks_total": 10, "tasks_done": 10,
+      "started_by": "claude-code", "completed_by": "claude-code",
+      "commit": "3bfecf2", "model_class": "frontier", "round": 2,
       "depends_on": ["v2-crdt-merge-strategy-port"],
-      "round": 2
+      "note": "Built against minimal-surface Flint facade; live frf-sdk integration test deferred until frf-sdk is reachable (FLINT DEP GATE)",
+      "last_task_completed": "createFlintAdapter + checkpoint resume; 7 tests"
     },
     "v2-devtools-graph-visualization": {
-      "status": "PENDING",
-      "tasks_total": 6,
-      "tasks_done": 0,
-      "last_task_completed": null,
-      "next_task_pending": "Add Graph tab to EntityExplorer panel + tab registry",
-      "started_by": null,
-      "model_class": "medium",
+      "status": "DONE", "tasks_total": 6, "tasks_done": 6,
+      "started_by": "claude-code", "completed_by": "claude-code",
+      "commit": "bf1d005", "model_class": "medium", "round": 2,
       "depends_on": ["v2-devtools-time-travel"],
-      "round": 2
+      "last_task_completed": "Graph tab (SVG radial) + node cap notice"
     }
   }
 }
