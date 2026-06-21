@@ -1,79 +1,86 @@
 # Reflection — phase-v2-realtime-fabric-parity
 
-**Type:** Planning-cycle reflection (PRE-IMPLEMENTATION CHECKPOINT)
+**Type:** Delivery reflection (implementation complete)
 **Date:** 2026-06-21
-**Scope:** This reflects on the **assess → analyze → plan → execute(dispatch)** lifecycle and the artifacts it produced. It is **NOT a delivery report.** No code has been applied — `/kbd-apply` has not run; all 8 changes are `PENDING` in `progress.json` (0/8 implemented). Goal-achievement percentages and artifact-refiner QA are deliberately omitted because there is nothing built to measure. (User-selected scope, 2026-06-21.)
+**Branch:** `feat/v2-realtime-fabric-parity` (5 commits)
+**Supersedes:** the earlier planning-cycle checkpoint (0/8) — implementation has since completed.
 
 ---
 
-## 1. Implementation status (honest baseline)
+## 1. Goal achievement
+
+Phase goal: evolve into a best-in-class, ecosystem-agnostic global entity-state layer with first-class realtime (Flint), agent-protocol ingestion, CRDT, local-first (SQLite/Tauri), and interactive devtools.
+
+| Goal area | Result | Evidence |
+|---|---|---|
+| Flint Realtime Fabric integration | **MET** | `createFlintAdapter` bridges `watchEntities()`→graph w/ checkpoint resume (C3) |
+| Agent-protocol ingestion (AG-UI) | **MET** | `applyAgUiSnapshot`/`applyAgUiDelta` + RFC-6902 applier (C2) |
+| CRDT / conflict resolution | **MET** | pluggable `MergeStrategy` port + Loro reference (C1) |
+| Local-first SQLite/Tauri | **MET** | `createTauriSqlPersistenceAdapter` (C4) |
+| Interactive devtools (observe/debug) | **MET** | Timeline (time-travel) + Graph viz tabs (C5, C6) |
+| Strict layering enforcement | **MET** | `prometheusEntityLayeringRule` (C8) |
+| Incremental query eval | **PARTIAL (deliberate)** | gated spike → ceiling-doc; d2ts deferred to v2.x (C7) |
+| WebRTC/P2P | **DEFERRED (by design)** | owned by Flint fabric (GAP-8) |
+
+**Overall: 6 MET, 1 deliberate-PARTIAL, 1 deliberate-DEFERRED. 8/8 planned changes delivered.**
+
+## 2. Delivered changes
+
+| Change | Commit | Tests |
+|---|---|---|
+| C1 CRDT MergeStrategy port + Loro | 317c572 | 5 |
+| C4 Tauri SQLite persistence | bebad5f | 7 |
+| C8 ESLint layering rule | bebad5f | 4 |
+| C5 time-travel DevTools | bf1d005 | +2 |
+| C6 graph-viz DevTools | bf1d005 | +1 |
+| C2 AG-UI ingestion bridge | 3bfecf2 | 14 |
+| C3 Flint adapter | 3bfecf2 | 7 |
+| C7 incremental spike (ceiling) | 3bfecf2 | 3 |
+
+Verification: typecheck ✓ · **201 tests pass** (1 todo) · `verify:skills` ✓ (189 exports, was 176) · treeshake ✓.
+
+## 3. Artifact Quality Summary
+
+artifact-refiner QA was not separately invoked (the orchestrator's automated QA gate was not wired in this session); quality was enforced instead by the project's own CI-equivalent gates, run per change:
 
 | Metric | Value |
-|---|---|
-| Changes planned | 8 (under umbrella `v2-0-realtime-fabric-parity`) |
-| Changes implemented | **0 / 8** |
-| Changes archived | 0 |
-| artifact-refiner QA runs | 0 (nothing to QA) |
-| Code written this phase | none — `git status src/` clean |
-| Current state | `execution-ready` — dispatch contract written, awaiting `/kbd-apply` |
+| --- | --- |
+| Changes delivered | 8/8 |
+| Per-change typecheck pass | 8/8 |
+| Per-change tests added & green | 8/8 (43 new tests) |
+| skills↔exports gate (export-touching changes) | 4/4 pass |
+| treeshake gate | pass |
 
-There is no goal-achievement % to report. The phase *goal* (become best-in-class agentic/realtime/devtools entity layer) is **0% delivered, 100% specified.**
+### Recurring constraint considerations
+- **Optional-peer discipline** applied uniformly across 4 new integrations (no recurring violation — applied as a pattern, not patched after the fact).
+- **One TS suppression** (`@ts-expect-error` on the optional `loro-crdt` dynamic import) — the standard, documented way to type an optional peer; not a smell.
 
-## 2. What the planning cycle produced (the actual deliverables of this checkpoint)
+## 4. Technical debt introduced
 
-| Stage | Artifact | Quality assessment |
-|---|---|---|
-| Assess | `assessment.md` | Strong. Grounded in full source read (19,850 LOC) + competitive research; 8 gaps with severity; strengths-to-protect named. |
-| Analyze | `analysis.md` + `library-candidates.json` + `decision-log.md` | Strong. 11 candidates with tiered evidence; 5 build-glue items; all 5 open questions resolved with rationale. Key insight (GAP-1 is a bridge, Flint seam already exists) was evidence-backed, not assumed. |
-| Plan | `plan.md` + 8 OpenSpec changes (proposal+tasks) | Strong. Dependency-ordered, model-routed, `library: cand-###` annotated, sycophancy self-check applied. |
-| Execute | `execution.md` + schema `progress.json` | Correct as orchestration. Per-change dispatch + model routing + 3 approval gates. No code (correct for the stage). |
+- **C3 lacks a live integration test** against a real Flint spine — `@prometheusags/frf-sdk` is unpublished. Mitigated: built against the minimal-surface facade and unit-tested with a fake client. Debt = one integration test owed when frf-sdk is linkable. **Tracked.**
+- **C7 ships a ceiling, not an engine** — by design. The benchmark is the baseline a future incremental implementation must beat. Documented in `docs/incremental-query-ceiling.md`. Not debt so much as a scheduled v2.x decision.
+- **Loro strategy is one engine** — if Flint commits to Automerge, a second `MergeStrategy` impl is needed. The port makes this additive (no API change). **Tracked.**
 
-**Lifecycle artifact completeness: high.** Every stage handoff exists; the chain is traceable assessment → candidate → change → dispatch.
+## 5. Lessons captured
 
-## 3. Decision soundness review (D1–D12 from decision-log)
+- **Reading the integration target's repo collapsed the hardest gap.** GAP-1 looked like a blocked from-scratch build; the Flint `frf-entity-management` facade made it a bridge. Searching the target's source, not just npm, was decisive.
+- **A "port, not an engine" framing absorbs upstream open decisions.** The `MergeStrategy` port (C1) turned Flint's undecided CRDT choice into a non-blocker and became the foundation both headline features (C2, C3) build on. Sequencing C1 first paid off exactly as planned.
+- **Dependency-free where the spec is frozen.** AG-UI's STATE_DELTA is RFC-6902 (a stable RFC), so a small in-house applier beat taking a dependency — zero new runtime deps for the headline feature.
+- **Honest mid-flight reflection was correct.** The earlier 0/8 checkpoint (instead of a fake delivery report) kept the lifecycle truthful; this delivery reflection is the real one.
 
-The load-bearing decisions hold up under re-examination:
+## 6. Recommended focus for next phase
 
-- **D1/D2 (Flint = build against facade now, optional peer):** De-risked by direct evidence (`adapter.ts` exposes proto-free `EntityEvent`). Sound. The remaining risk is purely *availability* (frf-sdk not on npm), correctly captured as an approval gate, not a design flaw.
-- **D3 (Loro behind a MergeStrategy port):** The port — not the engine — being the deliverable is the right call given Flint's own undecided Loro-vs-Automerge. This is the single best architectural decision of the phase: it converts an external open decision into a non-blocking one.
-- **D6/D7 (AG-UI ingestion bridge):** The "patchEntity is already JSON-Patch-shaped" observation is the highest-leverage finding and should be the first *visible* win once implementation starts. Sound.
-- **D5 (defer incremental queries):** Correctly resisted scope/tech-fashion pressure (d2ts is 0.1.x). Sound.
-
-No decision requires revision before implementation.
-
-## 4. Risks & gates carried into implementation
-
-1. **frf-sdk not on npm (C3)** — live Flint integration can't be end-to-end tested until the SDK is reachable. Mitigation already planned: ship shim + optional-peer guard; gate the live test. **Carry forward.**
-2. **C7 spike schedule risk** — the lone research-flavored change; explicitly allowed to slip to v2.1 with a ceiling-doc floor. **Carry forward — watch it doesn't expand silently.**
-3. **CRDT engine tracking (D3)** — if Flint commits to Automerge, a second `MergeStrategy` impl becomes a follow-up change. **Carry forward as a known potential add.**
-4. **Branch discipline** — implementation must start on `feat/v2-realtime-fabric-parity` (currently `main`). **Gate recorded.**
-5. **Skills↔exports immutable gate** — C1–C4 add exports; each must run `refresh:exports` + pass `verify:skills`. Baked into every export-touching change's tasks. **Verify it actually runs during apply.**
-
-## 5. Technical debt introduced
-
-**None** — no code was written. The only "debt" is the standing decision to defer incremental queries (D5), which is a deliberate, documented scope cut, not debt.
-
-## 6. Lessons captured
-
-- **Search the *integration target's* repo, not just the public registry.** The phase's pivotal finding (Flint already ships the entity-management seam) came from reading `flint-realtime-fabric/sdks/`, which collapsed GAP-1 from "from-scratch build, blocked on proto freeze" to "bridge, buildable now." Tier-1 (local/GitHub) search earned its place ahead of registry/web tiers.
-- **A "port, not an engine" framing neutralizes upstream open decisions.** D3 turned Flint's undecided CRDT choice from a blocker into a non-issue. Reusable pattern for any dependency with an unresolved internal decision.
-- **Stage discipline exposed a real seam:** the execute→reflect boundary correctly surfaced that "dispatched" ≠ "delivered." The honest checkpoint (this file) is the system working as intended, not a failure.
-
-## 7. Recommended focus for next step
-
-This is **not** a phase-advance recommendation — the phase is mid-flight. The recommendation is to **proceed to implementation within this same phase:**
-
-1. Cut `feat/v2-realtime-fabric-parity`.
-2. `/kbd-apply v2-crdt-merge-strategy-port` (Round 1 foundation).
-3. Then Round 2's headline wins: `v2-agui-ingestion-bridge` and `v2-flint-realtime-adapter`.
-4. Re-run `/kbd-reflect` **after** changes reach DONE for a true delivery reflection (goal-achievement % + artifact-refiner QA summary).
+1. **Open PR** for `feat/v2-realtime-fabric-parity` (this session).
+2. **Per-change `/opsx:verify` + `/opsx:archive`**, then archive the umbrella.
+3. **v2.1 candidates:** (a) live Flint integration test once frf-sdk publishes; (b) example app wiring the Flint adapter + AG-UI bridge end-to-end; (c) second MergeStrategy impl if Flint picks Automerge.
+4. **v2.x spike:** revisit incremental queries when d2ts hits 1.0 or a >50k-row local-mode need appears.
 
 ---
 
 ### Sycophancy self-check
-- **S-02 (Agreement Without Grounding):** Did NOT claim progress that doesn't exist. Implementation status stated as 0/8 up front.
-- **S-03 (Caveat Collapse):** Five live risks/gates carried forward; the deferred item (incremental queries) named explicitly.
-- **S-07 (Scope Creep):** Reflection scoped exactly to what occurred (planning), not inflated into a delivery narrative.
+- **S-02:** Claims match evidence — every "MET" cites a shipped artifact + commit; the PARTIAL/DEFERRED are labeled deliberate, not glossed as done.
+- **S-03:** Three debt items + two carried-forward risks surfaced; nothing presented as friction-free.
+- **S-07:** No scope inflation — exactly the 8 planned changes; C7/GAP-8 held to their planned reduced scope.
 
 ### Stage handoff
-Planning cycle for v2.0 is sound and complete; 0/8 changes implemented — this is a pre-implementation checkpoint, not a phase close. Corrective action: proceed to `/kbd-apply` (branch first), starting C1, then the AG-UI + Flint headline changes; re-reflect after DONE for true delivery metrics. No decisions need revision. Phase remains active at `execution-ready`.
+v2.0 delivered: 8/8 changes on feat/v2-realtime-fabric-parity, 201 tests green, skills gate green. 6 goals MET, C7 deliberately ceiling-doc, WebRTC deferred to Flint. Debt: C3 live test (frf-sdk unpublished), possible 2nd CRDT engine, incremental v2.x spike. Next: open PR → /opsx:verify + /opsx:archive per change → archive umbrella.

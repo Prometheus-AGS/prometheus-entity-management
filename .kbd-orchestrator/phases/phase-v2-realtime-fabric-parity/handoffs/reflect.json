@@ -1,14 +1,19 @@
 {
   "stage": "reflect",
   "phase": "phase-v2-realtime-fabric-parity",
-  "type": "planning-cycle-checkpoint",
+  "type": "delivery",
   "artifacts": ["reflection.md"],
-  "is_phase_close": false,
-  "implementation_status": "0/8 changes implemented — PRE-IMPLEMENTATION checkpoint, not a delivery report",
-  "summary": "Planning-cycle reflection only: assess→analyze→plan→execute(dispatch) produced complete, traceable, evidence-backed artifacts and sound decisions (D1-D12 hold; no revisions needed). No code applied — all 8 changes PENDING, no QA logs, nothing archived. Goal-achievement % and artifact-refiner summary deliberately omitted (nothing built to measure). Five risks/gates carried forward: frf-sdk-not-on-npm (C3), C7 spike schedule risk, possible Automerge follow-up strategy, branch discipline, skills↔exports gate enforcement during apply.",
-  "deltas_found": "execute→reflect boundary correctly exposed that 'dispatched' != 'delivered'; honest checkpoint written instead of a false delivery report.",
-  "corrective_action": "Proceed to implementation WITHIN this phase: cut feat/v2-realtime-fabric-parity, /kbd-apply v2-crdt-merge-strategy-port (Round 1), then headline Round 2 (AG-UI bridge + Flint adapter). Re-run /kbd-reflect after changes reach DONE for true delivery metrics.",
-  "recommended_next_step": "/kbd-apply v2-crdt-merge-strategy-port (NOT /kbd-new-phase — phase is mid-flight)",
-  "phase_advance_recommended": false,
-  "created_at": "2026-06-21T02:00:00.000Z"
+  "is_phase_close": true,
+  "implementation_status": "8/8 changes DELIVERED on feat/v2-realtime-fabric-parity",
+  "goals": "6 MET (Flint, AG-UI, CRDT, SQLite/Tauri, devtools, layering); 1 deliberate PARTIAL (C7 incremental → ceiling-doc); 1 deliberate DEFERRED (WebRTC → Flint).",
+  "verification": "typecheck pass; 201 tests pass (1 todo); verify:skills pass (189 exports); treeshake pass",
+  "debt": [
+    "C3 live Flint integration test owed when @prometheusags/frf-sdk is publishable (unit-tested with fake client now)",
+    "Second MergeStrategy impl needed if Flint chooses Automerge over Loro (additive via the port)",
+    "Incremental-query engine deferred to v2.x spike (ceiling-doc shipped)"
+  ],
+  "corrective_action": "Open PR for feat/v2-realtime-fabric-parity; run /opsx:verify + /opsx:archive per change; archive umbrella v2-0-realtime-fabric-parity.",
+  "recommended_next_step": "PR review/merge, then /opsx:archive; v2.1 = live Flint test + e2e example",
+  "phase_advance_recommended": true,
+  "created_at": "2026-06-21T03:30:00.000Z"
 }
