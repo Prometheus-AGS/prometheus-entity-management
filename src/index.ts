@@ -45,6 +45,20 @@ export {
 } from "./merge";
 export type { MergeStrategy, MergeContext } from "./merge";
 
+// ── 2.0 Agent protocol ingestion (AG-UI → graph) ─────────────────────────
+export {
+  applyAgUiSnapshot,
+  applyAgUiDelta,
+  applyJsonPatch,
+} from "./agent";
+export type {
+  AgUiStateSnapshotEvent,
+  AgUiStateDeltaEvent,
+  AgUiStateMapping,
+  ApplyAgUiOptions,
+  JsonPatchOp,
+} from "./agent";
+
 // ── Lint: Component→Hook→Store layering rule (copyable flat-config) ───────
 export { prometheusEntityLayeringRule } from "./lint/layering-rule";
 export type { LayeringRuleOptions, FlatConfigEntry } from "./lint/layering-rule";
@@ -257,6 +271,20 @@ export type {
   ElectricTableConfig,
   UseLocalFirstResult,
 } from "./adapters/electricsql";
+
+// ── Flint Realtime Fabric adapter (v2.0) ──────────────────────────────────
+export {
+  createFlintAdapter,
+  publishFlintMutation,
+} from "./adapters/flint";
+export type {
+  FlintClientLike,
+  FlintEntityEvent,
+  FlintEntityQuery,
+  FlintEntityRecord,
+  FlintCheckpointStore,
+  CreateFlintAdapterOptions,
+} from "./adapters/flint";
 
 // ── Surreal live (realtime) ───────────────────────────────────────────────
 export { createSurrealLiveAdapter } from "./adapters/surreal-live";
