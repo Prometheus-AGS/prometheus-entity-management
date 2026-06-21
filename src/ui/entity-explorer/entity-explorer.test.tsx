@@ -92,15 +92,17 @@ describe("EntityExplorerPanel", () => {
     expect(panel).toBeTruthy();
   });
 
-  it("panel contains exactly 4 tabs", () => {
+  it("panel contains all six tabs", () => {
     render(<Wrapper><EntityExplorerFAB /><EntityExplorerPanel /></Wrapper>);
     fireEvent.click(document.body.querySelector(".ee-fab") as HTMLButtonElement);
     const tabs = document.body.querySelectorAll('[role="tab"]');
-    expect(tabs).toHaveLength(4);
+    expect(tabs).toHaveLength(6);
     const labels = Array.from(tabs).map((t) => t.textContent);
     expect(labels).toContain("Entities");
     expect(labels).toContain("Patches");
     expect(labels).toContain("Events");
+    expect(labels).toContain("Timeline");
+    expect(labels).toContain("Graph");
     expect(labels).toContain("Performance");
   });
 
@@ -109,9 +111,32 @@ describe("EntityExplorerPanel", () => {
     fireEvent.click(document.body.querySelector(".ee-fab") as HTMLButtonElement);
     // Entities tab is active by default; other panels should have data-hidden="true"
     const panels = document.body.querySelectorAll('[role="tabpanel"]');
-    expect(panels).toHaveLength(4); // all mounted
+    expect(panels).toHaveLength(6); // all mounted (entities, patches, events, timeline, graph, performance)
     const hidden = Array.from(panels).filter((p) => p.getAttribute("data-hidden") === "true");
-    expect(hidden).toHaveLength(3); // 3 inactive
+    expect(hidden).toHaveLength(5); // 5 inactive
+  });
+
+  it("renders the Timeline tab (C5) with snapshot export/import controls", () => {
+    render(<Wrapper><EntityExplorerFAB /><EntityExplorerPanel /></Wrapper>);
+    fireEvent.click(document.body.querySelector(".ee-fab") as HTMLButtonElement);
+    const tabs = document.body.querySelectorAll('[role="tab"]');
+    const timelineTab = Array.from(tabs).find((t) => t.textContent === "Timeline")!;
+    expect(timelineTab).toBeTruthy();
+    fireEvent.click(timelineTab);
+    expect(timelineTab.getAttribute("aria-selected")).toBe("true");
+    const panel = document.body.querySelector("#ee-panel-timeline")!;
+    expect(panel.textContent).toMatch(/Export snapshot/);
+    expect(panel.textContent).toMatch(/Import snapshot/);
+  });
+
+  it("renders the Graph tab (C6)", () => {
+    render(<Wrapper><EntityExplorerFAB /><EntityExplorerPanel /></Wrapper>);
+    fireEvent.click(document.body.querySelector(".ee-fab") as HTMLButtonElement);
+    const tabs = document.body.querySelectorAll('[role="tab"]');
+    const graphTab = Array.from(tabs).find((t) => t.textContent === "Graph")!;
+    expect(graphTab).toBeTruthy();
+    fireEvent.click(graphTab);
+    expect(graphTab.getAttribute("aria-selected")).toBe("true");
   });
 
   it("clicking a tab activates it and deactivates others", () => {

@@ -1,0 +1,266 @@
+{
+  "phase": "phase-v2-realtime-fabric-parity",
+  "generated_at": "2026-06-21T00:30:00.000Z",
+  "research_budget": {
+    "max_queries_per_tier": 8,
+    "max_minutes": 20,
+    "queries_used": {
+      "tier1_github": 2,
+      "tier2_docs": 0,
+      "tier3_registry": 14,
+      "tier4_web": 4
+    }
+  },
+  "gaps_addressed": [
+    "GAP-1 Flint Realtime Fabric integration",
+    "GAP-2 CRDT / conflict resolution",
+    "GAP-3 Incremental / differential query evaluation",
+    "GAP-4 Agent protocol ingestion (AG-UI / A2A / A2UI)",
+    "GAP-5 Time-travel & richer DevTools",
+    "GAP-6 SQLite / Tauri on-device persistence",
+    "GAP-7 Strict layering enforcement"
+  ],
+  "candidates": [
+    {
+      "id": "cand-001",
+      "name": "@prometheusags/frf-entity-management (Flint entity-management SDK)",
+      "kind": "library",
+      "repo_url": "file:///Users/gqadonis/Projects/prometheus/flint-realtime-fabric/sdks/entity-management",
+      "registry": "none",
+      "fit_for_gap": "GAP-1 Flint Realtime Fabric integration",
+      "verdict": "adapt",
+      "coverage_estimate": 0.7,
+      "license": "proprietary (internal workspace)",
+      "maintenance": { "last_release": "2026-06-19", "stars": null, "open_issues": null },
+      "evidence": [
+        { "tier": 1, "source_url": "file://flint-realtime-fabric/sdks/entity-management/src/adapter.ts", "claim": "Flint already ships a RealtimeAdapter class with watchEntities(query): AsyncIterable<EntityEvent> and mutateEntity(record) — a clean entity-shaped seam that JSON-decodes the envelope payload and does NOT leak proto/tonic types." },
+        { "tier": 1, "source_url": "file://flint-realtime-fabric/sdks/entity-management/src/types.ts", "claim": "EntityEvent shape is {entityType, entityId, tenantId, channelId, data, offset, correlationId} — maps near-1:1 to our EntityChange/ChangeSet contract." },
+        { "tier": 3, "source_url": "npm:@prometheusags/frf-sdk", "claim": "frf-sdk is NOT published to npm (workspace:* dependency only); Flint is at Phase 0 with proto-v1 unfrozen." }
+      ],
+      "risks": [
+        "frf-sdk proto-v1 is unfrozen — depend on the entity-management facade (EntityEvent), never on generated proto types.",
+        "Not on npm — consume via local workspace link or a published preview; our published package must NOT hard-depend on it (peer/optional only).",
+        "offset is bigint — needs a checkpoint-store mapping to our adapter's resume semantics."
+      ],
+      "decision_rationale": "GAP-1 is a bridge, not a from-scratch build. Build createFlintAdapter() in OUR repo that wraps the Flint RealtimeAdapter's AsyncIterable into our ChangeSet stream feeding RealtimeManager, against our stable RealtimeAdapter contract + the EntityEvent shim. frf-sdk stays an optional peer dep so proto churn never breaks our published build."
+    },
+    {
+      "id": "cand-002",
+      "name": "loro-crdt",
+      "kind": "library",
+      "repo_url": "https://github.com/loro-dev/loro",
+      "registry": "npm",
+      "fit_for_gap": "GAP-2 CRDT / conflict resolution (reference impl behind MergeStrategy port)",
+      "verdict": "adopt",
+      "coverage_estimate": 0.8,
+      "license": "MIT",
+      "maintenance": { "last_release": "2026-06-21", "stars": 5000, "open_issues": null, "version": "1.13.5" },
+      "evidence": [
+        { "tier": 3, "source_url": "npm:loro-crdt", "claim": "v1.13.5, MIT, updated 2026-06-21 (today) — actively maintained, past 1.0." },
+        { "tier": 4, "source_url": "https://www.pkgpulse.com/guides/yjs-vs-automerge-vs-loro-crdt-libraries-2026", "claim": "Loro leads crdt-benchmarks in every category except WASM load; Fugue algorithm (maximal non-interleaving); movable Tree CRDT + LWW Map fit entity graphs; 2-5x smaller encoding." },
+        { "tier": 4, "source_url": "https://loro.dev/docs/performance", "claim": "Rust core with JS bindings; List/LWW-Map/Tree/Text data types — LWW-Map maps directly onto our entity field model." }
+      ],
+      "risks": [
+        "WASM load cost on first use (mitigate: lazy dynamic import, only when a CRDT entity type is registered).",
+        "Youngest ecosystem (~12K weekly downloads) vs Yjs — fewer community bindings.",
+        "Flint's own CRDT engine choice (Loro vs Automerge) is undecided; aligning reduces double-merge risk — track that decision (Q2)."
+      ],
+      "decision_rationale": "Best-performing CRDT with a movable Tree + LWW-Map that maps onto entity-graph semantics, and Rust-core aligns with Flint's Rust fabric (likely same engine). Adopt as the ONE reference MergeStrategy impl behind a pluggable port — do not hard-wire."
+    },
+    {
+      "id": "cand-003",
+      "name": "@automerge/automerge",
+      "kind": "library",
+      "repo_url": "https://github.com/automerge/automerge",
+      "registry": "npm",
+      "fit_for_gap": "GAP-2 CRDT / conflict resolution (alternative engine)",
+      "verdict": "reference",
+      "coverage_estimate": 0.6,
+      "license": "MIT",
+      "maintenance": { "last_release": "2026-06-19", "stars": 4000, "open_issues": null, "version": "3.2.6" },
+      "evidence": [
+        { "tier": 3, "source_url": "npm:@automerge/automerge", "claim": "v3.2.6, MIT, updated 2026-06-19 — healthy." },
+        { "tier": 4, "source_url": "https://www.pkgpulse.com/guides/yjs-vs-automerge-vs-loro-crdt-libraries-2026", "claim": "Automerge trades raw performance for a richer Git-like change-history model; ~85K weekly downloads." }
+      ],
+      "risks": ["Slower than Loro in benchmarks; heavier history model than entity-graph LWW needs."],
+      "decision_rationale": "Reference, not adopt. Its Git-like history is interesting for time-travel devtools (GAP-5) but overkill for entity merge. Keep as the second MergeStrategy impl if Flint picks Automerge."
+    },
+    {
+      "id": "cand-004",
+      "name": "yjs",
+      "kind": "library",
+      "repo_url": "https://github.com/yjs/yjs",
+      "registry": "npm",
+      "fit_for_gap": "GAP-2 CRDT / conflict resolution (ecosystem-default fallback)",
+      "verdict": "reference",
+      "coverage_estimate": 0.5,
+      "license": "MIT",
+      "maintenance": { "last_release": "2026-05-28", "stars": 17000, "open_issues": null, "version": "13.6.31" },
+      "evidence": [
+        { "tier": 3, "source_url": "npm:yjs", "claim": "v13.6.31, MIT — the production default (~920K weekly downloads, 17K stars)." },
+        { "tier": 4, "source_url": "https://www.pkgpulse.com/guides/yjs-vs-automerge-vs-loro-crdt-libraries-2026", "claim": "Largest ecosystem of bindings/providers; no-WASM (smaller bundle); second overall in benchmarks." }
+      ],
+      "risks": ["Y.Map/Y.Array model is text/collab-document-oriented, not entity-graph-native — more impedance with our type:id:field shape than Loro's LWW-Map."],
+      "decision_rationale": "Reference. Strongest ecosystem and bundle story, but its data model fits collaborative documents better than a normalized entity graph. The MergeStrategy port keeps the door open without committing."
+    },
+    {
+      "id": "cand-005",
+      "name": "@ag-ui/core + @ag-ui/client",
+      "kind": "library",
+      "repo_url": "https://github.com/ag-ui-protocol/ag-ui",
+      "registry": "npm",
+      "fit_for_gap": "GAP-4 Agent protocol ingestion (AG-UI / A2A / A2UI)",
+      "verdict": "adopt",
+      "coverage_estimate": 0.85,
+      "license": "MIT (per ag-ui-protocol/ag-ui repo)",
+      "maintenance": { "last_release": "2026-06-12", "stars": null, "open_issues": null, "version": "0.0.57" },
+      "evidence": [
+        { "tier": 3, "source_url": "npm:@ag-ui/core", "claim": "v0.0.57, updated 2026-06-12 — actively developed but pre-1.0 (0.0.x), expect churn." },
+        { "tier": 4, "source_url": "https://docs.ag-ui.com/sdk/js/core/events", "claim": "STATE_SNAPSHOT = full agent state; STATE_DELTA = partial update via JSON Patch (RFC 6902). 17 typed event types. AgentSubscriber consumption pattern with runtime validation + TS inference." },
+        { "tier": 4, "source_url": "https://www.copilotkit.ai/ag-ui", "claim": "Adopted by Google, LangChain, AWS, Microsoft, Mastra, PydanticAI — the de-facto agent-UI state protocol." }
+      ],
+      "risks": [
+        "0.0.x version — breaking changes likely; pin and isolate behind our own bridge module.",
+        "Keep @ag-ui/* an OPTIONAL peer dep so non-agentic users don't pay the bytes.",
+        "A2A / A2UI are separate from AG-UI — AG-UI covers agent→UI; A2A (Agent2Agent) is agent↔agent and is Flint's frf-agentproto concern, consumed via the Flint adapter, not this bridge."
+      ],
+      "decision_rationale": "ADOPT for types/events, BUILD the thin bridge. STATE_DELTA is RFC-6902 JSON Patch and our patchEntity() is already JSON-Patch-shaped — applyAgUiDelta(graph, event) is a small, high-leverage module. Use @ag-ui/core for the typed event vocabulary; do not take a hard runtime dependency."
+    },
+    {
+      "id": "cand-006",
+      "name": "fast-json-patch",
+      "kind": "library",
+      "repo_url": "https://github.com/Starcounter-Jack/JSON-Patch",
+      "registry": "npm",
+      "fit_for_gap": "GAP-4 apply RFC-6902 JSON Patch deltas (AG-UI STATE_DELTA) to graph entities",
+      "verdict": "adopt",
+      "coverage_estimate": 0.9,
+      "license": "MIT",
+      "maintenance": { "last_release": "2022-06-17", "stars": 4500, "open_issues": null, "version": "3.1.1" },
+      "evidence": [
+        { "tier": 3, "source_url": "npm:fast-json-patch", "claim": "v3.1.1, MIT — stable but last release 2022 (mature/feature-complete, not abandoned-risk for a frozen RFC)." },
+        { "tier": 4, "source_url": "https://docs.ag-ui.com/sdk/js/core/events", "claim": "AG-UI STATE_DELTA is RFC-6902 — a standard, stable spec, so a mature applier is acceptable." }
+      ],
+      "risks": ["Last release 2022 — for any non-trivial divergence prefer the applier already bundled in @ag-ui/client; evaluate both before adopting."],
+      "decision_rationale": "Adopt as the RFC-6902 applier IF @ag-ui/client does not already expose one we can reuse. Tiny, standard, stable. Spec stage should confirm whether to reuse AG-UI's internal applier instead (preferred — one fewer dep)."
+    },
+    {
+      "id": "cand-007",
+      "name": "@electric-sql/d2ts (differential dataflow for TS)",
+      "kind": "library",
+      "repo_url": "https://github.com/electric-sql/d2ts",
+      "registry": "npm",
+      "fit_for_gap": "GAP-3 Incremental / differential query evaluation",
+      "verdict": "reference",
+      "coverage_estimate": 0.5,
+      "license": "Apache-2.0",
+      "maintenance": { "last_release": "2026-01-30", "stars": null, "open_issues": null, "version": "0.1.8" },
+      "evidence": [
+        { "tier": 3, "source_url": "npm:@electric-sql/d2ts", "claim": "v0.1.8, Apache-2.0, last release 2026-01-30 — very early (0.1.x), ElectricSQL-backed." },
+        { "tier": 4, "source_url": "https://tanstack.com/blog/tanstack-db-0.5-query-driven-sync", "claim": "d2ts is the differential-dataflow engine powering TanStack DB's sub-ms incremental live queries; updating 1 row in a sorted 100k collection ≈ 0.7ms." }
+      ],
+      "risks": [
+        "0.1.x — pre-production, API unstable; adopting now couples us to an early dependency.",
+        "Integrating differential dataflow under our existing view/evaluator is a deep architectural change, not a drop-in."
+      ],
+      "decision_rationale": "Reference only for v2.0. The proven path TODAY is documented scale ceiling + @tanstack/react-virtual (already a dependency). Schedule a v2.x research spike to evaluate d2ts (or TanStack DB's live-query engine directly) once it stabilizes. Do not block v2.0 on it."
+    },
+    {
+      "id": "cand-008",
+      "name": "@tauri-apps/plugin-sql",
+      "kind": "library",
+      "repo_url": "https://github.com/tauri-apps/plugins-workspace",
+      "registry": "npm",
+      "fit_for_gap": "GAP-6 SQLite / Tauri on-device persistence",
+      "verdict": "adopt",
+      "coverage_estimate": 0.8,
+      "license": "MIT OR Apache-2.0",
+      "maintenance": { "last_release": "2026-04-04", "stars": null, "open_issues": null, "version": "2.4.0" },
+      "evidence": [
+        { "tier": 3, "source_url": "npm:@tauri-apps/plugin-sql", "claim": "v2.4.0, MIT OR Apache-2.0, updated 2026-04-04 — official Tauri plugin, stable v2 line." },
+        { "tier": 1, "source_url": "file://flint-realtime-fabric/CLAUDE.md", "claim": "Flint targets Tauri (desktop) + web parity; on-device store is redb (Rust). SQLite via Tauri plugin is the natural JS-side persistence for the entity graph on desktop." }
+      ],
+      "risks": ["Tauri-only — needs a parallel browser adapter (PGlite already covers browser/wasm)."],
+      "decision_rationale": "Adopt to implement a GraphPersistenceAdapter over Tauri SQL for desktop. Our GraphPersistenceAdapter interface (get/set/remove) already abstracts storage — this is a new adapter, not a core change. Pair with existing PGlite adapter for web."
+    },
+    {
+      "id": "cand-009",
+      "name": "wa-sqlite",
+      "kind": "library",
+      "repo_url": "https://github.com/rhashimoto/wa-sqlite",
+      "registry": "npm",
+      "fit_for_gap": "GAP-6 browser-side SQLite (alternative to PGlite)",
+      "verdict": "reject",
+      "coverage_estimate": 0.3,
+      "license": "MIT",
+      "maintenance": { "last_release": "2024-01-05", "stars": 3000, "open_issues": null, "version": "1.0.0" },
+      "evidence": [
+        { "tier": 3, "source_url": "npm:wa-sqlite", "claim": "v1.0.0, last release 2024-01-05 — stable but we already ship a PGlite browser persistence adapter covering this need." }
+      ],
+      "risks": ["Redundant with existing PGlite adapter; adds a second wasm-SQL engine for no clear gain."],
+      "decision_rationale": "Reject. Browser SQL persistence is already covered by createPGlitePersistenceAdapter. No need for a second browser wasm engine. SQLite need is real only on Tauri/native — covered by cand-008."
+    },
+    {
+      "id": "cand-010",
+      "name": "TanStack DB (@tanstack/db)",
+      "kind": "framework",
+      "repo_url": "https://github.com/TanStack/db",
+      "registry": "npm",
+      "fit_for_gap": "GAP-3 incremental queries + competitive reference for normalized collections",
+      "verdict": "reference",
+      "coverage_estimate": 0.4,
+      "license": "MIT",
+      "maintenance": { "last_release": "2026-06-19", "stars": null, "open_issues": null, "version": "0.6.9" },
+      "evidence": [
+        { "tier": 3, "source_url": "npm:@tanstack/db", "claim": "v0.6.9, MIT, updated 2026-06-19 — active; 1.0 targeted ~Dec 2025/early 2026." },
+        { "tier": 4, "source_url": "https://tanstack.com/db/latest/docs/overview", "claim": "Normalized in-memory collections + d2ts live queries with sub-ms incremental updates and cross-collection joins — the closest competitor to our model." }
+      ],
+      "risks": ["TanStack-ecosystem-flavored; adopting wholesale would surrender our ecosystem-agnostic positioning (the moat)."],
+      "decision_rationale": "Reference, never adopt as a dependency. Study its live-query/collection ergonomics and d2ts integration to inform GAP-3, but our differentiator is transport-agnosticism + realtime-adapter breadth + AI surface, which TanStack DB does not have. Compete, don't consume."
+    },
+    {
+      "id": "cand-011",
+      "name": "Custom ESLint flat-config rule (no in-repo candidate)",
+      "kind": "pattern",
+      "repo_url": "",
+      "registry": "npm",
+      "fit_for_gap": "GAP-7 Strict layering enforcement (no useGraphStore in component files)",
+      "verdict": "adapt",
+      "coverage_estimate": 0.6,
+      "license": "n/a",
+      "maintenance": {},
+      "evidence": [
+        { "tier": 1, "source_url": "n/a", "claim": "No off-the-shelf plugin enforces 'no direct store import in component files' for our specific Component→Hook→Store rule; this is project-specific architecture." }
+      ],
+      "risks": ["A bespoke lint rule is maintenance we own; keep it minimal (one no-restricted-imports-style rule may suffice before writing a custom AST rule)."],
+      "decision_rationale": "Adapt: start with eslint no-restricted-imports (ban ./graph / useGraphStore in **/components/**, **/*.tsx that aren't hooks) before investing in a full custom plugin. Cheapest path to enforced layering. Promote to a published eslint-plugin-prometheus-entity only if the simple rule proves insufficient."
+    }
+  ],
+  "build_required": [
+    {
+      "need": "createFlintAdapter() — wrap Flint frf-entity-management RealtimeAdapter.watchEntities() AsyncIterable into our ChangeSet stream + map mutateEntity() to graph writes, with offset↔checkpoint resume.",
+      "why_no_candidate": "The Flint SDK provides the spine transport (cand-001) but the translation into OUR RealtimeAdapter/ChangeSet contract + RealtimeManager coalescing is project-specific glue that must live in this repo.",
+      "capability_gap_id": "GAP-1"
+    },
+    {
+      "need": "MergeStrategy port — a pluggable seam at upsertEntity so conflict resolution (LWW default, Loro/Automerge/Yjs optional) is swappable per entity type.",
+      "why_no_candidate": "CRDT libs (cand-002/003/004) provide the merge math but the integration seam wiring CRDT docs to our type/id/field entity model and syncMetadata.origin is bespoke.",
+      "capability_gap_id": "GAP-2"
+    },
+    {
+      "need": "applyAgUiDelta(graph, event) + applyAgUiSnapshot — bridge AG-UI STATE_DELTA (JSON Patch) / STATE_SNAPSHOT into the graph's patches/entities layers, mapping agent state paths to type:id:field.",
+      "why_no_candidate": "AG-UI (cand-005) defines the events/types and JSON-Patch is appliable (cand-006), but the mapping of agent-state JSON paths onto our normalized entity graph is the novel, high-leverage integration.",
+      "capability_gap_id": "GAP-4"
+    },
+    {
+      "need": "Time-travel DevTools — wire the existing graph-actions action log + exportGraphSnapshot into the EntityExplorer panel as a timeline with state-before/after diff, snapshot import/export, and a graph-relationship visualization tab.",
+      "why_no_candidate": "Redux/TanStack DevTools are not embeddable into our Zustand-graph-shaped panel; the raw materials (action log, snapshot export, devtools-event-bus) already exist in-repo and only need a new panel surface.",
+      "capability_gap_id": "GAP-5"
+    },
+    {
+      "need": "GraphPersistenceAdapter over @tauri-apps/plugin-sql (SQLite) for desktop on-device persistence.",
+      "why_no_candidate": "cand-008 provides the SQL plugin; the adapter implementing our get/set/remove persistence contract over it is project glue.",
+      "capability_gap_id": "GAP-6"
+    }
+  ]
+}

@@ -34,6 +34,35 @@ export type {
   UseEntityQueryResult,
 } from "./hooks/use-entity-query";
 
+// ── 2.0 Merge strategies (pluggable conflict resolution) ─────────────────
+export {
+  registerMergeStrategy,
+  setDefaultMergeStrategy,
+  getMergeStrategy,
+  hasMergeStrategy,
+  lwwStrategy,
+  createLoroMergeStrategy,
+} from "./merge";
+export type { MergeStrategy, MergeContext } from "./merge";
+
+// ── 2.0 Agent protocol ingestion (AG-UI → graph) ─────────────────────────
+export {
+  applyAgUiSnapshot,
+  applyAgUiDelta,
+  applyJsonPatch,
+} from "./agent";
+export type {
+  AgUiStateSnapshotEvent,
+  AgUiStateDeltaEvent,
+  AgUiStateMapping,
+  ApplyAgUiOptions,
+  JsonPatchOp,
+} from "./agent";
+
+// ── Lint: Component→Hook→Store layering rule (copyable flat-config) ───────
+export { prometheusEntityLayeringRule } from "./lint/layering-rule";
+export type { LayeringRuleOptions, FlatConfigEntry } from "./lint/layering-rule";
+
 // ── Core graph ────────────────────────────────────────────────────────────
 export { useGraphStore } from "./graph";
 export type {
@@ -122,6 +151,18 @@ export { createDevtoolsEventBus, registerStore, getRegisteredStores } from "./de
 export type { DevtoolsEventBusOptions, DevtoolsEventBus, DevtoolsSourceFn, RegisteredStore } from "./devtools-event-bus";
 export { EntityExplorerFAB, EntityExplorerPanel, EntityExplorerProvider } from "./ui/entity-explorer";
 
+// ── True time-travel (rewind/replay the live graph) ──────────────────────
+export {
+  recordGraphSnapshot,
+  restoreGraphSnapshot,
+  restoreGraphSnapshotBySeq,
+  stepTimeTravel,
+  getTimeTravelState,
+  subscribeTimeTravel,
+  configureTimeTravel,
+} from "./devtools-time-travel";
+export type { TimeTravelSnapshot, TimeTravelState } from "./devtools-time-travel";
+
 // ── Hooks (REST) ──────────────────────────────────────────────────────────
 export {
   useEntity,
@@ -141,6 +182,8 @@ export {
   matchesSearch,
   checkCompleteness,
 } from "./view/evaluator";
+export { IncrementalView } from "./view/incremental";
+export type { IncrementalViewOptions } from "./view/incremental";
 export {
   toRestParams,
   toSQLClauses,
@@ -243,6 +286,20 @@ export type {
   UseLocalFirstResult,
 } from "./adapters/electricsql";
 
+// ── Flint Realtime Fabric adapter (v2.0) ──────────────────────────────────
+export {
+  createFlintAdapter,
+  publishFlintMutation,
+} from "./adapters/flint";
+export type {
+  FlintClientLike,
+  FlintEntityEvent,
+  FlintEntityQuery,
+  FlintEntityRecord,
+  FlintCheckpointStore,
+  CreateFlintAdapterOptions,
+} from "./adapters/flint";
+
 // ── Surreal live (realtime) ───────────────────────────────────────────────
 export { createSurrealLiveAdapter } from "./adapters/surreal-live";
 export type {
@@ -272,6 +329,15 @@ export type {
   PGlitePersistenceClient,
   CreatePGlitePersistenceAdapterOptions,
 } from "./adapters/pglite-persistence";
+
+// ── Tauri SQLite persistence adapter (v2.0) ───────────────────────────────
+export {
+  createTauriSqlPersistenceAdapter,
+} from "./adapters/tauri-sql-persistence";
+export type {
+  TauriSqlClient,
+  CreateTauriSqlPersistenceAdapterOptions,
+} from "./adapters/tauri-sql-persistence";
 
 // ── Schema generation from SQL (v1.3) ─────────────────────────────────────
 export {

@@ -1,14 +1,20 @@
 {
   "previous_phase": "phase-v1-npm-framework",
-  "active_phase": null,
-  "kbd_process_state": "idle",
-  "label": "KBD closed — v1.0 npm release track complete; no active phase",
+  "active_phase": "phase-v2-realtime-fabric-parity",
+  "kbd_process_state": "release-ready",
+  "label": "v2 realtime-fabric-parity — DELIVERED + PARITY PROVEN (G1-G5 closed); 2.2.0; 219 tests; PR #3; prepublish + npm dry-run green",
+  "parity_gaps_closed": "5/5 (Flint live, real Loro, incremental queries, true time-travel, real SQLite)",
   "next_pending_change": null,
-  "exact_next_command": "Run /kbd-assess when you start the next roadmap initiative.",
+  "pull_request": "https://github.com/Prometheus-AGS/prometheus-entity-management/pull/3",
+  "release_version": "2.2.0",
+  "exact_next_command": "Merge PR #3 into main, then `pnpm publish` (prepublishOnly + npm dry-run already green). Tag v2.2.0.",
   "plan_complete": true,
-  "execution_path": null,
-  "plan_path": null,
-  "openspec_umbrella": "openspec/changes/archive/2026-04-04-prometheus-v1-0-release",
+  "execution_dispatched": true,
+  "implementation_complete": true,
+  "branch": "feat/v2-realtime-fabric-parity",
+  "execution_path": ".kbd-orchestrator/phases/phase-v2-realtime-fabric-parity/execution.md",
+  "plan_path": ".kbd-orchestrator/phases/phase-v2-realtime-fabric-parity/plan.md",
+  "openspec_umbrella": "openspec/changes/archive/2026-06-21-v2-0-realtime-fabric-parity",
   "openspec_archive_recommended": false,
-  "updated_at": "2026-04-04T23:59:00.000Z"
+  "updated_at": "2026-06-21T03:45:00.000Z"
 }

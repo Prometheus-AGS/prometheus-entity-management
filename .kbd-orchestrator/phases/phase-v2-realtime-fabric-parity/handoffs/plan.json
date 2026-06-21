@@ -1,0 +1,17 @@
+{
+  "stage": "plan",
+  "phase": "phase-v2-realtime-fabric-parity",
+  "artifacts": ["plan.md"],
+  "backend": "openspec",
+  "umbrella_change": "v2-0-realtime-fabric-parity",
+  "change_count": 8,
+  "scope_decision": "User confirmed ALL FOUR TRACKS in v2.0 (2026-06-21).",
+  "summary": "8 OpenSpec changes emitted under umbrella v2-0-realtime-fabric-parity, dependency-ordered. Critical path: C1 (CRDT MergeStrategy port) unblocks C2 (AG-UI bridge) and C3 (Flint adapter) — the named headline priorities. Round 1 (parallel, no deps): C1, C4 (Tauri/SQLite), C5 (time-travel devtools), C7 (incremental spike, gated), C8 (eslint layering). Round 2: C2←C1, C3←C1, C6←C5. First change to apply: v2-crdt-merge-strategy-port (foundation). All integration libs ship as OPTIONAL peer deps (loro-crdt, @ag-ui/*, frf-sdk, @tauri-apps/plugin-sql) — core bundle stays zustand+immer. Every export-touching change (C1-C4) must run refresh:exports + verify:skills (CLAUDE.md immutable gate). C7 is the lone schedule risk: gated spike that may slip to v2.1 with a ceiling-doc floor deliverable.",
+  "first_change_to_apply": "v2-crdt-merge-strategy-port",
+  "execution_rounds": {
+    "round_1_parallel": ["v2-crdt-merge-strategy-port", "v2-tauri-sqlite-persistence", "v2-devtools-time-travel", "v2-incremental-query-spike", "v2-eslint-layering-rule"],
+    "round_2_parallel": ["v2-agui-ingestion-bridge", "v2-flint-realtime-adapter", "v2-devtools-graph-visualization"]
+  },
+  "recommended_next_stage": "execute",
+  "created_at": "2026-06-21T01:00:00.000Z"
+}

@@ -2,6 +2,8 @@ import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import type { EntityError } from "./errors";
+import { getMergeStrategy } from "./merge/registry";
+import type { MergeContext } from "./merge/types";
 
 /** Logical entity kind (e.g. `"Post"`). Used to partition the normalized graph. */
 export type EntityType = string;
@@ -270,15 +272,21 @@ export const useGraphStore = create<GraphState>()(
 
       upsertEntity: (type, id, data) => set((s) => {
         if (!s.entities[type]) s.entities[type] = {};
-        s.entities[type][id] = { ...(s.entities[type][id] ?? {}), ...data };
         const key = ek(type, id);
+        // Route through the registered MergeStrategy (default = LWW shallow merge,
+        // identical to the historical `{ ...prev, ...data }` behavior).
+        const strategy = getMergeStrategy(type);
+        const ctx: MergeContext = { type, id, origin: s.syncMetadata[key]?.origin ?? "server", updatedAt: Date.now() };
+        s.entities[type][id] = strategy(s.entities[type][id], data, ctx);
         if (!s.syncMetadata[key]) s.syncMetadata[key] = defaultSyncMetadata();
       }),
       upsertEntities: (type, entries) => set((s) => {
         if (!s.entities[type]) s.entities[type] = {};
+        const strategy = getMergeStrategy(type);
         for (const { id, data } of entries) {
-          s.entities[type][id] = { ...(s.entities[type][id] ?? {}), ...data };
           const key = ek(type, id);
+          const ctx: MergeContext = { type, id, origin: s.syncMetadata[key]?.origin ?? "server", updatedAt: Date.now() };
+          s.entities[type][id] = strategy(s.entities[type][id], data, ctx);
           if (!s.syncMetadata[key]) s.syncMetadata[key] = defaultSyncMetadata();
         }
       }),

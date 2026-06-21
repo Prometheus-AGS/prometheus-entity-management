@@ -1,0 +1,77 @@
+{
+  "phase": "phase-v2-realtime-fabric-parity",
+  "last_updated": "2026-06-21T03:00:00.000Z",
+  "last_updated_by": "claude-code",
+  "assessment_complete": true,
+  "analyze_complete": true,
+  "plan_complete": true,
+  "execution_dispatched": true,
+  "reflection_complete": true,
+  "reflection_type": "delivery",
+  "umbrella_change": "v2-0-realtime-fabric-parity",
+  "backend": "openspec",
+  "branch": "feat/v2-realtime-fabric-parity",
+  "changes_total": 8,
+  "changes_completed": 8,
+  "verification": {
+    "typecheck": "pass",
+    "tests": "201 passed, 1 todo",
+    "verify_skills": "pass (189 exports)",
+    "treeshake": "pass"
+  },
+  "changes": {
+    "v2-crdt-merge-strategy-port": {
+      "status": "DONE", "tasks_total": 10, "tasks_done": 10,
+      "started_by": "claude-code", "completed_by": "claude-code",
+      "commit": "317c572", "model_class": "frontier", "round": 1,
+      "last_task_completed": "verify:skills + typecheck + tests green"
+    },
+    "v2-tauri-sqlite-persistence": {
+      "status": "DONE", "tasks_total": 9, "tasks_done": 9,
+      "started_by": "claude-code", "completed_by": "claude-code",
+      "commit": "bebad5f", "model_class": "medium", "round": 1,
+      "last_task_completed": "7 tests pass; ledger updated"
+    },
+    "v2-devtools-time-travel": {
+      "status": "DONE", "tasks_total": 8, "tasks_done": 8,
+      "started_by": "claude-code", "completed_by": "claude-code",
+      "commit": "bf1d005", "model_class": "frontier", "round": 1,
+      "last_task_completed": "Timeline tab + export/import; tab tests updated"
+    },
+    "v2-incremental-query-spike": {
+      "status": "DONE", "tasks_total": 8, "tasks_done": 8,
+      "started_by": "claude-code", "completed_by": "claude-code",
+      "commit": "3bfecf2", "model_class": "frontier", "round": 1, "gated": true,
+      "decision": "ceiling-doc (defer d2ts to v2.x)",
+      "last_task_completed": "benchmark + docs/incremental-query-ceiling.md"
+    },
+    "v2-eslint-layering-rule": {
+      "status": "DONE", "tasks_total": 5, "tasks_done": 5,
+      "started_by": "claude-code", "completed_by": "claude-code",
+      "commit": "bebad5f", "model_class": "small", "round": 1,
+      "last_task_completed": "rule helper + docs + 4 tests"
+    },
+    "v2-agui-ingestion-bridge": {
+      "status": "DONE", "tasks_total": 10, "tasks_done": 10,
+      "started_by": "claude-code", "completed_by": "claude-code",
+      "commit": "3bfecf2", "model_class": "frontier", "round": 2,
+      "depends_on": ["v2-crdt-merge-strategy-port"],
+      "last_task_completed": "applyAgUiSnapshot/Delta + RFC-6902 applier; 14 tests"
+    },
+    "v2-flint-realtime-adapter": {
+      "status": "DONE", "tasks_total": 10, "tasks_done": 10,
+      "started_by": "claude-code", "completed_by": "claude-code",
+      "commit": "3bfecf2", "model_class": "frontier", "round": 2,
+      "depends_on": ["v2-crdt-merge-strategy-port"],
+      "note": "Built against minimal-surface Flint facade; live frf-sdk integration test deferred until frf-sdk is reachable (FLINT DEP GATE)",
+      "last_task_completed": "createFlintAdapter + checkpoint resume; 7 tests"
+    },
+    "v2-devtools-graph-visualization": {
+      "status": "DONE", "tasks_total": 6, "tasks_done": 6,
+      "started_by": "claude-code", "completed_by": "claude-code",
+      "commit": "bf1d005", "model_class": "medium", "round": 2,
+      "depends_on": ["v2-devtools-time-travel"],
+      "last_task_completed": "Graph tab (SVG radial) + node cap notice"
+    }
+  }
+}

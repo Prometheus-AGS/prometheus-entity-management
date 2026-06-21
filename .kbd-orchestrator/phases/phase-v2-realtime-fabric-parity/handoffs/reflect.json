@@ -1,0 +1,19 @@
+{
+  "stage": "reflect",
+  "phase": "phase-v2-realtime-fabric-parity",
+  "type": "delivery",
+  "artifacts": ["reflection.md"],
+  "is_phase_close": true,
+  "implementation_status": "8/8 changes DELIVERED on feat/v2-realtime-fabric-parity",
+  "goals": "6 MET (Flint, AG-UI, CRDT, SQLite/Tauri, devtools, layering); 1 deliberate PARTIAL (C7 incremental → ceiling-doc); 1 deliberate DEFERRED (WebRTC → Flint).",
+  "verification": "typecheck pass; 201 tests pass (1 todo); verify:skills pass (189 exports); treeshake pass",
+  "debt": [
+    "C3 live Flint integration test owed when @prometheusags/frf-sdk is publishable (unit-tested with fake client now)",
+    "Second MergeStrategy impl needed if Flint chooses Automerge over Loro (additive via the port)",
+    "Incremental-query engine deferred to v2.x spike (ceiling-doc shipped)"
+  ],
+  "corrective_action": "Open PR for feat/v2-realtime-fabric-parity; run /opsx:verify + /opsx:archive per change; archive umbrella v2-0-realtime-fabric-parity.",
+  "recommended_next_step": "PR review/merge, then /opsx:archive; v2.1 = live Flint test + e2e example",
+  "phase_advance_recommended": true,
+  "created_at": "2026-06-21T03:30:00.000Z"
+}

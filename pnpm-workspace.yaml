@@ -2,4 +2,7 @@ packages:
   - "examples/vite-app"
   - "examples/nextjs-app"
 allowBuilds:
+  better-sqlite3: false
   esbuild: true
+  msw: false
+  sharp: false
