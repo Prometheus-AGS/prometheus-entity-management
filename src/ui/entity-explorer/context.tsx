@@ -12,7 +12,7 @@ import { createDevtoolsEventBus, type DevtoolsEventBus } from "../../devtools-ev
 
 export interface EntityExplorerState {
   open: boolean;
-  activeTab: "entities" | "patches" | "events" | "performance";
+  activeTab: "entities" | "patches" | "events" | "performance" | "timeline" | "graph";
   selectedEntityId: string | null;
   selectedEntityType: string | null;
 }

@@ -5,6 +5,8 @@ import { EntitiesTab } from "./tabs/entities-tab";
 import { PatchesTab } from "./tabs/patches-tab";
 import { EventsTab } from "./tabs/events-tab";
 import { PerformanceTab } from "./tabs/performance-tab";
+import { TimelineTab } from "./tabs/timeline-tab";
+import { GraphTab } from "./tabs/graph-tab";
 
 type Tab = EntityExplorerState["activeTab"];
 
@@ -12,6 +14,8 @@ const TABS: { id: Tab; label: string }[] = [
   { id: "entities", label: "Entities" },
   { id: "patches", label: "Patches" },
   { id: "events", label: "Events" },
+  { id: "timeline", label: "Timeline" },
+  { id: "graph", label: "Graph" },
   { id: "performance", label: "Performance" },
 ];
 
@@ -112,6 +116,8 @@ export function EntityExplorerPanel({ forceOpen = false }: EntityExplorerPanelPr
             {tab.id === "entities" && <EntitiesTab />}
             {tab.id === "patches" && <PatchesTab />}
             {tab.id === "events" && <EventsTab />}
+            {tab.id === "timeline" && <TimelineTab />}
+            {tab.id === "graph" && <GraphTab />}
             {tab.id === "performance" && <PerformanceTab />}
           </div>
         ))}
