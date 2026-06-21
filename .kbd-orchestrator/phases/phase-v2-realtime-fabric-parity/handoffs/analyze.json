@@ -1,0 +1,22 @@
+{
+  "stage": "analyze",
+  "phase": "phase-v2-realtime-fabric-parity",
+  "artifacts": ["analysis.md", "library-candidates.json", "decision-log.md"],
+  "summary": "11 candidates across 7 gaps; 5 build_required glue items. Key adopt verdicts: ADAPT Flint frf-entity-management facade (GAP-1 is a BRIDGE not a build — Flint already ships RealtimeAdapter.watchEntities() exposing plain EntityEvent, no proto leak; proto-freeze is NOT a blocker; Flint = optional peer dep). ADOPT Loro 1.13.5 as the one reference impl behind a pluggable MergeStrategy port (GAP-2; Automerge/Yjs = reference). ADOPT @ag-ui/core types (optional peer) + BUILD applyAgUiDelta bridge — STATE_DELTA is RFC-6902 JSON Patch and patchEntity() is already JSON-Patch-shaped, the highest-leverage/lowest-effort win (GAP-4). ADOPT @tauri-apps/plugin-sql 2.4.0 + build adapter, REJECT wa-sqlite (PGlite already covers browser) (GAP-6). REFERENCE-only d2ts/TanStack DB — defer incremental queries to a v2.x spike, ship scale-ceiling + react-virtual for v2.0 (GAP-3). BUILD time-travel devtools on existing graph-actions log + snapshot-export + event-bus, add graph-viz tab (GAP-5). eslint no-restricted-imports for layering (GAP-7). DEFER WebRTC to Flint (GAP-8). All five assessment open questions Q1-Q5 RESOLVED.",
+  "adopt_verdicts": {
+    "GAP-1": "adapt: Flint frf-entity-management facade (optional peer) + build createFlintAdapter()",
+    "GAP-2": "adopt: loro-crdt behind built MergeStrategy port",
+    "GAP-3": "reference only: defer to v2.x spike; ceiling+virtualization for v2.0",
+    "GAP-4": "adopt: @ag-ui/core types + build applyAgUiDelta bridge",
+    "GAP-5": "build: extend EntityExplorer (time-travel + graph-viz)",
+    "GAP-6": "adopt: @tauri-apps/plugin-sql + build adapter; reject wa-sqlite",
+    "GAP-7": "adapt: eslint no-restricted-imports"
+  },
+  "open_questions": [
+    "Scope/sequencing: ship all 4 tracks in v2.0, or Track A (Agent+Fabric) as v2.0 with B/C/D as v2.1+? (recommend Track A as v2.0 headline)",
+    "Confirm @ag-ui/* and frf-sdk as optional peer deps (matches @tanstack/react-table precedent)",
+    "Spec detail: reuse @ag-ui/client's bundled JSON-Patch applier vs. add fast-json-patch"
+  ],
+  "recommended_next_stage": "plan",
+  "created_at": "2026-06-21T00:30:00.000Z"
+}

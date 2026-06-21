@@ -1,0 +1,15 @@
+{
+  "stage": "assess",
+  "phase": "phase-v2-realtime-fabric-parity",
+  "artifact": "assessment.md",
+  "summary": "Library is competitive-to-leading on normalized cross-view graph + transport-agnostic registry + realtime adapter breadth + AI tool surface. Behind the 2026 frontier on: (1) Flint Realtime Fabric integration (no frf adapter — but Flint proto is unfrozen, build against stable RealtimeAdapter contract + shim), (2) CRDT/conflict merge (last-writer-wins only; need pluggable MergeStrategy port), (3) incremental/differential query eval (TanStack DB d2ts gives sub-ms at 100k rows; we re-derive O(n)), (4) AG-UI/A2A/A2UI agent-state ingestion (we export graph→LLM but don't ingest agent JSON-Patch deltas — yet patchEntity is literally JSON-Patch-shaped, making this a low-effort/high-differentiation win), (5) time-travel devtools (live inspector is good; no time-travel/diff-timeline/graph-viz despite action-log + snapshot-export raw materials existing), (6) SQLite/Tauri-IPC persistence (only PGlite/Electric today), (7) unenforced layering. Defer direct WebRTC/P2P (owned by Flint). Open questions Q1-Q5 (Flint freeze sequencing, CRDT engine choice, incremental-query approach, AG-UI scope, devtools host) need decisions before planning.",
+  "open_questions": [
+    "Q1: Build Flint adapter against unfrozen proto or against stable RealtimeAdapter contract + envelope shim now?",
+    "Q2: Mirror Flint's Loro-vs-Automerge CRDT choice or stay engine-agnostic via MergeStrategy port?",
+    "Q3: Differential view maintenance, adopt d2ts, or document scale ceiling + lean on virtualization for v2.0?",
+    "Q4: Full AG-UI client or just state-snapshot/JSON-Patch ingestion bridge into the graph?",
+    "Q5: Extend EntityExplorer to time-travel or align to unified TanStack DevTools host?"
+  ],
+  "recommended_next_stage": "analyze",
+  "created_at": "2026-06-21T00:00:00.000Z"
+}

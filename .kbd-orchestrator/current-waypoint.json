@@ -1,14 +1,15 @@
 {
   "previous_phase": "phase-v1-npm-framework",
-  "active_phase": null,
-  "kbd_process_state": "idle",
-  "label": "KBD closed — v1.0 npm release track complete; no active phase",
-  "next_pending_change": null,
-  "exact_next_command": "Run /kbd-assess when you start the next roadmap initiative.",
+  "active_phase": "phase-v2-realtime-fabric-parity",
+  "kbd_process_state": "execution-ready",
+  "label": "v2 realtime-fabric-parity — execution dispatched; backend=openspec via /kbd-apply, 8 changes PENDING",
+  "next_pending_change": "v2-crdt-merge-strategy-port",
+  "exact_next_command": "/kbd-apply v2-crdt-merge-strategy-port  (Round 1 foundation; create feat/v2-realtime-fabric-parity branch first — BRANCH GATE).",
   "plan_complete": true,
-  "execution_path": null,
-  "plan_path": null,
-  "openspec_umbrella": "openspec/changes/archive/2026-04-04-prometheus-v1-0-release",
+  "execution_dispatched": true,
+  "execution_path": ".kbd-orchestrator/phases/phase-v2-realtime-fabric-parity/execution.md",
+  "plan_path": ".kbd-orchestrator/phases/phase-v2-realtime-fabric-parity/plan.md",
+  "openspec_umbrella": "openspec/changes/v2-0-realtime-fabric-parity",
   "openspec_archive_recommended": false,
-  "updated_at": "2026-04-04T23:59:00.000Z"
+  "updated_at": "2026-06-21T01:30:00.000Z"
 }

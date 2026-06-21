@@ -47,11 +47,15 @@
   },
   "peerDependencies": {
     "@tanstack/react-table": ">=8.0.0",
+    "loro-crdt": ">=1.0.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
   },
   "peerDependenciesMeta": {
     "@tanstack/react-table": {
+      "optional": true
+    },
+    "loro-crdt": {
       "optional": true
     }
   },

@@ -34,6 +34,17 @@ export type {
   UseEntityQueryResult,
 } from "./hooks/use-entity-query";
 
+// ── 2.0 Merge strategies (pluggable conflict resolution) ─────────────────
+export {
+  registerMergeStrategy,
+  setDefaultMergeStrategy,
+  getMergeStrategy,
+  hasMergeStrategy,
+  lwwStrategy,
+  createLoroMergeStrategy,
+} from "./merge";
+export type { MergeStrategy, MergeContext } from "./merge";
+
 // ── Core graph ────────────────────────────────────────────────────────────
 export { useGraphStore } from "./graph";
 export type {

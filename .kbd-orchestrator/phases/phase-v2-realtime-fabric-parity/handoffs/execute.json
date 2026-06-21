@@ -1,0 +1,23 @@
+{
+  "stage": "execute",
+  "phase": "phase-v2-realtime-fabric-parity",
+  "artifacts": ["execution.md", "progress.json"],
+  "backend": "openspec",
+  "dispatch_driver": "/kbd-apply (never bare /opsx:apply)",
+  "summary": "Backend = openspec, driven task-by-task through /kbd-apply. 8 changes dispatched with per-change model routing (frontier→Opus 4.8: C1/C2/C3/C5/C7; medium→Sonnet 4.6: C4/C6; small→Haiku 4.5: C8). First pending change: v2-crdt-merge-strategy-port (Round 1 foundation, unblocks C2/C3). progress.json initialized in orchestrator changes-map schema (8 changes, all PENDING). Execute is orchestration only — no code written this stage.",
+  "first_pending_change": "v2-crdt-merge-strategy-port",
+  "entrypoint": "/kbd-apply v2-crdt-merge-strategy-port",
+  "approval_gates": [
+    "BRANCH GATE: on main — create feat/v2-realtime-fabric-parity before /kbd-apply writes code",
+    "FLINT DEP GATE (C3): frf-sdk not on npm — confirm workspace link or apply shim+guard only",
+    "C7 DECISION GATE: spike must write adopt-later-vs-ceiling-doc decision; may slip to v2.1"
+  ],
+  "verification": [
+    "per change: pnpm run typecheck + pnpm run test",
+    "export-touching (C1-C4): pnpm run refresh:exports + pnpm run verify:skills",
+    "pre-release: pnpm run prepublishOnly path"
+  ],
+  "reflection_handoff": "Consume per-change DONE/BLOCKED, the C7 spike decision, any optional-peer contract changes, and whether to track Flint's Loro-vs-Automerge CRDT decision as a follow-up change.",
+  "recommended_next_stage": "apply (then reflect after changes complete)",
+  "created_at": "2026-06-21T01:30:00.000Z"
+}
