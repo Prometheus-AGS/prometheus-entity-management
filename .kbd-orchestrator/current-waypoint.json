@@ -1,19 +1,20 @@
 {
   "previous_phase": "phase-v2-realtime-fabric-parity",
   "active_phase": "phase-v3-universal-platform-evolution",
-  "kbd_process_state": "assessment_ready",
-  "label": "Universal Platform Evolution — multi-framework, Flutter, Rust CLI, A2UI, local-first, peer sync",
-  "next_pending_change": null,
+  "kbd_process_state": "plan_complete",
+  "label": "Universal Platform Evolution — plan REWRITTEN (research-driven, 17 changes/5 waves); ready to execute",
+  "next_pending_change": "v3-monorepo-and-tooling",
   "release_version": "2.2.0",
   "released_at": "2026-06-21",
-  "plan_complete": false,
+  "plan_complete": true,
   "execution_dispatched": false,
   "implementation_complete": false,
   "reflection_complete": false,
   "parked_phases": ["phase-v2-examples-and-docs-coverage"],
   "parked_notes": {
-    "phase-v2-examples-and-docs-coverage": "Resume AFTER phase-v3-universal-platform-evolution so example/doc coverage spans the evolved v3 surface, not just 2.2.0."
+    "phase-v2-examples-and-docs-coverage": "Resume AFTER phase-v3-universal-platform-evolution so example/doc coverage spans the evolved v3 surface."
   },
-  "exact_next_command": "Run /kbd-plan phase-v3-universal-platform-evolution to create the implementation plan (assessment already complete).",
-  "updated_at": "2026-06-22T00:05:00.000Z"
+  "plan_path": ".kbd-orchestrator/phases/phase-v3-universal-platform-evolution/plan.md",
+  "exact_next_command": "Run /kbd-execute phase-v3-universal-platform-evolution (or /kbd-analyze first for a build-vs-adopt ledger of the Rust/Flutter/CRDT deps). First change: v3-monorepo-and-tooling.",
+  "updated_at": "2026-06-22T01:00:00.000Z"
 }

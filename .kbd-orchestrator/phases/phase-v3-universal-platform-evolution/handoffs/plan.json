@@ -1,0 +1,24 @@
+{
+  "stage": "plan",
+  "phase": "phase-v3-universal-platform-evolution",
+  "artifacts": ["plan.md"],
+  "supersedes": "plan.superseded-2026-06-22.md",
+  "backend": "openspec",
+  "umbrella_change": "v3-0-universal-platform-evolution",
+  "change_count": 17,
+  "summary": "Rewrote the v3 plan to a higher standard using fresh 2026 research + in-repo 2.2.0 assets. 17 children in 5 waves. Five research-driven corrections to the prior plan: (1) adopt pnpm+Turborepo+Changesets+tsup (prior punted Turborepo); (2) use official rmcp Rust SDK + Streamable HTTP for MCP (prior unspecified); (3) Riverpod 3.0 codegen (prior generic); (4) tauri-specta v2 typed bindings (prior untyped); (5) CRDT sync = Yjs default + Loro option reusing the existing 2.2.0 createLoroMergeStrategy seam (prior Yjs-only, ignored shipped asset). Also credits 2.2.0 assets (IncrementalView, time-travel, Tauri SQLite adapter, AG-UI bridge) to reduce effort. Critical path: monorepo → core-extraction → {svelte canary, react-parity} in parallel with sdl → rust-cli → mcp/a2a.",
+  "first_change_to_apply": "v3-monorepo-and-tooling",
+  "execution_waves": {
+    "wave_1": ["v3-monorepo-and-tooling", "v3-core-extraction", "v3-sdl-spec", "v3-electricsql-react-extract"],
+    "wave_2": ["v3-react-parity", "v3-svelte-bindings", "v3-solid-bindings", "v3-sync-providers"],
+    "wave_3": ["v3-lit-webcomponents", "v3-alpine-plugin", "v3-htmx-server-adapter", "v3-rust-cli"],
+    "wave_4": ["v3-mcp-server", "v3-a2a-server", "v3-tauri-plugin", "v3-flutter-package"],
+    "wave_5": ["v3-a2ui-react"]
+  },
+  "open_questions": [
+    "Confirm Turborepo adoption now vs later (plan recommends now; reversible)",
+    "Confirm v3.0.0 ships as a re-export shim so the umbrella npm path stays working through the monorepo split"
+  ],
+  "recommended_next_stage": "execute (or kbd-analyze first if a build-vs-adopt candidate ledger is wanted for the Rust/Flutter/CRDT deps)",
+  "created_at": "2026-06-22T01:00:00.000Z"
+}
