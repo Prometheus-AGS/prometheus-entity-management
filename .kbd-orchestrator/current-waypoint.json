@@ -1,8 +1,8 @@
 {
   "previous_phase": "phase-v2-realtime-fabric-parity",
-  "active_phase": "phase-v2-examples-and-docs-coverage",
+  "active_phase": "phase-v3-universal-platform-evolution",
   "kbd_process_state": "assessment_ready",
-  "label": "Examples & docs coverage — inventory example apps + docs vs the 197-export surface; map capability gaps; recommend closure",
+  "label": "Universal Platform Evolution — multi-framework, Flutter, Rust CLI, A2UI, local-first, peer sync",
   "next_pending_change": null,
   "release_version": "2.2.0",
   "released_at": "2026-06-21",
@@ -10,7 +10,10 @@
   "execution_dispatched": false,
   "implementation_complete": false,
   "reflection_complete": false,
-  "parked_phases": ["phase-v3-universal-platform-evolution"],
-  "exact_next_command": "Run /kbd-assess phase-v2-examples-and-docs-coverage to inventory examples + docs and produce the capability-coverage gap report.",
-  "updated_at": "2026-06-22T00:00:00.000Z"
+  "parked_phases": ["phase-v2-examples-and-docs-coverage"],
+  "parked_notes": {
+    "phase-v2-examples-and-docs-coverage": "Resume AFTER phase-v3-universal-platform-evolution so example/doc coverage spans the evolved v3 surface, not just 2.2.0."
+  },
+  "exact_next_command": "Run /kbd-plan phase-v3-universal-platform-evolution to create the implementation plan (assessment already complete).",
+  "updated_at": "2026-06-22T00:05:00.000Z"
 }

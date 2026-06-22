@@ -2,7 +2,7 @@
   "phase": "phase-v2-examples-and-docs-coverage",
   "last_updated": "2026-06-22T00:00:00.000Z",
   "last_updated_by": "claude-code",
-  "kbd_process_state": "assessment_ready",
+  "kbd_process_state": "parked",
   "assessment_complete": false,
   "analyze_complete": false,
   "plan_complete": false,
@@ -10,5 +10,8 @@
   "reflection_complete": false,
   "previous_phase": "phase-v2-realtime-fabric-parity",
   "goals_path": ".kbd-orchestrator/phases/phase-v2-examples-and-docs-coverage/goals.md",
-  "changes": {}
+  "changes": {},
+  "parked": true,
+  "parked_reason": "Deferred until after phase-v3-universal-platform-evolution evolves the framework, so example/doc coverage spans the v3 surface (multi-framework, Flutter, Rust CLI, A2UI, peer sync) — not just 2.2.0.",
+  "resume_after": "phase-v3-universal-platform-evolution"
 }

@@ -13,10 +13,10 @@
   },
   "kbd": {
     "process_state": "assessment_ready",
-    "activePhase": "phase-v2-examples-and-docs-coverage",
+    "activePhase": "phase-v3-universal-platform-evolution",
     "last_closed_phase": "phase-v2-realtime-fabric-parity",
     "last_closure_at": "2026-06-21T20:15:00.000Z",
-    "active_phase": "phase-v2-examples-and-docs-coverage"
+    "active_phase": "phase-v3-universal-platform-evolution"
   },
   "source_roots": [
     "src"
