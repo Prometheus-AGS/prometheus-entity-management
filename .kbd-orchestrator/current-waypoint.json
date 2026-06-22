@@ -1,20 +1,23 @@
 {
   "previous_phase": "phase-v2-realtime-fabric-parity",
   "active_phase": "phase-v3-universal-platform-evolution",
-  "kbd_process_state": "plan_complete",
-  "label": "Universal Platform Evolution — plan REWRITTEN (research-driven, 17 changes/5 waves); ready to execute",
+  "kbd_process_state": "execution_dispatched",
+  "label": "Universal Platform Evolution — execution DISPATCHED (openspec via /kbd-apply); 17 changes/5 waves, all PENDING",
   "next_pending_change": "v3-monorepo-and-tooling",
   "release_version": "2.2.0",
   "released_at": "2026-06-21",
   "plan_complete": true,
-  "execution_dispatched": false,
+  "execution_dispatched": true,
   "implementation_complete": false,
   "reflection_complete": false,
-  "parked_phases": ["phase-v2-examples-and-docs-coverage"],
+  "parked_phases": [
+    "phase-v2-examples-and-docs-coverage"
+  ],
   "parked_notes": {
     "phase-v2-examples-and-docs-coverage": "Resume AFTER phase-v3-universal-platform-evolution so example/doc coverage spans the evolved v3 surface."
   },
   "plan_path": ".kbd-orchestrator/phases/phase-v3-universal-platform-evolution/plan.md",
-  "exact_next_command": "Run /kbd-execute phase-v3-universal-platform-evolution (or /kbd-analyze first for a build-vs-adopt ledger of the Rust/Flutter/CRDT deps). First change: v3-monorepo-and-tooling.",
-  "updated_at": "2026-06-22T01:00:00.000Z"
+  "exact_next_command": "Cut feat/v3-universal-platform-evolution (BRANCH GATE), confirm Turborepo + release-shim gates, then /kbd-apply v3-monorepo-and-tooling.",
+  "updated_at": "2026-06-22T01:30:00.000Z",
+  "execution_path": ".kbd-orchestrator/phases/phase-v3-universal-platform-evolution/execution.md"
 }

@@ -1,0 +1,28 @@
+{
+  "stage": "execute",
+  "phase": "phase-v3-universal-platform-evolution",
+  "artifacts": ["execution.md", "progress.json"],
+  "backend": "openspec",
+  "dispatch_driver": "/kbd-apply (never bare /opsx:apply)",
+  "change_count": 17,
+  "summary": "Backend = openspec via /kbd-apply. 17 changes in 5 waves, per-change model routing (frontier Opus 4.8 for core/sync/rust/ai/a2ui; medium Sonnet for solid/lit/htmx; small Haiku for electricsql-extract/alpine). First change: v3-monorepo-and-tooling. Execute is orchestration only — no code written. Five approval gates recorded; greenfield Rust/Dart changes are toolchain-gated (mark BLOCKED if cargo/flutter absent — the pure-Node framework chain Waves 1-3-minus-rust-cli is fully achievable without them).",
+  "first_pending_change": "v3-monorepo-and-tooling",
+  "entrypoint": "/kbd-apply v3-monorepo-and-tooling",
+  "approval_gates": [
+    "BRANCH GATE: cut feat/v3-universal-platform-evolution before any apply",
+    "BREAKING-CHANGE GATE: v3-core-extraction is semver MAJOR (3.0.0); ship as re-export shim, no consumer break",
+    "GREENFIELD-LANGUAGE GATE: rust-cli/mcp/a2a/tauri need cargo; flutter needs dart — confirm toolchains or mark BLOCKED",
+    "TURBOREPO-NOW GATE: confirm adopting Turborepo in Wave 1",
+    "RELEASE-SHIM GATE: confirm v3.0.0 ships as the re-export shim"
+  ],
+  "verification": [
+    "TS/JS: pnpm typecheck + test per package via turbo",
+    "export-touching: refresh:exports + verify:skills",
+    "Rust: cargo build/test + clippy -D warnings (<=500-line files)",
+    "Flutter: dart analyze + flutter test + build_runner",
+    "per-package Changesets version + publish dry-run"
+  ],
+  "reflection_handoff": "Consume per-change DONE/BLOCKED; whether the core re-export shim held consumers harmless; CRDT default-on benchmark (Yjs vs Loro @10k); which greenfield targets shipped vs toolchain-blocked; per-package Changesets version state.",
+  "recommended_next_step": "Cut branch, confirm Turborepo + release-shim gates, then /kbd-apply v3-monorepo-and-tooling",
+  "created_at": "2026-06-22T01:30:00.000Z"
+}
