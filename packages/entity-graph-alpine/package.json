@@ -1,0 +1,59 @@
+{
+  "name": "@prometheus-ags/entity-graph-alpine",
+  "version": "3.0.0-alpha.0",
+  "description": "Alpine.js plugin exposing $entity(type,id) and $entityList(type,query) magics — wires @prometheus-ags/entity-graph-core into Alpine.effect().",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@prometheus-ags/entity-graph-core": "workspace:*"
+  },
+  "peerDependencies": {
+    "alpinejs": ">=3.13.0"
+  },
+  "peerDependenciesMeta": {
+    "alpinejs": {
+      "optional": false
+    }
+  },
+  "devDependencies": {
+    "alpinejs": "^3.14.9",
+    "tsup": ">=8",
+    "typescript": ">=6",
+    "vitest": ">=4"
+  },
+  "keywords": [
+    "alpine",
+    "alpinejs",
+    "entity-graph",
+    "normalized-cache",
+    "state-management",
+    "zustand",
+    "magic"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prometheus-ags/prometheus-entity-management"
+  }
+}

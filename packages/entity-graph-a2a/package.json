@@ -1,0 +1,50 @@
+{
+  "name": "@prometheus-ags/entity-graph-a2a",
+  "version": "3.0.0-alpha.0",
+  "description": "A2A (Agent2Agent) v1.0 server for the Prometheus entity graph — AgentCard, Task routing, graph-mutation handlers, and Artifact results.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@prometheus-ags/entity-graph-core": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": ">=8",
+    "typescript": ">=6",
+    "vitest": ">=4"
+  },
+  "keywords": [
+    "a2a",
+    "agent2agent",
+    "entity-graph",
+    "normalized-cache",
+    "state-management",
+    "zustand",
+    "ai-agent"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prometheus-ags/prometheus-entity-management"
+  }
+}

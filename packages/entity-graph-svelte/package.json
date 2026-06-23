@@ -1,0 +1,60 @@
+{
+  "name": "@prometheus-ags/entity-graph-svelte",
+  "version": "3.0.0-alpha.0",
+  "description": "Svelte 5 runes bindings for the Prometheus entity graph — reactive $state stores that subscribe to the core graph.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "@prometheus-ags/entity-graph-core": "workspace:*",
+    "svelte": ">=5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "svelte": {
+      "optional": false
+    }
+  },
+  "dependencies": {
+    "@prometheus-ags/entity-graph-core": "workspace:*"
+  },
+  "devDependencies": {
+    "svelte": "^5.0.0",
+    "tsup": ">=8",
+    "typescript": ">=6",
+    "vitest": ">=4"
+  },
+  "keywords": [
+    "svelte",
+    "svelte5",
+    "runes",
+    "entity-graph",
+    "normalized-cache",
+    "state-management",
+    "zustand"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prometheus-ags/prometheus-entity-management"
+  }
+}

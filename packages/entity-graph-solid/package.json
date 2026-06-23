@@ -1,0 +1,55 @@
+{
+  "name": "@prometheus-ags/entity-graph-solid",
+  "version": "3.0.0-alpha.0",
+  "description": "SolidJS bindings for @prometheus-ags/entity-graph-core — fine-grained reactive entity and list primitives over the normalized entity graph.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@prometheus-ags/entity-graph-core": "workspace:*"
+  },
+  "peerDependencies": {
+    "solid-js": ">=1.8.0"
+  },
+  "peerDependenciesMeta": {
+    "solid-js": {
+      "optional": false
+    }
+  },
+  "devDependencies": {
+    "solid-js": "^1.9.7",
+    "tsup": ">=8",
+    "typescript": ">=6",
+    "vitest": ">=4"
+  },
+  "keywords": [
+    "solid",
+    "solidjs",
+    "entity-graph",
+    "normalized-cache",
+    "state-management",
+    "reactive",
+    "fine-grained-reactivity"
+  ]
+}

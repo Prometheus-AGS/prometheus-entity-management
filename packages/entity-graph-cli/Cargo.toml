@@ -1,0 +1,33 @@
+[package]
+name = "entity-graph-cli"
+version = "3.0.0-alpha.0"
+edition = "2021"
+description = "CLI for the Prometheus entity-graph ecosystem — scaffold schemas and generate TypeScript bindings."
+license = "MIT"
+authors = ["Prometheus AGS <engineering@prometheusags.ai>"]
+repository = "https://github.com/Prometheus-AGS/prometheus-entity-management"
+homepage = "https://github.com/Prometheus-AGS/prometheus-entity-management"
+keywords = ["entity-graph", "codegen", "cli", "typescript", "schema"]
+categories = ["command-line-utilities", "development-tools"]
+
+[[bin]]
+name = "entity-graph"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4", features = ["derive", "env"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tera = "1"
+anyhow = "1"
+thiserror = "1"
+convert_case = "0.6"
+
+[dev-dependencies]
+tempfile = "3"
+assert_cmd = "2"
+predicates = "3"
+
+[profile.release]
+opt-level = 3
+strip = true

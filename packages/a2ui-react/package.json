@@ -1,0 +1,62 @@
+{
+  "name": "@prometheus-ags/a2ui-react",
+  "version": "3.0.0-alpha.0",
+  "description": "A2UI React component library — EntityChat, EntityCopilot, EntityStream, EntityDiff, EntityApproval — built on the Prometheus entity graph core.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "@prometheus-ags/entity-graph-core": "workspace:*",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "dependencies": {
+    "@prometheus-ags/entity-graph-core": "workspace:*"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.2",
+    "@types/react": ">=19",
+    "@types/react-dom": ">=19",
+    "jsdom": "^29.1.1",
+    "tsup": ">=8",
+    "typescript": ">=6",
+    "vitest": ">=4"
+  },
+  "keywords": [
+    "a2ui",
+    "ai-chat",
+    "entity-graph",
+    "react",
+    "normalized-cache",
+    "state-management",
+    "zustand",
+    "ag-ui",
+    "copilot",
+    "entity-diff"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prometheus-ags/prometheus-entity-management"
+  }
+}

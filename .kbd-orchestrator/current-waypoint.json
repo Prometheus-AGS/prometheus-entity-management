@@ -1,15 +1,15 @@
 {
   "previous_phase": "phase-v2-realtime-fabric-parity",
   "active_phase": "phase-v3-universal-platform-evolution",
-  "kbd_process_state": "execution_dispatched",
-  "label": "Universal Platform Evolution — execution DISPATCHED (openspec via /kbd-apply); 17 changes/5 waves, all PENDING",
-  "next_pending_change": "v3-monorepo-and-tooling",
-  "release_version": "2.2.0",
+  "kbd_process_state": "in-review",
+  "label": "Universal Platform Evolution — v3.0.0 release-prepped (Changesets, all pkgs 3.0.0, dry-run clean) + PR #4 open; NOT published",
+  "next_pending_change": null,
+  "release_version": "3.0.0 (staged, unpublished)",
   "released_at": "2026-06-21",
   "plan_complete": true,
   "execution_dispatched": true,
-  "implementation_complete": false,
-  "reflection_complete": false,
+  "implementation_complete": true,
+  "reflection_complete": true,
   "parked_phases": [
     "phase-v2-examples-and-docs-coverage"
   ],
@@ -17,7 +17,8 @@
     "phase-v2-examples-and-docs-coverage": "Resume AFTER phase-v3-universal-platform-evolution so example/doc coverage spans the evolved v3 surface."
   },
   "plan_path": ".kbd-orchestrator/phases/phase-v3-universal-platform-evolution/plan.md",
-  "exact_next_command": "Cut feat/v3-universal-platform-evolution (BRANCH GATE), confirm Turborepo + release-shim gates, then /kbd-apply v3-monorepo-and-tooling.",
-  "updated_at": "2026-06-22T01:30:00.000Z",
-  "execution_path": ".kbd-orchestrator/phases/phase-v3-universal-platform-evolution/execution.md"
+  "exact_next_command": "Review/merge PR #4; then pnpm publish (changeset publish) for the 12 JS pkgs + cargo/pub.dev for native; live MCP/Tauri smoke; resume phase-v2-examples-and-docs-coverage.",
+  "updated_at": "2026-06-23T00:00:00.000Z",
+  "execution_path": ".kbd-orchestrator/phases/phase-v3-universal-platform-evolution/execution.md",
+  "pull_request": "https://github.com/Prometheus-AGS/prometheus-entity-management/pull/4"
 }
