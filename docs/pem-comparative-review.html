@@ -1,0 +1,1885 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PEM vs TanStack Query, Apollo &amp; RTK Query — Comparative Review | travisjames.ai</title>
+<meta name="description" content="Feature-set comparison, architectural analysis, and strategic positioning of `@prometheus-ags/prometheus-entity-management` against the three dominant server-state libraries in the React ecosystem.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/htmx.org@2.0.4"></script>
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<style>
+/* ============ travisjames.ai brand tokens (extracted from production CSS) ============ */
+:root{
+  --bg:216 29% 6%;        --surface:214 27% 9%;   --surface-2:214 25% 11%;
+  --border:212 23% 20%;   --fg:216 25% 93%;       --muted:213 10% 57%;
+  --dim:217 14% 34%;      --ember:14 100% 62%;    --ember-deep:14 76% 52%;
+  --good:152 58% 50%;     --shadow:0 0% 0%;
+  --ember-gradient:linear-gradient(135deg,hsl(14 76% 52%),hsl(14 100% 62%));
+  --font-display:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --font-body:"Inter",ui-sans-serif,system-ui,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --maxw:1180px;
+}
+:root[data-theme="light"]{
+  --bg:220 7% 97%;        --surface:0 0% 100%;    --surface-2:216 14% 93%;
+  --border:216 18% 84%;   --fg:216 29% 6%;        --muted:217 14% 34%;
+  --dim:213 10% 57%;      --ember:14 76% 52%;     --ember-deep:14 76% 52%;
+  --good:152 55% 38%;     --shadow:216 20% 40%;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{
+  margin:0;background:hsl(var(--bg));color:hsl(var(--fg));
+  font-family:var(--font-body);font-size:15.5px;line-height:1.68;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+::selection{background:hsl(var(--ember)/.28)}
+a{color:hsl(var(--ember));text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* ============ top bar ============ */
+.topbar{
+  position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:1rem;
+  height:60px;padding:0 clamp(1rem,4vw,2.25rem);
+  background:hsl(var(--bg)/.82);backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid hsl(var(--border));
+}
+.wordmark{display:flex;align-items:center;gap:.62rem;font-family:var(--font-display);
+  font-weight:700;letter-spacing:-.01em;font-size:1.02rem;color:hsl(var(--fg))}
+.wordmark .spark{width:14px;height:14px;border-radius:3px;background:var(--ember-gradient);
+  box-shadow:0 0 14px hsl(var(--ember)/.6);transform:rotate(45deg)}
+.wordmark b{font-weight:700}
+.wordmark .dim{color:hsl(var(--muted));font-weight:500}
+.topbar .spacer{flex:1}
+.tools{display:flex;align-items:center;gap:.4rem}
+.tbtn{
+  display:inline-flex;align-items:center;gap:.4rem;cursor:pointer;
+  font-family:var(--font-mono);font-size:.72rem;letter-spacing:.02em;
+  color:hsl(var(--muted));background:hsl(var(--surface));
+  border:1px solid hsl(var(--border));border-radius:7px;padding:.42rem .6rem;
+  transition:.16s ease}
+.tbtn:hover{color:hsl(var(--fg));border-color:hsl(var(--ember)/.55);background:hsl(var(--surface-2))}
+.tbtn svg{width:14px;height:14px}
+.menu-btn{display:none}
+
+/* ============ masthead ============ */
+.masthead{position:relative;max-width:var(--maxw);margin:0 auto;
+  padding:clamp(2.4rem,6vw,4rem) clamp(1rem,4vw,2.25rem) 1.4rem;overflow:hidden}
+.masthead::before{content:"";position:absolute;inset:-40% -10% auto auto;width:520px;height:520px;
+  background:radial-gradient(circle,hsl(var(--ember)/.16),transparent 62%);
+  filter:blur(8px);pointer-events:none;z-index:0}
+.masthead>*{position:relative;z-index:1}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.22em;
+  text-transform:uppercase;color:hsl(var(--ember));margin-bottom:1.1rem;
+  display:flex;align-items:center;gap:.6rem}
+.eyebrow::after{content:"";height:1px;flex:1;max-width:220px;
+  background:linear-gradient(90deg,hsl(var(--ember)/.5),transparent)}
+.masthead h1{font-family:var(--font-display);font-weight:700;letter-spacing:-.02em;
+  font-size:clamp(1.75rem,3.6vw,2.7rem);line-height:1.1;margin:0 0 1.1rem;max-width:24ch}
+.masthead h1 .accent{
+  background:var(--ember-gradient);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent}
+.lede{color:hsl(var(--muted));font-size:1.04rem;max-width:70ch;margin:0}
+.metarow{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1.7rem}
+.chip{font-family:var(--font-mono);font-size:.74rem;color:hsl(var(--fg));
+  background:hsl(var(--surface));border:1px solid hsl(var(--border));
+  border-radius:999px;padding:.34rem .8rem;display:inline-flex;gap:.45rem;align-items:center}
+.chip b{color:hsl(var(--ember));font-weight:600}
+.chip.scope{max-width:none}
+
+/* ============ layout ============ */
+.shell{max-width:var(--maxw);margin:0 auto;padding:1.5rem clamp(1rem,4vw,2.25rem) 5rem;
+  display:grid;grid-template-columns:248px minmax(0,1fr);gap:clamp(1.4rem,4vw,3rem);align-items:start}
+
+/* ============ TOC ============ */
+.toc{position:sticky;top:76px;max-height:calc(100vh - 96px);overflow-y:auto;
+  font-size:.84rem;padding-right:.4rem;scrollbar-width:thin;
+  scrollbar-color:hsl(var(--border)) transparent}
+.toc::-webkit-scrollbar{width:7px}
+.toc::-webkit-scrollbar-thumb{background:hsl(var(--border));border-radius:4px}
+.toc .toc-title{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.18em;
+  text-transform:uppercase;color:hsl(var(--dim));margin:0 0 .7rem .65rem}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc li{margin:0}
+.toc a{display:block;color:hsl(var(--muted));padding:.32rem .65rem;border-radius:6px;
+  border-left:2px solid transparent;line-height:1.35;transition:.14s ease}
+.toc a:hover{color:hsl(var(--fg));background:hsl(var(--surface));text-decoration:none}
+.toc a.lvl-3{padding-left:1.5rem;font-size:.79rem;color:hsl(var(--dim))}
+.toc a.active{color:hsl(var(--ember));border-left-color:hsl(var(--ember));
+  background:hsl(var(--ember)/.07);font-weight:500}
+.toc a.lvl-3.active{color:hsl(var(--ember))}
+
+/* ============ content ============ */
+.content{min-width:0}
+.content h2{font-family:var(--font-display);font-weight:700;letter-spacing:-.015em;
+  font-size:clamp(1.35rem,2.4vw,1.7rem);line-height:1.2;
+  margin:0;padding:1.5rem 0 .2rem;scroll-margin-top:80px;cursor:pointer;
+  display:flex;align-items:baseline;gap:.6rem;border-top:1px solid hsl(var(--border))}
+.content h2:first-of-type{border-top:none;padding-top:.4rem}
+.content h2 .num{font-family:var(--font-mono);font-size:.92rem;color:hsl(var(--ember));
+  font-weight:600;flex:none}
+.content h2 .caret{margin-left:auto;font-size:.8rem;color:hsl(var(--dim));
+  transition:transform .2s ease;flex:none;align-self:center}
+.content h2.collapsed .caret{transform:rotate(-90deg)}
+.content h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.01em;
+  font-size:1.1rem;margin:1.9rem 0 .3rem;scroll-margin-top:80px;color:hsl(var(--fg));
+  display:flex;align-items:baseline;gap:.5rem}
+.content h3 .num{font-family:var(--font-mono);font-size:.82rem;color:hsl(var(--ember-deep));font-weight:600}
+.sec-body{overflow:hidden}
+.sec-body.hidden{display:none}
+.content p{margin:.85rem 0;color:hsl(var(--fg))}
+.content strong{color:hsl(var(--fg));font-weight:600}
+.content ul,.content ol{margin:.7rem 0;padding-left:1.3rem}
+.content li{margin:.4rem 0}
+.content li::marker{color:hsl(var(--ember-deep))}
+.content hr{display:none}
+code{font-family:var(--font-mono);font-size:.84em;
+  background:hsl(var(--ember)/.1);color:hsl(var(--ember));
+  border:1px solid hsl(var(--ember)/.18);border-radius:5px;padding:.08em .38em;
+  white-space:nowrap}
+:root[data-theme="light"] code{background:hsl(var(--ember)/.08);color:hsl(var(--ember-deep))}
+
+/* lede paragraph right after each h2 (exec summary feel) */
+.content h2 + .sec-body > p:first-child{font-size:1.02rem}
+
+/* ============ tables ============ */
+.tablewrap{overflow-x:auto;margin:1.2rem 0;border:1px solid hsl(var(--border));
+  border-radius:11px;background:hsl(var(--surface));
+  box-shadow:0 1px 0 hsl(var(--shadow)/.04)}
+table{border-collapse:collapse;width:100%;font-size:.85rem;min-width:540px}
+thead th{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.02em;
+  text-transform:none;text-align:left;font-weight:600;
+  color:hsl(var(--fg));background:hsl(var(--surface-2));
+  padding:.7rem .85rem;border-bottom:1px solid hsl(var(--border));white-space:nowrap;
+  position:sticky;top:0}
+thead th:first-child{color:hsl(var(--ember))}
+tbody td{padding:.62rem .85rem;border-bottom:1px solid hsl(var(--border)/.6);
+  vertical-align:top;color:hsl(var(--muted))}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:hsl(var(--ember)/.035)}
+tbody td:first-child{color:hsl(var(--fg));font-weight:500}
+/* decorated yes/no cells */
+td.cell-yes,td.cell-yesx{color:hsl(var(--fg))}
+.pill{display:inline-flex;align-items:center;gap:.32rem;font-family:var(--font-mono);
+  font-size:.72rem;font-weight:600;border-radius:5px;padding:.12rem .42rem;line-height:1.5}
+.pill.y{background:var(--ember-gradient);color:#0b0e14}
+.pill.yo{background:hsl(var(--ember)/.12);color:hsl(var(--ember));border:1px solid hsl(var(--ember)/.32)}
+.pill.n{background:hsl(var(--surface-2));color:hsl(var(--dim));border:1px solid hsl(var(--border))}
+td.cell-yes .rest,td.cell-yesx .rest,td.cell-no .rest{color:hsl(var(--muted));font-weight:400}
+
+/* ============ callouts ============ */
+.adv,.beh{border-radius:10px;padding:.1rem 1.1rem .1rem 1.2rem;margin:1.1rem 0;
+  border:1px solid hsl(var(--border));background:hsl(var(--surface));position:relative}
+.adv{border-left:3px solid hsl(var(--ember))}
+.beh{border-left:3px solid hsl(var(--dim))}
+.calltag{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:600;margin-top:.9rem;display:inline-block}
+.adv .calltag{color:hsl(var(--ember))}
+.beh .calltag{color:hsl(var(--muted))}
+
+/* verdict block */
+.verdict{margin:1.6rem 0;padding:1.4rem 1.5rem;border-radius:12px;
+  background:linear-gradient(135deg,hsl(var(--ember)/.1),hsl(var(--ember)/.02));
+  border:1px solid hsl(var(--ember)/.3)}
+.verdict .calltag{color:hsl(var(--ember));margin-top:0}
+
+/* ============ footer ============ */
+.foot{max-width:var(--maxw);margin:0 auto;padding:2rem clamp(1rem,4vw,2.25rem) 4rem;
+  border-top:1px solid hsl(var(--border));color:hsl(var(--dim));font-size:.82rem;
+  display:flex;flex-wrap:wrap;gap:.6rem 1.4rem;align-items:center;justify-content:space-between}
+.foot .fm{display:flex;align-items:center;gap:.55rem;font-family:var(--font-display);
+  font-weight:600;color:hsl(var(--muted))}
+.foot .fm .spark{width:11px;height:11px;border-radius:2px;background:var(--ember-gradient);transform:rotate(45deg)}
+.foot code{background:none;border:none;color:hsl(var(--muted));padding:0}
+
+/* scroll progress */
+.progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:60;
+  background:var(--ember-gradient);box-shadow:0 0 10px hsl(var(--ember)/.7);transition:width .1s linear}
+
+/* ============ responsive ============ */
+@media(max-width:880px){
+  .shell{grid-template-columns:1fr}
+  .menu-btn{display:inline-flex}
+  .toc{position:fixed;inset:60px 0 auto 0;z-index:45;max-height:70vh;
+    background:hsl(var(--bg));border-bottom:1px solid hsl(var(--border));
+    padding:1rem clamp(1rem,4vw,2.25rem);transform:translateY(-130%);
+    transition:transform .26s cubic-bezier(.4,0,.2,1)}
+  .toc.open{transform:translateY(0)}
+}
+@media(min-width:881px){.menu-btn{display:none}}
+
+/* ============ print ============ */
+@media print{
+  .topbar,.toc,.progress,.tools,.content h2 .caret,.menu-btn{display:none!important}
+  body{background:#fff;color:#111;font-size:11pt}
+  .shell{display:block;max-width:none;padding:0}
+  .masthead::before{display:none}
+  .tablewrap{break-inside:avoid;box-shadow:none}
+  .sec-body.hidden{display:block!important}
+  a{color:#111;text-decoration:none}
+  code{background:#f2f2f2;color:#a3431f;border-color:#e3e3e3}
+}
+
+</style>
+</head>
+<body x-data="{ nav:false }">
+<div class="progress" id="progress"></div>
+
+<header class="topbar">
+  <a class="wordmark" href="https://travisjames.ai" target="_blank" rel="noopener">
+    <span class="spark"></span><b>TRAVIS&nbsp;JAMES</b><span class="dim">/ research</span>
+  </a>
+  <div class="spacer"></div>
+  <div class="tools">
+    <button class="tbtn menu-btn" @click="nav=!nav" aria-label="Sections">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      <span x-text="nav?'Close':'Sections'">Sections</span>
+    </button>
+    <button class="tbtn" hx-on:click="window.__toggleAll()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 9l4-4 4 4M8 15l4 4 4-4"/></svg><span id="toggleAllLabel">Collapse all</span></button>
+    <button class="tbtn" hx-on:click="window.print()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Print</button>
+    <button class="tbtn" hx-on:click="window.__toggleTheme()" aria-label="Theme"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span id="themeLabel">Light</span></button>
+  </div>
+</header>
+
+<section class="masthead">
+  <div class="eyebrow">Comparative Architecture Review &middot; 2026-06-22</div>
+  <h1><span class="accent">@prometheus-ags/<wbr>prometheus-entity-management</span><br>vs. TanStack&nbsp;Query, Apollo&nbsp;Client &amp; RTK&nbsp;Query</h1>
+  <p class="lede">Feature-set comparison, architectural analysis, and strategic positioning of `@prometheus-ags/prometheus-entity-management` against the three dominant server-state libraries in the React ecosystem.</p>
+  <div class="metarow">
+    <span class="chip"><b>Date</b> 2026-06-22</span>
+    <span class="chip"><b>Analyst</b> Kimi Work</span>
+    <span class="chip"><b>Field</b> React server-state &amp; entity graphs</span>
+    <span class="chip"><b>Subjects</b> PEM &middot; TanStack Query v5 &middot; Apollo v3 &middot; RTK Query</span>
+  </div>
+</section>
+
+<div class="shell">
+  <aside class="toc" :class="{open:nav}" @click="nav=false">
+    <div class="toc-title">On this page</div>
+    <ul>
+<li><a class="lvl-2" href="#1-executive-summary"><span class="tnum">1</span> Executive Summary</a></li>
+<li><a class="lvl-2" href="#2-the-competitors-framework-overview-2026"><span class="tnum">2</span> The Competitors: Framework Overview (2026)</a></li>
+<li><a class="lvl-3" href="#21-tanstack-query-v5-formerly-react-query"><span class="tnum">2.1</span> TanStack Query v5 (formerly React Query)</a></li>
+<li><a class="lvl-3" href="#22-apollo-client-v3"><span class="tnum">2.2</span> Apollo Client v3</a></li>
+<li><a class="lvl-3" href="#23-rtk-query-redux-toolkit"><span class="tnum">2.3</span> RTK Query (Redux Toolkit)</a></li>
+<li><a class="lvl-2" href="#3-architecture-comparison"><span class="tnum">3</span> Architecture Comparison</a></li>
+<li><a class="lvl-3" href="#31-cache-model-the-fundamental-divide"><span class="tnum">3.1</span> Cache Model: The Fundamental Divide</a></li>
+<li><a class="lvl-3" href="#32-data-flow-architecture"><span class="tnum">3.2</span> Data Flow Architecture</a></li>
+<li><a class="lvl-2" href="#4-feature-by-feature-comparison"><span class="tnum">4</span> Feature-by-Feature Comparison</a></li>
+<li><a class="lvl-3" href="#41-core-data-fetching"><span class="tnum">4.1</span> Core Data Fetching</a></li>
+<li><a class="lvl-3" href="#42-caching-normalization"><span class="tnum">4.2</span> Caching &amp;amp; Normalization</a></li>
+<li><a class="lvl-3" href="#43-mutations-optimistic-updates"><span class="tnum">4.3</span> Mutations &amp;amp; Optimistic Updates</a></li>
+<li><a class="lvl-3" href="#44-realtime-sync"><span class="tnum">4.4</span> Realtime &amp;amp; Sync</a></li>
+<li><a class="lvl-3" href="#45-view-layer-filtering-sorting-searching"><span class="tnum">4.5</span> View Layer: Filtering, Sorting, Searching</a></li>
+<li><a class="lvl-3" href="#46-crud-forms"><span class="tnum">4.6</span> CRUD &amp;amp; Forms</a></li>
+<li><a class="lvl-3" href="#47-table-engine"><span class="tnum">4.7</span> Table Engine</a></li>
+<li><a class="lvl-3" href="#48-devtools-debugging"><span class="tnum">4.8</span> DevTools &amp;amp; Debugging</a></li>
+<li><a class="lvl-3" href="#49-ai-interop-schema-system"><span class="tnum">4.9</span> AI Interop &amp;amp; Schema System</a></li>
+<li><a class="lvl-3" href="#410-transport-backend-agnosticism"><span class="tnum">4.10</span> Transport &amp;amp; Backend Agnosticism</a></li>
+<li><a class="lvl-2" href="#5-where-each-library-excels-a-summary-matrix"><span class="tnum">5</span> Where Each Library Excels: A Summary Matrix</a></li>
+<li><a class="lvl-3" href="#51-prometheus-agsprometheus-entity-management-unique-strengths"><span class="tnum">5.1</span> @prometheus-ags/prometheus-entity-management — Unique Strengths</a></li>
+<li><a class="lvl-3" href="#52-tanstack-query-v5-where-it-still-wins"><span class="tnum">5.2</span> TanStack Query v5 — Where It Still Wins</a></li>
+<li><a class="lvl-3" href="#53-apollo-client-v3-where-it-still-wins"><span class="tnum">5.3</span> Apollo Client v3 — Where It Still Wins</a></li>
+<li><a class="lvl-3" href="#54-rtk-query-where-it-still-wins"><span class="tnum">5.4</span> RTK Query — Where It Still Wins</a></li>
+<li><a class="lvl-2" href="#6-architectural-gaps-trade-offs"><span class="tnum">6</span> Architectural Gaps &amp;amp; Trade-offs</a></li>
+<li><a class="lvl-3" href="#61-what-pem-is-missing-relative-to-mature-libraries"><span class="tnum">6.1</span> What PEM Is Missing (Relative to Mature Libraries)</a></li>
+<li><a class="lvl-3" href="#62-what-pem-does-that-no-competitor-does"><span class="tnum">6.2</span> What PEM Does That No Competitor Does</a></li>
+<li><a class="lvl-2" href="#7-strategic-recommendations"><span class="tnum">7</span> Strategic Recommendations</a></li>
+<li><a class="lvl-3" href="#71-when-to-choose-pem"><span class="tnum">7.1</span> When to Choose PEM</a></li>
+<li><a class="lvl-3" href="#72-when-to-choose-tanstack-query-instead"><span class="tnum">7.2</span> When to Choose TanStack Query Instead</a></li>
+<li><a class="lvl-3" href="#73-when-to-choose-apollo-client-instead"><span class="tnum">7.3</span> When to Choose Apollo Client Instead</a></li>
+<li><a class="lvl-3" href="#74-when-to-choose-rtk-query-instead"><span class="tnum">7.4</span> When to Choose RTK Query Instead</a></li>
+<li><a class="lvl-2" href="#8-conclusion"><span class="tnum">8</span> Conclusion</a></li>
+</ul>
+  </aside>
+  <main class="content" id="content">
+<h2 id="1-executive-summary"><span class="num">1</span><span class="htext">Executive Summary</span></h2>
+<p><code>@prometheus-ags/prometheus-entity-management</code> (hereafter <strong>"PEM"</strong>) is not a direct competitor to TanStack Query, Apollo Client, or RTK Query in the traditional sense. While those libraries are <strong>server-state cache managers</strong>, PEM is a <strong>normalized entity graph</strong> built on Zustand that solves a different—but overlapping—problem: <strong>cross-view reactivity</strong> through a single, application-wide entity store.</p>
+<p><strong>The key differentiator:</strong> TanStack Query, Apollo, and RTK Query each maintain query-bound cache entries. When ten components fetch the same user, they all cache separate copies. PEM stores that user once in a normalized graph, and every list, detail view, and sidebar widget reads the same canonical record. Updating the user in one place immediately updates every view.</p>
+<p>This report outlines:
+- Where PEM is <strong>more advanced</strong> (normalized graph, local-first runtime, hybrid views, CRUD lifecycle, time-travel devtools, AI interop)
+- Where the <strong>established libraries are stronger</strong> (ecosystem maturity, community size, framework portability, battle-tested edge cases)
+- The <strong>architectural gaps</strong> PEM still has to close to be a standalone replacement for general-purpose data fetching</p>
+<hr />
+<h2 id="2-the-competitors-framework-overview-2026"><span class="num">2</span><span class="htext">The Competitors: Framework Overview (2026)</span></h2>
+<h3 id="21-tanstack-query-v5-formerly-react-query"><span class="num">2.1</span><span class="htext">TanStack Query v5 (formerly React Query)</span></h3>
+<p>The de facto standard for server-state management in React. ~10M weekly downloads. ~13 KB gzip.</p>
+<p><strong>Core Model:</strong> Query-key-driven cache. Each <code>useQuery({ queryKey, queryFn })</code> creates a cache entry keyed by the serialized query key. Data is stored per-query, not normalized per-entity. Cross-query synchronization is handled by cache invalidation (<code>invalidateQueries</code>), manual cache updates (<code>setQueryData</code>), or optimistic updates.</p>
+<p><strong>Key Strengths:</strong>
+- First-class infinite queries with <code>useInfiniteQuery</code> (<code>maxPages</code>, <code>initialPageParam</code>, <code>getNextPageParam</code>)
+- Dedicated Suspense hooks (<code>useSuspenseQuery</code>, <code>useSuspenseInfiniteQuery</code>) with non-nullable data types
+- Stable APIs, massive community, deep framework adapters (React, Vue, Solid, Svelte, Angular, Lit)
+- Excellent DevTools with cache inspection, query timeline, and manual invalidation
+- Query prefetching, placeholder data, <code>keepPreviousData</code> for pagination UX
+- Experimental persister (<code>experimental_createPersister</code>) for offline/cache persistence
+- Strong type inference with <code>queryOptions</code> helper for type-safe prop drilling</p>
+<p><strong>Limitations:</strong>
+- No built-in normalized entity store (queries cache data by key, not by entity ID)
+- No built-in local-first / offline-first architecture (plugins exist but are experimental)
+- No built-in CRUD form scaffolding, table engine, or view layer
+- No built-in realtime adapter system (users wire WebSocket/SSE manually)
+- Optimistic updates require manual <code>setQueryData</code> calls with rollback logic</p>
+<h3 id="22-apollo-client-v3"><span class="num">2.2</span><span class="htext">Apollo Client v3</span></h3>
+<p>The GraphQL-native standard. ~2M weekly downloads. Tightly coupled to GraphQL but has first-class normalized caching.</p>
+<p><strong>Core Model:</strong> Normalized in-memory cache (<code>InMemoryCache</code>) with <code>typePolicies</code> and <code>keyArgs</code>. This is the closest architectural peer to PEM's entity graph. Apollo's cache is entity-aware: it stores objects by <code>__typename + id</code> and can update every query referencing that object automatically.</p>
+<p><strong>Key Strengths:</strong>
+- True normalized caching (entity-level, not query-level)
+- Automatic cache updates when mutations return entity shapes
+- <code>optimisticResponse</code> for optimistic updates with automatic rollback
+- <code>fetchMore</code> for pagination; <code>@connection</code> directive for list pagination
+- <code>apollo3-cache-persist</code> for offline persistence
+- Excellent TypeScript codegen from GraphQL schemas
+- Mature ecosystem, extensive tooling, strong enterprise adoption</p>
+<p><strong>Limitations:</strong>
+- GraphQL-only (does not natively support REST without a wrapper like <code>graphql-let</code> or schema stitching)
+- Normalized cache is complex to configure (<code>typePolicies</code>, <code>merge</code> functions, <code>keyArgs</code>)
+- No built-in table engine, CRUD scaffolding, or view layer
+- No built-in local-first / ElectricSQL / PGlite integration
+- Offline support is addon-based, not core
+- Bundle size is larger than TanStack Query (~30KB+ with cache)</p>
+<h3 id="23-rtk-query-redux-toolkit"><span class="num">2.3</span><span class="htext">RTK Query (Redux Toolkit)</span></h3>
+<p>Redux's official data-fetching layer. ~1M weekly downloads. Bundled with Redux Toolkit (~24KB total with RTK).</p>
+<p><strong>Core Model:</strong> <code>createApi</code> defines endpoints declaratively. Data is stored in the Redux store as query cache entries. Cache invalidation is tag-based (<code>providesTags</code> / <code>invalidatesTags</code>). Because it's Redux-backed, data is accessible from middleware, thunks, and DevTools.</p>
+<p><strong>Key Strengths:</strong>
+- Tag-based cache invalidation is elegant and automatic
+- <code>updateQueryData</code> for manual cache manipulation with Immer-powered drafts
+- <code>onQueryStarted</code> for optimistic updates with <code>patchResult.undo()</code> rollback
+- OpenAPI codegen (<code>@rtk-query/codegen-openapi</code>) generates typed endpoints from specs
+- Redux DevTools integration (action history, state inspection, time-travel)
+- UI-agnostic (works outside React via Redux)
+- Polling, streaming cache updates (WebSocket), parallel/dependent queries</p>
+<p><strong>Limitations:</strong>
+- Query-level caching, not entity-level normalization (Apollo is closer to PEM here)
+- Requires Redux store (significant overhead if you don't already use Redux)
+- No built-in normalized entity graph (data is stored per endpoint + args)
+- No built-in table engine, CRUD scaffolding, or view layer
+- No native local-first / offline-first architecture
+- No dedicated Suspense support</p>
+<hr />
+<h2 id="3-architecture-comparison"><span class="num">3</span><span class="htext">Architecture Comparison</span></h2>
+<h3 id="31-cache-model-the-fundamental-divide"><span class="num">3.1</span><span class="htext">Cache Model: The Fundamental Divide</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>PEM</th>
+<th>TanStack Query</th>
+<th>Apollo Client</th>
+<th>RTK Query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cache Granularity</strong></td>
+<td>Entity-level (normalized graph: <code>entities[type][id]</code>)</td>
+<td>Query-level (serialized <code>queryKey</code> → data)</td>
+<td>Entity-level (normalized <code>InMemoryCache</code>)</td>
+<td>Query-level (endpoint + serialized args)</td>
+</tr>
+<tr>
+<td><strong>Cross-Query Reactivity</strong></td>
+<td>Automatic: updating one entity updates all views</td>
+<td>Manual: <code>invalidateQueries</code> or <code>setQueryData</code></td>
+<td>Automatic for normalized fields</td>
+<td>Manual: <code>invalidatesTags</code> triggers refetch</td>
+</tr>
+<tr>
+<td><strong>List Storage</strong></td>
+<td>ID arrays only (<code>lists[key].ids</code>)</td>
+<td>Full data arrays per query</td>
+<td>Normalized with <code>keyArgs</code>/<code>typePolicies</code></td>
+<td>Full data arrays per cache entry</td>
+</tr>
+<tr>
+<td><strong>UI-Only Overlay</strong></td>
+<td><code>patches</code> layer (merged at read-time)</td>
+<td><code>placeholderData</code> or manual <code>setQueryData</code></td>
+<td>Not built-in (custom client state)</td>
+<td>Redux slice for UI state</td>
+</tr>
+<tr>
+<td><strong>Sync Metadata</strong></td>
+<td><code>syncMetadata</code> (<code>$synced</code>, <code>$origin</code>, <code>$updatedAt</code>)</td>
+<td><code>dataUpdatedAt</code>, <code>isStale</code></td>
+<td><code>__typename</code> + cache fields</td>
+<td>Not built-in</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Analysis:</strong> PEM and Apollo are the only two with true entity-level normalization. TanStack Query and RTK Query are query-level caches. This is the single most important architectural distinction. PEM's normalized graph means:
+- A GraphQL mutation updating <code>Post:123</code> immediately reflects in a REST <code>useEntity("Post", "123")</code> subscriber
+- A realtime WebSocket update to a user updates every list, detail panel, and sidebar widget without manual invalidation
+- Lists store only IDs, so adding/removing a field to an entity doesn't require updating every list cache entry</p>
+<p>However, TanStack Query's query-level model is simpler for many apps. You don't need to think about entity types, IDs, or normalization. If your app has few overlapping data views, query-level caching is sufficient and less conceptual overhead.</p>
+<h3 id="32-data-flow-architecture"><span class="num">3.2</span><span class="htext">Data Flow Architecture</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>PEM</th>
+<th>TanStack Query</th>
+<th>Apollo</th>
+<th>RTK Query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Components</strong></td>
+<td>Read from hooks only (enforced)</td>
+<td>Read from hooks</td>
+<td>Read from hooks (<code>useQuery</code>)</td>
+<td>Read from hooks</td>
+</tr>
+<tr>
+<td><strong>Hooks</strong></td>
+<td>Orchestrate store subscriptions + fetch triggers</td>
+<td>Own fetch lifecycle + cache reads</td>
+<td>Own fetch lifecycle + cache reads</td>
+<td>Dispatch Redux actions</td>
+</tr>
+<tr>
+<td><strong>Store</strong></td>
+<td>Zustand entity graph</td>
+<td>Internal <code>QueryCache</code> (Map)</td>
+<td><code>InMemoryCache</code> (normalized)</td>
+<td>Redux store</td>
+</tr>
+<tr>
+<td><strong>External I/O</strong></td>
+<td>Stores/adapters handle REST, GraphQL, WebSocket, Supabase RT, ElectricSQL, PGlite, Flint, Surreal</td>
+<td><code>queryFn</code> (user-provided fetcher)</td>
+<td>GraphQL network layer + links</td>
+<td><code>baseQuery</code> (user-provided fetcher)</td>
+</tr>
+</tbody>
+</table></div>
+<p>PEM enforces a strict three-layer architecture: <strong>Components → Hooks → Stores → APIs</strong>. This is a design choice that prevents the "data silo" problem. TanStack Query is more flexible (you can call <code>queryClient.fetchQuery</code> imperatively), but that flexibility means it's easier to bypass the reactive layer.</p>
+<hr />
+<h2 id="4-feature-by-feature-comparison"><span class="num">4</span><span class="htext">Feature-by-Feature Comparison</span></h2>
+<h3 id="41-core-data-fetching"><span class="num">4.1</span><span class="htext">Core Data Fetching</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>PEM</th>
+<th>TanStack Query</th>
+<th>Apollo</th>
+<th>RTK Query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>useQuery</code> equivalent</td>
+<td><code>useEntity</code> / <code>useEntities</code> / <code>useEntityQuery</code></td>
+<td><code>useQuery</code></td>
+<td><code>useQuery</code></td>
+<td><code>useGetXQuery</code></td>
+</tr>
+<tr>
+<td><code>useInfiniteQuery</code> equivalent</td>
+<td><code>useEntityList</code> (append mode) / <code>useEntityQuery</code> with <code>fetchNextPage</code></td>
+<td><code>useInfiniteQuery</code> (first-class)</td>
+<td><code>fetchMore</code> + <code>updateQuery</code></td>
+<td>Manual pagination or <code>useInfiniteQuery</code> (if using)</td>
+</tr>
+<tr>
+<td>Suspense support</td>
+<td><code>useSuspenseEntity</code>, <code>useSuspenseEntityList</code></td>
+<td><code>useSuspenseQuery</code>, <code>useSuspenseInfiniteQuery</code></td>
+<td><code>useSuspenseQuery</code> (Apollo 3.8+)</td>
+<td>No dedicated Suspense support</td>
+</tr>
+<tr>
+<td>Parallel queries</td>
+<td><code>useQueries</code> pattern (manual)</td>
+<td><code>useQueries</code> (first-class)</td>
+<td>Multiple <code>useQuery</code> hooks</td>
+<td>Multiple <code>useGetXQuery</code> hooks</td>
+</tr>
+<tr>
+<td>Dependent queries</td>
+<td><code>enabled</code> flag</td>
+<td><code>enabled</code> flag</td>
+<td><code>skip</code> flag</td>
+<td><code>skip</code> flag</td>
+</tr>
+<tr>
+<td>Request deduplication</td>
+<td><code>dedupe()</code> in engine (process-global Map)</td>
+<td>Built-in (same <code>queryKey</code>)</td>
+<td>Built-in (query dedupe)</td>
+<td>Built-in (RTK middleware)</td>
+</tr>
+<tr>
+<td>Retry logic</td>
+<td>Exponential backoff with <code>maxRetries</code></td>
+<td>Exponential backoff (configurable)</td>
+<td>Link-based (<code>RetryLink</code>)</td>
+<td>Built-in retry with <code>retry</code> config</td>
+</tr>
+<tr>
+<td>Abort / cancellation</td>
+<td><code>AbortController</code> in <code>useEntities</code> / <code>useEntityQuery</code></td>
+<td><code>AbortSignal</code> (via <code>queryFn</code>)</td>
+<td><code>AbortController</code> (via <code>HttpLink</code>)</td>
+<td><code>AbortController</code> (via <code>fetchBaseQuery</code>)</td>
+</tr>
+<tr>
+<td>Typed errors (4xx vs 5xx)</td>
+<td><code>TerminalError</code> / <code>TransientError</code></td>
+<td><code>error</code> object (no built-in 4xx/5xx distinction)</td>
+<td>GraphQL <code>error</code> array</td>
+<td><code>error</code> object (no built-in 4xx/5xx distinction)</td>
+</tr>
+<tr>
+<td>SSR / Hydration</td>
+<td><code>initialIds</code>, <code>initialTotal</code> seeds; no full dehydration API</td>
+<td><code>HydrationBoundary</code>, <code>dehydrate</code>/<code>hydrate</code></td>
+<td><code>getDataFromTree</code>, <code>renderToStringWithData</code></td>
+<td>No built-in SSR hydration</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>PEM's advantages:</strong>
+- <strong>Typed errors (<code>TerminalError</code> vs <code>TransientError</code>)</strong> are a genuine innovation. The engine automatically retries <code>TransientError</code> (5xx, network) with backoff and immediately surfaces <code>TerminalError</code> (4xx, validation) without retry. Neither TanStack Query nor RTK Query makes this distinction natively.
+- <strong>2.0 transport registry</strong> (<code>registerEntityTransport</code>) is a structural improvement over 1.x's inline <code>fetch</code> closures. It centralizes transport logic, prevents the "Quick Stats trap" (each widget reinventing retry loops), and enables pure graph subscriptions without fetchers.</p>
+<p><strong>Where PEM is behind:</strong>
+- <strong>No first-class <code>useQueries</code> equivalent.</strong> TanStack Query's <code>useQueries</code> is elegant for parallel fetching of heterogeneous data. PEM requires manual <code>useEntity</code> calls or a custom hook.
+- <strong>SSR hydration is weaker.</strong> TanStack Query's <code>dehydrate</code>/<code>hydrate</code> is battle-tested and handles complex cases (prefetching, serialization, rehydration timing). PEM has <code>initialIds</code> seeding but no full dehydration pipeline.
+- <strong>No <code>keepPreviousData</code> / <code>placeholderData</code> for pagination.</strong> TanStack Query's ability to show stale data while fetching the next page is a polished UX pattern that PEM doesn't replicate.</p>
+<h3 id="42-caching-normalization"><span class="num">4.2</span><span class="htext">Caching &amp; Normalization</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>PEM</th>
+<th>TanStack Query</th>
+<th>Apollo</th>
+<th>RTK Query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Normalized entity cache</td>
+<td><strong>Yes</strong> (<code>entities[type][id]</code>)</td>
+<td>No (query-level)</td>
+<td><strong>Yes</strong> (<code>InMemoryCache</code>)</td>
+<td>No (query-level)</td>
+</tr>
+<tr>
+<td>Automatic entity updates across queries</td>
+<td><strong>Yes</strong> (graph is source of truth)</td>
+<td>No (manual <code>setQueryData</code> or <code>invalidateQueries</code>)</td>
+<td>Yes (for normalized fields)</td>
+<td>No (tag invalidation triggers refetch)</td>
+</tr>
+<tr>
+<td>Cache garbage collection</td>
+<td><code>startGarbageCollector</code> with <code>gcTime</code></td>
+<td><code>gcTime</code> (default 5 min)</td>
+<td><code>cache.evict()</code>, <code>cache.gc()</code></td>
+<td><code>keepUnusedDataFor</code> (default 60s)</td>
+</tr>
+<tr>
+<td>Stale-while-revalidate</td>
+<td>Yes (default 30s <code>staleTime</code>)</td>
+<td>Yes (default 0ms <code>staleTime</code>)</td>
+<td>Yes (<code>fetchPolicy</code> dependent)</td>
+<td>Yes (polling or manual refetch)</td>
+</tr>
+<tr>
+<td>Window focus refetch</td>
+<td><code>revalidateOnFocus</code></td>
+<td><code>refetchOnWindowFocus</code></td>
+<td>Not automatic (manual)</td>
+<td>Not automatic (manual/polling)</td>
+</tr>
+<tr>
+<td>Reconnect refetch</td>
+<td><code>revalidateOnReconnect</code></td>
+<td><code>refetchOnReconnect</code></td>
+<td>Not automatic</td>
+<td>Not automatic</td>
+</tr>
+<tr>
+<td>Subscriber ref-counting</td>
+<td><code>registerSubscriber</code> / <code>unregisterSubscriber</code></td>
+<td>Built-in (observer count)</td>
+<td>Built-in (watcher count)</td>
+<td>Built-in (subscription count via Redux)</td>
+</tr>
+<tr>
+<td>Background revalidation skips unobserved</td>
+<td>Yes (via <code>hasSubscribers</code>)</td>
+<td>Yes (gc triggers when no observers)</td>
+<td>Yes (cache gc)</td>
+<td>Yes (RTK cache cleanup)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>PEM's advantages:</strong>
+- The <strong>entity graph</strong> is the architectural crown jewel. When a realtime adapter pushes a <code>ChangeSet</code> into the graph, every hook reading that entity type re-renders automatically. No manual invalidation. No hunting query keys. This is a fundamentally different—and often superior—model for apps with complex, interrelated data.
+- <strong>Snapshot cache</strong> (<code>snapshotCache</code>) in <code>readEntitySnapshot</code> prevents React 19 <code>useSyncExternalStore</code> infinite loops by caching merged entity + patch + sync metadata per reference identity.</p>
+<p><strong>Where PEM is behind:</strong>
+- <strong>No cache persistence to <code>localStorage</code>/<code>IndexedDB</code> as a core feature.</strong> TanStack Query has <code>persistQueryClient</code> (experimental but widely used). Apollo has <code>apollo3-cache-persist</code>. PEM has <code>startLocalFirstGraph</code> with <code>GraphPersistenceAdapter</code>, but it's an opt-in local-first runtime, not a simple cache persister.
+- <strong>No fine-grained cache eviction by query key.</strong> TanStack Query's <code>queryClient.removeQueries</code> is precise. PEM's <code>invalidateLists</code> works by prefix or predicate, but removing specific list cache entries requires manual <code>delete</code> operations on the Zustand store.</p>
+<h3 id="43-mutations-optimistic-updates"><span class="num">4.3</span><span class="htext">Mutations &amp; Optimistic Updates</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>PEM</th>
+<th>TanStack Query</th>
+<th>Apollo</th>
+<th>RTK Query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mutation hook</td>
+<td><code>useEntityMutation</code></td>
+<td><code>useMutation</code></td>
+<td><code>useMutation</code></td>
+<td><code>useXMutation</code></td>
+</tr>
+<tr>
+<td>Optimistic updates</td>
+<td><code>optimistic</code> callback + <code>patchEntity</code></td>
+<td><code>onMutate</code> + <code>setQueryData</code> + manual rollback</td>
+<td><code>optimisticResponse</code> (automatic rollback)</td>
+<td><code>onQueryStarted</code> + <code>updateQueryData</code> + <code>patchResult.undo()</code></td>
+</tr>
+<tr>
+<td>Rollback on error</td>
+<td>Built-in (previous patch restored)</td>
+<td>Manual in <code>onError</code></td>
+<td>Automatic (discards optimistic layer)</td>
+<td><code>patchResult.undo()</code></td>
+</tr>
+<tr>
+<td>Cache invalidation after mutation</td>
+<td><code>invalidateLists</code> / <code>invalidateEntities</code></td>
+<td><code>invalidateQueries</code> / <code>setQueryData</code></td>
+<td>Automatic (normalized cache updates) or <code>refetchQueries</code></td>
+<td><code>invalidatesTags</code> (automatic)</td>
+</tr>
+<tr>
+<td>Cascade invalidation</td>
+<td><code>cascadeInvalidation</code> with schema registry</td>
+<td>Manual (developer decides)</td>
+<td>Automatic (normalized cache)</td>
+<td>Tag-based (automatic)</td>
+</tr>
+<tr>
+<td>Mutation state</td>
+<td><code>isPending</code>, <code>isSuccess</code>, <code>isError</code></td>
+<td><code>isPending</code>, <code>isSuccess</code>, <code>isError</code>, <code>isIdle</code></td>
+<td><code>loading</code>, <code>error</code>, <code>data</code></td>
+<td><code>isLoading</code>, <code>isSuccess</code>, <code>isError</code></td>
+</tr>
+<tr>
+<td>Transaction support</td>
+<td><code>createGraphTransaction</code> (commit/rollback)</td>
+<td>No (manual via multiple <code>setQueryData</code>)</td>
+<td>No</td>
+<td>No (but Redux actions are atomic)</td>
+</tr>
+<tr>
+<td>Graph actions (replayable)</td>
+<td><code>createGraphAction</code> with enqueued/settled events</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>PEM's advantages:</strong>
+- <strong><code>cascadeInvalidation</code></strong> with a schema registry is powerful and unique. You register relation schemas (<code>belongsTo</code>, <code>hasMany</code>, <code>manyToMany</code>) once, and after any mutation, PEM automatically traverses forward and reverse relations to mark stale lists and entities. Neither TanStack Query nor RTK Query has this level of automatic relational invalidation.
+- <strong><code>createGraphTransaction</code></strong> provides a fluent, chainable API for batching graph mutations with atomic commit/rollback. This is absent from all three competitors.
+- <strong><code>createGraphAction</code></strong> supports replayable, offline-queueable actions with <code>GraphActionRecord</code> tracking—useful for local-first architectures.</p>
+<p><strong>Where PEM is behind:</strong>
+- <strong>TanStack Query's mutation lifecycle is more mature.</strong> <code>onMutate</code> → <code>onError</code> → <code>onSettled</code> with context passing is a well-understood pattern. PEM's <code>useEntityMutation</code> has <code>onSuccess</code>/<code>onError</code> but no <code>onSettled</code> equivalent.
+- <strong>Apollo's <code>optimisticResponse</code> is more ergonomic.</strong> It uses the GraphQL response shape, requires no manual cache manipulation, and rolls back automatically. PEM's optimistic updates require the developer to construct <code>patchEntity</code> calls and manage <code>syncMetadata</code> manually.
+- <strong>RTK Query's <code>invalidatesTags</code> is more automatic.</strong> Once tags are declared, mutations invalidate queries without any imperative code. PEM's <code>cascadeInvalidation</code> requires registering schemas upfront, which is more work but more precise.</p>
+<h3 id="44-realtime-sync"><span class="num">4.4</span><span class="htext">Realtime &amp; Sync</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>PEM</th>
+<th>TanStack Query</th>
+<th>Apollo</th>
+<th>RTK Query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Realtime adapter system</td>
+<td><strong>Yes</strong> (WebSocket, Supabase RT, Convex, GraphQL-WS, ElectricSQL, PGlite, Flint, Surreal)</td>
+<td>No (manual <code>queryClient.invalidateQueries</code> in socket handler)</td>
+<td><code>GraphQL-WS</code> subscriptions</td>
+<td><code>createApi</code> with <code>eventSource</code> or WebSocket streaming</td>
+</tr>
+<tr>
+<td>Realtime manager (coalescing)</td>
+<td><strong>Yes</strong> (<code>RealtimeManager</code> with 16ms flush window)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>ChangeSet normalization</td>
+<td><strong>Yes</strong> (<code>ChangeSet</code> → <code>EntityChange</code> → graph write)</td>
+<td>No (manual)</td>
+<td>No (subscription data is query-specific)</td>
+<td>No (streaming cache updates are manual)</td>
+</tr>
+<tr>
+<td>Binary sorted insertion for realtime</td>
+<td><strong>Yes</strong> (<code>findInsertionIndex</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Local-first / offline-first</td>
+<td><strong>Yes</strong> (<code>startLocalFirstGraph</code>, <code>hydrateGraphFromStorage</code>, <code>persistGraphToStorage</code>)</td>
+<td>Experimental (<code>persistQueryClient</code>)</td>
+<td><code>apollo3-cache-persist</code> (addon)</td>
+<td>No built-in</td>
+</tr>
+<tr>
+<td>ElectricSQL + PGlite adapter</td>
+<td><strong>Yes</strong> (<code>createElectricAdapter</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Tenant-scoped sync</td>
+<td><strong>Yes</strong> (<code>createTenantScopedElectricAdapter</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Tauri SQLite persistence</td>
+<td><strong>Yes</strong> (<code>createTauriSqlPersistenceAdapter</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Sync status tracking</td>
+<td><strong>Yes</strong> (<code>useGraphSyncStatus</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Offline action replay</td>
+<td><strong>Yes</strong> (<code>replayActionWithRetry</code> with backoff + poison handling)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>PEM's advantages:</strong>
+- This is PEM's <strong>biggest differentiator</strong>. The realtime adapter ecosystem is comprehensive and purpose-built. No other library in this comparison ships with adapters for Supabase Realtime, Convex, ElectricSQL, PGlite, Flint Realtime Fabric, and SurrealDB out of the box.
+- The <strong>16ms coalescing flush window</strong> in <code>RealtimeManager</code> is a genuine performance optimization. Rapid-fire updates (e.g., from Supabase Realtime) collapse into a single Zustand write and React render cycle. Without this, realtime apps thrash.
+- <strong>Local-first runtime</strong> (<code>startLocalFirstGraph</code>) with hydration, persistence, offline status, and action replay is a core feature, not an addon. This positions PEM as a local-first architecture foundation, not just a data fetcher.
+- <strong>Binary sorted insertion</strong> (<code>findInsertionIndex</code>) for realtime updates means incoming entities land in the correct sorted position in a list without a full re-sort—O(log n) vs O(n log n).</p>
+<p><strong>Where PEM is behind:</strong>
+- <strong>TanStack Query's realtime story is "bring your own socket,"</strong> but its community has mature patterns (e.g., <code>@supabase-cache-helpers</code>). For many apps, a simple <code>useEffect</code> with a WebSocket + <code>queryClient.invalidateQueries</code> is sufficient. PEM's adapter system is overkill for simple polling needs.
+- <strong>Apollo's <code>subscribeToMore</code> with <code>updateQuery</code> is battle-tested</strong> for GraphQL subscriptions. PEM's GraphQL subscription support (<code>useGQLSubscription</code>, <code>GQLClient.subscribe</code>) is functional but less mature than Apollo's.</p>
+<h3 id="45-view-layer-filtering-sorting-searching"><span class="num">4.5</span><span class="htext">View Layer: Filtering, Sorting, Searching</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>PEM</th>
+<th>TanStack Query</th>
+<th>Apollo</th>
+<th>RTK Query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Declarative filter spec</td>
+<td><strong>Yes</strong> (<code>FilterSpec</code> with <code>FilterClause</code>, <code>FilterGroup</code>)</td>
+<td>No (query key is the filter)</td>
+<td>No (GraphQL variables are the filter)</td>
+<td>No (endpoint args are the filter)</td>
+</tr>
+<tr>
+<td>Local JS filter engine</td>
+<td><strong>Yes</strong> (<code>matchesFilter</code>, <code>matchesSearch</code>, <code>applyView</code>)</td>
+<td>No (data is whatever the query returned)</td>
+<td>No (Apollo cache handles it)</td>
+<td>No (Redux selectors handle it)</td>
+</tr>
+<tr>
+<td>Completeness modes (local/remote/hybrid)</td>
+<td><strong>Yes</strong> (<code>useEntityView</code> / <code>useEntityQuery</code>)</td>
+<td>No (all data is from the server)</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Remote filter compilation</td>
+<td><strong>Yes</strong> (<code>toRestParams</code>, <code>toGraphQLVariables</code>, <code>toSQLClauses</code>, <code>toPrismaWhere</code>)</td>
+<td>No (fetcher handles it)</td>
+<td>No (GraphQL variables)</td>
+<td>No (fetcher handles it)</td>
+</tr>
+<tr>
+<td>Debounced remote fetch</td>
+<td><strong>Yes</strong> (<code>remoteDebounce</code> in <code>useEntityView</code>)</td>
+<td>No (manual)</td>
+<td>No (manual)</td>
+<td>No (manual)</td>
+</tr>
+<tr>
+<td>Realtime sorted insertion</td>
+<td><strong>Yes</strong> (<code>findInsertionIndex</code> with binary search)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Custom predicates</td>
+<td><strong>Yes</strong> (<code>custom</code> operator with JS predicate)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Search with minChars</td>
+<td><strong>Yes</strong> (<code>search.minChars</code>)</td>
+<td>No (manual)</td>
+<td>No (manual)</td>
+<td>No (manual)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>PEM's advantages:</strong>
+- The <strong>completeness mode</strong> concept (<code>local</code>, <code>remote</code>, <code>hybrid</code>) is genuinely novel. If all data is already in the graph, filtering and sorting happen in JavaScript with zero network. If data is incomplete, the same <code>FilterSpec</code> compiles to remote query params. In hybrid mode, local results render immediately while a remote fetch runs in parallel. No other library has this concept.
+- The <strong>transport-agnostic <code>FilterSpec</code></strong> can compile to REST params, GraphQL variables, SQL <code>WHERE</code> clauses, Prisma <code>where</code>, or local JS predicates. This is powerful for apps that need to switch backends or support multiple transport layers.</p>
+<p><strong>Where PEM is behind:</strong>
+- <strong>TanStack Query's <code>queryKey</code> is simpler.</strong> <code>["tasks", { status: "open", sort: "dueAt" }]</code> is immediately intuitive. PEM's <code>FilterSpec</code> is more powerful but has a learning curve.
+- <strong>No built-in faceted filtering</strong> (min/max values, unique value counts per column). TanStack Table has <code>getFacetedMinMaxValues</code>, <code>getFacetedUniqueValues</code>. PEM has <code>getFacetedRowModel</code> in the pure table engine but it's not wired to the entity graph.</p>
+<h3 id="46-crud-forms"><span class="num">4.6</span><span class="htext">CRUD &amp; Forms</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>PEM</th>
+<th>TanStack Query</th>
+<th>Apollo</th>
+<th>RTK Query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Batteries-included CRUD hook</td>
+<td><strong>Yes</strong> (<code>useEntityCRUD</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Edit buffer isolation</td>
+<td><strong>Yes</strong> (<code>editBuffer</code> in React state, not graph)</td>
+<td>No (manual <code>useState</code>)</td>
+<td>No (manual <code>useState</code>)</td>
+<td>No (manual <code>useState</code>)</td>
+</tr>
+<tr>
+<td>Dirty field tracking</td>
+<td><strong>Yes</strong> (<code>DirtyFields</code> with <code>collectDirtyPaths</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Optimistic create with temp ID</td>
+<td><strong>Yes</strong> (<code>__temp__</code> ID + replacement)</td>
+<td>Manual</td>
+<td>Manual (<code>optimisticResponse</code>)</td>
+<td>Manual</td>
+</tr>
+<tr>
+<td>Cascade invalidation on save</td>
+<td><strong>Yes</strong> (<code>cascadeInvalidation</code> with schema)</td>
+<td>Manual</td>
+<td>Automatic (normalized cache)</td>
+<td>Automatic (<code>invalidatesTags</code>)</td>
+</tr>
+<tr>
+<td>Relation joins</td>
+<td><strong>Yes</strong> (<code>readRelations</code> with schema registry)</td>
+<td>No</td>
+<td>No (GraphQL handles this)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Form sheets (detail/form)</td>
+<td><strong>Yes</strong> (<code>EntityDetailSheet</code>, <code>EntityFormSheet</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Inline cell editing</td>
+<td><strong>Yes</strong> (<code>InlineCellEditor</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>PEM's advantages:</strong>
+- <strong><code>useEntityCRUD</code></strong> is a full CRUD lifecycle hook: list view, detail fetch, selection, edit buffer, create buffer, save with rollback, delete with undo, optimistic create, and <code>applyOptimistic</code> for instant toggles. None of the comparison libraries have anything like this. You would build it yourself with <code>useState</code> + <code>useMutation</code> + <code>useQuery</code> + manual invalidation.
+- <strong>Edit buffer isolation</strong> is a subtle but important design decision. While editing, other views continue showing the original server data. The graph only updates after <code>save()</code> succeeds. This prevents half-edited data from appearing in unrelated components.
+- <strong>Relation join resolution</strong> (<code>readRelations</code>) with schema registry means a detail panel can automatically resolve <code>belongsTo</code>, <code>hasMany</code>, and <code>manyToMany</code> relations from the graph without additional queries.</p>
+<p><strong>Where PEM is behind:</strong>
+- <strong>TanStack Form exists.</strong> If you need a headless form library, TanStack Form (10KB) is purpose-built and more powerful than PEM's form scaffolding. PEM's sheets are convenient but not as feature-rich as a dedicated form library.
+- <strong>The CRUD hook is opinionated.</strong> It assumes a specific UI pattern (list → detail → edit/create). If your app has non-standard CRUD flows, PEM's <code>useEntityCRUD</code> may fight you.</p>
+<h3 id="47-table-engine"><span class="num">4.7</span><span class="htext">Table Engine</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>PEM (Pure Table)</th>
+<th>TanStack Table</th>
+<th>Apollo</th>
+<th>RTK Query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Headless table engine</td>
+<td><strong>Yes</strong> (<code>useTable</code>)</td>
+<td><strong>Yes</strong> (<code>@tanstack/react-table</code>)</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Sorting</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Filtering</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Pagination</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Row selection</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Column visibility</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Column ordering</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Column pinning</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Column resizing</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Grouping</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Expanding</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Faceting</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Multi-view (table/gallery/list)</td>
+<td><strong>Yes</strong> (<code>EntityListView</code>, <code>GalleryView</code>, <code>ListView</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Preset system (filter/column)</td>
+<td><strong>Yes</strong> (<code>PresetStore</code>, <code>MemoryAdapter</code>, <code>ZustandPersistAdapter</code>, <code>RestApiAdapter</code>)</td>
+<td>No (community plugins)</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Selection store</td>
+<td><strong>Yes</strong> (<code>SelectionContext</code>)</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>TanStack Table integration</td>
+<td>Yes (<code>useEntityListAsTable</code>)</td>
+<td>N/A</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>PEM's advantages:</strong>
+- PEM ships a <strong>pure, dependency-free table engine</strong> that is structurally compatible with TanStack Table v8. This is remarkable for a library that also does data fetching. The table engine supports all major features: sorting, filtering, pagination, selection, visibility, ordering, pinning, resizing, grouping, expanding, and faceting.
+- <strong>Multi-view system</strong> (<code>table</code>, <code>gallery</code>, <code>list</code>) with <code>ViewModeSwitcher</code> is a unique feature. No other library in this comparison provides a built-in gallery or list view mode.
+- <strong>Preset system</strong> with pluggable storage adapters (<code>MemoryAdapter</code>, <code>ZustandPersistAdapter</code>, <code>RestApiAdapter</code>, <code>SupabasePresetAdapter</code>, <code>ElectricSQLPresetAdapter</code>) allows saving/loading filter presets and column presets. This is enterprise-grade table UX that TanStack Table doesn't provide out of the box.</p>
+<p><strong>Where PEM is behind:</strong>
+- <strong>TanStack Table v8 is more mature.</strong> It has years of production use, community plugins, and edge-case handling. PEM's pure table engine is impressive but likely has undiscovered edge cases.
+- <strong>Virtualization is missing.</strong> TanStack Table pairs with <code>TanStack Virtual</code> for large datasets. PEM has no virtualization solution.
+- <strong>Column resizing interaction is stubbed.</strong> Looking at <code>useTable.ts</code>, <code>getResizeHandler</code> returns a no-op: <code>return (_event: unknown) =&gt; { // Column resize handling }</code>. This suggests the table engine's resizing is not fully implemented.</p>
+<h3 id="48-devtools-debugging"><span class="num">4.8</span><span class="htext">DevTools &amp; Debugging</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>PEM</th>
+<th>TanStack Query</th>
+<th>Apollo</th>
+<th>RTK Query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DevTools panel</td>
+<td><strong>Yes</strong> (<code>EntityExplorerPanel</code>, <code>EntityExplorerFAB</code>)</td>
+<td><strong>Yes</strong> (standalone tab)</td>
+<td><strong>Yes</strong> (Apollo DevTools browser extension)</td>
+<td><strong>Yes</strong> (Redux DevTools)</td>
+</tr>
+<tr>
+<td>Event stream</td>
+<td><strong>Yes</strong> (<code>subscribeDevtoolsEvent</code>, <code>DevtoolsEventBus</code>)</td>
+<td>Query events in DevTools</td>
+<td>Mutation/query events</td>
+<td>Redux actions</td>
+</tr>
+<tr>
+<td>Time-travel (rewind live graph)</td>
+<td><strong>Yes</strong> (<code>restoreGraphSnapshot</code>, <code>stepTimeTravel</code>)</td>
+<td>No</td>
+<td>No</td>
+<td><strong>Yes</strong> (Redux DevTools time-travel)</td>
+</tr>
+<tr>
+<td>Subscriber count inspection</td>
+<td><strong>Yes</strong> (<code>getActiveSubscriberCount</code>)</td>
+<td>Yes (observer count)</td>
+<td>Yes (watcher count)</td>
+<td>Yes (via Redux)</td>
+</tr>
+<tr>
+<td>Graph export</td>
+<td><strong>Yes</strong> (<code>exportGraphSnapshot</code>)</td>
+<td>No (manual cache read)</td>
+<td>No (manual cache read)</td>
+<td>No (manual store read)</td>
+</tr>
+<tr>
+<td>Schema introspection</td>
+<td><strong>Yes</strong> (<code>getEntityJsonSchema</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Lint rules</td>
+<td><strong>Yes</strong> (<code>prometheusEntityLayeringRule</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>PEM's advantages:</strong>
+- <strong>True time-travel</strong> (<code>recordGraphSnapshot</code> → <code>restoreGraphSnapshot</code>) is a genuine capability. Unlike Redux DevTools time-travel (which rewinds actions), PEM captures the entire graph state at a point in time and can restore the live Zustand store to that state. This is more powerful for debugging entity-level bugs.
+- <strong>Devtools event bus</strong> (<code>subscribeDevtoolsEvent</code>) provides a real-time push stream of graph mutations, enabling live-updating explorer panels without polling.
+- <strong>Lint rule</strong> (<code>prometheusEntityLayeringRule</code>) enforces the <code>Component → Hook → Store</code> architecture at build time. This is unique and valuable for preventing architectural drift.</p>
+<p><strong>Where PEM is behind:</strong>
+- <strong>TanStack Query DevTools are more polished.</strong> They show query keys, observers, freshness, stale time, and allow manual refetching and invalidation with a click. PEM's Entity Explorer is functional but newer and less mature.
+- <strong>Redux DevTools action history</strong> is unbeatable for understanding mutation sequences. PEM's devtools show events but not the causal chain of actions that led to a state.</p>
+<h3 id="49-ai-interop-schema-system"><span class="num">4.9</span><span class="htext">AI Interop &amp; Schema System</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>PEM</th>
+<th>TanStack Query</th>
+<th>Apollo</th>
+<th>RTK Query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JSON Schema registration</td>
+<td><strong>Yes</strong> (<code>registerEntityJsonSchema</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Schema-driven fields</td>
+<td><strong>Yes</strong> (<code>buildEntityFieldsFromSchema</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Markdown rendering</td>
+<td><strong>Yes</strong> (<code>MarkdownFieldRenderer</code>, <code>renderMarkdownToHtml</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>AI tool context</td>
+<td><strong>Yes</strong> (<code>createGraphTool</code>, <code>createSchemaGraphTool</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Graph snapshot export for LLMs</td>
+<td><strong>Yes</strong> (<code>exportGraphSnapshotWithSchemas</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>SQL-to-schema generation</td>
+<td><strong>Yes</strong> (<code>registerEntityFromSql</code>, <code>parseCreateTable</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Prisma schema integration</td>
+<td><strong>Yes</strong> (<code>prismaRelationsToSchema</code>, <code>toPrismaInclude</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>PEM's advantages:</strong>
+- The <strong>AI interop layer</strong> (<code>createGraphTool</code>, <code>createSchemaGraphTool</code>) is forward-looking. It exposes the graph store, query functions, and schema metadata to LLM tool contexts, enabling AI agents to inspect and reason about the entity graph. This is genuinely novel.
+- <strong>SQL-to-schema generation</strong> (<code>registerEntityFromSql</code>) allows bootstrapping entity schemas from <code>CREATE TABLE</code> statements. This is a developer-experience feature no competitor has.</p>
+<p><strong>Where PEM is behind:</strong>
+- <strong>Apollo's GraphQL schema introspection is more powerful.</strong> A GraphQL schema is a self-describing API contract. PEM's JSON Schema registration requires manual wiring. Apollo's codegen from GraphQL schemas produces TypeScript types automatically.
+- <strong>RTK Query's OpenAPI codegen</strong> (<code>@rtk-query/codegen-openapi</code>) generates typed endpoints from API specs. PEM has no equivalent codegen from OpenAPI or PostgREST schemas.</p>
+<h3 id="410-transport-backend-agnosticism"><span class="num">4.10</span><span class="htext">Transport &amp; Backend Agnosticism</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>PEM</th>
+<th>TanStack Query</th>
+<th>Apollo</th>
+<th>RTK Query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>REST support</td>
+<td><strong>Yes</strong> (native, <code>makeRestTransport</code>)</td>
+<td><strong>Yes</strong> (via <code>queryFn</code>)</td>
+<td>Via wrapper</td>
+<td><strong>Yes</strong> (via <code>baseQuery</code>)</td>
+</tr>
+<tr>
+<td>GraphQL support</td>
+<td><strong>Yes</strong> (<code>GQLClient</code>, <code>useGQLEntity</code>, <code>useGQLList</code>, <code>useGQLMutation</code>, <code>useGQLSubscription</code>)</td>
+<td>Via <code>queryFn</code></td>
+<td><strong>Yes</strong> (native)</td>
+<td>Via <code>baseQuery</code></td>
+</tr>
+<tr>
+<td>Supabase/PostgREST</td>
+<td><strong>Yes</strong> (<code>makeRestTransport</code> with <code>SupabaseLike</code>)</td>
+<td>Via <code>queryFn</code></td>
+<td>Via wrapper</td>
+<td>Via <code>baseQuery</code></td>
+</tr>
+<tr>
+<td>ElectricSQL + PGlite</td>
+<td><strong>Yes</strong> (<code>createElectricAdapter</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>WebSocket realtime</td>
+<td><strong>Yes</strong> (<code>createWebSocketAdapter</code>)</td>
+<td>Manual</td>
+<td>Via <code>GraphQL-WS</code></td>
+<td>Via streaming updates</td>
+</tr>
+<tr>
+<td>Convex</td>
+<td><strong>Yes</strong> (<code>createConvexAdapter</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>SurrealDB</td>
+<td><strong>Yes</strong> (<code>createSurrealLiveAdapter</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Flint Realtime Fabric</td>
+<td><strong>Yes</strong> (<code>createFlintAdapter</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Tauri SQLite</td>
+<td><strong>Yes</strong> (<code>createTauriSqlPersistenceAdapter</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Tenant-scoped sync</td>
+<td><strong>Yes</strong> (<code>createTenantScopedElectricAdapter</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Merge strategies (conflict resolution)</td>
+<td><strong>Yes</strong> (<code>registerMergeStrategy</code>, <code>lwwStrategy</code>, <code>createLoroMergeStrategy</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Pluggable <code>identify</code></td>
+<td><strong>Yes</strong> (<code>identify</code> per transport)</td>
+<td>No</td>
+<td>No (GraphQL <code>id</code> + <code>__typename</code>)</td>
+<td>No</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>PEM's advantages:</strong>
+- <strong>Backend agnosticism is a core design goal.</strong> PEM's architecture explicitly supports REST, GraphQL, WebSocket, Supabase Realtime, Convex, ElectricSQL, PGlite, Flint, SurrealDB, and Tauri SQLite within the same entity graph. This is unmatched.
+- <strong>Merge strategies</strong> (<code>registerMergeStrategy</code>) allow pluggable conflict resolution. The default is LWW shallow merge, but you can register custom strategies (including a Loro CRDT strategy). This is unique among these libraries.
+- <strong>Transport registry</strong> (<code>registerEntityTransport</code>) centralizes per-entity-type transport configuration, preventing the "every widget has its own fetcher" anti-pattern.</p>
+<p><strong>Where PEM is behind:</strong>
+- <strong>Apollo's GraphQL-first design is more ergonomic for GraphQL apps.</strong> If your entire backend is GraphQL, Apollo's <code>useQuery</code>, <code>useMutation</code>, and normalized cache are purpose-built. PEM's GraphQL support (<code>GQLClient</code>, <code>normalizeGQLResponse</code>) is functional but requires more manual configuration (declarative <code>EntityDescriptor</code> arrays).
+- <strong>TanStack Query's <code>queryFn</code> flexibility is simpler.</strong> Any fetcher function works. PEM's 2.0 transport contract requires implementing <code>identify</code>, <code>authoritative</code>, <code>list</code>, and optional <code>subscribe</code>. This is more structured but adds boilerplate for simple cases.</p>
+<hr />
+<h2 id="5-where-each-library-excels-a-summary-matrix"><span class="num">5</span><span class="htext">Where Each Library Excels: A Summary Matrix</span></h2>
+<h3 id="51-prometheus-agsprometheus-entity-management-unique-strengths"><span class="num">5.1</span><span class="htext">@prometheus-ags/prometheus-entity-management — Unique Strengths</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Why It Matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Normalized entity graph</strong></td>
+<td>One entity update propagates to every view automatically. Solves the "query silo" problem.</td>
+</tr>
+<tr>
+<td><strong>Cross-transport normalization</strong></td>
+<td>REST, GraphQL, WebSocket, and realtime updates all write to the same graph. A GQL mutation updates REST subscribers.</td>
+</tr>
+<tr>
+<td><strong>Local-first / offline-first runtime</strong></td>
+<td><code>startLocalFirstGraph</code> with persistence, hydration, sync status, offline action replay, and poison handling. Core feature, not addon.</td>
+</tr>
+<tr>
+<td><strong>Realtime adapter ecosystem</strong></td>
+<td>8+ adapters (Supabase, Convex, ElectricSQL, PGlite, Flint, Surreal, WebSocket, GraphQL-WS) with coalescing and sorted insertion.</td>
+</tr>
+<tr>
+<td><strong>Hybrid view completeness</strong></td>
+<td>Local-only filtering when data is complete; remote when incomplete; hybrid for instant UX. Zero other library has this.</td>
+</tr>
+<tr>
+<td><strong>Transport-agnostic <code>FilterSpec</code></strong></td>
+<td>Same filter compiles to REST params, GraphQL variables, SQL WHERE, Prisma where, or JS predicates.</td>
+</tr>
+<tr>
+<td><strong>CRUD lifecycle hook</strong></td>
+<td><code>useEntityCRUD</code> provides list, detail, edit buffer, create buffer, optimistic create, rollback, and relation joins.</td>
+</tr>
+<tr>
+<td><strong>Schema-driven cascade invalidation</strong></td>
+<td>Register relations once; mutations automatically invalidate affected lists and entities via forward/reverse traversal.</td>
+</tr>
+<tr>
+<td><strong>Graph transactions &amp; actions</strong></td>
+<td><code>createGraphTransaction</code> for atomic commit/rollback; <code>createGraphAction</code> for replayable, offline-queueable mutations.</td>
+</tr>
+<tr>
+<td><strong>Time-travel for live graph</strong></td>
+<td><code>restoreGraphSnapshot</code> reverts the live Zustand store to a historical state, not just action replay.</td>
+</tr>
+<tr>
+<td><strong>AI interop</strong></td>
+<td><code>createGraphTool</code> exposes graph state to LLM tool contexts with schema-aware snapshot export.</td>
+</tr>
+<tr>
+<td><strong>Pure table engine + multi-view</strong></td>
+<td>Dependency-free table engine with table/gallery/list modes and preset system.</td>
+</tr>
+<tr>
+<td><strong>Typed errors (<code>TerminalError</code>/<code>TransientError</code>)</strong></td>
+<td>Automatic retry for transient failures, immediate surfacing for terminal failures. No competitor has this distinction.</td>
+</tr>
+<tr>
+<td><strong>Lint rule for architecture</strong></td>
+<td><code>prometheusEntityLayeringRule</code> enforces <code>Component → Hook → Store</code> at build time.</td>
+</tr>
+<tr>
+<td><strong>Merge strategies (CRDT support)</strong></td>
+<td>Pluggable conflict resolution including Loro CRDT strategy.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="52-tanstack-query-v5-where-it-still-wins"><span class="num">5.2</span><span class="htext">TanStack Query v5 — Where It Still Wins</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Why It Matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ecosystem maturity</strong></td>
+<td>~10M weekly downloads. Thousands of Stack Overflow answers, blog posts, and community plugins.</td>
+</tr>
+<tr>
+<td><strong>Framework portability</strong></td>
+<td>React, Vue, Solid, Svelte, Angular, Lit adapters. PEM is React-only.</td>
+</tr>
+<tr>
+<td><strong>First-class infinite queries</strong></td>
+<td><code>useInfiniteQuery</code> with <code>maxPages</code>, <code>initialPageParam</code>, <code>getNextPageParam</code>, <code>getPreviousPageParam</code>.</td>
+</tr>
+<tr>
+<td><strong>Dedicated Suspense hooks</strong></td>
+<td><code>useSuspenseQuery</code> / <code>useSuspenseInfiniteQuery</code> with guaranteed non-null data types.</td>
+</tr>
+<tr>
+<td><strong>Query prefetching</strong></td>
+<td><code>queryClient.prefetchQuery</code> with <code>staleTime</code> control. PEM has no equivalent prefetch API.</td>
+</tr>
+<tr>
+<td><strong><code>keepPreviousData</code> / <code>placeholderData</code></strong></td>
+<td>Smooth pagination UX without loading spinners.</td>
+</tr>
+<tr>
+<td><strong><code>useQueries</code> (parallel heterogeneous)</strong></td>
+<td>Elegant parallel fetching of different entity types.</td>
+</tr>
+<tr>
+<td><strong>Dehydration / hydration API</strong></td>
+<td><code>dehydrate</code> / <code>HydrationBoundary</code> for SSR with complex prefetching.</td>
+</tr>
+<tr>
+<td><strong>DevTools polish</strong></td>
+<td>Mature, feature-rich DevTools with cache inspection, query timeline, and manual invalidation.</td>
+</tr>
+<tr>
+<td><strong>Community plugins</strong></td>
+<td><code>persistQueryClient</code>, <code>@tanstack/query-sync-storage-persister</code>, <code>@tanstack/query-broadcast-client-experimental</code>.</td>
+</tr>
+<tr>
+<td><strong>Simpler mental model</strong></td>
+<td>Query key → fetcher → cache. No entity types, IDs, normalization, or schemas to learn.</td>
+</tr>
+<tr>
+<td><strong>Bundle size</strong></td>
+<td>~13 KB gzip vs PEM's significantly larger bundle (exact size depends on features used, but the table engine alone is substantial).</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="53-apollo-client-v3-where-it-still-wins"><span class="num">5.3</span><span class="htext">Apollo Client v3 — Where It Still Wins</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Why It Matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GraphQL-native design</strong></td>
+<td>If your backend is GraphQL, Apollo is the ergonomic choice. Schema-aware everything.</td>
+</tr>
+<tr>
+<td><strong>Normalized <code>InMemoryCache</code></strong></td>
+<td>True entity-level normalization with automatic cross-query updates. The closest peer to PEM's graph.</td>
+</tr>
+<tr>
+<td><strong><code>optimisticResponse</code></strong></td>
+<td>Most ergonomic optimistic update API: provide expected response shape, Apollo handles cache and rollback.</td>
+</tr>
+<tr>
+<td><strong>TypeScript codegen</strong></td>
+<td>Generate types from GraphQL schemas automatically. PEM requires manual JSON Schema registration.</td>
+</tr>
+<tr>
+<td><strong>GraphQL subscriptions</strong></td>
+<td><code>subscribeToMore</code> with <code>updateQuery</code> is mature and well-documented.</td>
+</tr>
+<tr>
+<td><strong>Enterprise adoption</strong></td>
+<td>Strong presence in large organizations. Proven at scale.</td>
+</tr>
+<tr>
+<td><strong>Apollo DevTools</strong></td>
+<td>Browser extension with query inspection, cache viewer, and mutation replay.</td>
+</tr>
+<tr>
+<td><strong>Cache persistence</strong></td>
+<td><code>apollo3-cache-persist</code> is mature and widely used.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="54-rtk-query-where-it-still-wins"><span class="num">5.4</span><span class="htext">RTK Query — Where It Still Wins</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Why It Matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tag-based invalidation</strong></td>
+<td>Elegant, automatic cache invalidation without manual query key hunting. <code>providesTags</code> / <code>invalidatesTags</code>.</td>
+</tr>
+<tr>
+<td><strong>Redux ecosystem integration</strong></td>
+<td>Data is in the Redux store: accessible from middleware, thunks, selectors, and DevTools.</td>
+</tr>
+<tr>
+<td><strong>OpenAPI codegen</strong></td>
+<td><code>@rtk-query/codegen-openapi</code> generates typed endpoints from OpenAPI specs. Huge productivity win.</td>
+</tr>
+<tr>
+<td><strong>Optimistic updates with <code>patchResult.undo()</code></strong></td>
+<td><code>updateQueryData</code> with Immer drafts + automatic rollback on <code>patchResult.undo()</code>.</td>
+</tr>
+<tr>
+<td><strong>UI-agnostic</strong></td>
+<td>Works outside React (Vanilla JS, Vue, Angular via Redux). PEM is React-only.</td>
+</tr>
+<tr>
+<td><strong>Redux DevTools time-travel</strong></td>
+<td>Full action history with state inspection and time-travel debugging.</td>
+</tr>
+<tr>
+<td><strong>Streaming cache updates</strong></td>
+<td>Built-in support for WebSocket-based streaming updates to cache entries.</td>
+</tr>
+<tr>
+<td><strong>Polling</strong></td>
+<td><code>pollingInterval</code> is a simple, effective built-in feature.</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="6-architectural-gaps-trade-offs"><span class="num">6</span><span class="htext">Architectural Gaps &amp; Trade-offs</span></h2>
+<h3 id="61-what-pem-is-missing-relative-to-mature-libraries"><span class="num">6.1</span><span class="htext">What PEM Is Missing (Relative to Mature Libraries)</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Gap</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>No framework adapters beyond React</strong></td>
+<td>PEM is React-only. Cannot be used in Vue, Svelte, Solid, or Angular.</td>
+<td>Use TanStack Query for multi-framework projects.</td>
+</tr>
+<tr>
+<td><strong>No virtualization for large lists</strong></td>
+<td>Table engine lacks virtual scrolling. Large datasets will suffer.</td>
+<td>Pair with <code>react-window</code> or <code>TanStack Virtual</code> manually.</td>
+</tr>
+<tr>
+<td><strong>Column resizing is stubbed</strong></td>
+<td><code>getResizeHandler</code> in <code>useTable.ts</code> is a no-op.</td>
+<td>Implement manual resizing or use TanStack Table.</td>
+</tr>
+<tr>
+<td><strong>No <code>useQueries</code> equivalent</strong></td>
+<td>Parallel heterogeneous fetching requires manual <code>useEntity</code> calls.</td>
+<td>Build a custom wrapper or use TanStack Query for that case.</td>
+</tr>
+<tr>
+<td><strong>SSR dehydration is immature</strong></td>
+<td><code>initialIds</code>/<code>initialTotal</code> seeding only; no full <code>dehydrate</code>/<code>hydrate</code> pipeline.</td>
+<td>Use TanStack Query for SSR-heavy apps.</td>
+</tr>
+<tr>
+<td><strong>Bundle size is larger</strong></td>
+<td>Table engine, view layer, CRUD hooks, adapters, and devtools add significant weight.</td>
+<td>Tree-shake unused features; PEM is modular.</td>
+</tr>
+<tr>
+<td><strong>Community size is tiny</strong></td>
+<td>No Stack Overflow tag, few blog posts, no ecosystem plugins.</td>
+<td>Risk factor for adoption in large teams.</td>
+</tr>
+<tr>
+<td><strong>No native Next.js App Router integration</strong></td>
+<td>No <code>useServerInsertedHTML</code> or streaming SSR support.</td>
+<td>Use TanStack Query for Next.js App Router.</td>
+</tr>
+<tr>
+<td><strong>GraphQL codegen is manual</strong></td>
+<td>Must declare <code>EntityDescriptor</code> arrays by hand.</td>
+<td>Use Apollo for GraphQL-first projects.</td>
+</tr>
+<tr>
+<td><strong>Testing utilities are sparse</strong></td>
+<td>No <code>renderHook</code> wrappers, mock transport helpers, or test fixtures.</td>
+<td>Build custom test utilities.</td>
+</tr>
+<tr>
+<td><strong>No <code>keepPreviousData</code> for pagination</strong></td>
+<td>Lists show loading state instead of stale data during refetch.</td>
+<td>Could be implemented with <code>patches</code> layer.</td>
+</tr>
+<tr>
+<td><strong>Preset system column resize is unimplemented</strong></td>
+<td>Column resizing in the pure table engine is not wired to interactions.</td>
+<td>Use TanStack Table for advanced column resizing.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="62-what-pem-does-that-no-competitor-does"><span class="num">6.2</span><span class="htext">What PEM Does That No Competitor Does</span></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Innovation</th>
+<th>Competitor Equivalent</th>
+<th>Why PEM's Approach Is Different</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Entity graph with patches + sync metadata</strong></td>
+<td>Apollo's <code>InMemoryCache</code> (closest)</td>
+<td>PEM separates <code>entities</code> (canonical), <code>patches</code> (UI-only), and <code>syncMetadata</code> (provenance). Apollo merges everything into the cache. PEM's separation enables cleaner optimistic updates and UI-only state.</td>
+</tr>
+<tr>
+<td><strong>Completeness modes (local/remote/hybrid)</strong></td>
+<td>None</td>
+<td>A genuinely novel concept. When data is complete locally, filtering/sorting is instant JS. When incomplete, the same spec compiles to remote params. Hybrid shows local data immediately while fetching remotely.</td>
+</tr>
+<tr>
+<td><strong>16ms realtime coalescing</strong></td>
+<td>None</td>
+<td>Rapid-fire updates collapse into one Zustand write. Prevents UI thrashing from realtime sources.</td>
+</tr>
+<tr>
+<td><strong>Schema-driven cascade invalidation</strong></td>
+<td>RTK Query's <code>invalidatesTags</code> (closest)</td>
+<td>PEM traverses registered relation schemas to find affected lists automatically. RTK Query requires explicit tag declarations. PEM's approach is more automatic but requires upfront schema registration.</td>
+</tr>
+<tr>
+<td><strong>Local-first runtime with action replay</strong></td>
+<td>TanStack Query's <code>persistQueryClient</code> (experimental)</td>
+<td>PEM's <code>startLocalFirstGraph</code> is a full runtime: hydration, persistence, sync status, offline detection, action replay with backoff, and poison handling. Not an addon—a core architecture.</td>
+</tr>
+<tr>
+<td><strong>Time-travel for live graph (not actions)</strong></td>
+<td>Redux DevTools time-travel</td>
+<td>PEM captures graph state snapshots and can restore the live store to any historical point. Redux time-travel replays actions, which may have different effects if reducers changed.</td>
+</tr>
+<tr>
+<td><strong>AI interop with schema-aware export</strong></td>
+<td>None</td>
+<td>Purpose-built for LLM tool contexts. Exports graph snapshots with JSON Schema metadata so AI agents can reason about entities.</td>
+</tr>
+<tr>
+<td><strong>Transport-agnostic <code>FilterSpec</code></strong></td>
+<td>None</td>
+<td>Same declarative filter works across REST, GraphQL, SQL, Prisma, and local JS. No other library abstracts filtering at this level.</td>
+</tr>
+<tr>
+<td><strong>Merge strategies (CRDT support)</strong></td>
+<td>None</td>
+<td>Pluggable conflict resolution at the entity level, including Loro CRDT. Positions PEM for collaborative editing.</td>
+</tr>
+<tr>
+<td><strong>Multi-view mode (table/gallery/list)</strong></td>
+<td>None</td>
+<td>TanStack Table is table-only. PEM provides table, gallery card, and list item views with a single data source.</td>
+</tr>
+<tr>
+<td><strong>Lint rule for architecture</strong></td>
+<td>None</td>
+<td>ESLint rule enforcing <code>Component → Hook → Store</code> layering. Prevents architectural drift.</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="7-strategic-recommendations"><span class="num">7</span><span class="htext">Strategic Recommendations</span></h2>
+<h3 id="71-when-to-choose-pem"><span class="num">7.1</span><span class="htext">When to Choose PEM</span></h3>
+<p>Choose <code>@prometheus-ags/prometheus-entity-management</code> when:</p>
+<ol>
+<li><strong>You need cross-view reactivity.</strong> If updating a user in one place must immediately update 10 other components without manual invalidation, PEM's normalized graph is the right model.</li>
+<li><strong>You're building a local-first or offline-capable app.</strong> The <code>startLocalFirstGraph</code> runtime with ElectricSQL/PGlite adapters is a genuine architectural foundation, not an afterthought.</li>
+<li><strong>You have realtime data from multiple sources.</strong> Supabase Realtime + WebSocket + ElectricSQL shape sync all feeding the same graph? PEM's adapter ecosystem is purpose-built for this.</li>
+<li><strong>You need a full CRUD + table + view layer in one package.</strong> <code>useEntityCRUD</code> + pure table engine + multi-view mode + preset system provides a lot of value for admin panels and data-heavy apps.</li>
+<li><strong>You're building an AI-native application.</strong> The <code>createGraphTool</code> / <code>createSchemaGraphTool</code> interop and schema-aware export are forward-looking capabilities.</li>
+<li><strong>You need transport-agnostic filtering.</strong> If your app must support REST today, GraphQL tomorrow, and SQL directly (via PGlite), PEM's <code>FilterSpec</code> is a genuine abstraction.</li>
+<li><strong>You want schema-driven data relationships.</strong> Registering <code>belongsTo</code>/<code>hasMany</code>/<code>manyToMany</code> schemas and getting automatic cascade invalidation is powerful for relational data models.</li>
+</ol>
+<h3 id="72-when-to-choose-tanstack-query-instead"><span class="num">7.2</span><span class="htext">When to Choose TanStack Query Instead</span></h3>
+<p>Choose TanStack Query v5 when:</p>
+<ol>
+<li><strong>You need framework portability.</strong> React, Vue, Solid, Svelte, Angular—TanStack Query works everywhere.</li>
+<li><strong>Your app is simple or medium-complexity.</strong> If you have a few API endpoints and overlapping data views are rare, TanStack Query's query-level caching is simpler and sufficient.</li>
+<li><strong>You need SSR with hydration.</strong> Next.js App Router, Remix, or Astro with <code>dehydrate</code>/<code>hydrate</code> is a solved problem with TanStack Query.</li>
+<li><strong>You rely on community plugins and Stack Overflow.</strong> The ecosystem is massive and well-documented.</li>
+<li><strong>You need <code>useInfiniteQuery</code> with <code>maxPages</code> and bi-directional pagination.</strong> TanStack Query's infinite query API is the best in the industry.</li>
+<li><strong>Bundle size matters.</strong> At ~13KB gzip, TanStack Query is significantly lighter than PEM.</li>
+<li><strong>You want Suspense without manual promise-throwing.</strong> <code>useSuspenseQuery</code> with non-null types is a polished DX feature.</li>
+</ol>
+<h3 id="73-when-to-choose-apollo-client-instead"><span class="num">7.3</span><span class="htext">When to Choose Apollo Client Instead</span></h3>
+<p>Choose Apollo Client v3 when:</p>
+<ol>
+<li><strong>Your entire backend is GraphQL.</strong> Apollo is purpose-built for this. Codegen, normalized cache, and <code>optimisticResponse</code> are all GraphQL-native.</li>
+<li><strong>You need the most mature normalized cache.</strong> Apollo's <code>InMemoryCache</code> has been in production for years and handles edge cases PEM likely hasn't encountered yet.</li>
+<li><strong>You want automatic cache updates from mutation responses.</strong> GraphQL's typed responses make this straightforward in Apollo.</li>
+<li><strong>Enterprise support and stability matter.</strong> Apollo has a commercial offering, extensive documentation, and proven scale.</li>
+</ol>
+<h3 id="74-when-to-choose-rtk-query-instead"><span class="num">7.4</span><span class="htext">When to Choose RTK Query Instead</span></h3>
+<p>Choose RTK Query when:</p>
+<ol>
+<li><strong>You're already using Redux Toolkit.</strong> RTK Query is a natural extension. Don't add a second cache.</li>
+<li><strong>You need tag-based cache invalidation.</strong> The <code>providesTags</code>/<code>invalidatesTags</code> model is elegant and automatic.</li>
+<li><strong>You have OpenAPI specs.</strong> <code>@rtk-query/codegen-openapi</code> generates typed endpoints from specs, a massive productivity win.</li>
+<li><strong>You need Redux DevTools integration.</strong> If your team relies on action history and time-travel debugging, RTK Query fits perfectly.</li>
+<li><strong>You need UI-agnostic data fetching.</strong> RTK Query works outside React via Redux actions.</li>
+</ol>
+<hr />
+<h2 id="8-conclusion"><span class="num">8</span><span class="htext">Conclusion</span></h2>
+<p><code>@prometheus-ags/prometheus-entity-management</code> is not a drop-in replacement for TanStack Query, Apollo Client, or RTK Query. It is a <strong>different architectural paradigm</strong>: a normalized entity graph with local-first runtime capabilities, rather than a query-bound cache manager.</p>
+<p><strong>PEM is more advanced than all three competitors in:</strong>
+- Normalized entity graph with cross-view reactivity
+- Local-first / offline-first architecture
+- Realtime adapter ecosystem with coalescing
+- Hybrid completeness modes for filtering/sorting
+- Transport-agnostic filter abstraction
+- CRUD lifecycle scaffolding
+- Schema-driven cascade invalidation
+- Graph transactions and replayable actions
+- Time-travel for live graph state
+- AI interop and schema-aware export
+- Multi-view table engine with presets
+- Typed errors (<code>TerminalError</code>/<code>TransientError</code>)
+- Merge strategies including CRDT support</p>
+<p><strong>PEM is behind the mature libraries in:</strong>
+- Ecosystem size, community support, and documentation depth
+- Framework portability (React-only)
+- SSR hydration maturity
+- First-class infinite query APIs (<code>maxPages</code>, bi-directional)
+- Dedicated Suspense hooks with non-null types
+- Bundle size efficiency
+- GraphQL-native ergonomics (Apollo is better for GraphQL-only)
+- OpenAPI codegen (RTK Query has this)
+- Table virtualization and column resizing polish
+- Testing utilities and developer tooling polish</p>
+<p><strong>The verdict:</strong> For data-heavy, reactive, local-first, or realtime applications—especially those mixing REST, GraphQL, and WebSocket data—PEM offers a genuinely novel and often superior architecture. For general-purpose data fetching in standard React apps, TanStack Query remains the pragmatic default due to its simplicity, maturity, and ecosystem. For GraphQL-only backends, Apollo Client is the ergonomic choice. For Redux-based stacks, RTK Query is the natural fit.</p>
+<p>PEM is best understood as a <strong>specialized tool for a specific class of problems</strong> (normalized reactive graphs, local-first architectures, multi-transport realtime apps) rather than a general-purpose replacement for the server-state standard-bearers. Within its domain, it is the most advanced option available. Outside its domain, the established libraries are safer, simpler, and better supported.</p>
+<hr />
+<p><em>Report generated by Kimi Work on 2026-06-22. Analysis based on source code review of <code>@prometheus-ags/prometheus-entity-management</code> (src/ directory, ~20+ modules) and web research of TanStack Query v5, Apollo Client v3, and RTK Query as of mid-2026.</em></p>  </main>
+</div>
+
+<footer class="foot">
+  <span class="fm"><span class="spark"></span>travisjames.ai</span>
+  <span>Architect of sovereign AI systems — engineered for permanence, not hype.</span>
+</footer>
+
+<script>
+(function(){
+  // group each <h2> + following siblings (until next h2) into a collapsible section
+  var content = document.getElementById('content');
+  var nodes = Array.prototype.slice.call(content.children);
+  var h2s = [];
+  nodes.forEach(function(node){
+    if(node.tagName === 'H2'){
+      var body = document.createElement('div');
+      body.className = 'sec-body';
+      var sib = node.nextSibling;
+      while(sib && !(sib.nodeType===1 && sib.tagName==='H2')){
+        var next = sib.nextSibling; body.appendChild(sib); sib = next;
+      }
+      node.after(body);
+      var caret = document.createElement('span');
+      caret.className='caret'; caret.textContent='▾'; node.appendChild(caret);
+      node.addEventListener('click', function(){ node.classList.toggle('collapsed'); body.classList.toggle('hidden'); });
+      h2s.push({h:node, b:body});
+    }
+  });
+
+  // callouts: PEM's advantages / Where PEM is behind / Key Strengths / Limitations / Core Model / verdict
+  function wrapCallout(strongTextRe, cls, tagLabel){
+    Array.prototype.forEach.call(content.querySelectorAll('p > strong'), function(s){
+      var t = s.textContent.trim().replace(/:$/,'');
+      if(!strongTextRe.test(t)) return;
+      var p = s.parentElement;
+      if(p.dataset.calloutDone) return;
+      var box = document.createElement('div'); box.className = cls;
+      var tag = document.createElement('div'); tag.className='calltag'; tag.textContent = tagLabel || t;
+      p.parentNode.insertBefore(box, p);
+      box.appendChild(tag);
+      // move the label paragraph's following sibling (ul or p) plus drop the label p
+      var sib = p.nextElementSibling;
+      p.dataset.calloutDone='1'; p.remove();
+      if(sib){ box.appendChild(sib); }
+    });
+  }
+  wrapCallout(/^PEM.?s advantages$/i,'adv','PEM advantages');
+  wrapCallout(/^Where PEM is behind$/i,'beh','Where PEM is behind');
+  wrapCallout(/^Key Strengths$/i,'adv','Key strengths');
+  wrapCallout(/^Limitations$/i,'beh','Limitations');
+
+  // verdict paragraph (inline strong "The verdict:")
+  Array.prototype.forEach.call(content.querySelectorAll('p > strong'), function(s){
+    if(!/^The verdict:?$/i.test(s.textContent.trim())) return;
+    var p = s.parentElement; var box=document.createElement('div'); box.className='verdict';
+    var tag=document.createElement('div'); tag.className='calltag'; tag.textContent='The verdict';
+    p.parentNode.insertBefore(box,p); box.appendChild(tag); box.appendChild(p);
+  });
+
+  // decorate Yes / No comparison cells
+  Array.prototype.forEach.call(content.querySelectorAll('table tbody td'), function(td){
+    if(td === td.parentElement.firstElementChild) return; // skip feature-name column
+    var txt = td.textContent.trim();
+    var lead = txt.match(/^(Yes|No|Not|None|N\/A)\b/);
+    if(!lead) return;
+    var isStrong = /^\s*<strong>\s*Yes/i.test(td.innerHTML);
+    var rest = td.innerHTML.replace(/^(\s*<strong>\s*)?(Yes|No|Not|None|N\/A)(\s*<\/strong>)?/i,'').trim();
+    var restHtml = rest ? ' <span class="rest">'+rest+'</span>' : '';
+    if(/^Yes/i.test(lead[0])){
+      td.className='cell-yes';
+      td.innerHTML = '<span class="pill '+(isStrong?'y':'yo')+'">✓ Yes</span>'+restHtml;
+    } else {
+      td.className='cell-no';
+      var word = lead[0];
+      td.innerHTML = '<span class="pill n">— '+word+'</span>'+restHtml;
+    }
+  });
+
+  // scrollspy
+  var links = {};
+  Array.prototype.forEach.call(document.querySelectorAll('.toc a'), function(a){
+    links[a.getAttribute('href').slice(1)] = a;
+  });
+  var heads = Array.prototype.slice.call(content.querySelectorAll('h2[id],h3[id]'));
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      var a = links[e.target.id]; if(!a) return;
+      if(e.isIntersecting){
+        Object.values(links).forEach(function(l){l.classList.remove('active');});
+        a.classList.add('active');
+        a.scrollIntoView({block:'nearest'});
+      }
+    });
+  }, {rootMargin:'-72px 0px -70% 0px', threshold:0});
+  heads.forEach(function(h){ spy.observe(h); });
+
+  // scroll progress
+  var prog = document.getElementById('progress');
+  function onScroll(){
+    var h = document.documentElement;
+    var p = (h.scrollTop)/(h.scrollHeight - h.clientHeight);
+    prog.style.width = Math.max(0,Math.min(1,p))*100 + '%';
+  }
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  // toolbar actions
+  var allCollapsed = false;
+  window.__toggleAll = function(){
+    allCollapsed = !allCollapsed;
+    h2s.forEach(function(s){ s.h.classList.toggle('collapsed', allCollapsed); s.b.classList.toggle('hidden', allCollapsed); });
+    document.getElementById('toggleAllLabel').textContent = allCollapsed ? 'Expand all' : 'Collapse all';
+  };
+  window.__toggleTheme = function(){
+    var root = document.documentElement;
+    var light = root.getAttribute('data-theme')==='light';
+    root.setAttribute('data-theme', light?'dark':'light');
+    document.getElementById('themeLabel').textContent = light?'Light':'Dark';
+    try{ localStorage.setItem('tj-theme', light?'dark':'light'); }catch(e){}
+  };
+  try{ var saved = localStorage.getItem('tj-theme'); if(saved==='light'){ window.__toggleTheme(); } }catch(e){}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+[package]
+name = "entity-graph-tauri"
+version = "3.0.0-alpha.0"
+edition = "2021"
+description = "Tauri v2 plugin exposing entity-graph commands and events with tauri-specta v2 TypeScript binding generation."
+license = "MIT"
+repository = "https://github.com/prometheus-ags/prometheus-entity-management"
+keywords = ["tauri", "tauri-plugin", "entity-graph", "specta"]
+categories = ["gui"]
+rust-version = "1.77.2"
+
+[lib]
+name = "entity_graph_tauri"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[features]
+default = []
+# Enable to regenerate src/generated-bindings.ts via tauri-specta build script.
+generate-bindings = ["specta-typescript"]
+
+[dependencies]
+tauri = { version = "2", default-features = false }
+tauri-specta = { version = "2.0.0-rc.25", features = ["derive", "typescript"] }
+specta = { version = "2.0.0-rc.25", features = ["serde_json"] }
+specta-typescript = { version = "0.0.12", optional = true }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["sync", "rt", "macros"] }
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }

@@ -8,7 +8,8 @@ import path from "path";
 import { pathToFileURL } from "url";
 
 const root = path.resolve(import.meta.dirname, "..");
-const dist = path.join(root, "dist", "index.mjs");
+// The published React shim moved to packages/entity-graph-react in v3 (monorepo split).
+const dist = path.join(root, "packages", "entity-graph-react", "dist", "index.mjs");
 const ledgerPath = path.join(
   root,
   "prometheus-entity-skills",

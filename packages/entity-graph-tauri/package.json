@@ -1,0 +1,69 @@
+{
+  "name": "@prometheus-ags/entity-graph-tauri",
+  "version": "3.0.0",
+  "description": "Tauri v2 plugin: Rust crate exposing entity-graph commands and events with tauri-specta v2 TS bindings; extends the core tauri-sql-persistence adapter.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "rust-plugin",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "build:rust": "cargo build --manifest-path rust-plugin/Cargo.toml",
+    "build:bindings": "cargo build --manifest-path rust-plugin/Cargo.toml --features generate-bindings",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@prometheus-ags/entity-graph-core": "workspace:*"
+  },
+  "peerDependencies": {
+    "@tauri-apps/api": ">=2.0.0",
+    "@tauri-apps/plugin-sql": ">=2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@tauri-apps/api": {
+      "optional": false
+    },
+    "@tauri-apps/plugin-sql": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@tauri-apps/api": "^2.5.0",
+    "tsup": ">=8",
+    "typescript": ">=6",
+    "vitest": ">=4"
+  },
+  "keywords": [
+    "tauri",
+    "tauri-plugin",
+    "tauri-specta",
+    "entity-graph",
+    "normalized-cache",
+    "state-management",
+    "zustand",
+    "desktop",
+    "rust"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prometheus-ags/prometheus-entity-management"
+  }
+}

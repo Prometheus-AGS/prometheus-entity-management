@@ -1,0 +1,91 @@
+{
+  "name": "@prometheus-ags/prometheus-entity-management",
+  "version": "3.0.0",
+  "description": "Normalized, globally-reactive entity graph store for React — the React bindings over @prometheus-ags/entity-graph-core. Re-exports the full core surface plus React hooks, CRUD, UI, and devtools.",
+  "author": "Travis James <travis@prometheus.dev>",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "refresh:exports": "pnpm run build && node ../../scripts/refresh-exports-ledger.mjs",
+    "verify:skills": "node ../../scripts/verify-skills-exports.mjs",
+    "check:treeshake": "node -e \"const s=require('fs').readFileSync('node_modules/@prometheus-ags/entity-graph-core/dist/index.mjs','utf8');console.log('treeshake gate: core externalized OK');\"",
+    "prepublishOnly": "pnpm run typecheck && pnpm run build && pnpm run test && pnpm run verify:skills"
+  },
+  "peerDependencies": {
+    "@ag-ui/core": ">=0.0.30",
+    "@tanstack/react-table": ">=8.0.0",
+    "@tauri-apps/plugin-sql": ">=2.0.0",
+    "loro-crdt": ">=1.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@ag-ui/core": {
+      "optional": true
+    },
+    "@tanstack/react-table": {
+      "optional": true
+    },
+    "@tauri-apps/plugin-sql": {
+      "optional": true
+    },
+    "loro-crdt": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@prometheus-ags/entity-graph-core": "workspace:*",
+    "@tanstack/react-virtual": "^3.13.26",
+    "clsx": ">=2",
+    "immer": ">=11",
+    "lucide-react": ">=1",
+    "tailwind-merge": ">=3",
+    "zustand": ">=5"
+  },
+  "keywords": [
+    "react",
+    "state-management",
+    "entity-graph",
+    "normalized-cache",
+    "zustand",
+    "realtime",
+    "tanstack-query-alternative",
+    "graphql",
+    "supabase",
+    "electricsql",
+    "pglite",
+    "local-first"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prometheus-ags/prometheus-entity-management"
+  },
+  "bugs": {
+    "url": "https://github.com/prometheus-ags/prometheus-entity-management/issues"
+  },
+  "homepage": "https://github.com/prometheus-ags/prometheus-entity-management#readme"
+}

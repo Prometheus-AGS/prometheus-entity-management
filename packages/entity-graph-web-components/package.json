@@ -1,0 +1,62 @@
+{
+  "name": "@prometheus-ags/entity-graph-web-components",
+  "version": "3.0.0",
+  "description": "Lit 3 custom elements (<entity-list>, <entity-detail>, <entity-form>) using ReactiveController to subscribe to the core entity graph. Framework-agnostic.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "@prometheus-ags/entity-graph-core": "workspace:*",
+    "lit": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "lit": {
+      "optional": false
+    }
+  },
+  "dependencies": {
+    "@prometheus-ags/entity-graph-core": "workspace:*",
+    "lit": "^3.0.0"
+  },
+  "devDependencies": {
+    "tsup": ">=8",
+    "typescript": ">=6",
+    "vitest": ">=4"
+  },
+  "keywords": [
+    "web-components",
+    "lit",
+    "lit3",
+    "custom-elements",
+    "entity-graph",
+    "normalized-cache",
+    "state-management",
+    "zustand",
+    "framework-agnostic"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prometheus-ags/prometheus-entity-management"
+  }
+}

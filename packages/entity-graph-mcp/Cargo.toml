@@ -1,0 +1,66 @@
+[package]
+name = "entity-graph-mcp"
+version = "3.0.0-alpha.0"
+edition = "2021"
+description = "MCP server for the Prometheus entity-graph ecosystem — exposes entity resources and tools over stdio and Streamable HTTP."
+license = "MIT"
+authors = ["Prometheus AGS <engineering@prometheusags.ai>"]
+repository = "https://github.com/Prometheus-AGS/prometheus-entity-management"
+homepage = "https://github.com/Prometheus-AGS/prometheus-entity-management"
+keywords = ["entity-graph", "mcp", "model-context-protocol", "server", "prometheus"]
+categories = ["network-programming", "web-programming", "development-tools"]
+
+[[bin]]
+name = "entity-graph-mcp"
+path = "src/main.rs"
+
+[lib]
+name = "entity_graph_mcp"
+path = "src/lib.rs"
+
+[dependencies]
+# MCP SDK
+rmcp = { version = "1.7.0", features = [
+    "server",
+    "macros",
+    "schemars",
+    "transport-io",
+    "transport-streamable-http-server",
+    "transport-streamable-http-server-session",
+] }
+
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+tokio-util = { version = "0.7", features = ["rt"] }
+
+# HTTP server (Axum wraps StreamableHttpService as a tower::Service)
+axum = { version = "0.8", default-features = false, features = ["http1", "json", "tokio"] }
+tower = "0.5"
+tower-http = { version = "0.7", features = ["cors", "trace"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+schemars = "0.8"
+
+# Error handling
+anyhow = "1"
+thiserror = "2"
+
+# Logging / tracing
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+
+# CLI
+clap = { version = "4", features = ["derive", "env"] }
+
+# Utilities
+dashmap = "6"
+uuid = { version = "1", features = ["v4"] }
+
+[dev-dependencies]
+tokio-test = "0.4"
+
+[profile.release]
+opt-level = 3
+strip = true

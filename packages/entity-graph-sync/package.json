@@ -1,0 +1,70 @@
+{
+  "name": "@prometheus-ags/entity-graph-sync",
+  "version": "3.0.0",
+  "description": "Pluggable peer-sync providers for the entity graph — ships Yjs (WebSocket + WebRTC) and Loro CRDT providers that bridge the core entity graph with collaborative editing engines.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@prometheus-ags/entity-graph-core": "workspace:*"
+  },
+  "peerDependencies": {
+    "loro-crdt": ">=1.0.0",
+    "y-webrtc": ">=10.2.3",
+    "y-websocket": ">=2.0.4",
+    "yjs": ">=13.6.0"
+  },
+  "peerDependenciesMeta": {
+    "loro-crdt": {
+      "optional": true
+    },
+    "y-webrtc": {
+      "optional": true
+    },
+    "y-websocket": {
+      "optional": true
+    },
+    "yjs": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "loro-crdt": "^1.13.6",
+    "tsup": ">=8",
+    "typescript": ">=6",
+    "vitest": ">=4"
+  },
+  "keywords": [
+    "entity-graph",
+    "sync",
+    "crdt",
+    "yjs",
+    "loro",
+    "collaboration",
+    "peer-sync",
+    "websocket",
+    "webrtc"
+  ]
+}

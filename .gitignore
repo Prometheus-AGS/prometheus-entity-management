@@ -69,3 +69,16 @@ supabase/.temp/
 # ── Misc ───────────────────────────────────────────────────────────────────────
 .turbo/
 *.local
+
+# Rust build artifacts (never commit)
+target/
+**/target/
+Cargo.lock.bak
+
+# Dart/Flutter build artifacts
+.dart_tool/
+**/.dart_tool/
+build/
+**/build/
+.flutter-plugins
+.flutter-plugins-dependencies

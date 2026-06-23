@@ -1,0 +1,35 @@
+{
+  "name": "@prometheus-ags/entity-graph-sdl",
+  "version": "3.0.0",
+  "description": "Schema Definition Language (SDL) for the entity graph — the shared contract every code generator (Rust CLI, Flutter, framework bindings) consumes.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "keywords": [
+    "entity-graph",
+    "schema",
+    "sdl",
+    "codegen"
+  ]
+}

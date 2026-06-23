@@ -8,7 +8,7 @@ import path from "path";
 import { pathToFileURL } from "url";
 
 const root = path.resolve(import.meta.dirname, "..");
-const dist = path.join(root, "dist", "index.mjs");
+const dist = path.join(root, "packages", "entity-graph-react", "dist", "index.mjs");
 if (!fs.existsSync(dist)) {
   console.error("Run `pnpm run build` first.");
   process.exit(1);

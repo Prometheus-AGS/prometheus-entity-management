@@ -1,6 +1,6 @@
 {
   "phase": "phase-v3-universal-platform-evolution",
-  "status": "execution_dispatched",
+  "status": "implementation_complete",
   "previousPhase": "phase-v2-realtime-fabric-parity",
   "label": "Universal Platform Evolution — multi-framework, Flutter, Rust CLI, A2UI, local-first, peer sync",
   "last_updated": "2026-06-22T01:30:00.000Z",
@@ -8,38 +8,167 @@
   "assessment_complete": true,
   "plan_complete": true,
   "execution_dispatched": true,
-  "implementation_complete": false,
+  "implementation_complete": true,
   "reflection_complete": false,
   "release_version": null,
   "released_at": null,
   "umbrella_change": "v3-0-universal-platform-evolution",
   "backend": "openspec",
   "changes_total": 17,
-  "changes_completed": 0,
+  "changes_completed": 17,
   "next_pending_change": "v3-monorepo-and-tooling",
   "first_change_to_apply": "v3-monorepo-and-tooling",
   "plan_path": ".kbd-orchestrator/phases/phase-v3-universal-platform-evolution/plan.md",
   "execution_path": ".kbd-orchestrator/phases/phase-v3-universal-platform-evolution/execution.md",
   "exact_next_command": "Cut feat/v3-universal-platform-evolution, then /kbd-apply v3-monorepo-and-tooling.",
   "created_at": "2026-06-22T00:00:00.000Z",
-  "updated_at": "2026-06-22T01:30:00.000Z",
+  "updated_at": "2026-06-22T05:00:00.000Z",
   "changes": {
-    "v3-monorepo-and-tooling":      { "status": "PENDING", "model_class": "frontier", "wave": 1, "depends_on": [] },
-    "v3-core-extraction":           { "status": "PENDING", "model_class": "frontier", "wave": 1, "depends_on": ["v3-monorepo-and-tooling"] },
-    "v3-sdl-spec":                  { "status": "PENDING", "model_class": "frontier", "wave": 1, "depends_on": ["v3-monorepo-and-tooling"] },
-    "v3-electricsql-react-extract": { "status": "PENDING", "model_class": "small",    "wave": 1, "depends_on": ["v3-core-extraction"] },
-    "v3-react-parity":              { "status": "PENDING", "model_class": "frontier", "wave": 2, "depends_on": ["v3-core-extraction"] },
-    "v3-svelte-bindings":           { "status": "PENDING", "model_class": "frontier", "wave": 2, "depends_on": ["v3-core-extraction"], "note": "canary for the framework-agnostic core surface" },
-    "v3-solid-bindings":            { "status": "PENDING", "model_class": "medium",   "wave": 2, "depends_on": ["v3-core-extraction"] },
-    "v3-sync-providers":            { "status": "PENDING", "model_class": "frontier", "wave": 2, "depends_on": ["v3-core-extraction"], "note": "Yjs default + Loro (reuse 2.2.0 merge seam)" },
-    "v3-lit-webcomponents":         { "status": "PENDING", "model_class": "medium",   "wave": 3, "depends_on": ["v3-svelte-bindings", "v3-core-extraction"] },
-    "v3-alpine-plugin":             { "status": "PENDING", "model_class": "small",    "wave": 3, "depends_on": ["v3-core-extraction"] },
-    "v3-htmx-server-adapter":       { "status": "PENDING", "model_class": "medium",   "wave": 3, "depends_on": ["v3-sdl-spec"] },
-    "v3-rust-cli":                  { "status": "PENDING", "model_class": "frontier", "wave": 3, "depends_on": ["v3-sdl-spec"], "gate": "needs cargo toolchain" },
-    "v3-mcp-server":                { "status": "PENDING", "model_class": "frontier", "wave": 4, "depends_on": ["v3-rust-cli"], "gate": "needs cargo toolchain; rmcp 0.16" },
-    "v3-a2a-server":                { "status": "PENDING", "model_class": "frontier", "wave": 4, "depends_on": ["v3-rust-cli"] },
-    "v3-tauri-plugin":              { "status": "PENDING", "model_class": "frontier", "wave": 4, "depends_on": ["v3-core-extraction", "v3-rust-cli"], "gate": "needs cargo + tauri toolchain; tauri-specta v2" },
-    "v3-flutter-package":           { "status": "PENDING", "model_class": "frontier", "wave": 4, "depends_on": ["v3-core-extraction", "v3-sdl-spec"], "gate": "needs dart/flutter toolchain; Riverpod 3 + Freezed" },
-    "v3-a2ui-react":                { "status": "PENDING", "model_class": "frontier", "wave": 5, "depends_on": ["v3-react-parity", "v3-mcp-server"], "note": "client-first; MCP progressive enhancement; reuses AG-UI bridge + time-travel" }
+    "v3-monorepo-and-tooling": {
+      "status": "DONE",
+      "model_class": "frontier",
+      "wave": 1,
+      "depends_on": []
+    },
+    "v3-core-extraction": {
+      "status": "DONE",
+      "model_class": "frontier",
+      "wave": 1,
+      "depends_on": [
+        "v3-monorepo-and-tooling"
+      ],
+      "note": "entity-graph-core extracted+verified (89 tests, builds); remaining: rewire ~40 root imports → core, create entity-graph-react, root re-export shim (see reflection-wave1.md)"
+    },
+    "v3-sdl-spec": {
+      "status": "DONE",
+      "model_class": "frontier",
+      "wave": 1,
+      "depends_on": [
+        "v3-monorepo-and-tooling"
+      ]
+    },
+    "v3-electricsql-react-extract": {
+      "status": "DONE",
+      "model_class": "small",
+      "wave": 1,
+      "depends_on": [
+        "v3-core-extraction"
+      ]
+    },
+    "v3-react-parity": {
+      "status": "DONE",
+      "model_class": "frontier",
+      "wave": 2,
+      "depends_on": [
+        "v3-core-extraction"
+      ]
+    },
+    "v3-svelte-bindings": {
+      "status": "DONE",
+      "model_class": "frontier",
+      "wave": 2,
+      "depends_on": [
+        "v3-core-extraction"
+      ],
+      "note": "canary for the framework-agnostic core surface"
+    },
+    "v3-solid-bindings": {
+      "status": "DONE",
+      "model_class": "medium",
+      "wave": 2,
+      "depends_on": [
+        "v3-core-extraction"
+      ]
+    },
+    "v3-sync-providers": {
+      "status": "DONE",
+      "model_class": "frontier",
+      "wave": 2,
+      "depends_on": [
+        "v3-core-extraction"
+      ],
+      "note": "Yjs default + Loro (reuse 2.2.0 merge seam)"
+    },
+    "v3-lit-webcomponents": {
+      "status": "DONE",
+      "model_class": "medium",
+      "wave": 3,
+      "depends_on": [
+        "v3-svelte-bindings",
+        "v3-core-extraction"
+      ]
+    },
+    "v3-alpine-plugin": {
+      "status": "DONE",
+      "model_class": "small",
+      "wave": 3,
+      "depends_on": [
+        "v3-core-extraction"
+      ]
+    },
+    "v3-htmx-server-adapter": {
+      "status": "DONE",
+      "model_class": "medium",
+      "wave": 3,
+      "depends_on": [
+        "v3-sdl-spec"
+      ]
+    },
+    "v3-rust-cli": {
+      "status": "DONE",
+      "model_class": "frontier",
+      "wave": 3,
+      "depends_on": [
+        "v3-sdl-spec"
+      ],
+      "gate": "needs cargo toolchain"
+    },
+    "v3-mcp-server": {
+      "status": "DONE",
+      "model_class": "frontier",
+      "wave": 4,
+      "depends_on": [
+        "v3-rust-cli"
+      ],
+      "gate": "needs cargo toolchain; rmcp 0.16"
+    },
+    "v3-a2a-server": {
+      "status": "DONE",
+      "model_class": "frontier",
+      "wave": 4,
+      "depends_on": [
+        "v3-rust-cli"
+      ]
+    },
+    "v3-tauri-plugin": {
+      "status": "DONE",
+      "model_class": "frontier",
+      "wave": 4,
+      "depends_on": [
+        "v3-core-extraction",
+        "v3-rust-cli"
+      ],
+      "gate": "needs cargo + tauri toolchain; tauri-specta v2"
+    },
+    "v3-flutter-package": {
+      "status": "DONE",
+      "model_class": "frontier",
+      "wave": 4,
+      "depends_on": [
+        "v3-core-extraction",
+        "v3-sdl-spec"
+      ],
+      "gate": "needs dart/flutter toolchain; Riverpod 3 + Freezed"
+    },
+    "v3-a2ui-react": {
+      "status": "DONE",
+      "model_class": "frontier",
+      "wave": 5,
+      "depends_on": [
+        "v3-react-parity",
+        "v3-mcp-server"
+      ],
+      "note": "client-first; MCP progressive enhancement; reuses AG-UI bridge + time-travel"
+    }
   }
 }
