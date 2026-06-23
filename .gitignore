@@ -74,6 +74,10 @@ supabase/.temp/
 target/
 **/target/
 Cargo.lock.bak
+# Explicit package-level Rust targets (also covered by **/target/ above)
+packages/entity-graph-cli/target/
+packages/entity-graph-mcp/target/
+packages/entity-graph-tauri/rust-plugin/target/
 
 # Dart/Flutter build artifacts
 .dart_tool/
