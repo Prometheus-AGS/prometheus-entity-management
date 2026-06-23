@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/entity-graph-alpine",
-  "version": "3.0.0",
+  "version": "3.0.0-alpha.0",
   "description": "Alpine.js plugin exposing $entity(type,id) and $entityList(type,query) magics — wires @prometheus-ags/entity-graph-core into Alpine.effect().",
   "license": "MIT",
   "type": "module",

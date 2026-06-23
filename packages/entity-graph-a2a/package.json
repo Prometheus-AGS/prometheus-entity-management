@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/entity-graph-a2a",
-  "version": "3.0.0",
+  "version": "3.0.0-alpha.0",
   "description": "A2A (Agent2Agent) v1.0 server for the Prometheus entity graph — AgentCard, Task routing, graph-mutation handlers, and Artifact results.",
   "license": "MIT",
   "type": "module",

@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/entity-graph-htmx",
-  "version": "3.0.0",
+  "version": "3.0.0-alpha.0",
   "description": "Node.js SSE fragment server for HTMX — streams HTML entity fragments over Server-Sent Events with idiomorph/morph swaps, backed by the Prometheus entity graph.",
   "license": "MIT",
   "type": "module",

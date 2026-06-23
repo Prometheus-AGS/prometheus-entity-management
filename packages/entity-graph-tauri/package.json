@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/entity-graph-tauri",
-  "version": "3.0.0",
+  "version": "3.0.0-alpha.0",
   "description": "Tauri v2 plugin: Rust crate exposing entity-graph commands and events with tauri-specta v2 TS bindings; extends the core tauri-sql-persistence adapter.",
   "license": "MIT",
   "type": "module",

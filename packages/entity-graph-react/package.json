@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/prometheus-entity-management",
-  "version": "3.0.0",
+  "version": "3.0.0-alpha.0",
   "description": "Normalized, globally-reactive entity graph store for React — the React bindings over @prometheus-ags/entity-graph-core. Re-exports the full core surface plus React hooks, CRUD, UI, and devtools.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
