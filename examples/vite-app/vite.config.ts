@@ -8,10 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "@prometheus-ags/prometheus-entity-management": path.resolve(
-        __dirname,
-        "../../src/index.ts",
-      ),
+      // The library resolves via the workspace dependency (built dist).
     },
   },
   server: {

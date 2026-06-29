@@ -15,9 +15,7 @@
     "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@prometheus-ags/prometheus-entity-management": ["../../src/index.ts"],
-      "@prometheus-ags/prometheus-entity-management/*": ["../../src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src"],
