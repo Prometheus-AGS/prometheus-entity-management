@@ -25,12 +25,6 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ],
-      "@prometheus-ags/prometheus-entity-management": [
-        "../../src/index.ts"
-      ],
-      "@prometheus-ags/prometheus-entity-management/*": [
-        "../../src/*"
       ]
     },
     "allowJs": true,

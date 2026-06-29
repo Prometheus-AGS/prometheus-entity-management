@@ -25,7 +25,9 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
-      - name: Typecheck (library)
+      # `turbo run typecheck` covers every workspace package, including the
+      # Vite and Next.js examples (each defines its own `typecheck` script).
+      - name: Typecheck (all workspaces)
         run: pnpm run typecheck
 
       - name: Build library
@@ -36,9 +38,3 @@ jobs:
 
       - name: Verify skills ↔ exports ledger
         run: pnpm run verify:skills
-
-      - name: Typecheck (Vite example)
-        run: pnpm run typecheck:vite
-
-      - name: Typecheck (Next.js example)
-        run: pnpm run typecheck:next

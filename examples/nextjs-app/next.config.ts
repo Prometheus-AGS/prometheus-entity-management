@@ -1,24 +1,9 @@
 import type { NextConfig } from "next";
-import path from "path";
-
-const libraryRoot = path.resolve(__dirname, "../../src/index.ts");
-/** Relative to this package root — required for Turbopack (absolute paths break resolve). */
-const libraryRootRelative = "../../src/index.ts";
 
 const nextConfig: NextConfig = {
+  // The library resolves via the workspace dependency (built dist);
+  // transpilePackages lets Next compile it as part of the app graph.
   transpilePackages: ["@prometheus-ags/prometheus-entity-management"],
-  webpack: (config) => {
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      "@prometheus-ags/prometheus-entity-management": libraryRoot,
-    };
-    return config;
-  },
-  turbopack: {
-    resolveAlias: {
-      "@prometheus-ags/prometheus-entity-management": libraryRootRelative,
-    },
-  },
 };
 
 export default nextConfig;

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import "@/schema";
 import { DemoLayoutClient } from "@/components/demo-layout-client";
 import { buildInitialEntitiesFromSeed } from "@/lib/ssr-entities";
 
