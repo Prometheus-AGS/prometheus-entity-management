@@ -4,6 +4,10 @@ description: >
   Scaffold a full CRUD page (list, create, edit, detail, delete) using useEntityCRUD with EntityTable,
   EntityDetailSheet, and EntityFormSheet. Enforces Components → Hooks → Stores: page composes only;
   useXxxCRUD hook wraps library CRUD; API module holds fetch/mutations.
+license: MIT
+version: '1.0.0'
+metadata:
+  tags: [react, typescript, entity-management]
 ---
 
 # `/entity-crud-page` — Full CRUD page

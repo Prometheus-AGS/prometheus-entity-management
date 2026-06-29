@@ -5,6 +5,10 @@ description: >
   Analyzes entity shape, produces column definitions (TanStack Table + entityMeta), FieldDescriptor-based forms,
   EntityDetailSheet / EntityFormSheet wiring, and registerSchema + cascade invalidation—all strictly following
   Components → Hooks → Stores → APIs data flow.
+license: MIT
+version: '1.0.0'
+metadata:
+  tags: [react, typescript, entity-management]
 ---
 
 # Entity Graph CRUD

@@ -6,6 +6,10 @@ description: >
   createTenantScopedElectricAdapter for tenant validation, createPGlitePersistenceAdapter
   + startLocalFirstGraph for entity graph hydration, and Supabase Realtime for Tier-C
   event push alongside the Electric read path. Replaces TanStack Query entirely.
+license: MIT
+version: '1.0.0'
+metadata:
+  tags: [react, typescript, entity-management]
 ---
 
 # `/entity-realtime-local-first` — Production PGlite Local-First Stack

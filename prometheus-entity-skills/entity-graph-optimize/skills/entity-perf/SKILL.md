@@ -4,6 +4,10 @@ description: >
   Slash command /entity-perf — analyze re-render patterns, Zustand selector granularity, duplicate
   fetches (dedupe keys), realtime flush settings, and list virtualization opportunities for
   @prometheus-ags/prometheus-entity-management apps.
+license: MIT
+version: '1.0.0'
+metadata:
+  tags: [react, typescript, entity-management]
 ---
 
 # /entity-perf

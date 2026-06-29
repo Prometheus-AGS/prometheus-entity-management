@@ -6,6 +6,10 @@ description: >
   useGQLMutation, useGQLSubscription). Supports schema-driven descriptor generation from .graphql
   files or introspection of a running endpoint. Sub-skills cover setup, hook codegen patterns,
   and wiring subscriptions through graphql-ws plus RealtimeManager.
+license: MIT
+version: '1.0.0'
+metadata:
+  tags: [react, typescript, entity-management]
 ---
 
 # Entity Graph — GraphQL
