@@ -1,6 +1,10 @@
 ---
 name: entity-graph-migrate
 description: "Phased migration from TanStack Query, Apollo, Redux, or SWR to @prometheus-ags/prometheus-entity-management—strangler patterns, query-key mapping, SSR hydration, and rollback-aware PR slices."
+license: MIT
+version: '1.0.0'
+metadata:
+  tags: [react, typescript, entity-management]
 ---
 
 # entity-graph-migrate

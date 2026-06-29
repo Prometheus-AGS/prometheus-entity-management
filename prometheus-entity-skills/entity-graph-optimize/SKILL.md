@@ -4,6 +4,10 @@ description: >
   Audit existing @prometheus-ags/prometheus-entity-management integrations for architectural violations (components→hooks→stores),
   performance issues (Zustand selectors, subscription churn), missing cascade/schema registration, and memory growth.
   Sub-skills: full CLAUDE.md audit, render/subscriber analysis, and eviction/GC strategies using graph APIs.
+license: MIT
+version: '1.0.0'
+metadata:
+  tags: [react, typescript, entity-management]
 ---
 
 # Entity Graph — Optimize

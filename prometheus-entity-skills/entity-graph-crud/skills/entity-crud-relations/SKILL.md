@@ -3,6 +3,10 @@ name: entity-crud-relations
 description: >
   Register EntitySchema graphs with registerSchema: belongsTo, hasMany, manyToMany, listKeyPrefix alignment,
   invalidateTargetLists, globalListKeys, and verification that cascadeInvalidation matches list query keys.
+license: MIT
+version: '1.0.0'
+metadata:
+  tags: [react, typescript, entity-management]
 ---
 
 # `/entity-crud-relations` — Schema registration and cascade invalidation
