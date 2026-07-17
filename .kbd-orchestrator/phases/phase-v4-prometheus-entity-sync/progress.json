@@ -1,0 +1,131 @@
+{
+  "phase": "phase-v4-prometheus-entity-sync",
+  "status": "execution_in_progress",
+  "previousPhase": "phase-v3-universal-platform-evolution",
+  "label": "prometheus-entity-sync — Rust sync engine, TypeScript/Dart/Tauri SDKs, PGlite + SQLite clients",
+  "last_updated": "2026-07-17T05:45:00.000Z",
+  "last_updated_by": "claude-code",
+  "assessment_complete": true,
+  "plan_complete": true,
+  "execution_dispatched": true,
+  "implementation_complete": false,
+  "reflection_complete": false,
+  "release_version": null,
+  "released_at": null,
+  "changes_total": 14,
+  "changes_completed": 11,
+  "completed_changes": [
+    "v4-repo-scaffold",
+    "v4-pes-core-types",
+    "v4-sync-rules-dsl",
+    "v4-bucket-assigner",
+    "v4-pes-oplog",
+    "v4-pes-snapshot",
+    "v4-wal-to-bucket-router",
+    "v4-psync-protocol",
+    "v4-pes-gateway",
+    "v4-pes-server-binary",
+    "v4-entity-sync-ts-sdk"
+  ],
+  "in_progress_changes": [
+    {
+      "id": "v4-pem-sync-transport",
+      "tasks_complete": "9/11",
+      "commits": { "prometheus-entity-sync": "8f8c057", "prometheus-entity-management": "50bc24a" },
+      "not_archived_reason": "Tasks 9-10 (two-tab integration tests: same-user mutual visibility, different-user no cross-user leak) — UNBLOCKED now that v4-pes-server-binary is done.",
+      "resume_hint": "Same examples/docker-compose/ stack as v4-entity-sync-ts-sdk's resume hint — test prometheusSyncTransport (this change's EntityTransport<T>) end-to-end against a real running pes-server.",
+      "shipped": "prometheusSyncTransport (EntityTransport<T>) in entity-sync-pglite/src/pem-transport.ts; a Zustand-shaped status-store.ts; examples/vite-app and examples/nextjs-app both got a demonstration src/lib/entity-sync-transport.ts (not wired into either app's actual Task UI — see known_issues entry on this)."
+    }
+  ],
+  "next_change": "v4-pem-sync-transport (resume deferred tasks 9-10), then v4-dart-sdk",
+  "next_change_note": "v4-entity-sync-ts-sdk archived (2026-07-17-v4-entity-sync-ts-sdk, 12/12 tasks) — see the pes-gateway-poll-deltas-infinite-redelivery known-issue entry for what its integration tests caught. v4-pes-server-binary (commit 1ab1d99, archived 2026-07-17-v4-pes-server-binary) remains DONE — 13/13 tasks, no deferrals, security-reviewed. Recommend resuming v4-pem-sync-transport's deferred integration-test tasks next, using the same now-fixed docker-compose stack, before moving further down the critical path to v4-dart-sdk.",
+  "known_issues": [
+    {
+      "id": "pes-gateway-poll-deltas-infinite-redelivery",
+      "change": "v4-entity-sync-ts-sdk",
+      "status": "RESOLVED — fixed and committed as 0b88600 in prometheus-entity-sync",
+      "description": "ConnectionHandler::poll_deltas stored the last-delivered LSN (inclusive) and reused it directly as BucketOpLog::drain_since's scan start — but drain_since is also inclusive of from_lsn, so every ~50ms poll tick re-included the already-delivered op, forever. Shipped in the already-archived, already-security-reviewed v4-pes-gateway change; only caught now because v4-entity-sync-ts-sdk's Docker integration tests were the first coverage to run the delta loop for more than a few assertions and check delivery *count*, not just presence. Fixed by scanning from last_seen_lsn + 1 (kept local to the scan, distinct from the inclusive-by-contract last_seen_lsn field). Regression test: crates/pes-gateway/tests/e2e_delta_propagation.rs's a_single_write_is_delivered_as_exactly_one_delta_not_repeated."
+    },
+    {
+      "id": "resume-lsn-zero-ambiguity",
+      "change": "v4-entity-sync-ts-sdk",
+      "status": "RESOLVED — fixed and committed as 0b88600 in prometheus-entity-sync",
+      "description": "resume_lsn: Some(PgLsn(0)) was used in several Rust E2E tests and in entity-sync-core's SyncClient.subscribe(buckets, \"0\") calls as a shortcut to skip snapshot delivery. This is ambiguous: PgLsn(0) is a real, reachable value (WalToBucketRouter's broker-Offset surrogate LSN starts at 0, per that crate's own documented LSN caveat), so Some(0) cannot be distinguished from 'I've already consumed the op at LSN 0.' Once the redelivery bug above was fixed, poll_deltas correctly started treating Some(0) as already-consumed, which silently dropped each client's first op. User decided (via AskUserQuestion) to fix the affected tests to use the real resume_lsn: None + snapshot-then-live-delta path rather than introduce a distinct sentinel type, since None is how a real client actually connects and has no such ambiguity. e2e_write_authorization.rs and e2e_graceful_shutdown.rs keep Some(0) — audited and confirmed safe since neither asserts on Delta receipt."
+    },
+    {
+      "id": "kbd-apply-nested-checkbox-numbering",
+      "change": "v4-sync-rules-dsl",
+      "status": "worked around once; not encountered since",
+      "description": "kbd-apply's OpenSpec adapter has a task-numbering mismatch when tasks.md contains nested sub-checkboxes. No change's tasks.md has had nesting since v4-sync-rules-dsl."
+    },
+    {
+      "id": "testcontainers-requires-docker-host-override",
+      "change": "v4-pes-snapshot, v4-wal-to-bucket-router",
+      "status": "environment note, not a bug",
+      "description": "This dev environment uses Colima (not Docker Desktop), so testcontainers' bollard client needs DOCKER_HOST=unix:///Users/gqadonis/.colima/default/docker.sock set explicitly when running any testcontainers-backed test locally. CI environments with a standard Docker socket won't need this."
+    },
+    {
+      "id": "frf-postgres-cdc-requires-uuid-primary-keys",
+      "change": "v4-wal-to-bucket-router",
+      "status": "environment/design note, not a pes-* bug",
+      "description": "frf-postgres-cdc's WAL decoder hard-requires every watched table's primary key to parse as a UUID (frf_domain::EntityId). A non-UUID id silently drops the row with only a WARN log. Real production schemas synced through prometheus-entity-sync must use UUID primary keys on any CDC-watched table."
+    },
+    {
+      "id": "repo-had-no-tsconfig-json",
+      "change": "v4-psync-protocol",
+      "status": "RESOLVED — fixed in commit 035d92c",
+      "description": "No tsconfig.json existed anywhere in prometheus-entity-sync since the v4-repo-scaffold change — every prior change touching TypeScript packages only wrote stub index.ts files, so `tsc --noEmit` had never actually been exercised until v4-psync-protocol needed it. Added a root tsconfig.json plus a package-level one for entity-sync-core; all 4 TS packages now typecheck clean via `pnpm run typecheck`. Worth double-checking other TS packages (entity-sync-pglite, entity-sync-react, entity-sync-tauri) get their own tsconfig.json extending the root one as they gain real content, since only entity-sync-core has one so far."
+    },
+    {
+      "id": "pes-gateway-write-path-broken-access-control",
+      "change": "v4-pes-gateway",
+      "status": "RESOLVED — fixed pre-archive in commit 0530604",
+      "description": "Pre-archive security review found CRITICAL: ConnectionHandler::handle_write authorized ClientMessage::Write by entity_type alone, never checking entity_id/ownership — any client authorized for any bucket reading a given entity_type could write, delete, or CRDT-patch any other user's row of that type, with the unauthorized write re-broadcast as a legitimate Delta to the real owner's sessions via the WAL pipeline. Fixed by verifying entity_id falls within the authorized assignment's owner-scoped data_queries predicate (SELECT 1 FROM (<data_query>) AS sq WHERE sq.id::text = $1) before any write. Regression test crates/pes-gateway/tests/e2e_write_authorization.rs proves cross-tenant writes are rejected (4001/AuthInvalid) and same-owner writes still succeed. A related HIGH finding (write-path DB errors bypassing GatewayErrorResponse, silently dropping the connection) was fixed in the same pass."
+    },
+    {
+      "id": "pes-rules-unquoted-template-substitution",
+      "change": "v4-pes-gateway (found; fix out of scope, flagged as background task_3ce9ef66)",
+      "status": "RESOLVED — fixed and committed as 65ac051",
+      "description": "pes_rules::template::substitute rendered {bucket_parameters.X} unquoted into data_queries SQL — only valid for bare numeric literals, so any non-numeric (e.g. UUID) owner column produced a Postgres parse error ('operator does not exist: text = integer' / arithmetic misparse). Found writing v4-pes-gateway's first E2E test; no prior pes-rules/pes-snapshot/pes-router test exercised the real substitution path against a non-numeric column through Postgres. Fix renders substituted values as single-quoted SQL string literals; docs/sync-rules-reference.md updated."
+    },
+    {
+      "id": "pes-snapshot-uuid-text-keyset-cursor",
+      "change": "v4-pes-gateway (found; fix out of scope, flagged as background task_adb5ee06)",
+      "status": "RESOLVED — fixed and committed as 097861f",
+      "description": "pes-snapshot's keyset pagination failed with 'operator does not exist: uuid > text' for any UUID-keyed table: IdCast::Text cast only the cursor bind, not the sq.id column itself. Found the same way as the pes-rules bug above."
+    },
+    {
+      "id": "pes-server-still-a-stub-blocks-ts-sdk-integration-tests",
+      "change": "v4-entity-sync-ts-sdk, v4-pem-sync-transport, v4-dart-sdk",
+      "status": "RESOLVED — v4-pes-server-binary complete (13/13 tasks, commit 1ab1d99, archived 2026-07-17-v4-pes-server-binary). Deferred tasks in v4-entity-sync-ts-sdk and v4-pem-sync-transport can now be resumed; v4-dart-sdk can now be started.",
+      "description": "crates/pes-server/src/main.rs used to be just `println!(\"prometheus-entity-sync server — hello world\")`. Now a full deployable binary: config.toml loading with escaped env-var interpolation, /health /ready /metrics HTTP server, WAL pipeline wiring, SIGTERM graceful shutdown, and a working Docker image (36.76MB, verified). examples/docker-compose/ in the target repo brings up a real server+Postgres stack — verified live end-to-end (health/ready/metrics endpoints, and a real SIGTERM against the running container completing full graceful shutdown in 1s)."
+    },
+    {
+      "id": "pes-server-proposal-version-drift",
+      "change": "v4-pes-server-binary",
+      "status": "RESOLVED — fixed and committed as 1ab1d99, found by actually running the Docker build rather than trusting the proposal",
+      "description": "Proposal specified rust:1.87-slim (too old for redb 4.1.0 and other transitive deps' MSRV — bumped to rust:1.94-slim per user direction) and gcr.io/distroless/cc (pg_walstream dynamically links libpq's ~15-shared-library transitive closure, unpatchable inside distroless — switched to debian:bookworm-slim + libpq5, confirmed with user). Also found and fixed a missing .dockerignore/Dockerfile.dockerignore that caused the first build attempt to try copying ~27GB of target/ into the build context."
+    },
+    {
+      "id": "pes-server-config-toml-injection",
+      "change": "v4-pes-server-binary",
+      "status": "RESOLVED — fixed and committed as 1ab1d99 (MEDIUM finding from pre-commit security review)",
+      "description": "config.toml's ${VAR_NAME} env-var interpolation did raw text substitution before TOML parsing — an env var value containing a quote + TOML syntax could break out of its string literal and inject config structure. Fixed by TOML-escaping interpolated values. Regression test in crates/pes-server/src/config.rs."
+    },
+    {
+      "id": "entity-transport-vs-syncprovider-architectural-fork",
+      "change": "v4-pem-sync-transport",
+      "status": "design note, not a bug — followed the written proposal",
+      "description": "prometheus-entity-management/packages/entity-graph-sync already has a purpose-built SyncProvider interface (start/pushLocalChange/stop) for realtime CRDT peer sync (Yjs/Loro providers exist there) — architecturally closer to prometheus-entity-sync's push-based delta stream than EntityTransport<T>'s pull-based list/get/subscribe contract, which v4-pem-sync-transport's proposal specifies. User confirmed following the proposal exactly. Worth a future design discussion on whether entity-graph-sync should also get a prometheus-entity-sync SyncProvider."
+    },
+    {
+      "id": "vite-nextjs-example-apps-still-on-1x-hooks",
+      "change": "v4-pem-sync-transport",
+      "status": "environment/design note, not a bug",
+      "description": "Both examples/vite-app and examples/nextjs-app's task-hooks.ts still use the 1.x useEntityList/useEntity + mock-backend pattern, not the 2.0 useEntities/useEntityQuery + registerEntityTransport pattern. v4-pem-sync-transport's new src/lib/entity-sync-transport.ts in each app proves the registration API compiles, but isn't wired into either app's rendered Task views. A future change would need to migrate task-hooks.ts to the 2.0 pattern."
+    }
+  ],
+  "target_repo": "/Users/gqadonis/Projects/prometheus/prometheus-entity-sync",
+  "created_at": "2026-07-13T00:00:00.000Z",
+  "updated_at": "2026-07-17T05:45:00.000Z"
+}
