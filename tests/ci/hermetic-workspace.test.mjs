@@ -84,6 +84,19 @@ test("aggregate CI and release rehearsal install every external certification ru
       workflow,
       /cargo \+1\.88\.0 fetch --locked[\s\S]*tests\/fixtures\/tauri-plugin-host\/Cargo\.toml/,
     );
+    for (const dependency of [
+      "libwebkit2gtk-4.1-dev",
+      "build-essential",
+      "curl",
+      "wget",
+      "file",
+      "libxdo-dev",
+      "libssl-dev",
+      "libayatana-appindicator3-dev",
+      "librsvg2-dev",
+    ]) {
+      assert.match(workflow, new RegExp(`\\b${dependency.replaceAll(".", "\\.")}\\b`));
+    }
   }
 });
 

@@ -48,6 +48,20 @@ jobs:
       - name: Install Rust minimum-supported toolchain
         run: rustup toolchain install 1.88.0 --profile minimal
 
+      - name: Install the certified Tauri Linux prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y \
+            libwebkit2gtk-4.1-dev \
+            build-essential \
+            curl \
+            wget \
+            file \
+            libxdo-dev \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev
+
       - name: Fetch locked Rust dependencies for offline verification
         run: |
           cargo +stable fetch --locked \
