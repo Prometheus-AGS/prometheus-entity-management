@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import {
   sha256Text,
   validatePortableProvenanceContract,
+  validateRepositoryHistoryBoundary,
 } from "../../scripts/flutter-source-provenance-contract.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -115,6 +116,31 @@ test("hybrid-mobile templates cannot be relabeled as imported runtime source", (
   assert.ok(errorCodes(input).includes("HYBRID_RUNTIME_IMPORT"));
 });
 
+test("a squash merge is accepted only when every approved imported file is unchanged", () => {
+  assert.deepEqual(
+    validateRepositoryHistoryBoundary({
+      ancestryPreserved: false,
+      approvedFilesUnchanged: true,
+    }),
+    { valid: true, mode: "content-equivalent-squash", errors: [] },
+  );
+  assert.deepEqual(
+    validateRepositoryHistoryBoundary({
+      ancestryPreserved: true,
+      approvedFilesUnchanged: false,
+    }),
+    { valid: true, mode: "ancestry", errors: [] },
+  );
+  const rejected = validateRepositoryHistoryBoundary({
+    ancestryPreserved: false,
+    approvedFilesUnchanged: false,
+  });
+  assert.equal(rejected.valid, false);
+  assert.deepEqual(rejected.errors.map(({ code }) => code), [
+    "DESTINATION_HISTORY_DISCONNECTED",
+  ]);
+});
+
 test("the real Git-aware verifier produces a passing integration receipt", () => {
   const temporary = mkdtempSync(join(tmpdir(), "flutter-provenance-test-"));
   const reportPath = join(temporary, "report.json");
@@ -129,6 +155,8 @@ test("the real Git-aware verifier produces a passing integration receipt", () =>
     assert.equal(report.verdict, "pass");
     assert.deepEqual(report.portableContract, { verdict: "pass", errors: [] });
     assert.equal(report.history.mergeCommit, "eb3c9802da5ff10ad6db135fed761bd23ea80b3f");
+    assert.ok(["ancestry", "content-equivalent-squash"].includes(report.history.integrationMode));
+    assert.deepEqual(report.history.approvedFileDiff, []);
   } finally {
     rmSync(temporary, { recursive: true, force: true });
   }
