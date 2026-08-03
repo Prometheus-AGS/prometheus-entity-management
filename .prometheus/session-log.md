@@ -201,3 +201,27 @@
 - Synced the new main capability spec and archived the complete OpenSpec change
   to `openspec/changes/archive/2026-08-03-v3-nextjs-app-router-example/`.
   Stable 3.0 and npm publication remain separate gates.
+
+## 2026-08-03 — React-first RC immutable rehearsal certified
+
+- Merged PR #12 as `1c40eaa08da210cbe3e20a77c5db211712b5c3a1` after the
+  Node 22, 24, and 26 CI matrix passed. The correction makes GitHub Actions
+  include the hidden `.release-candidate` directory and staging recovery
+  journal in uploaded artifacts.
+- Dispatched release-candidate rehearsal run `30837597774` from `main` and
+  verified its recorded `headSha` exactly matched the merge commit. The full
+  certification gate, 16-artifact rehearsal, GitHub attestation, and immutable
+  bundle upload all passed.
+- Downloaded and independently inspected the uploaded bundle. All 12 npm
+  tarballs are `3.0.0-rc.1`, their SHA-512 digests match the recovery journal,
+  packed names and internal RC ranges are correct, and the source SHA is bound
+  to `1c40eaa08da210cbe3e20a77c5db211712b5c3a1`.
+- The rehearsal made no registry mutation, preserved every existing `latest`
+  tag, selected npm `next`, retained 15 package/native dry-run receipts, and
+  recorded Flutter with zero warnings plus successful Rust CLI/MCP dry runs.
+- The remaining pre-staging boundary is npm account authority. The existing
+  token authenticates as `babyice1906`, but npm rejects trusted-publisher reads
+  with HTTP 403 because bypass-style tokens cannot manage trust. Two isolated
+  web-login attempts expired without browser completion and were cancelled at
+  the password prompt; no password, OTP, or temporary npm configuration was
+  retained.
