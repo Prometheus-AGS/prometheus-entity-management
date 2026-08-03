@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-03T07:29:24.775Z",
+  "candidate": {
+    "coreVersion": "3.0.0-rc.1",
+    "installSource": "packed-tarball-only",
+    "packageManager": "pnpm",
+    "fixedReleasePackages": 12
+  },
+  "manifestPolicy": {
+    "react": {
+      "packageName": "@prometheus-ags/prometheus-entity-management",
+      "productionCoreDependency": "absent",
+      "requiredCorePeer": "^3.0.0-rc.1",
+      "workspaceDevelopmentCore": "present in source; ignored by consumer install"
+    },
+    "svelte": {
+      "packageName": "@prometheus-ags/entity-graph-svelte",
+      "productionCoreDependency": "absent",
+      "requiredCorePeer": "^3.0.0-rc.1",
+      "workspaceDevelopmentCore": "present in source; ignored by consumer install"
+    },
+    "solid": {
+      "packageName": "@prometheus-ags/entity-graph-solid",
+      "productionCoreDependency": "absent",
+      "requiredCorePeer": "^3.0.0-rc.1",
+      "workspaceDevelopmentCore": "present in source; ignored by consumer install"
+    },
+    "web-components": {
+      "packageName": "@prometheus-ags/entity-graph-web-components",
+      "productionCoreDependency": "absent",
+      "requiredCorePeer": "^3.0.0-rc.1",
+      "workspaceDevelopmentCore": "present in source; ignored by consumer install"
+    },
+    "alpine": {
+      "packageName": "@prometheus-ags/entity-graph-alpine",
+      "productionCoreDependency": "absent",
+      "requiredCorePeer": "^3.0.0-rc.1",
+      "workspaceDevelopmentCore": "present in source; ignored by consumer install"
+    },
+    "htmx": {
+      "packageName": "@prometheus-ags/entity-graph-htmx",
+      "productionCoreDependency": "absent",
+      "requiredCorePeer": "^3.0.0-rc.1",
+      "workspaceDevelopmentCore": "present in source; ignored by consumer install"
+    }
+  },
+  "resolution": {
+    "compatibleCoreInstallations": 1,
+    "bindingCoreInstances": {
+      "consumer": "core-instance-1",
+      "@prometheus-ags/prometheus-entity-management": "core-instance-1",
+      "@prometheus-ags/entity-graph-svelte": "core-instance-1",
+      "@prometheus-ags/entity-graph-solid": "core-instance-1",
+      "@prometheus-ags/entity-graph-web-components": "core-instance-1",
+      "@prometheus-ags/entity-graph-alpine": "core-instance-1",
+      "@prometheus-ags/entity-graph-htmx": "core-instance-1"
+    },
+    "peerRangeFailure": {
+      "status": "pass",
+      "suppliedVersion": "4.0.0",
+      "expectedRange": "^3.0.0-rc.1",
+      "diagnosticIncludesPackage": true,
+      "diagnosticIncludesPeerContext": true
+    }
+  },
+  "behavior": {
+    "react": "pass",
+    "svelte": "pass",
+    "solid": "pass",
+    "webComponents": "pass",
+    "alpine": "pass",
+    "htmx": "pass",
+    "normalizedGraph": "one shared default graph"
+  },
+  "behaviorProofs": {
+    "react": "React StoreApi selector subscription observed a core write",
+    "svelte": "Svelte entity store observed a core write",
+    "solid": "Solid createGraphStore accessor observed a core write",
+    "webComponents": "Lit reactive controller observed a core write and requested a host update",
+    "alpine": "Alpine reactive entity binding observed a core write",
+    "htmx": "HTMX server graph emitted a binding change event and shared two-way writes with core"
+  },
+  "limitations": {
+    "visualEvidence": "not applicable: this verifier certifies headless package topology and reactive store behavior",
+    "browserOrDeviceRuntime": "not claimed by this change",
+    "publication": "no registry or dist-tag mutation performed"
+  }
+}

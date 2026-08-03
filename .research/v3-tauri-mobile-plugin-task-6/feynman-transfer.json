@@ -1,0 +1,33 @@
+{
+  "conceptId": "tauri-implementation-certification-separation",
+  "audience": "skeptic",
+  "coreIdea": "Think of a release as four locks: source implementation, reproducible evidence, release certification, and publication authority. Opening an earlier lock never opens a later one.",
+  "grade": {
+    "source": ".research/v3-tauri-mobile-plugin-task-5/feynman-transfer.json",
+    "overallScore": 0.963,
+    "scores": {
+      "completeness": 0.93,
+      "accuracy": 0.98,
+      "clarity": 0.94,
+      "misconceptionsAbsent": 1.0
+    },
+    "passed": true,
+    "transferValidated": true,
+    "remainingGap": "A real Android and iOS target host must produce response, denial, visual, environment, and hash receipts before mobile certification."
+  },
+  "transferProblems": [
+    {
+      "problem": "The Kotlin and Swift sources are in the tarball, desktop IPC passes, and the device procedure is documented. May stable 3.0 be certified?",
+      "answer": "No. Packaging and desktop execution pass, but native mobile registration, bridge return, and mobile capability denial remain unproven.",
+      "score": 1.0
+    },
+    {
+      "problem": "All six implementation tasks are recorded, but the Android/iOS receipts are missing. What may advance?",
+      "answer": "The bounded KBD implementation dimension may be complete. Evidence remains partial, certification and publication remain blocked, and OpenSpec must remain active because its archive scenario requires every plan criterion to have evidence.",
+      "score": 1.0
+    }
+  ],
+  "formalMasteryClaimed": false,
+  "retentionScheduled": false,
+  "reasonFormalMasteryOpen": "The same-turn transfer passes, but a delayed retention check is outside this task."
+}

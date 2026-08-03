@@ -1,0 +1,32 @@
+{
+  "format": "research-package",
+  "formatVersion": "1.0.0",
+  "okfType": "research-session",
+  "jobId": "v3-release-pipeline-rc-preflight",
+  "query": "How should Prometheus implement a recoverable Changesets release-candidate pipeline with npm trusted and staged publishing without moving latest?",
+  "depth": "deep",
+  "createdAt": "2026-08-02T00:00:00Z",
+  "completedAt": "2026-08-02T00:00:00Z",
+  "refreshedAt": "2026-08-02T12:40:00Z",
+  "stagesCompleted": 10,
+  "sourcesCount": 10,
+  "claimsCount": 9,
+  "confidence": 0.94,
+  "verificationStatus": "verified",
+  "feynmanGrade": 0.968,
+  "task6FeynmanGrade": 0.97,
+  "feynmanGateUsed": true,
+  "misconceptionsAbsent": 1.0,
+  "contradictionsResolved": 4,
+  "contradictionsUnresolved": 0,
+  "surrealMemoryUsed": false,
+  "sycophancyCorrectionUsed": true,
+  "citationStyle": "APA",
+  "toolAvailability": {
+    "prometheusResearchJob": "job-1785666090-700ecdb2",
+    "prometheusResearchJobStatus": "stalled-at-initializing",
+    "officialWebFallback": true,
+    "learnGrade": true,
+    "sycophancyCorrection": true
+  }
+}

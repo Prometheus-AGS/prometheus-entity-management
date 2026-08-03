@@ -1,0 +1,21 @@
+{
+  "query": "Which executable tests and evidence are necessary to certify the v3 Tauri plugin's desktop IPC, capability denial, packed Rust consumer, and Android/iOS bridge lanes?",
+  "depth": "deep",
+  "createdAt": "2026-08-02T04:00:00Z",
+  "constraints": [
+    "Use primary Tauri documentation and installed upstream source for technical claims.",
+    "Do not treat JavaScript IPC mocks or cross-compilation as native command execution.",
+    "Do not claim Android or iOS execution without simulator or device artifacts.",
+    "Complete only OpenSpec task 3 in this logical turn."
+  ],
+  "subquestions": [
+    "Can Tauri's frontend mockIPC prove the Rust plugin command?",
+    "How can a test drive the registered plugin and runtime authority?",
+    "How should an npm tarball prove its embedded Rust/native boundary is consumable?",
+    "What evidence distinguishes a documented mobile lane from executed mobile proof?"
+  ],
+  "searchFallback": {
+    "firecrawlAvailable": false,
+    "fallback": "Official-source web search plus the installed tauri 2.11.5 crate source"
+  }
+}

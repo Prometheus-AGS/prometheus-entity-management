@@ -1,0 +1,31 @@
+{
+  "contradictions": [
+    {
+      "id": "fixture-is-app",
+      "topic": "runnable host",
+      "claim_a": "The existing MockRuntime fixture is already a mobile app because it has tauri.conf.json.",
+      "claim_b": "It is test-only: Cargo emits only rlib, src/lib.rs has only cfg(test), and no mobile_entry_point registers the plugin in a target host.",
+      "resolved": true,
+      "resolution": "claim_b",
+      "confidence": 1.0
+    },
+    {
+      "id": "deny-capability-subtracts",
+      "topic": "capability denial",
+      "claim_a": "An empty capability attached beside an allowed capability removes permission.",
+      "claim_b": "Tauri merges permissions for matching capabilities; denial evidence needs a separate build/configuration that omits the allowed capability.",
+      "resolved": true,
+      "resolution": "claim_b",
+      "confidence": 0.99
+    },
+    {
+      "id": "machine-ready",
+      "topic": "host environment",
+      "claim_a": "Attached devices mean the clean mobile lane is ready to run.",
+      "claim_b": "Targets and devices are ready, but the app host is absent, the repo has no pnpm Tauri CLI, cargo-tauri is one minor release behind, and unrelated VM descriptor pressure can still abort builds.",
+      "resolved": true,
+      "resolution": "claim_b",
+      "confidence": 0.99
+    }
+  ]
+}

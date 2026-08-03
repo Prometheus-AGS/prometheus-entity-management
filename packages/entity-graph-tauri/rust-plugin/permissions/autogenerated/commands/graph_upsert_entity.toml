@@ -1,0 +1,13 @@
+# Automatically generated - DO NOT EDIT!
+
+"$schema" = "../../schemas/schema.json"
+
+[[permission]]
+identifier = "allow-graph-upsert-entity"
+description = "Enables the graph_upsert_entity command without any pre-configured scope."
+commands.allow = ["graph_upsert_entity"]
+
+[[permission]]
+identifier = "deny-graph-upsert-entity"
+description = "Denies the graph_upsert_entity command without any pre-configured scope."
+commands.deny = ["graph_upsert_entity"]

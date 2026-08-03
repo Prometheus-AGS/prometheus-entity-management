@@ -1,0 +1,68 @@
+{
+  "concept_id": "archive-readiness-versus-publication-authority",
+  "sources": [
+    {
+      "source_ref": "https://docs.npmjs.com/trusted-publishers/",
+      "content_summary": "npm trusted publishing is package-side configuration using short-lived OIDC credentials; stage-only permission and token denial provide the strongest boundary, but configuration errors can remain latent until a publish attempt.",
+      "key_points": [
+        "A workflow file cannot prove the package-side trusted-publisher relationship exists.",
+        "Trusted publishing can automatically generate provenance for public packages from public repositories.",
+        "Stage-only permission still requires maintainer review and approval."
+      ],
+      "misconceptions": [
+        "A valid GitHub workflow proves npm trusted publishing is configured.",
+        "OIDC removes the need for package-side authorization."
+      ]
+    },
+    {
+      "source_ref": "https://docs.npmjs.com/staged-publishing/",
+      "content_summary": "npm staging is a live registry operation for existing packages and requires a later 2FA-protected approval before public availability.",
+      "key_points": [
+        "New packages cannot use staged publishing.",
+        "Staging is not equivalent to an offline rehearsal.",
+        "Approval is an independent human-authority event."
+      ],
+      "misconceptions": [
+        "A dry-run proves npm staging works.",
+        "An rc dist-tag is the same mechanism as staged publishing."
+      ]
+    },
+    {
+      "source_ref": "https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations",
+      "content_summary": "GitHub artifact attestations require explicit workflow permissions and actions/attest, and are created only by an executed workflow over concrete subjects.",
+      "key_points": [
+        "The workflow needs contents read, id-token write, and attestations write.",
+        "A repository workflow contract is not an emitted attestation."
+      ],
+      "misconceptions": [
+        "Referencing actions/attest in YAML proves an attestation exists.",
+        "Provenance proves functional correctness."
+      ]
+    },
+    {
+      "source_ref": "https://dart.dev/tools/pub/automated-publishing",
+      "content_summary": "pub.dev automated publishing must be configured by an uploader or publisher administrator and binds repository, tag pattern, and optionally a GitHub environment.",
+      "key_points": [
+        "Repository inspection cannot prove pub.dev account-side configuration.",
+        "The pubspec version and pushed tag must match the configured pattern.",
+        "Environment protection can be bound into the OIDC identity."
+      ],
+      "misconceptions": [
+        "A successful local pub dry-run proves automated publishing authority.",
+        "Any tag can publish once id-token write is present."
+      ]
+    },
+    {
+      "source_ref": "https://doc.rust-lang.org/cargo/commands/cargo-publish.html",
+      "content_summary": "cargo publish dry-run performs verification without upload; real publication needs registry authentication and can time out while index visibility is still pending.",
+      "key_points": [
+        "Dry-run is local package verification, not registry acceptance.",
+        "A publish timeout does not necessarily mean upload failure and requires registry inspection."
+      ],
+      "misconceptions": [
+        "A green cargo publish dry-run proves crates.io ownership.",
+        "A publish timeout is safe to retry blindly."
+      ]
+    }
+  ]
+}

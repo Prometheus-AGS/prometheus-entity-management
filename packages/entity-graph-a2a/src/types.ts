@@ -1,103 +1,18 @@
-/**
- * types.ts — A2A v1.0 protocol type definitions.
- *
- * Implements the Google A2A (Agent-to-Agent) v1.0 specification:
- * https://github.com/google/A2A
- *
- * Key concepts:
- * - AgentCard: capability advertisement served at /.well-known/agent.json
- * - Task: unit of work sent from a client agent to this server agent
- * - Message / Part: structured content exchanged in a task
- * - Artifact: output produced by a task (file, data, text)
- * - TaskStatus: lifecycle state of a task
- *
- * Entity-graph extensions:
- * - GraphMutationPart: a Part subtype carrying graph mutations
- * - GraphQueryPart: a Part subtype carrying graph queries
- */
+import type { Message } from "@a2a-js/sdk";
 
-// ── AgentCard ─────────────────────────────────────────────────────────────────
+/** Stable Prometheus extension layered on official A2A structured data parts. */
+export const PROMETHEUS_GRAPH_EXTENSION_URI =
+  "https://prometheus-ags.github.io/prometheus-entity-management/extensions/entity-graph/v1";
 
-/** Authentication scheme required to call this agent. */
-export interface AgentAuthScheme {
-  /** "bearer" | "apiKey" | "oauth2" | "none" */
-  type: string;
-  description?: string;
-}
+/** Prometheus adapter contract for carrying validated A2UI v0.9.1 messages. */
+export const PROMETHEUS_A2UI_EXTENSION_URI =
+  "https://prometheus-ags.github.io/prometheus-entity-management/extensions/a2ui/v0.9.1";
 
-/** A single capability exposed by the agent. */
-export interface AgentCapability {
-  /** Machine-readable skill identifier, e.g. "graph/upsert". */
-  name: string;
-  description: string;
-  /** JSON Schema for the input accepted by this capability. */
-  inputSchema?: Record<string, unknown>;
-  /** JSON Schema for the output produced by this capability. */
-  outputSchema?: Record<string, unknown>;
-  tags?: string[];
-}
+export const PROMETHEUS_A2UI_PROTOCOL_VERSION = "v0.9.1" as const;
+export const PROMETHEUS_A2UI_MEDIA_TYPE = "application/json+a2ui" as const;
+export const PROMETHEUS_A2UI_CATALOG_ID = "urn:prometheus-ags:a2ui:catalog:v3";
 
-/**
- * AgentCard — the capability manifest served at /.well-known/agent.json.
- * Clients discover and verify agent capabilities via this document.
- */
-export interface AgentCard {
-  /** Spec version — always "1.0" for A2A v1.0. */
-  specVersion: "1.0";
-  /** Human-readable agent name. */
-  name: string;
-  /** Semantic version of this agent implementation. */
-  version: string;
-  description: string;
-  /** Base URL where A2A task requests are accepted (POST /tasks). */
-  url: string;
-  /** Auth schemes this agent accepts. */
-  auth: AgentAuthScheme[];
-  /** Declared capabilities/skills. */
-  capabilities: AgentCapability[];
-  /** Optional provider/org metadata. */
-  provider?: {
-    organization?: string;
-    url?: string;
-  };
-  /** Optional tags for discoverability. */
-  tags?: string[];
-}
-
-// ── Parts ──────────────────────────────────────────────────────────────────────
-
-/** Plain text content part. */
-export interface TextPart {
-  type: "text";
-  text: string;
-}
-
-/** JSON-structured data part. */
-export interface DataPart {
-  type: "data";
-  data: Record<string, unknown>;
-  mimeType?: string;
-}
-
-/** File reference part. */
-export interface FilePart {
-  type: "file";
-  /** URI or base64-encoded content. */
-  content: string;
-  mimeType: string;
-  name?: string;
-}
-
-/**
- * GraphMutationPart — carries one or more entity graph mutations.
- * The A2A server will apply these to the entity graph via `createGraphTransaction`.
- */
-export interface GraphMutationPart {
-  type: "graph/mutation";
-  mutations: GraphMutation[];
-}
-
-/** A single mutation operation on the entity graph. */
+/** A graph mutation transported inside an official A2A structured-data Part. */
 export type GraphMutation =
   | { op: "upsert"; entityType: string; id: string; data: Record<string, unknown> }
   | { op: "replace"; entityType: string; id: string; data: Record<string, unknown> }
@@ -105,223 +20,150 @@ export type GraphMutation =
   | { op: "patch"; entityType: string; id: string; patch: Record<string, unknown> }
   | { op: "clearPatch"; entityType: string; id: string };
 
-/**
- * GraphQueryPart — requests a snapshot read from the entity graph.
- * The handler resolves this and returns the result as an Artifact.
- */
-export interface GraphQueryPart {
-  type: "graph/query";
+export interface GraphMutateRequest {
+  kind: "prometheus.entity-graph.request";
+  version: "1.0";
+  operation: "mutate";
+  mutations: GraphMutation[];
+}
+
+export interface GraphQueryRequest {
+  kind: "prometheus.entity-graph.request";
+  version: "1.0";
+  operation: "query";
   entityType: string;
-  /** Entity id for single-entity lookup; omit for list lookup. */
   id?: string;
-  /** QueryKey for list lookup. */
   listKey?: string;
-  /** Limit number of results. */
   limit?: number;
 }
 
-/** Union of all recognized Part types. */
-export type Part = TextPart | DataPart | FilePart | GraphMutationPart | GraphQueryPart;
-
-// ── Message ────────────────────────────────────────────────────────────────────
-
-/** Role of the message author. */
-export type MessageRole = "user" | "agent";
-
-/**
- * Message — a single turn in a task's conversation.
- */
-export interface Message {
-  role: MessageRole;
-  parts: Part[];
-  /** ISO-8601 timestamp. Populated by the server on received messages. */
-  timestamp?: string;
-  metadata?: Record<string, unknown>;
+export interface GraphSnapshotRequest {
+  kind: "prometheus.entity-graph.request";
+  version: "1.0";
+  operation: "snapshot";
+  entityTypes?: string[];
 }
 
-// ── Artifact ──────────────────────────────────────────────────────────────────
+export type EntityGraphA2ARequest =
+  | GraphMutateRequest
+  | GraphQueryRequest
+  | GraphSnapshotRequest;
 
-/** Type of artifact output. */
-export type ArtifactType = "text" | "data" | "file" | "graph-snapshot";
+export interface EntityGraphMutationResult {
+  kind: "prometheus.entity-graph.result";
+  version: "1.0";
+  operation: "mutate";
+  applied: number;
+  affectedEntityIds: string[];
+}
 
-/**
- * Artifact — a concrete output produced by a completed task.
- */
-export interface Artifact {
-  /** Stable identifier for this artifact within the task. */
+export interface EntityGraphQueryResult {
+  kind: "prometheus.entity-graph.result";
+  version: "1.0";
+  operation: "query" | "snapshot";
+  entities: Record<string, unknown>[] | Record<string, Record<string, unknown>>;
+  total: number;
+}
+
+/** Authenticated identity made available to request and graph policy. */
+export interface A2ACaller {
   id: string;
-  type: ArtifactType;
-  /** Human-readable name. */
-  name?: string;
-  description?: string;
-  /** Artifact payload. */
-  content: unknown;
-  mimeType?: string;
-  /** ISO-8601 creation timestamp. */
-  createdAt: string;
-  metadata?: Record<string, unknown>;
+  isAuthenticated: boolean;
+  scopes: readonly string[];
+  claims?: Readonly<Record<string, unknown>>;
 }
 
-// ── Task ──────────────────────────────────────────────────────────────────────
-
-/** Lifecycle states for a task. */
-export type TaskState =
-  | "submitted"
-  | "working"
-  | "input-required"
-  | "completed"
-  | "failed"
-  | "canceled";
-
-/** TaskStatus carries the current state plus optional error info. */
-export interface TaskStatus {
-  state: TaskState;
-  message?: string;
-  /** ISO-8601 last-updated timestamp. */
-  updatedAt: string;
+export interface A2AAuthenticationContext {
+  request: Request;
 }
 
-/**
- * Task — the primary unit of work in A2A.
- * Clients POST a SendTaskRequest which creates or updates a Task.
- */
-export interface Task {
-  /** Unique task identifier (UUID). */
-  id: string;
-  /** Optional client-assigned session id for grouping related tasks. */
-  sessionId?: string;
-  status: TaskStatus;
-  /** Ordered list of messages exchanged for this task. */
-  history: Message[];
-  /** Artifacts produced by the task (populated on completion). */
-  artifacts: Artifact[];
-  /** ISO-8601 creation timestamp. */
-  createdAt: string;
-  /** ISO-8601 last-updated timestamp. */
-  updatedAt: string;
-  metadata?: Record<string, unknown>;
+/** Authentication adapter. Returning null rejects the HTTP request as unauthenticated. */
+export interface A2AAuthenticator {
+  authenticate(context: A2AAuthenticationContext):
+    | Promise<A2ACaller | null>
+    | A2ACaller
+    | null;
 }
 
-// ── JSON-RPC envelopes ─────────────────────────────────────────────────────────
+export interface A2APolicyDecision {
+  allowed: boolean;
+  /** Private audit reason; never reflected verbatim to untrusted callers. */
+  reason?: string;
+}
 
-/** A2A task send request params. */
-export interface SendTaskParams {
-  /** Task id (client-generated UUID or server-assigned). */
-  id: string;
-  /** Optional session scope. */
-  sessionId?: string;
-  /** The message to send (first message creates the task). */
+export interface A2ARequestPolicyContext {
+  caller: A2ACaller;
+  method: string;
+  tenantId?: string;
+  message?: Message;
+  metadata?: Readonly<Record<string, unknown>>;
+}
+
+export interface A2AGraphPolicyContext {
+  caller: A2ACaller;
+  tenantId?: string;
+  operation: "query" | "snapshot" | GraphMutation["op"];
+  entityType?: string;
+  entityId?: string;
+  fields: readonly string[];
   message: Message;
-  metadata?: Record<string, unknown>;
 }
 
-/** A2A task send result. */
-export interface SendTaskResult {
-  task: Task;
+/** Application authority. Protocol validity never implies graph authority. */
+export interface A2AApplicationPolicy {
+  authorizeRequest(context: A2ARequestPolicyContext):
+    | Promise<A2APolicyDecision>
+    | A2APolicyDecision;
+  authorizeGraphOperation(context: A2AGraphPolicyContext):
+    | Promise<A2APolicyDecision>
+    | A2APolicyDecision;
+  /** Out-of-band approval hook for replace/remove operations. */
+  requestApproval?(context: A2AGraphPolicyContext):
+    | Promise<A2APolicyDecision>
+    | A2APolicyDecision;
 }
 
-/** A2A task get request params. */
-export interface GetTaskParams {
-  id: string;
-  /** Number of most-recent history messages to return. */
-  historyLength?: number;
+export interface EntityGraphA2APolicyRule {
+  actions: readonly A2AGraphPolicyContext["operation"][];
+  /** Empty or omitted means no entity fields are permitted. */
+  fields?: readonly string[];
 }
 
-/** A2A task cancel params. */
-export interface CancelTaskParams {
-  id: string;
+export interface CreateEntityGraphA2APolicyOptions {
+  entities: Readonly<Record<string, EntityGraphA2APolicyRule>>;
+  authorize?: (
+    context: A2ARequestPolicyContext | A2AGraphPolicyContext,
+  ) => Promise<boolean> | boolean;
+  requestApproval?: A2AApplicationPolicy["requestApproval"];
 }
 
-/** Recognized A2A JSON-RPC method names. */
-export type A2AMethod =
-  | "tasks/send"
-  | "tasks/get"
-  | "tasks/cancel"
-  | "tasks/sendSubscribe";
+export interface DeterministicExecutorOptions {
+  policy?: A2AApplicationPolicy;
+  clock?: () => string;
+  idFactory?: () => string;
+  /** Async checkpoint between working and result; useful for cancellation tests. */
+  stepDelayMs?: number;
+}
 
-/** JSON-RPC 2.0 request envelope. */
-export interface JsonRpcRequest {
-  jsonrpc: "2.0";
+/** Wire envelope returned by the official JSON-RPC transport handler. */
+export interface A2AJsonRpcResponse {
+  jsonrpc: string;
   id: string | number | null;
-  method: A2AMethod;
-  params: unknown;
+  result?: unknown;
+  error?: unknown;
 }
 
-/** JSON-RPC 2.0 success response. */
-export interface JsonRpcSuccess<T = unknown> {
-  jsonrpc: "2.0";
-  id: string | number | null;
-  result: T;
+export interface A2AServerCallOptions {
+  caller?: A2ACaller;
+  headers?: Readonly<Record<string, string>>;
+  requestedVersion?: string;
+  requestedExtensions?: readonly string[];
+  tenantId?: string;
 }
 
-/** JSON-RPC 2.0 error response. */
-export interface JsonRpcError {
-  jsonrpc: "2.0";
-  id: string | number | null;
-  error: {
-    code: number;
-    message: string;
-    data?: unknown;
-  };
-}
-
-export type JsonRpcResponse<T = unknown> = JsonRpcSuccess<T> | JsonRpcError;
-
-// ── Handler interface ─────────────────────────────────────────────────────────
-
-/**
- * A2A task handler — implement this to route task messages to graph operations.
- */
-export interface A2ATaskHandler {
-  /**
-   * Process an incoming task message and return updated task state + artifacts.
-   *
-   * The handler receives the full task context and must return:
-   * - `status`: the new task status
-   * - `artifacts`: any artifacts produced
-   * - Optionally `reply`: an agent reply message to append to history
-   */
-  handle(ctx: TaskHandlerContext): Promise<TaskHandlerResult>;
-}
-
-/** Context provided to a task handler. */
-export interface TaskHandlerContext {
-  /** The current task (status = "working" when this is called). */
-  task: Task;
-  /** The most-recently received user/agent message. */
-  message: Message;
-  /** Convenience: direct access to the entity graph store state. */
-  graphState: import("@prometheus-ags/entity-graph-core").GraphState;
-}
-
-/** Result that a task handler must return. */
-export interface TaskHandlerResult {
-  status: Pick<TaskStatus, "state" | "message">;
-  artifacts?: Artifact[];
-  /** Optional reply message to append to task history. */
-  reply?: Omit<Message, "timestamp">;
-}
-
-// ── Server options ────────────────────────────────────────────────────────────
-
-/**
- * Options for creating an A2A entity-graph server instance.
- */
-export interface A2AServerOptions {
-  /** AgentCard metadata — advertised at /.well-known/agent.json. */
-  card: AgentCard;
-  /** Task handler (routes messages to graph mutations/queries). */
-  handler: A2ATaskHandler;
-  /**
-   * Optional task store factory. Defaults to in-memory store.
-   * Provide a persistent store for production deployments.
-   */
-  store?: A2ATaskStore;
-}
-
-/** Storage backend for task persistence. */
-export interface A2ATaskStore {
-  get(id: string): Promise<Task | null>;
-  set(task: Task): Promise<void>;
-  delete(id: string): Promise<void>;
+export interface ExternalA2AExecutorOptions {
+  /** Base URL used for standard AgentCard discovery. */
+  baseUrl: string;
+  fetch?: typeof fetch;
+  serviceParameters?: Readonly<Record<string, string>>;
 }

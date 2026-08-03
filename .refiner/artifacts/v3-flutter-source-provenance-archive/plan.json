@@ -1,0 +1,27 @@
+{
+  "plan": {
+    "stages": [
+      { "id": "audit", "description": "Map every phase acceptance criterion to direct implementation and evidence.", "requires_execution": false },
+      { "id": "visual", "description": "Inspect the original-resolution lineage raster and bind source/review hashes.", "requires_execution": true, "tool": "image inspection and sha256" },
+      { "id": "validate", "description": "Run provenance, BDD, package, coverage, skills, security, OpenSpec, and integrity gates.", "requires_execution": true, "tool": "repository scripts" },
+      { "id": "persist", "description": "Record the constrained QA verdict, release impact, and immutable downstream limits.", "requires_execution": false }
+    ],
+    "tool_invocations": [
+      { "stage_id": "visual", "tool": "image inspection and sha256", "purpose": "Prove the diagram is legible and unchanged without claiming it is Flutter UI evidence." },
+      { "stage_id": "validate", "tool": "repository scripts", "purpose": "Validate the exact source-provenance boundary deterministically." }
+    ],
+    "state_updates": {
+      "files_to_create": ["dist/artifact-refiner-qa.md", "artifact_manifest.json", "refinement_log.md", "decisions.md", "reflection.json"],
+      "files_to_update": ["state.json"],
+      "directories_required": ["dist"]
+    },
+    "validation_plan": [
+      { "constraint_id": "c1", "validation_method": "manifest/history/verifier and focused tests", "execution_required": true },
+      { "constraint_id": "c2", "validation_method": "workspace, export, package, and documentation assertions", "execution_required": true },
+      { "constraint_id": "c3", "validation_method": "adversarial unit and BDD tests", "execution_required": true },
+      { "constraint_id": "c4", "validation_method": "original-resolution image review plus hash verification", "execution_required": true },
+      { "constraint_id": "c5", "validation_method": "structured evidence and explicit downstream-owner review", "execution_required": true },
+      { "constraint_id": "c6", "validation_method": "complete clean/focused gate and skip audit", "execution_required": true }
+    ]
+  }
+}

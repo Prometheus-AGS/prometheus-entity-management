@@ -1,0 +1,20 @@
+{
+  "query": "What constitutes a reproducible clean-state verification matrix for the v3 Tauri plugin, and which claims require real Android/iOS execution?",
+  "depth": "focused-deep",
+  "subquestions": [
+    "How is JavaScript dependency and package reproducibility proved?",
+    "How are Rust compilation and tests isolated from cached artifacts?",
+    "What can Tauri mock, desktop, and packed-consumer tests prove?",
+    "What evidence is required to claim Android and iOS native execution?"
+  ],
+  "qualityGate": {
+    "minimumIndependentPrimarySources": 3,
+    "contradictionsMustBeResolved": true,
+    "unsupportedPlatformClaimsMustRemainOpen": true
+  },
+  "backgroundWorker": {
+    "jobId": "job-1785650649-6d154772",
+    "statusAtFallback": "stalled-initialization",
+    "fallback": "manual-primary-source-pipeline"
+  }
+}

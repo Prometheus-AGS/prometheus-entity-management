@@ -1,0 +1,41 @@
+{
+  "refinement_id": "9b0eb2b6-13cd-49d3-af07-c856e13561d3",
+  "artifact_name": "v3-a2a-conformance-agent-archive",
+  "artifact_type": "code",
+  "content_type": "direct:code",
+  "started_at": "2026-08-01T22:41:41Z",
+  "updated_at": "2026-08-01T22:43:26Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Prove every archive-scoped public claim without overclaiming full-release readiness."
+  ],
+  "constraints": [
+    "c1",
+    "c2",
+    "c3",
+    "c4",
+    "c5"
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "running",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "blocking_satisfied": 4,
+      "blocking_violated": 0,
+      "high_satisfied": 1,
+      "decision": "terminate",
+      "timestamp": "2026-08-01T22:43:26Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [],
+  "prior_cycle_id": null
+}

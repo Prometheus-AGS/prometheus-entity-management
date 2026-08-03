@@ -1,0 +1,13 @@
+{
+  "style": "APA",
+  "citations": [
+    {"id": "cite-mobile", "url": "https://v2.tauri.app/develop/plugins/develop-mobile/", "formatted": "Tauri Contributors. (2026). Mobile Plugin Development.", "credibilityScore": 96, "confidence": 0.98},
+    {"id": "cite-permissions", "url": "https://v2.tauri.app/security/permissions/", "formatted": "Tauri Contributors. (2026). Permissions.", "credibilityScore": 96, "confidence": 0.98},
+    {"id": "cite-capabilities", "url": "https://v2.tauri.app/security/capabilities/", "formatted": "Tauri Contributors. (2026). Capabilities.", "credibilityScore": 96, "confidence": 0.98},
+    {"id": "cite-store-build", "url": "https://github.com/tauri-apps/plugins-workspace/blob/v2/plugins/store/build.rs", "formatted": "Tauri Contributors. (2026). tauri-plugin-store build script [Source code].", "credibilityScore": 98, "confidence": 0.99},
+    {"id": "cite-barcode-build", "url": "https://github.com/tauri-apps/plugins-workspace/blob/v2/plugins/barcode-scanner/build.rs", "formatted": "Tauri Contributors. (2026). tauri-plugin-barcode-scanner build script [Source code].", "credibilityScore": 98, "confidence": 0.99},
+    {"id": "cite-barcode-runtime", "url": "https://github.com/tauri-apps/plugins-workspace/blob/v2/plugins/barcode-scanner/src/lib.rs", "formatted": "Tauri Contributors. (2026). tauri-plugin-barcode-scanner runtime registration [Source code].", "credibilityScore": 98, "confidence": 0.99},
+    {"id": "cite-tauri-crate", "url": "https://crates.io/crates/tauri", "formatted": "Tauri Programme. (2026). tauri crate registry record.", "credibilityScore": 94, "confidence": 0.96},
+    {"id": "cite-specta", "url": "https://github.com/specta-rs/tauri-specta", "formatted": "Specta contributors. (2026). tauri-specta [Source repository].", "credibilityScore": 88, "confidence": 0.92}
+  ]
+}

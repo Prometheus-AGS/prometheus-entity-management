@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "status": "pass",
+  "source": {
+    "contract": "release/v3-release-contract.json",
+    "policy": "release/release-candidate-policy.json",
+    "sha": "eb3c9802da5ff10ad6db135fed761bd23ea80b3f",
+    "createdAt": "2026-08-03T08:15:52.301Z"
+  },
+  "registryMutation": false,
+  "artifacts": {
+    "declared": 16,
+    "npm": 12,
+    "dependencyOrder": [
+      "@prometheus-ags/entity-graph-core",
+      "@prometheus-ags/a2ui-react",
+      "@prometheus-ags/entity-graph-a2a",
+      "@prometheus-ags/entity-graph-alpine",
+      "@prometheus-ags/entity-graph-sdl",
+      "@prometheus-ags/entity-graph-htmx",
+      "@prometheus-ags/entity-graph-solid",
+      "@prometheus-ags/entity-graph-svelte",
+      "@prometheus-ags/entity-graph-sync",
+      "@prometheus-ags/entity-graph-tauri",
+      "@prometheus-ags/entity-graph-web-components",
+      "@prometheus-ags/prometheus-entity-management"
+    ],
+    "privateWorkspaceRoot": "@prometheus-ags/entity-graph-workspace"
+  },
+  "workflow": {
+    "privateRootDenied": true,
+    "releaseNotes": "changesets-version-pr",
+    "provenance": "actions-attest-v4",
+    "oidc": true,
+    "stageEnvironment": "npm-rc",
+    "stageAction": "npm-stage-publish",
+    "longLivedNpmToken": false,
+    "humanApprovalInCi": false,
+    "stablePromotionInScope": false,
+    "actionlint": {
+      "status": "pass",
+      "command": "actionlint /Users/gqadonis/Projects/prometheus/prometheus-entity-management/.github/workflows/publish.yml"
+    }
+  },
+  "recovery": {
+    "partialRetry": "matching-skip-absent-stage-conflict-block",
+    "dependencyOrderEnforced": true,
+    "immutableConflictBlocked": true,
+    "candidateBundle": "bundle-relative-cross-job"
+  },
+  "protectedTags": {
+    "names": [
+      "latest"
+    ],
+    "latestMutationAllowed": false,
+    "snapshotComparison": "pass"
+  },
+  "consumers": {
+    "packageCount": 12,
+    "candidateSet": "tarballs-only",
+    "nodeEsm": "pass",
+    "nodeCommonJs": "pass",
+    "typescriptNodeNext": "pass",
+    "typescriptNode16": "pass",
+    "typescriptBundler": "pass"
+  },
+  "platforms": {
+    "dart": "dry-run-only",
+    "rustCli": "dry-run-only",
+    "rustMcp": "dry-run-only",
+    "rustTauri": "embedded-in-npm"
+  },
+  "externalLimits": [
+    "npm trusted-publisher configuration requires npm organization evidence",
+    "GitHub npm-rc environment reviewers require repository-settings evidence",
+    "registry acceptance and uploaded provenance require an authorized GitHub Actions run"
+  ]
+}

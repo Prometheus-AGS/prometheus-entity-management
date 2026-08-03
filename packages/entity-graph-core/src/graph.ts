@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { createStore } from "zustand/vanilla";
 import { subscribeWithSelector } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import type { EntityError } from "./errors";
@@ -106,7 +106,8 @@ export const EMPTY_LIST_STATE: ListState = {
 
 /**
  * Canonical Zustand store: **entities** (server truth), **patches** (UI-only overlay), **lists** (id order + list meta), and **entityStates** (per-entity fetch state).
- * Prefer hooks for React reads; use `useGraphStore.getState()` inside stores/adapters/engine code where React is not available.
+ * Framework bindings subscribe to the vanilla store; stores, adapters, and
+ * engines can read it synchronously through `graphStore.getState()`.
  */
 export interface GraphState {
   /** Normalized server-confirmed records. Mutate only via upsert/replace/remove — not from components. */
@@ -261,11 +262,9 @@ function readCachedEntitySnapshot<T extends Record<string, unknown>>(
   return snapshot;
 }
 
-/**
- * Global entity graph store (Zustand + Immer). **Components should not subscribe directly** — use hooks so layering stays `Component → hook → store`.
- * `getState()` is intended for non-React code paths (engine, adapters, mutations) that must write or read the graph synchronously.
- */
-export const useGraphStore = create<GraphState>()(
+/** Creates an isolated, framework-neutral entity graph store. */
+export function createGraphStore() {
+  return createStore<GraphState>()(
   subscribeWithSelector(
     immer((set, get) => ({
       entities: {}, patches: {}, entityStates: {}, syncMetadata: {}, lists: {},
@@ -430,4 +429,20 @@ export const useGraphStore = create<GraphState>()(
       },
     }))
   )
-);
+  );
+}
+
+/**
+ * Default process-wide entity graph store. Framework bindings subscribe to
+ * this vanilla store; non-React consumers use its `getState`, `setState`, and
+ * `subscribe` methods directly.
+ */
+export const graphStore = createGraphStore();
+
+export type GraphStore = ReturnType<typeof createGraphStore>;
+
+/**
+ * @deprecated Import `graphStore` from core, or `useGraphStore` from the React
+ * binding. This StoreApi-shaped alias remains for non-React 2.x migrations.
+ */
+export const useGraphStore = graphStore;

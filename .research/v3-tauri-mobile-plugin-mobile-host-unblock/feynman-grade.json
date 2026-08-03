@@ -1,0 +1,18 @@
+{
+  "grade_id": "grade-tauri-real-mobile-plugin-certification-host-1785656422",
+  "goal_id": "full-3.0-release",
+  "concept_id": "tauri-real-mobile-plugin-certification-host",
+  "learner_id": "full-3.0-release",
+  "graded_at": "2026-08-02T07:40:22Z",
+  "explanation_excerpt": "A real mobile receipt is a chain-of-custody test, not a compilation badge.",
+  "scores": {"completeness":0.96,"accuracy":0.98,"clarity":0.92,"misconceptions_absent":1.0},
+  "overall_score": 0.965,
+  "gaps": [],
+  "transfer_problems": [
+    "A main webview belongs to both an allowed capability and an empty capability. Will the empty capability prove denial? Explain the result.",
+    "An Android APK builds and contains EntityGraphPlugin.kt, but no command response was captured. Which boundary remains unproven?"
+  ],
+  "passed": true,
+  "pass_threshold": 0.7,
+  "sycophancy_check": "No praise substituted for evidence. The explanation explicitly retains runtime and clean-host gaps."
+}

@@ -1,0 +1,33 @@
+{
+  "checked_at": "2026-08-02T00:34:00Z",
+  "strictness": "adversarial",
+  "score": 0.0,
+  "correction_mandatory": true,
+  "classifications": [
+    {
+      "pattern_id": "S-latest-is-best",
+      "severity": "high",
+      "rationale": "The requested latest-dependency review cannot justify an incoherent analyzer matrix or a prerelease generator for functionality the package does not use.",
+      "correction": "Prefer the newest mutually compatible stable dependencies and delete stale unused generator claims."
+    },
+    {
+      "pattern_id": "S-copy-is-adoption",
+      "severity": "high",
+      "rationale": "The imported KnowMe package is useful evidence but its FFI ownership conflicts with the canonical Dart graph boundary.",
+      "correction": "Adapt useful orchestration patterns and keep FFI optional."
+    },
+    {
+      "pattern_id": "S-prerequisite-overclaim",
+      "severity": "medium",
+      "rationale": "Archived prerequisites prove only their own narrow contracts.",
+      "correction": "Record task 1 as dependency readiness, not implementation or release certification."
+    },
+    {
+      "pattern_id": "S-library-is-app",
+      "severity": "high",
+      "rationale": "Passing library tests and a widget harness do not certify the complete Flutter/A2UI showcase, devices, accessibility, persistence, or realtime coalescing.",
+      "correction": "Mark only the exact Dart platform and scoped visual evidence implemented; retain broader capability and showcase entries as partial or planned."
+    }
+  ],
+  "disposition": "pass-after-corrections"
+}

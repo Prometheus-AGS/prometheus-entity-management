@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-08-01T18:27:13Z",
+  "status": "pass",
+  "triggerPolicy": "manual-only",
+  "workflow": ".github/workflows/entity-sync-contract.yml",
+  "workflowSha256": "5d79bc0258ac92b16843f329788d79ab6c0065bc4dac37b1e6d7272f56fb3fe9",
+  "consumer": {
+    "repository": "https://github.com/Prometheus-AGS/prometheus-entity-sync",
+    "commit": "792a1046651fe75730d64c27c3f12e14cecc524a",
+    "lockfileSha256": "b00389085befff8f7dca77ccab6d2f49e815599acf1c42d0b982dec24dadcfdb"
+  },
+  "candidate": {
+    "package": "@prometheus-ags/entity-graph-core",
+    "version": "3.0.0-alpha.0",
+    "source": "packed current worktree",
+    "tarballSha256": "410a53a9c11334f9820fb7771aea37e04c202e54a13efbbc2afc3e4eb50f9cf7",
+    "localLinkUsed": false
+  },
+  "checks": {
+    "freshSiblingFrozenInstall": "pass",
+    "packedCandidateInstall": "pass",
+    "typescriptWorkspaces": {
+      "status": "pass",
+      "count": 4
+    },
+    "protocolUnitTests": {
+      "status": "pass",
+      "files": 2,
+      "tests": 21
+    },
+    "actionlint": "pass"
+  },
+  "mandatoryReleaseEvidence": false,
+  "limitations": [
+    "The opt-in contract does not replace mandatory PGlite/Loro tests in this repository.",
+    "The run proves TypeScript compatibility and protocol unit behavior, not the sibling Docker/Postgres gateway integration lane.",
+    "No registry package or developer-local link path was consumed."
+  ]
+}

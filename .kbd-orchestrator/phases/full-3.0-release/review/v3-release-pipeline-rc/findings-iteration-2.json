@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".github/workflows/publish.yml",
+      "line": 56,
+      "claim": "The publish workflow declares an unsupported GitHub Actions permission key, which makes the workflow contract invalid instead of runnable.",
+      "evidence": "In the rehearse job permissions block the diff adds `artifact-metadata: write` alongside `contents`, `id-token`, and `attestations`; GitHub workflow permissions do not include an `artifact-metadata` permission.",
+      "suggested_fix": "Remove `artifact-metadata: write` and keep only valid permissions such as `contents: read`, `id-token: write`, and `attestations: write`."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/release-candidate-pipeline.mjs",
+      "line": 121,
+      "claim": "The RC manifest builder accepts any prerelease of 3.0.0, allowing alpha versions to be staged by a release-candidate pipeline.",
+      "evidence": "`buildReleaseCandidateManifest` only asserts `candidateVersion.startsWith(`${contract.release.version}-`)`, while `release/release-candidate-policy.json` declares `candidate.channel` as `rc` and the tests explicitly accept `version === \"3.0.0-alpha.0\"` for RC artifacts.",
+      "suggested_fix": "Require an RC prerelease identifier, for example by asserting `candidateVersion` matches `^${contract.release.version}-rc\\.\\d+$` or by deriving the required prerelease channel from `policy.candidate.channel`."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

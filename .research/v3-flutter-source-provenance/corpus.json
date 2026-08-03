@@ -1,0 +1,23 @@
+{
+  "concept_id": "provenance-preserving-flutter-import",
+  "sources": [
+    {
+      "source_ref": "local-git-and-license-audit",
+      "content_summary": "KnowMe has reusable committed Flutter code but no tracked root/package license and a dirty worktree; hybrid-mobile is an MIT template/reference repository.",
+      "key_points": ["copy only committed objects", "record owner-directed MIT authority before copy", "exclude dirty/product/generated paths", "hybrid-mobile is reference-only"],
+      "misconceptions": ["the request makes all files automatically licensed", "the template repository contains a canonical runtime library"]
+    },
+    {
+      "source_ref": "git-filter-repo-primary-docs",
+      "content_summary": "Path filtering and renaming preserve usable evolution but rewrite hashes, so work in a fresh clone and retain the commit map.",
+      "key_points": ["fresh disposable clone", "path filter and rename", "authors/dates/messages retained", "old-to-new commit map retained", "source repo never rewritten"],
+      "misconceptions": ["history preservation means identical commit SHAs", "filter-repo should run in the dirty source checkout"]
+    },
+    {
+      "source_ref": "dart-riverpod-primary-docs",
+      "content_summary": "Published Dart packages require license metadata; Riverpod 3 changes retry and notifier APIs; current dependencies must be resolved as a compatible matrix.",
+      "key_points": ["package-local LICENSE", "explicit terminal retry policy", "newest mutually compatible stable set", "analyze/test/codegen proof"],
+      "misconceptions": ["numeric latest is always compatible", "Riverpod 2 and 3 provider behavior is interchangeable"]
+    }
+  ]
+}

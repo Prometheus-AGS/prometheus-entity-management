@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "kbd-critic",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": ".github/workflows/publish.yml",
+      "line": 101,
+      "claim": "The stage job consumes the candidate artifact without verifying the attestation that the rehearse job created, so staging is not actually gated on provenance.",
+      "evidence": "The rehearse job runs `actions/attest@v4` over `.release-candidate/packages/*`, `manifest.json`, and `rehearsal.json`, but the stage job permissions only include `contents: read` and `id-token: write` and then uses `actions/download-artifact@v8` followed directly by `pnpm run release:rc:stage`; there is no attestation verification step before the mutating stage command. The acceptance criteria require provenance for the release path, and `release/release-candidate-pipeline.md` describes the downloaded bundle as the authoritative staged candidate.",
+      "suggested_fix": "Add an explicit attestation verification step in the stage job before `release:rc:stage`, grant the required read permissions, and fail closed unless the downloaded files match the attested subject digests for the current `${{ github.sha }}`."
+    },
+    {
+      "severity": "WARNING",
+      "file": "scripts/release-candidate-pipeline.mjs",
+      "line": 793,
+      "claim": "RC stage authority is implemented as spoofable environment-variable presence checks, so a local invocation can pass the authority gate and perform registry reads despite the documented local-fail-closed boundary.",
+      "evidence": "`assertRcStageAuthority` accepts `GITHUB_ACTIONS === \"true\"`, `PROMETHEUS_RELEASE_ENVIRONMENT === \"npm-rc\"`, `PROMETHEUS_RELEASE_AUTHORITY === \"stage-rc\"`, and non-empty `ACTIONS_ID_TOKEN_REQUEST_URL/TOKEN`; `stageReleaseCandidate` calls this before `snapshotTags` and `lookupNpmVersion`, but the function never validates an actual GitHub OIDC token or protected-environment claim. `release/release-candidate-pipeline.md` says the mutating command is intentionally unusable as a normal local command and requires GitHub Actions OIDC plus the protected `npm-rc` environment before any registry read.",
+      "suggested_fix": "Exchange and validate the OIDC token or require an unforgeable GitHub-provided claim before snapshot/lookup, and treat mere user-supplied environment variables as insufficient authority."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

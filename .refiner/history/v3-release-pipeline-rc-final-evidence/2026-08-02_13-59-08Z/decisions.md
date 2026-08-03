@@ -1,0 +1,57 @@
+# Refinement decisions — `v3-release-pipeline-rc-final-evidence`
+
+### Iteration 1 decision
+
+- **Decision:** terminate
+- **Iteration:** 1 of 5
+- **Blocking violations remaining:** 0
+- **Rationale:** All six blocking constraints have direct deterministic evidence; the visual is accessible and legible; coverage and publication boundaries remain explicit.
+- **Next focus:** None inside this bounded artifact. The KBD phase should archive this change and execute the React Vite and Next.js changes next.
+
+### Scope decision
+
+The empty `.kbd-orchestrator/constraints.md` supplied no project-specific
+constraint objects, so the generic artifact-refiner template was used and the
+six task-specific blocking constraints were recorded explicitly. No severity
+was downgraded and no external-authority assumption was converted into a pass.
+
+### Iteration 2 decision
+
+- **Decision:** terminate
+- **Iteration:** 2 of 5
+- **Blocking violations remaining:** 0
+- **Rationale:** The confirmed cross-job staging defect now has a RED-first regression contract and a bundle-relative, traversal-safe implementation. The current GitHub permission finding was disproved by official syntax documentation.
+- **Next focus:** Re-run adversarial review over the corrected diff, then archive only if it passes.
+
+### Iteration 3 decision
+
+- **Decision:** terminate
+- **Iteration:** 3 of 5
+- **Blocking violations remaining:** 0
+- **Rationale:** The stage CLI now proves the entire rehearsal before network access, and absent-package completion requires npm's registry-issued stage UUID and exact SRI rather than locally fabricated verification evidence.
+- **Next focus:** Run a fresh-context adversarial review over these corrections; archive only after an independent PASS and current full gates.
+
+### Iteration 4 decision
+
+- **Decision:** terminate
+- **Iteration:** 4 of 5
+- **Blocking violations remaining:** 0
+- **Rationale:** The protected GitHub/OIDC authority check is now the first state-machine operation, so matching retries and absent-package staging share one fail-closed boundary before any registry access.
+- **Next focus:** Re-run the independent judge with the existing workflow included explicitly, then run current full gates before archive.
+
+### Iteration 5 decision
+
+- **Decision:** terminate
+- **Iteration:** 5 of 5
+- **Blocking violations remaining:** 0
+- **Rationale:** Immutable-version lookup now decodes npm's live flat `dist.integrity` response with RED-first unit and BDD proof while retaining nested-shape compatibility.
+- **Next focus:** Obtain the final independent judge verdict, then run current full gates and archive only on PASS.
+
+### Cycle 2, iteration 1 decision
+
+- **Decision:** terminate
+- **Iteration:** 1 of 5 in cycle 2
+- **Prior cycle:** `9a14dd68-d7da-4699-81ca-bcdfd6409fd7`
+- **Blocking violations remaining:** 0
+- **Rationale:** Stage progress is now durable across ordinary partial failures, ambiguous attempts are retained conservatively, and CI uploads the report even when staging exits nonzero.
+- **Next focus:** Obtain an independent PASS, then run current full gates before archive.

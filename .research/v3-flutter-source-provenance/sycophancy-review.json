@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-08-01T22:55:43.972176Z",
+  "strictness": "standard",
+  "score": 0.01785714365541935,
+  "correction_mandatory": false,
+  "classifications": [
+    {
+      "pattern_id": "S-07",
+      "severity": "low",
+      "rationale": "The report is long; each section was retained because it maps a distinct acceptance or contradiction rather than adding praise or certainty."
+    }
+  ],
+  "disposition": "pass-with-low-verbosity-note"
+}

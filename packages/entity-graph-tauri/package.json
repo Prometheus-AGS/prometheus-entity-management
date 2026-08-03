@@ -1,24 +1,42 @@
 {
   "name": "@prometheus-ags/entity-graph-tauri",
-  "version": "3.0.0-alpha.0",
-  "description": "Tauri v2 plugin: Rust crate exposing entity-graph commands and events with tauri-specta v2 TS bindings; extends the core tauri-sql-persistence adapter.",
+  "version": "3.0.0-rc.1",
+  "description": "Tauri v2 entity-graph plugin with generated TypeScript bindings, least-privilege capabilities, and bundled Rust, Android, and iOS sources.",
+  "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     }
   },
   "sideEffects": false,
   "files": [
     "dist",
-    "rust-plugin",
-    "README.md"
+    "README.md",
+    "CHANGELOG.md",
+    "rust-plugin/Cargo.toml",
+    "rust-plugin/build.rs",
+    "rust-plugin/src",
+    "rust-plugin/permissions",
+    "rust-plugin/android/build.gradle.kts",
+    "rust-plugin/android/consumer-rules.pro",
+    "rust-plugin/android/proguard-rules.pro",
+    "rust-plugin/android/settings.gradle",
+    "rust-plugin/android/src",
+    "rust-plugin/ios/Package.resolved",
+    "rust-plugin/ios/Package.swift",
+    "rust-plugin/ios/Sources"
   ],
   "publishConfig": {
     "access": "public"
@@ -26,9 +44,13 @@
   "scripts": {
     "build": "tsup",
     "build:rust": "cargo build --manifest-path rust-plugin/Cargo.toml",
-    "build:bindings": "cargo build --manifest-path rust-plugin/Cargo.toml --features generate-bindings",
+    "build:bindings": "cargo run --manifest-path rust-plugin/Cargo.toml --bin generate-bindings --features generate-bindings",
+    "check:bindings": "cargo run --manifest-path rust-plugin/Cargo.toml --bin generate-bindings --features generate-bindings -- --check",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "refresh:exports": "pnpm run build && node ../../scripts/tauri-public-api-contract.mjs --write",
+    "verify:skills": "node ../../scripts/tauri-public-api-contract.mjs",
+    "prepublishOnly": "pnpm run typecheck && pnpm run build && pnpm run test && pnpm run verify:skills"
   },
   "dependencies": {
     "@prometheus-ags/entity-graph-core": "workspace:*"
@@ -46,10 +68,10 @@
     }
   },
   "devDependencies": {
-    "@tauri-apps/api": "^2.5.0",
-    "tsup": ">=8",
-    "typescript": ">=6",
-    "vitest": ">=4"
+    "@tauri-apps/api": "^2.11.1",
+    "tsup": "8.5.1",
+    "typescript": "6.0.2",
+    "vitest": "4.1.10"
   },
   "keywords": [
     "tauri",
@@ -60,10 +82,21 @@
     "state-management",
     "zustand",
     "desktop",
+    "mobile",
+    "android",
+    "ios",
     "rust"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/prometheus-ags/prometheus-entity-management"
+    "url": "git+https://github.com/prometheus-ags/prometheus-entity-management.git",
+    "directory": "packages/entity-graph-tauri"
+  },
+  "homepage": "https://github.com/prometheus-ags/prometheus-entity-management/tree/main/packages/entity-graph-tauri#readme",
+  "bugs": {
+    "url": "https://github.com/prometheus-ags/prometheus-entity-management/issues"
+  },
+  "engines": {
+    "node": "^22.14.0 || ^24.0.0 || >=26.0.0"
   }
 }

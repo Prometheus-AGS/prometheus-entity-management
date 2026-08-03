@@ -8,6 +8,7 @@
  * - Realtime sorted insertion modifies the base list
  * - Transport subscribe wiring (tested synchronously via direct store write)
  */
+import { act, renderHook, waitFor } from "@testing-library/react";
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useGraphStore } from "@prometheus-ags/entity-graph-core";
 import { registerEntityTransport, __resetEntityTransports } from "@prometheus-ags/entity-graph-core";
@@ -15,6 +16,7 @@ import { TerminalError, TransientError } from "@prometheus-ags/entity-graph-core
 import { toEntityError } from "@prometheus-ags/entity-graph-core";
 import type { EntityTransport } from "@prometheus-ags/entity-graph-core";
 import { serializeKey } from "@prometheus-ags/entity-graph-core";
+import { useEntityQuery } from "./use-entity-query";
 
 type FooRow = { id: string; name: string; score: number };
 
@@ -74,7 +76,11 @@ async function simulateViewFetch<T extends object>(
         nextCursor: typeof result.nextCursor === "string" ? result.nextCursor : null,
         hasNextPage: result.nextCursor !== null,
       });
-      graphStore.setListFetching(bk, false);
+      graphStore.setListResult(bk, ids, {
+        total: result.total,
+        nextCursor: typeof result.nextCursor === "string" ? result.nextCursor : null,
+        hasNextPage: result.nextCursor !== null,
+      });
     }
   } catch (err) {
     const typed = toEntityError(err);
@@ -96,6 +102,113 @@ beforeEach(() => {
 });
 
 describe("useEntityQuery — graph contract", () => {
+  it("remote mode renders the remote result and seeds the canonical base list", async () => {
+    const rows: FooRow[] = [
+      { id: "remote-a", name: "Remote Alpha", score: 10 },
+      { id: "remote-b", name: "Remote Beta", score: 20 },
+    ];
+    const list = vi.fn(async () => ({ rows, total: 2, nextCursor: null }));
+    registerEntityTransport<FooRow>("RemoteBar", {
+      identify: (row) => row.id,
+      authoritative: true,
+      list,
+    });
+
+    const { result } = renderHook(() =>
+      useEntityQuery<FooRow>("RemoteBar", {
+        mode: "remote",
+        remoteDebounce: 0,
+      }),
+    );
+
+    await waitFor(() => expect(result.current.viewIds).toEqual(["remote-a", "remote-b"]));
+    expect(result.current.items.map((row) => row.name)).toEqual([
+      "Remote Alpha",
+      "Remote Beta",
+    ]);
+    expect(useGraphStore.getState().lists[baseKey("RemoteBar")]?.ids).toEqual([
+      "remote-a",
+      "remote-b",
+    ]);
+    expect(list).toHaveBeenCalled();
+  });
+
+  it("local mode projects only the canonical base list", () => {
+    useGraphStore.getState().upsertEntities("LocalBar", [
+      { id: "local-a", data: { id: "local-a", name: "Local Alpha", score: 10 } },
+      { id: "local-b", data: { id: "local-b", name: "Local Beta", score: 20 } },
+    ]);
+    useGraphStore.getState().setListResult(baseKey("LocalBar"), ["local-a", "local-b"], {
+      total: 2,
+      hasNextPage: false,
+    });
+
+    const { result } = renderHook(() =>
+      useEntityQuery<FooRow>("LocalBar", {
+        mode: "local",
+        view: { filter: [{ field: "score", op: "gte", value: 20 }] },
+      }),
+    );
+
+    expect(result.current.completenessMode).toBe("local");
+    expect(result.current.viewIds).toEqual(["local-b"]);
+    expect(result.current.items[0]?.name).toBe("Local Beta");
+  });
+
+  it("hybrid mode keeps local rows visible until the remote result replaces them", async () => {
+    useGraphStore.getState().upsertEntity("HybridBar", "local", {
+      id: "local",
+      name: "Local pending",
+      score: 1,
+    });
+    useGraphStore.getState().setListResult(baseKey("HybridBar"), ["local"], {
+      total: 2,
+      hasNextPage: true,
+    });
+    useGraphStore.getState().setListStale(baseKey("HybridBar"), true);
+
+    let resolveRemote!: (value: {
+      rows: FooRow[];
+      total: number;
+      nextCursor: null;
+    }) => void;
+    const remote = new Promise<{
+      rows: FooRow[];
+      total: number;
+      nextCursor: null;
+    }>((resolve) => {
+      resolveRemote = resolve;
+    });
+    registerEntityTransport<FooRow>("HybridBar", {
+      identify: (row) => row.id,
+      authoritative: false,
+      list: async () => remote,
+    });
+
+    const { result } = renderHook(() =>
+      useEntityQuery<FooRow>("HybridBar", {
+        mode: "hybrid",
+        remoteDebounce: 0,
+      }),
+    );
+
+    await waitFor(() => expect(result.current.isShowingLocalPending).toBe(true));
+    expect(result.current.viewIds).toEqual(["local"]);
+
+    await act(async () => {
+      resolveRemote({
+        rows: [{ id: "remote", name: "Remote confirmed", score: 2 }],
+        total: 1,
+        nextCursor: null,
+      });
+      await remote;
+    });
+
+    await waitFor(() => expect(result.current.viewIds).toEqual(["remote"]));
+    expect(result.current.isShowingLocalPending).toBe(false);
+    expect(result.current.items[0]?.name).toBe("Remote confirmed");
+  });
+
   it("happy path: rows land in view-keyed list slot", async () => {
     const rows: FooRow[] = [
       { id: "a", name: "Alpha", score: 10 },

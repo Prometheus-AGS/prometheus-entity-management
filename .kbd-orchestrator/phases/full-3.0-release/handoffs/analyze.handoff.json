@@ -1,0 +1,12 @@
+{
+  "stage": "analyze",
+  "completedAt": "2026-08-01T10:57:01Z",
+  "outputs": [
+    "analysis.md",
+    "library-candidates.json"
+  ],
+  "nextStage": "spec",
+  "summaryForNext": "20 candidates (8 adopt, 7 adapt, 4 reference, 1 reject) and 8 build gaps. Adopt official A2UI/GenUI, Riverpod 3, Vite/Next/Tauri/Melos; consolidate Flutter behind generic transports; adapt existing A2A and Loro+PGlite sync. Open: KnowMe source license, Flutter package/store contract, A2UI protocol/package boundary, mobile device evidence, and registry launch scope. Adversarial review BLOCK after cap: 1 CRITICAL preserved verbatim and substantively addressed with cand-019/build-a2a-conformance; 4 warnings addressed by explicit sync choice, conditional tool/shell adoption, and Builder source classification.",
+  "skipped": false,
+  "skipReason": null
+}

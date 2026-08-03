@@ -1,0 +1,13 @@
+# Automatically generated - DO NOT EDIT!
+
+"$schema" = "../../schemas/schema.json"
+
+[[permission]]
+identifier = "allow-graph-remove-entity"
+description = "Enables the graph_remove_entity command without any pre-configured scope."
+commands.allow = ["graph_remove_entity"]
+
+[[permission]]
+identifier = "deny-graph-remove-entity"
+description = "Denies the graph_remove_entity command without any pre-configured scope."
+commands.deny = ["graph_remove_entity"]

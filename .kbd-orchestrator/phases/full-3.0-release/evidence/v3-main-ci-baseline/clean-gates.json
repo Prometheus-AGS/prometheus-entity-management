@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-main-ci-baseline",
+  "verifiedAt": "2026-08-01",
+  "source": {
+    "branch": "main",
+    "localHead": "dd5d70c9954381d3af4519ccedeb5cb565d6027e",
+    "originMain": "7f982fcc5b981314053323fe6ef3016ea1eb4988",
+    "worktreeDirty": true,
+    "immutableCommitCertification": false,
+    "lockfileSha256": "630603fe57777ab44f6f25fff6ea8c317dbc2c6173bd5aac00c89377d6bc46aa"
+  },
+  "javascript": {
+    "platform": {
+      "image": "ubuntu:24.04",
+      "architecture": "linux/arm64",
+      "glibc": "2.39",
+      "pnpm": "10.33.0"
+    },
+    "lanes": [
+      {
+        "node": "22.23.2",
+        "freshSourceCopy": true,
+        "frozenInstall": "passed",
+        "ci": "passed"
+      },
+      {
+        "node": "24.18.1",
+        "freshSourceCopy": true,
+        "frozenInstall": "passed",
+        "ci": "passed"
+      },
+      {
+        "node": "26.5.1",
+        "freshSourceCopy": true,
+        "frozenInstall": "passed",
+        "ci": "passed"
+      }
+    ],
+    "countsPerLane": {
+      "typecheckTasks": 17,
+      "buildTasks": 14,
+      "packageTestsPassed": 362,
+      "packageTestsSkipped": 1,
+      "packageTestsTodo": 1,
+      "releaseContractTests": 10,
+      "ciBaselineTests": 17,
+      "bddScenarios": 10,
+      "bddSteps": 57,
+      "runtimeExports": 197
+    },
+    "productionAudit": {
+      "dependencies": 309,
+      "info": 0,
+      "low": 1,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "blockingAdvisories": 0,
+      "acceptedBlockingAdvisories": 0
+    },
+    "knownNonBlockingOutput": [
+      "The external Flint live integration is explicitly skipped until v3-flint-portable-contracts.",
+      "One core benchmark remains todo.",
+      "Next.js emits legacy-hook deprecation messages owned by the example changes.",
+      "Vite reports a large example chunk.",
+      "Turbo reports missing declared outputs for Next.js build and test tasks.",
+      "Vitest reports that the root TypeScript config is not yet native-loader clean."
+    ]
+  },
+  "packaging": {
+    "command": "pnpm --filter './packages/**' pack --recursive --dry-run --json",
+    "status": "passed",
+    "publicNpmPackages": 12,
+    "packedConsumerCertification": false,
+    "owner": "v3-package-module-contracts"
+  },
+  "openspec": {
+    "command": "openspec validate v3-main-ci-baseline --strict",
+    "status": "passed"
+  },
+  "flutter": {
+    "environment": "Flutter 3.47.0-0.1.pre; Dart 3.12.2; macOS arm64",
+    "pubGet": "passed",
+    "format": {
+      "status": "failed",
+      "filesChanged": 6
+    },
+    "analyze": "passed",
+    "tests": {
+      "status": "passed",
+      "passed": 54
+    },
+    "outdated": {
+      "status": "debt-recorded",
+      "directConstraintsBehindResolvable": [
+        "flutter_riverpod",
+        "freezed_annotation",
+        "riverpod_annotation"
+      ],
+      "lockedUpgradesAvailable": 3,
+      "discontinuedTransitives": [
+        "build_resolvers",
+        "build_runner_core"
+      ]
+    },
+    "owners": [
+      "v3-flutter-source-provenance",
+      "v3-dart-graph-riverpod"
+    ]
+  },
+  "rust": {
+    "environment": "cargo 1.99.0-nightly; rustc 1.99.0-nightly; macOS arm64",
+    "crates": [
+      {
+        "id": "entity-graph-cli",
+        "format": "failed",
+        "testsPassed": 24,
+        "clippy": "passed",
+        "audit": {
+          "status": "failed",
+          "vulnerabilities": [
+            "RUSTSEC-2026-0204"
+          ],
+          "warnings": [
+            "RUSTSEC-2026-0190"
+          ]
+        }
+      },
+      {
+        "id": "entity-graph-mcp",
+        "format": "passed",
+        "testsPassed": 26,
+        "clippy": "passed",
+        "audit": {
+          "status": "failed",
+          "vulnerabilities": [],
+          "warnings": [
+            "RUSTSEC-2026-0190"
+          ]
+        }
+      },
+      {
+        "id": "entity-graph-tauri",
+        "format": "failed",
+        "testsPassed": 6,
+        "clippy": "failed-new-ret-no-self",
+        "iosCheck": "passed",
+        "androidCheck": "passed",
+        "audit": {
+          "status": "failed",
+          "vulnerabilities": [
+            "RUSTSEC-2026-0194",
+            "RUSTSEC-2026-0195"
+          ],
+          "warnings": 16
+        }
+      }
+    ],
+    "owners": [
+      "v3-package-module-contracts",
+      "v3-tauri-mobile-plugin",
+      "v3-release-pipeline-rc"
+    ]
+  },
+  "releaseImpact": {
+    "mainCiBaseline": "passed",
+    "fullV3Release": "blocked",
+    "stablePublicationAuthorized": false
+  },
+  "archive": {
+    "status": "passed",
+    "changePath": "openspec/changes/archive/2026-08-01-v3-main-ci-baseline",
+    "promotedSpec": "openspec/specs/v3-main-ci-baseline/spec.md"
+  }
+}

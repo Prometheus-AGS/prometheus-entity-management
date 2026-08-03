@@ -1,0 +1,9 @@
+# Tasks: v3-release-certification
+
+- [ ] Confirm dependencies are complete: v3-release-pipeline-rc; v3-sync-persistence-path; v3-a2a-conformance-agent; v3-dart-graph-riverpod; v3-tauri-mobile-plugin; all five examples; v3-skills-ecosystem; v3-docs-github-pages.
+- [ ] Implement the full scope in the `v3-release-certification` plan section without weakening its explicit exclusions.
+- [ ] Add or update unit, integration, consumer, platform, documentation, and/or E2E checks required by the plan acceptance criteria.
+- [ ] Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface.
+- [ ] Run the relevant pnpm, Dart/Melos, Cargo, OpenSpec, package, docs, security, and platform gates from a clean state.
+- [ ] Record verification evidence, unresolved platform/manual limits, and release impact before archive.
+

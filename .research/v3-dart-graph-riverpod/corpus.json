@@ -1,0 +1,23 @@
+{
+  "concept_id": "dart-native-graph-riverpod3-binding",
+  "sources": [
+    {
+      "source_ref": "local-prerequisite-and-package-audit",
+      "content_summary": "Both prerequisites are archived; the canonical package owns normalized graph state and has stale unused generator declarations.",
+      "key_points": ["prerequisites enable but do not certify", "one graph owner", "lists retain IDs", "no generated model use"],
+      "misconceptions": ["archived prerequisites mean implementation complete", "providers should cache duplicate entity copies"]
+    },
+    {
+      "source_ref": "official-riverpod-3-migration",
+      "content_summary": "Riverpod 3 changes retry, notifier, Ref, pause, equality, and lifecycle behavior.",
+      "key_points": ["automatic retry by default", "terminal errors opt out", "legacy notifier APIs removed", "provider state equality uses =="],
+      "misconceptions": ["Riverpod 2 providers compile unchanged", "terminal failures stop automatically"]
+    },
+    {
+      "source_ref": "registry-and-resolver-matrix",
+      "content_summary": "Latest stable Riverpod codegen and Freezed codegen conflict through analyzer, while Riverpod-only resolution succeeds.",
+      "key_points": ["resolve a matrix", "remove unused generators", "avoid prerelease Freezed", "certify with stable SDK"],
+      "misconceptions": ["all latest stable packages necessarily coexist", "resolver success alone proves behavior"]
+    }
+  ]
+}

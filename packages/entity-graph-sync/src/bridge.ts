@@ -11,15 +11,20 @@
  * The bridge is transport-agnostic: it never imports yjs or loro-crdt.
  */
 
-import { useGraphStore } from "@prometheus-ags/entity-graph-core";
-import type { EntityType, EntityId } from "@prometheus-ags/entity-graph-core";
+import { graphStore } from "@prometheus-ags/entity-graph-core";
+import type {
+  EntityType,
+  EntityId,
+  GraphStore,
+} from "@prometheus-ags/entity-graph-core";
 import type { SyncProvider } from "./types";
-import {
-  getAllSyncProviders,
-  getRegisteredSyncTypes,
-  getSyncProvider,
-} from "./registry";
-import type { PeerEntityChange, SyncBridgeHandle, SyncBridgeOptions } from "./types";
+import { getDefaultSyncProviderRegistry } from "./registry";
+import type {
+  PeerEntityChange,
+  SyncBridgeHandle,
+  SyncBridgeOptions,
+  SyncProviderRegistry,
+} from "./types";
 
 // ---------------------------------------------------------------------------
 // Peer-change ingestion (called by providers)
@@ -34,8 +39,11 @@ import type { PeerEntityChange, SyncBridgeHandle, SyncBridgeOptions } from "./ty
  * with `$origin: "server"` sync metadata so other observers know the
  * update came from a peer (not a local optimistic write).
  */
-export function applyPeerChanges(changes: PeerEntityChange[]): void {
-  const store = useGraphStore.getState();
+export function applyPeerChanges(
+  changes: PeerEntityChange[],
+  targetStore: GraphStore = graphStore,
+): void {
+  const store = targetStore.getState();
   for (const change of changes) {
     store.upsertEntity(change.type, change.id, change.fields);
     store.setEntitySyncMetadata(change.type, change.id, {
@@ -56,11 +64,24 @@ interface PendingChange {
   id: EntityId;
 }
 
-function makeBridge(opts: SyncBridgeOptions = {}): SyncBridgeHandle {
+interface BridgeRuntime {
+  handle: SyncBridgeHandle;
+  applyPeerChanges: (changes: PeerEntityChange[]) => void;
+}
+
+function makeBridge(
+  store: GraphStore,
+  registry: SyncProviderRegistry,
+  opts: SyncBridgeOptions,
+): BridgeRuntime {
   const pushDebounceMs = opts.pushDebounceMs ?? 16;
 
   // Map of "type:id" → pending change for the current debounce window.
   const pending = new Map<string, PendingChange>();
+  // Zustand subscriptions run synchronously. Marking peer-originated keys
+  // around their graph write lets the entity subscription ignore exactly that
+  // inbound transition without suppressing later local edits.
+  const applyingPeerKeys = new Set<string>();
   let flushTimer: ReturnType<typeof setTimeout> | null = null;
 
   function scheduleFlush(): void {
@@ -77,12 +98,12 @@ function makeBridge(opts: SyncBridgeOptions = {}): SyncBridgeHandle {
 
   function flush(): void {
     if (pending.size === 0) return;
-    const snapshot = useGraphStore.getState();
+    const snapshot = store.getState();
     const batch = Array.from(pending.values());
     pending.clear();
 
     for (const { type, id } of batch) {
-      const provider = getSyncProvider(type);
+      const provider = registry.getProvider(type);
       if (!provider) continue;
       const fields = snapshot.entities[type]?.[id];
       if (!fields) continue;
@@ -93,10 +114,10 @@ function makeBridge(opts: SyncBridgeOptions = {}): SyncBridgeHandle {
   // Subscribe to the graph store. Zustand subscribeWithSelector lets us
   // compare only the `entities` slice to avoid rendering noise from list
   // metadata or patch changes.
-  const unsubscribe = useGraphStore.subscribe(
+  const unsubscribe = store.subscribe(
     (state) => state.entities,
     (entities, prevEntities) => {
-      const managedTypes = getRegisteredSyncTypes();
+      const managedTypes = registry.getRegisteredTypes();
       for (const type of managedTypes) {
         const current = entities[type];
         const prev = prevEntities[type];
@@ -106,6 +127,7 @@ function makeBridge(opts: SyncBridgeOptions = {}): SyncBridgeHandle {
         if (current) {
           for (const id of Object.keys(current)) {
             if (current[id] !== prev?.[id]) {
+              if (applyingPeerKeys.has(`${type}:${id}`)) continue;
               pending.set(`${type}:${id}`, { type, id });
             }
           }
@@ -116,17 +138,29 @@ function makeBridge(opts: SyncBridgeOptions = {}): SyncBridgeHandle {
   );
 
   return {
-    stop() {
-      if (flushTimer !== null) {
-        clearTimeout(flushTimer);
-        flushTimer = null;
+    applyPeerChanges(changes) {
+      for (const change of changes) {
+        const key = `${change.type}:${change.id}`;
+        applyingPeerKeys.add(key);
+        try {
+          applyPeerChanges([change], store);
+        } finally {
+          applyingPeerKeys.delete(key);
+        }
       }
-      pending.clear();
-      unsubscribe();
-      // Stop all registered providers.
-      for (const provider of getAllSyncProviders()) {
-        provider.stop();
-      }
+    },
+    handle: {
+      stop() {
+        if (flushTimer !== null) {
+          clearTimeout(flushTimer);
+          flushTimer = null;
+        }
+        pending.clear();
+        applyingPeerKeys.clear();
+        unsubscribe();
+        // Stop all providers owned by this registry.
+        for (const provider of registry.getAllProviders()) provider.stop();
+      },
     },
   };
 }
@@ -153,25 +187,27 @@ function makeBridge(opts: SyncBridgeOptions = {}): SyncBridgeHandle {
  * ```
  */
 export async function startSyncBridge(opts: SyncBridgeOptions = {}): Promise<SyncBridgeHandle> {
+  const store = opts.store ?? graphStore;
+  const registry = opts.registry ?? getDefaultSyncProviderRegistry();
+  const runtime = makeBridge(store, registry, opts);
+
   // Start all registered providers, grouping their entity types.
-  const providerToTypes = new Map<SyncProvider["name"], { provider: SyncProvider; types: EntityType[] }>();
-  for (const provider of getAllSyncProviders()) {
-    if (!providerToTypes.has(provider.name)) {
-      providerToTypes.set(provider.name, { provider, types: [] });
-    }
-  }
-  // Build provider → types mapping via registry.
-  const { getTypesForProvider } = await import("./registry");
-  for (const entry of providerToTypes.values()) {
-    entry.types = getTypesForProvider(entry.provider);
+  const providerToTypes = new Map<SyncProvider, EntityType[]>();
+  for (const provider of registry.getAllProviders()) {
+    providerToTypes.set(provider, registry.getTypesForProvider(provider));
   }
 
   // Start each provider and pass the inbound change handler.
-  await Promise.all(
-    Array.from(providerToTypes.values()).map(({ provider, types }) =>
-      provider.start(types, applyPeerChanges),
-    ),
-  );
+  try {
+    await Promise.all(
+      Array.from(providerToTypes, ([provider, types]) =>
+        provider.start(types, runtime.applyPeerChanges),
+      ),
+    );
+  } catch (error) {
+    runtime.handle.stop();
+    throw error;
+  }
 
-  return makeBridge(opts);
+  return runtime.handle;
 }

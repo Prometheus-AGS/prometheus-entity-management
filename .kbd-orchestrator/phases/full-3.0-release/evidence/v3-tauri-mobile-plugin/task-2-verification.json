@@ -1,0 +1,43 @@
+{
+  "change": "v3-tauri-mobile-plugin",
+  "task": 2,
+  "verifiedAt": "2026-08-02T03:56:45Z",
+  "candidateRevision": "eb3c9802da5ff10ad6db135fed761bd23ea80b3f",
+  "result": "pass",
+  "implementation": {
+    "pluginCommands": 10,
+    "generatedEvents": 4,
+    "platforms": ["desktop", "android", "ios"],
+    "nativeBridgeCommand": "graph_platform_ping",
+    "defaultPermissions": [
+      "allow-graph-get-entity",
+      "allow-graph-get-list",
+      "allow-graph-platform-ping"
+    ],
+    "bindingStubRemoved": true,
+    "applicationSchemasRemoved": true,
+    "applicationTauriConfigRemoved": true
+  },
+  "verification": {
+    "typescriptTests": {"result": "pass", "files": 2, "tests": 16, "failed": 0},
+    "typescriptTypecheck": "pass",
+    "packageBuild": "pass",
+    "bindingDrift": "pass",
+    "rustFormat": "pass",
+    "gitDiffCheck": "pass",
+    "rustUnitTests": {"result": "pass", "tests": 6, "failed": 0},
+    "packDryRun": "pass"
+  },
+  "deferredTasks": {
+    "task3": ["capability denial", "packed consumer", "desktop host E2E", "Android/iOS runner or device smoke"],
+    "task4": ["examples coverage", "public API ledgers", "skills", "documentation and migration"],
+    "task5": ["clean-state repository and platform gates"],
+    "task6": ["final evidence", "manual limits", "release impact"]
+  },
+  "nonClaims": [
+    "No desktop host or mobile device command execution is claimed.",
+    "No capability-denial certification is claimed.",
+    "No public-ledger or documentation synchronization is claimed.",
+    "No stable publication readiness is claimed."
+  ]
+}

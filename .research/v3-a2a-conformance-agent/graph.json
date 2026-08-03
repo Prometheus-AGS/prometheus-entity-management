@@ -1,0 +1,32 @@
+{
+  "topics": [
+    {"id":"wire","name":"A2A v1 wire contract","claims":["claim-001","claim-002","claim-003"]},
+    {"id":"security","name":"Security and visibility","claims":["claim-004","claim-005"]},
+    {"id":"migration","name":"Current-package migration","claims":["claim-006","claim-012"]},
+    {"id":"extensions","name":"A2UI extension boundary","claims":["claim-007","claim-011"]},
+    {"id":"dependencies","name":"SDK and TCK","claims":["claim-008","claim-009","claim-010"]}
+  ],
+  "claims": [
+    {"id":"claim-001","text":"A2A v1 discovery uses /.well-known/agent-card.json and AgentCard.supportedInterfaces; protocolVersion belongs on each interface, not the card root.","confidence":0.99,"sources":["a2a-spec","a2a-v1","a2a-discovery"],"contradicts":["contra-001"]},
+    {"id":"claim-002","text":"A2A v1 JSON-RPC operation names are PascalCase, including SendMessage, SendStreamingMessage, GetTask, ListTasks, CancelTask, and SubscribeToTask.","confidence":0.99,"sources":["a2a-spec","a2a-v1"],"contradicts":["contra-001"]},
+    {"id":"claim-003","text":"JSON-RPC streaming uses Server-Sent Events and the v1 task/message/artifact model, not a Promise-only response with bespoke artifact fields.","confidence":0.98,"sources":["a2a-spec","a2a-concepts"],"contradicts":[]},
+    {"id":"claim-004","text":"Agent Cards declare authentication schemes, while credentials travel through standard HTTP mechanisms and must not be embedded as card secrets.","confidence":0.99,"sources":["a2a-spec","a2a-discovery","a2a-concepts"],"contradicts":[]},
+    {"id":"claim-005","text":"Authorization must scope task visibility and must not reveal whether an inaccessible resource exists; Prometheus must enforce its graph policy before mutation.","confidence":0.98,"sources":["a2a-spec"],"contradicts":[]},
+    {"id":"claim-006","text":"The current package is not an A2A v1 implementation despite its comments and description: it uses the old discovery path, bespoke card fields, slash-style methods, no ListTasks, and no streaming.","confidence":0.99,"sources":["a2a-v1","local-a2a"],"contradicts":["contra-001"]},
+    {"id":"claim-007","text":"A2A supports URI-identified extensions and structured data parts; an A2UI adapter must negotiate and label its exact extension/version contract.","confidence":0.96,"sources":["a2a-concepts","a2a-governance","a2ui-a2a-v08"],"contradicts":["contra-002"]},
+    {"id":"claim-008","text":"The stable dependency baseline is @a2a-js/sdk@1.0.1 for the A2A v1 family, pinned for this newly stable integration.","confidence":0.98,"sources":["a2a-releases","a2a-js-release","a2a-js-source"],"contradicts":["contra-003"]},
+    {"id":"claim-009","text":"The official JavaScript server SDK provides the protocol model, request handler, task store, executor contract, JSON-RPC transport, and streaming event bus; Prometheus should adapt these instead of maintaining a second wire implementation.","confidence":0.98,"sources":["a2a-js-release","a2a-js-source"],"contradicts":[]},
+    {"id":"claim-010","text":"The official TCK can grade normative scenarios across bindings and emit machine reports, but a Prometheus JSON-RPC-only result must not be presented as REST, gRPC, push, signing, or multi-tenant certification.","confidence":0.98,"sources":["a2a-tck"],"contradicts":["contra-004"]},
+    {"id":"claim-011","text":"Prometheus targets A2UI v0.9.1, while the currently published dedicated A2UI-for-A2A extension page is explicitly v0.8 legacy; this version mismatch requires an honest adapter contract rather than a conformance claim for an unpublished v0.9 extension.","confidence":0.97,"sources":["a2ui-v091","a2ui-a2a-v08"],"contradicts":["contra-002"]},
+    {"id":"claim-012","text":"Legacy slash-style methods and bespoke graph parts may be retained only behind an explicitly named compatibility adapter with migration documentation, not on the v1 public surface.","confidence":0.96,"sources":["a2a-v1","local-a2a"],"contradicts":[]}
+  ],
+  "relations": [
+    {"from":"claim-001","to":"claim-006","type":"invalidates-current-claim"},
+    {"from":"claim-002","to":"claim-003","type":"defines-binding"},
+    {"from":"claim-004","to":"claim-005","type":"precedes"},
+    {"from":"claim-009","to":"claim-003","type":"implements"},
+    {"from":"claim-010","to":"claim-009","type":"verifies"},
+    {"from":"claim-011","to":"claim-007","type":"constrains"},
+    {"from":"claim-012","to":"claim-006","type":"migrates"}
+  ]
+}

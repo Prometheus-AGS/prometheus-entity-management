@@ -1,0 +1,45 @@
+{
+  "contradictions": [
+    {
+      "id": "contra-latest-generators",
+      "topic": "stable generator matrix",
+      "claim_a": "All generator dependencies should be upgraded to their numerically latest stable versions.",
+      "claim_b": "riverpod_generator 4.0.8 requires analyzer 13 while freezed 3.2.5 requires analyzer below 11.",
+      "resolved": true,
+      "strategy": "registry metadata plus disposable resolver",
+      "resolution": "Remove unused Freezed and JSON generation dependencies; use the coherent current stable Riverpod-only generator matrix. Do not introduce a Freezed prerelease merely to satisfy an unused manifest claim.",
+      "confidence": 0.98
+    },
+    {
+      "id": "contra-ffi-owner",
+      "topic": "canonical graph ownership",
+      "claim_a": "The imported KnowMe Riverpod implementation can be copied as the canonical store.",
+      "claim_b": "The release plan and provenance contract name the tested Dart-native graph as canonical and prohibit a public core requirement on KnowMe FFI.",
+      "resolved": true,
+      "strategy": "local architecture and provenance evidence",
+      "resolution": "Adapt provider-family, view, CRUD, and retry patterns; expose Rust/FFI only through an optional transport adapter.",
+      "confidence": 0.97
+    },
+    {
+      "id": "contra-provider-cache",
+      "topic": "normalization",
+      "claim_a": "Each Riverpod family can own its fetched entity value.",
+      "claim_b": "Entities must live exactly once in the graph and lists may hold only IDs.",
+      "resolved": true,
+      "strategy": "non-negotiable architecture and source inspection",
+      "resolution": "Families/controllers orchestrate subscription, selection, and mutations against the one graph; they do not become independent entity databases.",
+      "confidence": 0.98
+    },
+    {
+      "id": "contra-beta-vs-release",
+      "topic": "toolchain certification",
+      "claim_a": "The locally installed Flutter beta is sufficient evidence for a stable 3.0 release.",
+      "claim_b": "Flutter recommends the stable channel for production releases and the release needs a reproducible supported matrix.",
+      "resolved": true,
+      "strategy": "official Flutter guidance and explicit gate ownership",
+      "resolution": "Use the beta only for a readiness probe. Task 5 must certify the declared stable Flutter/Dart matrix in a clean environment.",
+      "confidence": 0.94
+    }
+  ],
+  "unresolved": []
+}

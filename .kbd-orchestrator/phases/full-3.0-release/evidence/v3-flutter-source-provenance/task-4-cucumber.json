@@ -1,0 +1,1250 @@
+[
+  {
+    "description": "  As a 3.0 maintainer or coding agent\n  I need coverage, documentation, and skills to agree on the provenance boundary\n  So that imported history cannot be mistaken for a public API, runnable package, or publication approval",
+    "elements": [
+      {
+        "description": "",
+        "id": "flutter-provenance-is-taught-without-overstating-release-readiness;coverage-records-the-implemented-provenance-gate-and-downstream-work",
+        "keyword": "Scenario",
+        "line": 7,
+        "name": "Coverage records the implemented provenance gate and downstream work",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 692329499
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "the Flutter source provenance verifier executes for release ledgers",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:200"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 98375
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 9,
+            "name": "coverage records the Flutter source provenance gate as implemented",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:205"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 500291
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "Dart runtime and Flutter visual evidence remain planned under their owning changes",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:210"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          },
+          {
+            "name": "@provenance-ledgers",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "flutter-provenance-is-taught-without-overstating-release-readiness;public-api-ledgers-remain-unchanged-for-a-non-runtime-import",
+        "keyword": "Scenario",
+        "line": 12,
+        "name": "Public API ledgers remain unchanged for a non-runtime import",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 34625
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 13,
+            "name": "the Flutter source provenance verifier executes for release ledgers",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:200"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 40250
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 14,
+            "name": "the provenance change declares no public runtime export impact",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:217"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 34291
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 15,
+            "name": "the non-buildable import is absent from every public API ledger and workspace",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:221"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          },
+          {
+            "name": "@provenance-ledgers",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "flutter-provenance-is-taught-without-overstating-release-readiness;maintainer-and-skill-documentation-preserve-one-canonical-owner",
+        "keyword": "Scenario",
+        "line": 17,
+        "name": "Maintainer and skill documentation preserve one canonical owner",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 19166
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 18,
+            "name": "the Flutter source provenance verifier executes for release ledgers",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:200"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 32541
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 19,
+            "name": "release and package documentation identify entity_graph_flutter as the sole canonical Dart package",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:228"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 33791
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 20,
+            "name": "shared skills require the provenance verifier before source-lineage claims",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:234"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 243291
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 21,
+            "name": "documentation denies Flutter rendering, registry publication, and stable-release claims",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:240"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          },
+          {
+            "name": "@provenance-ledgers",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "flutter-provenance-is-taught-without-overstating-release-readiness",
+    "line": 2,
+    "keyword": "Feature",
+    "name": "Flutter provenance is taught without overstating release readiness",
+    "tags": [
+      {
+        "name": "@release",
+        "line": 1
+      },
+      {
+        "name": "@system",
+        "line": 1
+      },
+      {
+        "name": "@smoke",
+        "line": 1
+      },
+      {
+        "name": "@v3-flutter-source-provenance",
+        "line": 1
+      },
+      {
+        "name": "@provenance-ledgers",
+        "line": 1
+      }
+    ],
+    "uri": "tests/features/release/v3-flutter-source-provenance-ledgers.feature"
+  },
+  {
+    "description": "  As a 3.0 release reviewer\n  I need provenance checks to reject plausible-looking but false receipts\n  So that a green verifier cannot be produced by weakening the evidence",
+    "elements": [
+      {
+        "description": "",
+        "id": "flutter-provenance-evidence-fails-closed-when-tampered;generated-or-unapproved-source-cannot-enter-filtered-history",
+        "keyword": "Scenario",
+        "line": 10,
+        "name": "Generated or unapproved source cannot enter filtered history",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 85628500
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a valid portable Flutter provenance contract fixture",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:62"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 319709
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 11,
+            "name": "a generated Dart file appears in the filtered history fixture",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:68"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 220458
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "portable provenance validation fails with \"FORBIDDEN_FILTERED_PATH\"",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:106"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 31333
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "it also reports the allowlist mismatch",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:111"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          },
+          {
+            "name": "@provenance-tamper",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "flutter-provenance-evidence-fails-closed-when-tampered;retained-history-requires-a-complete-metadata-mapping",
+        "keyword": "Scenario",
+        "line": 15,
+        "name": "Retained history requires a complete metadata mapping",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 74210458
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a valid portable Flutter provenance contract fixture",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:62"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 313916
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 16,
+            "name": "one retained commit loses its captured original metadata",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:75"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 55166
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 17,
+            "name": "portable provenance validation fails with \"METADATA_MAPPING_MISMATCH\"",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:106"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 34334
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 18,
+            "name": "the valid filtered commit count cannot conceal the missing metadata",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:115"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          },
+          {
+            "name": "@provenance-tamper",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "flutter-provenance-evidence-fails-closed-when-tampered;a-second-canonical-dart-graph-is-rejected",
+        "keyword": "Scenario",
+        "line": 20,
+        "name": "A second canonical Dart graph is rejected",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 67962084
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a valid portable Flutter provenance contract fixture",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:62"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 263292
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 21,
+            "name": "another Dart graph artifact is declared canonical",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:80"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 35041
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 22,
+            "name": "portable provenance validation fails with \"CANONICAL_DART_ARTIFACT_COUNT\"",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:106"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 24832
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 23,
+            "name": "entity_graph_flutter remains the expected canonical owner",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:120"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          },
+          {
+            "name": "@provenance-tamper",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "flutter-provenance-evidence-fails-closed-when-tampered;publication-authority-cannot-be-smuggled-into-provenance",
+        "keyword": "Scenario",
+        "line": 25,
+        "name": "Publication authority cannot be smuggled into provenance",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 76939292
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a valid portable Flutter provenance contract fixture",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:62"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 280041
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 26,
+            "name": "the provenance fixture authorizes pub.dev publication",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:91"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 42625
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 27,
+            "name": "portable provenance validation fails with \"PUBLICATION_AUTHORIZED\"",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:106"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 84624
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 28,
+            "name": "deferred registry authority remains mandatory",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:125"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          },
+          {
+            "name": "@provenance-tamper",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "flutter-provenance-evidence-fails-closed-when-tampered;content-addressed-evidence-cannot-be-substituted",
+        "keyword": "Scenario Outline",
+        "line": 36,
+        "name": "Content-addressed evidence cannot be substituted",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 44624709
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a valid portable Flutter provenance contract fixture",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:62"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 303166
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 31,
+            "name": "the recorded license hash differs from its observed hash",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:96"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 39749
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 32,
+            "name": "portable provenance validation fails with \"LICENSE_HASH_MISMATCH\"",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:106"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          },
+          {
+            "name": "@provenance-tamper",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "flutter-provenance-evidence-fails-closed-when-tampered;content-addressed-evidence-cannot-be-substituted",
+        "keyword": "Scenario Outline",
+        "line": 37,
+        "name": "Content-addressed evidence cannot be substituted",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 49609333
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a valid portable Flutter provenance contract fixture",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:62"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 313750
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 31,
+            "name": "the recorded visual hash differs from its observed hash",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:101"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 36833
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 32,
+            "name": "portable provenance validation fails with \"VISUAL_HASH_MISMATCH\"",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance-tamper.steps.ts:106"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          },
+          {
+            "name": "@provenance-tamper",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "flutter-provenance-evidence-fails-closed-when-tampered",
+    "line": 2,
+    "keyword": "Feature",
+    "name": "Flutter provenance evidence fails closed when tampered",
+    "tags": [
+      {
+        "name": "@release",
+        "line": 1
+      },
+      {
+        "name": "@system",
+        "line": 1
+      },
+      {
+        "name": "@smoke",
+        "line": 1
+      },
+      {
+        "name": "@v3-flutter-source-provenance",
+        "line": 1
+      },
+      {
+        "name": "@provenance-tamper",
+        "line": 1
+      }
+    ],
+    "uri": "tests/features/release/v3-flutter-source-provenance-tamper.feature"
+  },
+  {
+    "description": "  As a 3.0 release reviewer\n  I need reusable Flutter source to retain authority, history, and one canonical owner\n  So that a directory copy cannot be mistaken for a licensable, auditable migration",
+    "elements": [
+      {
+        "description": "",
+        "id": "licensed-and-history-preserving-flutter-source-migration;committed-knowme-history-is-imported-through-an-allowlist",
+        "keyword": "Scenario",
+        "line": 10,
+        "name": "Committed KnowMe history is imported through an allowlist",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 96291
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "Flutter source-import authority is recorded before copying",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:85"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 66249
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 11,
+            "name": "the Flutter source provenance verifier executes",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:91"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 49708
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "the imported ref is rooted in a disposable filtered clone of the recorded KnowMe revision",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:98"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 52625
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "authors, dates, messages, path evolution, and the old-to-new commit map are retained",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:105"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 117083
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "dirty files, applications, product models, secrets, generated output, locks, and direct FFI are excluded",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:121"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "licensed-and-history-preserving-flutter-source-migration;one-canonical-dart-graph-remains-after-adaptation",
+        "keyword": "Scenario",
+        "line": 16,
+        "name": "One canonical Dart graph remains after adaptation",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 10290
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "Flutter source-import authority is recorded before copying",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:85"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 9500
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 17,
+            "name": "the Flutter source provenance verifier executes",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:91"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 42083
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 18,
+            "name": "approved generic paths map to explicit adapt, reference, or reject decisions",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:129"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 30250
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 19,
+            "name": "entity_graph_flutter remains the only canonical Dart graph package",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:137"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 15333
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 20,
+            "name": "the filtered import is non-buildable provenance rather than a second public package",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:145"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "licensed-and-history-preserving-flutter-source-migration;licensing-and-attribution-survive-outside-this-conversation",
+        "keyword": "Scenario",
+        "line": 22,
+        "name": "Licensing and attribution survive outside this conversation",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 7249
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "Flutter source-import authority is recorded before copying",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:85"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 8249
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 23,
+            "name": "the Flutter source provenance verifier executes",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:91"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 21458
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 24,
+            "name": "the root, canonical Dart package, and imported source carry the declared MIT license",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:149"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 25832
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 25,
+            "name": "the provenance manifest records source revisions, filtered commits, attribution, and publication limits",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:158"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 15208
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 26,
+            "name": "pub.dev publication remains unauthorized",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:165"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "licensed-and-history-preserving-flutter-source-migration;the-migration-lineage-has-deterministic-visual-evidence",
+        "keyword": "Scenario",
+        "line": 28,
+        "name": "The migration lineage has deterministic visual evidence",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 7082
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "Flutter source-import authority is recorded before copying",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:85"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 7707
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 29,
+            "name": "the Flutter source provenance verifier executes",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:91"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 115625
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 30,
+            "name": "a deterministic lineage diagram shows source, filter, provenance import, and canonical adaptation boundaries",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:170"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 40165
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 31,
+            "name": "the visual artifact hash is bound to the machine-readable provenance receipt",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:179"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 17208
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 32,
+            "name": "the headless diagram does not claim Flutter rendering or accessibility certification",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:184"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "licensed-and-history-preserving-flutter-source-migration;the-architecture-repository-is-not-misreported-as-runtime-source",
+        "keyword": "Scenario",
+        "line": 34,
+        "name": "The architecture repository is not misreported as runtime source",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 7666
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "Flutter source-import authority is recorded before copying",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:85"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 7667
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 35,
+            "name": "the Flutter source provenance verifier executes",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:91"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 18499
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 36,
+            "name": "hybrid-mobile-architecture-src is recorded as MIT reference-only",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:189"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 19583
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 37,
+            "name": "no runtime library is fabricated from its templates, scripts, or documentation",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:195"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "licensed-and-history-preserving-flutter-source-migration",
+    "line": 2,
+    "keyword": "Feature",
+    "name": "Licensed and history-preserving Flutter source migration",
+    "tags": [
+      {
+        "name": "@release",
+        "line": 1
+      },
+      {
+        "name": "@system",
+        "line": 1
+      },
+      {
+        "name": "@smoke",
+        "line": 1
+      },
+      {
+        "name": "@v3-flutter-source-provenance",
+        "line": 1
+      }
+    ],
+    "uri": "tests/features/release/v3-flutter-source-provenance.feature"
+  }
+]

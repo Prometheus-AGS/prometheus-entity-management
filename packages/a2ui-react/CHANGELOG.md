@@ -1,35 +1,48 @@
-# @prometheus-ags/a2ui-react
+# @prometheus-ags/a2ui-react changelog
 
-## 3.0.0
-
-### Major Changes
-
-- v3.0.0 — Universal Platform Evolution
-
-  Evolves the React-only entity graph into a cross-platform, multi-framework,
-  AI-native, local-first ecosystem.
-  - **Monorepo split (breaking, but consumer-safe):** the framework-agnostic core
-    is extracted into `@prometheus-ags/entity-graph-core` (zero React). The
-    published `@prometheus-ags/prometheus-entity-management` package is now a
-    re-export shim over the React bindings + core — its runtime surface is
-    byte-identical to 2.2.0 (197 exports unchanged), so existing consumers upgrade
-    with no code changes.
-  - **New framework bindings:** `entity-graph-svelte` (Svelte 5 runes),
-    `entity-graph-solid`, `entity-graph-web-components` (Lit 3), `entity-graph-alpine`,
-    `entity-graph-htmx` (Node SSE fragment server).
-  - **Peer sync:** `entity-graph-sync` with a pluggable SyncProvider — Yjs (default)
-    and Loro (reusing the 2.2.0 merge seam).
-  - **AI-native:** `entity-graph-a2a` (Agent2Agent v1.0 server), `a2ui-react`
-    (EntityChat/Copilot/Stream/Diff/Approval, reusing AG-UI ingestion + time-travel).
-  - **Codegen contract:** `entity-graph-sdl` (schema → validated IR).
-  - **Native (published outside npm):** `entity-graph-cli` + `entity-graph-mcp`
-    (Rust, via crates.io), `entity-graph-tauri` (Tauri v2 plugin), and
-    `entity_graph_flutter` (Riverpod 3, via pub.dev).
-
-  All integrations ship as optional peer dependencies; the core bundle stays
-  `zustand + immer`.
+## 3.0.0-rc.1
 
 ### Patch Changes
 
-- Updated dependencies
-  - @prometheus-ags/entity-graph-core@3.0.0
+- @prometheus-ags/entity-graph-core@3.0.0-rc.1
+
+## 3.0.0-alpha.0 — 3.0 release worktree
+
+The full 3.0 release is not yet certified or published to npm `latest`.
+
+### Breaking
+
+- The package root is now the official A2UI v0.9.1 integration surface.
+- Pre-3.0 `EntityChat`, `EntityCopilot`, `EntityStream`, `EntityDiff`,
+  `EntityApproval`, tool-provider, and chat-session APIs move to
+  `@prometheus-ags/a2ui-react/ag-ui`.
+- React 19 is the supported peer line.
+
+### Added
+
+- Thin official `@a2ui/react/v0_9` and `@a2ui/web_core/v0_9` runtime bridge.
+- Exact `v0.9.1` message enforcement with allowlisted official catalogs,
+  components, and functions.
+- `PrometheusA2uiProvider`, single/all-surface renderers, and subscription
+  hooks with deterministic SSR fallback markup.
+- Generic default-deny action policy with strict context validation,
+  authorization, destructive approval, and auditable decisions.
+- Entity-graph action policy with entity/action/field allowlists and
+  application-owned tenant authorization.
+- Root plus `./ag-ui` ESM/CommonJS/declaration exports and enforced public API
+  ledger.
+
+### Security
+
+- `openUrl` is excluded from the default catalog.
+- Unknown actions, tenants, entity types, and fields fail closed.
+- Replace and remove require out-of-band approval; message context cannot
+  self-authorize.
+
+### Verification
+
+- Official renderer and policy unit/integration tests.
+- Tarball-only ESM, CommonJS, NodeNext, Node16, and server-render consumers.
+- BDD acceptance scenarios.
+- Built-artifact Chrome keyboard, responsive screenshot, accessibility, trace,
+  video, and immutable-hash evidence.

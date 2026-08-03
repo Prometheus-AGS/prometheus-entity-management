@@ -56,6 +56,7 @@ export {
   setList,
   getEntity,
   getList,
+  platformPing,
   persistSnapshot,
   restoreSnapshot,
   clearGraph,
@@ -90,19 +91,34 @@ export type {
   TauriInvokeFn,
   TauriListenFn,
   TauriGraphPluginOptions,
+  PlatformPing,
 } from "./types";
 
-// ── Generated bindings (tauri-specta output) ──────────────────────────────────
+// ── Generated bindings (tauri-specta output) ─────────────────────────────────
+export {
+  generatedCommands,
+  generatedEvents,
+  PLUGIN_NAME,
+} from "./generated-public";
+export type {
+  EntityChangedEvent as RustEntityChangedEvent,
+  SnapshotPersistedEvent as RustSnapshotPersistedEvent,
+  SnapshotRestoredEvent as RustSnapshotRestoredEvent,
+  GraphPluginErrorEvent as RustGraphPluginErrorEvent,
+  GetEntityResult,
+  GetListResult,
+  PlatformPing as RustPlatformPing,
+  RestoreSnapshotResult,
+  UpsertEntityPayload as RustUpsertEntityPayload,
+  RemoveEntityPayload as RustRemoveEntityPayload,
+  PatchEntityPayload as RustPatchEntityPayload,
+  SetListPayload as RustSetListPayload,
+  PersistSnapshotPayload as RustPersistSnapshotPayload,
+  RestoreSnapshotPayload as RustRestoreSnapshotPayload,
+} from "./generated-bindings";
+
+// ── Alpha compatibility maps ─────────────────────────────────────────────────
 export {
   GENERATED_COMMANDS,
   GENERATED_EVENTS,
-} from "./generated-bindings";
-export type {
-  RustUpsertEntityPayload,
-  RustRemoveEntityPayload,
-  RustPatchEntityPayload,
-  RustSetListPayload,
-  RustEntityChangedEvent,
-  RustSnapshotPersistedEvent,
-  RustGraphPluginErrorEvent,
-} from "./generated-bindings";
+} from "./generated-compat";

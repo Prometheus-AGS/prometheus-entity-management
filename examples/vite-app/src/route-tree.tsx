@@ -16,6 +16,7 @@ import { SettingsPage } from "./pages/settings/settings-page";
 import { UIDemoPage } from "./pages/ui-demo/ui-demo-page";
 import { PureDemoPage } from "./pages/pure-demo/pure-demo-page";
 import { TanStackBridgePage } from "./pages/tanstack-bridge/tanstack-bridge-page";
+import { ReleaseShowcasePage } from "./pages/release-showcase/release-showcase-page";
 import { AlertTriangle, RefreshCcw } from "lucide-react";
 
 const rootRoute = createRootRoute({
@@ -121,6 +122,12 @@ const tanstackBridgeRoute = createRoute({
   component: TanStackBridgePage,
 });
 
+const releaseShowcaseRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/release-showcase",
+  component: ReleaseShowcasePage,
+});
+
 export const routeTree = rootRoute.addChildren([
   indexRoute,
   dashboardRoute,
@@ -132,4 +139,5 @@ export const routeTree = rootRoute.addChildren([
   uiDemoRoute,
   pureDemoRoute,
   tanstackBridgeRoute,
+  releaseShowcaseRoute,
 ]);

@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-critic",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "examples/coverage.json",
+      "claim": "The change adds a new release-pipeline quality gate but does not update the coverage ledger that the acceptance criteria require.",
+      "evidence": "Acceptance criterion requires updating examples/coverage.json, but the packet omitted that generated ledger.",
+      "suggested_fix": "Add the release.pipeline.recoverable-rc quality gate entry."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "prometheus-entity-skills/SKILL.md",
+      "claim": "The new shared release-candidate pipeline reference is not wired into the skill indexes required by the added tests and acceptance criteria.",
+      "evidence": "The packet omitted current skill-index hunks.",
+      "suggested_fix": "Update the skill indexes."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "prometheus-entity-skills/_shared/references/v3-release-contract.md",
+      "claim": "The release-contract skill reference is not synchronized with the new release-pipeline verification surface.",
+      "evidence": "The packet omitted the current untracked reference file.",
+      "suggested_fix": "Update the reference."
+    }
+  ]
+}

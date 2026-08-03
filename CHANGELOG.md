@@ -5,6 +5,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [Unreleased] — 3.0 release program
+
+### Added
+
+- Official A2UI v0.9.1 React rendering through the maintained `@a2ui/react` and `@a2ui/web_core` engine.
+- Default-deny A2UI action and entity-graph policies with tenant/entity/action/field allowlists and destructive approval.
+- Packed ESM/CommonJS/NodeNext/SSR plus real-browser keyboard, responsive, accessibility, trace, video, and hash certification.
+- Canonical `entity_graph_flutter` 3.0 library with generated Riverpod 3 families, normalized views, optimistic rollback, bounded retry, realtime invalidation, optional FFI, widget goldens, and a checked Dart public API ledger.
+
+### Changed
+
+- `@prometheus-ags/a2ui-react` now reserves its root for official A2UI. Pre-3.0 AG-UI chat/state APIs migrate to `@prometheus-ags/a2ui-react/ag-ui`.
+
+The complete 3.0 release remains in progress; this entry does not announce stable publication.
+
 ## [2.2.0] — 2026-06-21 — Realtime Fabric Parity
 
 Additive, backward-compatible. Evolves the library toward a best-in-class,

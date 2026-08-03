@@ -11,6 +11,16 @@ your HTML renderers are always in sync with the schema.
 
 ---
 
+## Installation
+
+```bash
+pnpm add @prometheus-ags/entity-graph-core @prometheus-ags/entity-graph-htmx
+```
+
+`@prometheus-ags/entity-graph-core` is a required peer: install it explicitly so the application owns the one compatible graph instance. The HTMX binding must not install a private core copy. See the [binding singleton contract](../../release/binding-singleton-contract.md).
+
+---
+
 ## Quick start
 
 ```ts
@@ -168,7 +178,7 @@ Browser (HTMX + idiomorph)
 createHtmxSseServer          ← Layer 3: HTTP + SSE routing
         │
         ▼
-createServerGraph             ← Layer 1: entity graph (useGraphStore from core)
+createServerGraph             ← Layer 1: entity graph (graphStore from core)
         │  onEntityChanged listener
         ▼
 renderFragment                ← Fragment assembly

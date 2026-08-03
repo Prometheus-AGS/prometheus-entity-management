@@ -4,8 +4,9 @@ description: >
   Wire the full production local-first stack: ElectricSQL shape sync into PGlite via the
   trio pattern (synced/local/view + INSTEAD OF triggers + local_writes queue + write drain),
   createTenantScopedElectricAdapter for tenant validation, createPGlitePersistenceAdapter
-  + startLocalFirstGraph for entity graph hydration, and Supabase Realtime for Tier-C
-  event push alongside the Electric read path. Replaces TanStack Query entirely.
+  + startLocalFirstGraph for entity graph hydration, the certified optional Loro provider
+  path for peer convergence, and Supabase Realtime for Tier-C event push alongside the
+  Electric read path. Replaces TanStack Query entirely.
 license: MIT
 version: '1.0.0'
 metadata:
@@ -276,6 +277,51 @@ export async function bootstrapEntityGraph(pglite: LocalDB, companyId: string) {
 }
 ```
 
+## Optional peer collaboration — entity-graph-sync + Loro
+
+PGlite snapshot durability and Electric server replication do not prove
+peer-to-peer conflict resolution. Add the companion sync package only when
+multiple offline replicas must reconcile entity fields:
+
+```typescript
+import { createGraphStore } from '@prometheus-ags/entity-graph-core';
+import {
+  createLoroProvider,
+  createSyncProviderRegistry,
+  createWebSocketLoroChannel,
+  startSyncBridge,
+} from '@prometheus-ags/entity-graph-sync';
+
+export async function startPeerSync(url: string, peerId: number) {
+  const store = createGraphStore();
+  const registry = createSyncProviderRegistry();
+  const channel = createWebSocketLoroChannel(url, {
+    onError: (error) => reportSyncError(error),
+  });
+  registry.register({
+    entityTypes: ['Task', 'Comment'],
+    provider: createLoroProvider({
+      channel,
+      peerId,
+      registerMergeStrategies: false,
+      onError: (error, operation) => reportSyncError(error, operation),
+    }),
+  });
+  const bridge = await startSyncBridge({ store, registry });
+  return { store, bridge };
+}
+```
+
+Use one unique numeric `peerId` per live replica. The bridge suppresses inbound
+peer projections from its outbound subscription. The WebSocket channel queues
+the latest offline write per entity type and requests current peer snapshots
+after reconnect. A relay broadcasts opaque binary frames to other clients; it
+does not own canonical entities or understand Loro.
+
+Do not add peer sync if Electric's server-confirmed replication is the only
+required synchronization model. Do not claim peer convergence from a PGlite
+reload test, or persistence from an in-memory convergence test.
+
 ## Supabase Realtime — Tier-C Only
 
 ```typescript
@@ -323,6 +369,9 @@ bootPromise = null;           // reset singleton
 - Self-hosted Supabase only — enforce with `*.supabase.co` URL guard at module load
 - `BUNDLED_PGLITE_SCHEMA_VERSION` must always match the timestamp in `local-schema.sql`
 - Never hand-edit `local-schema.sql` — regenerate with `pnpm gen:pglite-schema`
+- Keep peer `GraphStore` and `SyncProviderRegistry` ownership aligned; inject
+  both for isolated clients, workers, and SSR/request graphs
+- Install `loro-crdt >=1.13.9 <2` when selecting the Loro provider
 
 ## Pitfalls
 
@@ -332,6 +381,9 @@ bootPromise = null;           // reset singleton
 | `onInitialSync` never fires on return visits | Check `sub.isUpToDate` immediately after attach; call resolver in both paths |
 | FK violations on initial sync | Use `syncShapesToTables` (multi-table transactional) |
 | Duplicate graph writes | Remove Realtime subscriptions from Tier-A/B tables |
+| Peer updates bounce forever | Use `startSyncBridge`; do not bypass its inbound echo-suppression boundary |
+| Same-field conflicts vary in tests | Assign distinct deterministic numeric Loro peer IDs |
+| Reconnect misses remote work | Use the sync-request-aware WebSocket channel and an opaque binary relay |
 | Schema version mismatch after deploy | Sync `BUNDLED_PGLITE_SCHEMA_VERSION` with SQL stamp |
 
 ## Cross-Reference
@@ -344,3 +396,7 @@ Realtime coexistence rules, presence, broadcast, Tier-C patterns.
 
 `prometheus-skill-pack/skills/typescript/pglite/references/SYNC_CONFIG_SCHEMA_GEN.md` —
 SYNC_CONFIG declaration, EMIT_ORDER, gen-pglite-schema, EntityName type safety.
+
+`prometheus-entity-skills/_shared/references/sync-persistence-path.md` —
+certified PGlite/Loro boundaries, public sync APIs, conflict policy, exclusions,
+and mandatory verification commands.

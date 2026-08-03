@@ -1,0 +1,50 @@
+{
+  "mode": "artifact",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "library-candidates.json",
+      "claim": "The analysis does not evaluate the existing A2A package or any A2A implementation candidate despite making A2A a primary part of the agentic example and release surface.",
+      "evidence": "The file tree contains `packages/entity-graph-a2a`; analysis.md says the monorepo has packages \"including React, A2A, A2UI-named, sync, SDL, and Tauri packages\" and the feature coverage table marks \"A2A server/client\" as \"Primary\" for the A2UI example, but `library-candidates.json` has no candidate for `entity-graph-a2a`, A2A protocol/runtime, or an A2A build-required item.",
+      "suggested_fix": "Add an explicit candidate/build-required entry for the existing A2A package and the A2A runtime/protocol choice, with verdict, maintenance/provenance evidence, and required certification scenarios."
+    },
+    {
+      "severity": "WARNING",
+      "file": "analysis.md",
+      "claim": "The analysis requires a local-first/sync provider scenario but never evaluates or selects the sync provider/category needed to implement it.",
+      "evidence": "analysis.md requires scenario 6: \"Persistence/sync: snapshot restore and at least one supported local-first/sync provider path.\" The file tree contains `packages/entity-graph-sync`, `examples/supabase`, and `docs/pglite-local-first-architecture-research.md`, but `library-candidates.json` contains no candidate or build-required decision for `entity-graph-sync`, Supabase, PGlite, Electric/Dexie-style local-first storage, or any other sync provider.",
+      "suggested_fix": "Add a sync/local-first candidate evaluation or a build-required decision naming the supported provider path and how it will be certified across examples."
+    },
+    {
+      "severity": "WARNING",
+      "file": "analysis.md",
+      "claim": "The release gates mandate Publint and Are The Types Wrong even though the candidate evaluation says final adoption still needs a maintenance/version check.",
+      "evidence": "analysis.md lists required root gate 6 as \"Publint and Are The Types Wrong on all npm tarballs\". But the Build-vs-adopt summary says \"Publint and Are The Types Wrong are strong packed-artifact gate candidates, but final adoption needs a maintenance/version check because Analyze reached its Tier 3 cap,\" and `library-candidates.json` gives cand-018 verdict `reference` with maintenance \"not captured before the Tier 3 query cap\".",
+      "suggested_fix": "Make the gate conditional on a Spec/Plan maintenance check, or change cand-018 to an adopted gate only after recording current maintenance/version evidence."
+    },
+    {
+      "severity": "WARNING",
+      "file": "library-candidates.json",
+      "claim": "The analysis recommends using assistant-ui in the agentic example without a current maintenance or version evaluation.",
+      "evidence": "`library-candidates.json` cand-016 verdict is `adapt` and decision rationale says \"Use it in the agentic example to avoid maintaining another chat shell,\" but its maintenance field only says \"KnowMe source consumes @assistant-ui/react 0.14.x\" and the evidence is a local KnowMe `desktop/package.json`, not a registry or repository maintenance check.",
+      "suggested_fix": "Add a current registry/repository maintenance check for assistant-ui or mark its use as conditional and provide a fallback shell plan."
+    },
+    {
+      "severity": "WARNING",
+      "file": "analysis.md",
+      "claim": "The analysis does not close the goal's requested consolidation assessment for reusable Flutter/A2UI material from `hybrid-mobile-architecture-src`.",
+      "evidence": "The goal says to \"Consolidate reusable Flutter entity-management and A2UI libraries from `/Users/gqadonis/Projects/hybrid-mobile-architecture-src` and `/Users/gqadonis/Projects/know-me/know-me-system` into this monorepo\". analysis.md says `hybrid-mobile-architecture-src` provides \"maintained Flutter, Tauri/React, Rust, A2UI, and hybrid profile structure\" and \"source templates\", but the only related candidate, cand-014, treats it as \"Builder maintained templates\" with verdict `reference`; no candidate evaluates whether any Flutter/A2UI source from that repository is reusable or explicitly absent.",
+      "suggested_fix": "Add a specific evaluation stating whether `hybrid-mobile-architecture-src` contains reusable Flutter/A2UI source to migrate, and if not, cite the inspected paths and record a reject/reference verdict for that migration source."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

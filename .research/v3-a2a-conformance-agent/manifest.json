@@ -1,0 +1,43 @@
+{
+  "format": "research-package",
+  "format_version": "1.0.0",
+  "okf_type": "research-session",
+  "job_id": "v3-a2a-conformance-agent",
+  "query": "What exact protocol, dependency, security, streaming, A2UI-extension, and conformance boundaries must the Prometheus entity-graph A2A package satisfy for the 3.0 release?",
+  "depth": "exhaustive",
+  "created_at": "2026-08-01T21:00:00Z",
+  "completed_at": "2026-08-01T21:00:00Z",
+  "stages_completed": 10,
+  "sources_count": 12,
+  "claims_count": 12,
+  "confidence": 0.95,
+  "verification_status": "verified",
+  "feynman_grade": 0.96,
+  "feynman_gate_used": true,
+  "misconceptions_absent": 1.0,
+  "contradictions_resolved": 4,
+  "contradictions_unresolved": 0,
+  "surreal_memory_used": false,
+  "sycophancy_correction_used": true,
+  "citation_style": "none",
+  "model_routing": {
+    "planner": "frontier",
+    "search": "frontier",
+    "verify": "frontier",
+    "report": "frontier"
+  },
+  "automation": {
+    "attempted_job": "job-1785617542-b1bd0de1",
+    "result": "The background research worker remained at stage 0 and was cancelled. The ten-stage package was completed manually from official protocol, SDK, TCK, A2UI, registry, and local repository sources.",
+    "web_retrieval": "Official web sources through the configured web research interface; Firecrawl was not exposed as a direct callable tool in this session."
+  },
+  "pinned_inputs": {
+    "a2a_protocol_family": "1.0",
+    "a2a_protocol_patch_reviewed": "1.0.1",
+    "a2a_javascript_sdk": "@a2a-js/sdk@1.0.1",
+    "a2a_javascript_sdk_commit": "f5ca7d05945a69cbf3dcd357203d4ce99201494f",
+    "a2a_tck_commit": "5996b79f9cefa6fc390980e383e358a66fb9e49e",
+    "a2ui_wire_baseline": "v0.9.1",
+    "a2ui_a2a_extension_published_contract": "v0.8 legacy"
+  }
+}

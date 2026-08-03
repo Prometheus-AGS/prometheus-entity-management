@@ -1,0 +1,32 @@
+{
+  "conceptId": "tauri-real-mobile-plugin-certification-host",
+  "audience": "skeptic",
+  "coreIdea": "A real mobile receipt is a chain-of-custody test: the webview must be authorized, Rust must route the generated command into the installed local plugin, Kotlin or Swift must answer on the target, and the same webview must fail when that authority is removed.",
+  "outline": {
+    "analogies": ["A package label is not a signed delivery receipt.", "A circuit diagram is not proof that current crossed every component.", "Two access badges do not subtract; possessing either badge that grants access is enough."],
+    "anticipatedChallenges": ["Why compilation and source inspection are insufficient.", "Why MockRuntime cannot stand in for a native WebView library.", "Why allow and denial runs require isolated capability selections."]
+  },
+  "explanation": "A real mobile receipt is a chain-of-custody test, not a compilation badge. The main webview calls the Rust-generated graphPlatformPing binding. Tauri first checks whether that exact webview has entity-graph-tauri permission. Rust then handles graph_platform_ping and, on mobile, PluginHandle.run_mobile_plugin sends ping across the platform boundary. Android must answer from the annotated Kotlin Command; iOS must answer from the Swift Invoke function exported through the required initializer. The exact JSON response proves the whole chain. A packed Kotlin or Swift file proves only shipment, just as a package label does not prove delivery. A successful build proves the circuit can be assembled, not that current crossed every component. The denial run must be isolated: Tauri merges permissions from every capability that matches a window, so adding an empty capability beside an allowed one does not subtract authority. A separate build/configuration must omit the allowed permission and capture the rejected promise. Only success, denial, target metadata, visual evidence, and verified hashes close the lane.",
+  "grade": {
+    "overallScore": 0.965,
+    "scores": {"completeness":0.96,"accuracy":0.98,"clarity":0.92,"misconceptionsAbsent":1.0},
+    "passed": true,
+    "gaps": []
+  },
+  "transferProblems": [
+    {
+      "problem": "A main webview belongs to both an allowed capability and an empty capability. Will the empty capability prove denial?",
+      "answer": "No. Matching capability permissions merge; the allow remains effective. The denial run must select only a capability without entity-graph-tauri permission.",
+      "score": 1.0
+    },
+    {
+      "problem": "An APK contains EntityGraphPlugin.kt but no response was captured. Which boundary remains unproven?",
+      "answer": "Runtime registration and the Rust-to-Kotlin command bridge remain unproven; packaging is not execution.",
+      "score": 1.0
+    }
+  ],
+  "transferValidated": true,
+  "formalMasteryClaimed": false,
+  "retentionScheduled": false,
+  "reasonFormalMasteryOpen": "The same-turn research gate passed, but the skill's delayed retention criterion cannot be satisfied in this autonomous execution turn."
+}

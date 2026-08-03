@@ -1,0 +1,82 @@
+{
+  "sources": [
+    {
+      "id": "pnpm-install",
+      "title": "pnpm install",
+      "url": "https://pnpm.io/cli/install",
+      "publisher": "pnpm",
+      "credibility": 95,
+      "keyPoints": [
+        "A frozen install does not update the lockfile.",
+        "It fails when the lockfile is absent or out of sync with manifests."
+      ]
+    },
+    {
+      "id": "cargo-clean",
+      "title": "cargo clean — The Cargo Book",
+      "url": "https://doc.rust-lang.org/cargo/commands/cargo-clean.html",
+      "publisher": "Rust Project",
+      "credibility": 98,
+      "keyPoints": [
+        "Cargo supports an explicit target directory for generated artifacts.",
+        "Locked mode fails if dependency resolution would change Cargo.lock."
+      ]
+    },
+    {
+      "id": "cargo-test",
+      "title": "cargo test — The Cargo Book",
+      "url": "https://doc.rust-lang.org/cargo/commands/cargo-test.html",
+      "publisher": "Rust Project",
+      "credibility": 98,
+      "keyPoints": [
+        "cargo test compiles and executes unit, integration, and documentation tests.",
+        "CARGO_TARGET_DIR or --target-dir isolates generated artifacts."
+      ]
+    },
+    {
+      "id": "tauri-tests",
+      "title": "Tests",
+      "url": "https://v2.tauri.app/develop/tests/",
+      "publisher": "Tauri",
+      "credibility": 96,
+      "keyPoints": [
+        "Tauri mock-runtime tests do not execute native webview libraries.",
+        "Platform runners require their native compilation libraries."
+      ]
+    },
+    {
+      "id": "tauri-mobile-plugin",
+      "title": "Mobile Plugin Development",
+      "url": "https://v2.tauri.app/develop/plugins/develop-mobile/",
+      "publisher": "Tauri",
+      "credibility": 96,
+      "keyPoints": [
+        "Android plugin commands execute in a TauriPlugin-annotated Kotlin class.",
+        "iOS plugin commands execute in a Swift Plugin class through objc entrypoints.",
+        "Rust calls the native implementation through run_mobile_plugin."
+      ]
+    },
+    {
+      "id": "tauri-prerequisites",
+      "title": "Prerequisites",
+      "url": "https://v2.tauri.app/start/prerequisites/",
+      "publisher": "Tauri",
+      "credibility": 96,
+      "keyPoints": [
+        "Android execution requires the Android SDK, NDK, build tools, and Rust Android targets.",
+        "iOS execution is macOS-only and requires full Xcode plus iOS Rust targets."
+      ]
+    },
+    {
+      "id": "local-release-plan",
+      "title": "Prometheus full 3.0 release plan",
+      "url": ".kbd-orchestrator/phases/full-3.0-release/plan.md",
+      "publisher": "Prometheus AGS",
+      "credibility": 100,
+      "keyPoints": [
+        "The change accepts desktop plus a documented Android/iOS device lane.",
+        "The lane must invoke real plugin commands rather than infer execution from compilation."
+      ]
+    }
+  ]
+}

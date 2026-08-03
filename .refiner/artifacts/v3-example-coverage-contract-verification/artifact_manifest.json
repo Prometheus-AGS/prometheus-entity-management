@@ -1,0 +1,27 @@
+{
+  "artifact_type": "content",
+  "variants": [
+    {
+      "name": "archive-qa-report",
+      "file": "dist/archive-qa-report.md",
+      "format": "markdown",
+      "description": "Artifact-refiner QA decision for the v3-example-coverage-contract evidence package."
+    }
+  ],
+  "preview": {
+    "required": false,
+    "runs": []
+  },
+  "validation": {
+    "preview_status": "pass",
+    "has_console_errors": false,
+    "has_request_failures": false,
+    "notes": [
+      "No browser preview is required because this artifact certifies a headless semantic data and coverage contract.",
+      "All thirteen semantic scenarios, sixteen capability mappings, sixteen artifact mappings, and five planned showcase identities validate.",
+      "Runtime and visual evidence remains mandatory under the five downstream showcase owners."
+    ]
+  },
+  "generated_at": "2026-08-01T17:21:29Z"
+}
+

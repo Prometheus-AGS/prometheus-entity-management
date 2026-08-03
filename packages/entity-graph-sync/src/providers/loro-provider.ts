@@ -13,13 +13,14 @@
  *
  * Document layout (one LoroDoc per entity type):
  *   doc.getMap("entities")   // root LoroMap
- *     .getOrCreateContainer(entityId, LoroMap)  // per-entity LoroMap
+ *     .ensureMergeableMap(entityId)             // deterministic per-entity map
  *       .set(fieldName, value)                  // field → value
  *
  * Binary snapshots are exchanged via `doc.export({ mode: "snapshot" })` and
  * `doc.import(bytes)`. Any transport can carry these bytes.
  *
- * `loro-crdt` is an optional peer dependency — nothing loads until `start()`.
+ * `loro-crdt` is a consumer-selectable peer dependency and a mandatory
+ * release-test dependency — nothing loads until `start()`.
  */
 
 import {
@@ -37,13 +38,14 @@ import type { PeerChangeHandler, SyncProvider } from "../types";
 interface LoroMapLike {
   set(key: string, value: unknown): void;
   get(key: string): unknown;
-  getOrCreateContainer(key: string, container: LoroMapLike): LoroMapLike;
+  ensureMergeableMap(key: string): LoroMapLike;
   toJSON(): Record<string, unknown>;
 }
 
 /** A LoroDoc instance. */
 interface LoroDocLike {
   getMap(name: string): LoroMapLike;
+  setPeerId(peerId: number | bigint | `${number}`): void;
   toJSON(): Record<string, unknown>;
   export(opts: { mode: "snapshot" | "update" }): Uint8Array;
   import(bytes: Uint8Array): void;
@@ -52,10 +54,6 @@ interface LoroDocLike {
 
 interface LoroDocConstructor {
   new (): LoroDocLike;
-}
-
-interface LoroMapConstructor {
-  new (): LoroMapLike;
 }
 
 // ---------------------------------------------------------------------------
@@ -89,7 +87,21 @@ export interface LoroChannel {
 
   /** Optional lifecycle hook called when the provider stops. */
   disconnect?(): void;
+
+  /** Optional observable transport state for diagnostics and UI adapters. */
+  getStatus?(): LoroChannelStatus;
+
+  /** Optional subscription to transport-state changes. */
+  onStatusChange?(handler: (status: LoroChannelStatus) => void): () => void;
 }
+
+export type LoroChannelStatus =
+  | "idle"
+  | "connecting"
+  | "connected"
+  | "reconnecting"
+  | "disconnected"
+  | "error";
 
 // ---------------------------------------------------------------------------
 // Options
@@ -103,12 +115,29 @@ export interface LoroProviderOptions {
   channel: LoroChannel;
 
   /**
+   * Optional bundler-visible loader for browser applications. Supply
+   * `() => import("loro-crdt")` when the bundler cannot resolve the provider's
+   * runtime-only peer import. Node consumers can omit this.
+   */
+  loadLoro?: () => Promise<{ LoroDoc: unknown }>;
+
+  /**
    * Whether to automatically register `createLoroMergeStrategy` for each
    * entity type this provider manages. This replaces the graph's default
    * LWW strategy with CRDT-based resolution for those types.
    * @default true
    */
   registerMergeStrategies?: boolean;
+
+  /**
+   * Stable Loro peer identity. Supplying distinct numeric IDs makes concurrent
+   * same-field resolution reproducible: Loro's LWW map tie-break chooses the
+   * higher peer ID when logical counters are equal.
+   */
+  peerId?: number | bigint | `${number}`;
+
+  /** Receives import, export, and lifecycle failures instead of hiding them. */
+  onError?: (error: Error, operation: "start" | "import" | "export") => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -144,7 +173,19 @@ export function createLoroProvider(opts: LoroProviderOptions): SyncProvider {
   let started = false;
 
   let LoroCtor: LoroDocConstructor | null = null;
-  let LoroMapCtor: LoroMapConstructor | null = null;
+
+  function reportError(
+    cause: unknown,
+    operation: "start" | "import" | "export",
+  ): Error {
+    const error =
+      cause instanceof Error
+        ? cause
+        : new Error(`[entity-graph-sync/loro] ${operation} failed: ${String(cause)}`);
+    if (opts.onError) opts.onError(error, operation);
+    else console.error(error);
+    return error;
+  }
 
   // ---------------------------------------------------------------------------
   // Lazy module loading
@@ -152,10 +193,13 @@ export function createLoroProvider(opts: LoroProviderOptions): SyncProvider {
 
   async function loadLoro(): Promise<void> {
     try {
-      // @ts-ignore optional peer dependency
-      const mod = await import(/* @vite-ignore */ "loro-crdt");
+      const mod = opts.loadLoro
+        ? await opts.loadLoro()
+        : await import(/* @vite-ignore */ "loro-crdt");
+      if (typeof mod.LoroDoc !== "function") {
+        throw new TypeError("loro-crdt did not export a LoroDoc constructor");
+      }
       LoroCtor = mod.LoroDoc as unknown as LoroDocConstructor;
-      LoroMapCtor = mod.LoroMap as unknown as LoroMapConstructor;
     } catch (cause) {
       throw new Error(
         "[entity-graph-sync/loro] createLoroProvider requires the optional peer dependency 'loro-crdt'. " +
@@ -174,6 +218,7 @@ export function createLoroProvider(opts: LoroProviderOptions): SyncProvider {
     if (!doc) {
       if (!LoroCtor) throw new Error("[entity-graph-sync/loro] Loro not loaded.");
       doc = new LoroCtor();
+      if (opts.peerId !== undefined) doc.setPeerId(opts.peerId);
       docs.set(type, doc);
       seenIds.set(type, new Set<EntityId>());
     }
@@ -182,12 +227,12 @@ export function createLoroProvider(opts: LoroProviderOptions): SyncProvider {
 
   /**
    * Get or create the per-entity LoroMap for `id` within the type's doc.
-   * Uses `getOrCreateContainer` so repeated calls return the same map.
+   * Uses Loro's deterministic child-container identity so two peers that
+   * create the same entity while offline merge the same map after reconnect.
    */
   function getEntityMap(doc: LoroDocLike, id: EntityId): LoroMapLike {
-    if (!LoroMapCtor) throw new Error("[entity-graph-sync/loro] Loro not loaded.");
     const root = doc.getMap("entities");
-    return root.getOrCreateContainer(id, new LoroMapCtor());
+    return root.ensureMergeableMap(id);
   }
 
   /** Read all entities from a doc given the set of known ids. */
@@ -220,8 +265,8 @@ export function createLoroProvider(opts: LoroProviderOptions): SyncProvider {
     const doc = getOrCreateDoc(type);
     try {
       doc.import(bytes);
-    } catch {
-      // Malformed or already-applied snapshot — skip silently.
+    } catch (cause) {
+      reportError(cause, "import");
       return;
     }
     if (!currentOnPeerChange) return;
@@ -244,29 +289,40 @@ export function createLoroProvider(opts: LoroProviderOptions): SyncProvider {
 
     async start(entityTypes, onPeerChange) {
       if (started) return;
-      started = true;
-      currentOnPeerChange = onPeerChange;
+      try {
+        await loadLoro();
 
-      await loadLoro();
-
-      if (shouldRegisterStrategies) {
-        const strategy = await createLoroMergeStrategy();
-        for (const type of entityTypes) {
-          registerMergeStrategy(type, strategy);
+        if (shouldRegisterStrategies) {
+          const strategy = await createLoroMergeStrategy(opts.loadLoro);
+          for (const type of entityTypes) {
+            registerMergeStrategy(type, strategy);
+          }
         }
-      }
 
-      for (const type of entityTypes) {
-        getOrCreateDoc(type);
-      }
+        for (const type of entityTypes) getOrCreateDoc(type);
 
-      unsubscribeChannel = channel.onReceive(handleIncomingBytes);
-      if (channel.connect) await channel.connect();
+        currentOnPeerChange = onPeerChange;
+        unsubscribeChannel = channel.onReceive(handleIncomingBytes);
+        if (channel.connect) await channel.connect();
+        started = true;
+      } catch (cause) {
+        unsubscribeChannel?.();
+        unsubscribeChannel = null;
+        currentOnPeerChange = null;
+        docs.clear();
+        seenIds.clear();
+        channel.disconnect?.();
+        throw reportError(cause, "start");
+      }
     },
 
     pushLocalChange(type, id, fields) {
       const doc = docs.get(type);
-      if (!doc) return;
+      if (!started || !doc) {
+        throw new Error(
+          `[entity-graph-sync/loro] cannot push ${type}:${id} before the provider manages that type.`,
+        );
+      }
 
       const ids = seenIds.get(type);
       if (ids) ids.add(id);
@@ -281,8 +337,8 @@ export function createLoroProvider(opts: LoroProviderOptions): SyncProvider {
       try {
         const bytes = doc.export({ mode: "snapshot" });
         channel.send(type, bytes);
-      } catch {
-        // Export failed — non-fatal; peer will reconcile on next write.
+      } catch (cause) {
+        throw reportError(cause, "export");
       }
     },
 
@@ -300,91 +356,6 @@ export function createLoroProvider(opts: LoroProviderOptions): SyncProvider {
 
     getDoc(type) {
       return docs.get(type);
-    },
-  };
-}
-
-// ---------------------------------------------------------------------------
-// Built-in channel factory: WebSocket
-// ---------------------------------------------------------------------------
-
-/**
- * Create a `LoroChannel` that exchanges binary snapshots over a WebSocket.
- *
- * The server is expected to relay received messages to all other clients
- * subscribed to the same entity type (room-based relay model).
- *
- * Message framing:
- *   `[1 byte: type-name length N][N bytes: UTF-8 type name][M bytes: loro snapshot]`
- *
- * @example
- * ```ts
- * const channel = createWebSocketLoroChannel("ws://localhost:8080");
- * const provider = createLoroProvider({ channel });
- * ```
- */
-export function createWebSocketLoroChannel(url: string): LoroChannel {
-  let ws: WebSocket | null = null;
-  const listeners: Array<(type: EntityType, bytes: Uint8Array) => void> = [];
-
-  function encodeMessage(type: EntityType, bytes: Uint8Array): ArrayBuffer {
-    const typeBytes = new TextEncoder().encode(type);
-    const out = new Uint8Array(1 + typeBytes.length + bytes.length);
-    out[0] = typeBytes.length;
-    out.set(typeBytes, 1);
-    out.set(bytes, 1 + typeBytes.length);
-    return out.buffer as ArrayBuffer;
-  }
-
-  function decodeMessage(raw: Uint8Array): { type: EntityType; bytes: Uint8Array } | null {
-    if (raw.length < 2) return null;
-    const typeLen = raw[0];
-    if (raw.length < 1 + typeLen) return null;
-    const type = new TextDecoder().decode(raw.slice(1, 1 + typeLen));
-    const bytes = raw.slice(1 + typeLen);
-    return { type, bytes };
-  }
-
-  return {
-    async connect() {
-      await new Promise<void>((resolve, reject) => {
-        ws = new WebSocket(url);
-        ws.binaryType = "arraybuffer";
-        ws.addEventListener("open", () => resolve());
-        ws.addEventListener("error", (ev) =>
-          reject(
-            new Error(
-              `[entity-graph-sync/loro] WebSocket connection failed: ${String(ev)}`,
-            ),
-          ),
-        );
-        ws.addEventListener("message", (ev: MessageEvent<ArrayBuffer>) => {
-          const raw = new Uint8Array(ev.data);
-          const decoded = decodeMessage(raw);
-          if (decoded) {
-            for (const listener of listeners) listener(decoded.type, decoded.bytes);
-          }
-        });
-      });
-    },
-
-    send(type, bytes) {
-      if (!ws || ws.readyState !== WebSocket.OPEN) return;
-      ws.send(encodeMessage(type, bytes));
-    },
-
-    onReceive(handler) {
-      listeners.push(handler);
-      return () => {
-        const idx = listeners.indexOf(handler);
-        if (idx >= 0) listeners.splice(idx, 1);
-      };
-    },
-
-    disconnect() {
-      ws?.close();
-      ws = null;
-      listeners.length = 0;
     },
   };
 }

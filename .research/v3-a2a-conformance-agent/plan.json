@@ -1,0 +1,23 @@
+{
+  "query": "What must task 2 implement and tasks 3-6 prove before @prometheus-ags/entity-graph-a2a can truthfully claim A2A v1 conformance?",
+  "depth": "exhaustive",
+  "subquestions": [
+    "Which A2A protocol patch, JavaScript SDK version, binding, and discovery route are current and stable?",
+    "How does the existing package differ structurally and behaviorally from A2A v1?",
+    "Which task operations, lifecycle states, streaming events, and errors are required by the phase plan?",
+    "Where must authentication and application authorization execute to prevent rejected calls from mutating the entity graph?",
+    "How can A2UI v0.9.1 payloads travel over A2A without overstating the legacy v0.8 extension contract?",
+    "What deterministic reference agent can prove the contract without an API key?",
+    "How should the official TCK be pinned and how should its results be scoped?",
+    "Which legacy imports and methods require an explicit migration boundary?"
+  ],
+  "source_policy": "Prefer the current A2A and A2UI specifications, official SDK and TCK repositories, registry metadata, and direct local code inspection. Treat search summaries and project labels as discovery hints only.",
+  "verification": [
+    "Cross-check registry versions with signed upstream tags and cloned source.",
+    "Compare the local package field-by-field with the A2A v1 data model and operations.",
+    "Separate protocol conformance from Prometheus graph business policy.",
+    "Record the A2UI extension version mismatch as a governed compatibility decision.",
+    "Apply strict sycophancy correction to the implementation recommendation.",
+    "Require a Feynman grade of at least 0.70 and misconceptions_absent of 1.0."
+  ]
+}

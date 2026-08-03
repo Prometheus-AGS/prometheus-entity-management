@@ -1,236 +1,164 @@
-/**
- * agent-card.ts — AgentCard factory for the entity-graph A2A server.
- *
- * Builds the capability manifest that is served at /.well-known/agent.json so
- * that client agents can discover what graph operations this agent supports.
- *
- * Declared capabilities map 1-to-1 with the graph mutations and queries that
- * the default handler (handler.ts) can execute:
- *   - graph/upsert
- *   - graph/replace
- *   - graph/remove
- *   - graph/patch
- *   - graph/query
- *   - graph/snapshot
- */
+import {
+  A2A_PROTOCOL_VERSION,
+  type AgentCard,
+  type AgentExtension,
+  type AgentProvider,
+  type AgentSkill,
+  type SecurityRequirement,
+  type SecurityScheme,
+} from "@a2a-js/sdk";
+import {
+  PROMETHEUS_A2UI_CATALOG_ID,
+  PROMETHEUS_A2UI_EXTENSION_URI,
+  PROMETHEUS_A2UI_MEDIA_TYPE,
+  PROMETHEUS_A2UI_PROTOCOL_VERSION,
+  PROMETHEUS_GRAPH_EXTENSION_URI,
+} from "./types.js";
 
-import type { AgentCard, AgentCapability } from "./types.js";
+export const DEFAULT_AGENT_SKILLS: readonly AgentSkill[] = Object.freeze([
+  {
+    id: "prometheus.entity-graph.mutate",
+    name: "Entity graph mutation",
+    description:
+      "Apply an application-authorized batch of normalized entity upsert, replace, remove, patch, or clear-patch operations.",
+    tags: ["entity-graph", "mutation", "normalized-data"],
+    examples: ["Upsert an allowlisted project entity."],
+    inputModes: ["application/json"],
+    outputModes: ["application/json"],
+    securityRequirements: [],
+  },
+  {
+    id: "prometheus.entity-graph.query",
+    name: "Entity graph query",
+    description:
+      "Read an application-authorized entity, ID-backed list, or graph snapshot from the canonical normalized graph.",
+    tags: ["entity-graph", "query", "normalized-data"],
+    examples: ["Read the allowlisted project with id project-1."],
+    inputModes: ["application/json"],
+    outputModes: ["application/json"],
+    securityRequirements: [],
+  },
+  {
+    id: "prometheus.a2ui.reference-surface",
+    name: "Deterministic A2UI reference surface",
+    description:
+      "Produce repeatable A2UI v0.9.1 artifact messages without a model API key.",
+    tags: ["a2ui", "reference-agent", "deterministic"],
+    examples: ["Show the deterministic Prometheus entity surface."],
+    inputModes: ["text/plain"],
+    outputModes: [PROMETHEUS_A2UI_MEDIA_TYPE],
+    securityRequirements: [],
+  },
+]);
 
-// ── Built-in capability descriptors ──────────────────────────────────────────
-
-const GRAPH_UPSERT_CAPABILITY: AgentCapability = {
-  name: "graph/upsert",
-  description: "Shallow-merge one or more entities into the canonical entity graph.",
-  inputSchema: {
-    type: "object",
-    required: ["mutations"],
-    properties: {
-      mutations: {
-        type: "array",
-        items: {
-          type: "object",
-          required: ["op", "entityType", "id", "data"],
-          properties: {
-            op: { type: "string", const: "upsert" },
-            entityType: { type: "string" },
-            id: { type: "string" },
-            data: { type: "object" },
-          },
-        },
-      },
+export const DEFAULT_AGENT_EXTENSIONS: readonly AgentExtension[] = Object.freeze([
+  {
+    uri: PROMETHEUS_GRAPH_EXTENSION_URI,
+    description:
+      "Prometheus v1 entity-graph requests and results in official A2A structured-data Parts.",
+    required: false,
+    params: { version: "1.0" },
+  },
+  {
+    uri: PROMETHEUS_A2UI_EXTENSION_URI,
+    description:
+      "Prometheus-owned adapter for validated A2UI v0.9.1 messages; this does not impersonate the legacy upstream A2UI v0.8 A2A extension.",
+    required: false,
+    params: {
+      protocolVersion: PROMETHEUS_A2UI_PROTOCOL_VERSION,
+      supportedCatalogIds: [PROMETHEUS_A2UI_CATALOG_ID],
+      mediaType: PROMETHEUS_A2UI_MEDIA_TYPE,
     },
   },
-  outputSchema: {
-    type: "object",
-    properties: {
-      applied: { type: "integer" },
-    },
-  },
-  tags: ["write", "graph"],
-};
-
-const GRAPH_REPLACE_CAPABILITY: AgentCapability = {
-  name: "graph/replace",
-  description: "Replace entity canonical data entirely (no merge — stale keys are dropped).",
-  inputSchema: {
-    type: "object",
-    required: ["mutations"],
-    properties: {
-      mutations: {
-        type: "array",
-        items: {
-          type: "object",
-          required: ["op", "entityType", "id", "data"],
-          properties: {
-            op: { type: "string", const: "replace" },
-            entityType: { type: "string" },
-            id: { type: "string" },
-            data: { type: "object" },
-          },
-        },
-      },
-    },
-  },
-  outputSchema: {
-    type: "object",
-    properties: { applied: { type: "integer" } },
-  },
-  tags: ["write", "graph"],
-};
-
-const GRAPH_REMOVE_CAPABILITY: AgentCapability = {
-  name: "graph/remove",
-  description: "Remove one or more entities from the canonical graph.",
-  inputSchema: {
-    type: "object",
-    required: ["mutations"],
-    properties: {
-      mutations: {
-        type: "array",
-        items: {
-          type: "object",
-          required: ["op", "entityType", "id"],
-          properties: {
-            op: { type: "string", const: "remove" },
-            entityType: { type: "string" },
-            id: { type: "string" },
-          },
-        },
-      },
-    },
-  },
-  outputSchema: {
-    type: "object",
-    properties: { applied: { type: "integer" } },
-  },
-  tags: ["write", "graph"],
-};
-
-const GRAPH_PATCH_CAPABILITY: AgentCapability = {
-  name: "graph/patch",
-  description: "Apply UI-only patch fields to one or more entities (not sent to server).",
-  inputSchema: {
-    type: "object",
-    required: ["mutations"],
-    properties: {
-      mutations: {
-        type: "array",
-        items: {
-          type: "object",
-          required: ["op", "entityType", "id", "patch"],
-          properties: {
-            op: { type: "string", const: "patch" },
-            entityType: { type: "string" },
-            id: { type: "string" },
-            patch: { type: "object" },
-          },
-        },
-      },
-    },
-  },
-  outputSchema: {
-    type: "object",
-    properties: { applied: { type: "integer" } },
-  },
-  tags: ["write", "graph"],
-};
-
-const GRAPH_QUERY_CAPABILITY: AgentCapability = {
-  name: "graph/query",
-  description: "Read one entity or a list from the canonical entity graph.",
-  inputSchema: {
-    type: "object",
-    required: ["entityType"],
-    properties: {
-      entityType: { type: "string" },
-      id: { type: "string" },
-      listKey: { type: "string" },
-      limit: { type: "integer", minimum: 1, maximum: 1000 },
-    },
-  },
-  outputSchema: {
-    type: "object",
-    properties: {
-      entities: { type: "array", items: { type: "object" } },
-      total: { type: "integer" },
-    },
-  },
-  tags: ["read", "graph"],
-};
-
-const GRAPH_SNAPSHOT_CAPABILITY: AgentCapability = {
-  name: "graph/snapshot",
-  description: "Export the current entity graph as a structured snapshot artifact.",
-  inputSchema: {
-    type: "object",
-    properties: {
-      types: {
-        type: "array",
-        items: { type: "string" },
-        description: "Entity types to include. Omit to export all types.",
-      },
-    },
-  },
-  outputSchema: {
-    type: "object",
-    properties: {
-      entities: { type: "object" },
-      exportedAt: { type: "string" },
-    },
-  },
-  tags: ["read", "graph"],
-};
-
-/** All capabilities built into the default entity-graph A2A handler. */
-export const DEFAULT_CAPABILITIES: AgentCapability[] = [
-  GRAPH_UPSERT_CAPABILITY,
-  GRAPH_REPLACE_CAPABILITY,
-  GRAPH_REMOVE_CAPABILITY,
-  GRAPH_PATCH_CAPABILITY,
-  GRAPH_QUERY_CAPABILITY,
-  GRAPH_SNAPSHOT_CAPABILITY,
-];
-
-// ── Factory ───────────────────────────────────────────────────────────────────
+]);
 
 export interface BuildAgentCardOptions {
+  /** Absolute JSON-RPC endpoint URL advertised to clients. */
+  url: string;
   name?: string;
   version?: string;
   description?: string;
-  /** Base URL where the A2A server is reachable. Must be set for real deployments. */
-  url: string;
-  /** Additional capabilities beyond the built-in graph ones. */
-  extraCapabilities?: AgentCapability[];
-  /** Provider metadata. */
-  provider?: AgentCard["provider"];
-  /** Auth schemes. Defaults to [{ type: "none" }]. */
-  auth?: AgentCard["auth"];
-  tags?: string[];
+  documentationUrl?: string;
+  iconUrl?: string;
+  provider?: AgentProvider;
+  skills?: readonly AgentSkill[];
+  extensions?: readonly AgentExtension[];
+  /** Enable an HTTP Bearer declaration without embedding credentials. */
+  authentication?: "none" | "bearer";
+  bearerFormat?: string;
+  securitySchemes?: Readonly<Record<string, SecurityScheme>>;
+  securityRequirements?: readonly SecurityRequirement[];
 }
 
-/**
- * Build an AgentCard for the entity-graph A2A server.
- *
- * @example
- * ```ts
- * const card = buildAgentCard({ url: "https://api.example.com/a2a" });
- * // Serve at GET /.well-known/agent.json
- * ```
- */
-export function buildAgentCard(opts: BuildAgentCardOptions): AgentCard {
+/** Build an official A2A v1 AgentCard that advertises JSON-RPC only. */
+export function buildAgentCard(options: BuildAgentCardOptions): AgentCard {
+  const endpoint = new URL(options.url);
+  if (endpoint.protocol !== "https:" && endpoint.hostname !== "localhost" && endpoint.hostname !== "127.0.0.1") {
+    throw new Error("A2A AgentCard endpoints must use HTTPS outside local development.");
+  }
+
+  const authentication = options.authentication ?? "none";
+  const securitySchemes: Record<string, SecurityScheme> = {
+    ...(options.securitySchemes ?? {}),
+  };
+  const securityRequirements = [...(options.securityRequirements ?? [])];
+  if (authentication === "bearer") {
+    securitySchemes.bearer = {
+      scheme: {
+        $case: "httpAuthSecurityScheme",
+        value: {
+          description: "Bearer credential verified by the host application.",
+          scheme: "Bearer",
+          bearerFormat: options.bearerFormat ?? "JWT",
+        },
+      },
+    };
+    if (securityRequirements.length === 0) {
+      securityRequirements.push({ schemes: { bearer: { list: [] } } });
+    }
+  }
+
+  const skills = (options.skills ?? DEFAULT_AGENT_SKILLS).map((skill) => ({
+    ...skill,
+    securityRequirements:
+      skill.securityRequirements.length > 0
+        ? [...skill.securityRequirements]
+        : [...securityRequirements],
+  }));
+
   return {
-    specVersion: "1.0",
-    name: opts.name ?? "Entity Graph Agent",
-    version: opts.version ?? "3.0.0-alpha.0",
+    name: options.name ?? "Prometheus Entity Graph Agent",
     description:
-      opts.description ??
-      "A2A server exposing normalized entity graph read/write operations. " +
-        "Clients can upsert, replace, remove, patch, and query entities " +
-        "in the Prometheus entity graph over the A2A protocol.",
-    url: opts.url,
-    auth: opts.auth ?? [{ type: "none" }],
-    capabilities: [...DEFAULT_CAPABILITIES, ...(opts.extraCapabilities ?? [])],
-    provider: opts.provider,
-    tags: opts.tags ?? ["entity-graph", "data", "storage"],
+      options.description ??
+      "A policy-gated A2A v1 JSON-RPC agent for the Prometheus normalized entity graph and deterministic A2UI artifacts.",
+    supportedInterfaces: [
+      {
+        url: endpoint.toString(),
+        protocolBinding: "JSONRPC",
+        protocolVersion: A2A_PROTOCOL_VERSION,
+        tenant: "",
+      },
+    ],
+    provider: options.provider ?? {
+      organization: "Prometheus AGS",
+      url: "https://github.com/prometheus-ags",
+    },
+    version: options.version ?? "3.0.0-rc.1",
+    documentationUrl:
+      options.documentationUrl ??
+      "https://github.com/prometheus-ags/prometheus-entity-management/tree/main/packages/entity-graph-a2a",
+    capabilities: {
+      streaming: true,
+      pushNotifications: false,
+      extensions: [...(options.extensions ?? DEFAULT_AGENT_EXTENSIONS)],
+      extendedAgentCard: false,
+    },
+    securitySchemes,
+    securityRequirements,
+    defaultInputModes: ["text/plain", "application/json"],
+    defaultOutputModes: ["text/plain", "application/json", PROMETHEUS_A2UI_MEDIA_TYPE],
+    skills,
+    signatures: [],
+    iconUrl: options.iconUrl,
   };
 }

@@ -1,22 +1,30 @@
 {
   "name": "@prometheus-ags/entity-graph-core",
-  "version": "3.0.0-alpha.0",
+  "version": "3.0.0-rc.1",
   "description": "Framework-agnostic normalized entity graph store (zero React) — the core of the Prometheus entity-graph ecosystem.",
+  "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     }
   },
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
   ],
   "publishConfig": {
     "access": "public"
@@ -43,8 +51,8 @@
     }
   },
   "dependencies": {
-    "immer": ">=11",
-    "zustand": ">=5"
+    "immer": "^11.1.15",
+    "zustand": "^5.0.14"
   },
   "keywords": [
     "entity-graph",
@@ -52,5 +60,20 @@
     "state-management",
     "zustand",
     "framework-agnostic"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prometheus-ags/prometheus-entity-management.git",
+    "directory": "packages/entity-graph-core"
+  },
+  "homepage": "https://github.com/prometheus-ags/prometheus-entity-management/tree/main/packages/entity-graph-core#readme",
+  "bugs": {
+    "url": "https://github.com/prometheus-ags/prometheus-entity-management/issues"
+  },
+  "engines": {
+    "node": "^22.14.0 || ^24.0.0 || >=26.0.0"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.4"
+  }
 }

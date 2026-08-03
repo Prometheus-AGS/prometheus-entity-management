@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 2,
+  "change": "v3-release-pipeline-rc",
+  "recordedAt": "2026-08-02T14:47:22Z",
+  "candidateCommit": "eb3c9802da5ff10ad6db135fed761bd23ea80b3f",
+  "workspaceState": "dirty-change-candidate",
+  "verdict": "pass-change-certified-archive-ready-publication-blocked",
+  "dimensions": {
+    "implementation": "complete",
+    "evidence": "complete",
+    "changeCertification": "pass",
+    "openSpecArchive": "ready",
+    "fullReleaseCertification": "pending",
+    "publication": "blocked"
+  },
+  "acceptance": {
+    "declaredArtifactsOnly": "pass-16-artifacts-private-root-denied",
+    "dependencyOrder": "pass-12-npm-packages",
+    "changesetsReleaseNotes": "pass-workflow-contract",
+    "provenance": "pass-workflow-contract-live-attestation-unproven",
+    "latestProtection": "pass-no-mutation",
+    "partialPublishRecovery": "pass-incremental-failure-journal-authority-before-read-live-npm-field-closed-rehearsal-bundle-relative-matching-skip-absent-stage-id-sri-conflict-block",
+    "rcRehearsal": "pass-no-registry-mutation",
+    "packedConsumers": "pass-esm-cjs-nodenext-node16-bundler",
+    "nativeDispositions": "pass-explicit-dry-run-or-embedded",
+    "allPlanCriteriaHaveReproducibleEvidence": true,
+    "mandatorySkippedLanes": 0
+  },
+  "authoritativeEvidence": {
+    "releaseReport": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-3-verification.json",
+    "packedConsumers": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-3-packed-consumers.json",
+    "cleanGates": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-final-gates.json",
+    "functionalVisual": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-3-certification.svg",
+    "stateVisual": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-release-disposition.svg",
+    "task6Bdd": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-bdd.md",
+    "visualValidation": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-visual-validation.md",
+    "artifactRefinerQa": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/artifact-refiner-qa.md",
+    "adversarialReview": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/adversarial-review.md",
+    "kbdControlPlaneReconciliation": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-kbd-control-plane-reconciliation.md",
+    "research": ".research/v3-release-pipeline-rc/",
+    "releaseGuide": "release/release-candidate-pipeline.md",
+    "skillGuide": "prometheus-entity-skills/_shared/references/release-candidate-pipeline.md"
+  },
+  "cleanGates": {
+    "fullCi": "pass-87-scenarios-414-steps-6-hooks",
+    "productionAudit": "pass-325-dependencies-0-blocking-advisories",
+    "dartFlutter": "pass-flutter-3.44.8-70-tests-0-warning-pub-dry-run",
+    "tauriRust": "pass-js-host-packed-mobile-and-6-locked-cargo-tests",
+    "openSpecStrict": "pass",
+    "diffCheck": "pass"
+  },
+  "bdd": {
+    "feature": "tests/features/release/v3-release-pipeline-rc.feature",
+    "unitTests": 24,
+    "scenarios": 13,
+    "steps": 57,
+    "hooks": 6,
+    "status": "pass",
+    "redReceipts": [
+      ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-bdd-red.md",
+      ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-adversarial-bdd-red.md",
+      ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-rc-version-bdd-red.md"
+      ,
+      ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-pnpm-forwarding-bdd-red.md",
+      ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-staging-evidence-bdd-red.md",
+      ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-stage-authority-bdd-red.md",
+      ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-npm-view-shape-bdd-red.md",
+      ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-partial-journal-bdd-red.md",
+      ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-npm-absence-shape-bdd-red.md"
+    ]
+  },
+  "coverage": {
+    "status": "in-progress",
+    "releaseCertified": false,
+    "showcasesImplemented": 0,
+    "showcasesPlanned": 5,
+    "documentationSite": "planned"
+  },
+  "research": {
+    "package": ".research/v3-release-pipeline-rc",
+    "depth": "deep-10-stage-plus-task6-primary-source-refresh",
+    "confidence": 0.94,
+    "task6FeynmanGrade": 0.97,
+    "misconceptionsAbsent": 1.0,
+    "transferScores": [1.0, 1.0],
+    "sycophancyScore": 0.0,
+    "formalMasteryClaimed": false
+  },
+  "visual": {
+    "inspectedAtOriginalResolution": true,
+    "dimensions": "1400x960",
+    "svgSha256": "9c0de782426f848212b50d5162d553cd572e4ade4d46e65027aaafb400379f31",
+    "pngSha256": "9eba2b3c98da09bb0000c3f5d32d25db682a618142f8665422d57fea787f49fa",
+    "minimumContrastRatio": 8.9,
+    "xmlValid": true,
+    "accessibleNameAndDescription": true,
+    "clippingOrOverlap": false
+  },
+  "artifactRefiner": {
+    "artifact": "v3-release-pipeline-rc-final-evidence",
+    "refinementId": "8ca76db6-4e5e-4a5d-a367-f1cbb734e219",
+    "cycle": 3,
+    "priorCycleId": "c66c87c0-e62f-42f1-b02f-eee0d113968c",
+    "iteration": 1,
+    "blockingConstraints": 6,
+    "blockingViolations": 0,
+    "convergence": "terminate",
+    "checkpoint": "5d78780b",
+    "historyRoot": ".refiner/history/v3-release-pipeline-rc-final-evidence",
+    "status": "pass"
+  },
+  "adversarialReview": {
+    "mode": "diff",
+    "verdict": "PASS",
+    "critical": 0,
+    "warnings": 2,
+    "suggestions": 0,
+    "judgeModel": "kbd-critic",
+    "producerModel": "gpt-5",
+    "isolationMode": "rest-gateway:http://localhost:8181/v1",
+    "crossModelCheck": "verified-distinct",
+    "sycophancyScore": 0.0,
+    "status": "pass-with-retained-warnings"
+  },
+  "externalAuthority": {
+    "npmTrustedPublisher": "unproven",
+    "githubNpmRcEnvironment": "unproven",
+    "githubAttestationRun": "unproven",
+    "pubDevPublisher": "unproven",
+    "cratesIoOwnership": "unproven"
+  },
+  "reactPreviewAcceleration": {
+    "priorityOrder": [
+      "v3-vite-react19-example",
+      "v3-nextjs-app-router-example"
+    ],
+    "currentReadiness": "local-numbered-rc-artifacts-and-full-ci-ready-not-publication-ready",
+    "minimumArtifactScope": [
+      "@prometheus-ags/entity-graph-core",
+      "@prometheus-ags/prometheus-entity-management"
+    ],
+    "currentFixedGroup": "all-12-npm-packages",
+    "currentVersion": "3.0.0-rc.1",
+    "requiredVersionPattern": "3.0.0-rc.N",
+    "requiredChannel": "next",
+    "latestMutationAllowed": false,
+    "contractAmendmentRequired": true,
+    "immutableCommittedShaRequired": true,
+    "externalAuthorityRequired": true,
+    "authorizedByThisChange": false
+  },
+  "unresolvedLimits": [
+    { "limit": "React 19 and Vite 8 full showcase is pending.", "ownerChange": "v3-vite-react19-example" },
+    { "limit": "Next.js App Router SSR/hydration showcase is pending.", "ownerChange": "v3-nextjs-app-router-example" },
+    { "limit": "Agentic A2UI full showcase is pending.", "ownerChange": "v3-agentic-a2ui-example" },
+    { "limit": "Flutter/Riverpod/A2UI application and platform evidence is pending.", "ownerChange": "v3-flutter-riverpod-a2ui-example" },
+    { "limit": "Universal Tauri desktop/mobile showcase is pending.", "ownerChange": "v3-tauri-universal-example" },
+    { "limit": "Portable Flint contract conformance is pending.", "ownerChange": "v3-flint-portable-contracts" },
+    { "limit": "Complete synchronized skills ecosystem is pending.", "ownerChange": "v3-skills-ecosystem" },
+    { "limit": "Prometheus docs foundation and brand system is pending.", "ownerChange": "v3-docs-foundation-brand" },
+    { "limit": "Generated multi-language API reference is pending.", "ownerChange": "v3-docs-api-reference" },
+    { "limit": "Concept and package documentation is pending.", "ownerChange": "v3-docs-concepts-packages" },
+    { "limit": "Example and integration tutorials are pending.", "ownerChange": "v3-docs-examples-integrations" },
+    { "limit": "Migration, operations, security, and troubleshooting documentation is pending.", "ownerChange": "v3-docs-operations-migration" },
+    { "limit": "Protected GitHub Pages deployment is pending.", "ownerChange": "v3-docs-github-pages" },
+    { "limit": "Immutable cross-ecosystem 3.0 certification bundle is pending.", "ownerChange": "v3-release-certification" },
+    { "limit": "Registry publication and stable promotion require external authority and approval.", "ownerChange": "v3-stable-publication" }
+  ],
+  "openSpec": {
+    "verifyReady": true,
+    "archiveReady": true,
+    "reason": "Every bounded plan criterion has current direct evidence and the final independent-state BDD contract passes."
+  },
+  "orchestrationReconciliation": {
+    "canonicalTaskEventCommitted": false,
+    "compatibilityProjectionAdvanced": false,
+    "signedJournalMutated": false,
+    "status": "pending-kbd-control-plane-signature-compatibility"
+  },
+  "registryMutation": false,
+  "publicationAuthorized": false,
+  "changeCertified": true,
+  "fullReleaseCertified": false
+}

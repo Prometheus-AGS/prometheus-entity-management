@@ -1,0 +1,20 @@
+{
+  "concept": "archive readiness versus publication authority",
+  "audience": "skeptic",
+  "transferProblems": [
+    {
+      "problem": "The GitHub workflow has id-token write and actions/attest, but npm has no trusted-publisher relationship. Which state may advance?",
+      "answer": "The bounded RC mechanism may become archive-ready when its tasks and evidence pass. npm authority and stable publication remain blocked because workflow intent does not create package-side authorization or an attestation.",
+      "score": 1.0
+    },
+    {
+      "problem": "npm staging succeeds, but Pub.dev publisher configuration is absent. May the project claim full stable 3.0?",
+      "answer": "No. Record the new npm lane evidence, but keep cross-ecosystem certification and stable publication blocked until Pub.dev authority, every other mandatory lane, the immutable evidence bundle, and explicit release approval are present.",
+      "score": 1.0
+    }
+  ],
+  "retentionScheduled": true,
+  "retentionDueAfter": "2026-08-03T12:40:00Z",
+  "masteryStatus": "grade-and-transfer-pass-retention-scheduled",
+  "formalMasteryClaimed": false
+}

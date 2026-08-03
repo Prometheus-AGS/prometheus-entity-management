@@ -1,0 +1,31 @@
+{
+  "refinement_id": "9b2faba0-0c52-416d-aa09-6f4b4c0234db",
+  "artifact_name": "v3-vite-react19-example-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-03T08:02:27Z",
+  "updated_at": "2026-08-03T08:02:27Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Re-evaluate the claimed Loro first-sync defect against final source and targeted execution.",
+    "Avoid speculative code when the reported failure scenario is already handled."
+  ],
+  "constraints": [
+    {"id": "acceptance-direct-evidence", "severity": "blocking", "status": "satisfied"},
+    {"id": "clean-and-packed-boundaries-distinct", "severity": "blocking", "status": "satisfied"},
+    {"id": "scenario-surface-complete", "severity": "blocking", "status": "satisfied"},
+    {"id": "visual-and-hash-integrity", "severity": "blocking", "status": "satisfied"},
+    {"id": "ledgers-and-evidence-synchronized", "severity": "blocking", "status": "satisfied"},
+    {"id": "limits-and-broader-blockers-explicit", "severity": "blocking", "status": "satisfied"},
+    {"id": "no-publication-overclaim", "severity": "blocking", "status": "satisfied"}
+  ],
+  "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {"iteration": 1, "phases_completed": ["specify", "plan", "execute", "reflect", "persist"], "constraints_satisfied": 7, "constraints_total": 7, "decision": "terminate", "timestamp": "2026-08-03T08:02:27Z"}
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [],
+  "prior_cycle_id": "12f1c75a-38d7-4c59-ab6f-2eda1e5f30da"
+}

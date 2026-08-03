@@ -1,0 +1,51 @@
+{
+  "concept_id": "stable-v3-release-proof-system",
+  "sources": [
+    {
+      "source_ref": "release-integrity",
+      "content_summary": "Stable publication depends on loader-correct tarballs, explicit monorepo version policy, OIDC publication, provenance, and a non-latest rehearsal.",
+      "key_points": [
+        "Test packed tarballs through import, require, and TypeScript consumers.",
+        "Trusted publishing has explicit runner, Node, npm, and permission requirements.",
+        "Fixed and linked Changesets policies produce different release behavior.",
+        "An RC rehearsal must not mutate the stable dist-tag."
+      ],
+      "misconceptions": [
+        "A source build proves the npm package works.",
+        "Publishing to latest is an acceptable release rehearsal.",
+        "Fixed and linked package groups are interchangeable."
+      ]
+    },
+    {
+      "source_ref": "runtime-boundaries",
+      "content_summary": "React/Next, A2UI/A2A, Flutter/Riverpod, and Tauri each have ownership and maturity boundaries that the examples must expose rather than hide.",
+      "key_points": [
+        "Next server requests require isolated graph instances and serializable hydration data.",
+        "A2UI v0.9.1 is the stable protocol target; action authorization remains application-owned.",
+        "Flutter genui remains experimental even when protocol fixtures pass.",
+        "Tauri shared-code certification is not equivalent to signed store distribution."
+      ],
+      "misconceptions": [
+        "Official A2UI rendering authorizes entity mutations.",
+        "A working genui demo makes genui a stable dependency.",
+        "A Tauri desktop build proves mobile store readiness.",
+        "A process-global graph is safe for concurrent Next.js requests."
+      ]
+    },
+    {
+      "source_ref": "evidence-product",
+      "content_summary": "BDD, deterministic visual evidence, and branded documentation form one traceable proof product tied to an immutable candidate SHA.",
+      "key_points": [
+        "Each stable claim maps from specification to Gherkin to executable result and evidence.",
+        "Visual baselines require a pinned rendering environment.",
+        "Traces diagnose behavior; video and screenshots are review receipts, not assertions.",
+        "GitHub Pages deployment should use a least-privilege artifact workflow."
+      ],
+      "misconceptions": [
+        "A screenshot alone certifies behavior.",
+        "Retrying a flaky BDD scenario until green is certification.",
+        "A logo on the default Docusaurus theme constitutes complete branding."
+      ]
+    }
+  ]
+}

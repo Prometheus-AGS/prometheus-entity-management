@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/release-candidate.mjs",
+      "line": 68,
+      "claim": "The stage CLI only writes the staging recovery journal after the entire mutating stage operation succeeds, so a partial staging failure loses the journal needed for recovery.",
+      "evidence": "Acceptance requires recovery from partial publication, and the workflow step is named \"Preserve the staging recovery journal\"; however `const report = await stageReleaseCandidate(manifest, candidates, adapters); await writeJson(output, report);` writes the report only after `stageReleaseCandidate` returns. In `scripts/release-candidate-pipeline.mjs`, `stageReleaseCandidate` can throw after mutating work has begun, e.g. from `validateStagedNpmResult(...)`, `adapters.stageNpm(...)`, `classifyRegistryVersion(...)`, or the final `assertProtectedTagsUnchanged(before, after)`, and no partial journal is returned or persisted.",
+      "suggested_fix": "Persist the journal incrementally after each state transition, or make `stageReleaseCandidate` throw an error carrying the current journal/staged set and have the CLI write a failure recovery report in a `catch`/`finally` before exiting nonzero."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

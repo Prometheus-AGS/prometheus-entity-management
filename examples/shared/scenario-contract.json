@@ -1,0 +1,255 @@
+{
+  "$schema": "./scenario-contract.schema.json",
+  "schemaVersion": "1.0.0",
+  "contractId": "prometheus.entity-management.shared-example",
+  "version": "1.0.0",
+  "fixedClock": "2030-01-15T12:00:00.000Z",
+  "tenant": {
+    "id": "tenant-prometheus-demo",
+    "name": "Prometheus Demo Workspace"
+  },
+  "domain": {
+    "entityTypes": [
+      {
+        "id": "User",
+        "idField": "id",
+        "fields": ["id", "tenantId", "name", "email", "role", "status"],
+        "relationships": []
+      },
+      {
+        "id": "Project",
+        "idField": "id",
+        "fields": ["id", "tenantId", "name", "status", "ownerId", "memberIds", "updatedAt"],
+        "relationships": [
+          { "field": "ownerId", "target": "User", "cardinality": "one", "onChange": "invalidate" },
+          { "field": "memberIds", "target": "User", "cardinality": "many", "onChange": "invalidate" }
+        ]
+      },
+      {
+        "id": "Task",
+        "idField": "id",
+        "fields": ["id", "tenantId", "projectId", "assigneeId", "title", "status", "priority", "version", "updatedAt"],
+        "relationships": [
+          { "field": "projectId", "target": "Project", "cardinality": "one", "onChange": "invalidate" },
+          { "field": "assigneeId", "target": "User", "cardinality": "one", "onChange": "invalidate" }
+        ]
+      },
+      {
+        "id": "Comment",
+        "idField": "id",
+        "fields": ["id", "tenantId", "taskId", "authorId", "body", "createdAt"],
+        "relationships": [
+          { "field": "taskId", "target": "Task", "cardinality": "one", "onChange": "cascade-delete" },
+          { "field": "authorId", "target": "User", "cardinality": "one", "onChange": "invalidate" }
+        ]
+      },
+      {
+        "id": "Activity",
+        "idField": "id",
+        "fields": ["id", "tenantId", "actorId", "subjectType", "subjectId", "action", "createdAt"],
+        "relationships": [
+          { "field": "actorId", "target": "User", "cardinality": "one", "onChange": "retain-audit" }
+        ]
+      }
+    ],
+    "seed": {
+      "User": [
+        { "id": "user-ada", "tenantId": "tenant-prometheus-demo", "name": "Ada Example", "email": "ada@example.invalid", "role": "admin", "status": "active" },
+        { "id": "user-grace", "tenantId": "tenant-prometheus-demo", "name": "Grace Example", "email": "grace@example.invalid", "role": "member", "status": "active" }
+      ],
+      "Project": [
+        { "id": "project-atlas", "tenantId": "tenant-prometheus-demo", "name": "Atlas Migration", "status": "active", "ownerId": "user-ada", "memberIds": ["user-ada", "user-grace"], "updatedAt": "2030-01-15T11:00:00.000Z" },
+        { "id": "project-hermes", "tenantId": "tenant-prometheus-demo", "name": "Hermes Launch", "status": "planning", "ownerId": "user-grace", "memberIds": ["user-grace"], "updatedAt": "2030-01-15T10:00:00.000Z" }
+      ],
+      "Task": [
+        { "id": "task-schema", "tenantId": "tenant-prometheus-demo", "projectId": "project-atlas", "assigneeId": "user-ada", "title": "Define shared schema", "status": "in-progress", "priority": "high", "version": 1, "updatedAt": "2030-01-15T11:15:00.000Z" },
+        { "id": "task-sync", "tenantId": "tenant-prometheus-demo", "projectId": "project-atlas", "assigneeId": "user-grace", "title": "Prove offline convergence", "status": "todo", "priority": "critical", "version": 1, "updatedAt": "2030-01-15T11:20:00.000Z" },
+        { "id": "task-docs", "tenantId": "tenant-prometheus-demo", "projectId": "project-hermes", "assigneeId": "user-grace", "title": "Publish migration guide", "status": "todo", "priority": "medium", "version": 1, "updatedAt": "2030-01-15T11:25:00.000Z" }
+      ],
+      "Comment": [
+        { "id": "comment-001", "tenantId": "tenant-prometheus-demo", "taskId": "task-schema", "authorId": "user-grace", "body": "Keep IDs deterministic.", "createdAt": "2030-01-15T11:30:00.000Z" }
+      ],
+      "Activity": [
+        { "id": "activity-001", "tenantId": "tenant-prometheus-demo", "actorId": "user-grace", "subjectType": "Comment", "subjectId": "comment-001", "action": "comment.created", "createdAt": "2030-01-15T11:30:00.000Z" }
+      ]
+    },
+    "lists": {
+      "projects:active": ["project-atlas"],
+      "tasks:project-atlas": ["task-schema", "task-sync"],
+      "tasks:todo": ["task-sync", "task-docs"],
+      "comments:task-schema": ["comment-001"],
+      "activity:recent": ["activity-001"]
+    }
+  },
+  "security": {
+    "syntheticData": true,
+    "externalCredentials": false,
+    "tenantBoundary": "Every entity and transport request carries tenant-prometheus-demo; mismatches fail before graph mutation.",
+    "actionPolicy": "Read and task.update are allowlisted; destructive actions require explicit approval and unauthorized actions fail closed.",
+    "secretPolicy": "Fixtures, logs, screenshots, traces, videos, and evidence manifests contain no credentials or product data."
+  },
+  "transports": [
+    {
+      "id": "transport.rest",
+      "kind": "rest",
+      "deterministic": true,
+      "externalCredentials": false,
+      "fixture": { "request": "GET /tasks?projectId=project-atlas", "status": 200, "entityIds": ["task-schema", "task-sync"] }
+    },
+    {
+      "id": "transport.graphql",
+      "kind": "graphql",
+      "deterministic": true,
+      "externalCredentials": false,
+      "fixture": { "operation": "TasksByProject", "variables": { "projectId": "project-atlas" }, "entityIds": ["task-schema", "task-sync"] }
+    },
+    {
+      "id": "transport.realtime",
+      "kind": "realtime",
+      "deterministic": true,
+      "externalCredentials": false,
+      "fixture": { "batchWindowMs": 16, "events": ["task-sync:v2", "task-sync:v3", "comment-002:v1"] }
+    },
+    {
+      "id": "transport.offline",
+      "kind": "offline",
+      "deterministic": true,
+      "externalCredentials": false,
+      "fixture": { "clients": ["client-a", "client-b"], "merge": "field-level deterministic", "reload": true }
+    },
+    {
+      "id": "transport.a2a",
+      "kind": "a2a",
+      "deterministic": true,
+      "externalCredentials": false,
+      "fixture": { "taskId": "agent-task-001", "states": ["submitted", "working", "completed"], "modelKeyRequired": false }
+    },
+    {
+      "id": "transport.a2ui",
+      "kind": "a2ui",
+      "deterministic": true,
+      "externalCredentials": false,
+      "fixture": { "protocol": "0.9.1", "surfaceId": "surface-task-sync", "allowedAction": "task.update", "deniedAction": "task.delete" }
+    },
+    {
+      "id": "transport.ssr",
+      "kind": "ssr",
+      "deterministic": true,
+      "externalCredentials": false,
+      "fixture": { "requests": ["request-atlas", "request-hermes"], "perRequestGraph": true, "duplicateFetches": 0 }
+    },
+    {
+      "id": "transport.platform",
+      "kind": "platform",
+      "deterministic": true,
+      "externalCredentials": false,
+      "fixture": { "hosts": ["browser", "desktop", "mobile"], "commands": ["loadGraph", "saveGraph"], "canonicalGraphOwner": "application" }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "example.graph.normalized-cross-view",
+      "title": "One canonical entity update reaches ID-backed list and detail views",
+      "capabilityIds": ["graph.normalized-identity", "framework.binding-singleton"],
+      "transportIds": [],
+      "steps": ["Seed the normalized graph and ID-only lists.", "Update project-atlas through the detail path.", "Read project-atlas through the active-project list join."],
+      "expected": { "canonicalCopies": 1, "listEntriesAreIds": true, "detailName": "Atlas 3.0", "listName": "Atlas 3.0" }
+    },
+    {
+      "id": "example.crud.optimistic-confirm",
+      "title": "Optimistic task update confirms into canonical state",
+      "capabilityIds": ["graph.crud-optimistic", "graph.local-patches"],
+      "transportIds": ["transport.rest"],
+      "steps": ["Patch task-schema status to done without changing canonical data.", "Confirm the server mutation.", "Clear the local patch."],
+      "expected": { "duringPatch": "done", "canonicalDuringPatch": "in-progress", "afterConfirm": "done", "patchCleared": true }
+    },
+    {
+      "id": "example.crud.optimistic-rollback",
+      "title": "Rejected optimistic task update rolls back without graph corruption",
+      "capabilityIds": ["graph.crud-optimistic", "graph.local-patches"],
+      "transportIds": ["transport.rest"],
+      "steps": ["Patch task-sync status to done.", "Reject the mutation deterministically.", "Clear the patch and read canonical state."],
+      "expected": { "duringPatch": "done", "afterRollback": "todo", "canonicalVersion": 1, "patchCleared": true }
+    },
+    {
+      "id": "example.relationship.cascade-invalidation",
+      "title": "Foreign-key change invalidates old and new relationship views",
+      "capabilityIds": ["graph.relationship-invalidation"],
+      "transportIds": ["transport.rest"],
+      "steps": ["Move task-schema from project-atlas to project-hermes.", "Compare previous and next foreign keys.", "Mark both project task lists and related projects stale."],
+      "expected": { "projectId": "project-hermes", "invalidated": ["project:project-atlas", "project:project-hermes", "tasks:project-atlas", "tasks:project-hermes"] }
+    },
+    {
+      "id": "example.view.local-remote-hybrid",
+      "title": "Local, remote, and hybrid views share one filter specification",
+      "capabilityIds": ["graph.views-completeness"],
+      "transportIds": ["transport.rest", "transport.graphql"],
+      "steps": ["Evaluate todo tasks locally.", "Compile the same filter for remote transport.", "Return local IDs immediately in hybrid mode and reconcile the remote IDs."],
+      "expected": { "localIds": ["task-docs", "task-sync"], "remoteField": "status", "remoteValue": "todo", "hybridImmediateIds": ["task-docs", "task-sync"], "hybridFinalIds": ["task-docs", "task-sync"] }
+    },
+    {
+      "id": "example.transport.rest-graphql-equivalence",
+      "title": "REST and GraphQL normalize the same transport result",
+      "capabilityIds": ["transport.rest-graphql"],
+      "transportIds": ["transport.rest", "transport.graphql"],
+      "steps": ["Execute the fixed REST task query.", "Execute the fixed GraphQL task query.", "Normalize both responses into the graph and compare ordered IDs."],
+      "expected": { "restIds": ["task-schema", "task-sync"], "graphqlIds": ["task-schema", "task-sync"], "sameCanonicalEntities": true }
+    },
+    {
+      "id": "example.realtime.coalesced-cross-view",
+      "title": "Realtime updates coalesce before one cross-view graph write",
+      "capabilityIds": ["graph.realtime-batching"],
+      "transportIds": ["transport.realtime"],
+      "steps": ["Queue two updates for task-sync and one comment insert in one window.", "Coalesce by entity identity.", "Flush once and read the task through every joined view."],
+      "expected": { "queuedEvents": 3, "coalescedEntities": 2, "taskVersion": 3, "graphWrites": 1, "listStatus": "in-progress" }
+    },
+    {
+      "id": "example.offline.persistence-convergence",
+      "title": "Two offline clients converge and reload the persisted graph",
+      "capabilityIds": ["graph.offline-persistence-sync"],
+      "transportIds": ["transport.offline"],
+      "steps": ["Persist the seeded graph on both clients.", "Change task-sync title on client-a and priority on client-b while offline.", "Reconnect, merge field changes, persist, and reload."],
+      "expected": { "title": "Prove deterministic convergence", "priority": "high", "convergedClients": 2, "reloadMatches": true, "conflicts": 0 }
+    },
+    {
+      "id": "example.protocol.a2a-a2ui-policy",
+      "title": "A2A task output renders A2UI and actions cross policy",
+      "capabilityIds": ["protocol.a2a-a2ui"],
+      "transportIds": ["transport.a2a", "transport.a2ui"],
+      "steps": ["Run the keyless A2A task through submitted, working, and completed.", "Render the fixed A2UI 0.9.1 surface.", "Approve task.update and deny task.delete and malformed action payloads."],
+      "expected": { "a2aFinalState": "completed", "surfaceId": "surface-task-sync", "approvedMutation": "task.update", "deniedMutation": "task.delete", "malformedRejected": true, "modelKeyRequired": false }
+    },
+    {
+      "id": "example.runtime.ssr-isolation-hydration",
+      "title": "Concurrent SSR requests isolate and hydrate graph state",
+      "capabilityIds": ["runtime.ssr-hydration"],
+      "transportIds": ["transport.ssr"],
+      "steps": ["Create one graph for request-atlas and another for request-hermes.", "Prefetch only the requested project in each graph.", "Dehydrate JSON and hydrate client-owned graphs without duplicate fetch."],
+      "expected": { "requestAtlasIds": ["project-atlas"], "requestHermesIds": ["project-hermes"], "crossRequestLeakage": false, "serializable": true, "duplicateFetches": 0 }
+    },
+    {
+      "id": "example.platform.adapter-boundary",
+      "title": "Browser desktop and mobile hosts remain transport adapters",
+      "capabilityIds": ["platform.tauri", "platform.flutter-riverpod"],
+      "transportIds": ["transport.platform"],
+      "steps": ["Invoke loadGraph and saveGraph through a host adapter.", "Deny an undeclared native command.", "Verify the application graph remains canonical on browser, desktop, and mobile."],
+      "expected": { "hosts": ["browser", "desktop", "mobile"], "canonicalGraphOwner": "application", "allowedCommands": ["loadGraph", "saveGraph"], "deniedCommand": "deleteAll", "flutterGenuiStability": "experimental" }
+    },
+    {
+      "id": "example.schema.roundtrip",
+      "title": "SDL and code generation preserve the shared entity model",
+      "capabilityIds": ["schema.sdl-codegen"],
+      "transportIds": [],
+      "steps": ["Read the five entity type definitions.", "Generate a deterministic structural signature.", "Round-trip the signature without changing IDs, fields, or relationships."],
+      "expected": { "entityTypes": ["Activity", "Comment", "Project", "Task", "User"], "idField": "id", "relationshipCount": 7, "roundTripStable": true }
+    },
+    {
+      "id": "example.runtime.lifecycle-security",
+      "title": "Lifecycle errors diagnostics and security boundaries fail closed",
+      "capabilityIds": ["runtime.engine-suspense-errors-devtools", "security.tenant-actions-secrets"],
+      "transportIds": ["transport.rest", "transport.a2ui"],
+      "steps": ["Record stale, fetching, success, and terminal-error lifecycle events.", "Reject a tenant mismatch before mutation.", "Require approval for destructive action and scan emitted evidence for secrets."],
+      "expected": { "lifecycle": ["stale", "fetching", "success", "terminal-error"], "tenantMismatchRejected": true, "destructiveRequiresApproval": true, "secretFindings": 0, "diagnosticEvents": 4 }
+    }
+  ]
+}

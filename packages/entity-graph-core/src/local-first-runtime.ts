@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { useGraphStore } from "./graph";
+import { createStore } from "zustand/vanilla";
+import { graphStore } from "./graph";
 import { replayRegisteredGraphAction, subscribeGraphActionEvents } from "./graph-actions";
 
 export interface GraphPersistenceAdapter {
@@ -29,11 +29,11 @@ export interface GraphSyncStatus {
 export interface GraphSnapshotPayload {
   version: 1;
   snapshot: {
-    entities: ReturnType<typeof useGraphStore.getState>["entities"];
-    patches: ReturnType<typeof useGraphStore.getState>["patches"];
-    entityStates: ReturnType<typeof useGraphStore.getState>["entityStates"];
-    syncMetadata: ReturnType<typeof useGraphStore.getState>["syncMetadata"];
-    lists: ReturnType<typeof useGraphStore.getState>["lists"];
+    entities: ReturnType<typeof graphStore.getState>["entities"];
+    patches: ReturnType<typeof graphStore.getState>["patches"];
+    entityStates: ReturnType<typeof graphStore.getState>["entityStates"];
+    syncMetadata: ReturnType<typeof graphStore.getState>["syncMetadata"];
+    lists: ReturnType<typeof graphStore.getState>["lists"];
   };
   pendingActions: GraphActionRecord[];
 }
@@ -93,7 +93,7 @@ export interface LocalFirstGraphRuntime {
 
 const DEFAULT_STORAGE_KEY = "prometheus:graph";
 
-const useGraphSyncStatusStore = create<{ status: GraphSyncStatus; setStatus: (status: Partial<GraphSyncStatus>) => void }>((set) => ({
+export const graphSyncStatusStore = createStore<{ status: GraphSyncStatus; setStatus: (status: Partial<GraphSyncStatus>) => void }>()((set) => ({
   status: {
     phase: "idle",
     isOnline: true,
@@ -115,8 +115,8 @@ const useGraphSyncStatusStore = create<{ status: GraphSyncStatus; setStatus: (st
 
 const pendingActions = new Map<string, GraphActionRecord>();
 
-export function useGraphSyncStatus() {
-  return useGraphSyncStatusStore((state) => state.status);
+export function getGraphSyncStatus() {
+  return graphSyncStatusStore.getState().status;
 }
 
 export async function persistGraphToStorage(opts: PersistGraphToStorageOptions) {
@@ -128,7 +128,7 @@ export async function persistGraphToStorage(opts: PersistGraphToStorageOptions) 
   const json = JSON.stringify(payload);
   await opts.storage.set(opts.key, json);
   const persistedAt = new Date().toISOString();
-  useGraphSyncStatusStore.getState().setStatus({
+  graphSyncStatusStore.getState().setStatus({
     lastPersistedAt: persistedAt,
     storageKey: opts.key,
     pendingActions: payload.pendingActions.length,
@@ -155,11 +155,11 @@ export async function hydrateGraphFromStorage(opts: HydrateGraphFromStorageOptio
 
   try {
     const parsed = JSON.parse(raw) as GraphSnapshotPayload;
-    useGraphStore.setState(parsed.snapshot as Partial<ReturnType<typeof useGraphStore.getState>>);
+    graphStore.setState(parsed.snapshot as Partial<ReturnType<typeof graphStore.getState>>);
     pendingActions.clear();
     for (const action of parsed.pendingActions ?? []) pendingActions.set(action.id, action);
     const hydratedAt = new Date().toISOString();
-    useGraphSyncStatusStore.getState().setStatus({
+    graphSyncStatusStore.getState().setStatus({
       lastHydratedAt: hydratedAt,
       storageKey: opts.key,
       pendingActions: pendingActions.size,
@@ -176,7 +176,7 @@ export async function hydrateGraphFromStorage(opts: HydrateGraphFromStorageOptio
     };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    useGraphSyncStatusStore.getState().setStatus({
+    graphSyncStatusStore.getState().setStatus({
       phase: "error",
       error: message,
       storageKey: opts.key,
@@ -194,7 +194,7 @@ export async function hydrateGraphFromStorage(opts: HydrateGraphFromStorageOptio
 export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFirstGraphRuntime {
   const key = opts.key ?? DEFAULT_STORAGE_KEY;
   const persistDebounceMs = opts.persistDebounceMs ?? 50;
-  const statusStore = useGraphSyncStatusStore.getState();
+  const statusStore = graphSyncStatusStore.getState();
   statusStore.setStatus({
     phase: "hydrating",
     storageKey: key,
@@ -211,14 +211,14 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
     }, persistDebounceMs);
   };
 
-  const graphUnsub = useGraphStore.subscribe(() => {
+  const graphUnsub = graphStore.subscribe(() => {
     schedulePersist();
   });
 
   const actionUnsub = subscribeGraphActionEvents((event) => {
     if (event.type === "enqueued") pendingActions.set(event.record.id, event.record);
     if (event.type === "settled") pendingActions.delete(event.record.id);
-    useGraphSyncStatusStore.getState().setStatus({
+    graphSyncStatusStore.getState().setStatus({
       pendingActions: pendingActions.size,
       isSynced: pendingActions.size === 0,
     });
@@ -227,7 +227,7 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
 
   const onlineSource = opts.onlineSource ?? getDefaultOnlineSource();
   const onlineUnsub = onlineSource.subscribe((online) => {
-    useGraphSyncStatusStore.getState().setStatus({
+    graphSyncStatusStore.getState().setStatus({
       isOnline: online,
       phase: online ? "ready" : "offline",
     });
@@ -236,7 +236,7 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
   const ready = (async () => {
     const hydrated = await hydrateGraphFromStorage({ storage: opts.storage, key });
     if (opts.replayPendingActions && hydrated.ok && pendingActions.size > 0) {
-      useGraphSyncStatusStore.getState().setStatus({
+      graphSyncStatusStore.getState().setStatus({
         phase: "syncing",
         isSynced: false,
       });
@@ -251,7 +251,7 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
     }
 
     const online = onlineSource.getIsOnline();
-    useGraphSyncStatusStore.getState().setStatus({
+    graphSyncStatusStore.getState().setStatus({
       phase: online ? "ready" : "offline",
       isOnline: online,
       isSynced: pendingActions.size === 0,
@@ -274,13 +274,13 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
       return hydrateGraphFromStorage({ storage: opts.storage, key });
     },
     getStatus() {
-      return useGraphSyncStatusStore.getState().status;
+      return graphSyncStatusStore.getState().status;
     },
   };
 }
 
 function cloneGraphSnapshot() {
-  const state = useGraphStore.getState();
+  const state = graphStore.getState();
   return {
     entities: structuredClone(state.entities),
     patches: structuredClone(state.patches),

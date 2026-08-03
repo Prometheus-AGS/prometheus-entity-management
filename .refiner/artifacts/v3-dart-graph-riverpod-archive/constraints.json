@@ -1,0 +1,21 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    { "id": "c1", "description": "Every Dart/Riverpod phase-plan acceptance claim has direct evidence.", "severity": "blocking", "type": "technical", "validation": { "requires_code_execution": true, "validation_method": "acceptance matrix, verifier, permanent tests, and final manifest" } },
+    { "id": "c2", "description": "The declared Flutter stable floor and clean package candidate are reproducible without generated drift.", "severity": "blocking", "type": "technical", "validation": { "requires_code_execution": true, "validation_method": "frozen stable-SDK Dart/Melos and clean candidate receipts" } },
+    { "id": "c3", "description": "Final archive truth fails closed before its manifest and passes only with complete bounded evidence.", "severity": "blocking", "type": "semantic", "validation": { "requires_code_execution": true, "validation_method": "observed RED/GREEN tagged BDD and aggregate CI" } },
+    { "id": "c4", "description": "Visual evidence is hash-bound, legible, and limited to the host widget harness.", "severity": "blocking", "type": "visual", "validation": { "requires_code_execution": true, "validation_method": "original-resolution inspection and SHA-256" } },
+    { "id": "c5", "description": "Public ledgers, coverage, docs, skills, research, and downstream limits remain synchronized.", "severity": "blocking", "type": "structural", "validation": { "requires_code_execution": true, "validation_method": "ledger, coverage, schema, path, and documentation gates" } },
+    { "id": "c6", "description": "Archive readiness cannot authorize publication or full-release certification and contains no hidden task-owned skips.", "severity": "blocking", "type": "semantic", "validation": { "requires_code_execution": true, "validation_method": "publication/downstream assertions and skip/todo audit" } }
+  ],
+  "global_rules": [
+    "pnpm remains the JavaScript monorepo entry point.",
+    "EntityGraph remains the sole Dart state owner and FFI remains optional.",
+    "A host widget harness cannot be described as complete app, device, or accessibility evidence.",
+    "Archiving this change cannot authorize Pub.dev, npm latest, GitHub Release, Pages deployment, or full 3.0 certification."
+  ],
+  "termination_conditions": [
+    "Terminate only when blocking validation failures are zero.",
+    "Terminate with publicationAuthorized=false, fullReleaseCertified=false, and all unresolved lanes assigned downstream."
+  ]
+}

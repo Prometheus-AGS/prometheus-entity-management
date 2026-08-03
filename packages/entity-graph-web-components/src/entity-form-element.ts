@@ -33,8 +33,8 @@
  *         body: JSON.stringify(buf),
  *       }).then(r => r.json());
  *       // caller is responsible for updating the graph
- *       import("@prometheus-ags/entity-graph-core").then(({ useGraphStore }) => {
- *         useGraphStore.getState().upsertEntity("Invoice", saved.id, saved);
+ *       import("@prometheus-ags/entity-graph-core").then(({ graphStore }) => {
+ *         graphStore.getState().upsertEntity("Invoice", saved.id, saved);
  *       });
  *     },
  *   });

@@ -1,0 +1,40 @@
+{
+  "concept": "Tauri plugin release readiness",
+  "audience": "skeptic",
+  "coreIdea": "A Rust crate that compiles for mobile is only cargo; a Tauri mobile plugin is cargo plus native Android/iOS registration, generated permission manifests, authorized IPC, and a host that proves commands execute.",
+  "analogies": [
+    "Cross-compiling is printing a key shape; runtime testing proves the key opens the intended lock.",
+    "Generated schemas are a menu of possible permissions; a capability file is the actual order placed for a specific window and platform."
+  ],
+  "skepticChallenges": [
+    {
+      "challenge": "The crate already cross-compiles for iOS and Android, so why add Kotlin and Swift?",
+      "answer": "The current Rust implementation can run shared Rust logic, but the plan explicitly promises the Tauri mobile plugin contract and native initialization. Official mobile plugins register Android classes and iOS bindings. Cross-compilation never calls those seams."
+    },
+    {
+      "challenge": "The generated schemas directory proves capabilities are configured.",
+      "answer": "Schemas describe valid configuration; they neither define plugin permissions nor grant them to a window. The package has no permission source directory and no allow/deny capability fixture."
+    },
+    {
+      "challenge": "Using latest dependencies means upgrading TypeScript to 7 immediately.",
+      "answer": "The ratified v3 contract caps TypeScript below 7. A stable release must honor that contract; an incompatible major upgrade needs its own proposal and packed-consumer evidence."
+    }
+  ],
+  "transferProblems": [
+    {
+      "problem": "A CI job runs cargo check for aarch64-linux-android and passes. May the release evidence say Android plugin commands work?",
+      "answer": "No. Record target compilation only. Command readiness requires an Android host/emulator/device lane that loads the Kotlin plugin, grants a capability, invokes a real command, and proves denial without the permission."
+    },
+    {
+      "problem": "A checked-in TypeScript file is labeled generated, but rerunning the documented build leaves its hash unchanged. Is the binding contract reproducible?",
+      "answer": "No. Move generation into an explicit executable/build path, generate in a disposable tree, compare against the checked-in output, and fail on drift."
+    }
+  ],
+  "qualityGate": {
+    "learnGradeAvailable": false,
+    "feynmanGrade": null,
+    "misconceptionsAbsent": null,
+    "status": "manual-transfer-pass-not-mastery-certification",
+    "reason": "The learn-grade callable was not exposed. The artifact records evidence-grounded transfer answers but does not claim a closed learner-model loop or retention schedule."
+  }
+}

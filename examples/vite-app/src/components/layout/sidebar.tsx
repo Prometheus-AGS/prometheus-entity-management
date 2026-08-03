@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard, FolderKanban, CheckSquare,
-  Users, Flame, ChevronRight, Radio, Settings, LayoutGrid, Link2,
+  Users, Flame, ChevronRight, Radio, Settings, LayoutGrid, Link2, FlaskConical,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +16,7 @@ const NAV = [
   { to: "/ui-demo",   label: "UI Demo",   icon: LayoutGrid },
   { to: "/pure-demo", label: "Pure Demo", icon: LayoutGrid },
   { to: "/tanstack-bridge", label: "Query bridge", icon: Link2 },
+  { to: "/release-showcase", label: "3.0 RC showcase", icon: FlaskConical },
 ];
 
 export function Sidebar() {
@@ -47,11 +48,11 @@ export function Sidebar() {
               className={cn(
                 "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium font-sans transition-colors duration-150",
                 active
-                  ? "bg-primary/12 text-primary"
+                  ? "bg-primary/12 text-foreground"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted/80"
               )}
             >
-              <Icon className={cn("w-4 h-4 shrink-0", active ? "text-primary" : "")} />
+              <Icon className="w-4 h-4 shrink-0" />
               {label}
               {active && <ChevronRight className="w-3 h-3 ml-auto opacity-60" />}
             </Link>
@@ -64,7 +65,7 @@ export function Sidebar() {
         <p className="text-[10px] text-muted-foreground font-mono leading-snug break-all">
           @prometheus-ags/prometheus-entity-management
         </p>
-        <p className="text-[10px] text-muted-foreground">v0.1.0 · Vite + React 19</p>
+        <p className="text-[10px] text-muted-foreground">v3.0.0-rc.1 · Vite 8 + React 19</p>
       </div>
     </aside>
   );

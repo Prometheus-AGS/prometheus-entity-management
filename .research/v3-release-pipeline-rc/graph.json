@@ -1,0 +1,21 @@
+{
+  "nodes": [
+    {"id": "release-contract", "type": "policy"},
+    {"id": "changesets", "type": "version-planner"},
+    {"id": "release-manifest", "type": "generated-evidence"},
+    {"id": "offline-rehearsal", "type": "non-mutating-gate"},
+    {"id": "npm-stage", "type": "optional-registry-gate"},
+    {"id": "npm-latest", "type": "protected-state"},
+    {"id": "release-journal", "type": "recovery-state"},
+    {"id": "human-approval", "type": "authority-boundary"}
+  ],
+  "edges": [
+    {"from": "release-contract", "to": "changesets", "relation": "constrains"},
+    {"from": "changesets", "to": "release-manifest", "relation": "plans"},
+    {"from": "release-manifest", "to": "offline-rehearsal", "relation": "drives"},
+    {"from": "offline-rehearsal", "to": "npm-latest", "relation": "must-not-mutate"},
+    {"from": "release-journal", "to": "release-manifest", "relation": "tracks"},
+    {"from": "npm-stage", "to": "human-approval", "relation": "requires"},
+    {"from": "human-approval", "to": "npm-latest", "relation": "guards"}
+  ]
+}

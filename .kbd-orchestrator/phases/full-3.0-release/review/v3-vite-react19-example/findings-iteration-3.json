@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/entity-graph-sync/src/providers/loro-provider.ts",
+      "line": 218,
+      "claim": "A Loro peer cannot apply entities it first learns from another peer because incoming snapshots are read only for IDs already present in the local `seenIds` set.",
+      "evidence": "The hunk initializes `seenIds.set(type, new Set<EntityId>())` when a doc is created, only adds IDs in `pushLocalChange` via `ids.add(id)`, and `handleIncomingBytes` imports peer bytes without adding any entity IDs from the imported document before the code path documented as `Read all entities from a doc given the set of known ids`; this breaks the claimed WebSocket/loopback first-sync convergence where a receiver has not locally seen the entity ID.",
+      "suggested_fix": "After `doc.import(bytes)`, derive entity IDs from the imported Loro document/root map (for example from `doc.toJSON().entities` or a map key iterator) and merge them into `seenIds` before building peer changes, or stop using a separate `seenIds` filter and enumerate the document contents directly."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

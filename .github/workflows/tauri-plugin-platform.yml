@@ -1,0 +1,46 @@
+name: Tauri plugin platform contract
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/entity-graph-tauri/**"
+      - "tests/fixtures/tauri-plugin-host/**"
+      - "tests/features/release/v3-tauri-mobile-plugin.feature"
+      - "tests/steps/v3-tauri-mobile-plugin.steps.ts"
+      - "scripts/verify-tauri-mobile-plugin.mjs"
+      - "release/tauri-mobile-device-lane.md"
+      - ".github/workflows/tauri-plugin-platform.yml"
+  pull_request:
+    paths:
+      - "packages/entity-graph-tauri/**"
+      - "tests/fixtures/tauri-plugin-host/**"
+      - "tests/features/release/v3-tauri-mobile-plugin.feature"
+      - "tests/steps/v3-tauri-mobile-plugin.steps.ts"
+      - "scripts/verify-tauri-mobile-plugin.mjs"
+      - "release/tauri-mobile-device-lane.md"
+      - ".github/workflows/tauri-plugin-platform.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  desktop-permissions-and-packed-consumer:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install Rust minimum-supported toolchain
+        run: rustup toolchain install 1.88.0 --profile minimal
+      - name: Install workspace dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Verify registered IPC, capability denial, and packed Rust host
+        run: pnpm run verify:tauri-plugin
+      - name: Run Tauri plugin BDD contract
+        run: pnpm run bdd:tauri-plugin

@@ -279,7 +279,11 @@ const suspenseEntityPromises = new Map<string, Promise<void>>();
 /** In-flight Suspense waiters keyed by `serializeKey(queryKey)`. */
 const suspenseListPromises = new Map<string, Promise<void>>();
 
-function getEntitySuspensePromise(type: EntityType, id: EntityId): Promise<void> {
+function getEntitySuspensePromise(
+  type: EntityType,
+  id: EntityId,
+  start?: () => Promise<void>,
+): Promise<void> {
   const key = `${type}:${id}`;
   const existing = suspenseEntityPromises.get(key);
   if (existing) return existing;
@@ -313,6 +317,7 @@ function getEntitySuspensePromise(type: EntityType, id: EntityId): Promise<void>
 
   const tracked = promise.finally(() => { suspenseEntityPromises.delete(key); });
   suspenseEntityPromises.set(key, tracked);
+  if (start) void start();
   return tracked;
 }
 
@@ -368,9 +373,15 @@ export function useSuspenseEntity<TRaw, TEntity extends object>(
   const result = useEntity(opts);
   const { type, id } = opts;
 
-  if (result.isLoading) {
-    if (!id) throw new Error("useSuspenseEntity requires a non-null entity id");
-    throw getEntitySuspensePromise(type, id);
+  if (
+    result.data == null &&
+    result.error == null &&
+    id &&
+    opts.enabled !== false
+  ) {
+    throw getEntitySuspensePromise(type, id, () =>
+      fetchEntity(opts, getEngineOptions()),
+    );
   }
 
   if (result.error != null && result.data == null) {

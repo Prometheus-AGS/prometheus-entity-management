@@ -1,0 +1,24 @@
+{
+  "topics": [
+    {"id":"topic-authority","name":"license and copyright authority","claims":["claim-authority","claim-attribution"]},
+    {"id":"topic-history","name":"history-preserving import","claims":["claim-filter","claim-map"]},
+    {"id":"topic-boundary","name":"canonical package boundary","claims":["claim-adapt","claim-reference"]},
+    {"id":"topic-dependencies","name":"Flutter dependency compatibility","claims":["claim-riverpod","claim-toolchain"]}
+  ],
+  "claims": [
+    {"id":"claim-authority","text":"No KnowMe Flutter source may be copied until the owner-directed MIT destination decision is recorded.","confidence":0.82,"sources":["src-knowme-git","src-target-contract","src-reuse"]},
+    {"id":"claim-attribution","text":"Imported paths must retain copyright attribution and machine-readable source mapping.","confidence":0.94,"sources":["src-reuse","src-dart-package-layout"]},
+    {"id":"claim-filter","text":"Filtering must occur in a fresh disposable clone from a committed revision.","confidence":0.96,"sources":["src-knowme-git","src-filter-repo","src-github-split"]},
+    {"id":"claim-map","text":"Rewritten hashes require an original-to-filtered commit map rather than an identity claim.","confidence":0.96,"sources":["src-filter-repo"]},
+    {"id":"claim-adapt","text":"KnowMe generic provider/view/CRUD concepts are adapted into the existing canonical entity_graph_flutter package; FFI and product models remain excluded.","confidence":0.93,"sources":["src-knowme-git","src-target-contract"]},
+    {"id":"claim-reference","text":"hybrid-mobile-architecture-src remains a reference-only template source.","confidence":0.98,"sources":["src-hybrid-git"]},
+    {"id":"claim-riverpod","text":"Riverpod 3 migration requires explicit terminal retry semantics and current notifier APIs.","confidence":0.95,"sources":["src-riverpod-migration","src-pub-riverpod"]},
+    {"id":"claim-toolchain","text":"Dependency updates must be resolved and tested under the declared Flutter/Dart toolchain.","confidence":0.94,"sources":["src-flutter-sdk","src-pub-riverpod"]}
+  ],
+  "relations": [
+    {"from":"claim-authority","to":"src-target-contract","type":"cites"},
+    {"from":"claim-filter","to":"src-filter-repo","type":"cites"},
+    {"from":"claim-adapt","to":"claim-reference","type":"contrasts"},
+    {"from":"claim-riverpod","to":"claim-toolchain","type":"requires"}
+  ]
+}

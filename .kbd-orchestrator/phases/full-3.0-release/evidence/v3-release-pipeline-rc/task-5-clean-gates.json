@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-release-pipeline-rc",
+  "task": 5,
+  "generatedAt": "2026-08-02T12:24:53Z",
+  "status": "pass",
+  "releaseCertified": false,
+  "registryMutation": false,
+  "toolchains": {
+    "node": "24.16.0",
+    "pnpm": "10.33.0",
+    "flutter": "3.44.8",
+    "flutterRevision": "058e0af2c2b57e369d905a03ac9748b0ebf543c6",
+    "dart": "3.12.2",
+    "rustStable": "1.97.1",
+    "tauriHostRust": "1.88.0"
+  },
+  "locks": {
+    "pnpm": {
+      "frozen": true,
+      "before": "c53a72fc54c9419f2d2ca15b187779d0d2a1c8274fca871a82b11a48a6ce42da",
+      "after": "c53a72fc54c9419f2d2ca15b187779d0d2a1c8274fca871a82b11a48a6ce42da"
+    },
+    "dartWorkspace": {
+      "frozen": true,
+      "sha256": "b1d5f04a06b6cef20b5b0304835a30cc512bf59cd49382b91e6e384f3c650952"
+    },
+    "riverpodGeneratedSource": {
+      "drift": false,
+      "sha256": "7a1c417c318d59c6180c415c0f50c6948120f53806c969190c421f593ea717a4"
+    }
+  },
+  "gates": {
+    "pnpmFrozenInstall": "pass",
+    "fullCi": {
+      "status": "pass",
+      "bddScenarios": 83,
+      "bddSteps": 393,
+      "securityDependencies": 325,
+      "blockingAdvisories": 0
+    },
+    "releaseCandidateVerifier": {
+      "status": "pass",
+      "declaredArtifacts": 16,
+      "packedNpmCandidates": 12,
+      "consumers": ["node-esm", "node-commonjs", "typescript-nodenext", "typescript-node16", "typescript-bundler"],
+      "actionlint": "pass",
+      "registryMutation": false
+    },
+    "dart": {
+      "status": "pass",
+      "frozenBootstrap": "pass",
+      "generation": "pass",
+      "format": "pass",
+      "analysis": "pass",
+      "tests": 70,
+      "exports": 81,
+      "cleanPubDryRun": {
+        "status": "pass",
+        "warnings": 0,
+        "archiveSizeKb": 84,
+        "candidateCommit": "98cebad"
+      }
+    },
+    "tauri": {
+      "status": "pass",
+      "runtimeExports": 26,
+      "declarationExports": 57,
+      "javascriptTests": 16,
+      "capabilityHostTests": 2,
+      "directLockedCargoTests": 6,
+      "androidReceipt": "hash-verified",
+      "iosReceipt": "hash-verified",
+      "packedRustHost": "pass"
+    },
+    "openSpecStrict": "pass",
+    "visualInspection": "pass",
+    "diffCheck": "pass"
+  },
+  "visuals": {
+    "releaseCertificationSvg": "d69bb3c9c73523eeedabfd3cba086b2d2e542dd2b6efe309eaaa23c7e0cc9a4b",
+    "flutterInitial": "cf8cafe9e6ef51f7138f74f73ae732d7286d695b9c3bad1afb46a8730f648e3a",
+    "flutterOptimistic": "e1e6ea7a4e4f4fe9339111f2a4ec1a1bbe9d81ca3c3a993b60bf58cb8ca8aac3",
+    "betaFailureImagesPreserved": 8
+  },
+  "corrections": [
+    "Excluded the generated Tauri host bundle from authored-source lint and added a regression test.",
+    "Isolated CI_GATE_TIMEOUT_MS from tests that intentionally exercise a 25 ms watchdog.",
+    "Aligned the Tauri packed-payload BDD contract with the host-owned tauri.conf.json boundary.",
+    "Added the Tauri and recoverable-RC quality gates to the release-contract BDD ledger expectation.",
+    "Rejected Flutter beta golden drift and reran Dart and visual gates on the declared Flutter 3.44.8 stable floor."
+  ],
+  "externalAuthority": {
+    "npmOidcEnvironment": "not-proven-live",
+    "pubDevPublisher": "not-proven-live",
+    "cratesIoOwner": "not-proven-live",
+    "githubEnvironmentProtection": "not-proven-live"
+  }
+}

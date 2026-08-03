@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-dart-graph-riverpod",
+  "recordedAt": "2026-08-02T02:23:30Z",
+  "verdict": "pass-to-archive",
+  "acceptance": {
+    "canonicalDartGraphOwner": "pass",
+    "idOnlyListMembership": "pass",
+    "generatedRiverpod3Families": "pass",
+    "providerGraphOwnershipBoundary": "pass",
+    "localRemoteHybridViews": "pass",
+    "optimisticCrudExactRollback": "pass",
+    "terminalAndBoundedTransientRetry": "pass",
+    "realtimeNormalizationAndInvalidation": "pass",
+    "pluggableTransport": "pass",
+    "optionalFfiWithoutNativeRuntime": "pass",
+    "coherentStableDependencyMatrix": "pass",
+    "melosWorkspaceOrchestration": "pass",
+    "publicApiCoverageSkillsAndDocsSynchronized": "pass",
+    "cleanStableSdkPackageCandidate": "pass",
+    "scopedVisualEvidence": "pass",
+    "mandatoryLaneDisposition": "pass",
+    "deepResearchAndFeynmanTransfer": "pass"
+  },
+  "cleanState": {
+    "status": "pass",
+    "candidateCommit": "9c341c22c158e3c685860ab3b60e649d29367f87",
+    "historyRetained": true,
+    "flutter": "3.44.8-stable",
+    "flutterRevision": "058e0af2c2b57e369d905a03ac9748b0ebf543c6",
+    "dart": "3.12.2",
+    "flutterArchiveSha256": "c3d6fe95078f7001d947a31d42527de91d5bfe62e4cf444a1493a2e8f1fb199d",
+    "frozenPnpmInstall": "pass",
+    "frozenDartResolution": "pass",
+    "generatedSourceDrift": "none",
+    "format": "pass-zero-changes",
+    "analyze": "pass-zero-issues",
+    "flutterTests": "pass-70",
+    "packageDryRun": "pass-zero-warnings",
+    "packageArchiveSize": "84-KB",
+    "rootCi": "pass",
+    "fullBdd": "pass-68-scenarios-335-steps",
+    "skills": "pass-react-201-sync-16-a2ui-18-plus-9-a2a-30-plus-2-dart-81",
+    "security": "pass-policy-zero-blocking"
+  },
+  "freshVerification": {
+    "stableDartBootstrap": "pass",
+    "stableDartCi": "pass-generation-format-analysis-70-tests",
+    "stableDartExamples": "pass-zero-example-packages",
+    "generatedProviderShaUnchanged": true,
+    "activeWorktreePackageProbe": "expected-nonrelease-result-two-dirty-state-warnings",
+    "activeWorktreePackageProbeIsReleaseEvidence": false,
+    "rootCi": "pass",
+    "aggregateBdd": "pass-69-scenarios-339-steps",
+    "rootValidateLintTypecheckBuildTestSkillsSecurity": "pass",
+    "productionSecurity": {
+      "dependencies": 325,
+      "critical": 0,
+      "high": 0,
+      "moderate": 0,
+      "low": 2,
+      "blocking": 0
+    }
+  },
+  "focused": {
+    "permanentNodeReleaseTests": "pass-4-of-4",
+    "taggedBdd": "pass-8-scenarios-26-steps",
+    "taggedBddReceiptSha256": "832c2203b3149a2a81e32070371d332d3afc06c1cca062a796c5c405381b8094",
+    "exampleCoverage": "pass-13-of-13-release-not-certified",
+    "strictOpenSpec": "pass",
+    "skills": "pass",
+    "eslint": "pass-zero-warnings",
+    "jsonIntegrity": "pass",
+    "gitDiffCheck": "pass",
+    "publicDartDeclarations": 81,
+    "mandatoryTaskOwnedSkipsOrTodos": 0,
+    "cargoApplicability": "not-applicable-no-cargo-manifest-or-native-runtime-dependency"
+  },
+  "visual": {
+    "scope": "Flutter host widget harness for cross-view optimistic propagation only",
+    "inspected": true,
+    "lastInspectedAt": "2026-08-02T02:18:00Z",
+    "dimensions": "960x600",
+    "initialSha256": "cf8cafe9e6ef51f7138f74f73ae732d7286d695b9c3bad1afb46a8730f648e3a",
+    "optimisticSha256": "e1e6ea7a4e4f4fe9339111f2a4ec1a1bbe9d81ca3c3a993b60bf58cb8ca8aac3",
+    "claimsFullApplication": false,
+    "claimsDeviceCertification": false,
+    "claimsAccessibilityCertification": false
+  },
+  "integrity": {
+    "rootPubspecLockSha256": "b1d5f04a06b6cef20b5b0304835a30cc512bf59cd49382b91e6e384f3c650952",
+    "packagePubspecSha256": "38d55c6e38fbc623b3290cdd24a781799993f468da3c5362382f3017d52cb5b9",
+    "publicLedgerSha256": "5767746555a24af4d7015eb79d1ed8c16bd773986594fcd6789e2af172243b81",
+    "cleanGateReceiptSha256": "b3a443df45d01ef5625634f1eb253805aaf93c9c6c93d6ae6da3a79e3d008177",
+    "cleanDartReportSha256": "4b37d80ae377ebad1b971f1d9c813e0c7c04ef876f75328c5e103289ed3a944e",
+    "cleanCucumberReceiptSha256": "1ad2416a86187f7268b1351593d5031603cf66805bd5a1cdce727645e56b3157"
+  },
+  "research": {
+    "depth": "deep",
+    "sources": 14,
+    "confidence": 0.96,
+    "feynmanGrade": 0.95,
+    "sycophancyCorrectionUsed": true,
+    "unresolvedContradictions": 0,
+    "firecrawl": "not-callable-official-primary-source-fallback-recorded"
+  },
+  "artifactRefiner": {
+    "artifact": "v3-dart-graph-riverpod-archive",
+    "contentType": "direct:content",
+    "iteration": 1,
+    "blockingConstraints": 6,
+    "blockingViolations": 0,
+    "schema": "pass",
+    "files": "pass",
+    "constraints": "pass",
+    "consistency": "pass",
+    "checkpoint": "e1640926",
+    "archive": ".refiner/history/v3-dart-graph-riverpod-archive/2026-08-02_02-21-16Z",
+    "qaSha256": "022c1debce8d0a6585b4f0361f25a3e7b2d196d365be1417686c6b88e10c3243",
+    "convergence": "terminate"
+  },
+  "releaseImpact": {
+    "artifact": "entity_graph_flutter@3.0.0",
+    "stability": "stable-source-contract",
+    "consumerImpact": "breaking-riverpod-2-to-generated-riverpod-3-and-sdk-floor-update",
+    "npmRuntimeExportImpact": "none",
+    "dartPublicDeclarations": 81,
+    "unblocks": [
+      "v3-flutter-riverpod-a2ui-example",
+      "v3-docs-api-reference",
+      "v3-docs-concepts-packages",
+      "v3-docs-examples-integrations",
+      "v3-release-certification"
+    ]
+  },
+  "unresolvedLimits": [
+    {
+      "limit": "Complete Flutter/Riverpod/A2UI application, Android/iOS runners, phone/tablet visuals, accessibility, offline persistence, and device smoke are not certified by the host widget harness.",
+      "ownerChange": "v3-flutter-riverpod-a2ui-example"
+    },
+    {
+      "limit": "Portable live Flint compatibility remains unavailable when the external frf-sdk dependency cannot resolve.",
+      "ownerChange": "v3-flint-portable-contracts"
+    },
+    {
+      "limit": "Complete public skill coverage across the final 3.0 ecosystem remains downstream.",
+      "ownerChange": "v3-skills-ecosystem"
+    },
+    {
+      "limit": "Prometheus-branded Docusaurus content, API generation, examples, operations, and migration material remain downstream.",
+      "ownerChange": "v3-docs-foundation-brand"
+    },
+    {
+      "limit": "Protected GitHub Pages deployment and production route checks remain downstream.",
+      "ownerChange": "v3-docs-github-pages"
+    },
+    {
+      "limit": "One immutable SHA joining npm, Dart, Rust, platform, showcase, docs, skills, and security evidence does not yet exist.",
+      "ownerChange": "v3-release-certification"
+    },
+    {
+      "limit": "Pub.dev ownership, credentials, publication, post-publish consumers, GitHub Release, and stable promotion remain unauthorized.",
+      "ownerChange": "v3-stable-publication"
+    }
+  ],
+  "registryDecision": "deferred",
+  "publicationAuthorized": false,
+  "fullReleaseCertified": false,
+  "postArchive": {
+    "status": "pass",
+    "archivePath": "openspec/changes/archive/2026-08-02-v3-dart-graph-riverpod",
+    "promotedSpec": "openspec/specs/v3-dart-graph-riverpod/spec.md",
+    "promotedSpecPurposeAndStalePathCorrected": true,
+    "promotedSpecValidation": "pass",
+    "structuralDartVerifier": "pass",
+    "exampleCoverage": "pass-13-of-13-release-not-certified",
+    "gitDiffCheck": "pass",
+    "globalOpenSpecValidation": {
+      "status": "repository-wide-pre-existing-failures-outside-this-change",
+      "passed": 28,
+      "failed": 6,
+      "failedItems": [
+        "change/2026-06-22-v3-universal-platform-evolution",
+        "change/2026-07-13-v4-prometheus-entity-sync",
+        "change/v4-dart-sdk",
+        "change/v4-entity-sync-skill",
+        "change/v4-pem-sync-transport",
+        "change/v4-tauri-plugin"
+      ]
+    }
+  }
+}

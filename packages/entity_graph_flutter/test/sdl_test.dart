@@ -66,8 +66,9 @@ void main() {
           },
         },
       });
-      final statusField = ir.entities.first.fields
-          .firstWhere((f) => f.name == 'status');
+      final statusField = ir.entities.first.fields.firstWhere(
+        (f) => f.name == 'status',
+      );
       expect(statusField.type, equals(SdlScalarType.enumType));
       expect(statusField.values, equals(['draft', 'published', 'archived']));
     });
@@ -122,13 +123,19 @@ void main() {
             },
           },
           'User': {
-            'fields': {'id': {'type': 'uuid', 'primary': true}},
+            'fields': {
+              'id': {'type': 'uuid', 'primary': true},
+            },
           },
           'Tag': {
-            'fields': {'id': {'type': 'uuid', 'primary': true}},
+            'fields': {
+              'id': {'type': 'uuid', 'primary': true},
+            },
           },
           'PostTag': {
-            'fields': {'id': {'type': 'uuid', 'primary': true}},
+            'fields': {
+              'id': {'type': 'uuid', 'primary': true},
+            },
           },
         },
       });
@@ -140,7 +147,9 @@ void main() {
       final ir = parseSdl({
         'entities': {
           'Item': {
-            'fields': {'id': {'type': 'string', 'primary': true}},
+            'fields': {
+              'id': {'type': 'string', 'primary': true},
+            },
           },
         },
         'config': {
@@ -154,10 +163,7 @@ void main() {
 
     group('validation errors', () {
       test('throws when root is not a map', () {
-        expect(
-          () => parseSdl('not a map'),
-          throwsA(isA<SdlValidationError>()),
-        );
+        expect(() => parseSdl('not a map'), throwsA(isA<SdlValidationError>()));
       });
 
       test('throws when entities is missing', () {
@@ -238,10 +244,7 @@ void main() {
                   'id': {'type': 'uuid', 'primary': true},
                 },
                 'relations': {
-                  'posts': {
-                    'type': 'hasMany',
-                    'target': 'NonExistentEntity',
-                  },
+                  'posts': {'type': 'hasMany', 'target': 'NonExistentEntity'},
                 },
               },
             },
@@ -253,7 +256,10 @@ void main() {
 
     group('SdlValidationError', () {
       test('toString includes message and path', () {
-        const err = SdlValidationError('bad field', r'$.entities.User.fields.id');
+        const err = SdlValidationError(
+          'bad field',
+          r'$.entities.User.fields.id',
+        );
         expect(err.toString(), contains('bad field'));
         expect(err.toString(), contains(r'$.entities.User.fields.id'));
       });

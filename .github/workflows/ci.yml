@@ -9,32 +9,48 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   library-and-examples:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24, 26]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: pnpm/action-setup@v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: "22"
+          node-version: ${{ matrix.node }}
           cache: "pnpm"
 
       - name: Install
         run: pnpm install --frozen-lockfile
 
-      # `turbo run typecheck` covers every workspace package, including the
-      # Vite and Next.js examples (each defines its own `typecheck` script).
-      - name: Typecheck (all workspaces)
-        run: pnpm run typecheck
+      - name: Validate release contract
+        run: pnpm run ci:validate
 
-      - name: Build library
-        run: pnpm run build
+      - name: Lint
+        run: pnpm run ci:lint
+
+      - name: Typecheck (all workspaces)
+        run: pnpm run ci:typecheck
+
+      - name: Build all workspaces
+        run: pnpm run ci:build
 
       - name: Test
-        run: pnpm run test
+        run: pnpm run ci:test
 
       - name: Verify skills ↔ exports ledger
-        run: pnpm run verify:skills
+        run: pnpm run ci:skills
+
+      - name: Audit production dependency policy
+        if: matrix.node == 24
+        run: pnpm run ci:security

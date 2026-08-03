@@ -5,7 +5,7 @@
  * Architecture:
  *   createEntity  (this file, Layer 2)
  *     └─ core engine fetchEntity  (Layer 1 / transport)
- *          └─ useGraphStore  (Layer 0 / Zustand graph)
+ *          └─ graphStore  (Layer 0 / Zustand graph)
  *
  * SolidJS `createResource` owns the async lifecycle; the graph is the
  * single source of truth for the entity payload. Once fetchEntity writes to
@@ -22,7 +22,7 @@ import {
 import { createStore } from "solid-js/store";
 
 import {
-  useGraphStore,
+  graphStore,
   fetchEntity,
   getEngineOptions,
   registerSubscriber,
@@ -44,7 +44,7 @@ interface EntitySnapshot<TEntity extends object> {
  *
  * - Uses `createResource` as the async driver so Suspense and ErrorBoundary
  *   boundaries work naturally.
- * - Subscribes to the Zustand graph with `useGraphStore.subscribe` and mirrors
+ * - Subscribes to the Zustand graph with `graphStore.subscribe` and mirrors
  *   the merged entity into a `createStore`-backed signal for fine-grained
  *   SolidJS reactivity (only the changed field triggers updates).
  * - Registers / unregisters a subscriber token with the core engine so idle
@@ -103,7 +103,7 @@ export function createEntity<TRaw, TEntity extends object>(
     const effectiveStaleTime = staleTime ?? engineOpts.defaultStaleTime;
 
     // Check if cached data is fresh enough to skip a network round-trip.
-    const graphState = useGraphStore.getState();
+    const graphState = graphStore.getState();
     const cachedEntityState = graphState.entityStates[`${type}:${id}`];
     const cachedEntity = graphState.readEntity<TEntity>(type, id);
     const age = Date.now() - (cachedEntityState?.lastFetched ?? 0);
@@ -130,7 +130,7 @@ export function createEntity<TRaw, TEntity extends object>(
     );
 
     // Return the graph value after the fetch completes.
-    return useGraphStore.getState().readEntity<TEntity>(type, id);
+    return graphStore.getState().readEntity<TEntity>(type, id);
   });
 
   // ── Subscribe to Zustand graph for live fine-grained updates ───────────────
@@ -143,7 +143,7 @@ export function createEntity<TRaw, TEntity extends object>(
 
     // Sync initial graph state into the Solid store.
     const syncFromGraph = () => {
-      const s = useGraphStore.getState();
+      const s = graphStore.getState();
       const entity = s.readEntity<TEntity>(type, id);
       const entityState = s.entityStates[subKey] ?? EMPTY_ENTITY_STATE;
       setSnapshot("data", entity);
@@ -153,7 +153,7 @@ export function createEntity<TRaw, TEntity extends object>(
     syncFromGraph();
 
     // Subscribe to graph changes that affect this entity.
-    const unsub = useGraphStore.subscribe(
+    const unsub = graphStore.subscribe(
       (s) => ({
         entity: s.readEntity<TEntity>(type, id),
         entityState: s.entityStates[subKey] ?? EMPTY_ENTITY_STATE,
@@ -177,7 +177,7 @@ export function createEntity<TRaw, TEntity extends object>(
   const refetch = async () => {
     const id = idAccessor();
     if (!id) return;
-    useGraphStore.getState().setEntityStale(type, id, true);
+    graphStore.getState().setEntityStale(type, id, true);
     await fetchEntity(
       { type, id, fetch, normalize, idField, onSuccess, onError },
       getEngineOptions(),

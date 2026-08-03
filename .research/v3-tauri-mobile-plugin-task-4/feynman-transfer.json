@@ -1,0 +1,35 @@
+{
+  "concept": "Tauri plugin public-surface certification",
+  "audience": "skeptic",
+  "coreIdea": "A Tauri plugin crosses four independent locks—declared API, generated Rust-to-TypeScript bindings, runtime capability authority, and platform-native execution—and evidence for one lock cannot open the others.",
+  "analogies": [
+    "The export ledger is the parts list: it proves what was shipped, not that the machine ran.",
+    "A capability is a keycard assigned to a webview: installing the plugin does not grant every command.",
+    "MockRuntime is a desktop fire drill; Android Kotlin and iOS Swift are different buildings and require their own drills."
+  ],
+  "skepticChallenges": [
+    {
+      "challenge": "The tarball contains Android and iOS sources, so mobile support is proven.",
+      "answer": "Source presence proves packaging only. It does not prove native registration, serialization, capability evaluation, or the response path on either platform."
+    },
+    {
+      "challenge": "The desktop IPC test exercises the same command name, so mobile evidence is redundant.",
+      "answer": "The command name is shared, but desktop executes Rust directly while mobile delegates through PluginHandle into Kotlin or Swift. The untested bridge is the feature under claim."
+    },
+    {
+      "challenge": "A persistSnapshot command proves restart durability.",
+      "answer": "Names are not evidence. The current Rust state uses an in-memory map; durable SQLite remains the separate core adapter path."
+    }
+  ],
+  "transferProblems": [
+    {
+      "problem": "A new mutation command is added to Rust and generated TypeScript, but not the default permission set. What must change?",
+      "solution": "Refresh the public declaration/runtime ledger, document the new explicit allow/deny permission, keep default read-only unless policy intentionally changes, and add denial plus allowed-host evidence."
+    },
+    {
+      "problem": "An Android cross-compile passes and the APK contains the Kotlin class. Can coverage mark mobile runtime implemented?",
+      "solution": "No. Keep mobile runtime planned until a simulator or device invokes the command through the registered native bridge and records the exact response and denial artifact."
+    }
+  ],
+  "qualityGate": {"score": 0.92, "misconceptionsAbsent": 1.0, "formalMasteryClosed": false, "reason": "Retention cannot be demonstrated in the same execution turn."}
+}

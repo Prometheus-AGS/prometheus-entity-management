@@ -1,66 +1,158 @@
-name: Publish
+name: Release candidate
 
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Rehearse only, or stage the rehearsed RC for human 2FA approval
+        required: true
+        type: choice
+        default: rehearse
+        options:
+          - rehearse
+          - stage
 
 concurrency:
-  group: publish-${{ github.ref }}
+  group: release-candidate-${{ github.ref }}-${{ inputs.mode || 'version-pr' }}
   cancel-in-progress: false
 
 jobs:
-  publish:
+  version-pr:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      id-token: write
+      contents: write
+      pull-requests: write
 
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
         with:
-          node-version: "22"
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
           cache: "pnpm"
-          registry-url: "https://registry.npmjs.org"
+          package-manager-cache: false
 
       - name: Install
         run: pnpm install --frozen-lockfile
 
-      - name: Check if version already published
-        id: version-check
-        run: |
-          PKG_VERSION=$(node -p "require('./package.json').version")
-          PKG_NAME=$(node -p "require('./package.json').name")
-          echo "version=$PKG_VERSION" >> $GITHUB_OUTPUT
-          if npm view "${PKG_NAME}@${PKG_VERSION}" version 2>/dev/null | grep -q "${PKG_VERSION}"; then
-            echo "already_published=true" >> $GITHUB_OUTPUT
-            echo "Version ${PKG_VERSION} already exists on npm — skipping publish."
-          else
-            echo "already_published=false" >> $GITHUB_OUTPUT
-            echo "Version ${PKG_VERSION} not yet published — will publish."
-          fi
-
-      - name: Typecheck
-        if: steps.version-check.outputs.already_published == 'false'
-        run: pnpm run typecheck
-
-      - name: Build
-        if: steps.version-check.outputs.already_published == 'false'
-        run: pnpm run build
-
-      - name: Test
-        if: steps.version-check.outputs.already_published == 'false'
-        run: pnpm run test
-
-      - name: Verify skills exports ledger
-        if: steps.version-check.outputs.already_published == 'false'
-        run: pnpm run verify:skills
-
-      - name: Publish to npm
-        if: steps.version-check.outputs.already_published == 'false'
-        run: pnpm publish --no-git-checks --access public
+      - name: Create or update the Changesets version PR
+        uses: changesets/action@v1
+        with:
+          version: pnpm version-packages
+          commit: "chore(release): version 3.0 packages"
+          title: "chore(release): version 3.0 packages"
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  rehearse:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+      artifact-metadata: write
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: "pnpm"
+          package-manager-cache: false
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Install the current npm CLI through pnpm
+        run: pnpm add --global npm@12.0.2
+
+      - name: Run the complete certification gate
+        run: pnpm run ci
+
+      - name: Rehearse every declared release artifact
+        run: |
+          candidate_created_at=$(date -u +%Y-%m-%dT%H:%M:%S.000Z)
+          pnpm run release:rc:rehearse \
+            --source-sha "${GITHUB_SHA}" \
+            --created-at "${candidate_created_at}" \
+            --output-dir .release-candidate
+
+      - name: Attest candidate packages and native dry-run evidence
+        uses: actions/attest@v4
+        with:
+          subject-path: |
+            .release-candidate/packages/*
+            .release-candidate/manifest.json
+            .release-candidate/rehearsal.json
+
+      - name: Upload the immutable candidate bundle
+        uses: actions/upload-artifact@v7
+        with:
+          name: prometheus-entity-management-rc-${{ github.sha }}
+          path: .release-candidate
+          if-no-files-found: error
+          retention-days: 30
+
+  stage:
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'stage'
+    needs: rehearse
+    runs-on: ubuntu-latest
+    environment: npm-rc
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      PROMETHEUS_RELEASE_AUTHORITY: stage-rc
+      PROMETHEUS_RELEASE_ENVIRONMENT: npm-rc
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+          package-manager-cache: false
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Install the current npm CLI through pnpm
+        run: pnpm add --global npm@12.0.2
+
+      - name: Download the attested candidate bundle
+        uses: actions/download-artifact@v8
+        with:
+          name: prometheus-entity-management-rc-${{ github.sha }}
+          path: .release-candidate
+
+      - name: Stage RC packages in dependency order
+        run: |
+          pnpm run release:rc:stage \
+            --manifest .release-candidate/manifest.json \
+            --rehearsal .release-candidate/rehearsal.json \
+            --output .release-candidate/stage-report.json
+
+      - name: Preserve the staging recovery journal
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: prometheus-entity-management-rc-stage-${{ github.sha }}
+          path: .release-candidate/stage-report.json
+          if-no-files-found: error
+          retention-days: 30

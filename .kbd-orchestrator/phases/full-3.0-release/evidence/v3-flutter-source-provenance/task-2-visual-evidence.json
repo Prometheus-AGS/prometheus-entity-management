@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "kind": "deterministic-headless-lineage-diagram",
+  "artifact": "release/evidence/flutter-source-provenance-lineage.svg",
+  "sha256": "af434e9163f49dea8afa219dd685c5d859b43ca05c1a38f7b75a72692880d03a",
+  "reviewRaster": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/task-2-lineage-review.png",
+  "reviewRasterSha256": "d70e598046617f70aa3556b37bf83f916c40cc33804e3c53cb64aa7f9d031e06",
+  "visualInspection": "pass-no-clipping-overlap-or-boundary-ambiguity",
+  "shows": [
+    "recorded KnowMe committed source",
+    "disposable explicit allowlist filter",
+    "non-buildable provenance import",
+    "single canonical entity_graph_flutter adaptation owner",
+    "hybrid-mobile-architecture-src reference-only boundary"
+  ],
+  "claimsFlutterRendering": false,
+  "claimsAccessibilityCertification": false,
+  "note": "This task certifies lineage, not a rendered Flutter user interface."
+}

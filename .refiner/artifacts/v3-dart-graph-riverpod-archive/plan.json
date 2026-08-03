@@ -1,0 +1,27 @@
+{
+  "plan": {
+    "stages": [
+      { "id": "audit", "description": "Map every phase-plan criterion to direct source, behavioral, package, and ledger evidence.", "requires_execution": false },
+      { "id": "visual", "description": "Inspect both original-resolution stable widget goldens and verify hashes.", "requires_execution": true, "tool": "image inspection and sha256" },
+      { "id": "validate", "description": "Run stable Dart, focused BDD, complete CI, skills, security, OpenSpec, schema, skip, and integrity gates.", "requires_execution": true, "tool": "repository scripts" },
+      { "id": "persist", "description": "Record QA convergence, release impact, and explicit downstream/manual limits.", "requires_execution": false }
+    ],
+    "tool_invocations": [
+      { "stage_id": "visual", "tool": "image inspection and sha256", "purpose": "Prove the list/detail harness remains legible and synchronized without claiming app/device/accessibility certification." },
+      { "stage_id": "validate", "tool": "repository scripts", "purpose": "Validate the exact Dart/Riverpod archive boundary deterministically." }
+    ],
+    "state_updates": {
+      "files_to_create": ["dist/artifact-refiner-qa.md", "artifact_manifest.json", "constraints.json", "refinement_log.md", "decisions.md", "reflection.json"],
+      "files_to_update": ["state.json"],
+      "directories_required": ["dist"]
+    },
+    "validation_plan": [
+      { "constraint_id": "c1", "validation_method": "acceptance matrix, verifier, permanent tests, and final manifest", "execution_required": true },
+      { "constraint_id": "c2", "validation_method": "official stable SDK, frozen locks, generation drift, analyze, tests, and clean Pub dry run", "execution_required": true },
+      { "constraint_id": "c3", "validation_method": "observed RED then GREEN tagged Cucumber plus aggregate CI", "execution_required": true },
+      { "constraint_id": "c4", "validation_method": "original-resolution image review and SHA-256 verification", "execution_required": true },
+      { "constraint_id": "c5", "validation_method": "coverage, public ledger, docs, skills, research, and evidence-path checks", "execution_required": true },
+      { "constraint_id": "c6", "validation_method": "publication flags, downstream-owner assertions, and skip/todo audit", "execution_required": true }
+    ]
+  }
+}

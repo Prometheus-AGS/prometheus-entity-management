@@ -4,6 +4,47 @@
 
 Update a post in one screen and every list row, detail panel, and badge that reads that entity updates automatically—without hand-maintained query keys. Normalization is built around your `type` + `id` + `normalize` function, not a separate cache product. The same graph holds data from **REST**, **GraphQL**, **WebSocket / Supabase / Convex**, **Prisma-shaped APIs**, and **ElectricSQL + PGlite** local-first sync.
 
+### 3.0 release program status
+
+The full 3.0 release is **in progress**, not yet certified or promoted to npm's `latest` tag. The authoritative [3.0 release contract](release/v3-release-contract.json) defines the complete artifact inventory, compatibility matrix, stability labels, required evidence, promotion approvals, and recovery policy. The [example coverage ledger](examples/coverage.json) records the React 19/Vite 8 showcase as implemented while Next.js, agentic A2UI, Flutter/Riverpod, and universal Tauri remain planned. A planned entry is not release evidence, and one implemented showcase is not full-release certification.
+
+Native Dart and Rust sources are included in the 3.0 inventory, while first publication to pub.dev and crates.io remains deferred until registry ownership and native release workflows are established. npm publication and the branded GitHub Pages documentation site are required release outcomes.
+
+The [3.0 main CI baseline](release/ci-baseline.md) is implemented: the repository now uses one frozen root lockfile, a Node 22/24/26 matrix, bounded named gates, compatible-current dependency decisions, and fail-closed critical/high production advisory policy. This quality gate improves confidence in `main`; it does **not** certify showcase applications, packed artifacts, native platforms, documentation deployment, or stable npm publication.
+
+The [packed npm package gate](release/package-contracts.md) is also implemented. All twelve candidates now expose loader-specific ESM/CommonJS runtimes and declarations, pass strict Publint and Are The Types Wrong checks, and install as one tarball-only set in Node ESM, Node CommonJS, TypeScript NodeNext, Node16, and Bundler consumers.
+
+The [framework-neutral core gate](release/framework-neutral-core.md) is implemented as well. The packed core resolves no React runtime or type packages, its runtimes and declarations contain no React dependency, and isolated ESM/CommonJS/TypeScript consumers can share the default vanilla graph or create isolated graph instances.
+
+The [binding singleton gate](release/binding-singleton-contract.md) now certifies the next boundary: isolated packed consumers resolve one application-owned core from React, Svelte, Solid, Web Components, Alpine, and HTMX, and each binding observes writes through that same graph. Incompatible core peers fail with actionable diagnostics. This does **not** certify native Tauri/Flutter behavior, showcases, visual evidence, documentation deployment, provenance, or publication.
+
+The [shared example contract](examples/shared/README.md) is implemented as a presentation-neutral flight plan for all five showcases. Its deterministic Project/User/Task/Comment/Activity fixtures execute thirteen semantic outcomes and map all sixteen stable release artifacts and capabilities. This proves the examples agree on expected behavior; it does **not** certify an application by itself. Run `pnpm run verify:example-coverage` to validate the contract and its fail-closed coverage ledger.
+
+The [official A2UI bridge](release/a2ui-protocol-bridge.md) is now implemented and independently certified. The `@prometheus-ags/a2ui-react` root renders official v0.9.1 surfaces through the maintained engine, graph actions cross a default-deny application policy, and alpha AG-UI chat/state APIs move to the explicit `./ag-ui` subpath. Packed consumers and real-browser accessibility/keyboard evidence prove this bridge.
+
+The [A2A conformance agent](release/a2a-conformance-agent.md) separately implements the official A2A v1 JSON-RPC binding with authenticated, caller-scoped task access, a default-deny graph policy, deterministic A2UI artifacts, packed-consumer verification, and a pinned upstream TCK receipt. Protocol validity never grants application authority. This headless gate does not certify the complete agentic showcase, unsupported REST/gRPC or push-notification bindings, Flutter rendering, documentation deployment, registry authority, or stable promotion.
+
+The [Flutter source provenance gate](release/flutter-source-provenance.md) preserves the allowlisted KnowMe history, authorship, MIT attribution, path dispositions, and deterministic lineage evidence. `packages/entity_graph_flutter` remains the sole canonical Dart package; the filtered import is non-buildable and non-public. This is chain-of-custody evidence only—not Riverpod/runtime certification, Flutter rendering, pub.dev authority, or stable 3.0 readiness.
+
+The [Dart graph and Riverpod 3 gate](release/dart-graph-riverpod.md) now certifies that canonical package's generated Riverpod families, normalized list/detail behavior, local/remote/hybrid views, optimistic CRUD rollback, bounded retry, realtime invalidation, pluggable transports, optional FFI seam, public declaration ledger, scoped cross-view widget goldens, and a clean Flutter 3.44.8 stable package candidate. It does not certify the complete Flutter/A2UI showcase, Android/iOS devices, pub.dev authority, the immutable full-release SHA, or stable promotion.
+
+The [recoverable release-candidate pipeline](release/release-candidate-pipeline.md)
+is implemented as a separate non-mutating gate. It derives the sixteen-artifact
+inventory and twelve-package dependency order from the release contract,
+certifies tarball-only consumers, protects npm `latest`, and records restartable
+partial-staging recovery. External trusted-publisher/reviewer configuration,
+stable certification, documentation deployment, the GitHub Release, and npm
+`latest` remain unproven downstream outcomes.
+
+The [React 19/Vite 8 showcase](release/vite-react19-example.md) is the first
+implemented 3.0 application. Its production-browser gate covers normalized
+cross-view identity, optimistic confirm/rollback, relationship invalidation,
+local/remote/hybrid views, REST/GraphQL seams, realtime coalescing, browser
+PGlite/Loro, Suspense/error containment, DevTools, and accessibility. This is
+source-workspace evidence, not packed-package or npm staging evidence; it is
+the application proof used to prioritize a core + React preview RC while the
+remaining portfolio is completed.
+
 ### Documentation map
 
 | Doc | Purpose |
@@ -13,6 +54,21 @@ Update a post in one screen and every list row, detail panel, and badge that rea
 | [docs/advanced.md](docs/advanced.md) | Engine, GC, Suspense, DevTools, SSR, testing |
 | [RELEASING.md](RELEASING.md) | Versioning, `prepublishOnly`, npm publish |
 | [CHANGELOG.md](CHANGELOG.md) | Release history |
+| [release/README.md](release/README.md) | 3.0 contract, registry scope, and release policy |
+| [release/ci-baseline.md](release/ci-baseline.md) | Hermetic install, CI gates, dependency holds, and advisory policy |
+| [release/package-contracts.md](release/package-contracts.md) | Twelve-package tarball, module, declaration, and payload gate |
+| [release/framework-neutral-core.md](release/framework-neutral-core.md) | Vanilla core API, React boundary migration, and packed non-React certification |
+| [release/binding-singleton-contract.md](release/binding-singleton-contract.md) | Required core peers, fixed release policy, and six-binding singleton certification |
+| [release/a2ui-protocol-bridge.md](release/a2ui-protocol-bridge.md) | Official A2UI v0.9.1 rendering, graph action policy, and AG-UI migration boundary |
+| [release/a2a-conformance-agent.md](release/a2a-conformance-agent.md) | Official A2A v1 JSON-RPC lifecycle, authority boundary, TCK scope, and alpha migration |
+| [release/flutter-source-provenance.md](release/flutter-source-provenance.md) | Licensed Flutter source lineage, canonical ownership, and publication limits |
+| [release/dart-graph-riverpod.md](release/dart-graph-riverpod.md) | Canonical Dart graph, Riverpod 3, public API ledger, behavioral evidence, and exclusions |
+| [release/release-candidate-pipeline.md](release/release-candidate-pipeline.md) | Contract-derived RC manifest, rehearsal, OIDC staging boundary, and recovery |
+| [release/vite-react19-example.md](release/vite-react19-example.md) | Implemented React 19/Vite 8 scenarios, architecture, verification, and evidence limits |
+| [examples/shared/README.md](examples/shared/README.md) | Deterministic shared showcase domain, semantic scenarios, and evidence boundary |
+| [release/dependency-policy.json](release/dependency-policy.json) | Machine-readable compatible-current dependency holds |
+| [security/advisory-policy.json](security/advisory-policy.json) | Critical/high production advisory dispositions |
+| [examples/coverage.json](examples/coverage.json) | Machine-readable implementation and showcase status |
 
 ---
 
@@ -21,7 +77,7 @@ Update a post in one screen and every list row, detail panel, and badge that rea
 ### 1. Install
 
 ```bash
-pnpm add @prometheus-ags/prometheus-entity-management zustand immer
+pnpm add @prometheus-ags/entity-graph-core @prometheus-ags/prometheus-entity-management react react-dom
 ```
 
 (`npm install` works for consumers too; this repository itself is `pnpm`-only.)
@@ -196,7 +252,8 @@ Compare against peers only when measurement methodology matches (minified vs unm
 
 | Export | Description |
 |--------|-------------|
-| `useGraphStore` | Zustand store: `entities`, `patches`, `lists`, and graph mutations. Prefer hooks in UI; `getState()` is for effects/adapters. |
+| `createGraphStore` / `graphStore` | Create an isolated vanilla graph or access the default process-wide singleton. |
+| `useGraphStore` | React subscription hook over `graphStore`, with compatibility StoreApi methods attached. Prefer domain hooks in components. |
 | `configureEngine` | App-wide defaults: stale time, retries, GC interval, GC time, etc. |
 | `getEngineOptions` | Read merged engine options. |
 | `serializeKey` | Stable string key for list `queryKey` serialization. |
@@ -310,6 +367,32 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | `createTenantScopedElectricAdapter` | Safety wrapper: refuses to attach a shape unless it declares a `tenantColumn`; builds the `WHERE` clause from a validated `{ companyId }` claim. |
 | `useLocalFirst` | Hook for local-first workflows with the adapter. |
 | `usePGliteQuery` | Run queries against PGlite in sync with the graph story. |
+
+### Peer sync companion
+
+`@prometheus-ags/entity-graph-sync` adds Yjs and the certified Loro path without
+making CRDTs a core dependency.
+
+| Export | Description |
+| --- | --- |
+| `createSyncProviderRegistry` | Create provider state owned by one graph client. |
+| `startSyncBridge({ store, registry })` | Bridge an isolated store to its providers and suppress inbound peer echo. |
+| `createLoroProvider` | Reconcile entity fields using deterministic Loro peer identities and mergeable child maps. |
+| `createLoroLoopbackNetwork` | Control offline/reconnect delivery in FIFO or reverse order for deterministic tests. |
+| `createWebSocketLoroChannel` | Queue disconnected writes, reconnect, and request snapshots missed during an outage. |
+
+Install the Loro selection explicitly:
+
+```bash
+pnpm add @prometheus-ags/entity-graph-sync loro-crdt@^1.13.9
+```
+
+PGlite persistence, Loro merge semantics, graph projection, and WebSocket
+recovery are separate proof obligations. The mandatory 3.0 commands are
+`pnpm run test:sync-persistence`, `pnpm run verify:sync-persistence`, and
+`pnpm run bdd:sync-persistence`. They do not certify any rendered showcase;
+browser, mobile, accessibility, screenshot, trace, and device evidence remains
+owned by the planned example changes.
 
 ### DevTools
 

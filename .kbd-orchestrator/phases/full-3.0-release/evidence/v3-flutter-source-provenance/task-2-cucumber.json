@@ -1,0 +1,482 @@
+[
+  {
+    "description": "  As a 3.0 release reviewer\n  I need reusable Flutter source to retain authority, history, and one canonical owner\n  So that a directory copy cannot be mistaken for a licensable, auditable migration",
+    "elements": [
+      {
+        "description": "",
+        "id": "licensed-and-history-preserving-flutter-source-migration;committed-knowme-history-is-imported-through-an-allowlist",
+        "keyword": "Scenario",
+        "line": 10,
+        "name": "Committed KnowMe history is imported through an allowlist",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 268374
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "Flutter source-import authority is recorded before copying",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:75"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 635044959
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 11,
+            "name": "the Flutter source provenance verifier executes",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:81"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 146250
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "the imported ref is rooted in a disposable filtered clone of the recorded KnowMe revision",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:88"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 553167
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "authors, dates, messages, path evolution, and the old-to-new commit map are retained",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:95"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 284416
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "dirty files, applications, product models, secrets, generated output, locks, and direct FFI are excluded",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:111"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "licensed-and-history-preserving-flutter-source-migration;one-canonical-dart-graph-remains-after-adaptation",
+        "keyword": "Scenario",
+        "line": 16,
+        "name": "One canonical Dart graph remains after adaptation",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 67125
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "Flutter source-import authority is recorded before copying",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:75"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 25916
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 17,
+            "name": "the Flutter source provenance verifier executes",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:81"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 75499
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 18,
+            "name": "approved generic paths map to explicit adapt, reference, or reject decisions",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:119"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 158000
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 19,
+            "name": "entity_graph_flutter remains the only canonical Dart graph package",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:127"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 101666
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 20,
+            "name": "the filtered import is non-buildable provenance rather than a second public package",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:135"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "licensed-and-history-preserving-flutter-source-migration;licensing-and-attribution-survive-outside-this-conversation",
+        "keyword": "Scenario",
+        "line": 22,
+        "name": "Licensing and attribution survive outside this conversation",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 20209
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "Flutter source-import authority is recorded before copying",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:75"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 35208
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 23,
+            "name": "the Flutter source provenance verifier executes",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:81"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 46833
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 24,
+            "name": "the root, canonical Dart package, and imported source carry the declared MIT license",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:139"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 64292
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 25,
+            "name": "the provenance manifest records source revisions, filtered commits, attribution, and publication limits",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:148"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 21917
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 26,
+            "name": "pub.dev publication remains unauthorized",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:155"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "licensed-and-history-preserving-flutter-source-migration;the-migration-lineage-has-deterministic-visual-evidence",
+        "keyword": "Scenario",
+        "line": 28,
+        "name": "The migration lineage has deterministic visual evidence",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 9750
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "Flutter source-import authority is recorded before copying",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:75"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 13583
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 29,
+            "name": "the Flutter source provenance verifier executes",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:81"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 394375
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 30,
+            "name": "a deterministic lineage diagram shows source, filter, provenance import, and canonical adaptation boundaries",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:160"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 191624
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 31,
+            "name": "the visual artifact hash is bound to the machine-readable provenance receipt",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:169"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 49416
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 32,
+            "name": "the headless diagram does not claim Flutter rendering or accessibility certification",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:174"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "licensed-and-history-preserving-flutter-source-migration;the-architecture-repository-is-not-misreported-as-runtime-source",
+        "keyword": "Scenario",
+        "line": 34,
+        "name": "The architecture repository is not misreported as runtime source",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 33500
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "Flutter source-import authority is recorded before copying",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:75"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 17832
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 35,
+            "name": "the Flutter source provenance verifier executes",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:81"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 92208
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 36,
+            "name": "hybrid-mobile-architecture-src is recorded as MIT reference-only",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:179"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 66125
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 37,
+            "name": "no runtime library is fabricated from its templates, scripts, or documentation",
+            "match": {
+              "location": "tests/steps/v3-flutter-source-provenance.steps.ts:185"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@system",
+            "line": 1
+          },
+          {
+            "name": "@smoke",
+            "line": 1
+          },
+          {
+            "name": "@v3-flutter-source-provenance",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "licensed-and-history-preserving-flutter-source-migration",
+    "line": 2,
+    "keyword": "Feature",
+    "name": "Licensed and history-preserving Flutter source migration",
+    "tags": [
+      {
+        "name": "@release",
+        "line": 1
+      },
+      {
+        "name": "@system",
+        "line": 1
+      },
+      {
+        "name": "@smoke",
+        "line": 1
+      },
+      {
+        "name": "@v3-flutter-source-provenance",
+        "line": 1
+      }
+    ],
+    "uri": "tests/features/release/v3-flutter-source-provenance.feature"
+  }
+]

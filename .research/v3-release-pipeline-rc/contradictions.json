@@ -1,0 +1,32 @@
+{
+  "contradictions": [
+    {
+      "id": "provenance-flag",
+      "claimA": "npm provenance examples use npm publish --provenance",
+      "claimB": "trusted publishing generates provenance automatically",
+      "resolution": "For OIDC trusted publishing, automatic provenance is authoritative. An explicit flag may remain harmless for compatibility, but the verifier must not treat the flag itself as proof that an attestation exists.",
+      "status": "resolved"
+    },
+    {
+      "id": "staging-versus-rc",
+      "claimA": "npm staged publishing is the safest human approval boundary",
+      "claimB": "the plan requires an RC rehearsal and new packages cannot be staged",
+      "resolution": "Use an offline/ephemeral-registry rehearsal for every declared package. Use npm stage publish only as an optional real-registry gate for packages that already exist and only with explicit authority; never redefine staging as RC versioning.",
+      "status": "resolved"
+    },
+    {
+      "id": "changesets-recovery",
+      "claimA": "Changesets publishes a monorepo with one command",
+      "claimB": "the action warns custom publish commands must handle already-published versions",
+      "resolution": "A release journal and registry preflight must classify each package-version as pending, already-published-with-matching-integrity, or conflicting. Changesets is the version planner, not sufficient recovery state.",
+      "status": "resolved"
+    },
+    {
+      "id": "prerelease-new-package-latest",
+      "claimA": "prerelease mode selects the rc dist-tag",
+      "claimB": "Changesets warns a first-time package may still receive latest",
+      "resolution": "The verifier must reject a real prerelease publish containing a never-published npm package unless a separately approved bootstrap strategy proves latest cannot move.",
+      "status": "resolved"
+    }
+  ]
+}

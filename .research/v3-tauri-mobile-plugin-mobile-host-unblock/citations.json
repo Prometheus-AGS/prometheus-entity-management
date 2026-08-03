@@ -1,0 +1,14 @@
+{
+  "style": "inline-link",
+  "citations": [
+    {"id":"tauri-project-structure","url":"https://v2.tauri.app/start/project-structure/","credibility_score":98,"confidence":0.99,"supports":"Mobile applications load the Rust library mobile entry point through platform frameworks."},
+    {"id":"tauri-create-project","url":"https://v2.tauri.app/start/create-project/","credibility_score":98,"confidence":0.99,"supports":"A complete app plus Tauri CLI is required before Android/iOS target initialization and execution."},
+    {"id":"tauri-prerequisites","url":"https://v2.tauri.app/start/prerequisites/","credibility_score":98,"confidence":0.99,"supports":"Android and iOS require their Rust targets and platform toolchains."},
+    {"id":"tauri-mobile-plugin","url":"https://v2.tauri.app/develop/plugins/develop-mobile/","credibility_score":98,"confidence":0.99,"supports":"Real mobile execution crosses Rust PluginHandle into Kotlin Command or Swift Invoke code."},
+    {"id":"tauri-capabilities","url":"https://v2.tauri.app/security/capabilities/","credibility_score":98,"confidence":0.99,"supports":"Capabilities bind permissions to windows and matching capability permissions merge."},
+    {"id":"tauri-permissions","url":"https://v2.tauri.app/security/permissions/","credibility_score":98,"confidence":0.99,"supports":"Plugin commands are unavailable to frontend code until a capability grants their permission."},
+    {"id":"tauri-template","url":"https://github.com/tauri-apps/create-tauri-app/tree/dev/templates/_base_/src-tauri","credibility_score":99,"confidence":0.99,"supports":"The current base app template defines staticlib/cdylib/rlib and mobile_entry_point."},
+    {"id":"local-device-lane","url":"release/tauri-mobile-device-lane.md","credibility_score":100,"confidence":1.0,"supports":"The accepted local contract requires exact platform response, denial, visual, environment, and hash receipts."},
+    {"id":"local-source-flow","url":"packages/entity-graph-tauri/rust-plugin/src/commands.rs","credibility_score":100,"confidence":1.0,"supports":"graph_platform_ping calls EntityGraphExt::ping, which uses run_mobile_plugin on mobile."}
+  ]
+}

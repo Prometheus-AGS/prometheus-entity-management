@@ -31,12 +31,38 @@ class EntitySyncMetadata {
     bool? synced,
     SyncOrigin? origin,
     DateTime? updatedAt,
-  }) =>
-      EntitySyncMetadata(
-        synced: synced ?? this.synced,
-        origin: origin ?? this.origin,
-        updatedAt: updatedAt ?? this.updatedAt,
-      );
+  }) => EntitySyncMetadata(
+    synced: synced ?? this.synced,
+    origin: origin ?? this.origin,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+}
+
+/// Complete rollback receipt for an optimistic entity removal.
+///
+/// The receipt belongs to the graph because only the graph knows every list
+/// membership and local patch associated with an entity. UI/controller code
+/// must not manufacture duplicate entity snapshots outside this boundary.
+class EntityRemovalSnapshot {
+  const EntityRemovalSnapshot({
+    required this.type,
+    required this.id,
+    required this.entity,
+    required this.patch,
+    required this.state,
+    required this.syncMetadata,
+    required this.listIndexes,
+  });
+
+  final String type;
+  final String id;
+  final Map<String, Object?>? entity;
+  final Map<String, Object?>? patch;
+  final EntityState? state;
+  final EntitySyncMetadata? syncMetadata;
+
+  /// Query key to the entity's former index in that ID-only list.
+  final Map<String, int> listIndexes;
 }
 
 /// Fetch / cache metadata for a single entity instance.
@@ -59,13 +85,12 @@ class EntityState {
     String? error,
     bool? stale,
     bool clearError = false,
-  }) =>
-      EntityState(
-        isFetching: isFetching ?? this.isFetching,
-        lastFetched: lastFetched ?? this.lastFetched,
-        error: clearError ? null : (error ?? this.error),
-        stale: stale ?? this.stale,
-      );
+  }) => EntityState(
+    isFetching: isFetching ?? this.isFetching,
+    lastFetched: lastFetched ?? this.lastFetched,
+    error: clearError ? null : (error ?? this.error),
+    stale: stale ?? this.stale,
+  );
 }
 
 /// Ordered entity-id array + pagination metadata.
@@ -111,20 +136,22 @@ class ListState {
     DateTime? lastFetched,
     bool? stale,
     bool clearError = false,
-  }) =>
-      ListState(
-        ids: ids ?? this.ids,
-        total: total ?? this.total,
-        nextCursor: nextCursor ?? this.nextCursor,
-        prevCursor: prevCursor ?? this.prevCursor,
-        hasNextPage: hasNextPage ?? this.hasNextPage,
-        hasPrevPage: hasPrevPage ?? this.hasPrevPage,
-        isFetching: isFetching ?? this.isFetching,
-        isFetchingMore: isFetchingMore ?? this.isFetchingMore,
-        error: clearError ? null : (error ?? this.error),
-        lastFetched: lastFetched ?? this.lastFetched,
-        stale: stale ?? this.stale,
-      );
+    bool clearTotal = false,
+    bool clearNextCursor = false,
+    bool clearPrevCursor = false,
+  }) => ListState(
+    ids: ids ?? this.ids,
+    total: clearTotal ? null : (total ?? this.total),
+    nextCursor: clearNextCursor ? null : (nextCursor ?? this.nextCursor),
+    prevCursor: clearPrevCursor ? null : (prevCursor ?? this.prevCursor),
+    hasNextPage: hasNextPage ?? this.hasNextPage,
+    hasPrevPage: hasPrevPage ?? this.hasPrevPage,
+    isFetching: isFetching ?? this.isFetching,
+    isFetchingMore: isFetchingMore ?? this.isFetchingMore,
+    error: clearError ? null : (error ?? this.error),
+    lastFetched: lastFetched ?? this.lastFetched,
+    stale: stale ?? this.stale,
+  );
 
   static const empty = ListState();
 }
@@ -163,10 +190,11 @@ final class ListChanged extends GraphChange {
 /// Mirrors the Zustand [GraphState] from entity-graph-core's graph.ts.
 /// All writes are synchronous and notify [changes].
 class EntityGraph {
-  EntityGraph._();
+  /// Creates an isolated graph, primarily for provider overrides and tests.
+  EntityGraph();
 
   /// Singleton instance (mirrors the module-global Zustand store).
-  static final EntityGraph instance = EntityGraph._();
+  static final EntityGraph instance = EntityGraph();
 
   // Internal storage — all maps are mutated in-place; the graph notifies
   // listeners via [_changeController] on every write.
@@ -175,6 +203,7 @@ class EntityGraph {
   final Map<String, EntityState> _entityStates = {};
   final Map<String, EntitySyncMetadata> _syncMetadata = {};
   final Map<String, ListState> _lists = {};
+  final Map<String, String> _listTypes = {};
 
   final _changeController = StreamController<GraphChange>.broadcast();
 
@@ -201,6 +230,18 @@ class EntityGraph {
     return Map.unmodifiable({...base, ...patch});
   }
 
+  /// Read canonical server-confirmed data without UI/optimistic patches.
+  Map<String, Object?>? readCanonicalEntity(String type, String id) {
+    final row = _entities[type]?[id];
+    return row == null ? null : Map.unmodifiable(row);
+  }
+
+  /// Read only the local patch layer for an entity.
+  Map<String, Object?>? readEntityPatch(String type, String id) {
+    final patch = _patches[type]?[id];
+    return patch == null ? null : Map.unmodifiable(patch);
+  }
+
   /// Read entity + sync metadata fields (`\$synced`, `\$origin`, `\$updatedAt`).
   Map<String, Object?>? readEntitySnapshot(String type, String id) {
     final base = readEntity(type, id);
@@ -218,9 +259,12 @@ class EntityGraph {
   EntityState entityState(String type, String id) =>
       _entityStates[_ek(type, id)] ?? const EntityState();
 
+  /// Sync metadata for an entity, defaulting to a server-confirmed record.
+  EntitySyncMetadata syncMetadata(String type, String id) =>
+      _syncMetadata[_ek(type, id)] ?? const EntitySyncMetadata();
+
   /// List slot for a query key.
-  ListState listState(String queryKey) =>
-      _lists[queryKey] ?? ListState.empty;
+  ListState listState(String queryKey) => _lists[queryKey] ?? ListState.empty;
 
   /// All entity ids for a given type.
   Iterable<String> entityIds(String type) =>
@@ -270,7 +314,60 @@ class EntityGraph {
     _patches[type]?.remove(id);
     _entityStates.remove(_ek(type, id));
     _syncMetadata.remove(_ek(type, id));
+    removeIdFromAllLists(type, id);
     _changeController.add(EntityRemoved(type, id));
+  }
+
+  /// Remove an entity optimistically and return everything needed to roll back.
+  EntityRemovalSnapshot removeEntityOptimistically(String type, String id) {
+    final indexes = <String, int>{};
+    for (final entry in _lists.entries) {
+      final knownType = _listTypes[entry.key];
+      if (knownType != null && knownType != type) continue;
+      final index = entry.value.ids.indexOf(id);
+      if (index >= 0) indexes[entry.key] = index;
+    }
+    final snapshot = EntityRemovalSnapshot(
+      type: type,
+      id: id,
+      entity: readCanonicalEntity(type, id),
+      patch: readEntityPatch(type, id),
+      state: _entityStates[_ek(type, id)],
+      syncMetadata: _syncMetadata[_ek(type, id)],
+      listIndexes: Map.unmodifiable(indexes),
+    );
+    removeEntity(type, id);
+    return snapshot;
+  }
+
+  /// Restore a failed optimistic removal from its graph-owned receipt.
+  void restoreRemovedEntity(EntityRemovalSnapshot snapshot) {
+    final entity = snapshot.entity;
+    if (entity != null) {
+      _entities.putIfAbsent(snapshot.type, () => {});
+      _entities[snapshot.type]![snapshot.id] = Map.of(entity);
+    }
+    final patch = snapshot.patch;
+    if (patch != null) {
+      _patches.putIfAbsent(snapshot.type, () => {});
+      _patches[snapshot.type]![snapshot.id] = Map.of(patch);
+    }
+    final key = _ek(snapshot.type, snapshot.id);
+    if (snapshot.state != null) _entityStates[key] = snapshot.state!;
+    if (snapshot.syncMetadata != null) {
+      _syncMetadata[key] = snapshot.syncMetadata!;
+    }
+    for (final entry in snapshot.listIndexes.entries) {
+      final previous = _lists[entry.key] ?? ListState.empty;
+      final ids = previous.ids.where((item) => item != snapshot.id).toList();
+      ids.insert(entry.value.clamp(0, ids.length), snapshot.id);
+      _lists[entry.key] = previous.copyWith(
+        ids: List.unmodifiable(ids),
+        total: previous.total == null ? null : previous.total! + 1,
+      );
+      _notifyList(entry.key);
+    }
+    _notifyEntity(snapshot.type, snapshot.id);
   }
 
   // ─── Patch API ───────────────────────────────────────────────────────────
@@ -299,19 +396,53 @@ class EntityGraph {
     _notifyEntity(type, id);
   }
 
+  /// Mark the current visible entity as a local optimistic value.
+  void markEntityOptimistic(String type, String id) {
+    _syncMetadata[_ek(type, id)] = EntitySyncMetadata(
+      synced: false,
+      origin: SyncOrigin.optimistic,
+      updatedAt: DateTime.now(),
+    );
+    _notifyEntity(type, id);
+  }
+
+  /// Mark an entity as confirmed without changing its canonical payload.
+  void markEntitySynced(String type, String id) {
+    _syncMetadata[_ek(type, id)] = EntitySyncMetadata(
+      synced: true,
+      origin: SyncOrigin.server,
+      updatedAt: DateTime.now(),
+    );
+    _notifyEntity(type, id);
+  }
+
+  /// Restore an exact sync-metadata value after optimistic rollback.
+  void setEntitySyncMetadata(
+    String type,
+    String id,
+    EntitySyncMetadata metadata,
+  ) {
+    _syncMetadata[_ek(type, id)] = metadata;
+    _notifyEntity(type, id);
+  }
+
   // ─── Entity state API ────────────────────────────────────────────────────
 
   void setEntityFetching(String type, String id, {required bool fetching}) {
     final k = _ek(type, id);
-    _entityStates[k] =
-        (_entityStates[k] ?? const EntityState()).copyWith(isFetching: fetching);
+    _entityStates[k] = (_entityStates[k] ?? const EntityState()).copyWith(
+      isFetching: fetching,
+    );
     _notifyEntity(type, id);
   }
 
   void setEntityError(String type, String id, String? error) {
     final k = _ek(type, id);
-    _entityStates[k] = (_entityStates[k] ?? const EntityState())
-        .copyWith(isFetching: false, error: error, clearError: error == null);
+    _entityStates[k] = (_entityStates[k] ?? const EntityState()).copyWith(
+      isFetching: false,
+      error: error,
+      clearError: error == null,
+    );
     _notifyEntity(type, id);
   }
 
@@ -323,18 +454,20 @@ class EntityGraph {
       stale: false,
       clearError: true,
     );
-    _syncMetadata[k] = (_syncMetadata[k] ?? const EntitySyncMetadata()).copyWith(
-      synced: true,
-      origin: SyncOrigin.server,
-      updatedAt: DateTime.now(),
-    );
+    _syncMetadata[k] = (_syncMetadata[k] ?? const EntitySyncMetadata())
+        .copyWith(
+          synced: true,
+          origin: SyncOrigin.server,
+          updatedAt: DateTime.now(),
+        );
     _notifyEntity(type, id);
   }
 
   void setEntityStale(String type, String id, {required bool stale}) {
     final k = _ek(type, id);
-    _entityStates[k] =
-        (_entityStates[k] ?? const EntityState()).copyWith(stale: stale);
+    _entityStates[k] = (_entityStates[k] ?? const EntityState()).copyWith(
+      stale: stale,
+    );
     _notifyEntity(type, id);
   }
 
@@ -343,12 +476,14 @@ class EntityGraph {
   void setListResult(
     String queryKey,
     List<String> ids, {
+    String? entityType,
     int? total,
     String? nextCursor,
     String? prevCursor,
     bool hasNextPage = false,
     bool hasPrevPage = false,
   }) {
+    if (entityType != null) _listTypes[queryKey] = entityType;
     final prev = _lists[queryKey] ?? ListState.empty;
     _lists[queryKey] = prev.copyWith(
       ids: List.unmodifiable(ids),
@@ -362,6 +497,9 @@ class EntityGraph {
       lastFetched: DateTime.now(),
       stale: false,
       clearError: true,
+      clearTotal: total == null,
+      clearNextCursor: nextCursor == null,
+      clearPrevCursor: prevCursor == null,
     );
     _notifyList(queryKey);
   }
@@ -369,15 +507,14 @@ class EntityGraph {
   void appendListResult(
     String queryKey,
     List<String> ids, {
+    String? entityType,
     int? total,
     String? nextCursor,
     bool hasNextPage = false,
   }) {
+    if (entityType != null) _listTypes[queryKey] = entityType;
     final prev = _lists[queryKey] ?? ListState.empty;
-    final merged = [
-      ...prev.ids,
-      ...ids.where((id) => !prev.ids.contains(id)),
-    ];
+    final merged = [...prev.ids, ...ids.where((id) => !prev.ids.contains(id))];
     _lists[queryKey] = prev.copyWith(
       ids: List.unmodifiable(merged),
       total: total ?? prev.total,
@@ -393,14 +530,16 @@ class EntityGraph {
   }
 
   void setListFetching(String queryKey, {required bool fetching}) {
-    _lists[queryKey] =
-        (_lists[queryKey] ?? ListState.empty).copyWith(isFetching: fetching);
+    _lists[queryKey] = (_lists[queryKey] ?? ListState.empty).copyWith(
+      isFetching: fetching,
+    );
     _notifyList(queryKey);
   }
 
   void setListFetchingMore(String queryKey, {required bool fetchingMore}) {
-    _lists[queryKey] = (_lists[queryKey] ?? ListState.empty)
-        .copyWith(isFetchingMore: fetchingMore);
+    _lists[queryKey] = (_lists[queryKey] ?? ListState.empty).copyWith(
+      isFetchingMore: fetchingMore,
+    );
     _notifyList(queryKey);
   }
 
@@ -418,13 +557,16 @@ class EntityGraph {
   }
 
   void setListStale(String queryKey, {required bool stale}) {
-    _lists[queryKey] =
-        (_lists[queryKey] ?? ListState.empty).copyWith(stale: stale);
+    _lists[queryKey] = (_lists[queryKey] ?? ListState.empty).copyWith(
+      stale: stale,
+    );
     _notifyList(queryKey);
   }
 
   void removeIdFromAllLists(String type, String id) {
     for (final key in _lists.keys) {
+      final knownType = _listTypes[key];
+      if (knownType != null && knownType != type) continue;
       final list = _lists[key]!;
       if (list.ids.contains(id)) {
         final newIds = list.ids.where((e) => e != id).toList();
@@ -437,8 +579,15 @@ class EntityGraph {
     }
   }
 
-  void insertIdInList(String queryKey, String id, Object position) {
+  void insertIdInList(
+    String queryKey,
+    String id,
+    Object position, {
+    String? entityType,
+  }) {
     final prev = _lists[queryKey] ?? ListState.empty;
+    if (entityType != null) _listTypes[queryKey] = entityType;
+    final isNew = !prev.ids.contains(id);
     final ids = prev.ids.where((e) => e != id).toList();
     if (position == 'start') {
       ids.insert(0, id);
@@ -447,7 +596,10 @@ class EntityGraph {
     } else if (position is int) {
       ids.insert(position.clamp(0, ids.length), id);
     }
-    _lists[queryKey] = prev.copyWith(ids: List.unmodifiable(ids));
+    _lists[queryKey] = prev.copyWith(
+      ids: List.unmodifiable(ids),
+      total: isNew && prev.total != null ? prev.total! + 1 : prev.total,
+    );
     _notifyList(queryKey);
   }
 
@@ -479,9 +631,23 @@ class EntityGraph {
     }
   }
 
+  /// Mark every list registered for [type] stale.
+  ///
+  /// Older untyped list keys retain prefix behavior for backwards
+  /// compatibility, while provider-created lists use the explicit type map.
+  void invalidateListsForType(String type) {
+    for (final key in _lists.keys) {
+      final knownType = _listTypes[key];
+      if (knownType == type || (knownType == null && key.startsWith(type))) {
+        _lists[key] = _lists[key]!.copyWith(stale: true);
+        _notifyList(key);
+      }
+    }
+  }
+
   void invalidateType(String type) {
     invalidateEntity(type);
-    invalidateLists(type);
+    invalidateListsForType(type);
   }
 
   // ─── Test / DevTools helpers ──────────────────────────────────────────────
@@ -493,6 +659,7 @@ class EntityGraph {
     _entityStates.clear();
     _syncMetadata.clear();
     _lists.clear();
+    _listTypes.clear();
   }
 
   /// Dispose the change stream. Call when the graph is no longer needed.

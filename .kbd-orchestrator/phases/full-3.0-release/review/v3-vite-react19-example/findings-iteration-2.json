@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "release/v3-release-contract.json",
+      "line": 87,
+      "claim": "The machine-readable release contract declares the wrong ESM extension for the npm package contract.",
+      "evidence": "`release/v3-release-contract.json` adds `\"moduleContract\": { ... \"esmExtension\": \".js\" ... }`, while the package manifests and package evidence in the same diff use ESM `.mjs` paths, e.g. `packages/entity-graph-sync/package.json` sets `\"module\": \"./dist/index.mjs\"` and exports import default `\"./dist/index.mjs\"`; acceptance requires public API, package, documentation, and release ledgers to be synchronized.",
+      "suggested_fix": "Change `moduleContract.esmExtension` to `.mjs` or update all package outputs/manifests to match the contract."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "packages/entity-graph-sync/src/index.ts",
+      "line": 73,
+      "claim": "The sync package now re-exports WebSocket Loro APIs from a module that is not included in the diff after the previous implementation was deleted.",
+      "evidence": "`packages/entity-graph-sync/src/index.ts` now exports `createWebSocketLoroChannel`, `encodeLoroWebSocketMessage`, and `decodeLoroWebSocketMessage` from `./providers/loro-websocket-channel`, while `packages/entity-graph-sync/src/providers/loro-provider.ts` removes the existing in-file `createWebSocketLoroChannel` implementation; the corrected `openspec/changes/v3-vite-react19-example/files.txt` lists `loro-loopback.ts`, `loro-provider.ts`, and related files but does not list `packages/entity-graph-sync/src/providers/loro-websocket-channel.ts`.",
+      "suggested_fix": "Add `packages/entity-graph-sync/src/providers/loro-websocket-channel.ts` to the change with the exported functions/types, or keep/export the implementation from `loro-provider.ts`."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

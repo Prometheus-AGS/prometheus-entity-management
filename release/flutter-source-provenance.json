@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-08-01T23:42:00Z",
+  "authorityRecord": "release/flutter-source-authority.json",
+  "decision": "history-preserved-provenance-imported-adaptation-pending",
+  "destination": {
+    "repository": "prometheus-entity-management",
+    "license": "MIT",
+    "licenseSha256": "b56ac2452db200fb5b4e14b7f8ce31c52ebd9d1d23558fa217e21e412bd2fc3a",
+    "canonicalDartGraphPackage": {
+      "name": "entity_graph_flutter",
+      "path": "packages/entity_graph_flutter",
+      "releaseContractArtifactId": "dart-flutter"
+    },
+    "provenanceImportPath": "provenance/imports/knowme-flutter",
+    "provenanceImportMode": "non-buildable-non-workspace-non-public"
+  },
+  "knowMe": {
+    "repository": "Know-Me-Tools/know-me-system",
+    "sourcePath": "/Users/gqadonis/Projects/know-me/know-me-system",
+    "sourceRevision": "68f7ab83b72c8bed37d1e7d19a5371a45b4f8f52",
+    "sourceRevisionMapping": "0000000000000000000000000000000000000000",
+    "sourceRevisionMappingReason": "The recorded source HEAD made no allowlisted-path change; git-filter-repo correctly pruned it while retaining its earlier relevant ancestors.",
+    "sourceWorkingTreeAtImport": "dirty-and-explicitly-not-read-for-import-content",
+    "filterMethod": "fresh-disposable-no-local-clone-plus-git-filter-repo-explicit-paths",
+    "filterTool": "git-filter-repo",
+    "filteredTip": "cb318ddb2beb2948a1b26e5e589cff3145b788cc",
+    "filteredTree": "6bd3c232073687b774e444f4196c1a4f4da2c39c",
+    "destinationMergeCommit": "eb3c9802da5ff10ad6db135fed761bd23ea80b3f",
+    "destinationMergeParents": [
+      "dd5d70c9954381d3af4519ccedeb5cb565d6027e",
+      "cb318ddb2beb2948a1b26e5e589cff3145b788cc"
+    ],
+    "commitMap": {
+      "path": "provenance/imports/knowme-flutter/commit-map.tsv",
+      "sha256": "02cb27df3df09be057af9a2e4878efe73f7e213abcf9914ead4a88e99787de78",
+      "metadataPath": "provenance/imports/knowme-flutter/retained-commit-metadata.tsv",
+      "metadataSha256": "7d2e1e8515ed13cebdbbee1c34d3d4353dfbe9572d2677b97be39b933daf87ef",
+      "sourceCommitsExamined": 226,
+      "retainedCommits": 8,
+      "prunedCommits": 218,
+      "identicalCommitHashesClaimed": false
+    },
+    "historyRetained": [
+      "authors",
+      "author dates",
+      "committer identities",
+      "committer dates",
+      "messages",
+      "allowed file evolution",
+      "old-to-new commit mappings"
+    ],
+    "attribution": {
+      "authorsObserved": ["Travis James"],
+      "destinationCopyright": "2026 Travis James / Prometheus AGS / KnowMe LLC"
+    },
+    "approvedFiles": [
+      "provenance/imports/knowme-flutter/gen_ui_widgets/README.md",
+      "provenance/imports/knowme-flutter/gen_ui_widgets/lib/src/a2ui_surface_view.dart",
+      "provenance/imports/knowme-flutter/gen_ui_widgets/pubspec.yaml",
+      "provenance/imports/knowme-flutter/prometheus_entity_management/README.md",
+      "provenance/imports/knowme-flutter/prometheus_entity_management/analysis_options.yaml",
+      "provenance/imports/knowme-flutter/prometheus_entity_management/lib/prometheus_entity_management.dart",
+      "provenance/imports/knowme-flutter/prometheus_entity_management/lib/src/entity.dart",
+      "provenance/imports/knowme-flutter/prometheus_entity_management/lib/src/providers.dart",
+      "provenance/imports/knowme-flutter/prometheus_entity_management/lib/src/sync.dart",
+      "provenance/imports/knowme-flutter/prometheus_entity_management/lib/src/transport.dart",
+      "provenance/imports/knowme-flutter/prometheus_entity_management/lib/src/view.dart",
+      "provenance/imports/knowme-flutter/prometheus_entity_management/pubspec.yaml"
+    ],
+    "pathDecisions": [
+      {
+        "source": "flutter_packages/prometheus_entity_management/lib/** (hand-authored allowlist only)",
+        "destination": "provenance/imports/knowme-flutter/prometheus_entity_management/lib/**",
+        "decision": "adapt",
+        "canonicalOwner": "packages/entity_graph_flutter"
+      },
+      {
+        "source": "flutter_packages/prometheus_entity_management/{README.md,analysis_options.yaml,pubspec.yaml}",
+        "destination": "provenance/imports/knowme-flutter/prometheus_entity_management/",
+        "decision": "reference",
+        "canonicalOwner": "packages/entity_graph_flutter"
+      },
+      {
+        "source": "flutter_packages/gen_ui_widgets/lib/src/a2ui_surface_view.dart",
+        "destination": "provenance/imports/knowme-flutter/gen_ui_widgets/lib/src/a2ui_surface_view.dart",
+        "decision": "adapt",
+        "canonicalOwner": "packages/entity_graph_flutter"
+      },
+      {
+        "source": "flutter_packages/gen_ui_widgets/{README.md,pubspec.yaml}",
+        "destination": "provenance/imports/knowme-flutter/gen_ui_widgets/",
+        "decision": "reference",
+        "canonicalOwner": "packages/entity_graph_flutter"
+      },
+      {
+        "source": "all other KnowMe paths",
+        "destination": null,
+        "decision": "reject",
+        "canonicalOwner": null
+      }
+    ],
+    "exclusions": [
+      "dirty working-tree content",
+      "mobile and desktop applications",
+      "KnowMe product models and product-specific UI",
+      "direct gen_ui_core FFI implementation",
+      "secrets and local configuration",
+      ".dart_tool and build output",
+      "lockfiles",
+      "generated Dart output",
+      "flutter_packages/gen_ui_flutter placeholder package"
+    ]
+  },
+  "hybridMobileArchitecture": {
+    "repository": "Know-Me-Tools/hybrid-mobile-architecture-skill",
+    "sourcePath": "/Users/gqadonis/Projects/hybrid-mobile-architecture-src",
+    "revision": "e641c25d5c99ac04c3c872626099583c29ac568c",
+    "license": "MIT",
+    "decision": "reference-only-no-runtime-import",
+    "runtimeFilesImported": 0,
+    "reason": "The repository is architecture scaffolding, templates, scripts, and documentation rather than a canonical Flutter runtime library."
+  },
+  "visualEvidence": {
+    "path": "release/evidence/flutter-source-provenance-lineage.svg",
+    "sha256": "af434e9163f49dea8afa219dd685c5d859b43ca05c1a38f7b75a72692880d03a",
+    "kind": "deterministic-headless-lineage-diagram",
+    "claimsFlutterRendering": false,
+    "claimsAccessibilityCertification": false
+  },
+  "licenseDecision": {
+    "destinationLicense": "MIT",
+    "sourceTrackedLicenseFound": false,
+    "basis": "project-owner-directed migration plus destination release contract",
+    "legalQualification": "Engineering provenance record, not a general legal opinion."
+  },
+  "publicationAuthorized": false,
+  "registryAuthorityRequiredLater": true,
+  "adaptationTask": "v3-dart-graph-riverpod"
+}

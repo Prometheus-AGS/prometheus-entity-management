@@ -14,11 +14,30 @@ Data flows **up** into the graph; UI reads **down** through hooks.
 
 Sideways data flow between components (duplicated caches, prop-drilled copies) is an anti-pattern; the graph is the single source of truth.
 
+## Framework store boundary
+
+- `@prometheus-ags/entity-graph-core` exports `createGraphStore()` and the vanilla `graphStore`; it has no React runtime or type dependency.
+- `@prometheus-ags/prometheus-entity-management` exports the callable React `useGraphStore(selector)` hook over that singleton.
+- Core's deprecated `useGraphStore` name is a StoreApi alias only. New non-React code uses `graphStore`; SSR code that requires request isolation uses `createGraphStore()`.
+- Non-React local-first code uses `getGraphSyncStatus()` or `graphSyncStatusStore`; React components use `useGraphSyncStatus()`.
+- React, Svelte, Solid, Web Components, Alpine, and HTMX bindings declare core as one required compatible peer plus a workspace-only development dependency. Never add core as a binding production dependency or mark its peer optional; the application owns resolution of the shared graph.
+- Require `pnpm run verify:binding-singletons` before claiming those packed bindings resolve one physical core or share reactive behavior. Native Tauri/Flutter and browser/device claims require their own later gates.
+- `packages/entity_graph_flutter` is the sole canonical Dart graph package. `provenance/imports/knowme-flutter` is a non-buildable, non-workspace, non-public history boundary; never import, analyze, build, publish, or expose it as a second runtime. Require `pnpm run verify:flutter-source-provenance` for source-lineage claims. Require `pnpm run verify:dart-graph-riverpod` and `pnpm run verify:dart-exports` for Dart runtime/API claims, but do not treat their scoped widget goldens as complete Flutter showcase or device evidence.
+
+## Dart provider boundary
+
+- Flutter widgets read generated Riverpod providers and call provider controllers; they do not own entity copies or invoke transports directly.
+- `EntityGraph` alone owns canonical rows, patches, sync metadata, and ID-only list membership.
+- Riverpod families select/orchestrate that graph. Local, remote, and hybrid list modes all join models from it.
+- `EntityTransport` implementations own list/get/create/update/delete/change I/O and normalization.
+- `FfiEntityTransportAdapter` is optional and cannot introduce a second graph or mandatory native runtime.
+- Terminal provider failures do not retry; transient fetches receive at most two retries; mutation side effects are not automatically retried.
+
 ## Components NEVER interact directly with stores
 
 - Do **not** import or subscribe to `useGraphStore` inside **component** files.
 - Components use **`useEntity`**, **`useEntityList`**, **`useEntityView`**, **`useEntityCRUD`**, GraphQL hooks, etc.
-- `useGraphStore.getState()` is allowed **inside** engine code, adapters, CRUD internals, **custom app hooks** (e.g. syncing TanStack Query results into the graph), effects, workers, and other **non-component** modules—not in presentational `*.tsx` components.
+- `graphStore.getState()` (or the React hook's attached compatibility method) is allowed **inside** engine code, adapters, CRUD internals, **custom app hooks** (e.g. syncing TanStack Query results into the graph), effects, workers, and other **non-component** modules—not in presentational `*.tsx` components.
 
 ## Entities live exactly once (normalized cache)
 

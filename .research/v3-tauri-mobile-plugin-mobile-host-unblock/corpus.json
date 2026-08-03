@@ -1,0 +1,35 @@
+{
+  "concept_id": "tauri-real-mobile-plugin-certification-host",
+  "sources": [
+    {
+      "source_ref": "https://v2.tauri.app/start/project-structure/",
+      "content_summary": "Tauri mobile apps compile the application as a library and load the function marked with mobile_entry_point through the platform framework.",
+      "key_points": ["The app crate needs staticlib, cdylib, and rlib outputs.", "The mobile entry point belongs in src/lib.rs.", "tauri.conf.json identifies the Tauri project to the CLI."],
+      "misconceptions": ["A test-only rlib with no mobile entry point is a runnable mobile application."]
+    },
+    {
+      "source_ref": "https://v2.tauri.app/develop/plugins/develop-mobile/",
+      "content_summary": "A mobile plugin call crosses Rust PluginHandle into an annotated Kotlin command on Android or an Objective-C-visible Swift function on iOS.",
+      "key_points": ["Android plugins extend Plugin and use TauriPlugin and Command annotations.", "iOS plugins extend Plugin and expose Invoke functions.", "Rust calls native code with run_mobile_plugin."],
+      "misconceptions": ["Desktop MockRuntime execution proves Kotlin or Swift execution."]
+    },
+    {
+      "source_ref": "https://v2.tauri.app/security/capabilities/",
+      "content_summary": "Capabilities grant plugin commands to named windows; multiple matching capabilities merge their permissions.",
+      "key_points": ["The mobile main window needs an explicit plugin permission.", "Allowed and denied evidence must not attach both capabilities to the same window in one build.", "A separate configuration selection can produce a genuine denial run."],
+      "misconceptions": ["Adding an empty denial capability cancels an allow capability on the same window."]
+    },
+    {
+      "source_ref": "https://v2.tauri.app/start/create-project/",
+      "content_summary": "The supported Tauri 2 workflow installs the CLI and initializes Android/iOS targets from a complete app project.",
+      "key_points": ["The repository may use pnpm for a JS CLI or cargo-tauri.", "android init and ios init generate platform projects.", "android dev/run and ios dev/run execute on targets."],
+      "misconceptions": ["Native plugin source trees alone are sufficient for target execution receipts."]
+    },
+    {
+      "source_ref": "https://github.com/tauri-apps/create-tauri-app/tree/dev/templates/_base_/src-tauri",
+      "content_summary": "The maintained Tauri 2 base template uses a three-crate-type library, mobile_entry_point, Builder registration, and a tiny desktop main delegating to run.",
+      "key_points": ["Follow the complete maintained template shape.", "Register entity_graph_tauri::init() on the Builder.", "Use static frontend assets for the narrow certification screen."],
+      "misconceptions": ["A mobile target can be added by changing only tauri.conf.json."]
+    }
+  ]
+}

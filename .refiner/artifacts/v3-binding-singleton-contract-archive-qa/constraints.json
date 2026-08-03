@@ -1,0 +1,67 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    {
+      "id": "acceptance-traceability",
+      "description": "Every binding-singleton acceptance criterion has direct executable evidence for all six supported JavaScript bindings.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Run the isolated packed verifier and map its manifest, resolution, behavior, and negative-peer results to the phase plan."
+      }
+    },
+    {
+      "id": "evidence-integrity",
+      "description": "Coverage evidence exists and is non-empty, machine reports parse, strict OpenSpec validation passes, and no task remains unchecked before archive.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Parse ledgers/reports, stat evidence paths, scan tasks, and run strict OpenSpec validation."
+      }
+    },
+    {
+      "id": "release-boundary",
+      "description": "Archive readiness is not presented as full 3.0 release, native-platform, immutable-SHA, RC, registry, or npm latest readiness.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Require explicit downstream ownership and stable-publication denial in evidence, coverage, and release documentation."
+      }
+    },
+    {
+      "id": "visual-honesty",
+      "description": "Screenshots are marked non-applicable only because this change has no rendered surface; real visual evidence remains mandatory for later examples and Docusaurus work.",
+      "severity": "high",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Review evidence medium and downstream visual-certification routing."
+      }
+    },
+    {
+      "id": "architecture-preservation",
+      "description": "The QA report does not imply changes to normalized entities, ID-only lists, patches, or component-to-hook-to-store I/O ownership.",
+      "severity": "high",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Review implementation and release-impact language against repository invariants."
+      }
+    }
+  ],
+  "global_rules": [
+    "Use pnpm-only evidence and packed/public artifacts where package topology is claimed.",
+    "Do not authorize or perform registry publication.",
+    "Do not use screenshots as decorative proof for physical module identity.",
+    "Do not weaken or reinterpret the phase-plan acceptance criteria."
+  ],
+  "termination_conditions": [
+    "All blocking constraints are satisfied.",
+    "The packed singleton verifier passes from the current worktree.",
+    "Strict OpenSpec validation and evidence-integrity checks pass.",
+    "No unsupported full-release or platform claim remains."
+  ]
+}

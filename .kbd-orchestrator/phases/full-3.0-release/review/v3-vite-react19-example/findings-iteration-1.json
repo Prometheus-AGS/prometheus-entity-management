@@ -1,0 +1,39 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/verification.md",
+      "line": 56,
+      "claim": "The change claims retained visual evidence, but the diff does not add the referenced screenshots or Playwright trace archives.",
+      "evidence": "The verification text says \"Three implementation screenshots and three clean-room screenshots are retained independently with their associated traces,\" and the JSON receipts reference paths such as `task-3-browser-graph-and-transports.png`, `clean-browser-graph-and-transports.png`, and `trace.zip`, but the diff contains no added binary artifact hunks for those files; acceptance requires recording verification evidence and browser visual evidence before archive.",
+      "suggested_fix": "Add the referenced screenshot and trace artifacts to the repository or remove the archive-ready claim and make the verifier regenerate and validate them as part of the checked gate."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "packages/entity-graph-sync/src/index.ts",
+      "line": 52,
+      "claim": "Public runtime exports were added without updating the public API/skills ledgers required by the acceptance criteria.",
+      "evidence": "The diff adds exports including `createSyncProviderRegistry`, `getDefaultSyncProviderRegistry`, `createWebSocketLoroChannel`, `encodeLoroWebSocketMessage`, `decodeLoroWebSocketMessage`, and `createLoroLoopbackNetwork`, while the acceptance criterion says to \"Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface\"; no public export ledger JSON is modified in the diff.",
+      "suggested_fix": "Run the relevant export refresh commands and commit the updated skills/API ledger files alongside the public export changes."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-react/src/hooks.ts",
+      "line": 373,
+      "claim": "`useSuspenseEntity` no longer throws when called without a non-null entity id, weakening the previous invariant.",
+      "evidence": "The old branch explicitly threw `useSuspenseEntity requires a non-null entity id` when loading without `id`, but the new condition requires `id` before suspending and removes that error path, so `id` being null/undefined with no data and no error can fall through instead of failing closed.",
+      "suggested_fix": "Restore an explicit `if (!id) throw new Error(...)` path before the cache-miss suspense branch."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

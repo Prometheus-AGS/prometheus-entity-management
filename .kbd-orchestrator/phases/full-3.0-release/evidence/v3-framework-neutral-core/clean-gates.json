@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-framework-neutral-core",
+  "verifiedAt": "2026-08-01",
+  "source": {
+    "branch": "main",
+    "localHead": "dd5d70c9954381d3af4519ccedeb5cb565d6027e",
+    "worktreeDirty": true,
+    "immutableCommitCertification": false,
+    "lockfileSha256": "ad8d1a9cde243830542eabdc1577d4e76b095d5048f0edee4128de61a6f54af9"
+  },
+  "cleanRoom": {
+    "pathClass": "new temporary source-only copy",
+    "platform": "Darwin 25.6.0 arm64",
+    "node": "24.16.0",
+    "pnpm": "10.33.0",
+    "freshSourceCopy": true,
+    "excludedFromCopy": [
+      ".git",
+      "node_modules",
+      "dist",
+      ".next",
+      ".turbo",
+      "coverage",
+      "target",
+      ".dart_tool",
+      "build",
+      "*.tgz"
+    ],
+    "frozenInstall": "passed",
+    "completeCi": "passed"
+  },
+  "javascript": {
+    "typecheckTasks": 17,
+    "buildTasks": 14,
+    "testTasks": 15,
+    "packageTestsPassed": 365,
+    "packageTestsSkipped": 1,
+    "packageTestsTodo": 1,
+    "releaseContractTests": 12,
+    "ciBaselineTests": 17,
+    "packageContractTests": 8,
+    "frameworkNeutralGuardTests": 4,
+    "bddScenarios": 19,
+    "bddSteps": 102,
+    "runtimeExports": 201
+  },
+  "frameworkNeutralCore": {
+    "command": "pnpm run verify:framework-neutral-core",
+    "status": "passed",
+    "installSource": "packed-tarball-only",
+    "runtimeReactDependencies": "none",
+    "declarationReactDependencies": "none",
+    "resolvedReactPackages": "none",
+    "nodeEsmSharedGraph": "passed",
+    "nodeCommonJsSharedGraph": "passed",
+    "isolatedGraphFactories": "passed",
+    "typescriptWithoutReactTypes": "passed",
+    "report": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-framework-neutral-core/clean-framework-neutral-core-report.json"
+  },
+  "packaging": {
+    "status": "passed through the complete BDD suite",
+    "publicPackages": 12,
+    "publintChecks": 12,
+    "areTheTypesWrongChecks": 12,
+    "candidateSet": "tarballs-only"
+  },
+  "openspec": {
+    "change": "passed strict validation",
+    "releaseContractSpec": "passed strict validation with informational length suggestions only",
+    "packageModuleContractsSpec": "passed strict validation"
+  },
+  "documentation": {
+    "coverageLedger": "validated by release validation and BDD",
+    "skillsLedger": "passed with 201 runtime exports",
+    "migrationBoundary": "validated by framework-neutral BDD",
+    "docusaurusBuild": "not applicable; no site source exists in this change and website delivery is owned by later documentation changes"
+  },
+  "security": {
+    "productionDependencies": 309,
+    "info": 0,
+    "low": 1,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "blockingAdvisories": 0,
+    "acceptedBlockingAdvisories": 0
+  },
+  "knownNonBlockingOutput": [
+    "The external Flint live integration is explicitly skipped and owned by v3-flint-portable-contracts.",
+    "One core benchmark remains todo.",
+    "Next.js emits legacy-hook deprecation guidance owned by the example changes.",
+    "Vite reports the existing example chunk-size warning.",
+    "Turbo reports missing declared outputs for existing build/test tasks.",
+    "Vitest reports the existing root config native-loader warning in selected packages."
+  ],
+  "notApplicable": {
+    "dartMelos": "No Dart or Flutter source, manifest, generated file, or package boundary changed in this JavaScript core change.",
+    "cargo": "No Rust source, Cargo manifest, capability file, or Rust package boundary changed in this JavaScript core change.",
+    "deviceRunners": "No native platform behavior changed; device certification belongs to the Flutter and Tauri changes.",
+    "visualEvidence": "No rendered interface changed; executable tarball, declaration, subscription-hook, and BDD evidence is the truthful medium."
+  },
+  "integrity": {
+    "gitDiffCheck": "passed",
+    "changedJsonParse": "passed"
+  },
+  "releaseImpact": {
+    "frameworkNeutralCore": "passed",
+    "crossBindingSingleton": "not yet certified",
+    "fullV3Release": "blocked by remaining planned changes",
+    "stablePublicationAuthorized": false
+  }
+}

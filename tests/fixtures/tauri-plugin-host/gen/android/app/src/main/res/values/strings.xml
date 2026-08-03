@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">"Entity Graph Tauri Host Contract"</string>
+    <string name="main_activity_title">"Entity Graph Tauri Host Contract"</string>
+</resources>

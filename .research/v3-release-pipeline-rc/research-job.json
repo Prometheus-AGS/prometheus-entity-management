@@ -1,0 +1,9 @@
+{
+  "jobId": "job-1785666090-700ecdb2",
+  "requestedDepth": "moderate",
+  "requestedMaxSources": 35,
+  "observedStatus": "running",
+  "observedStage": "initializing",
+  "observedProgress": 0,
+  "fallback": "Direct official-source web retrieval was used after two unchanged status reads. The background job was not cancelled and no claim depends on it."
+}

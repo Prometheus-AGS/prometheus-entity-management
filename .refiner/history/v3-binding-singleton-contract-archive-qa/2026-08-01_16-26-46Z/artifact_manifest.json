@@ -1,0 +1,23 @@
+{
+  "artifact_type": "content",
+  "variants": [
+    {
+      "name": "archive-qa-report",
+      "file": "dist/archive-qa-report.md",
+      "format": "markdown",
+      "description": "Artifact-refiner QA decision for the v3-binding-singleton-contract evidence package."
+    }
+  ],
+  "validation": {
+    "preview_status": "pass",
+    "has_console_errors": false,
+    "has_request_failures": false,
+    "notes": [
+      "No browser preview is required because this artifact certifies headless package topology and store behavior.",
+      "The packed consumer now includes explicit reactive proofs for Solid and HTMX in addition to the other four bindings.",
+      "Machine reports, BDD, release, skills, and strict OpenSpec gates pass."
+    ]
+  },
+  "generated_at": "2026-08-01T16:22:05Z"
+}
+

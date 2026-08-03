@@ -1,0 +1,294 @@
+{
+  "schemaVersion": "1.0.0",
+  "source": {
+    "contract": "release/v3-release-contract.json",
+    "policy": "release/release-candidate-policy.json",
+    "sha": "eb3c9802da5ff10ad6db135fed761bd23ea80b3f",
+    "createdAt": "2026-08-02T12:00:00.000Z"
+  },
+  "release": {
+    "targetVersion": "3.0.0",
+    "candidateVersion": "3.0.0-rc.1",
+    "channel": "rc",
+    "distTag": "next",
+    "stableTag": "latest"
+  },
+  "publication": {
+    "authorized": false,
+    "latestMutationAllowed": false,
+    "stablePromotionChange": "v3-stable-publication"
+  },
+  "npm": {
+    "publishOrder": [
+      "@prometheus-ags/entity-graph-core",
+      "@prometheus-ags/a2ui-react",
+      "@prometheus-ags/entity-graph-a2a",
+      "@prometheus-ags/entity-graph-alpine",
+      "@prometheus-ags/entity-graph-sdl",
+      "@prometheus-ags/entity-graph-htmx",
+      "@prometheus-ags/entity-graph-solid",
+      "@prometheus-ags/entity-graph-svelte",
+      "@prometheus-ags/entity-graph-sync",
+      "@prometheus-ags/entity-graph-tauri",
+      "@prometheus-ags/entity-graph-web-components",
+      "@prometheus-ags/prometheus-entity-management"
+    ],
+    "action": "stage-rc",
+    "trustedPublishing": {
+      "provider": "github-actions-oidc",
+      "workflow": "publish.yml",
+      "environment": "npm-rc",
+      "runner": "github-hosted",
+      "minimumNode": "22.14.0",
+      "minimumNpm": "11.15.0",
+      "allowedAction": "npm stage publish",
+      "longLivedWriteTokenAllowed": false,
+      "provenance": "automatic-for-public-packages-in-public-repositories"
+    }
+  },
+  "protectedTags": {
+    "names": [
+      "latest"
+    ],
+    "snapshotRequired": true
+  },
+  "recovery": {
+    "states": [
+      "declared",
+      "packed",
+      "verified",
+      "classified",
+      "submitted",
+      "registry-verified",
+      "complete"
+    ],
+    "registryClassifications": [
+      "absent",
+      "matching",
+      "conflicting"
+    ],
+    "matchingVersionAction": "skip-and-record",
+    "absentVersionAction": "continue-in-dependency-order",
+    "conflictingVersionAction": "block",
+    "publishedArtifactRollback": "publish-corrective-version"
+  },
+  "artifacts": [
+    {
+      "id": "npm-core",
+      "ecosystem": "npm",
+      "packageName": "@prometheus-ags/entity-graph-core",
+      "path": "packages/entity-graph-core",
+      "registry": "npm",
+      "registryDecision": "required",
+      "version": "3.0.0-rc.1",
+      "distTag": "next",
+      "stableTag": "latest",
+      "action": "stage-rc",
+      "internalDependencies": []
+    },
+    {
+      "id": "npm-a2ui",
+      "ecosystem": "npm",
+      "packageName": "@prometheus-ags/a2ui-react",
+      "path": "packages/a2ui-react",
+      "registry": "npm",
+      "registryDecision": "required",
+      "version": "3.0.0-rc.1",
+      "distTag": "next",
+      "stableTag": "latest",
+      "action": "stage-rc",
+      "internalDependencies": [
+        "@prometheus-ags/entity-graph-core"
+      ]
+    },
+    {
+      "id": "npm-a2a",
+      "ecosystem": "npm",
+      "packageName": "@prometheus-ags/entity-graph-a2a",
+      "path": "packages/entity-graph-a2a",
+      "registry": "npm",
+      "registryDecision": "required",
+      "version": "3.0.0-rc.1",
+      "distTag": "next",
+      "stableTag": "latest",
+      "action": "stage-rc",
+      "internalDependencies": [
+        "@prometheus-ags/entity-graph-core"
+      ]
+    },
+    {
+      "id": "npm-alpine",
+      "ecosystem": "npm",
+      "packageName": "@prometheus-ags/entity-graph-alpine",
+      "path": "packages/entity-graph-alpine",
+      "registry": "npm",
+      "registryDecision": "required",
+      "version": "3.0.0-rc.1",
+      "distTag": "next",
+      "stableTag": "latest",
+      "action": "stage-rc",
+      "internalDependencies": [
+        "@prometheus-ags/entity-graph-core"
+      ]
+    },
+    {
+      "id": "npm-sdl",
+      "ecosystem": "npm",
+      "packageName": "@prometheus-ags/entity-graph-sdl",
+      "path": "packages/entity-graph-sdl",
+      "registry": "npm",
+      "registryDecision": "required",
+      "version": "3.0.0-rc.1",
+      "distTag": "next",
+      "stableTag": "latest",
+      "action": "stage-rc",
+      "internalDependencies": []
+    },
+    {
+      "id": "npm-htmx",
+      "ecosystem": "npm",
+      "packageName": "@prometheus-ags/entity-graph-htmx",
+      "path": "packages/entity-graph-htmx",
+      "registry": "npm",
+      "registryDecision": "required",
+      "version": "3.0.0-rc.1",
+      "distTag": "next",
+      "stableTag": "latest",
+      "action": "stage-rc",
+      "internalDependencies": [
+        "@prometheus-ags/entity-graph-core",
+        "@prometheus-ags/entity-graph-sdl"
+      ]
+    },
+    {
+      "id": "npm-solid",
+      "ecosystem": "npm",
+      "packageName": "@prometheus-ags/entity-graph-solid",
+      "path": "packages/entity-graph-solid",
+      "registry": "npm",
+      "registryDecision": "required",
+      "version": "3.0.0-rc.1",
+      "distTag": "next",
+      "stableTag": "latest",
+      "action": "stage-rc",
+      "internalDependencies": [
+        "@prometheus-ags/entity-graph-core"
+      ]
+    },
+    {
+      "id": "npm-svelte",
+      "ecosystem": "npm",
+      "packageName": "@prometheus-ags/entity-graph-svelte",
+      "path": "packages/entity-graph-svelte",
+      "registry": "npm",
+      "registryDecision": "required",
+      "version": "3.0.0-rc.1",
+      "distTag": "next",
+      "stableTag": "latest",
+      "action": "stage-rc",
+      "internalDependencies": [
+        "@prometheus-ags/entity-graph-core"
+      ]
+    },
+    {
+      "id": "npm-sync",
+      "ecosystem": "npm",
+      "packageName": "@prometheus-ags/entity-graph-sync",
+      "path": "packages/entity-graph-sync",
+      "registry": "npm",
+      "registryDecision": "required",
+      "version": "3.0.0-rc.1",
+      "distTag": "next",
+      "stableTag": "latest",
+      "action": "stage-rc",
+      "internalDependencies": [
+        "@prometheus-ags/entity-graph-core"
+      ]
+    },
+    {
+      "id": "npm-tauri",
+      "ecosystem": "npm",
+      "packageName": "@prometheus-ags/entity-graph-tauri",
+      "path": "packages/entity-graph-tauri",
+      "registry": "npm",
+      "registryDecision": "required",
+      "version": "3.0.0-rc.1",
+      "distTag": "next",
+      "stableTag": "latest",
+      "action": "stage-rc",
+      "internalDependencies": [
+        "@prometheus-ags/entity-graph-core"
+      ]
+    },
+    {
+      "id": "npm-web-components",
+      "ecosystem": "npm",
+      "packageName": "@prometheus-ags/entity-graph-web-components",
+      "path": "packages/entity-graph-web-components",
+      "registry": "npm",
+      "registryDecision": "required",
+      "version": "3.0.0-rc.1",
+      "distTag": "next",
+      "stableTag": "latest",
+      "action": "stage-rc",
+      "internalDependencies": [
+        "@prometheus-ags/entity-graph-core"
+      ]
+    },
+    {
+      "id": "npm-react",
+      "ecosystem": "npm",
+      "packageName": "@prometheus-ags/prometheus-entity-management",
+      "path": "packages/entity-graph-react",
+      "registry": "npm",
+      "registryDecision": "required",
+      "version": "3.0.0-rc.1",
+      "distTag": "next",
+      "stableTag": "latest",
+      "action": "stage-rc",
+      "internalDependencies": [
+        "@prometheus-ags/entity-graph-core"
+      ]
+    },
+    {
+      "id": "dart-flutter",
+      "ecosystem": "dart",
+      "packageName": "entity_graph_flutter",
+      "path": "packages/entity_graph_flutter",
+      "registry": "pub.dev",
+      "registryDecision": "deferred",
+      "version": "3.0.0",
+      "action": "dry-run-only"
+    },
+    {
+      "id": "rust-cli",
+      "ecosystem": "rust",
+      "packageName": "entity-graph-cli",
+      "path": "packages/entity-graph-cli",
+      "registry": "crates.io",
+      "registryDecision": "deferred",
+      "version": "3.0.0-alpha.0",
+      "action": "dry-run-only"
+    },
+    {
+      "id": "rust-mcp",
+      "ecosystem": "rust",
+      "packageName": "entity-graph-mcp",
+      "path": "packages/entity-graph-mcp",
+      "registry": "crates.io",
+      "registryDecision": "deferred",
+      "version": "3.0.0-alpha.0",
+      "action": "dry-run-only"
+    },
+    {
+      "id": "rust-tauri",
+      "ecosystem": "rust",
+      "packageName": "entity-graph-tauri",
+      "path": "packages/entity-graph-tauri/rust-plugin",
+      "registry": "bundled-in-npm",
+      "registryDecision": "embedded",
+      "version": "3.0.0-alpha.0",
+      "action": "embedded-in-npm"
+    }
+  ]
+}

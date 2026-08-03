@@ -1,0 +1,45 @@
+{
+  "reflection": {
+    "iteration": 2,
+    "max_iterations": 5,
+    "constraint_evaluation": [
+      {
+        "constraint_id": "c1",
+        "status": "satisfied",
+        "notes": "The final matrix maps every phase criterion to task 2/3/4 evidence, task 5 current-state evidence, or the explicit Android/iOS blocker. Adversarial review found and remediation added the missing iOS initializer symbol."
+      },
+      {
+        "constraint_id": "c2",
+        "status": "satisfied",
+        "notes": "The mobile BDD wording now says the lane defines invocation and independently asserts missing receipts block stable certification."
+      },
+      {
+        "constraint_id": "c3",
+        "status": "satisfied",
+        "notes": "Final evidence records implementation complete, evidence partial, certification blocked, publication blocked, archiveReady false, and package version alpha."
+      },
+      {
+        "constraint_id": "c4",
+        "status": "satisfied",
+        "notes": "The 1200x900 visual was inspected at original resolution; XML/ARIA and minimum 6.18:1 contrast pass; SVG and PNG hashes are recorded."
+      },
+      {
+        "constraint_id": "c5",
+        "status": "satisfied",
+        "notes": "4/4 release tests, 16/16 package tests, ESLint, Swift syntax parsing, packed initializer inspection, 13/13 coverage, all public ledgers, strict change validation, JSON/XML integrity, and diff hygiene pass."
+      },
+      {
+        "constraint_id": "c6",
+        "status": "satisfied",
+        "notes": "The device receipt is absent, OpenSpec remains active, publication is unauthorized, and clean/mobile follow-up owners are explicit."
+      }
+    ],
+    "deterministic_validation": "pass-with-explicit-host-and-mobile-blockers",
+    "target_alignment": "100% of evidence-disposition constraints are satisfied; native mobile evidence, OpenSpec archive, certification, and publication remain blocked.",
+    "regression_check": "Adversarial review found a genuine iOS registration defect. Iteration 2 added the exact Tauri template-compatible initializer symbol, a permanent source contract assertion, packed-payload content checks, Swift parsing, and tarball inspection. The package peer-dependency warning was disproved by the manifest.",
+    "convergence": {
+      "status": "terminate",
+      "rationale": "Zero disposition-quality violations remain. The correct outcome is an honest no-archive verdict, not a weakened acceptance criterion."
+    }
+  }
+}

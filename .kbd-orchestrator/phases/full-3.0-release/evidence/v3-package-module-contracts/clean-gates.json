@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-package-module-contracts",
+  "verifiedAt": "2026-08-01",
+  "source": {
+    "branch": "main",
+    "localHead": "dd5d70c9954381d3af4519ccedeb5cb565d6027e",
+    "worktreeDirty": true,
+    "immutableCommitCertification": false,
+    "lockfileSha256": "ad8d1a9cde243830542eabdc1577d4e76b095d5048f0edee4128de61a6f54af9"
+  },
+  "cleanRoom": {
+    "platform": "Darwin 25.6.0 arm64",
+    "node": "24.16.0",
+    "pnpm": "10.33.0",
+    "freshSourceCopy": true,
+    "excludedFromCopy": [
+      ".git",
+      "node_modules",
+      "dist",
+      ".next",
+      ".turbo",
+      "coverage",
+      "target",
+      ".dart_tool",
+      "build",
+      "*.tgz"
+    ],
+    "frozenInstall": "passed",
+    "completeCi": "passed"
+  },
+  "javascript": {
+    "typecheckTasks": 17,
+    "buildTasks": 14,
+    "workspaceTestsPassed": 362,
+    "workspaceTestsSkipped": 1,
+    "workspaceTestsTodo": 1,
+    "releaseContractTests": 11,
+    "ciBaselineTests": 17,
+    "packageContractTests": 8,
+    "bddScenarios": 15,
+    "bddSteps": 81,
+    "runtimeExports": 197
+  },
+  "packaging": {
+    "command": "node scripts/verify-package-contracts.mjs --report <ephemeral-report>",
+    "status": "passed",
+    "publicPackages": 12,
+    "manifestChecks": 12,
+    "payloadChecks": 12,
+    "publintChecks": 12,
+    "areTheTypesWrongChecks": 12,
+    "candidateSet": "tarballs-only",
+    "consumers": {
+      "nodeEsm": "passed",
+      "nodeCommonJs": "passed",
+      "typescriptNodeNext": "passed",
+      "typescriptNode16": "passed",
+      "typescriptBundler": "passed"
+    }
+  },
+  "tauriPackedRustBoundary": {
+    "cargo": "1.99.0-nightly (3efb1f477 2026-07-17)",
+    "rustc": "1.99.0-nightly (008fa22ce 2026-07-25)",
+    "cargoMetadata": "passed",
+    "cargoCheck": "passed",
+    "requiredTauriConfigPacked": true,
+    "cargoLockPacked": false,
+    "redGreenFinding": {
+      "before": "failed because rust-plugin/tauri.conf.json was absent from the npm tarball",
+      "correction": "added the build-script input to the intentional payload and fail-closed tests",
+      "after": "the Rust crate compiled from the unpacked npm tarball"
+    }
+  },
+  "openspec": {
+    "change": "passed strict validation",
+    "releaseContractSpec": "passed strict validation",
+    "mainCiBaselineSpec": "passed strict validation"
+  },
+  "documentation": {
+    "packageContractGuide": "validated by BDD traceability scenario",
+    "coverageLedger": "validated by the release-contract validator and BDD",
+    "docusaurusBuild": "not applicable; the site is owned by later documentation changes"
+  },
+  "security": {
+    "productionDependencies": 309,
+    "info": 0,
+    "low": 1,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "blockingAdvisories": 0,
+    "acceptedBlockingAdvisories": 0
+  },
+  "notApplicable": {
+    "dartMelos": "No Dart or Flutter source, manifest, lockfile, or package boundary changed in this npm-only change.",
+    "visualEvidence": "No rendered interface changed; the authoritative evidence is executable tarball and consumer behavior.",
+    "deviceRunners": "Desktop/mobile runtime behavior is owned by v3-tauri-mobile-plugin and v3-tauri-universal-example."
+  },
+  "integrity": {
+    "gitDiffCheck": "passed",
+    "changedJsonParse": "passed"
+  },
+  "releaseImpact": {
+    "packageModuleContract": "passed",
+    "fullV3Release": "blocked by remaining planned changes",
+    "stablePublicationAuthorized": false
+  },
+  "archive": {
+    "status": "passed",
+    "changePath": "openspec/changes/archive/2026-08-01-v3-package-module-contracts",
+    "promotedSpec": "openspec/specs/v3-package-module-contracts/spec.md"
+  }
+}

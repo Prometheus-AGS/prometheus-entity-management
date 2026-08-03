@@ -1,0 +1,44 @@
+{
+  "plan": {
+    "stages": [
+      {
+        "id": "audit",
+        "description": "Map every phase acceptance criterion to direct implementation and evidence.",
+        "requires_execution": false
+      },
+      {
+        "id": "correct",
+        "description": "Add missing external-executor tests and repair the injected discovery transport defect found by the audit.",
+        "requires_execution": true,
+        "tool": "vitest"
+      },
+      {
+        "id": "validate",
+        "description": "Run focused protocol, package, type, lint, coverage, skills, security, release-contract, and OpenSpec checks.",
+        "requires_execution": true,
+        "tool": "repository scripts"
+      },
+      {
+        "id": "persist",
+        "description": "Record the constrained QA verdict and immutable limits in the evidence bundle.",
+        "requires_execution": false
+      }
+    ],
+    "tool_invocations": [
+      { "stage_id": "correct", "tool": "vitest", "purpose": "Prove the public external executor rather than infer behavior from compilation." },
+      { "stage_id": "validate", "tool": "repository scripts", "purpose": "Validate the exact release boundary deterministically." }
+    ],
+    "state_updates": {
+      "files_to_create": ["dist/artifact-refiner-qa.md", "artifact_manifest.json", "refinement_log.md", "decisions.md"],
+      "files_to_update": ["state.json"],
+      "directories_required": ["dist"]
+    },
+    "validation_plan": [
+      { "constraint_id": "c1", "validation_method": "focused and BDD tests", "execution_required": true },
+      { "constraint_id": "c2", "validation_method": "skills, coverage, and package contract verifiers", "execution_required": true },
+      { "constraint_id": "c3", "validation_method": "evidence review and JSON assertions", "execution_required": true },
+      { "constraint_id": "c4", "validation_method": "visual applicability review", "execution_required": false },
+      { "constraint_id": "c5", "validation_method": "typecheck, lint, security, OpenSpec, and diff checks", "execution_required": true }
+    ]
+  }
+}

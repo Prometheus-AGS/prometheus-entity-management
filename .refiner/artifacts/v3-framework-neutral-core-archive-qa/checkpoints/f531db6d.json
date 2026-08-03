@@ -1,0 +1,76 @@
+{
+  "refinement_id": "35a71598-d3d6-46c3-a53d-a27b062ccae9",
+  "artifact_name": "v3-framework-neutral-core-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-01T15:28:06Z",
+  "updated_at": "2026-08-01T15:30:09Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Challenge archive evidence against the plan acceptance criteria.",
+    "Prevent archive readiness from being presented as full 3.0 release readiness."
+  ],
+  "constraints": [
+    {
+      "id": "acceptance-traceability",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "archive-release-boundary",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "evidence-integrity",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "visual-honesty",
+      "severity": "high",
+      "status": "satisfied"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "running",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 4,
+      "constraints_total": 4,
+      "decision": "terminate",
+      "timestamp": "2026-08-01T15:28:06Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "efc61cb8",
+      "phase": "specify",
+      "iteration": 1,
+      "timestamp": "2026-08-01T15:30:09Z"
+    },
+    {
+      "checkpoint_id": "90b300ae",
+      "phase": "plan",
+      "iteration": 1,
+      "timestamp": "2026-08-01T15:30:09Z"
+    }
+  ],
+  "prior_cycle_id": null
+}

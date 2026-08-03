@@ -1,0 +1,21 @@
+{
+  "query": "What must be true before Prometheus Entity Management can be released as stable 3.0.0 with its npm, Dart, Rust, examples, skills, documentation, and release proof?",
+  "depth": "exhaustive",
+  "subquestions": [
+    "What packaging and registry constraints make the npm release installable and recoverable?",
+    "What are the current compatibility boundaries for React 19, Vite 8, and Next.js App Router?",
+    "Which A2UI and A2A protocol versions and safety boundaries should the examples certify?",
+    "How should Flutter, Riverpod 3, and experimental genui code be consolidated and labeled?",
+    "What can a single Tauri 2 desktop/mobile example prove without signing or store credentials?",
+    "What Docusaurus and GitHub Pages configuration produces a maintainable branded documentation product?",
+    "What BDD and visual artifacts constitute reviewable release evidence?"
+  ],
+  "source_policy": "Prefer current official specifications, vendor documentation, and upstream repositories. Use secondary sources only to discover primary sources.",
+  "verification": [
+    "Cross-check time-sensitive versions against current official documentation.",
+    "Separate source-supported facts from project recommendations.",
+    "Record and resolve contradictions explicitly.",
+    "Apply strict sycophancy detection to the synthesized report.",
+    "Require a Feynman grade of at least 0.70 and misconceptions_absent of 1.0."
+  ]
+}

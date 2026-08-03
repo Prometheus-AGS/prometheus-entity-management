@@ -18,7 +18,7 @@
  */
 
 import { createSignal, onCleanup } from "solid-js";
-import { useGraphStore } from "@prometheus-ags/entity-graph-core";
+import { graphStore } from "@prometheus-ags/entity-graph-core";
 import type { GraphState } from "@prometheus-ags/entity-graph-core";
 
 /**
@@ -33,10 +33,10 @@ export function createGraphStore<T>(
   equalityFn?: (a: T, b: T) => boolean,
 ): () => T {
   const eq = equalityFn ?? ((a, b) => a === b);
-  const initial = selector(useGraphStore.getState());
+  const initial = selector(graphStore.getState());
   const [value, setValue] = createSignal<T>(initial);
 
-  const unsub = useGraphStore.subscribe(
+  const unsub = graphStore.subscribe(
     selector,
     (next, prev) => {
       if (!eq(next, prev)) {

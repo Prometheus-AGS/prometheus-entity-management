@@ -1,0 +1,40 @@
+{
+  "grade_id": "grade-v3-a2ui-protocol-bridge-1785609900",
+  "goal_id": "full-3.0-release-execution-readiness",
+  "concept_id": "official-a2ui-graph-policy-bridge",
+  "learner_id": "codex-root",
+  "graded_at": "2026-08-01T19:05:00Z",
+  "explanation_excerpt": "AG-UI is the courier carrying an agent run; A2UI is the blueprint for a user interface; Prometheus is the security desk between the official renderer and the normalized graph.",
+  "scores": {
+    "completeness": 0.97,
+    "accuracy": 0.98,
+    "clarity": 0.97,
+    "misconceptions_absent": 1.0
+  },
+  "overall_score": 0.98,
+  "gaps": [
+    {
+      "dimension": "implementation",
+      "description": "The exact public TypeScript names and compatibility-subpath export map remain task 2 implementation details; their governing boundaries are frozen here.",
+      "corpus_ref": "a2ui-implementation-contract"
+    },
+    {
+      "dimension": "visual_evidence",
+      "description": "No renderer has been changed in this dependency task, so real browser, keyboard, accessibility, and policy-outcome evidence must be produced by later tasks.",
+      "corpus_ref": "a2ui-evidence-boundary"
+    }
+  ],
+  "transfer_problems": [
+    "Does a working AG-UI STATE_DELTA chat projection prove official A2UI rendering?",
+    "May an official A2UI component mutate the entity graph directly after schema validation?",
+    "May a local JSONL parser replace web_core if its tests pass?",
+    "How must a v1.0 candidate message be handled by the stable v0.9.1 bridge?",
+    "What is the policy for unknown components and unapproved destructive actions?",
+    "May workspace tests waive a broken packed v0_9 dependency path?"
+  ],
+  "transfer_scores": [0.99, 0.99, 0.98, 0.97, 0.99, 0.98],
+  "passed": true,
+  "pass_threshold": 0.7,
+  "misconception_review": "No AG-UI/A2UI category error, distribution/protocol version conflation, schema/authorization conflation, workspace/tarball conflation, or screenshot/certification conflation remains in the explanation.",
+  "grading_method": "Source-grounded self-assessment against official A2UI and AG-UI documentation plus isolated current package declarations; no claim of human learner mastery is made."
+}

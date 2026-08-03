@@ -1,0 +1,14 @@
+{
+  "executedAt": "2026-08-02T02:37:34.454519Z",
+  "strictness": "strict",
+  "score": 0.01785714365541935,
+  "correctionMandatory": false,
+  "classifications": [
+    {
+      "patternId": "S-07",
+      "severity": "low",
+      "rationale": "The persistent report is longer than a typical task response; retain only because each section maps a research subquestion and keep the user-facing handoff concise."
+    }
+  ],
+  "decision": "No rewrite required. The report's length carries dependency, architecture, version, contradiction, transfer, and non-claim evidence rather than decorative visible effort."
+}

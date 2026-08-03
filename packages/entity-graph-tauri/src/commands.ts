@@ -22,20 +22,22 @@ import type {
   SetListPayload,
   PersistSnapshotPayload,
   RestoreSnapshotPayload,
+  PlatformPing,
   TauriInvokeFn,
 } from "./types";
 
 // ── Command name constants (match Rust side exactly) ─────────────────────────
 
-const CMD_UPSERT_ENTITY = "plugin:entity_graph|graph_upsert_entity";
-const CMD_REMOVE_ENTITY = "plugin:entity_graph|graph_remove_entity";
-const CMD_PATCH_ENTITY = "plugin:entity_graph|graph_patch_entity";
-const CMD_SET_LIST = "plugin:entity_graph|graph_set_list";
-const CMD_GET_ENTITY = "plugin:entity_graph|graph_get_entity";
-const CMD_GET_LIST = "plugin:entity_graph|graph_get_list";
-const CMD_PERSIST_SNAPSHOT = "plugin:entity_graph|graph_persist_snapshot";
-const CMD_RESTORE_SNAPSHOT = "plugin:entity_graph|graph_restore_snapshot";
-const CMD_CLEAR_GRAPH = "plugin:entity_graph|graph_clear";
+const CMD_UPSERT_ENTITY = "plugin:entity-graph-tauri|graph_upsert_entity";
+const CMD_REMOVE_ENTITY = "plugin:entity-graph-tauri|graph_remove_entity";
+const CMD_PATCH_ENTITY = "plugin:entity-graph-tauri|graph_patch_entity";
+const CMD_SET_LIST = "plugin:entity-graph-tauri|graph_set_list";
+const CMD_GET_ENTITY = "plugin:entity-graph-tauri|graph_get_entity";
+const CMD_GET_LIST = "plugin:entity-graph-tauri|graph_get_list";
+const CMD_PLATFORM_PING = "plugin:entity-graph-tauri|graph_platform_ping";
+const CMD_PERSIST_SNAPSHOT = "plugin:entity-graph-tauri|graph_persist_snapshot";
+const CMD_RESTORE_SNAPSHOT = "plugin:entity-graph-tauri|graph_restore_snapshot";
+const CMD_CLEAR_GRAPH = "plugin:entity-graph-tauri|graph_clear";
 
 // ── Command implementations ───────────────────────────────────────────────────
 
@@ -119,9 +121,15 @@ export async function getList(
   return result ?? null;
 }
 
+/** Invoke the registered desktop, Android, or iOS native bridge. */
+export async function platformPing(invoke: TauriInvokeFn): Promise<PlatformPing> {
+  return invoke<PlatformPing>(CMD_PLATFORM_PING);
+}
+
 /**
- * Persist the current graph snapshot to the configured SQLite database.
- * The actual serialisation happens in Rust; the TS side sends the storage key.
+ * Store the current graph snapshot in the native in-memory mirror.
+ * This command does not survive process restart; use
+ * `createTauriSqlPersistenceAdapter` when SQLite durability is required.
  */
 export async function persistSnapshot(
   invoke: TauriInvokeFn,
@@ -144,7 +152,7 @@ export async function persistSnapshot(
 }
 
 /**
- * Restore a previously persisted snapshot from the Rust plugin into the TS graph store.
+ * Restore an in-memory native snapshot from the Rust plugin into the TS graph store.
  */
 export async function restoreSnapshot(
   invoke: TauriInvokeFn,

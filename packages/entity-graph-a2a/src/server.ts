@@ -1,362 +1,432 @@
-/**
- * server.ts — A2A v1.0 server core.
- *
- * Provides:
- *   createA2AServer(opts)  → A2AServer instance
- *
- * The A2AServer:
- *   - Manages task lifecycle (create → working → completed/failed/canceled)
- *   - Dispatches task messages to the configured A2ATaskHandler
- *   - Exposes handleRequest(req) — a framework-agnostic JSON-RPC dispatcher
- *   - Exposes fetch(request) — a standard Web Fetch API handler (Cloudflare
- *     Workers, Deno, Bun, Next.js Edge, Hono, etc.)
- *
- * The server does NOT depend on Node.js http module. Framework adapters are the
- * caller's responsibility (use handleRequest() from Express/Fastify/Hono/Next.js).
- *
- * Architecture:
- *   Request → handleRequest → dispatch by method → task store → handler → response
- *
- * Error handling:
- *   - Unknown method   → JSON-RPC code -32601 (Method not found)
- *   - Task not found   → JSON-RPC code -32001 (custom)
- *   - Handler error    → task status "failed" + JSON-RPC code -32000
- *   - Parse error      → JSON-RPC code -32700
- */
-
-import { MemoryTaskStore } from "./store.js";
-import { DefaultEntityGraphHandler } from "./handler.js";
+import {
+  A2A_PROTOCOL_VERSION,
+  A2A_VERSION_HEADER,
+  AGENT_CARD_PATH,
+  AgentCard as AgentCardCodec,
+  Extensions,
+  HTTP_EXTENSION_HEADER,
+  SSE_HEADERS,
+  SendMessageRequest,
+  formatSSEErrorEvent,
+  formatSSEEvent,
+  type AgentCard,
+  type Message,
+} from "@a2a-js/sdk";
+import {
+  JsonRpcTransportHandler,
+  DefaultRequestHandler,
+  InMemoryTaskStore,
+  ServerCallContext,
+  validateVersion,
+  type AgentExecutor,
+  type TaskStore,
+  type User,
+} from "@a2a-js/sdk/server";
+import {
+  JsonRpcContentTypeNotSupportedError,
+  toJsonRpcError,
+} from "@a2a-js/sdk/errors";
+import { createDeterministicEntityGraphExecutor, A2A_CALLER_STATE_KEY } from "./handler.js";
+import { ANONYMOUS_A2A_CALLER, createDefaultDenyA2APolicy } from "./policy.js";
 import type {
-  A2AServerOptions,
-  A2ATaskHandler,
-  A2ATaskStore,
-  AgentCard,
-  Artifact,
-  CancelTaskParams,
-  GetTaskParams,
-  JsonRpcError,
-  JsonRpcRequest,
-  JsonRpcResponse,
-  JsonRpcSuccess,
-  Message,
-  SendTaskParams,
-  SendTaskResult,
-  Task,
-  TaskStatus,
+  A2AApplicationPolicy,
+  A2AAuthenticator,
+  A2ACaller,
+  A2AJsonRpcResponse,
+  A2AServerCallOptions,
+  DeterministicExecutorOptions,
 } from "./types.js";
 
-// ── JSON-RPC helpers ──────────────────────────────────────────────────────────
+const DEFAULT_MAX_BODY_BYTES = 1024 * 1024;
 
-function success<T>(id: JsonRpcRequest["id"], result: T): JsonRpcSuccess<T> {
-  return { jsonrpc: "2.0", id, result };
+function weakEtag(value: string): string {
+  let hash = 0x811c9dc5;
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 0x01000193);
+  }
+  return `W/"${value.length.toString(16)}-${(hash >>> 0).toString(16)}"`;
 }
 
-function rpcError(
-  id: JsonRpcRequest["id"],
-  code: number,
-  message: string,
-  data?: unknown,
-): JsonRpcError {
-  return { jsonrpc: "2.0", id, error: { code, message, data } };
+export class A2AAccessDeniedError extends Error {
+  readonly status: 401 | 403;
+
+  constructor(status: 401 | 403) {
+    super(status === 401 ? "Authentication required." : "Request is not accessible.");
+    this.name = "A2AAccessDeniedError";
+    this.status = status;
+  }
 }
 
-const ERR_PARSE = -32700;
-const ERR_METHOD_NOT_FOUND = -32601;
-const ERR_INVALID_PARAMS = -32602;
-const ERR_TASK_NOT_FOUND = -32001;
-const ERR_INTERNAL = -32000;
+class CallerUser implements User {
+  constructor(private readonly caller: A2ACaller) {}
 
-// ── Task factory ──────────────────────────────────────────────────────────────
+  get isAuthenticated(): boolean {
+    return this.caller.isAuthenticated;
+  }
 
-function makeTask(params: SendTaskParams): Task {
-  const now = new Date().toISOString();
+  get userName(): string {
+    return this.caller.id;
+  }
+}
+
+export interface A2AServerOptions {
+  card: AgentCard;
+  executor?: AgentExecutor;
+  taskStore?: TaskStore;
+  authenticator?: A2AAuthenticator;
+  policy?: A2AApplicationPolicy;
+  deterministicExecutor?: Omit<DeterministicExecutorOptions, "policy">;
+  maxBodyBytes?: number;
+}
+
+interface DispatchResult {
+  response: A2AJsonRpcResponse | AsyncGenerator<A2AJsonRpcResponse, void, undefined>;
+  context: ServerCallContext;
+}
+
+interface RequestMetadata {
+  id: string | number | null;
+  method: string;
+  tenantId?: string;
+  metadata?: Readonly<Record<string, unknown>>;
+  message?: Message;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function isAsyncGenerator(
+  value: A2AJsonRpcResponse | AsyncGenerator<A2AJsonRpcResponse, void, undefined>,
+): value is AsyncGenerator<A2AJsonRpcResponse, void, undefined> {
+  return typeof (value as AsyncGenerator<A2AJsonRpcResponse>)[Symbol.asyncIterator] === "function";
+}
+
+function normalizeHeaders(
+  headers: Readonly<Record<string, string>> | undefined,
+): Record<string, string> {
+  const result: Record<string, string> = {};
+  for (const [key, value] of Object.entries(headers ?? {})) {
+    result[key.toLowerCase()] = value;
+  }
+  return result;
+}
+
+function requestMetadata(raw: unknown): RequestMetadata | null {
+  let parsed: unknown = raw;
+  if (typeof raw === "string") {
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  }
+  if (!isRecord(parsed) || typeof parsed.method !== "string") return null;
+  const params = isRecord(parsed.params) ? parsed.params : undefined;
+  let message: Message | undefined;
+  if (
+    (parsed.method === "SendMessage" || parsed.method === "SendStreamingMessage") &&
+    params
+  ) {
+    try {
+      message = SendMessageRequest.fromJSON(params).message;
+    } catch {
+      message = undefined;
+    }
+  }
+  const id = parsed.id;
   return {
-    id: params.id,
-    sessionId: params.sessionId,
-    status: { state: "submitted", updatedAt: now },
-    history: [],
-    artifacts: [],
-    createdAt: now,
-    updatedAt: now,
-    metadata: params.metadata,
+    id:
+      typeof id === "string" || (typeof id === "number" && Number.isInteger(id)) || id === null
+        ? id
+        : null,
+    method: parsed.method,
+    tenantId: typeof params?.tenant === "string" && params.tenant
+      ? params.tenant
+      : undefined,
+    metadata: isRecord(params?.metadata) ? params.metadata : undefined,
+    message,
   };
 }
 
-function withStatus(task: Task, status: Pick<TaskStatus, "state" | "message">): Task {
-  const now = new Date().toISOString();
-  return {
-    ...task,
-    status: { ...status, updatedAt: now },
-    updatedAt: now,
-  };
-}
-
-function appendMessage(task: Task, message: Message): Task {
-  return {
-    ...task,
-    history: [
-      ...task.history,
-      { ...message, timestamp: new Date().toISOString() },
-    ],
-    updatedAt: new Date().toISOString(),
-  };
-}
-
-function appendArtifacts(task: Task, artifacts: Artifact[]): Task {
-  if (artifacts.length === 0) return task;
-  return {
-    ...task,
-    artifacts: [...task.artifacts, ...artifacts],
-    updatedAt: new Date().toISOString(),
-  };
-}
-
-// ── A2AServer ─────────────────────────────────────────────────────────────────
-
-/**
- * A2AServer — the entity-graph A2A server instance.
- *
- * Use `createA2AServer(opts)` to instantiate.
- */
+/** Fetch-compatible official A2A v1 JSON-RPC server. */
 export class A2AServer {
   private readonly card: AgentCard;
-  private readonly handler: A2ATaskHandler;
-  private readonly store: A2ATaskStore;
+  private readonly policy: A2AApplicationPolicy;
+  private readonly authenticator?: A2AAuthenticator;
+  private readonly transport: JsonRpcTransportHandler;
+  private readonly maxBodyBytes: number;
+  private readonly endpointPath: string;
+  private readonly cardJson: string;
+  private readonly cardEtag: string;
+  private readonly cardLastModified: string;
 
-  constructor(opts: A2AServerOptions) {
-    this.card = opts.card;
-    this.handler = opts.handler ?? new DefaultEntityGraphHandler();
-    this.store = opts.store ?? new MemoryTaskStore();
+  constructor(options: A2AServerOptions) {
+    this.card = structuredClone(options.card);
+    this.cardJson = JSON.stringify(AgentCardCodec.toJSON(this.card), null, 2);
+    this.cardEtag = weakEtag(this.cardJson);
+    this.cardLastModified = new Date().toUTCString();
+    this.policy = options.policy ?? createDefaultDenyA2APolicy();
+    this.authenticator = options.authenticator;
+    this.maxBodyBytes = options.maxBodyBytes ?? DEFAULT_MAX_BODY_BYTES;
+    if (!Number.isInteger(this.maxBodyBytes) || this.maxBodyBytes < 1) {
+      throw new Error("maxBodyBytes must be a positive integer.");
+    }
+
+    const jsonRpcInterface = this.card.supportedInterfaces.find(
+      (entry) => entry.protocolBinding.toUpperCase() === "JSONRPC",
+    );
+    if (!jsonRpcInterface || jsonRpcInterface.protocolVersion !== A2A_PROTOCOL_VERSION) {
+      throw new Error("The server card must declare a JSONRPC interface at A2A protocol 1.0.");
+    }
+    this.endpointPath = new URL(jsonRpcInterface.url).pathname || "/";
+    if (this.card.securityRequirements.length > 0 && !this.authenticator) {
+      throw new Error("AgentCard security requirements need an A2AAuthenticator.");
+    }
+
+    const executor = options.executor ?? createDeterministicEntityGraphExecutor({
+      ...options.deterministicExecutor,
+      policy: this.policy,
+    });
+    const requestHandler = new DefaultRequestHandler(
+      this.card,
+      options.taskStore ?? new InMemoryTaskStore(),
+      executor,
+    );
+    this.transport = new JsonRpcTransportHandler(requestHandler);
   }
 
-  /** Return the AgentCard (serve this at GET /.well-known/agent.json). */
   getCard(): AgentCard {
-    return this.card;
+    return structuredClone(this.card);
   }
 
-  // ── JSON-RPC dispatcher ───────────────────────────────────────────────────
-
-  /**
-   * Dispatch a raw JSON-RPC request object.
-   * Framework-agnostic — call from any HTTP handler.
-   */
-  async handleRequest(raw: unknown): Promise<JsonRpcResponse> {
-    // Parse / validate the request envelope.
-    let req: JsonRpcRequest;
-    try {
-      req = parseJsonRpcRequest(raw);
-    } catch (err) {
-      return rpcError(null, ERR_PARSE, "Parse error", String(err));
-    }
-
-    switch (req.method) {
-      case "tasks/send":
-        return this.handleTasksSend(req);
-      case "tasks/get":
-        return this.handleTasksGet(req);
-      case "tasks/cancel":
-        return this.handleTasksCancel(req);
-      case "tasks/sendSubscribe":
-        // Streaming is out of scope for the initial implementation.
-        // Callers should use tasks/send and poll tasks/get.
-        return rpcError(req.id, ERR_METHOD_NOT_FOUND, "tasks/sendSubscribe is not supported — use tasks/send + tasks/get polling.");
-      default:
-        return rpcError(req.id, ERR_METHOD_NOT_FOUND, `Method not found: ${req.method}`);
-    }
+  async handleRequest(
+    raw: string | Record<string, unknown>,
+    options: A2AServerCallOptions = {},
+  ): Promise<A2AJsonRpcResponse | AsyncGenerator<A2AJsonRpcResponse, void, undefined>> {
+    return (await this.dispatch(raw, options)).response;
   }
 
-  /**
-   * Web Fetch API handler.
-   * Mount at any route in your server framework.
-   *
-   * Routes:
-   *   GET  /.well-known/agent.json → AgentCard
-   *   POST /tasks                  → JSON-RPC dispatcher
-   *
-   * @example (Hono)
-   * ```ts
-   * app.use("/a2a/*", (c) => server.fetch(c.req.raw));
-   * ```
-   */
   async fetch(request: Request): Promise<Response> {
     const url = new URL(request.url);
-
-    // AgentCard discovery endpoint.
-    if (request.method === "GET" && url.pathname.endsWith("/.well-known/agent.json")) {
-      return new Response(JSON.stringify(this.card, null, 2), {
+    if (request.method === "GET" && url.pathname === `/${AGENT_CARD_PATH}`) {
+      if (request.headers.get("if-none-match") === this.cardEtag) {
+        return new Response(null, {
+          status: 304,
+          headers: {
+            ETag: this.cardEtag,
+            "Cache-Control": "public, max-age=300",
+          },
+        });
+      }
+      return new Response(this.cardJson, {
         status: 200,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "public, max-age=300",
+          ETag: this.cardEtag,
+          "Last-Modified": this.cardLastModified,
+          [A2A_VERSION_HEADER]: A2A_PROTOCOL_VERSION,
+        },
       });
     }
 
-    // JSON-RPC task endpoint.
-    if (request.method === "POST") {
-      let body: unknown;
-      try {
-        body = await request.json();
-      } catch {
-        const err = rpcError(null, ERR_PARSE, "Invalid JSON body");
-        return new Response(JSON.stringify(err), {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        });
+    if (request.method !== "POST" || url.pathname !== this.endpointPath) {
+      return new Response("Not Found", { status: 404 });
+    }
+    const contentType = request.headers.get("content-type")?.split(";", 1)[0].trim();
+    if (contentType !== "application/json") {
+      return Response.json({
+        jsonrpc: "2.0",
+        id: null,
+        error: toJsonRpcError(
+          new JsonRpcContentTypeNotSupportedError({
+            message: "Content-Type must be application/json.",
+          }),
+        ),
+      }, { status: 415 });
+    }
+    const contentLength = Number(request.headers.get("content-length") ?? 0);
+    if (Number.isFinite(contentLength) && contentLength > this.maxBodyBytes) {
+      return Response.json({ error: "request-too-large" }, { status: 413 });
+    }
+
+    let caller = ANONYMOUS_A2A_CALLER;
+    if (this.authenticator) {
+      caller = (await this.authenticator.authenticate({ request })) ?? ANONYMOUS_A2A_CALLER;
+      if (!caller.isAuthenticated) {
+        return Response.json(
+          { error: "authentication-required" },
+          {
+            status: 401,
+            headers: { "WWW-Authenticate": "Bearer" },
+          },
+        );
       }
-
-      const response = await this.handleRequest(body);
-      const status = "error" in response ? 400 : 200;
-      return new Response(JSON.stringify(response), {
-        status,
-        headers: { "Content-Type": "application/json" },
-      });
     }
 
-    return new Response("Not Found", { status: 404 });
-  }
-
-  // ── Method handlers ───────────────────────────────────────────────────────
-
-  private async handleTasksSend(req: JsonRpcRequest): Promise<JsonRpcResponse<SendTaskResult>> {
-    const params = req.params as SendTaskParams | undefined;
-    if (!isValidSendTaskParams(params)) {
-      return rpcError(req.id, ERR_INVALID_PARAMS, "tasks/send requires params.id (string) and params.message (object)");
+    const body = await request.text();
+    if (new TextEncoder().encode(body).byteLength > this.maxBodyBytes) {
+      return Response.json({ error: "request-too-large" }, { status: 413 });
     }
 
-    // Fetch or create task.
-    let task = await this.store.get(params.id);
-    if (task === null) {
-      task = makeTask(params);
-    }
-
-    // Append the incoming message and set status to "working".
-    task = appendMessage(task, params.message);
-    task = withStatus(task, { state: "working" });
-    await this.store.set(task);
-
-    // Dispatch to handler.
+    const headers = Object.fromEntries(request.headers.entries());
     try {
-      const { useGraphStore } = await import("@prometheus-ags/entity-graph-core");
-      const ctx = {
-        task,
-        message: params.message,
-        graphState: useGraphStore.getState(),
-      };
-
-      const result = await this.handler.handle(ctx);
-
-      // Apply handler result.
-      task = withStatus(task, result.status);
-      if (result.artifacts && result.artifacts.length > 0) {
-        task = appendArtifacts(task, result.artifacts);
-      }
-      if (result.reply !== undefined) {
-        task = appendMessage(task, {
-          ...result.reply,
-          timestamp: new Date().toISOString(),
+      const requestedExtensions = Extensions.parseServiceParameter(
+        request.headers.get(HTTP_EXTENSION_HEADER) ?? undefined,
+      );
+      const dispatched = await this.dispatch(body, {
+        caller,
+        headers,
+        requestedVersion: request.headers.get(A2A_VERSION_HEADER) ?? "0.3",
+        requestedExtensions,
+      });
+      if (isAsyncGenerator(dispatched.response)) {
+        const generator = dispatched.response;
+        const metadata = requestMetadata(body);
+        let first;
+        try {
+          first = await generator.next();
+        } catch (error) {
+          return Response.json({
+            jsonrpc: "2.0",
+            id: metadata?.id ?? null,
+            error: JsonRpcTransportHandler.mapToJSONRPCError(error),
+          }, {
+            status: 200,
+            headers: { [A2A_VERSION_HEADER]: A2A_PROTOCOL_VERSION },
+          });
+        }
+        const streamExtensions = dispatched.context.activatedExtensions ?? [];
+        const extensionHeader = streamExtensions.length
+          ? Extensions.toServiceParameter(streamExtensions)
+          : undefined;
+        const stream = new ReadableStream<Uint8Array>({
+          async start(controller) {
+            const encoder = new TextEncoder();
+            try {
+              if (!first.done) {
+                controller.enqueue(encoder.encode(formatSSEEvent(first.value)));
+              }
+              for await (const response of generator) {
+                controller.enqueue(encoder.encode(formatSSEEvent(response)));
+              }
+            } catch (error) {
+              controller.enqueue(encoder.encode(formatSSEErrorEvent({
+                jsonrpc: "2.0",
+                id: metadata?.id ?? null,
+                error: JsonRpcTransportHandler.mapToJSONRPCError(error),
+              })));
+            } finally {
+              controller.close();
+            }
+          },
+          async cancel() {
+            await generator.return(undefined);
+          },
+        });
+        return new Response(stream, {
+          status: 200,
+          headers: {
+            ...SSE_HEADERS,
+            [A2A_VERSION_HEADER]: A2A_PROTOCOL_VERSION,
+            ...(extensionHeader ? { [HTTP_EXTENSION_HEADER]: extensionHeader } : {}),
+          },
         });
       }
-    } catch (err) {
-      task = withStatus(task, {
-        state: "failed",
-        message: err instanceof Error ? err.message : String(err),
+
+      const responseExtensions = dispatched.context.activatedExtensions ?? [];
+      const extensionHeader = responseExtensions.length
+        ? Extensions.toServiceParameter(responseExtensions)
+        : undefined;
+      return new Response(JSON.stringify(dispatched.response), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          [A2A_VERSION_HEADER]: A2A_PROTOCOL_VERSION,
+          ...(extensionHeader ? { [HTTP_EXTENSION_HEADER]: extensionHeader } : {}),
+        },
       });
-      await this.store.set(task);
-      return rpcError(
-        req.id,
-        ERR_INTERNAL,
-        "Task handler error",
-        err instanceof Error ? err.message : String(err),
-      );
+    } catch (error) {
+      if (error instanceof A2AAccessDeniedError) {
+        return Response.json(
+          { error: error.status === 401 ? "authentication-required" : "forbidden" },
+          { status: error.status },
+        );
+      }
+      throw error;
     }
-
-    await this.store.set(task);
-    return success(req.id, { task });
   }
 
-  private async handleTasksGet(req: JsonRpcRequest): Promise<JsonRpcResponse<{ task: Task }>> {
-    const params = req.params as GetTaskParams | undefined;
-    if (typeof params?.id !== "string") {
-      return rpcError(req.id, ERR_INVALID_PARAMS, "tasks/get requires params.id (string)");
+  private async dispatch(
+    raw: string | Record<string, unknown>,
+    options: A2AServerCallOptions,
+  ): Promise<DispatchResult> {
+    if (typeof raw === "string") {
+      try {
+        JSON.parse(raw);
+      } catch {
+        return {
+          response: {
+            jsonrpc: "2.0",
+            id: null,
+            error: { code: -32700, message: "Parse error" },
+          },
+          context: new ServerCallContext({
+            requestedVersion: options.requestedVersion ?? A2A_PROTOCOL_VERSION,
+          }),
+        };
+      }
+    }
+    const metadata = requestMetadata(raw);
+    const requestedVersion = options.requestedVersion ?? A2A_PROTOCOL_VERSION;
+    try {
+      validateVersion(requestedVersion, this.card, "JSONRPC");
+    } catch (error) {
+      return {
+        response: {
+          jsonrpc: "2.0",
+          id: metadata?.id ?? null,
+          error: JsonRpcTransportHandler.mapToJSONRPCError(error),
+        },
+        context: new ServerCallContext({ requestedVersion }),
+      };
     }
 
-    const task = await this.store.get(params.id);
-    if (task === null) {
-      return rpcError(req.id, ERR_TASK_NOT_FOUND, `Task not found: ${params.id}`);
+    const caller = options.caller ?? ANONYMOUS_A2A_CALLER;
+    if (metadata) {
+      const decision = await this.policy.authorizeRequest({
+        caller,
+        method: metadata.method,
+        tenantId: options.tenantId ?? metadata.tenantId,
+        message: metadata.message,
+        metadata: metadata.metadata,
+      });
+      if (!decision.allowed) {
+        throw new A2AAccessDeniedError(caller.isAuthenticated ? 403 : 401);
+      }
     }
 
-    // Trim history if historyLength is specified.
-    const trimmedTask: Task =
-      params.historyLength !== undefined
-        ? { ...task, history: task.history.slice(-params.historyLength) }
-        : task;
-
-    return success(req.id, { task: trimmedTask });
-  }
-
-  private async handleTasksCancel(req: JsonRpcRequest): Promise<JsonRpcResponse<{ task: Task }>> {
-    const params = req.params as CancelTaskParams | undefined;
-    if (typeof params?.id !== "string") {
-      return rpcError(req.id, ERR_INVALID_PARAMS, "tasks/cancel requires params.id (string)");
-    }
-
-    const task = await this.store.get(params.id);
-    if (task === null) {
-      return rpcError(req.id, ERR_TASK_NOT_FOUND, `Task not found: ${params.id}`);
-    }
-
-    if (task.status.state === "completed" || task.status.state === "failed") {
-      return rpcError(
-        req.id,
-        ERR_INVALID_PARAMS,
-        `Cannot cancel a task in state "${task.status.state}"`,
-      );
-    }
-
-    const canceled = withStatus(task, { state: "canceled" });
-    await this.store.set(canceled);
-    return success(req.id, { task: canceled });
+    const state = new Map<string, unknown>([
+      [A2A_CALLER_STATE_KEY, caller],
+      ["headers", normalizeHeaders(options.headers)],
+    ]);
+    const context = new ServerCallContext({
+      requestedExtensions: [...(options.requestedExtensions ?? [])],
+      requestedVersion,
+      tenant: options.tenantId ?? metadata?.tenantId,
+      user: new CallerUser(caller),
+      state,
+    });
+    const response = await this.transport.handle(raw, context);
+    return {
+      response: response as A2AJsonRpcResponse | AsyncGenerator<A2AJsonRpcResponse, void, undefined>,
+      context,
+    };
   }
 }
 
-// ── Factory ───────────────────────────────────────────────────────────────────
-
-/**
- * Create an A2A entity-graph server instance.
- *
- * @example
- * ```ts
- * import { createA2AServer, buildAgentCard, DefaultEntityGraphHandler } from "@prometheus-ags/entity-graph-a2a";
- *
- * const server = createA2AServer({
- *   card: buildAgentCard({ url: "https://api.example.com/a2a" }),
- *   handler: new DefaultEntityGraphHandler(),
- * });
- *
- * // Hono / Cloudflare Workers
- * export default { fetch: (req) => server.fetch(req) };
- * ```
- */
-export function createA2AServer(opts: A2AServerOptions): A2AServer {
-  return new A2AServer(opts);
-}
-
-// ── Validation helpers ────────────────────────────────────────────────────────
-
-function parseJsonRpcRequest(raw: unknown): JsonRpcRequest {
-  if (typeof raw !== "object" || raw === null) {
-    throw new Error("Request must be a JSON object");
-  }
-  const obj = raw as Record<string, unknown>;
-  if (obj["jsonrpc"] !== "2.0") {
-    throw new Error('Request must have jsonrpc: "2.0"');
-  }
-  if (typeof obj["method"] !== "string") {
-    throw new Error("Request must have a string method");
-  }
-  return raw as JsonRpcRequest;
-}
-
-function isValidSendTaskParams(params: unknown): params is SendTaskParams {
-  if (typeof params !== "object" || params === null) return false;
-  const p = params as Record<string, unknown>;
-  return typeof p["id"] === "string" && typeof p["message"] === "object" && p["message"] !== null;
+export function createA2AServer(options: A2AServerOptions): A2AServer {
+  return new A2AServer(options);
 }

@@ -1,0 +1,13 @@
+# Automatically generated - DO NOT EDIT!
+
+"$schema" = "../../schemas/schema.json"
+
+[[permission]]
+identifier = "allow-graph-set-list"
+description = "Enables the graph_set_list command without any pre-configured scope."
+commands.allow = ["graph_set_list"]
+
+[[permission]]
+identifier = "deny-graph-set-list"
+description = "Denies the graph_set_list command without any pre-configured scope."
+commands.deny = ["graph_set_list"]

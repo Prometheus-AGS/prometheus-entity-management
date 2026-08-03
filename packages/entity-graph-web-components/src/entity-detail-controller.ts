@@ -1,7 +1,7 @@
 /**
  * EntityDetailController — Lit 3 ReactiveController for a single entity.
  *
- * Subscribes to `useGraphStore` from `@prometheus-ags/entity-graph-core` and
+ * Subscribes to `graphStore` from `@prometheus-ags/entity-graph-core` and
  * calls `requestUpdate()` on the host Lit element whenever the relevant entity
  * or its entityState changes. The controller also invokes `fetchEntity` /
  * `registerSubscriber` / `unregisterSubscriber` so the engine's GC and
@@ -14,7 +14,7 @@
 
 import type { ReactiveController, ReactiveControllerHost } from "lit";
 import {
-  useGraphStore,
+  graphStore,
   fetchEntity,
   getEngineOptions,
   registerSubscriber,
@@ -125,7 +125,7 @@ export class EntityDetailController<TRaw, TEntity extends object>
     const id = this.#id;
     const { fetch: fetchFn } = this.#opts;
     if (!id || !fetchFn) return;
-    useGraphStore.getState().setEntityStale(this.#type, id, true);
+    graphStore.getState().setEntityStale(this.#type, id, true);
     this.#doFetch(true);
   }
 
@@ -156,7 +156,7 @@ export class EntityDetailController<TRaw, TEntity extends object>
     const type = this.#type;
     const id = this.#id;
 
-    this.#unsubscribe = useGraphStore.subscribe(
+    this.#unsubscribe = graphStore.subscribe(
       (state) => ({
         entity: id ? state.entities[type]?.[id] : null,
         patch: id ? state.patches[type]?.[id] : null,
@@ -180,7 +180,7 @@ export class EntityDetailController<TRaw, TEntity extends object>
       return;
     }
 
-    const state = useGraphStore.getState();
+    const state = graphStore.getState();
     const eKey = `${this.#type}:${id}`;
     const eState = state.entityStates[eKey] ?? EMPTY_ENTITY_STATE;
 
@@ -198,7 +198,7 @@ export class EntityDetailController<TRaw, TEntity extends object>
 
     const engineOpts = getEngineOptions();
     const effectiveStaleTime = staleTime ?? engineOpts.defaultStaleTime;
-    const state = useGraphStore.getState();
+    const state = graphStore.getState();
     const eKey = `${this.#type}:${id}`;
     const eState = state.entityStates[eKey];
     const lastFetched = eState?.lastFetched ?? 0;

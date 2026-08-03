@@ -1,12 +1,6 @@
-import { defineConfig } from "tsup";
+import { definePackageConfig } from "../../scripts/tsup-package-config";
 
-export default defineConfig({
-  entry: ["src/index.ts"],
-  format: ["esm", "cjs"],
-  dts: true,
-  outExtension({ format }) {
-    return { js: format === "esm" ? ".mjs" : ".js" };
-  },
+export default definePackageConfig({
   // Externalize the core graph + all optional peer deps so the bundle stays lean.
   external: [
     "@prometheus-ags/entity-graph-core",
@@ -18,7 +12,4 @@ export default defineConfig({
     "y-webrtc",
     "loro-crdt",
   ],
-  treeshake: true,
-  sourcemap: true,
-  clean: true,
 });

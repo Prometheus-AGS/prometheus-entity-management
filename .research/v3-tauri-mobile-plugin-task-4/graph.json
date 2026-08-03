@@ -1,0 +1,22 @@
+{
+  "nodes": [
+    {"id": "rust-source", "type": "source-of-truth"},
+    {"id": "generated-bindings", "type": "generated-artifact"},
+    {"id": "public-api-ledger", "type": "drift-gate"},
+    {"id": "capabilities", "type": "runtime-authority"},
+    {"id": "desktop-host", "type": "evidence"},
+    {"id": "packed-host", "type": "evidence"},
+    {"id": "android-runtime", "type": "evidence-required"},
+    {"id": "ios-runtime", "type": "evidence-required"},
+    {"id": "skill-reference", "type": "agent-guidance"}
+  ],
+  "edges": [
+    {"from": "rust-source", "to": "generated-bindings", "relation": "generates"},
+    {"from": "generated-bindings", "to": "public-api-ledger", "relation": "is-checked-by"},
+    {"from": "capabilities", "to": "desktop-host", "relation": "is-enforced-by"},
+    {"from": "desktop-host", "to": "skill-reference", "relation": "supports-desktop-claim"},
+    {"from": "packed-host", "to": "skill-reference", "relation": "supports-distribution-claim"},
+    {"from": "android-runtime", "to": "skill-reference", "relation": "blocks-mobile-certification"},
+    {"from": "ios-runtime", "to": "skill-reference", "relation": "blocks-mobile-certification"}
+  ]
+}

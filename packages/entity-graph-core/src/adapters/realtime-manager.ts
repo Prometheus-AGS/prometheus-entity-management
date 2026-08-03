@@ -108,6 +108,13 @@ function coalesceChanges(changes: EntityChange[]): EntityChange[] {
     if (!existing) { byKey.set(key, { ...c }); continue; }
     if (c.op === "delete") { byKey.set(key, c); continue; }
     if (existing.op === "delete") continue;
+    if (existing.op === "update" && c.op === "update") {
+      byKey.set(key, {
+        ...existing,
+        patch: { ...(existing.patch ?? {}), ...(c.patch ?? {}) },
+      });
+      continue;
+    }
     byKey.set(key, { ...existing, op: "upsert", data: c.data ?? existing.data, patch: c.patch ? { ...(existing.patch ?? {}), ...c.patch } : existing.patch });
   }
   return Array.from(byKey.values());

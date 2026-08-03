@@ -1,0 +1,217 @@
+{
+  "schemaVersion": "1.0.0",
+  "change": "v3-release-contract",
+  "release": "3.0.0",
+  "evaluatedOn": "2026-08-01",
+  "source": {
+    "isolation": "fresh temporary copy of the complete working-tree source snapshot",
+    "excludedBeforeInstall": [
+      ".git",
+      "node_modules",
+      "dist",
+      ".next",
+      ".turbo",
+      ".dart_tool",
+      "target"
+    ],
+    "immutableSha": null,
+    "immutableShaReason": "The release-plan work is not committed yet; this evidence cannot certify an immutable release candidate."
+  },
+  "environment": {
+    "os": "macOS arm64",
+    "node": "24.16.0",
+    "pnpm": "10.33.0",
+    "flutter": "3.47.0-0.1.pre beta",
+    "flutterDart": "3.13.0-282.1.beta",
+    "standaloneDart": "3.12.2 stable",
+    "rust": "1.99.0-nightly",
+    "xcode": "26.6"
+  },
+  "changeDisposition": "archived",
+  "releaseDisposition": "blocked",
+  "archive": {
+    "date": "2026-08-01",
+    "changePath": "openspec/changes/archive/2026-08-01-v3-release-contract",
+    "promotedSpec": "openspec/specs/v3-release-contract/spec.md",
+    "status": "pass"
+  },
+  "gates": [
+    {
+      "id": "pnpm-frozen-install",
+      "status": "pass",
+      "command": "pnpm install --frozen-lockfile",
+      "result": "847 packages installed across all 15 workspace projects from the checked-in lockfile."
+    },
+    {
+      "id": "release-contract-validator",
+      "status": "pass",
+      "command": "pnpm run validate:release-contract",
+      "result": "16 artifacts, including exactly 12 npm packages, one Dart package, three Rust crates, three required registries, and five planned showcases."
+    },
+    {
+      "id": "release-contract-unit",
+      "status": "pass",
+      "command": "pnpm run test:release-contract",
+      "result": "8 of 8 tests passed."
+    },
+    {
+      "id": "release-contract-bdd",
+      "status": "pass",
+      "command": "pnpm run bdd:release-contract",
+      "result": "5 scenarios and 32 steps passed."
+    },
+    {
+      "id": "workspace-tests",
+      "status": "limited",
+      "command": "pnpm run test",
+      "result": "362 tests passed; one Flint live integration was skipped because its sibling SDK was unavailable; one benchmark case remains marked todo.",
+      "releaseOwner": "v3-flint-portable-contracts"
+    },
+    {
+      "id": "workspace-typecheck",
+      "status": "fail",
+      "command": "pnpm run typecheck",
+      "result": "The Vite example cannot resolve @prometheus-ags/entity-sync-pglite.",
+      "releaseOwners": ["v3-main-ci-baseline", "v3-sync-persistence-path", "v3-vite-react19-example"]
+    },
+    {
+      "id": "workspace-build",
+      "status": "fail",
+      "command": "pnpm run build",
+      "result": "The Vite example fails on the unresolved @prometheus-ags/entity-sync-pglite import; an isolated Next.js build fails on the same import.",
+      "releaseOwners": ["v3-main-ci-baseline", "v3-sync-persistence-path", "v3-vite-react19-example", "v3-nextjs-app-router-example"]
+    },
+    {
+      "id": "workspace-lint",
+      "status": "limited",
+      "command": "pnpm run lint",
+      "result": "The command exits zero but Turbo executes zero lint tasks; this is not certification evidence.",
+      "releaseOwner": "v3-main-ci-baseline"
+    },
+    {
+      "id": "npm-pack-dry-run",
+      "status": "pass",
+      "command": "pnpm --filter './packages/**' pack --recursive --dry-run --json",
+      "result": "All 12 public npm workspaces produced a dry-run file inventory. This does not replace packed clean-consumer tests.",
+      "releaseOwner": "v3-package-module-contracts"
+    },
+    {
+      "id": "packed-consumers",
+      "status": "deferred",
+      "result": "ESM, CommonJS, TypeScript resolution, singleton, and framework consumer matrices are owned by the package-contract changes.",
+      "releaseOwners": ["v3-package-module-contracts", "v3-binding-singleton-contract"]
+    },
+    {
+      "id": "skills-exports",
+      "status": "pass",
+      "command": "pnpm run verify:skills",
+      "result": "197 runtime exports match library-exports.json after build."
+    },
+    {
+      "id": "npm-production-audit",
+      "status": "fail",
+      "command": "pnpm audit --prod --audit-level high",
+      "result": "69 vulnerabilities: 1 critical, 25 high, 38 moderate, and 5 low across 583 production dependencies. Critical/high advisory modules include next, fast-uri, brace-expansion, postcss, hono, js-yaml, seroval, and sharp.",
+      "releaseOwner": "v3-main-ci-baseline"
+    },
+    {
+      "id": "secret-pattern-scan",
+      "status": "pass",
+      "result": "No private-key, AWS access-key, GitHub token, or npm token patterns were found outside excluded dependency and lock files."
+    },
+    {
+      "id": "flutter-format",
+      "status": "fail",
+      "command": "dart format --output=none --set-exit-if-changed lib test",
+      "result": "Six Dart files require formatting.",
+      "releaseOwners": ["v3-flutter-source-provenance", "v3-dart-graph-riverpod"]
+    },
+    {
+      "id": "flutter-analyze",
+      "status": "pass",
+      "command": "flutter analyze",
+      "result": "No issues found."
+    },
+    {
+      "id": "flutter-tests",
+      "status": "pass",
+      "command": "flutter test",
+      "result": "54 tests passed."
+    },
+    {
+      "id": "flutter-dependency-currency",
+      "status": "fail",
+      "command": "flutter pub outdated --no-dev-dependencies --no-dependency-overrides",
+      "result": "Four direct constraints are older than resolvable releases, including Riverpod and Freezed major generations; two transitive build packages are discontinued.",
+      "releaseOwners": ["v3-flutter-source-provenance", "v3-dart-graph-riverpod"]
+    },
+    {
+      "id": "rust-format",
+      "status": "fail",
+      "command": "cargo fmt --check",
+      "result": "MCP passes; CLI and Tauri require formatting.",
+      "releaseOwners": ["v3-main-ci-baseline", "v3-tauri-mobile-plugin"]
+    },
+    {
+      "id": "rust-tests",
+      "status": "pass",
+      "command": "cargo test --locked",
+      "result": "CLI 24, MCP 26, and Tauri 6 tests passed; one Tauri doc test is ignored."
+    },
+    {
+      "id": "rust-clippy",
+      "status": "fail",
+      "command": "cargo clippy --locked --all-targets -- -D warnings",
+      "result": "CLI and MCP pass; Tauri fails clippy::new-ret-no-self.",
+      "releaseOwner": "v3-tauri-mobile-plugin"
+    },
+    {
+      "id": "rust-security-audit",
+      "status": "fail",
+      "command": "cargo audit --file Cargo.lock --deny warnings",
+      "result": "CLI has one vulnerability and one denied warning; MCP has one denied warning; Tauri has two high vulnerabilities and 16 denied warnings.",
+      "releaseOwners": ["v3-main-ci-baseline", "v3-tauri-mobile-plugin", "v3-release-certification"]
+    },
+    {
+      "id": "tauri-ios-cross-compile",
+      "status": "pass",
+      "command": "cargo check --locked --target aarch64-apple-ios",
+      "result": "The Tauri Rust plugin cross-compiles for iOS."
+    },
+    {
+      "id": "tauri-android-cross-compile",
+      "status": "pass",
+      "command": "cargo check --locked --target aarch64-linux-android",
+      "result": "The Tauri Rust plugin cross-compiles for Android."
+    },
+    {
+      "id": "openspec-strict",
+      "status": "pass",
+      "command": "openspec validate v3-release-contract --strict",
+      "result": "The change is valid."
+    },
+    {
+      "id": "documentation-status",
+      "status": "limited",
+      "result": "BDD verifies honest README, coverage-ledger, and skill references. The Docusaurus build, links, search, accessibility, Lighthouse, and GitHub Pages gates do not exist yet.",
+      "releaseOwners": ["v3-docs-foundation-brand", "v3-docs-github-pages"]
+    },
+    {
+      "id": "visual-evidence",
+      "status": "not-applicable",
+      "result": "This change defines a non-visual release contract and has no rendered UI. Visual certification remains mandatory for the five examples and branded documentation site."
+    },
+    {
+      "id": "release-platform-matrix",
+      "status": "limited",
+      "result": "Local evidence covers Node 24 and macOS arm64. Node 22/26+, Linux, Windows, browsers, mobile simulators/devices, signing, stores, and registry publication were not executed.",
+      "releaseOwners": ["v3-release-pipeline-rc", "v3-release-certification", "v3-stable-publication"]
+    }
+  ],
+  "manualAuthoritiesNotExercised": [
+    "npm-latest",
+    "github-pages-production",
+    "native-registry-first-publish",
+    "platform-signing-and-stores"
+  ]
+}

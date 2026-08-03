@@ -1,0 +1,41 @@
+{
+  "concept_id": "tauri-clean-state-platform-certification",
+  "sources": [
+    {
+      "source_ref": "pnpm-install",
+      "content_summary": "A frozen pnpm workspace install validates that manifests and the committed lockfile agree without modifying dependency resolution.",
+      "key_points": [
+        "Use pnpm install --frozen-lockfile for workspace dependency reproducibility.",
+        "A successful cached install is still a lockfile consistency check, not a native-platform execution check."
+      ],
+      "misconceptions": [
+        "A successful pnpm install proves Android or iOS native code executed."
+      ]
+    },
+    {
+      "source_ref": "cargo-clean,cargo-test",
+      "content_summary": "A new Cargo target directory forces compilation away from prior build products, while --locked pins dependency resolution and cargo test executes the selected Rust test targets.",
+      "key_points": [
+        "Use a fresh CARGO_TARGET_DIR to prevent stale compiled artifacts from satisfying the run.",
+        "Use --locked for deterministic Cargo dependency selection."
+      ],
+      "misconceptions": [
+        "Cross-compiling or checking Rust alone proves Kotlin or Swift commands returned through Tauri's native bridge."
+      ]
+    },
+    {
+      "source_ref": "tauri-tests,tauri-mobile-plugin,tauri-prerequisites",
+      "content_summary": "Tauri's desktop mock/runtime checks and mobile native bridge are distinct evidence layers. Kotlin and Swift command execution requires an Android or iOS host with the corresponding platform toolchain and runtime target.",
+      "key_points": [
+        "Mock-runtime tests do not execute native webview libraries.",
+        "Android native commands are Kotlin Tauri plugin commands.",
+        "iOS native commands are Swift Plugin objc entrypoints.",
+        "Real platform certification must observe the command response and capability denial on the target runtime."
+      ],
+      "misconceptions": [
+        "Shipping Kotlin and Swift source files is equivalent to executing them.",
+        "A desktop permission-denial test automatically certifies Android and iOS capability enforcement."
+      ]
+    }
+  ]
+}

@@ -1,4 +1,3 @@
-
 import 'package:entity_graph_flutter/entity_graph_flutter.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -168,10 +167,7 @@ void main() {
       graph.upsertEntity('User', '42', {'name': 'Charlie'});
       await Future<void>.delayed(Duration.zero);
       sub.cancel();
-      expect(
-        events.whereType<EntityChanged>(),
-        isNotEmpty,
-      );
+      expect(events.whereType<EntityChanged>(), isNotEmpty);
       final change = events.whereType<EntityChanged>().first;
       expect(change.type, equals('User'));
       expect(change.id, equals('42'));

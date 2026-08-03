@@ -1,0 +1,453 @@
+[
+  {
+    "description": "  As a 3.0 release reviewer\n  I need every stable capability to use one deterministic semantic contract\n  So that polished showcase applications cannot hide missing behavior or unsupported release claims",
+    "elements": [
+      {
+        "description": "",
+        "id": "machine-verifiable-shared-example-coverage;the-shared-domain-and-transports-are-deterministic-and-normalized",
+        "keyword": "Scenario",
+        "line": 10,
+        "name": "The shared domain and transports are deterministic and normalized",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 409499
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "the shared example coverage verifier is available",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:68"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 437146708
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 11,
+            "name": "the shared example contract is verified",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:73"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 498333
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "all thirteen semantic scenarios pass",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:77"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 556666
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "the domain contains Project, User, Task, Comment, and Activity exactly once",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:85"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 233791
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "all eight transport fixtures are deterministic and keyless",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:93"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 30549665
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 15,
+            "name": "every shared list contains known entity IDs only",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:100"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@v3-example-coverage-contract",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "machine-verifiable-shared-example-coverage;stable-capabilities-have-complete-bidirectional-mappings",
+        "keyword": "Scenario",
+        "line": 17,
+        "name": "Stable capabilities have complete bidirectional mappings",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 118290
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "the shared example coverage verifier is available",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:68"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 21332
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 18,
+            "name": "the shared example contract is verified",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:73"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 658083
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 19,
+            "name": "all sixteen stable capabilities have runnable semantic evidence",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:113"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 196915
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 20,
+            "name": "all sixteen stable release artifacts are mapped",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:127"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 23135083
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 21,
+            "name": "every scenario and capability mapping links in both directions",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:135"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 260292
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 22,
+            "name": "all five showcase applications reference shared scenarios",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:141"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 130541
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 23,
+            "name": "the coverage ledger registers the implemented shared contract gate",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:151"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@v3-example-coverage-contract",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "machine-verifiable-shared-example-coverage;stale-mappings-and-evidence-drift-fail-closed",
+        "keyword": "Scenario",
+        "line": 25,
+        "name": "Stale mappings and evidence drift fail closed",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 27374
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "the shared example coverage verifier is available",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:68"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 72215584
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 26,
+            "name": "adversarial example coverage mutations",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:162"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 97374
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 27,
+            "name": "the mutated contracts are validated",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:194"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 104207
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 28,
+            "name": "stale scenario mappings are rejected",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:198"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 47292
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 29,
+            "name": "missing stable artifact mappings are rejected",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:202"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 25666
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 30,
+            "name": "wrong evidence commands and missing paths are rejected",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:206"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 21707
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 31,
+            "name": "nondeterministic or cross-tenant fixtures are rejected",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:211"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@v3-example-coverage-contract",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "machine-verifiable-shared-example-coverage;coverage-claims-remain-honest-while-showcase-work-is-pending",
+        "keyword": "Scenario",
+        "line": 33,
+        "name": "Coverage claims remain honest while showcase work is pending",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 60166
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "the shared example coverage verifier is available",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:68"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 11665
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 34,
+            "name": "the shared example contract is verified",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:73"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 36875
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 35,
+            "name": "the overall example coverage remains in progress",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:216"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 192041
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 36,
+            "name": "runtime and visual evidence remain owned by the five showcase changes",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:220"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 326708
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 37,
+            "name": "this headless contract does not claim release certification or visual evidence",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:230"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 23048457
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 38,
+            "name": "a complete state is accepted only after all release and showcase evidence is implemented",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:238"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 2128249
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 39,
+            "name": "release documentation and skills teach the shared contract evidence boundary",
+            "match": {
+              "location": "tests/steps/v3-example-coverage-contract.steps.ts:257"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@v3-example-coverage-contract",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "machine-verifiable-shared-example-coverage",
+    "line": 2,
+    "keyword": "Feature",
+    "name": "Machine-verifiable shared example coverage",
+    "tags": [
+      {
+        "name": "@release",
+        "line": 1
+      },
+      {
+        "name": "@v3-example-coverage-contract",
+        "line": 1
+      }
+    ],
+    "uri": "tests/features/release/v3-example-coverage-contract.feature"
+  }
+]

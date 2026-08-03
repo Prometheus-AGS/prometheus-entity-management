@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".github/workflows/publish.yml",
+      "line": 67,
+      "claim": "The workflow invokes new pnpm scripts that are not added by this diff, so the rehearsal and staging jobs can fail before running the new CLI.",
+      "evidence": "The workflow hunk runs `pnpm run release:rc:rehearse` and `pnpm run release:rc:stage`, while the diff adds `scripts/release-candidate.mjs` but contains no `package.json` hunk adding `release:rc:rehearse` or `release:rc:stage` scripts; acceptance criteria require executable verification and RC automation.",
+      "suggested_fix": "Add package.json scripts such as `release:rc:plan`, `release:rc:rehearse`, and `release:rc:stage` that invoke `node scripts/release-candidate.mjs <command>`."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

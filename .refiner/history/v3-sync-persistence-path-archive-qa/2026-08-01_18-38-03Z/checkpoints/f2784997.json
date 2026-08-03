@@ -1,0 +1,97 @@
+{
+  "refinement_id": "b8015ab7-8462-4261-b240-122c7903288d",
+  "artifact_name": "v3-sync-persistence-path-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-01T18:34:26Z",
+  "updated_at": "2026-08-01T18:37:34Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Challenge every v3-sync-persistence-path acceptance claim against direct deterministic evidence.",
+    "Prevent headless npm-sync readiness from being presented as platform, visual, relay-production, full-release, or publication readiness."
+  ],
+  "constraints": [
+    {
+      "id": "acceptance-traceability",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "deterministic-storage-convergence",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "mandatory-no-skip",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "evidence-integrity",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "external-contract-boundary",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "release-boundary",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "visual-honesty",
+      "severity": "high",
+      "status": "satisfied"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "running",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 7,
+      "constraints_total": 7,
+      "decision": "terminate",
+      "timestamp": "2026-08-01T18:36:19Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "ae347379",
+      "phase": "specify",
+      "iteration": 0,
+      "timestamp": "2026-08-01T18:35:24Z"
+    },
+    {
+      "checkpoint_id": "56a2f3a5",
+      "phase": "plan",
+      "iteration": 0,
+      "timestamp": "2026-08-01T18:35:25Z"
+    },
+    {
+      "checkpoint_id": "c1451c48",
+      "phase": "execute",
+      "iteration": 1,
+      "timestamp": "2026-08-01T18:37:34Z"
+    }
+  ],
+  "prior_cycle_id": null
+}

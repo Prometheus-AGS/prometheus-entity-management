@@ -19,11 +19,11 @@ vi.mock("solid-js", () => {
   };
 });
 
-import { useGraphStore } from "@prometheus-ags/entity-graph-core";
+import { graphStore } from "@prometheus-ags/entity-graph-core";
 import { createGraphStore } from "./create-graph-store";
 
 beforeEach(() => {
-  const s = useGraphStore.getState();
+  const s = graphStore.getState();
   for (const type of Object.keys(s.entities)) {
     for (const id of Object.keys(s.entities[type])) {
       s.removeEntity(type, id);
@@ -38,7 +38,7 @@ describe("createGraphStore", () => {
   });
 
   it("reflects initial graph state", () => {
-    useGraphStore.getState().upsertEntity("Project", "proj-1", { id: "proj-1" });
+    graphStore.getState().upsertEntity("Project", "proj-1", { id: "proj-1" });
 
     const projectCount = createGraphStore(
       (s) => Object.keys(s.entities["Project"] ?? {}).length,
