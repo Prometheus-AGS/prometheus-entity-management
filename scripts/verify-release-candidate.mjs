@@ -226,6 +226,20 @@ function verifyWorkflow({ workflow, workflowSource, rootManifest }) {
     findStep(stageJob, ({ run }) => /release:rc:stage/.test(run ?? "")),
     "guarded staging command is required",
   );
+  for (const [job, label] of [
+    [rehearsalJob, "candidate bundle"],
+    [stageJob, "staging recovery journal"],
+  ]) {
+    const uploadAction = findStep(
+      job,
+      ({ uses }) => /^actions\/upload-artifact@v7$/.test(uses ?? ""),
+    );
+    assert(uploadAction, `${label} upload is required`);
+    assert(
+      uploadAction.with?.["include-hidden-files"] === true,
+      `${label} upload must include the hidden .release-candidate path`,
+    );
+  }
   assert(!/NODE_AUTH_TOKEN|NPM_TOKEN/.test(workflowSource), "long-lived npm write tokens are forbidden");
   assert(!/npm\s+stage\s+(approve|reject)/.test(workflowSource), "human 2FA actions cannot run in CI");
   assert(!/npm\s+dist-tag\s+add/.test(workflowSource), "stable tag promotion is out of scope");
@@ -239,6 +253,7 @@ function verifyWorkflow({ workflow, workflowSource, rootManifest }) {
     oidc: true,
     stageEnvironment: "npm-rc",
     stageAction: "npm-stage-publish",
+    hiddenReleaseArtifacts: true,
     longLivedNpmToken: false,
     humanApprovalInCi: false,
     stablePromotionInScope: false,
