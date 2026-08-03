@@ -1,6 +1,7 @@
 // Kebab-case subject plus Flutter's required _test.dart discovery suffix.
 // ignore_for_file: file_names
 
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:entity_graph_flutter/entity_graph_flutter.dart';
@@ -29,6 +30,9 @@ final class _CrossPlatformGoldenComparator extends LocalFileComparator {
     throw FlutterError(error);
   }
 }
+
+String _goldenPath(String filename) =>
+    Platform.isLinux ? 'goldens/linux-$filename' : 'goldens/$filename';
 
 final class VisualUser {
   const VisualUser({required this.id, required this.name, required this.role});
@@ -306,7 +310,7 @@ void main() {
     expect(find.text('Alice Rivera'), findsNWidgets(2));
     await expectLater(
       find.byType(CrossViewHarness),
-      matchesGoldenFile('goldens/cross-view-initial.png'),
+      matchesGoldenFile(_goldenPath('cross-view-initial.png')),
     );
 
     final crud = entityCrudProvider<VisualUser>(type: 'User', id: '1');
@@ -322,7 +326,7 @@ void main() {
     expect(graph.readEntity('User', '1')?['name'], 'Alicia Rivera');
     await expectLater(
       find.byType(CrossViewHarness),
-      matchesGoldenFile('goldens/cross-view-optimistic.png'),
+      matchesGoldenFile(_goldenPath('cross-view-optimistic.png')),
     );
   });
 }

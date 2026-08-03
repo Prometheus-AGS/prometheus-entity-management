@@ -22,6 +22,37 @@ test("the stable Dart package and generated Riverpod contract are structurally c
   assert.equal(report.publicApiDeclarations, 81);
 });
 
+test("Flutter visual evidence uses explicit Linux and default platform baselines", () => {
+  const widgetTest = readFileSync(
+    join(root, "packages/entity_graph_flutter/test/cross-view-widget_test.dart"),
+    "utf8",
+  );
+  assert.match(widgetTest, /Platform\.isLinux/);
+  assert.match(widgetTest, /goldens\/linux-\$filename/);
+
+  for (const filename of [
+    "cross-view-initial.png",
+    "cross-view-optimistic.png",
+    "linux-cross-view-initial.png",
+    "linux-cross-view-optimistic.png",
+  ]) {
+    assert.ok(existsSync(join(root, "packages/entity_graph_flutter/test/goldens", filename)));
+  }
+
+  const report = verifyDartGraphRiverpod({ runFlutter: false });
+  const expectedPlatform = process.platform === "linux" ? "linux" : "default";
+  const expectedPrefix = process.platform === "linux" ? "linux-" : "";
+  assert.equal(report.visualEvidence.baselinePlatform, expectedPlatform);
+  assert.equal(
+    report.visualEvidence.initial.path,
+    `packages/entity_graph_flutter/test/goldens/${expectedPrefix}cross-view-initial.png`,
+  );
+  assert.equal(
+    report.visualEvidence.optimistic.path,
+    `packages/entity_graph_flutter/test/goldens/${expectedPrefix}cross-view-optimistic.png`,
+  );
+});
+
 test("coverage, package, release, and skill guidance match the certified Dart boundary", () => {
   const report = verifyDartGraphRiverpod({ runFlutter: false });
   assert.equal(report.contracts.publicApiLedger, "pass");

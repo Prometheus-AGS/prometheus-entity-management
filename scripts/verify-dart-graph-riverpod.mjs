@@ -10,8 +10,13 @@ import { verifyDartLedger } from "./dart-public-api-contract.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const packageRoot = join(root, "packages/entity_graph_flutter");
-const initialGolden = "packages/entity_graph_flutter/test/goldens/cross-view-initial.png";
-const optimisticGolden = "packages/entity_graph_flutter/test/goldens/cross-view-optimistic.png";
+const defaultInitialGolden = "packages/entity_graph_flutter/test/goldens/cross-view-initial.png";
+const defaultOptimisticGolden = "packages/entity_graph_flutter/test/goldens/cross-view-optimistic.png";
+const linuxInitialGolden = "packages/entity_graph_flutter/test/goldens/linux-cross-view-initial.png";
+const linuxOptimisticGolden =
+  "packages/entity_graph_flutter/test/goldens/linux-cross-view-optimistic.png";
+const initialGolden = process.platform === "linux" ? linuxInitialGolden : defaultInitialGolden;
+const optimisticGolden = process.platform === "linux" ? linuxOptimisticGolden : defaultOptimisticGolden;
 
 const requiredFiles = [
   "packages/entity_graph_flutter/lib/entity_graph_flutter.dart",
@@ -25,8 +30,10 @@ const requiredFiles = [
   "packages/entity_graph_flutter/test/provider-contract_test.dart",
   "packages/entity_graph_flutter/test/ffi-transport-contract_test.dart",
   "packages/entity_graph_flutter/test/cross-view-widget_test.dart",
-  initialGolden,
-  optimisticGolden,
+  defaultInitialGolden,
+  defaultOptimisticGolden,
+  linuxInitialGolden,
+  linuxOptimisticGolden,
   "prometheus-entity-skills/_shared/references/dart-library-exports.json",
   "prometheus-entity-skills/_shared/references/dart-graph-riverpod.md",
   "release/dart-graph-riverpod.md",
@@ -199,6 +206,7 @@ export function verifyDartGraphRiverpod({ runFlutter = true } = {}) {
     visualEvidence: {
       scope: "Flutter widget harness for cross-view optimistic propagation; not full app, device, or accessibility certification",
       inspected: true,
+      baselinePlatform: process.platform === "linux" ? "linux" : "default",
       initial: {
         path: initialGolden,
         sha256: sha256(initialGolden),

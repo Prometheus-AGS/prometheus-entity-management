@@ -24,6 +24,7 @@
   "visualEvidence": {
     "scope": "Flutter widget harness for cross-view optimistic propagation; not full app, device, or accessibility certification",
     "inspected": true,
+    "baselinePlatform": "default",
     "initial": {
       "path": "packages/entity_graph_flutter/test/goldens/cross-view-initial.png",
       "sha256": "cf8cafe9e6ef51f7138f74f73ae732d7286d695b9c3bad1afb46a8730f648e3a"
@@ -47,6 +48,8 @@
     "packages/entity_graph_flutter/test/cross-view-widget_test.dart",
     "packages/entity_graph_flutter/test/goldens/cross-view-initial.png",
     "packages/entity_graph_flutter/test/goldens/cross-view-optimistic.png",
+    "packages/entity_graph_flutter/test/goldens/linux-cross-view-initial.png",
+    "packages/entity_graph_flutter/test/goldens/linux-cross-view-optimistic.png",
     "prometheus-entity-skills/_shared/references/dart-library-exports.json",
     "prometheus-entity-skills/_shared/references/dart-graph-riverpod.md",
     "release/dart-graph-riverpod.md"
