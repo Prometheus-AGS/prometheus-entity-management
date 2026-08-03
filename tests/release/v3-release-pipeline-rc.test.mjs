@@ -723,7 +723,10 @@ test("command adapters use real dry-run commands and keep staging explicit", asy
     ),
   );
   assert.ok(
-    calls.some(({ command, args }) => command === "dart" && args.join(" ") === "pub publish --dry-run"),
+    calls.some(
+      ({ command, args }) =>
+        command === "flutter" && args.join(" ") === "pub publish --dry-run",
+    ),
   );
   assert.ok(
     calls.some(

@@ -892,7 +892,7 @@ export function createReleaseCommandAdapters({
 
     async dryRunNative(artifact) {
       if (artifact.ecosystem === "dart") {
-        const result = await runCommand("dart", ["pub", "publish", "--dry-run"], {
+        const result = await runCommand("flutter", ["pub", "publish", "--dry-run"], {
           cwd: join(rootPath, artifact.path),
           mutation: false,
         });
