@@ -8,19 +8,19 @@ import { AppProviders } from "@/components/app-providers";
 import { AppShell } from "@/components/layout/app-shell";
 import {
   GraphHydrationProvider,
-  type InitialEntity,
 } from "@/components/graph-hydration-provider";
+import type { DehydratedGraphSnapshot } from "@/features/next-runtime/graph-snapshot";
 
 export function DemoLayoutClient({
-  initialEntities,
+  snapshot,
   children,
 }: {
-  initialEntities: InitialEntity[];
+  snapshot: DehydratedGraphSnapshot;
   children: React.ReactNode;
 }) {
   return (
     <AppProviders>
-      <GraphHydrationProvider initialEntities={initialEntities}>
+      <GraphHydrationProvider snapshot={snapshot}>
         <AppShell>{children}</AppShell>
       </GraphHydrationProvider>
     </AppProviders>

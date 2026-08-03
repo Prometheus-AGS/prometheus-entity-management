@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useRef, useCallback } from "react";
 import { RealtimeManager, useGraphDevTools } from "@prometheus-ags/prometheus-entity-management";
 import type {
@@ -20,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useTaskStatusMutation, useTasksList } from "@/features/tasks/task-hooks";
+import { useScopedRealtimeManager } from "@/features/next-runtime/use-scoped-realtime-manager";
 import { cn } from "@/lib/utils";
 import type { Task } from "@/types";
 import {
@@ -128,27 +131,28 @@ export function RealtimePage() {
   const { items: tasks } = useTasksList();
   const taskStatusMutation = useTaskStatusMutation();
 
+  const scopedManager = useScopedRealtimeManager({
+    flushInterval: 16,
+    onStatusChange: (_name, status) => setAdapterStatus(status),
+    onChangeReceived: (_name, change) => {
+      feedIdRef.current++;
+      setFeed((prev) => [
+        { id: feedIdRef.current, timestamp: new Date().toISOString(), adapterName: _name, change },
+        ...prev.slice(0, 49),
+      ]);
+      setBatchCount((c) => c + 1);
+    },
+  });
+
   // Create the RealtimeManager once. No adapter here — the second effect owns that.
   useEffect(() => {
-    const manager = new RealtimeManager({
-      flushInterval: 16,
-      onStatusChange: (_name, status) => setAdapterStatus(status),
-      onChangeReceived: (_name, change) => {
-        feedIdRef.current++;
-        setFeed((prev) => [
-          { id: feedIdRef.current, timestamp: new Date().toISOString(), adapterName: _name, change },
-          ...prev.slice(0, 49),
-        ]);
-        setBatchCount((c) => c + 1);
-      },
-    });
-    managerRef.current = manager;
+    managerRef.current = scopedManager;
 
     return () => {
       adapterRef.current?.stop();
       unregisterRef.current?.();
     };
-  }, []);
+  }, [scopedManager]);
 
   // Create/replace the adapter whenever intervalMs changes (runs on mount too).
   // React runs effects in declaration order, so managerRef is always populated here.

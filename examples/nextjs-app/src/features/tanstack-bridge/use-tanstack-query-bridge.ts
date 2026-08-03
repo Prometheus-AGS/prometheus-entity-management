@@ -1,6 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useGraphStore } from "@prometheus-ags/prometheus-entity-management";
+import {
+  useGraphStore,
+  useGraphStoreApi,
+} from "@prometheus-ags/prometheus-entity-management";
 
 export type BridgeDemoPost = { id: string; title: string };
 
@@ -27,10 +30,12 @@ export function useTanStackQueryBridgePost(postId: string) {
 
 /** Writes successful Query results into the graph (hook layer — not a component calling the store). */
 export function useSyncQueryResultToGraph(data: BridgeDemoPost | undefined) {
+  const store = useGraphStoreApi();
+
   useEffect(() => {
     if (!data) return;
-    useGraphStore.getState().upsertEntity(DEMO_TYPE, data.id, data);
-  }, [data]);
+    store.getState().upsertEntity(DEMO_TYPE, data.id, data);
+  }, [data, store]);
 }
 
 export function useBridgePostFromGraph(postId: string) {

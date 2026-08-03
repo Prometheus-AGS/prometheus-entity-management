@@ -58,3 +58,14 @@
   task surfaces and merged strict-valid specifications. The signed legacy
   import still projects those historical changes as pending; direct archive
   evidence, not that stale projection, is the dependency-readiness authority.
+- Completed the implementation boundary for Next.js task 2: request-owned
+  server graphs, dehydrate/hydrate into a provider-scoped browser graph,
+  Server/Client Component route boundaries, loading/error boundaries, Server
+  Action mutation, and client realtime takeover. Core engine registries and
+  React REST, rich-query, GraphQL, ElectricSQL, CRUD, mutation, Suspense,
+  realtime, and DevTools paths now honor the selected graph store while the
+  default singleton remains backward compatible.
+- Tier 0 source-mapped TypeScript checks passed for core, React, and Next; the
+  touched-file ESLint gate, strict OpenSpec validation, and diff hygiene also
+  passed. Production builds, packed consumers, concurrent SSR tests, and
+  browser E2E remain deliberately unclaimed until the later registered tasks.

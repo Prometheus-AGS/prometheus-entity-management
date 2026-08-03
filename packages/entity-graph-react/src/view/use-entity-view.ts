@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
-import { useGraphStore, EMPTY_IDS, EMPTY_LIST_STATE } from "@prometheus-ags/entity-graph-core";
+import { EMPTY_IDS, EMPTY_LIST_STATE } from "@prometheus-ags/entity-graph-core";
 import { serializeKey, getEngineOptions } from "@prometheus-ags/entity-graph-core";
 import { applyView, checkCompleteness, matchesFilter, matchesSearch, findInsertionIndex } from "@prometheus-ags/entity-graph-core";
 import { toRestParams, toSQLClauses, toGraphQLVariables, hasCustomPredicates } from "@prometheus-ags/entity-graph-core";
 import type { ViewDescriptor, FilterSpec, SortSpec, CompletenessMode } from "@prometheus-ags/entity-graph-core";
 import type { EntityType, EntityId } from "@prometheus-ags/entity-graph-core";
 import type { ListResponse } from "@prometheus-ags/entity-graph-core";
+import { useGraphStoreApi } from "../graph-store";
 
 /**
  * Precompiled transport payloads for one view snapshot — pass to REST, GraphQL, or SQL backends without re-deriving from `ViewDescriptor`.
@@ -88,6 +89,7 @@ export function useEntityView<TEntity extends object>(opts: UseEntityViewOptions
     );
   }
   const { type, baseQueryKey, mode: forcedMode, remoteFetch, remoteDebounce = 300, staleTime = getEngineOptions().defaultStaleTime, enabled = true, initialIds, initialTotal } = opts;
+  const storeApi = useGraphStoreApi();
   const optsRef = useRef(opts); optsRef.current = opts;
   const [liveView, setLiveView] = useState<ViewDescriptor>(opts.view);
   const liveViewRef = useRef(liveView); liveViewRef.current = liveView;
@@ -99,16 +101,16 @@ export function useEntityView<TEntity extends object>(opts: UseEntityViewOptions
   const seededRef = useRef(false);
   if (!seededRef.current && initialIds && initialIds.length > 0) {
     seededRef.current = true;
-    const store = useGraphStore.getState();
+    const store = storeApi.getState();
     if (!store.lists[baseKey]) {
       store.setListResult(baseKey, initialIds, { total: initialTotal ?? null });
     }
   }
   const listState = useStore(
-    useGraphStore,
+    storeApi,
     useCallback((state) => state.lists[baseKey] ?? null, [baseKey]),
   );
-  const remoteListState = useStore(useGraphStore, useCallback((state) => remoteResultKey ? state.lists[remoteResultKey] ?? null : null, [remoteResultKey]));
+  const remoteListState = useStore(storeApi, useCallback((state) => remoteResultKey ? state.lists[remoteResultKey] ?? null : null, [remoteResultKey]));
   const { isComplete } = useMemo(() => {
     if (!listState) return { isComplete: false };
     return checkCompleteness(listState.ids.length, listState.total, listState.hasNextPage);
@@ -121,7 +123,7 @@ export function useEntityView<TEntity extends object>(opts: UseEntityViewOptions
     return "hybrid";
   }, [forcedMode, isComplete, liveView.filter, remoteFetch]);
   const localViewIds = useStore(
-    useGraphStore,
+    storeApi,
     useShallow((state): EntityId[] => {
       const list = state.lists[baseKey] ?? EMPTY_LIST_STATE;
       const sourceIds =
@@ -143,16 +145,16 @@ export function useEntityView<TEntity extends object>(opts: UseEntityViewOptions
   const items = useMemo(
     () =>
       localViewIds
-        .map((id) => useGraphStore.getState().readEntitySnapshot<TEntity>(type, id))
+        .map((id) => storeApi.getState().readEntitySnapshot<TEntity>(type, id))
         .filter((item) => item !== null) as TEntity[],
-    [localViewIds, type],
+    [localViewIds, type, storeApi],
   );
   const fireRemoteFetch = useCallback(async (view: ViewDescriptor, cursor?: string) => {
     const { remoteFetch: rf, normalize: norm, baseQueryKey: bqk } = optsRef.current; if (!rf) return;
     const params: ViewFetchParams = { rest: toRestParams(view), graphql: toGraphQLVariables(view), sql: toSQLClauses(view), view };
     const rKey = serializeKey([...bqk, "__view__", view, cursor]);
     setRemoteResultKey(rKey); setIsRemoteFetching(true); setRemoteError(null);
-    const store = useGraphStore.getState(); store.setListFetching(rKey, true);
+    const store = storeApi.getState(); store.setListFetching(rKey, true);
     const baseKeyStr = serializeKey(bqk);
     try {
       const response = await rf(params);
@@ -179,7 +181,7 @@ export function useEntityView<TEntity extends object>(opts: UseEntityViewOptions
       store.setListError(baseKeyStr, msg);
     }
     finally { setIsRemoteFetching(false); }
-  }, [type]);
+  }, [type, storeApi]);
   useEffect(() => {
     if (!enabled || completenessMode === "local" || !remoteFetch) return;
     const searchQuery = liveView.search?.query ?? ""; const minChars = liveView.search?.minChars ?? 2;
@@ -189,13 +191,13 @@ export function useEntityView<TEntity extends object>(opts: UseEntityViewOptions
     return () => { if (debounceTimer.current) clearTimeout(debounceTimer.current); };
   }, [liveView, completenessMode, enabled, remoteFetch, remoteDebounce, fireRemoteFetch]);
   useEffect(() => {
-    if (!enabled) return; const state = useGraphStore.getState(); const existing = state.lists[baseKey];
+    if (!enabled) return; const state = storeApi.getState(); const existing = state.lists[baseKey];
     const isStale = !existing?.lastFetched || existing.stale || Date.now() - (existing.lastFetched ?? 0) > staleTime;
     if (!existing || isStale) fireRemoteFetch(liveViewRef.current);
-  }, [baseKey, enabled, staleTime, fireRemoteFetch]);
+  }, [baseKey, enabled, staleTime, fireRemoteFetch, storeApi]);
   useEffect(() => {
-    const unsub = useGraphStore.subscribe((state) => state.entities[type] ?? EMPTY_ENTITY_BUCKET, (newEntities, prevEntities) => {
-      const view = liveViewRef.current; const store = useGraphStore.getState(); const list = store.lists[baseKey]; if (!list) return;
+    const unsub = storeApi.subscribe((state) => state.entities[type] ?? EMPTY_ENTITY_BUCKET, (newEntities, prevEntities) => {
+      const view = liveViewRef.current; const store = storeApi.getState(); const list = store.lists[baseKey]; if (!list) return;
       for (const id of new Set([...Object.keys(newEntities), ...Object.keys(prevEntities)])) {
         const isPresent = id in newEntities; if (!isPresent) continue;
         const entity = newEntities[id] as Record<string, unknown>;
@@ -208,7 +210,7 @@ export function useEntityView<TEntity extends object>(opts: UseEntityViewOptions
       }
     });
     return unsub;
-  }, [type, baseKey]);
+  }, [type, baseKey, storeApi]);
   const setView = useCallback((partial: Partial<ViewDescriptor>) => setLiveView((prev) => ({ ...prev, ...partial })), []);
   const setFilter = useCallback((filter: FilterSpec | null) => setLiveView((prev) => ({ ...prev, filter: filter ?? undefined })), []);
   const setSort = useCallback((sort: SortSpec | null) => setLiveView((prev) => ({ ...prev, sort: sort ?? undefined })), []);

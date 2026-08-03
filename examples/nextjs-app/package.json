@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
+    "@prometheus-ags/entity-graph-core": "workspace:*",
     "@prometheus-ags/prometheus-entity-management": "workspace:*",
     "@tanstack/react-query": "^5.101.4",
     "@tanstack/react-table": "^8.21.3",
