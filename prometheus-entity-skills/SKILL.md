@@ -106,6 +106,7 @@ Cross-cutting schemas and patterns used by all sub-skills:
 - [Certified sync path](_shared/references/sync-persistence-path.md) — PGlite durability, Loro convergence, reconnect, packed consumers, and evidence limits
 - [Official A2UI bridge](_shared/references/a2ui-protocol-bridge.md) — v0.9.1 rendering, default-deny graph actions, AG-UI migration, and certification limits
 - [A2A conformance agent](_shared/references/a2a-conformance-agent.md) — official v1 JSON-RPC lifecycle, application authority, TCK scope, and alpha migration
+- [Agentic A2A/A2UI example](_shared/references/agentic-a2ui-example.md) — safe end-to-end composition, exact action authority, keyless fixtures, and showcase evidence limits
 - [Flutter source provenance](_shared/references/flutter-source-provenance.md) — licensed filtered history, sole Dart owner, non-public import, and blocked publication claims
 - [Dart graph and Riverpod 3](_shared/references/dart-graph-riverpod.md) — canonical graph ownership, generated providers, views, optimistic rollback, retry, transports, API ledger, and evidence limits
 - [Tauri desktop/mobile plugin](_shared/references/tauri-mobile-plugin.md) — generated bindings, least-privilege capabilities, in-memory mirror ownership, packed host proof, and mobile evidence limits
@@ -129,6 +130,13 @@ source-workspace evidence boundary; for installability or registry claims also
 require new packed-candidate and immutable RC-rehearsal receipts.
 
 When a task makes a 3.0 compatibility or publication claim, load the 3.0 release contract reference first. For dependency-currentness or vulnerability claims, also follow its links to `release/dependency-policy.json` and `security/advisory-policy.json`. For npm module or type claims, require the packed-candidate procedure in `release/package-contracts.md`; workspace aliases are not release evidence. For cross-binding singleton claims, require `pnpm run verify:binding-singletons`. For PGlite/Loro durability, convergence, or reconnect claims, read the certified sync reference and require `pnpm run test:sync-persistence` plus `pnpm run verify:sync-persistence`; persistence, CRDT merge, graph projection, and transport recovery are separate receipts. For official A2UI work, read the A2UI bridge reference, use the package root for official v0.9.1 only, move alpha chat/state APIs to `./ag-ui`, and require explicit application authority after protocol validation. For A2A work, read the A2A conformance reference, use the package root for official v1 JSON-RPC and `./legacy` only for pre-v3 slash-method migration, require `pnpm run test:a2a-conformance`, `pnpm run verify:a2a-conformance`, and the pinned TCK receipt, and never infer application authority from protocol validity. For Tauri work, preserve the four separate gates for public declarations, Rust-derived bindings, webview capability authority, and platform-native execution. For example-coverage claims, read the shared contract and require `pnpm run verify:example-coverage`; semantic evidence is a flight plan, not framework, browser, device, accessibility, or visual certification. Treat `planned` entries in `examples/coverage.json` as work remaining. An `implemented` showcase proves only the commands and paths declared on that entry; it does not automatically prove packed installation, another platform, or publication authority.
+
+For an end-to-end A2A-to-A2UI application, load the agentic example reference
+in addition to both protocol references. Keep the deterministic reference
+agent keyless, make external endpoints explicit opt-ins, route rendered actions
+through exact schemas plus application authorization and human approval, and
+require `pnpm run verify:agentic-a2ui` before claiming rendered,
+accessible, or visual showcase evidence.
 
 For release-candidate planning, rehearsal, staging, or recovery, load the
 release-candidate pipeline reference and require the non-mutating release

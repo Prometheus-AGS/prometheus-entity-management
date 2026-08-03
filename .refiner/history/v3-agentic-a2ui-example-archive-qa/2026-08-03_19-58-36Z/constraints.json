@@ -1,0 +1,25 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    {"id": "acceptance-direct-evidence", "description": "Every bounded plan and OpenSpec acceptance criterion maps to reproducible current evidence.", "severity": "blocking", "type": "structural", "validation": {"requires_code_execution": true, "validation_method": "acceptance matrix and evidence-path checks"}},
+    {"id": "official-protocol-runtime", "description": "The example reuses canonical A2A and official A2UI package runtime ownership rather than implementing a parallel protocol engine.", "severity": "blocking", "type": "technical", "validation": {"requires_code_execution": true, "validation_method": "source ownership inspection and both package export-ledger commands"}},
+    {"id": "action-boundary-fails-closed", "description": "Untrusted components and actions cannot bypass schema validation, catalog allowlisting, tenant authorization, or human approval.", "severity": "blocking", "type": "technical", "validation": {"requires_code_execution": true, "validation_method": "unit and Chromium policy receipts"}},
+    {"id": "normalized-layering-preserved", "description": "Components consume hooks, command stores own graph mutation, and lists retain IDs while list/detail views react to one canonical entity.", "severity": "blocking", "type": "structural", "validation": {"requires_code_execution": true, "validation_method": "architecture regression and browser cross-view receipt"}},
+    {"id": "lifecycle-and-golden-coverage", "description": "Deterministic fixtures and runtime evidence cover keyless streaming, artifact render, happy and denied actions, malformed rejection, approval, and cancellation.", "severity": "blocking", "type": "technical", "validation": {"requires_code_execution": true, "validation_method": "10 focused units, 3 production-browser flows, and golden fixture hashes"}},
+    {"id": "evidence-integrity", "description": "All retained machine evidence parses, required artifacts exist, ten recorded hashes match, and accessibility has no serious or critical findings.", "severity": "blocking", "type": "accessibility", "validation": {"requires_code_execution": true, "validation_method": "JSON parsing, file checks, SHA-256 recomputation, and receipt assertions"}},
+    {"id": "ledgers-synchronized", "description": "Coverage, package export ledgers, skills, documentation, and OpenSpec agree on the implemented source-workspace example.", "severity": "blocking", "type": "structural", "validation": {"requires_code_execution": true, "validation_method": "coverage, ledger, path, and strict OpenSpec validators"}},
+    {"id": "limits-and-release-impact-explicit", "description": "QA must not claim packed consumption, live external-agent hosting, non-Chromium or native certification, npm publication, or inclusion in the frozen React RC candidate.", "severity": "blocking", "type": "semantic", "validation": {"requires_code_execution": false, "validation_method": "cross-file boundary and release-impact review"}}
+  ],
+  "global_rules": [
+    "Use current repository evidence as authoritative.",
+    "Do not infer a passing external or platform gate from source-workspace evidence.",
+    "Do not mutate npm or any other public release state.",
+    "Lead reflection with gaps and deltas rather than success claims."
+  ],
+  "termination_conditions": [
+    "All eight blocking constraints pass.",
+    "Both manifest variants exist and are non-empty.",
+    "Manifest, constraints, and state are internally consistent.",
+    "No material correction remains before isolated adversarial review."
+  ]
+}

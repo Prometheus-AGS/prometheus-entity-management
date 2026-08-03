@@ -13,6 +13,18 @@
   runtime correctly derives change completion from all *registered* tasks; lazy
   one-at-a-time registration can therefore transiently report a change complete
   when later backend tasks have not been registered yet.
+
+## KBD next-work projection after final task completion
+
+- The final `kbd-apply end-task` transition can mark both the task and its change
+  complete atomically. A later explicit `Complete -> Complete` change transition
+  is rejected with HTTP 409 and must not be forced or worked around by editing
+  projections.
+- At the same signed revision, `exactNextWork` can still name the just-completed
+  change even though its canonical status and all tasks are complete. Treat the
+  signed work-item status plus immutable plan sequence as authoritative, retain
+  the stale projection as an observed control-plane issue, and activate the next
+  planned change through a fresh signed transition on the next execution turn.
 - In runtime revision 39, registering and transitioning a task preserved the
   task event but reset `v3-nextjs-app-router-example` from `in_progress` to
   `pending` at the change projection. Treat the immutable task event and exact

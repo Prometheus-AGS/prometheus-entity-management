@@ -1,1 +1,1 @@
-{"totalRuns":369,"failedRuns":0,"lastRun":{"ts":"2026-08-03T15:18:04Z","kind":"task","edge":"after","name":"v3-nextjs-app-router-example:6","hookId":"legacy-change-complete","layer":"builtin","mode":"augment","status":0},"lastFailure":null}
+{"totalRuns":394,"failedRuns":0,"lastRun":{"ts":"2026-08-03T21:40:38Z","kind":"task","edge":"after","name":"v3-agentic-a2ui-example:6","hookId":"legacy-change-complete","layer":"builtin","mode":"augment","status":0},"lastFailure":null}

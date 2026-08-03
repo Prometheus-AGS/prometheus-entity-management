@@ -6,7 +6,7 @@ Update a post in one screen and every list row, detail panel, and badge that rea
 
 ### 3.0 release program status
 
-The full 3.0 release is **in progress**, not yet certified or promoted to npm's `latest` tag. The authoritative [3.0 release contract](release/v3-release-contract.json) defines the complete artifact inventory, compatibility matrix, stability labels, required evidence, promotion approvals, and recovery policy. The [example coverage ledger](examples/coverage.json) records both the React 19/Vite 8 and Next.js App Router showcases as implemented with browser evidence; agentic A2UI, Flutter/Riverpod, and universal Tauri remain planned. A planned entry is not release evidence, and two implemented showcases are not full-release certification.
+The full 3.0 release is **in progress**, not yet certified or promoted to npm's `latest` tag. The authoritative [3.0 release contract](release/v3-release-contract.json) defines the complete artifact inventory, compatibility matrix, stability labels, required evidence, promotion approvals, and recovery policy. The [example coverage ledger](examples/coverage.json) records React 19/Vite 8, Next.js App Router, and agentic A2UI as implemented with browser evidence; Flutter/Riverpod and universal Tauri remain planned. A planned entry is not release evidence, and three implemented showcases are not full-release certification.
 
 Native Dart and Rust sources are included in the 3.0 inventory, while first publication to pub.dev and crates.io remains deferred until registry ownership and native release workflows are established. npm publication and the branded GitHub Pages documentation site are required release outcomes.
 
@@ -22,7 +22,7 @@ The [shared example contract](examples/shared/README.md) is implemented as a pre
 
 The [official A2UI bridge](release/a2ui-protocol-bridge.md) is now implemented and independently certified. The `@prometheus-ags/a2ui-react` root renders official v0.9.1 surfaces through the maintained engine, graph actions cross a default-deny application policy, and alpha AG-UI chat/state APIs move to the explicit `./ag-ui` subpath. Packed consumers and real-browser accessibility/keyboard evidence prove this bridge.
 
-The [A2A conformance agent](release/a2a-conformance-agent.md) separately implements the official A2A v1 JSON-RPC binding with authenticated, caller-scoped task access, a default-deny graph policy, deterministic A2UI artifacts, packed-consumer verification, and a pinned upstream TCK receipt. Protocol validity never grants application authority. This headless gate does not certify the complete agentic showcase, unsupported REST/gRPC or push-notification bindings, Flutter rendering, documentation deployment, registry authority, or stable promotion.
+The [A2A conformance agent](release/a2a-conformance-agent.md) separately implements the official A2A v1 JSON-RPC binding with authenticated, caller-scoped task access, a default-deny graph policy, deterministic A2UI artifacts, packed-consumer verification, and a pinned upstream TCK receipt. Protocol validity never grants application authority. The dedicated [agentic A2UI example](release/agentic-a2ui-example.md) composes that transport with the official renderer, exact application actions, human approval, and normalized graph projections. Its deletion-aware clean gate passes eleven units, four package builds, both protocol export ledgers, a Vite production build, three Chromium flows, accessibility, screenshots, traces, coverage, security, and strict OpenSpec. Unsupported external-agent hosting, REST/gRPC or push-notification bindings, Flutter rendering, documentation deployment, registry authority, and stable promotion remain outside these gates.
 
 The [Flutter source provenance gate](release/flutter-source-provenance.md) preserves the allowlisted KnowMe history, authorship, MIT attribution, path dispositions, and deterministic lineage evidence. `packages/entity_graph_flutter` remains the sole canonical Dart package; the filtered import is non-buildable and non-public. This is chain-of-custody evidence only—not Riverpod/runtime certification, Flutter rendering, pub.dev authority, or stable 3.0 readiness.
 
@@ -70,6 +70,7 @@ completion of the remaining showcase portfolio.
 | [release/binding-singleton-contract.md](release/binding-singleton-contract.md) | Required core peers, fixed release policy, and six-binding singleton certification |
 | [release/a2ui-protocol-bridge.md](release/a2ui-protocol-bridge.md) | Official A2UI v0.9.1 rendering, graph action policy, and AG-UI migration boundary |
 | [release/a2a-conformance-agent.md](release/a2a-conformance-agent.md) | Official A2A v1 JSON-RPC lifecycle, authority boundary, TCK scope, and alpha migration |
+| [release/agentic-a2ui-example.md](release/agentic-a2ui-example.md) | Keyless end-to-end A2A/A2UI application architecture, policy matrix, verification state, and limits |
 | [release/flutter-source-provenance.md](release/flutter-source-provenance.md) | Licensed Flutter source lineage, canonical ownership, and publication limits |
 | [release/dart-graph-riverpod.md](release/dart-graph-riverpod.md) | Canonical Dart graph, Riverpod 3, public API ledger, behavioral evidence, and exclusions |
 | [release/release-candidate-pipeline.md](release/release-candidate-pipeline.md) | Contract-derived RC manifest, rehearsal, OIDC staging boundary, and recovery |
@@ -402,7 +403,7 @@ recovery are separate proof obligations. The mandatory 3.0 commands are
 `pnpm run test:sync-persistence`, `pnpm run verify:sync-persistence`, and
 `pnpm run bdd:sync-persistence`. They do not certify any rendered showcase;
 browser, mobile, accessibility, screenshot, trace, and device evidence remains
-owned by the planned example changes.
+owned by each example's declared gate.
 
 ### DevTools
 

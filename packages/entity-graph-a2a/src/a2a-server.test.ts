@@ -692,6 +692,38 @@ describe("optional external agent executor", () => {
       createExternalA2AExecutor({ baseUrl: "http://agents.example.test" }),
     ).toThrow("External A2A endpoints must use HTTPS outside local development.");
   });
+
+  it("rejects non-HTTP schemes even when the endpoint hostname is loopback", () => {
+    expect(() =>
+      createExternalA2AExecutor({ baseUrl: "ftp://localhost/a2a" }),
+    ).toThrow("External A2A endpoints must use HTTPS outside local development.");
+    expect(() =>
+      createExternalA2AExecutor({ baseUrl: "ws://127.0.0.1/a2a" }),
+    ).toThrow("External A2A endpoints must use HTTPS outside local development.");
+  });
+
+  it("rejects credential-bearing external endpoints before discovery", () => {
+    expect(() =>
+      createExternalA2AExecutor({ baseUrl: "https://token@agents.example.test/a2a" }),
+    ).toThrow("External A2A endpoints must not embed credentials.");
+    expect(() =>
+      createExternalA2AExecutor({
+        baseUrl: "https://service:secret@agents.example.test/a2a",
+      }),
+    ).toThrow("External A2A endpoints must not embed credentials.");
+  });
+
+  it("allows HTTP only for IPv4, IPv6, and named loopback development", () => {
+    expect(() =>
+      createExternalA2AExecutor({ baseUrl: "http://localhost/a2a" }),
+    ).not.toThrow();
+    expect(() =>
+      createExternalA2AExecutor({ baseUrl: "http://127.0.0.1/a2a" }),
+    ).not.toThrow();
+    expect(() =>
+      createExternalA2AExecutor({ baseUrl: "http://[::1]/a2a" }),
+    ).not.toThrow();
+  });
 });
 
 describe("deterministic A2UI and compatibility seams", () => {

@@ -118,6 +118,11 @@ export function OrderAgentSurface() {
 Call `a2uiRuntime.dispose()` when the application-owned runtime is no longer
 needed.
 
+`processMessages()` treats each supplied message list as one transaction. It
+preflights the complete batch against a shadow official processor seeded from
+the current surfaces; a later schema, catalog, component, or official state
+error therefore cannot partially commit an earlier message to the live runtime.
+
 ## The security boundary
 
 **Protocol validity never grants application authority.**
@@ -226,11 +231,18 @@ pnpm run verify:a2ui-bridge
 pnpm run bdd:a2ui-bridge
 ```
 
-The current evidence covers official message processing/rendering,
+The current package evidence covers official atomic message processing/rendering,
 default-deny graph actions, packed ESM/CommonJS/NodeNext/Node16/SSR consumers,
 keyboard-only browser behavior, desktop/mobile screenshots, and accessibility.
-It does not certify the pending A2A reference agent, the full agentic showcase,
-the Docusaurus deployment, registry authority, or stable publication.
+The repository's dedicated
+[`agentic-a2ui-app`](../../examples/agentic-a2ui-app/README.md) demonstrates how
+to compose this renderer with the official A2A package and an application-owned
+action boundary. Its focused tests are implemented, but its clean production
+browser gate now passes all three flows with zero serious or critical axe
+findings and hash-bound screenshots and traces. That implements the showcase
+without broadening this package's separate packed evidence boundary. The
+Docusaurus deployment, registry authority, and stable publication also remain
+separate.
 
 See [the release bridge contract](../../release/a2ui-protocol-bridge.md) for the
 complete evidence boundary and upstream references.

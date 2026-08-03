@@ -627,6 +627,11 @@
           "kind": "protocol", "status": "implemented", "ownerChange": "v3-a2a-conformance-agent", "command": "pnpm run verify:a2a-conformance",
           "paths": ["packages/entity-graph-a2a/src/server.ts", "packages/entity-graph-a2a/src/handler.ts", "packages/entity-graph-a2a/src/policy.ts", "scripts/run-a2a-tck.mjs", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2a-conformance-agent/tck/receipt.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2a-conformance-agent/packed-consumer-report.json"],
           "applicability": "Proves the A2A 1.0 JSON-RPC discovery, send/get/list/cancel/stream/subscribe lifecycle, deterministic A2UI artifact metadata, explicit legacy seam, and pinned upstream TCK scope. REST, gRPC, push notifications, signed cards, and rendered showcase evidence remain excluded."
+        },
+        {
+          "kind": "browser", "status": "implemented", "ownerChange": "v3-agentic-a2ui-example", "command": "pnpm run verify:agentic-a2ui",
+          "paths": ["scripts/verify-agentic-a2ui-example.mjs", "tests/browser/v3-agentic-a2ui-example.spec.ts", "examples/agentic-a2ui-app/src/features/agentic/agent-session-store.test.ts", "examples/agentic-a2ui-app/src/features/agentic/action-policy.test.tsx", "examples/agentic-a2ui-app/src/features/agentic/reference-surfaces.test.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/task-5-verification.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-evidence.json"],
+          "applicability": "The clean source-workspace gate proves deterministic keyless streaming, official A2UI fixture stability and rendering, normalized cross-view mutation, authorization denial, malformed and undeclared action rejection, human approval, cancellation, accessibility, screenshots, and traces. It does not count as packed-package or external-agent evidence."
         }
       ]
     },
@@ -805,12 +810,12 @@
     },
     {
       "id": "agentic-a2ui",
-      "status": "planned",
+      "status": "implemented",
       "change": "v3-agentic-a2ui-example",
-      "path": "examples/agentic-a2ui",
+      "path": "examples/agentic-a2ui-app",
       "scenarioIds": ["example.graph.normalized-cross-view", "example.crud.optimistic-confirm", "example.realtime.coalesced-cross-view", "example.protocol.a2a-a2ui-policy", "example.runtime.lifecycle-security"],
-      "runtimeEvidence": { "kind": "protocol", "status": "planned", "ownerChange": "v3-agentic-a2ui-example", "applicability": "Keyless happy, denied, malformed, streaming, approval, and cancellation browser BDD remains owned by the agentic example." },
-      "visualEvidence": { "kind": "visual", "status": "planned", "ownerChange": "v3-agentic-a2ui-example", "applicability": "A2UI surface screenshots, accessibility, trace, and video/hash receipt remain owned by the agentic example." }
+      "runtimeEvidence": { "kind": "browser", "status": "implemented", "ownerChange": "v3-agentic-a2ui-example", "command": "pnpm run verify:agentic-a2ui", "paths": ["scripts/verify-agentic-a2ui-example.mjs", "tests/browser/v3-agentic-a2ui-example.playwright.config.ts", "tests/browser/v3-agentic-a2ui-example.spec.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/task-5-verification.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-evidence.json"], "applicability": "A deletion-aware clean source-workspace run passes typecheck, lint, eleven units, core/React/A2A/A2UI builds, both protocol export ledgers, the Vite production build, three Chromium flows, coverage, security, and strict OpenSpec. It does not count as packed-package or external-agent evidence." },
+      "visualEvidence": { "kind": "visual", "status": "implemented", "ownerChange": "v3-agentic-a2ui-example", "command": "pnpm run verify:agentic-a2ui", "paths": [".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-happy-policy-approval.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-malformed-artifact.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-cancelled-task.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/playwright-artifacts/v3-agentic-a2ui-example-re-3788d-orces-every-action-boundary-chromium-desktop/trace.zip", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/playwright-artifacts/v3-agentic-a2ui-example-re-cf5bd-ent-component-before-render-chromium-desktop/trace.zip", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/playwright-artifacts/v3-agentic-a2ui-example-ca-217e3-sk-before-artifact-delivery-chromium-desktop/trace.zip", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/task-5-verification.json"], "applicability": "The clean Chromium receipt hash-binds three full-page screenshots and three always-on traces and records zero serious or critical axe findings across the certified flow set." }
     },
     {
       "id": "flutter-riverpod",

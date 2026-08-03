@@ -49,6 +49,44 @@
   unauthorized; immutable source, aggregate CI, protected staging, and registry
   verification remain downstream.
 
+## 2026-08-03 — Agentic A2UI archive boundary
+
+- Delta: isolated review cycles 6 and 7 exposed two real trust-boundary defects
+  and one later false positive. Pending destructive approvals now fail closed at
+  run/reset boundaries, and credential-bearing external A2A URLs are rejected
+  before discovery; both corrections were observed RED before implementation.
+- The deletion-aware verifier passes 19 commands with 11/11 example units, four
+  endpoint-policy regressions, package builds, three Chromium flows, 13/13
+  semantic scenarios, 14/14 coverage tests, zero serious/critical accessibility
+  findings, and zero blocking security advisories. All ten retained hashes match.
+- Artifact-refiner cycle 7 passed 8/8 blocking constraints. The initial cycle-7
+  catalog-array finding contradicted both current source and the pinned official
+  processor, so no speculative code was added. An alternate isolated reviewer
+  returned PASS with zero findings and anti-sycophancy score 0.0.
+- The frozen React RC remains on remote `main` at
+  `1c40eaa08da210cbe3e20a77c5db211712b5c3a1`; this continuation does not alter
+  it. npm trusted-publisher authorization remains external to repository code.
+- Completed task 2 of `v3-agentic-a2ui-example` through the signed KBD apply
+  boundary. Added a dedicated React 19/Vite 8 application with an in-process
+  official A2A v1 reference server, optional external-agent executor, streamed
+  task lifecycle and cancellation, official A2UI v0.9.1 artifacts, exact
+  application action rules, tenant denial, malformed-action and component
+  rejection, human approval, and normalized list/detail graph projections.
+- Scoped T0 verification passed for the new example (`tsc --noEmit` and ESLint).
+  Full unit/integration/browser checks remain task 3; full build and aggregate
+  phase gates remain task 5. The frozen React RC source and registry state were
+  not changed; npm trusted-publisher authentication remains incomplete.
+- Completed task 3 of `v3-agentic-a2ui-example` through the signed KBD apply
+  boundary. Added stored happy and hostile-component A2UI v0.9.1 golden
+  fixtures; direct action-policy, human-approval, graph-projection, no-model-key,
+  layering, streamed artifact, malformed artifact, and cancellation tests; and
+  three production-browser flows covering happy/denied/invalid/undeclared/
+  approval, malformed, and cancelled behavior.
+- The focused Vitest gate passed 10/10 tests. Scoped TypeScript and ESLint
+  passed, and Playwright discovery found all three expected browser tests.
+  Production build and browser execution remain intentionally unclaimed until
+  task 5.
+
 ## 2026-08-03 — Next.js task 4 documentation and ledger boundary
 
 - Updated the Next.js coverage entry with its packed verification command and
@@ -225,3 +263,46 @@
   web-login attempts expired without browser completion and were cancelled at
   the password prompt; no password, OTP, or temporary npm configuration was
   retained.
+
+## 2026-08-03 — Agentic A2UI task 4 coverage and guidance synchronization
+
+- Corrected the showcase path to `examples/agentic-a2ui-app` and added partial
+  capability evidence for the focused keyless lifecycle, action-policy, golden,
+  and architecture tests.
+- Preserved the fail-closed showcase contract: both runtime and visual evidence
+  remain `planned` until task 5 runs the clean production build and Chromium
+  flows.
+- Added the release guide and agent skill reference, then linked the example
+  from the root, release, examples, A2A, and A2UI documentation.
+- Confirmed the example changes no package source or publishable entry point;
+  the A2A and A2UI public export ledgers remain unchanged.
+- Coverage validation passed all 13 semantic scenarios, the focused coverage
+  suite passed 14/14 tests, strict OpenSpec validation passed, and diff/link
+  hygiene passed. Package export verification could not run without built
+  `dist/` artifacts and is deferred explicitly to the task-5 clean gate.
+- Completed KBD task 4 of 6 at signed revision 70. Tasks 5 and 6 remain.
+
+## 2026-08-03 — Agentic A2UI task 5 clean verification
+
+- Added a deletion-aware `pnpm run verify:agentic-a2ui` gate and ran it from a
+  clean generated state. Frozen install, typecheck, lint, 10 focused units, four
+  package builds, both export ledgers, the production Vite build, three Chromium
+  flows, coverage checks, the production security audit, strict OpenSpec, and diff
+  hygiene passed.
+- The browser run retained exactly three screenshots and three traces, recorded
+  zero serious or critical accessibility findings, and proved the happy policy and
+  approval flow, malformed-artifact rejection, and pre-delivery cancellation.
+- Corrected two observed contrast defects, aligned one browser assertion with the
+  policy's “not allowlisted” message, and fixed a real transactional defect where a
+  rejected untrusted component left a partial empty surface in the official A2UI
+  runtime.
+- The partial-surface cleanup is security hardening at the actual untrusted-agent
+  artifact boundary. A focused regression proves the invalid surface is removed
+  without deleting previously existing surfaces.
+- Promoted the example's runtime and visual coverage plus its public docs and skill
+  guidance to `implemented`, then reran the coverage, ledger, strict OpenSpec, and
+  diff gates against that final declaration state.
+- Recorded the source-workspace evidence boundary, the non-blocking approximately
+  661 kB Vite chunk warning, two low audit findings with zero blocking findings, and
+  the explicit exclusion of external-agent, packed-consumer, Flutter, Tauri, and
+  native certification from this change.

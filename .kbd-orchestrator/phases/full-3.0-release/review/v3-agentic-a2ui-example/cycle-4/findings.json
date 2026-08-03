@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "examples/agentic-a2ui-app/src/features/agentic/runtime.ts",
+      "line": 24,
+      "claim": "Malformed agent messages can still leave partial mutations on an already-existing A2UI surface because rollback only deletes newly-created surfaces.",
+      "evidence": "Acceptance evidence requires validation failures to fail closed and prevent invalid agent output from leaving partial UI state; however `processAgentSurface` records only `newSurfaceIds` for surfaces that do not already exist before `agentA2uiRuntime.processMessages(messages)`, and the catch block only deletes those new surfaces (lines 24-45), so a batch that validly updates an existing surface before throwing on a later invalid component is not rolled back.",
+      "suggested_fix": "Validate the entire message batch before applying it, or snapshot/clone affected existing surfaces and restore them on any processing error rather than only deleting newly-created surfaces."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

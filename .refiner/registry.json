@@ -76,6 +76,13 @@
       "content_type": "direct:content",
       "updated_at": "2026-08-03T16:34:24Z",
       "finalized_at": "2026-08-03T16:34:24Z"
+    },
+    "v3-agentic-a2ui-example-archive-qa": {
+      "path": ".refiner/artifacts/v3-agentic-a2ui-example-archive-qa",
+      "artifact_type": "content",
+      "content_type": "direct:content",
+      "updated_at": "2026-08-03T22:23:11Z",
+      "finalized_at": "2026-08-03T22:23:11Z"
     }
   }
 }

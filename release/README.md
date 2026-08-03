@@ -131,6 +131,21 @@ Server Action mutation, realtime takeover, accessibility, screenshot, and
 trace receipts. The evidence-backed coverage entry is implemented; npm
 publication and the remaining showcases remain separate gates.
 
+## Implemented Agentic A2A and A2UI showcase
+
+[`agentic-a2ui-example.md`](agentic-a2ui-example.md) documents the dedicated
+React 19/Vite 8 application that composes the certified A2A v1 server and A2UI
+v0.9.1 renderer with exact `task.update`, `task.archive`, and `task.delete`
+application policies. Its deletion-aware clean verifier passes the keyless
+stream, golden fixtures, normalized cross-view mutation, denials, human
+approval, cancellation, four package builds, both protocol export ledgers, a
+Vite production build, three Chromium flows, accessibility, screenshots,
+traces, coverage, security, and strict OpenSpec.
+
+The evidence-backed coverage entry is implemented. The receipt remains
+source-workspace evidence and does not add a package export, packed-consumer or
+external-agent claim, registry authority, or stable-release certification.
+
 ## Registry decision
 
 The stable 3.0.0 release requires all twelve npm packages, a GitHub Release, and the production GitHub Pages documentation site. Dart and standalone Rust artifacts remain versioned and certified in the monorepo, while first publication to pub.dev/crates.io is deferred until registry ownership is verified. The Tauri Rust crate is embedded in the npm plugin tarball.

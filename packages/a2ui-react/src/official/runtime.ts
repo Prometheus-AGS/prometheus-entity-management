@@ -86,6 +86,7 @@ function parseMessages(input: PrometheusA2uiMessageInput): A2uiMessage[] {
  */
 export class PrometheusA2uiRuntime {
   readonly processor: MessageProcessor<PrometheusA2uiComponentImplementation>;
+  private readonly catalogs: readonly Catalog<PrometheusA2uiComponentImplementation>[];
   private readonly actionPolicy: A2uiActionPolicy;
   private readonly onActionDecision?: CreatePrometheusA2uiRuntimeOptions["onActionDecision"];
   private readonly listeners = new Set<() => void>();
@@ -102,6 +103,7 @@ export class PrometheusA2uiRuntime {
       throw new Error("A2UI catalog ids must be unique.");
     }
 
+    this.catalogs = catalogs;
     this.actionPolicy = options.actionPolicy ?? createDenyAllA2uiActionPolicy();
     this.onActionDecision = options.onActionDecision;
     this.processor = new OfficialMessageProcessor(
@@ -125,6 +127,7 @@ export class PrometheusA2uiRuntime {
   processMessages(input: PrometheusA2uiMessageInput): void {
     this.assertActive();
     const messages = parseMessages(input);
+    this.preflight(messages);
 
     for (const message of messages) {
       this.assertAllowedComponents(message);
@@ -169,9 +172,74 @@ export class PrometheusA2uiRuntime {
     this.listeners.clear();
   }
 
-  private assertAllowedComponents(message: A2uiMessage): void {
+  private preflight(messages: readonly A2uiMessage[]): void {
+    const shadow = new OfficialMessageProcessor(
+      [...this.catalogs],
+      async () => undefined,
+      { version: PROMETHEUS_A2UI_PROTOCOL_VERSION },
+    );
+
+    try {
+      for (const [surfaceId, surface] of this.processor.model.surfacesMap) {
+        shadow.processMessages([
+          {
+            version: PROMETHEUS_A2UI_PROTOCOL_VERSION,
+            createSurface: {
+              surfaceId,
+              catalogId: surface.catalog.id,
+              theme: structuredClone(surface.theme),
+              sendDataModel: surface.sendDataModel,
+            },
+          },
+        ]);
+
+        const components = [...surface.componentsModel.entries].map(
+          ([id, component]) => ({
+            ...structuredClone(component.properties),
+            id,
+            component: component.type,
+          }),
+        );
+        if (components.length > 0) {
+          shadow.processMessages([
+            {
+              version: PROMETHEUS_A2UI_PROTOCOL_VERSION,
+              updateComponents: { surfaceId, components },
+            },
+          ]);
+        }
+
+        const data = surface.dataModel.get("/");
+        if (data !== undefined) {
+          shadow.processMessages([
+            {
+              version: PROMETHEUS_A2UI_PROTOCOL_VERSION,
+              updateDataModel: {
+                surfaceId,
+                path: "/",
+                value: structuredClone(data),
+              },
+            },
+          ]);
+        }
+      }
+
+      for (const message of messages) {
+        this.assertAllowedComponents(message, shadow);
+        shadow.processMessages([message]);
+      }
+    } finally {
+      shadow.model.dispose();
+    }
+  }
+
+  private assertAllowedComponents(
+    message: A2uiMessage,
+    processor: MessageProcessor<PrometheusA2uiComponentImplementation> =
+      this.processor,
+  ): void {
     if (!("updateComponents" in message)) return;
-    const surface = this.processor.model.getSurface(message.updateComponents.surfaceId);
+    const surface = processor.model.getSurface(message.updateComponents.surfaceId);
     if (!surface) return; // The official processor emits the canonical state error.
 
     for (const component of message.updateComponents.components) {

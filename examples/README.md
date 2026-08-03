@@ -10,7 +10,7 @@ The [machine-readable coverage ledger](coverage.json) is the source of truth for
 | --- | --- | --- |
 | React 19 + Vite 8 | `examples/vite-app` | Implemented (`v3-vite-react19-example`) |
 | Next.js App Router | `examples/nextjs-app` | Implemented (`v3-nextjs-app-router-example`) |
-| Agentic A2UI | `examples/agentic-a2ui` | Planned (`v3-agentic-a2ui-example`) |
+| Agentic A2UI | `examples/agentic-a2ui-app` | Implemented (`v3-agentic-a2ui-example`) |
 | Flutter + Riverpod + A2UI | `examples/flutter-riverpod` | Planned (`v3-flutter-riverpod-a2ui-example`) |
 | Tauri desktop + mobile | `examples/tauri-app` | Planned (`v3-tauri-universal-example`) |
 
@@ -66,7 +66,7 @@ Run it from the repository root:
 pnpm run verify:example-coverage
 ```
 
-The `release.examples.shared-semantic-contract` quality gate proves that every stable capability and release artifact is mapped to runnable semantic evidence and that missing/stale mappings fail closed. It is a headless contract, not browser, device, accessibility, or visual evidence. A showcase remains `planned` until its owning change implements these scenarios and records real runtime and visual receipts; React 19/Vite 8 and Next.js now have those separate receipts.
+The `release.examples.shared-semantic-contract` quality gate proves that every stable capability and release artifact is mapped to runnable semantic evidence and that missing/stale mappings fail closed. It is a headless contract, not browser, device, accessibility, or visual evidence. A showcase remains `planned` until its owning change implements these scenarios and records real runtime and visual receipts; React 19/Vite 8, Next.js, and agentic A2UI now have those separate receipts.
 
 ## Implemented headless sync evidence
 
@@ -102,9 +102,33 @@ pnpm run verify:a2ui-bridge
 pnpm run bdd:a2ui-bridge
 ```
 
-The `agentic-a2ui` showcase remains planned. The bridge fixture certifies the
-renderer package boundary, not the complete shared-domain showcase or its final
-visual receipts.
+The bridge fixture certifies the renderer package boundary, while the separate
+`agentic-a2ui` clean gate now certifies the complete shared-domain showcase and
+its declared visual receipts.
+
+## Implemented Agentic A2A and A2UI showcase
+
+The dedicated [`agentic-a2ui-app`](agentic-a2ui-app/README.md) now connects the
+official A2A v1 lifecycle to an official A2UI v0.9.1 surface and routes exact
+actions through application-owned authorization, approval, command-store, and
+normalized-graph boundaries. Its default reference agent is deterministic and
+keyless; an external A2A endpoint is an explicit opt-in.
+
+Run the complete deletion-aware gate:
+
+```bash
+pnpm run verify:agentic-a2ui
+```
+
+It performs a frozen install; typecheck and lint; eleven focused units; core,
+React, A2A, and A2UI builds; both protocol export-ledger checks; a Vite
+production build; three Chromium flows; coverage, security, strict OpenSpec,
+and diff hygiene. The retained receipt hash-binds three screenshots and three
+traces and records zero serious or critical axe findings. This remains
+source-workspace evidence, not packed-package or external-agent certification.
+
+See [`../release/agentic-a2ui-example.md`](../release/agentic-a2ui-example.md)
+for the architecture, action matrix, current evidence, and explicit limits.
 
 ## Implemented headless A2A evidence
 
@@ -125,7 +149,8 @@ pnpm run bdd:a2a-conformance
 Protocol validity never grants application authority. The headless gate does
 not certify a rendered showcase, REST or gRPC bindings, push notifications,
 extension signing, full shared-domain flows, accessibility, or visual evidence.
-Those receipts remain owned by `v3-agentic-a2ui-example`.
+Those rendered receipts are implemented by `v3-agentic-a2ui-example`; they do
+not broaden the headless protocol gate itself.
 
 ## Shared Demo Infrastructure
 

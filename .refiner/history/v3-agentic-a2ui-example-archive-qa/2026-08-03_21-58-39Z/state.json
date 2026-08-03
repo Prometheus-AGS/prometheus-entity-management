@@ -1,0 +1,92 @@
+{
+  "refinement_id": "3ff5b299-db89-478b-ae55-21f13a7f008a",
+  "artifact_name": "v3-agentic-a2ui-example-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-03T21:55:52Z",
+  "updated_at": "2026-08-03T21:58:39Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Validate the canonical atomic A2UI message-batch correction identified by review cycle 4.",
+    "Bind the final 19-command clean receipt and freshly recomputed evidence hashes.",
+    "Obtain a new isolated review before OpenSpec archive."
+  ],
+  "constraints": [
+    {
+      "id": "acceptance-direct-evidence",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "official-protocol-runtime",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "action-boundary-fails-closed",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "normalized-layering-preserved",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "lifecycle-and-golden-coverage",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "evidence-integrity",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "ledgers-synchronized",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "limits-and-release-impact-explicit",
+      "severity": "blocking",
+      "status": "satisfied"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-03T21:56:09Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "3fc51bfb",
+      "phase": "persist",
+      "iteration": 1,
+      "timestamp": "2026-08-03T21:58:39Z"
+    }
+  ],
+  "prior_cycle_id": "c0bef464-354b-4dd4-a293-9510989e80bb",
+  "finalized_at": "2026-08-03T21:58:39Z"
+}

@@ -1,0 +1,60 @@
+{
+  "specification": {
+    "artifact_name": "v3-agentic-a2ui-example-archive-qa",
+    "artifact_type": "content",
+    "content_type": "direct:content",
+    "clarified_intent": {
+      "description": "Validate the canonical transactional A2UI batch correction and the bounded keyless agentic A2A/A2UI example before a fifth isolated review and archive.",
+      "domain": "React 19, Vite 8, A2A v1, and A2UI v0.9.1 example evidence"
+    },
+    "constraint_source": "KBD generic constraint template plus task-specific constraints because .kbd-orchestrator/constraints.md is absent",
+    "constraints": [
+      "acceptance-direct-evidence",
+      "official-protocol-runtime",
+      "action-boundary-fails-closed",
+      "normalized-layering-preserved",
+      "lifecycle-and-golden-coverage",
+      "evidence-integrity",
+      "ledgers-synchronized",
+      "limits-and-release-impact-explicit"
+    ],
+    "target_state": {
+      "description": "A reproducible QA bundle with zero blocking violations, explicit evidence boundaries, and no publication or platform overclaim.",
+      "success_criteria": [
+        "Every plan and OpenSpec acceptance criterion maps to direct current evidence.",
+        "Official A2UI processing and A2A lifecycle reuse canonical packages rather than duplicate protocol ownership.",
+        "Malformed components, undeclared actions, invalid context, unauthorized actions, and denied approvals fail closed without partially committing an earlier message in the same A2UI batch.",
+        "Approved actions enter the command store and update normalized list/detail projections.",
+        "Golden fixtures and browser evidence cover happy, denied, malformed, and cancelled behavior without a model key.",
+        "Coverage, public ledgers, skills, docs, and retained evidence agree.",
+        "Packed consumers, live external agents, non-Chromium browsers, native platforms, and npm publication remain explicitly uncertified."
+      ],
+      "measurable_outcomes": [
+        {"metric": "blocking violations", "threshold": "0"},
+        {"metric": "focused example unit tests", "threshold": "10/10"},
+        {"metric": "canonical A2UI atomic-batch regressions", "threshold": "1/1"},
+        {"metric": "external-endpoint policy regressions", "threshold": "3/3"},
+        {"metric": "production browser flows", "threshold": "3/3"},
+        {"metric": "retained artifact hashes", "threshold": "10/10"},
+        {"metric": "serious or critical accessibility violations", "threshold": "0"},
+        {"metric": "shared semantic scenarios", "threshold": "13/13"}
+      ]
+    },
+    "unknowns": [
+      "A live external A2A endpoint is configurable but not certified by this keyless gate.",
+      "The example resolves workspace source and is not packed-consumer evidence.",
+      "Firefox, WebKit, mobile browsers, Flutter, Tauri, and native devices remain outside this change.",
+      "The frozen React RC source SHA predates this continuation and remains a separate publication lane."
+    ],
+    "requires_code_execution": true,
+    "likely_tools": [
+      "example coverage verifier",
+      "package export-ledger verifiers",
+      "OpenSpec strict validator",
+      "SHA-256 calculator",
+      "JSON parser",
+      "artifact-refiner validators",
+      "canonical A2UI package regression"
+    ]
+  }
+}
