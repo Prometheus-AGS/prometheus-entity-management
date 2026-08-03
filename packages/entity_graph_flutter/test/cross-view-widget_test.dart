@@ -1,10 +1,34 @@
 // Kebab-case subject plus Flutter's required _test.dart discovery suffix.
 // ignore_for_file: file_names
 
+import 'dart:typed_data';
+
 import 'package:entity_graph_flutter/entity_graph_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+final class _CrossPlatformGoldenComparator extends LocalFileComparator {
+  _CrossPlatformGoldenComparator(super.testFile);
+
+  static const precisionTolerance = 0.0005;
+
+  @override
+  Future<bool> compare(Uint8List imageBytes, Uri golden) async {
+    final result = await GoldenFileComparator.compareLists(
+      imageBytes,
+      await getGoldenBytes(golden),
+    );
+    final passed = result.passed || result.diffPercent <= precisionTolerance;
+    if (passed) {
+      result.dispose();
+      return true;
+    }
+    final error = await generateFailureOutput(result, golden, basedir);
+    result.dispose();
+    throw FlutterError(error);
+  }
+}
 
 final class VisualUser {
   const VisualUser({required this.id, required this.name, required this.role});
@@ -254,6 +278,11 @@ void main() {
   testWidgets('optimistic edit renders through list and detail joins', (
     tester,
   ) async {
+    final previousGoldenComparator = goldenFileComparator;
+    goldenFileComparator = _CrossPlatformGoldenComparator(
+      Uri.parse('test/cross-view-widget_test.dart'),
+    );
+    addTearDown(() => goldenFileComparator = previousGoldenComparator);
     await tester.binding.setSurfaceSize(const Size(960, 600));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     final graph = EntityGraph()
