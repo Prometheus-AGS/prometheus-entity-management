@@ -368,3 +368,23 @@
 - Fatal Dart analysis and the complete 25-test app suite pass. Coverage ledger
   promotion, stable-toolchain/device certification, and publication remain
   pending.
+
+## 2026-08-03 — Flutter task-4 declared surface
+
+- Added an evidence-bearing `partial` showcase state so the release ledger can
+  record passing Flutter host tests and goldens without misreporting
+  stable-SDK or Android/iOS certification.
+- Promoted only the Flutter host runtime, optimistic CRUD, in-memory
+  offline/reconnect, and visual entries to partial; overall coverage remains
+  in progress and release certification remains false.
+- Added complete example, release, and skill guidance for the one-graph
+  Riverpod/transport architecture and the atomic, default-deny GenUI action
+  boundary.
+- Confirmed the application adds no package declaration: the Dart public API
+  ledger remains byte-identical at 81 entries.
+- Coverage, 35 focused Node/Dart tests, three BDD tags, release-contract
+  validation, scoped ESLint, strict OpenSpec, link checks, and diff hygiene
+  pass. The aggregate skill gate stops only at an unrelated missing Tauri dist;
+  all reached ledgers and the directly affected Dart ledger pass.
+- Stable Flutter 3.44.8 and Android/iOS execution remain task 5. No publication
+  authority changed, and the React RC lane remains frozen.

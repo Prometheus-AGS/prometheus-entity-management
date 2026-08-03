@@ -46,3 +46,15 @@ Rationale: relabeling the Flutter stream 0.9.1 would be rejected by the current
 official parser; claiming the two byte formats are identical would be false.
 The explicit adapter keeps semantic coverage shared and makes the remaining
 cross-runtime protocol-version difference inspectable.
+
+## 2026-08-03 — Represent Flutter host evidence as partial
+
+The example coverage contract now supports `partial` showcase status. The
+Flutter showcase uses it for host analyzer, test, and golden evidence until the
+release-floor SDK and both native integration lanes pass.
+
+Rationale: leaving the showcase planned would discard observed evidence, while
+marking it implemented would falsely certify Android/iOS and stable-SDK gates.
+A constrained intermediate state keeps evidence inspectable and prevents both
+forms of misreporting. The validator rejects partial entries that still have
+planned evidence and requires fully complete evidence to use implemented.

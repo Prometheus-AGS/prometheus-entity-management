@@ -36,6 +36,6 @@ Feature: Authoritative Prometheus Entity Management 3.0 release contract
 
   Scenario: Release-facing ledgers consume the authoritative contract
     Then the example coverage ledger references the 3.0 release contract
-    And the coverage ledger marks React Vite implemented and unfinished showcases planned
+    And the coverage ledger distinguishes implemented, partial, and planned showcases
     And the skill release reference links to the authoritative contract
     And the project and examples documentation report the 3.0 release status honestly

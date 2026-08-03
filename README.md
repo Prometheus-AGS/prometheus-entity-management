@@ -6,7 +6,7 @@ Update a post in one screen and every list row, detail panel, and badge that rea
 
 ### 3.0 release program status
 
-The full 3.0 release is **in progress**, not yet certified or promoted to npm's `latest` tag. The authoritative [3.0 release contract](release/v3-release-contract.json) defines the complete artifact inventory, compatibility matrix, stability labels, required evidence, promotion approvals, and recovery policy. The [example coverage ledger](examples/coverage.json) records React 19/Vite 8, Next.js App Router, and agentic A2UI as implemented with browser evidence; Flutter/Riverpod and universal Tauri remain planned. A planned entry is not release evidence, and three implemented showcases are not full-release certification.
+The full 3.0 release is **in progress**, not yet certified or promoted to npm's `latest` tag. The authoritative [3.0 release contract](release/v3-release-contract.json) defines the complete artifact inventory, compatibility matrix, stability labels, required evidence, promotion approvals, and recovery policy. The [example coverage ledger](examples/coverage.json) records React 19/Vite 8, Next.js App Router, and agentic A2UI as implemented with browser evidence; Flutter/Riverpod is partial with host test/golden evidence but pending stable-SDK and Android/iOS receipts; universal Tauri remains planned. Partial evidence is not platform certification, and completed showcase work is not full-release certification.
 
 Native Dart and Rust sources are included in the 3.0 inventory, while first publication to pub.dev and crates.io remains deferred until registry ownership and native release workflows are established. npm publication and the branded GitHub Pages documentation site are required release outcomes.
 
@@ -27,6 +27,14 @@ The [A2A conformance agent](release/a2a-conformance-agent.md) separately impleme
 The [Flutter source provenance gate](release/flutter-source-provenance.md) preserves the allowlisted KnowMe history, authorship, MIT attribution, path dispositions, and deterministic lineage evidence. `packages/entity_graph_flutter` remains the sole canonical Dart package; the filtered import is non-buildable and non-public. This is chain-of-custody evidence only—not Riverpod/runtime certification, Flutter rendering, pub.dev authority, or stable 3.0 readiness.
 
 The [Dart graph and Riverpod 3 gate](release/dart-graph-riverpod.md) now certifies that canonical package's generated Riverpod families, normalized list/detail behavior, local/remote/hybrid views, optimistic CRUD rollback, bounded retry, realtime invalidation, pluggable transports, optional FFI seam, public declaration ledger, scoped cross-view widget goldens, and a clean Flutter 3.44.8 stable package candidate. It does not certify the complete Flutter/A2UI showcase, Android/iOS devices, pub.dev authority, the immutable full-release SHA, or stable promotion.
+
+The [Flutter, Riverpod, and A2UI showcase](release/flutter-riverpod-a2ui-example.md)
+now implements the complete application composition: one graph, generated
+providers/controllers, optimistic and offline-aware CRUD, relationships,
+realtime changes, policy-gated official GenUI surfaces, responsive UI, and an
+optional FFI transport. Analyzer, 25 host tests, and three deterministic
+goldens pass. Its ledger status remains `partial` until Flutter 3.44.8 stable
+and the Android/iOS integration lanes execute successfully.
 
 The [recoverable release-candidate pipeline](release/release-candidate-pipeline.md)
 is implemented as a separate non-mutating gate. It derives the sixteen-artifact
@@ -73,6 +81,7 @@ completion of the remaining showcase portfolio.
 | [release/agentic-a2ui-example.md](release/agentic-a2ui-example.md) | Keyless end-to-end A2A/A2UI application architecture, policy matrix, verification state, and limits |
 | [release/flutter-source-provenance.md](release/flutter-source-provenance.md) | Licensed Flutter source lineage, canonical ownership, and publication limits |
 | [release/dart-graph-riverpod.md](release/dart-graph-riverpod.md) | Canonical Dart graph, Riverpod 3, public API ledger, behavioral evidence, and exclusions |
+| [release/flutter-riverpod-a2ui-example.md](release/flutter-riverpod-a2ui-example.md) | Flutter application architecture, safe GenUI policy, host evidence, and pending platform gates |
 | [release/release-candidate-pipeline.md](release/release-candidate-pipeline.md) | Contract-derived RC manifest, rehearsal, OIDC staging boundary, and recovery |
 | [release/vite-react19-example.md](release/vite-react19-example.md) | Implemented React 19/Vite 8 scenarios, architecture, verification, and evidence limits |
 | [release/nextjs-app-router-example.md](release/nextjs-app-router-example.md) | Implemented Next.js request isolation, RSC hydration, packed production verification, and browser evidence |

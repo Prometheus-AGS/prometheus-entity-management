@@ -109,6 +109,7 @@ Cross-cutting schemas and patterns used by all sub-skills:
 - [Agentic A2A/A2UI example](_shared/references/agentic-a2ui-example.md) — safe end-to-end composition, exact action authority, keyless fixtures, and showcase evidence limits
 - [Flutter source provenance](_shared/references/flutter-source-provenance.md) — licensed filtered history, sole Dart owner, non-public import, and blocked publication claims
 - [Dart graph and Riverpod 3](_shared/references/dart-graph-riverpod.md) — canonical graph ownership, generated providers, views, optimistic rollback, retry, transports, API ledger, and evidence limits
+- [Flutter/Riverpod/A2UI showcase](_shared/references/flutter-riverpod-a2ui-example.md) — complete app composition, safe GenUI boundary, host evidence, and pending stable-SDK/device gates
 - [Tauri desktop/mobile plugin](_shared/references/tauri-mobile-plugin.md) — generated bindings, least-privilege capabilities, in-memory mirror ownership, packed host proof, and mobile evidence limits
 - [Recoverable release-candidate pipeline](_shared/references/release-candidate-pipeline.md) — contract-derived artifacts, non-mutating rehearsal, OIDC staging boundary, protected tags, and restart recovery
 - [Entity Schema Reference](/_shared/references/schemas/entity-schema.md) — registerSchema contract
@@ -117,6 +118,12 @@ Cross-cutting schemas and patterns used by all sub-skills:
 For Flutter source-lineage or adaptation claims, load the Flutter source provenance reference and require `pnpm run verify:flutter-source-provenance`; provenance never certifies the Dart runtime, rendered Flutter, or publication.
 
 For Dart graph, Riverpod, Flutter-library, optional FFI, or public Dart API claims, load the Dart graph reference and require `pnpm run verify:dart-graph-riverpod` plus `pnpm run verify:dart-exports`. Do not extrapolate its widget-harness goldens to the complete Flutter/A2UI showcase or devices.
+
+For the complete Flutter/Riverpod/A2UI application, load the Flutter showcase
+reference too. Preserve the one-graph/provider/transport layering and atomic
+default-deny A2UI boundary. Require the declared host analyzer/test commands
+for host claims, and keep the showcase `partial` until Flutter 3.44.8 stable
+plus Android and iOS integration receipts exist.
 
 For Tauri plugin, IPC, capability, generated-binding, or Android/iOS claims,
 load the Tauri reference and require `pnpm run verify:tauri-plugin` plus the

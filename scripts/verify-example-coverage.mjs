@@ -634,6 +634,25 @@ export function validateExampleCoverage(coverage, contract, releaseContract = lo
       errors.push(`${showcase.id}: implemented showcases require implemented runtime and visual evidence`);
     }
     if (
+      showcase.status === "partial" &&
+      !["partial", "implemented"].includes(showcase.runtimeEvidence?.status)
+    ) {
+      errors.push(`${showcase.id}: partial showcases require partial or implemented runtime evidence`);
+    }
+    if (
+      showcase.status === "partial" &&
+      !["partial", "implemented"].includes(showcase.visualEvidence?.status)
+    ) {
+      errors.push(`${showcase.id}: partial showcases require partial or implemented visual evidence`);
+    }
+    if (
+      showcase.status === "partial" &&
+      showcase.runtimeEvidence?.status === "implemented" &&
+      showcase.visualEvidence?.status === "implemented"
+    ) {
+      errors.push(`${showcase.id}: fully implemented evidence requires implemented showcase status`);
+    }
+    if (
       showcase.runtimeEvidence?.ownerChange !== showcase.change ||
       showcase.visualEvidence?.ownerChange !== showcase.change
     ) {

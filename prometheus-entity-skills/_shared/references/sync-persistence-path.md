@@ -63,4 +63,4 @@ pnpm --filter @prometheus-ags/entity-graph-sync run verify:skills
 
 These commands prove real PGlite close/reopen, two isolated Loro clients, both delivery orders, different-field preservation, same-field deterministic conflicts, echo suppression, real socket termination/reconnect, packed ESM/CommonJS runtime, and NodeNext declarations. Mandatory receipts contain no conditional skip.
 
-The machine coverage source is `examples/coverage.json`, capability `graph.offline-persistence-sync`, quality gate `release.sync.persistence-convergence`. Overall coverage remains `in-progress`: React/Vite now has separate browser PGlite/Loro evidence, while Flutter, Tauri, the remaining showcases, Docusaurus, and native/device evidence remain planned.
+The machine coverage source is `examples/coverage.json`, capability `graph.offline-persistence-sync`, quality gate `release.sync.persistence-convergence`. Overall coverage remains `in-progress`: React/Vite has browser PGlite/Loro evidence; the Flutter showcase has partial in-memory offline/reconnect evidence but no durable or device claim; Tauri and Docusaurus work remains planned.

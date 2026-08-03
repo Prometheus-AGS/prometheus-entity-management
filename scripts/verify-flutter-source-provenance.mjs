@@ -164,7 +164,7 @@ assert.ok(flutterCapability, "missing platform.flutter-riverpod capability");
 assert.ok(flutterCapability.releaseEvidence.some(({ ownerChange, status }) => ownerChange === "v3-flutter-source-provenance" && status === "implemented"));
 assert.ok(flutterCapability.releaseEvidence.some(({ ownerChange, status, kind }) => ownerChange === "v3-dart-graph-riverpod" && status === "implemented" && kind === "platform"));
 assert.ok(flutterCapability.releaseEvidence.some(({ ownerChange, status, kind }) => ownerChange === "v3-dart-graph-riverpod" && status === "implemented" && kind === "visual"));
-assert.ok(flutterCapability.releaseEvidence.some(({ ownerChange, status }) => ownerChange === "v3-flutter-riverpod-a2ui-example" && status === "planned"));
+assert.ok(flutterCapability.releaseEvidence.some(({ ownerChange, status }) => ownerChange === "v3-flutter-riverpod-a2ui-example" && status === "partial"));
 
 for (const ledgerPath of publicExportLedgers) {
   assert.doesNotMatch(read(ledgerPath), /provenance|knowme/i, `${ledgerPath} must not expose provenance source`);

@@ -207,11 +207,11 @@ Then("coverage records the Flutter source provenance gate as implemented", funct
   assert.equal(verificationReport().releaseLedgers.qualityGateStatus, "implemented");
 });
 
-Then("Dart library evidence is implemented while full Flutter app evidence remains planned", function () {
+Then("Dart library evidence is implemented while Flutter app evidence remains partial", function () {
   assert.deepEqual(verificationReport().releaseLedgers.downstreamEvidence, [
     { ownerChange: "v3-dart-graph-riverpod", status: "implemented", kind: "platform" },
     { ownerChange: "v3-dart-graph-riverpod", status: "implemented", kind: "visual" },
-    { ownerChange: "v3-flutter-riverpod-a2ui-example", status: "planned", kind: "visual" },
+    { ownerChange: "v3-flutter-riverpod-a2ui-example", status: "partial", kind: "visual" },
   ]);
 });
 

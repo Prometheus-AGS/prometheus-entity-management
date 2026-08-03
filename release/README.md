@@ -77,6 +77,21 @@ official Flutter 3.44.8 stable SDK. This gate does not certify the complete
 Flutter/A2UI showcase, Android/iOS devices, accessibility, pub.dev authority,
 the immutable full-release SHA, documentation deployment, or stable promotion.
 
+## Partial Flutter, Riverpod, and A2UI showcase
+
+[`flutter-riverpod-a2ui-example.md`](flutter-riverpod-a2ui-example.md)
+documents the complete application at `examples/flutter-riverpod`. It composes
+one canonical graph, generated Riverpod controllers, optimistic/offline-aware
+CRUD, relationship and realtime invalidation, policy-gated official GenUI,
+responsive phone/tablet UI, and an optional FFI transport. The current host
+boundary passes analyzer, 25 tests, and three hash-recorded goldens.
+
+The coverage status is deliberately `partial`: those receipts do not establish
+frozen resolution under Flutter 3.44.8 stable or Android/iOS runtime and visual
+behavior. The shared mobile integration test and workflow lanes are authored,
+but execution remains the next platform gate. The example adds no public Dart
+declaration and authorizes no registry publication.
+
 ## Partial Tauri desktop/mobile plugin gate
 
 [`tauri-mobile-plugin.md`](tauri-mobile-plugin.md) documents the implemented

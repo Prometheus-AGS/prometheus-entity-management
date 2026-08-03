@@ -235,6 +235,17 @@ test("coverage cannot claim completion until release and showcase evidence is im
     joined(validateExampleCoverage(incompleteShowcase, contract)),
     /implemented showcases require implemented runtime and visual evidence/,
   );
+
+  const dishonestPartial = structuredClone(coverage);
+  const partialShowcase = dishonestPartial.showcases.find(
+    (showcase) => showcase.status === "partial",
+  );
+  assert.ok(partialShowcase, "the fixture must retain the partial Flutter showcase");
+  partialShowcase.runtimeEvidence.status = "planned";
+  assert.match(
+    joined(validateExampleCoverage(dishonestPartial, contract)),
+    /partial showcases require partial or implemented runtime evidence/,
+  );
 });
 
 test("the validator admits a future truthful complete state", () => {
