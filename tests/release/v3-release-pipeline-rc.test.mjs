@@ -89,6 +89,18 @@ test("the RC staging lane rejects alpha and requires a numbered rc prerelease", 
   );
 });
 
+test("the checked-in rc.1 state has consumed its React showcase changeset", async () => {
+  const pre = JSON.parse(
+    await readFile(new URL("../../.changeset/pre.json", import.meta.url), "utf8"),
+  );
+  assert.equal(pre.mode, "pre");
+  assert.equal(pre.tag, "rc");
+  assert.ok(
+    pre.changesets.includes("certify-vite-react19"),
+    "the merged rc.1 source must not ask Changesets to generate an unnecessary rc.2 PR for the React showcase",
+  );
+});
+
 test("the pnpm RC workflow forwards named CLI flags without a literal separator", async () => {
   const workflow = await readFile(new URL("../../.github/workflows/publish.yml", import.meta.url), "utf8");
   const guide = await readFile(
