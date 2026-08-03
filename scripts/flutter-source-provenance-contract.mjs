@@ -27,6 +27,33 @@ export function parseRetainedMetadata(value) {
   });
 }
 
+/**
+ * A normal merge preserves the destination provenance merge as an ancestor.
+ * A GitHub squash merge preserves the approved file content but not that
+ * ancestry. Accept the squash form only when every approved imported file is
+ * byte-identical to the recorded destination merge.
+ */
+export function validateRepositoryHistoryBoundary({
+  ancestryPreserved,
+  approvedFilesUnchanged,
+}) {
+  if (ancestryPreserved) {
+    return { valid: true, mode: "ancestry", errors: [] };
+  }
+  if (approvedFilesUnchanged) {
+    return { valid: true, mode: "content-equivalent-squash", errors: [] };
+  }
+  return {
+    valid: false,
+    mode: "invalid",
+    errors: [{
+      code: "DESTINATION_HISTORY_DISCONNECTED",
+      message:
+        "the destination merge is not an ancestor and approved imported files differ from its recorded content",
+    }],
+  };
+}
+
 function sameSet(left, right) {
   return JSON.stringify([...left].sort()) === JSON.stringify([...right].sort());
 }

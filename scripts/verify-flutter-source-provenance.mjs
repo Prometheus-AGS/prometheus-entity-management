@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -8,6 +8,7 @@ import {
   FORBIDDEN_FILTERED_PATH,
   sha256Text,
   validatePortableProvenanceContract,
+  validateRepositoryHistoryBoundary,
 } from "./flutter-source-provenance-contract.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -65,10 +66,35 @@ assert.deepEqual(filteredPaths.filter((path) => FORBIDDEN_FILTERED_PATH.test(pat
 
 assert.equal(git("rev-parse", knowMe.destinationMergeCommit), knowMe.destinationMergeCommit);
 assert.equal(git("show", "--no-patch", "--format=%P", knowMe.destinationMergeCommit), knowMe.destinationMergeParents.join(" "));
-execFileSync("git", ["merge-base", "--is-ancestor", knowMe.destinationMergeCommit, "HEAD"], { cwd: root });
 const mergeDelta = git("diff-tree", "--no-commit-id", "--name-only", "-r", `${knowMe.destinationMergeCommit}^1`, knowMe.destinationMergeCommit)
   .split("\n").filter(Boolean).sort();
 assert.deepEqual(mergeDelta, [...knowMe.approvedFiles].sort());
+const ancestry = spawnSync(
+  "git",
+  ["merge-base", "--is-ancestor", knowMe.destinationMergeCommit, "HEAD"],
+  { cwd: root, encoding: "utf8" },
+);
+assert.ok(
+  ancestry.status === 0 || ancestry.status === 1,
+  `cannot inspect destination ancestry: ${ancestry.stderr || ancestry.error?.message || "unknown git error"}`,
+);
+const approvedFileDiff = git(
+  "diff",
+  "--name-only",
+  knowMe.destinationMergeCommit,
+  "HEAD",
+  "--",
+  ...knowMe.approvedFiles,
+).split("\n").filter(Boolean);
+const repositoryHistory = validateRepositoryHistoryBoundary({
+  ancestryPreserved: ancestry.status === 0,
+  approvedFilesUnchanged: approvedFileDiff.length === 0,
+});
+assert.equal(
+  repositoryHistory.valid,
+  true,
+  repositoryHistory.errors.map(({ code, message }) => `${code}: ${message}`).join("; "),
+);
 
 assert.equal(sha256(knowMe.commitMap.path), knowMe.commitMap.sha256);
 assert.equal(sha256(knowMe.commitMap.metadataPath), knowMe.commitMap.metadataSha256);
@@ -226,6 +252,8 @@ const report = {
     filteredTip: knowMe.filteredTip,
     filteredTree,
     mergeCommit: knowMe.destinationMergeCommit,
+    integrationMode: repositoryHistory.mode,
+    approvedFileDiff,
     examined: mappings.length,
     retained: retainedMappings.length,
     pruned: mappings.length - retainedMappings.length,
