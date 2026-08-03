@@ -202,7 +202,10 @@ These additions are intentionally graph-native. They extend the entity graph for
 | Garbage collection | Yes (automatic, configurable) | Yes | Yes | No |
 | Bundle size | See [Bundle size](#bundle-size) | ~39KB | ~130KB | ~4KB |
 
-Peer dependencies (`react`, `react-dom`, optional `@tanstack/react-table`) are **not** included in any column. Published `dist` sizes change with each release—measure before quoting numbers in docs or talks.
+Peer dependencies (`react` and `react-dom`) are **not** included in any column.
+The package installs `@tanstack/react-table` because the root entry exports the
+built-in table components that use it at runtime. Published `dist` sizes change
+with each release—measure before quoting numbers in docs or talks.
 
 ### Bundle size
 

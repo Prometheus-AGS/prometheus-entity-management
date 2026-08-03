@@ -8,6 +8,7 @@
 - Certify the React 19/Vite 8 source-workspace showcase across normalized identity, optimistic mutation, relationships, local/remote/hybrid views, transport seams, realtime, PGlite/Loro, Suspense/error containment, DevTools, and accessibility.
 - Seed the canonical base list when a remote entity query resolves so later local and hybrid projections share the same graph source.
 - Start cache-miss entity fetches before throwing the Suspense promise, allowing initial Suspense reads to resolve instead of failing as missing entities.
+- Install TanStack Table as a runtime dependency so clean consumers can import the root React package without manually adding an allegedly optional peer.
   - @prometheus-ags/entity-graph-core@3.0.0-rc.1
 
 ## 3.0.0

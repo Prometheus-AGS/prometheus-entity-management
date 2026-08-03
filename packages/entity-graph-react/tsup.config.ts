@@ -21,7 +21,7 @@ export default definePackageConfig({
     "lucide-react",
     "clsx",
     "tailwind-merge",
-    // Optional peer — TanStack Table (legacy entity-table/columns only)
+    // Runtime dependency — root exports include the legacy entity-table/columns.
     "@tanstack/react-table",
   ],
 

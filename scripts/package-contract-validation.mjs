@@ -106,7 +106,6 @@ export function createPackedConsumerManifest(tarballsByName) {
     dependencies: {
       ...tarballsByName,
       "@ag-ui/core": ">=0.0.30",
-      "@tanstack/react-table": ">=8.0.0",
       "@tauri-apps/api": ">=2.0.0",
       "@tauri-apps/plugin-sql": ">=2.0.0",
       "@types/node": "22.20.1",

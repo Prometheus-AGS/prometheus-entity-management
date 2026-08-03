@@ -43,7 +43,6 @@
   "peerDependencies": {
     "@prometheus-ags/entity-graph-core": "workspace:^",
     "@ag-ui/core": ">=0.0.30",
-    "@tanstack/react-table": ">=8.0.0",
     "@tauri-apps/plugin-sql": ">=2.0.0",
     "loro-crdt": ">=1.0.0",
     "react": ">=19.0.0 <20.0.0",
@@ -51,9 +50,6 @@
   },
   "peerDependenciesMeta": {
     "@ag-ui/core": {
-      "optional": true
-    },
-    "@tanstack/react-table": {
       "optional": true
     },
     "@tauri-apps/plugin-sql": {
@@ -64,6 +60,7 @@
     }
   },
   "dependencies": {
+    "@tanstack/react-table": "^8.21.3",
     "@tanstack/react-virtual": "^3.14.9",
     "clsx": ">=2",
     "immer": "^11.1.15",

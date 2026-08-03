@@ -167,6 +167,23 @@ test("the isolated consumer overrides every internal dependency with its tarball
   }
 });
 
+test("the React package installs its unconditional TanStack Table runtime", async () => {
+  const reactPackage = PUBLIC_PACKAGES.find(
+    ({ directory }) => directory === "packages/entity-graph-react",
+  );
+  assert.ok(reactPackage);
+  const manifest = await readManifest(reactPackage);
+
+  assert.equal(manifest.dependencies?.["@tanstack/react-table"], "^8.21.3");
+  assert.equal(manifest.peerDependencies?.["@tanstack/react-table"], undefined);
+  assert.equal(manifest.peerDependenciesMeta?.["@tanstack/react-table"], undefined);
+
+  const consumer = createPackedConsumerManifest({
+    [reactPackage.name]: "file:/tmp/react-package.tgz",
+  });
+  assert.equal(consumer.dependencies["@tanstack/react-table"], undefined);
+});
+
 test("every tsup config consumes the central loader-extension contract", async () => {
   for (const publicPackage of PUBLIC_PACKAGES) {
     const config = await readFile(join(root, publicPackage.directory, "tsup.config.ts"), "utf8");
