@@ -40,6 +40,12 @@ jobs:
         run: rustup toolchain install 1.88.0 --profile minimal
       - name: Install workspace dependencies
         run: pnpm install --frozen-lockfile
+      - name: Fetch locked Rust dependencies for offline verification
+        run: |
+          cargo +stable fetch --locked \
+            --manifest-path packages/entity-graph-tauri/rust-plugin/Cargo.toml
+          cargo +1.88.0 fetch --locked \
+            --manifest-path tests/fixtures/tauri-plugin-host/Cargo.toml
       - name: Verify registered IPC, capability denial, and packed Rust host
         run: pnpm run verify:tauri-plugin
       - name: Run Tauri plugin BDD contract
