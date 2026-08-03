@@ -306,3 +306,23 @@
   661 kB Vite chunk warning, two low audit findings with zero blocking findings, and
   the explicit exclusion of external-agent, packed-consumer, Flutter, Tauri, and
   native certification from this change.
+
+## 2026-08-03 — Flutter/Riverpod A2UI dependency boundary
+
+- Activated `v3-flutter-riverpod-a2ui-example` in the signed KBD control plane,
+  registered its complete six-task surface before execution, and completed task
+  1 at revision 83. A follow-up signed transition restored the change itself to
+  `in_progress` at revision 84 after task registration re-derived it to pending.
+- Confirmed `v3-dart-graph-riverpod`, `v3-a2ui-protocol-bridge`, and
+  `v3-example-coverage-contract` from their archived 6/6 OpenSpec task surfaces,
+  retained verification artifacts, promoted canonical specs, and fresh strict
+  OpenSpec validation passes.
+- Preserved the provenance caveat: the signed legacy import retains aggregate
+  completion but does not backfill individual events for those older changes,
+  so their empty pending KBD task maps were not presented as completion proof.
+- The task-1 receipt keeps the canonical architecture explicit: one Dart
+  `EntityGraph`, Riverpod as projection/orchestration, official `genui` protocol
+  ownership, safe catalog actions, deterministic coverage evidence, and an
+  optional native transport that does not own graph state.
+- No Flutter application code or dependency version changed in this task.
+  Tasks 2–6 remain, and publication remains unauthorized.
