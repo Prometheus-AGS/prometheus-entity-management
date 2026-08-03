@@ -1,8 +1,8 @@
 # Task 5 — clean verification gates
 
-Date: 2026-08-03  
-Change: `v3-nextjs-app-router-example`  
-Candidate versions: core and React `3.0.0-rc.1`  
+Date: 2026-08-03
+Change: `v3-nextjs-app-router-example`
+Candidate versions: core and React `3.0.0-rc.1`
 Result: PASS
 
 ## Clean packed production boundary

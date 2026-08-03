@@ -1,7 +1,7 @@
 # Artifact-refiner QA — `v3-nextjs-app-router-example`
 
-Date: 2026-08-03  
-Artifact: `v3-nextjs-app-router-example-archive-qa`  
+Date: 2026-08-03
+Artifact: `v3-nextjs-app-router-example-archive-qa`
 Current refinement ID: `46725a52-9c0b-409b-bf20-26eb6447cb8e`
 Prior refinement ID: `5bcff6b5-4856-4420-92e1-fabd0eb62f42`
 Checkpoint: `3d3c977f`
