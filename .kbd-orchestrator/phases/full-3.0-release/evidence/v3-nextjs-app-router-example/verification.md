@@ -1,7 +1,7 @@
 # Verification — `v3-nextjs-app-router-example`
 
 Date: 2026-08-03
-Implementation source through review corrections: `9051b10f`
+Implementation source through review corrections: `b44126b`
 Verdict: **PASS — IMPLEMENTATION EVIDENCE COMPLETE; QA/ARCHIVE PENDING**
 
 ## Acceptance matrix
@@ -83,7 +83,7 @@ These limits are exclusions, not waived acceptance criteria for this change.
 ## QA boundary
 
 The second complete adversarial review correctly blocked the pre-cleanup
-artifact. Its critical path and lifecycle warning are now corrected. A new
-artifact-refiner cycle and complete fresh-context review remain mandatory
-before OpenSpec verification and archive; neither earlier review certifies the
-changed artifact.
+artifact. Artifact-refiner cycle 3 now passes after correcting its critical
+path and lifecycle warning. A new complete fresh-context review remains
+mandatory before OpenSpec verification and archive; neither earlier review
+certifies the changed artifact.

@@ -1,14 +1,14 @@
 {
-  "refinement_id": "46725a52-9c0b-409b-bf20-26eb6447cb8e",
+  "refinement_id": "07d31533-e25a-4bab-ba32-e1065c1901e2",
   "artifact_name": "v3-nextjs-app-router-example-archive-qa",
   "artifact_type": "content",
   "content_type": "direct:content",
-  "started_at": "2026-08-03T15:43:23Z",
-  "updated_at": "2026-08-03T15:44:00Z",
+  "started_at": "2026-08-03T16:02:11Z",
+  "updated_at": "2026-08-03T16:02:24Z",
   "current_iteration": 1,
   "max_iterations": 5,
   "goals": [
-    "Correct both findings from the first isolated review and revalidate the complete Next.js evidence boundary.",
+    "Correct the cycle-2 BLOCK and lifecycle warning with direct regression evidence.",
     "Preserve the frozen React rc.1 lane and avoid publication overclaim."
   ],
   "constraints": [
@@ -30,10 +30,10 @@
       "constraints_satisfied": 8,
       "constraints_total": 8,
       "decision": "terminate",
-      "timestamp": "2026-08-03T15:44:00Z"
+      "timestamp": "2026-08-03T16:02:24Z"
     }
   ],
   "workflow_triggers": [],
   "checkpoints": [],
-  "prior_cycle_id": "5bcff6b5-4856-4420-92e1-fabd0eb62f42"
+  "prior_cycle_id": "46725a52-9c0b-409b-bf20-26eb6447cb8e"
 }

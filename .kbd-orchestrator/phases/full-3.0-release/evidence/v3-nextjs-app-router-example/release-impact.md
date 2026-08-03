@@ -1,7 +1,7 @@
 # Release impact — `v3-nextjs-app-router-example`
 
 Date: 2026-08-03
-Implementation source through review corrections: `9051b10f`
+Implementation source through review corrections: `b44126b`
 Change status: implementation evidence complete; certification and archive are
 separate quality gates
 
