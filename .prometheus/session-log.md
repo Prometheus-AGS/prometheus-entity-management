@@ -48,6 +48,25 @@
   `v3-vite-react19-example` was archived on 2026-08-03. npm publication remains
   unauthorized; immutable source, aggregate CI, protected staging, and registry
   verification remain downstream.
+
+## 2026-08-03 — Next.js task 4 documentation and ledger boundary
+
+- Updated the Next.js coverage entry with its packed verification command and
+  source paths while keeping runtime and visual evidence planned until the
+  clean production/browser receipt exists.
+- Added the React scoped-store runtime exports to the 203-name ledger and
+  documented `GraphStoreProvider`, `useGraphStoreApi`, provider props, and
+  store-scoped engine behavior.
+- Replaced stale skill guidance that hydrated request data into the singleton
+  with a canonical per-request server graph, serializable RSC snapshot, one
+  browser graph, scoped provider, and client-only realtime contract.
+- Coverage semantics (13/13), coverage contract tests (14/14), Next structural
+  tests (5/5), focused ESLint, strict OpenSpec validation, ledger truthfulness,
+  and diff hygiene passed.
+- A direct React package typecheck was not valid in the current unbuilt
+  worktree because core `dist/` is absent. Task 5 retains the dependency-ordered
+  clean build, full export-ledger verification, packed production build, and
+  Playwright evidence; no green claim was inferred from source documentation.
 - Froze the certified React RC source and PR at `c06ffe0`, then created the
   isolated `codex/full-3.0-continue` worktree so continued 3.0 development
   cannot move the React candidate SHA.

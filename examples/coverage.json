@@ -644,7 +644,7 @@
         }
       ],
       "releaseEvidence": [
-        { "kind": "browser", "status": "planned", "ownerChange": "v3-nextjs-app-router-example", "applicability": "Concurrent Next.js request, RSC, hydration, and client takeover evidence remain downstream." }
+        { "kind": "browser", "status": "planned", "ownerChange": "v3-nextjs-app-router-example", "command": "pnpm run verify:nextjs-app-router", "paths": ["scripts/verify-nextjs-app-router-example.mjs", "tests/release/v3-nextjs-app-router-example.test.mjs", "tests/browser/v3-nextjs-app-router-example.spec.ts"], "applicability": "The packed Next.js verification surface now covers concurrent request isolation, RSC serialization, hydration without duplicate fetches, route persistence, Server Action mutation, and client realtime takeover. It remains planned evidence until the clean task-5 command writes and validates its production-browser receipt." }
       ]
     },
     {
@@ -800,8 +800,8 @@
       "change": "v3-nextjs-app-router-example",
       "path": "examples/nextjs-app",
       "scenarioIds": ["example.graph.normalized-cross-view", "example.crud.optimistic-confirm", "example.relationship.cascade-invalidation", "example.view.local-remote-hybrid", "example.realtime.coalesced-cross-view", "example.runtime.ssr-isolation-hydration", "example.runtime.lifecycle-security"],
-      "runtimeEvidence": { "kind": "browser", "status": "planned", "ownerChange": "v3-nextjs-app-router-example", "applicability": "Concurrent SSR, hydration, route, mutation, and browser BDD evidence remain owned by the Next.js change." },
-      "visualEvidence": { "kind": "visual", "status": "planned", "ownerChange": "v3-nextjs-app-router-example", "applicability": "Pinned SSR/client screenshots, accessibility, trace, and video/hash receipt remain owned by the Next.js change." }
+      "runtimeEvidence": { "kind": "browser", "status": "planned", "ownerChange": "v3-nextjs-app-router-example", "command": "pnpm run verify:nextjs-app-router", "paths": ["scripts/verify-nextjs-app-router-example.mjs", "tests/release/v3-nextjs-app-router-example.test.mjs", "tests/browser/v3-nextjs-app-router-example.spec.ts"], "applicability": "Implementation and focused tests are present for concurrent SSR, hydration, route persistence, Server Action mutation, and client realtime takeover. The showcase remains planned until the packed production-browser verifier passes from a clean state." },
+      "visualEvidence": { "kind": "visual", "status": "planned", "ownerChange": "v3-nextjs-app-router-example", "command": "pnpm run verify:nextjs-app-router", "paths": ["tests/browser/v3-nextjs-app-router-example.playwright.config.ts", "tests/browser/v3-nextjs-app-router-example.spec.ts"], "applicability": "The browser gate is wired to capture the SSR/client screenshot, trace, and zero-serious-or-critical axe receipt. Those artifacts remain planned until task 5 executes and validates the clean packed consumer." }
     },
     {
       "id": "agentic-a2ui",

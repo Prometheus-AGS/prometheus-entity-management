@@ -228,7 +228,9 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | Export | Description |
 |--------|-------------|
 | `createGraphStore` / `graphStore` | Create an isolated vanilla graph or access the default core singleton. |
-| `useGraphStore` | React hook subscribed to `graphStore`; compatibility `getState`, `setState`, and `subscribe` methods remain attached. Prefer domain hooks in components. |
+| `GraphStoreProvider` | Scope all descendant React hooks to an application-owned `GraphStore`; use one request graph per SSR render and one hydrated graph per mounted browser tree. |
+| `useGraphStoreApi` | Resolve the nearest provider-owned graph, falling back to the public singleton. Use in hooks and infrastructure, not presentational components. |
+| `useGraphStore` | React hook subscribed to the nearest scoped graph; compatibility `getState`, `setState`, and `subscribe` methods remain attached to the default singleton. Prefer domain hooks in components. |
 | `configureEngine` | App-wide defaults: stale time, retries, GC interval, GC time, etc. |
 | `getEngineOptions` | Read merged engine options. |
 | `serializeKey` | Stable string key for list `queryKey` serialization. |
@@ -613,7 +615,7 @@ Use `Posts.crud()` with `useEntityCRUD` when you want the full list + detail + f
 | Example | Path | What it demonstrates |
 |--------|------|---------------------|
 | **Vite app** | [`examples/vite-app/`](../../examples/vite-app/) | Full CRUD, realtime adapters, **TanStack Query → graph bridge** (`/tanstack-bridge`), `EntityTable` / sheets, mock API with latency |
-| **Next.js app** | [`examples/nextjs-app/`](../../examples/nextjs-app/) | Same feature set as the Vite example (Project/Task/User CRUD, realtime, engine settings, pure list view, TanStack Query → graph bridge). **SSR:** `GraphHydrationProvider` seeds the client graph from the shared demo data on first load |
+| **Next.js app** | [`examples/nextjs-app/`](../../examples/nextjs-app/) | Next.js 16 App Router with a new `createGraphStore()` per document request, serializable RSC snapshot, one hydrated `GraphStoreProvider`, zero duplicate client fetches, route persistence, validated Server Action mutation, and client-only realtime takeover. |
 
 From the repo root (this monorepo uses **pnpm**):
 

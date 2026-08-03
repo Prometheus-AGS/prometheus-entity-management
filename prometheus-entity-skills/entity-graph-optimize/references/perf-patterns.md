@@ -67,5 +67,7 @@ const { ids, isFetching } = useGraphStore(
 
 ## Next.js
 
-- Server Components should not import client graph store.
-- Hydration: follow `GraphHydrationProvider` pattern for seeding graph from SSR props.
+- Server Components do not import React graph hooks or write request data to the process-wide singleton.
+- Create one vanilla graph per document request, serialize it, and create one browser graph inside `GraphHydrationProvider`.
+- Wrap descendants in `GraphStoreProvider`; use `useGraphStoreApi()` inside hooks and infrastructure so fetch dedupe, mutations, and realtime target that graph.
+- Verify concurrent request IDs, zero duplicate client fetches, no hydration mismatch, and route persistence. See `_shared/references/nextjs-app-router.md`.
