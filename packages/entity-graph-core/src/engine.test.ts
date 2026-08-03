@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { createGraphStore } from "./graph";
 import { dedupe } from "./engine";
 
 describe("engine dedupe", () => {
@@ -28,6 +29,20 @@ describe("engine dedupe", () => {
     const [a, b] = await Promise.all([run("a"), run("b")]);
     expect(a).toBe("a");
     expect(b).toBe("b");
+    expect(calls).toBe(2);
+  });
+
+  it("does not dedupe equal keys across request-owned stores", async () => {
+    const requestA = createGraphStore();
+    const requestB = createGraphStore();
+    let calls = 0;
+
+    const [a, b] = await Promise.all([
+      dedupe("Task:t1", async () => ++calls, requestA),
+      dedupe("Task:t1", async () => ++calls, requestB),
+    ]);
+
+    expect([a, b]).toEqual([1, 2]);
     expect(calls).toBe(2);
   });
 });

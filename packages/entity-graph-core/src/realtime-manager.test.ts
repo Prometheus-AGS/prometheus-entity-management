@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from "vitest";
 import { getRealtimeManager, RealtimeManager, resetRealtimeManager } from "./adapters/realtime-manager";
-import { useGraphStore } from "./graph";
+import { createGraphStore, useGraphStore } from "./graph";
 import type { RealtimeAdapter, ChangeSet } from "./adapters/types";
 
 afterEach(() => {
@@ -63,5 +63,35 @@ describe("RealtimeManager", () => {
     expect(
       useGraphStore.getState().readEntity<Record<string, unknown>>("RtDemo", "r1")?.status,
     ).toBe("review");
+  });
+
+  it("applies client takeover events only to the selected graph", () => {
+    const requestStore = createGraphStore();
+    const adapter: RealtimeAdapter = {
+      name: "request-scoped-adapter",
+      subscribe(_cfg, handler) {
+        handler({
+          changes: [
+            {
+              op: "upsert",
+              type: "RtDemo",
+              id: "request-only",
+              data: { id: "request-only", status: "connected" },
+            },
+          ],
+        });
+        return () => {};
+      },
+    };
+
+    const manager = new RealtimeManager({ store: requestStore, flushInterval: 0 });
+    manager.register(adapter, [{ type: "RtDemo" }]);
+
+    expect(
+      requestStore.getState().readEntity<Record<string, unknown>>("RtDemo", "request-only"),
+    ).toEqual({ id: "request-only", status: "connected" });
+    expect(
+      useGraphStore.getState().readEntity("RtDemo", "request-only"),
+    ).toBeNull();
   });
 });

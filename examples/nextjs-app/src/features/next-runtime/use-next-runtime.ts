@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   RealtimeManager,
+  useEntity,
   useEntityMutation,
-  useGraphStore,
   useGraphStoreApi,
 } from "@prometheus-ags/prometheus-entity-management";
 import type {
@@ -38,12 +38,30 @@ function createManualRealtimeAdapter(): RealtimeAdapter & {
 
 export function useNextRuntime() {
   const store = useGraphStoreApi();
-  const request = useGraphStore((state) =>
-    state.readEntity<RequestMarker>("NextRequest", "current"),
-  );
-  const task = useGraphStore((state) =>
-    state.readEntity<Task>("Task", "t1"),
-  );
+  const [clientFetchCount, setClientFetchCount] = useState(0);
+  const requestQuery = useEntity<RequestMarker, RequestMarker>({
+    type: "NextRequest",
+    id: "current",
+    fetch: async () => {
+      setClientFetchCount((count) => count + 1);
+      return {
+        requestId: "unexpected-client-fetch",
+        preload: "client",
+      };
+    },
+    normalize: (marker) => marker,
+  });
+  const taskQuery = useEntity<Task, Task>({
+    type: "Task",
+    id: "t1",
+    fetch: async () => {
+      setClientFetchCount((count) => count + 1);
+      const task = store.getState().readEntity<Task>("Task", "t1");
+      if (!task) throw new Error("Hydrated task t1 is unavailable");
+      return task;
+    },
+    normalize: (task) => task,
+  });
   const [realtimeReady, setRealtimeReady] = useState(false);
   const adapterRef = useRef<ReturnType<typeof createManualRealtimeAdapter> | null>(null);
   const unregisterRef = useRef<UnsubscribeFn | null>(null);
@@ -94,8 +112,9 @@ export function useNextRuntime() {
   }, []);
 
   return {
-    request,
-    task,
+    request: requestQuery.data,
+    task: taskQuery.data,
+    clientFetchCount,
     mutation: mutation.state,
     confirmMutation,
     realtimeReady,

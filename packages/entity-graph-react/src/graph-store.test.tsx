@@ -1,10 +1,13 @@
 import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
+import type { ReactNode } from "react";
 
-import { graphStore } from "@prometheus-ags/entity-graph-core";
+import { createGraphStore, graphStore } from "@prometheus-ags/entity-graph-core";
 import {
+  GraphStoreProvider,
   graphSyncStatusStore,
   useGraphStore,
+  useGraphStoreApi,
   useGraphSyncStatus,
 } from "./graph-store";
 
@@ -45,6 +48,38 @@ describe("React bindings over the vanilla core store", () => {
     expect(useGraphStore.getState).toBe(graphStore.getState);
     expect(useGraphStore.setState).toBe(graphStore.setState);
     expect(useGraphStore.subscribe).toBe(graphStore.subscribe);
+  });
+
+  it("isolates provider-owned graphs from the default singleton and sibling providers", () => {
+    const requestA = createGraphStore();
+    const requestB = createGraphStore();
+    const wrapperA = ({ children }: { children: ReactNode }) => (
+      <GraphStoreProvider store={requestA}>{children}</GraphStoreProvider>
+    );
+    const wrapperB = ({ children }: { children: ReactNode }) => (
+      <GraphStoreProvider store={requestB}>{children}</GraphStoreProvider>
+    );
+
+    const hookA = renderHook(
+      () => ({
+        store: useGraphStoreApi(),
+        entity: useGraphStore((state) => state.readEntity("Request", "current")),
+      }),
+      { wrapper: wrapperA },
+    );
+    const hookB = renderHook(
+      () => useGraphStore((state) => state.readEntity("Request", "current")),
+      { wrapper: wrapperB },
+    );
+
+    act(() => {
+      requestA.getState().upsertEntity("Request", "current", { requestId: "a" });
+    });
+
+    expect(hookA.result.current.store).toBe(requestA);
+    expect(hookA.result.current.entity).toEqual({ requestId: "a" });
+    expect(hookB.result.current).toBeNull();
+    expect(graphStore.getState().readEntity("Request", "current")).toBeNull();
   });
 
   it("subscribes to framework-neutral local-first status", () => {

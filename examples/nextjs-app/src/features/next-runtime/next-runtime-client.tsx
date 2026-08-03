@@ -13,8 +13,18 @@ export function NextRuntimeClient() {
         <CardHeader><CardTitle>Request-scoped SSR</CardTitle></CardHeader>
         <CardContent className="space-y-2 text-sm">
           <p>Server preload: <strong>{runtime.request?.preload ?? "missing"}</strong></p>
-          <p className="break-all" data-testid="request-id">
+          <p
+            className="break-all"
+            data-testid="request-id"
+            data-request-id={runtime.request?.requestId ?? "missing"}
+          >
             Request: {runtime.request?.requestId ?? "missing"}
+          </p>
+          <p
+            data-testid="client-fetch-count"
+            data-client-fetch-count={runtime.clientFetchCount}
+          >
+            Client fetches: {runtime.clientFetchCount}
           </p>
         </CardContent>
       </Card>

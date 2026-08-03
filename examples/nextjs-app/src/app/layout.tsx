@@ -3,6 +3,8 @@ import "./globals.css";
 import { DemoLayoutClient } from "@/components/demo-layout-client";
 import { preloadRequestGraph } from "@/features/next-runtime/server-graph";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Prometheus — Entity Graph Demo",
   description:

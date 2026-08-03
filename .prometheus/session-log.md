@@ -69,3 +69,17 @@
   touched-file ESLint gate, strict OpenSpec validation, and diff hygiene also
   passed. Production builds, packed consumers, concurrent SSR tests, and
   browser E2E remain deliberately unclaimed until the later registered tasks.
+- Completed the Next.js task-3 test surface. Seventeen focused tests now cover
+  per-store engine dedupe, scoped realtime, provider isolation, 24 concurrent
+  serializable server snapshots, default-singleton non-interference, Server
+  Action input denial, and fail-closed packed/browser harness contracts.
+- Added a clean external-consumer verifier that builds and packs core plus the
+  React binding, replaces workspace dependencies with the two tarballs, then
+  drives Next typecheck/build/start and Playwright. Browser coverage requests
+  12 concurrent documents, checks unique request IDs, zero hydration refetches,
+  route persistence, reload replacement, mutation, realtime takeover, axe,
+  screenshot, and trace receipts. Its higher-tier execution remains reserved
+  for task 5 and is not claimed by task 3.
+- Test design exposed that request-owned state alone was insufficient if Next
+  statically prerendered the layout. The root layout now forces dynamic document
+  rendering, making the per-request contract testable rather than aspirational.
