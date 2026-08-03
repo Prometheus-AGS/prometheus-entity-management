@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -667,6 +668,9 @@ test("command adapters use real dry-run commands and keep staging explicit", asy
         stderr: "",
       };
     }
+    if (command === "cargo" && args[0] === "publish") {
+      return { stdout: "", stderr: "cargo publish dry-run passed", code: 0 };
+    }
     return { stdout: '{"ok":true}', stderr: "" };
   };
   const adapters = createReleaseCommandAdapters({
@@ -702,11 +706,12 @@ test("command adapters use real dry-run commands and keep staging explicit", asy
     ecosystem: "dart",
     path: "packages/dart",
   });
-  await adapters.dryRunNative({
+  const rustDryRun = await adapters.dryRunNative({
     id: "rust",
     ecosystem: "rust",
     path: "packages/rust",
   });
+  assert.equal(rustDryRun.receipt, "cargo publish dry-run passed");
 
   assert.ok(
     calls.some(
@@ -781,6 +786,46 @@ test("command adapters use real dry-run commands and keep staging explicit", asy
         options.allowMutation === true,
     ),
   );
+});
+
+test("pnpm pack output without integrity is hashed from the produced tarball", async () => {
+  const { createReleaseCommandAdapters } = await import(
+    "../../scripts/release-candidate-pipeline.mjs"
+  );
+  const directory = await mkdtemp(join(tmpdir(), "release-pack-integrity-"));
+  const candidateDirectory = join(directory, "candidate");
+  const tarballName = "prometheus-ags-example-3.0.0-rc.1.tgz";
+  const tarball = Buffer.from("immutable release candidate tarball", "utf8");
+
+  try {
+    await mkdir(candidateDirectory, { recursive: true });
+    await writeFile(join(candidateDirectory, tarballName), tarball);
+    const adapters = createReleaseCommandAdapters({
+      root: directory,
+      candidateDirectory,
+      runCommand: async () => ({
+        stdout: JSON.stringify({
+          name: "@prometheus-ags/example",
+          version: "3.0.0-rc.1",
+          filename: join(directory, "packages/example", tarballName),
+          files: [{ path: "package.json" }],
+        }),
+        stderr: "",
+        code: 0,
+      }),
+    });
+
+    const candidate = await adapters.packNpm({
+      packageName: "@prometheus-ags/example",
+      path: "packages/example",
+    });
+    assert.equal(
+      candidate.integrity,
+      `sha512-${createHash("sha512").update(tarball).digest("base64")}`,
+    );
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
 });
 
 test("npm exact-version absence is recognized from JSON stdout and plain-text stderr", async () => {

@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
@@ -831,11 +832,14 @@ export function createReleaseCommandAdapters({
       const output = parseJsonOutput(result.stdout, `${artifact.packageName} pack`);
       const packed = Array.isArray(output) ? output.at(-1) : output;
       assert(packed?.filename, `${artifact.packageName}: pnpm pack did not return a filename`);
-      assert(packed?.integrity, `${artifact.packageName}: pnpm pack did not return integrity`);
+      const tarballPath = join(candidatePath, basename(packed.filename));
+      const integrity =
+        packed.integrity ??
+        `sha512-${createHash("sha512").update(await readFile(tarballPath)).digest("base64")}`;
       return {
-        path: join(candidatePath, basename(packed.filename)),
+        path: tarballPath,
         bundlePath: join("packages", basename(packed.filename)),
-        integrity: packed.integrity,
+        integrity,
       };
     },
 
@@ -900,7 +904,7 @@ export function createReleaseCommandAdapters({
           ["publish", "--dry-run", "--manifest-path", join(rootPath, artifact.path, "Cargo.toml")],
           { cwd: rootPath, mutation: false },
         );
-        return { receipt: compactReceipt(result.stdout) };
+        return { receipt: compactReceipt(result.stdout, result.stderr) };
       }
       throw new Error(`${artifact.id}: unsupported native ecosystem ${artifact.ecosystem}`);
     },
@@ -995,8 +999,8 @@ export async function runReleaseCommand(command, args, options = {}) {
   });
 }
 
-function compactReceipt(stdout) {
-  const value = stdout.trim();
+function compactReceipt(...channels) {
+  const value = channels.map((channel) => channel.trim()).filter(Boolean).join("\n");
   assert(value, "release command returned an empty receipt");
   return value;
 }
