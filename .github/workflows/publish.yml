@@ -39,6 +39,11 @@ jobs:
           cache: "pnpm"
           package-manager-cache: false
 
+      - name: Install the pinned uv runtime
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.1"
+
       - name: Install
         run: pnpm install --frozen-lockfile
 
@@ -84,8 +89,18 @@ jobs:
       - name: Install Rust minimum-supported toolchain
         run: rustup toolchain install 1.88.0 --profile minimal
 
+      - name: Fetch locked Rust dependencies for offline verification
+        run: |
+          cargo +stable fetch --locked \
+            --manifest-path packages/entity-graph-tauri/rust-plugin/Cargo.toml
+          cargo +1.88.0 fetch --locked \
+            --manifest-path tests/fixtures/tauri-plugin-host/Cargo.toml
+
       - name: Install
         run: pnpm install --frozen-lockfile
+
+      - name: Install the certified Chromium runtime
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Install the current npm CLI through pnpm
         run: pnpm add --global npm@12.0.2

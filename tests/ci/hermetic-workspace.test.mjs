@@ -66,6 +66,27 @@ test("workflows that verify source provenance check out the complete Git history
   }
 });
 
+test("aggregate CI and release rehearsal install every external certification runtime", () => {
+  for (const path of [".github/workflows/ci.yml", ".github/workflows/publish.yml"]) {
+    const workflow = readFileSync(new URL(path, root), "utf8");
+    assert.match(
+      workflow,
+      /astral-sh\/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9\.0\.0/,
+      `${path} must pin the reviewed setup-uv action`,
+    );
+    assert.match(workflow, /version: "0\.12\.1"/);
+    assert.match(workflow, /pnpm exec playwright install --with-deps chromium/);
+    assert.match(
+      workflow,
+      /cargo \+stable fetch --locked[\s\S]*packages\/entity-graph-tauri\/rust-plugin\/Cargo\.toml/,
+    );
+    assert.match(
+      workflow,
+      /cargo \+1\.88\.0 fetch --locked[\s\S]*tests\/fixtures\/tauri-plugin-host\/Cargo\.toml/,
+    );
+  }
+});
+
 test("intentional dependency holds are explicit and assigned a revisit change", () => {
   const policy = json("release/dependency-policy.json");
   assert.deepEqual(policy.intentionalHolds.map(({ package: name }) => name).sort(), [

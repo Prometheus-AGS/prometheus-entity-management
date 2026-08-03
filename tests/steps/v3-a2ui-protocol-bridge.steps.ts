@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 import { Given, Then, When, setDefaultTimeout } from "@cucumber/cucumber";
@@ -31,6 +31,13 @@ function ensureReceipts(): void {
   if (unitReceipt && consumerReceipt) return;
   unitReceipt = runPnpm(["run", "test:a2ui-bridge"]);
   consumerReceipt = runPnpm(["run", "verify:a2ui-bridge"]);
+}
+
+function sourceFiles(directory: string): string[] {
+  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const path = join(directory, entry.name);
+    return entry.isDirectory() ? sourceFiles(path) : [path];
+  });
 }
 
 function visualManifest() {
@@ -108,11 +115,8 @@ Then("the bridge imports explicit official v0_9 entry points", function () {
 
 Then("the bridge does not implement JSONL parsing or an alternate surface model", function () {
   for (const directory of ["official", "react", "policy"]) {
-    const paths = execFileSync("rg", ["--files", `packages/a2ui-react/src/${directory}`], {
-      cwd: root,
-      encoding: "utf8",
-    }).trim().split("\n");
-    const source = paths.map((path) => readFileSync(join(root, path), "utf8")).join("\n");
+    const paths = sourceFiles(join(root, "packages/a2ui-react/src", directory));
+    const source = paths.map((path) => readFileSync(path, "utf8")).join("\n");
     assert.doesNotMatch(source, /JSON\.parse|jsonl|STATE_SNAPSHOT|MESSAGE_START/);
   }
 });

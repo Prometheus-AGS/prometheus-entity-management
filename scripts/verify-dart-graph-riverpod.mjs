@@ -49,14 +49,20 @@ function sha256(path) {
 }
 
 function executeFlutterSuite() {
-  return execFileSync("flutter", ["test", "--reporter", "compact"], {
-    cwd: packageRoot,
-    env: { ...process.env, FORCE_COLOR: "0" },
-    encoding: "utf8",
-    maxBuffer: 100 * 1024 * 1024,
-    stdio: ["ignore", "pipe", "pipe"],
-    timeout: 300_000,
-  });
+  try {
+    return execFileSync("flutter", ["test", "--reporter", "compact"], {
+      cwd: packageRoot,
+      env: { ...process.env, FORCE_COLOR: "0" },
+      encoding: "utf8",
+      maxBuffer: 100 * 1024 * 1024,
+      stdio: ["ignore", "pipe", "pipe"],
+      timeout: 300_000,
+    });
+  } catch (error) {
+    process.stderr.write(error.stdout ?? "");
+    process.stderr.write(error.stderr ?? "");
+    throw error;
+  }
 }
 
 export function verifyDartGraphRiverpod({ runFlutter = true } = {}) {
