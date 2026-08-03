@@ -1,0 +1,19 @@
+{
+  "artifact_type": "content",
+  "variants": [
+    {"name": "archive-qa-report", "file": ".refiner/artifacts/v3-nextjs-app-router-example-archive-qa/dist/archive-qa-report.md", "format": "markdown", "description": "Constraint-by-constraint Next.js archive QA disposition."},
+    {"name": "validation", "file": ".refiner/artifacts/v3-nextjs-app-router-example-archive-qa/dist/validation.json", "format": "json", "description": "Machine-readable deterministic QA results and release boundary."}
+  ],
+  "preview": {"required": false, "runs": []},
+  "validation": {
+    "preview_status": "pass",
+    "has_console_errors": false,
+    "has_request_failures": false,
+    "notes": [
+      "Direct content QA artifact; no additional preview is required.",
+      "The retained packed Next.js Chromium screenshot and traces provide the required visual and accessibility evidence."
+    ]
+  },
+  "sizes": [],
+  "generated_at": "2026-08-03T15:20:00Z"
+}

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "artifact": "v3-nextjs-app-router-example-archive-qa",
+  "recordedAt": "2026-08-03T15:20:00Z",
+  "status": "pass",
+  "blockingConstraints": {"passed": 8, "total": 8},
+  "checks": {
+    "packedVerifierCommands": {"passed": 10, "total": 10},
+    "focusedTests": {"passed": 12, "total": 12},
+    "structuralTests": {"passed": 5, "total": 5},
+    "browserTests": {"passed": 2, "total": 2},
+    "concurrentRequests": {"uniqueGraphs": 12, "requests": 12},
+    "hydration": {"clientFetches": 0, "errors": 0},
+    "accessibility": {"serious": 0, "critical": 0},
+    "visualArtifacts": {"matchedHashes": 3, "total": 3},
+    "reactExports": {"matched": 203, "total": 203},
+    "semanticScenarios": {"passed": 13, "total": 13},
+    "coverageContractTests": {"passed": 14, "total": 14},
+    "security": {"critical": 0, "high": 0, "blocking": 0, "low": 2},
+    "openSpecStrict": "pass",
+    "changesets": "pass",
+    "releaseContract": "pass",
+    "frozenInstall": "pass",
+    "diffHygiene": "pass"
+  },
+  "evidenceHashes": {
+    "task5Report": "5f9cc4c281f2c4e735febe08766f0a1a19d5e464eb828c466d750e24f24a8db3",
+    "browserReceipt": "7fb59f5900b5e6a8b819712435bf7f03e16dd81eba9041140065a53c96eb9a5a",
+    "playwrightReport": "97e5db01caa2ea19bc588e3958e4b3552ac0a01a6a22a86b78c65b9773a18896",
+    "screenshot": "28921eb3beb8348ef5d3edfc2ccb574e5a7de45ad058da69276a49c1b5097c5c",
+    "requestTrace": "e9617f21f50d32a7b9ad62220ab15949f999cb002101a6c6dbd22a0937e6f84f",
+    "runtimeTrace": "1ec83a85bda4797ac436e040046e1a08c42f7a04e7c169e7d788f33164cc2ced"
+  },
+  "publication": {
+    "reactRc1SourceMoved": false,
+    "npmMutated": false,
+    "stableReleaseComplete": false,
+    "nextContinuationRequiresLaterPrerelease": true
+  },
+  "notApplicable": ["Dart/Melos", "Cargo", "Flutter devices", "Tauri platforms"]
+}

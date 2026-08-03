@@ -124,3 +124,23 @@
 - Dart/Melos, Cargo, Flutter, and Tauri gates were not applicable to this
   Next.js task. Overall release coverage remains in progress with three planned
   showcases.
+
+## 2026-08-03 — Next.js task 6 evidence and release disposition
+
+- Completed a criterion-by-criterion audit against the signed phase plan and
+  OpenSpec delta. Concurrent SSR isolation, hydration without refetch or error,
+  tarball-only production build, and browser E2E each have direct retained
+  evidence.
+- Recorded six artifact hashes, pass predicates for every verifier command,
+  explicit browser/hosting/platform exclusions, and the observed Vitest and
+  accessibility corrections in the final verification packet.
+- Recorded release impact without collapsing the two lanes: the pushed Next.js
+  continuation adds scoped-store APIs for a later coordinated prerelease, while
+  the frozen React `3.0.0-rc.1` candidate and its isolated gate-fix PR can stage
+  first without moving candidate source.
+- Confirmed no current root, example, release, or coverage document still calls
+  the Next.js showcase planned. Historical task-4 evidence remains unchanged
+  because it truthfully records the state at that earlier boundary.
+- The change is ready for artifact-refiner, isolated adversarial review, strict
+  OpenSpec verification, and archive. Those certification results are not
+  inferred from implementation evidence and remain the next gates.

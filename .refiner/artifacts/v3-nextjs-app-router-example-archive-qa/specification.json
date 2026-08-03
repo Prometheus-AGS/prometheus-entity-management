@@ -1,0 +1,48 @@
+{
+  "specification": {
+    "artifact_name": "v3-nextjs-app-router-example-archive-qa",
+    "artifact_type": "content",
+    "clarified_intent": {
+      "description": "Independently validate that the completed Next.js App Router change satisfies its bounded plan acceptance criteria and can proceed to adversarial review without delaying or mutating the frozen React rc.1 lane.",
+      "domain": "Next.js release-candidate implementation evidence"
+    },
+    "constraint_source": "KBD plan and task-specific constraints because .kbd-orchestrator/constraints.md is absent",
+    "constraints": [
+      "acceptance-direct-evidence",
+      "packed-consumer-boundary",
+      "ssr-hydration-runtime",
+      "visual-accessibility-integrity",
+      "ledgers-synchronized",
+      "limits-and-release-lanes-explicit",
+      "security-boundary-fail-closed",
+      "no-publication-overclaim"
+    ],
+    "target_state": {
+      "description": "A reproducible QA bundle with zero blocking violations, explicit limits, intact React-first staging, and no registry mutation claim.",
+      "success_criteria": [
+        "Every Next.js plan and OpenSpec criterion maps to direct evidence.",
+        "Packed-package and workspace-source boundaries remain explicit.",
+        "SSR, hydration, mutation, realtime, accessibility, screenshot, and trace requirements pass.",
+        "Coverage, exports, skills, docs, Changesets, and OpenSpec agree.",
+        "Security and unresolved platform/manual limits remain explicit.",
+        "React rc.1 can stage independently while this change waits for a later prerelease."
+      ],
+      "measurable_outcomes": [
+        {"metric": "blocking violations", "threshold": "0"},
+        {"metric": "verifier commands", "threshold": "10/10"},
+        {"metric": "isolated request graphs", "threshold": "12/12"},
+        {"metric": "browser tests", "threshold": "2/2"},
+        {"metric": "serious or critical accessibility violations", "threshold": "0"},
+        {"metric": "retained screenshot/trace hashes", "threshold": "3/3"}
+      ]
+    },
+    "content_type": "direct:content",
+    "unknowns": [
+      "External npm trusted-publisher and protected-environment authority cannot be proven by repository artifacts.",
+      "Firefox, WebKit, mobile browser, static/ISR rendering, and live hosted services are outside this change.",
+      "The stable release SHA and remaining showcase/docs work do not yet exist."
+    ],
+    "requires_code_execution": true,
+    "likely_tools": ["JSON/schema validator", "OpenSpec validator", "SHA-256 calculator", "coverage/export verifiers", "file integrity checks"]
+  }
+}
