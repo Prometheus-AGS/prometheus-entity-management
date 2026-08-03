@@ -68,7 +68,12 @@ try {
     recursive: true,
     filter: (source) => {
       const name = basename(source);
-      return name !== "node_modules" && name !== ".next";
+      return (
+        name !== "node_modules" &&
+        name !== ".next" &&
+        name !== "vitest.config.mts" &&
+        !/\.(?:test|spec)\.[cm]?[jt]sx?$/.test(name)
+      );
     },
   });
 
@@ -83,14 +88,6 @@ try {
   if (packedNextConfig !== sourceNextConfig) {
     throw new Error("packed consumer must preserve the checked-in Next.js config");
   }
-  const workspaceSourceAliases = [
-    /packages\/entity-graph-(?:core|react)\/src\//,
-    /@prometheus-ags\/(?:entity-graph-core|prometheus-entity-management)["']\s*:\s*["'][^"']*\/src\//,
-  ];
-  if (workspaceSourceAliases.some((pattern) => pattern.test(packedNextConfig))) {
-    throw new Error("packed Next.js config contains a workspace source alias");
-  }
-
   const sourceManifest = readJson("examples/nextjs-app/package.json");
   const rootManifest = readJson("package.json");
   const consumerManifest = {
@@ -111,6 +108,24 @@ try {
     join(packedAppDirectory, "package.json"),
     `${JSON.stringify(consumerManifest, null, 2)}\n`,
   );
+  const workspaceSourceAliases = [
+    /packages\/entity-graph-(?:core|react)\/src\//,
+    /@prometheus-ags\/(?:entity-graph-core|prometheus-entity-management)["']\s*:\s*["'][^"']*\/src\//,
+  ];
+  const packedTextFiles = walk(packedAppDirectory).filter((path) =>
+    /\.(?:[cm]?[jt]sx?|json|ya?ml)$/.test(path),
+  );
+  const sourceAliasFiles = packedTextFiles.filter((path) => {
+    const source = readFileSync(path, "utf8");
+    return workspaceSourceAliases.some((pattern) => pattern.test(source));
+  });
+  if (sourceAliasFiles.length > 0) {
+    throw new Error(
+      `packed consumer contains workspace source aliases: ${sourceAliasFiles
+        .map((path) => relative(packedAppDirectory, path))
+        .join(", ")}`,
+    );
+  }
   run(
     "packed-consumer-install",
     "pnpm",
@@ -199,6 +214,15 @@ try {
         preserved: true,
         workspaceSourceAliasesPresent: false,
         sha256: sha256Text(packedNextConfig),
+      },
+      workspaceSourceScan: {
+        filesScanned: packedTextFiles.length,
+        aliasesFound: 0,
+        excludedSourceOnlyFiles: [
+          "vitest.config.mts",
+          "src/**/*.test.{ts,tsx}",
+          "src/**/*.spec.{ts,tsx}",
+        ],
       },
     },
     browser: {

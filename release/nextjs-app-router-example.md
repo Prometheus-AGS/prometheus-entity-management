@@ -81,8 +81,10 @@ hash-verified screenshot and trace artifacts. The showcase is therefore
 `implemented` in `examples/coverage.json`.
 
 The packed verifier preserves the checked-in `next.config.ts` byte for byte,
-rejects workspace source aliases, and records the config hash in the task-5
-receipt. Provider replacement recreates the scoped realtime manager and
+excludes source-only tests plus their Vitest config, scans every remaining
+copied TypeScript, JavaScript, JSON, and YAML file for workspace source aliases,
+and records the config hash and scan result in the task-5 receipt. Provider
+replacement recreates the scoped realtime manager and
 unregisters the previous adapter before binding the new graph.
 
 The authoritative receipts are

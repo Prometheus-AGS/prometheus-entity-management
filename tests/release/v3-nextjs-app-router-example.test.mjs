@@ -37,12 +37,22 @@ test("the packed verifier preserves and validates the checked-in Next.js config"
   const verifier = read("scripts/verify-nextjs-app-router-example.mjs");
 
   assert.match(verifier, /packedNextConfig !== sourceNextConfig/);
-  assert.match(verifier, /workspaceSourceAliases\.some/);
+  assert.match(verifier, /packedTextFiles\.filter/);
+  assert.match(verifier, /sourceAliasFiles\.length > 0/);
   assert.match(verifier, /preserved: true/);
   assert.doesNotMatch(
     verifier,
     /writeFile\(\s*join\(packedAppDirectory, "next\.config\.ts"\)/s,
   );
+});
+
+test("the packed app excludes source-only tests and their workspace Vitest aliases", () => {
+  const verifier = read("scripts/verify-nextjs-app-router-example.mjs");
+
+  assert.match(verifier, /name !== "vitest\.config\.mts"/);
+  assert.match(verifier, /\\\.\(\?:test\|spec\)/);
+  assert.match(verifier, /excludedSourceOnlyFiles/);
+  assert.match(verifier, /aliasesFound: 0/);
 });
 
 test("scoped realtime follows provider replacement and unregisters the prior adapter", () => {

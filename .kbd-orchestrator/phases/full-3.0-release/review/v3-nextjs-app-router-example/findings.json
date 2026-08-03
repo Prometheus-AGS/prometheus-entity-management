@@ -9,18 +9,10 @@
     {
       "severity": "CRITICAL",
       "file": "scripts/verify-nextjs-app-router-example.mjs",
-      "line": 95,
-      "claim": "The packed verifier does not certify the checked-in Next.js example configuration because it overwrites the copied app's `next.config.ts` with an empty config before typecheck/build/browser execution.",
-      "evidence": "The acceptance criteria require clean or packed-artifact consumer evidence for the `v3-nextjs-app-router-example`; the verifier copies `examples/nextjs-app` and then writes `next.config.ts` as `const nextConfig: NextConfig = {};`, so any defect in the repository's actual Next config is excluded from the release receipt.",
-      "suggested_fix": "Preserve the checked-in `next.config.ts` in the copied app, or transform only the specific workspace aliases that must be removed and assert no workspace aliases remain."
-    },
-    {
-      "severity": "WARNING",
-      "file": "examples/nextjs-app/src/features/next-runtime/use-scoped-realtime-manager.ts",
-      "line": 15,
-      "claim": "`useScopedRealtimeManager` keeps a manager bound to the initial provider store and will write realtime events to the wrong graph if the provider store changes.",
-      "evidence": "The hook reads `const store = useGraphStoreApi()` but creates `new RealtimeManager({ store, ... })` inside a `useState` initializer, which never reruns for a later `store` value.",
-      "suggested_fix": "Create the manager with `useMemo(() => new RealtimeManager({ store, ... }), [store])` and ensure callers unregister old adapters when the manager changes."
+      "line": 84,
+      "claim": "The packed-consumer verifier reports `workspaceSourceAliasesPresent: false` while only scanning `next.config.ts`, leaving copied workspace source aliases in the external app.",
+      "evidence": "The verifier copies the whole example app excluding only `node_modules` and `.next` (`scripts/verify-nextjs-app-router-example.mjs` lines 65-71), then checks `workspaceSourceAliases` only against `packedNextConfig` (`scripts/verify-nextjs-app-router-example.mjs` lines 84-93) and reports `workspaceSourceAliasesPresent: false` in the receipt; however the copied app includes `examples/nextjs-app/vitest.config.mts` lines 10-11 aliasing `@prometheus-ags/entity-graph-core` and `@prometheus-ags/prometheus-entity-management` to `../../packages/.../src/index.ts`. This violates the `packed-consumer-boundary` criterion requiring the exact command to reject workspace source aliases.",
+      "suggested_fix": "Scan all copied config/source files that can influence commands in the external app, or remove/rewrite `vitest.config.mts` during packing; fail if any copied file contains workspace source aliases before writing the report."
     }
   ],
   "sycophancy_screen": {

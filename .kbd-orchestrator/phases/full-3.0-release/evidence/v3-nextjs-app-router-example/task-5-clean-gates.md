@@ -27,6 +27,9 @@ The retained receipt records:
 - one screenshot and two traces with SHA-256 hashes in the JSON report;
 - byte-identical checked-in/packed Next config with no workspace source alias,
   SHA-256 `49ebd9f84c79dde5cac32bf1909c674b21897948c837205ddc66ef97df25c4e3`;
+- a full scan of every copied TypeScript, JavaScript, JSON, and YAML file with
+  zero workspace source aliases; source-only tests and their Vitest config are
+  excluded after the focused source test gate passes;
 - packed core SHA-256
   `6f7b30420be61a7746671408812d41d792d8cb9a5627934286956ce092a833fc`;
 - packed React SHA-256
