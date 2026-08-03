@@ -1,24 +1,25 @@
 {
   "schemaVersion": 1,
   "artifact": "v3-nextjs-app-router-example-archive-qa",
-  "refinementId": "07d31533-e25a-4bab-ba32-e1065c1901e2",
-  "priorCycleId": "46725a52-9c0b-409b-bf20-26eb6447cb8e",
-  "implementationSource": "b44126b",
-  "recordedAt": "2026-08-03T16:02:24Z",
+  "refinementId": "002133fd-50f7-45e4-b762-9693aa8f442b",
+  "priorCycleId": "07d31533-e25a-4bab-ba32-e1065c1901e2",
+  "implementationSource": "499ef73",
+  "recordedAt": "2026-08-03T16:22:04Z",
   "status": "pass",
   "blockingConstraints": {"passed": 8, "total": 8},
   "reviewCorrections": {
     "passed": 2,
     "total": 2,
-    "defaultReportPath": "task-5-verification.json",
-    "reportTask": 5,
-    "finalOwnerListenerCleanup": "pass",
-    "finalOwnerGarbageCollectorCleanup": "pass"
+    "checkedInNextConfigPreserved": true,
+    "workspaceSourceAliasesPresent": false,
+    "nextConfigSha256": "49ebd9f84c79dde5cac32bf1909c674b21897948c837205ddc66ef97df25c4e3",
+    "providerStoreRebinding": "pass",
+    "priorAdapterCleanup": "pass"
   },
   "checks": {
     "packedVerifierCommands": {"passed": 10, "total": 10},
-    "focusedTests": {"passed": 15, "total": 15},
-    "structuralTests": {"passed": 6, "total": 6},
+    "focusedTests": {"passed": 16, "total": 16},
+    "structuralTests": {"passed": 8, "total": 8},
     "browserTests": {"passed": 2, "total": 2},
     "concurrentRequests": {"uniqueGraphs": 12, "requests": 12},
     "hydration": {"clientFetches": 0, "errors": 0},
@@ -35,12 +36,12 @@
     "diffHygiene": "pass"
   },
   "evidenceHashes": {
-    "task5Report": "b9b976b974f78878a96ca412ee397af9e95f224d3c3d1e0646c25729caa3644d",
-    "browserReceipt": "a666e49723d985312908bf7301e57456450788994fb8be3ef968c46e92bfaf4b",
-    "playwrightReport": "d26e7f62b761baca2ec528bd9b0c1832de6b0680b0f10b949272b326d42216b9",
-    "screenshot": "024ccbb540d617caae837dfb01f6efe3324cabb5b33e94c6ebcc72826d70144f",
-    "requestTrace": "e65035a5660514934a59f9ab2dc572995253ae50164482dbc1837c015e0873a3",
-    "runtimeTrace": "aa9cd2b0e80f802272e7273a852f46f3973f8f3827c6153f87b99fca8477de7a"
+    "task5Report": "8c7878519e71964d17aca7edd7723f2808a99b116accd5255c207ad3093a7d3e",
+    "browserReceipt": "a5b0721a6eaff427b2425cd0d8efdf005235a67b0afeda676d284bd7580da664",
+    "playwrightReport": "6ab040d130b430d9d27945242d16df362b45a25a80074f8499179e23d62bbd37",
+    "screenshot": "c11fb1431ae5a6c20604dd4f4a7deb570146b4af9176f8bcc3b47285b0b70497",
+    "requestTrace": "d95324e306cd565ed01b70045bfd2974bd5a5f15b92a53f85eca0171527677d7",
+    "runtimeTrace": "a6b41f75f913b8071cce6a8d72da2e4692213d7c100cb45a4452042f9f30dfca"
   },
   "publication": {
     "reactRc1SourceMoved": false,

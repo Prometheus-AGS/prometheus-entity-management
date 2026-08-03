@@ -80,6 +80,11 @@ confirmation, realtime takeover, zero serious or critical axe findings, and
 hash-verified screenshot and trace artifacts. The showcase is therefore
 `implemented` in `examples/coverage.json`.
 
+The packed verifier preserves the checked-in `next.config.ts` byte for byte,
+rejects workspace source aliases, and records the config hash in the task-5
+receipt. Provider replacement recreates the scoped realtime manager and
+unregisters the previous adapter before binding the new graph.
+
 The authoritative receipts are
 `task-5-verification.json`, `browser-evidence.json`, the Playwright JSON report,
 the screenshot, and both retained traces under the change evidence directory.

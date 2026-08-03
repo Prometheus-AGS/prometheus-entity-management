@@ -12,18 +12,21 @@ Result: PASS
 passed from the continuation worktree. The verifier built and packed core plus
 React, copied the example into an external application, replaced both workspace
 dependencies with those tarballs, installed with strict peers, type-checked,
-ran a Next.js 16 production build, started `next start`, and executed Chromium.
+preserved and validated the checked-in Next config, ran a Next.js 16 production
+build, started `next start`, and executed Chromium.
 
 The retained receipt records:
 
-- 6/6 structural contract tests;
-- 8/8 core, 5/5 React, and 2/2 Next-focused unit tests;
+- 8/8 structural contract tests;
+- 8/8 core, 5/5 React, and 3/3 Next-focused unit tests;
 - 12 concurrent production requests with 12 unique request graph IDs;
 - zero duplicate hydration fetches and zero hydration errors;
 - client-route graph persistence and document-reload graph replacement;
 - confirmed Server Action mutation and scoped realtime takeover;
 - zero serious or critical axe violations;
 - one screenshot and two traces with SHA-256 hashes in the JSON report;
+- byte-identical checked-in/packed Next config with no workspace source alias,
+  SHA-256 `49ebd9f84c79dde5cac32bf1909c674b21897948c837205ddc66ef97df25c4e3`;
 - packed core SHA-256
   `6f7b30420be61a7746671408812d41d792d8cb9a5627934286956ce092a833fc`;
 - packed React SHA-256

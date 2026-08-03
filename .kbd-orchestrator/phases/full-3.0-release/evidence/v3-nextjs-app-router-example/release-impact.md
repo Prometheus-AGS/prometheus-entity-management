@@ -1,7 +1,7 @@
 # Release impact — `v3-nextjs-app-router-example`
 
 Date: 2026-08-03
-Implementation source through review corrections: `b44126b`
+Implementation source through review corrections: `499ef73`
 Change status: implementation evidence complete; certification and archive are
 separate quality gates
 
@@ -19,6 +19,11 @@ React hooks reference-count each selected graph's focus/reconnect listeners and
 collector, then remove the window callbacks and stop GC after the final hook
 unmounts. Discarded provider trees therefore do not remain retained by engine
 lifecycle infrastructure.
+
+The example's scoped realtime manager also follows provider replacement: a new
+manager is created for the new graph, the prior adapter is unregistered, and
+running intent survives adapter recreation. The packed verifier preserves the
+checked-in Next config rather than substituting an empty release-only config.
 
 The checked-in Changeset requests a patch prerelease for:
 

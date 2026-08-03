@@ -1,7 +1,7 @@
 # Verification — `v3-nextjs-app-router-example`
 
 Date: 2026-08-03
-Implementation source through review corrections: `b44126b`
+Implementation source through review corrections: `499ef73`
 Verdict: **PASS — IMPLEMENTATION EVIDENCE COMPLETE; QA/ARCHIVE PENDING**
 
 ## Acceptance matrix
@@ -10,7 +10,7 @@ Verdict: **PASS — IMPLEMENTATION EVIDENCE COMPLETE; QA/ARCHIVE PENDING**
 | --- | --- | --- |
 | Concurrent SSR proves request isolation | Packed production browser receipt records 12 concurrent requests and 12 unique graph IDs; focused server test creates 24 isolated serializable snapshots | Pass |
 | Hydration has no mismatch or duplicate fetch | Browser receipt records `clientFetches: 0` and `hydrationErrors: 0`; route transition preserves the graph and reload replaces it | Pass |
-| Clean production build uses packed packages | Verifier builds and packs core plus React `3.0.0-rc.1`, installs only those tarballs into an external Next.js 16 app with strict peers, type-checks, and production-builds it | Pass |
+| Clean production build uses packed packages | Verifier preserves and validates the checked-in Next config, builds and packs core plus React `3.0.0-rc.1`, installs only those tarballs into an external Next.js 16 app with strict peers, type-checks, and production-builds it | Pass |
 | Browser E2E covers the required server/client flow | Two Playwright tests pass for request isolation, hydration, Server Action mutation, realtime takeover, route persistence, and reload behavior | Pass |
 | Suspense/error and accessibility boundaries work | Loading and route error boundaries are structurally checked; the runtime receipt reports zero serious or critical axe findings | Pass |
 | Public API, coverage, skills, documentation, and Changesets stay synchronized | Next showcase and SSR evidence are implemented in `examples/coverage.json`; 203/203 React runtime exports match the ledger; docs and scoped-store skills are updated; Changesets status passes | Pass |
@@ -21,17 +21,17 @@ Verdict: **PASS — IMPLEMENTATION EVIDENCE COMPLETE; QA/ARCHIVE PENDING**
 
 - `task-5-verification.json` — command-by-command packed consumer and browser
   receipt; SHA-256
-  `b9b976b974f78878a96ca412ee397af9e95f224d3c3d1e0646c25729caa3644d`.
+  `8c7878519e71964d17aca7edd7723f2808a99b116accd5255c207ad3093a7d3e`.
 - `browser-evidence.json` — scenario proof and accessibility receipt; SHA-256
-  `a666e49723d985312908bf7301e57456450788994fb8be3ef968c46e92bfaf4b`.
+  `a5b0721a6eaff427b2425cd0d8efdf005235a67b0afeda676d284bd7580da664`.
 - `playwright-report.json` — 2 expected, 0 unexpected, 0 flaky; SHA-256
-  `d26e7f62b761baca2ec528bd9b0c1832de6b0680b0f10b949272b326d42216b9`.
+  `6ab040d130b430d9d27945242d16df362b45a25a80074f8499179e23d62bbd37`.
 - `task-3-nextjs-ssr-hydration.png` — retained screenshot; SHA-256
-  `024ccbb540d617caae837dfb01f6efe3324cabb5b33e94c6ebcc72826d70144f`.
+  `c11fb1431ae5a6c20604dd4f4a7deb570146b4af9176f8bcc3b47285b0b70497`.
 - Concurrent-request trace — SHA-256
-  `e65035a5660514934a59f9ab2dc572995253ae50164482dbc1837c015e0873a3`.
+  `d95324e306cd565ed01b70045bfd2974bd5a5f15b92a53f85eca0171527677d7`.
 - Hydration/mutation/realtime trace — SHA-256
-  `aa9cd2b0e80f802272e7273a852f46f3973f8f3827c6153f87b99fca8477de7a`.
+  `a6b41f75f913b8071cce6a8d72da2e4692213d7c100cb45a4452042f9f30dfca`.
 - `task-5-clean-gates.md` — package, OpenSpec, coverage, Changesets,
   accessibility, security, and not-applicable gate disposition.
 - `release-impact.md` — React-first lane separation, package impact, stable
@@ -65,6 +65,15 @@ and the final unmount removes window callbacks and stops that graph's interval.
 Focused core and React tests cover both the final-owner cleanup and idempotent
 release, and the exact no-argument packed verifier passes.
 
+The following complete review then found that the packed verifier replaced the
+checked-in Next config and that the example realtime manager stayed bound to
+its initial provider. The verifier now preserves the copied config byte for
+byte, rejects workspace source aliases, and records its SHA-256. The scoped
+manager is memoized by the current provider store, its page effect unregisters
+the old adapter when that manager changes, and a runtime regression proves
+events write only to the replacement graph. The exact packed gate now passes
+8/8 structural tests and 16/16 focused runtime tests with the checked-in config.
+
 ## Unresolved limits
 
 - Chromium desktop is the only browser runtime certified here.
@@ -82,8 +91,9 @@ These limits are exclusions, not waived acceptance criteria for this change.
 
 ## QA boundary
 
-The second complete adversarial review correctly blocked the pre-cleanup
-artifact. Artifact-refiner cycle 3 now passes after correcting its critical
-path and lifecycle warning. A new complete fresh-context review remains
+The latest complete adversarial review correctly blocked the pre-correction
+artifact. Artifact-refiner cycle 4 now passes after correcting its
+config-certification critical and provider-rebinding warning. A new complete
+fresh-context review remains
 mandatory before OpenSpec verification and archive; neither earlier review
 certifies the changed artifact.
