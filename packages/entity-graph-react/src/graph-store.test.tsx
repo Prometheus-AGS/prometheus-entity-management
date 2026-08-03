@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ReactNode } from "react";
 
 import { createGraphStore, graphStore } from "@prometheus-ags/entity-graph-core";
@@ -80,6 +80,32 @@ describe("React bindings over the vanilla core store", () => {
     expect(hookA.result.current.entity).toEqual({ requestId: "a" });
     expect(hookB.result.current).toBeNull();
     expect(graphStore.getState().readEntity("Request", "current")).toBeNull();
+  });
+
+  it("releases provider-owned graph listeners when the final hook unmounts", () => {
+    const request = createGraphStore();
+    const addEventListener = vi.spyOn(window, "addEventListener");
+    const removeEventListener = vi.spyOn(window, "removeEventListener");
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <GraphStoreProvider store={request}>{children}</GraphStoreProvider>
+    );
+
+    try {
+      const hook = renderHook(() => useGraphStoreApi(), { wrapper });
+      expect(addEventListener).toHaveBeenCalledWith("focus", expect.any(Function));
+
+      hook.unmount();
+
+      expect(removeEventListener).toHaveBeenCalledWith("focus", expect.any(Function));
+      expect(removeEventListener).toHaveBeenCalledWith("online", expect.any(Function));
+      expect(removeEventListener).toHaveBeenCalledWith(
+        "visibilitychange",
+        expect.any(Function),
+      );
+    } finally {
+      addEventListener.mockRestore();
+      removeEventListener.mockRestore();
+    }
   });
 
   it("subscribes to framework-neutral local-first status", () => {

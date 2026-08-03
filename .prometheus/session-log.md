@@ -164,3 +164,21 @@
   with 2/2 warnings corrected and 8/8 blocking constraints satisfied. A new
   full-diff adversarial review remains required; the prior review cannot certify
   the changed artifact.
+
+## 2026-08-03 — Next.js second review block and lifecycle correction
+
+- The complete cycle-2 review returned BLOCK with one critical finding: the
+  advertised no-argument verifier still defaulted to the obsolete task-3
+  evidence path. It also warned that scoped window listeners and GC retained
+  unmounted provider graphs.
+- Changed the default output to `task-5-verification.json` and added a structural
+  regression that locks the package command, default path, and task metadata
+  together.
+- Replaced render-time one-shot listener attachment with React-effect ownership
+  and a reference-counted core disposer. The final hook unmount now removes all
+  selected-graph window listeners and stops its GC interval; repeated disposer
+  calls are idempotent.
+- Added core and React lifecycle tests. The exact no-argument verifier passed
+  with 6 structural tests, 15 focused units, 12/12 request isolation, 2/2
+  browser flows, zero serious/critical accessibility findings, and regenerated
+  hashes. The blocked review is retained and cannot be used for archive.

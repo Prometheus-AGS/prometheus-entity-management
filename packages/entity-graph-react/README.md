@@ -229,7 +229,7 @@ Compare against peers only when measurement methodology matches (minified vs unm
 |--------|-------------|
 | `createGraphStore` / `graphStore` | Create an isolated vanilla graph or access the default core singleton. |
 | `GraphStoreProvider` | Scope all descendant React hooks to an application-owned `GraphStore`; use one request graph per SSR render and one hydrated graph per mounted browser tree. |
-| `useGraphStoreApi` | Resolve the nearest provider-owned graph, falling back to the public singleton. Use in hooks and infrastructure, not presentational components. |
+| `useGraphStoreApi` | Resolve the nearest provider-owned graph, falling back to the public singleton. React-hook ownership reference-counts focus/reconnect listeners and GC, releasing them after the final hook unmounts. |
 | `useGraphStore` | React hook subscribed to the nearest scoped graph; compatibility `getState`, `setState`, and `subscribe` methods remain attached to the default singleton. Prefer domain hooks in components. |
 | `configureEngine` | App-wide defaults: stale time, retries, GC interval, GC time, etc. |
 | `getEngineOptions` | Read merged engine options. |
@@ -238,6 +238,7 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | `fetchList` | Imperative list fetch with dedupe and graph write. |
 | `dedupe` | Process-global in-flight promise deduplication helper. |
 | `startGarbageCollector(storeApi?)` / `stopGarbageCollector(storeApi?)` | Periodic eviction of unsubscribed, stale entities in the selected graph; omitting the store targets the compatibility singleton. |
+| `attachGlobalListeners(storeApi?)` | Reference-count focus/reconnect listeners and GC for one graph; call the returned disposer to release the attachment. React hooks manage this automatically. |
 
 ### Graph runtime
 

@@ -1,26 +1,26 @@
 {
   "mode": "diff",
-  "verdict": "PASS",
+  "verdict": "BLOCK",
   "judge_model": "kbd-judge",
   "producer_model": "gpt-5",
   "isolation_mode": "rest-gateway:http://localhost:8181/v1",
   "cross_model_check": "verified-distinct",
   "findings": [
     {
-      "severity": "WARNING",
+      "severity": "CRITICAL",
       "file": "scripts/verify-nextjs-app-router-example.mjs",
-      "line": 185,
-      "claim": "The packed verification report is mislabeled as task 3 even when it is the task-5 clean gate receipt.",
-      "evidence": "The verifier writes `task: 3` in the generated report object, while the retained clean-gate evidence is `task-5-verification.json` and `task-5-clean-gates.md` describes the clean packed production boundary.",
-      "suggested_fix": "Set the report metadata to the actual verification task, or make the task number an explicit argument/default matching the task-5 clean gate."
+      "line": 23,
+      "claim": "The advertised verifier command does not write the task-5 evidence file that the coverage ledger and release evidence claim.",
+      "evidence": "The script defaults `reportArgument` to `.../task-3-verification.json` when `--report` is omitted, while `package.json` defines `\"verify:nextjs-app-router\": \"node scripts/verify-nextjs-app-router-example.mjs\"` and `examples/coverage.json` records `.kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/task-5-verification.json` as the implemented evidence path.",
+      "suggested_fix": "Change the default report path to `task-5-verification.json`, or update the package script to pass `--report .kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/task-5-verification.json`."
     },
     {
       "severity": "WARNING",
       "file": "packages/entity-graph-core/src/engine.ts",
-      "line": 388,
-      "claim": "Scoped stores attach focus/reconnect listeners but the garbage collector still starts without being bound to the scoped store.",
-      "evidence": "The diff changes `runGarbageCollection(storeApi: GraphStore = graphStore)` and `attachGlobalListeners(storeApi: GraphStore = graphStore)`, but `attachGlobalListeners` still calls `restartGarbageCollector()` without passing `storeApi`, so the defaulted GC path can continue to operate on `graphStore` rather than the provider-owned graph.",
-      "suggested_fix": "Thread the selected `GraphStore` through the garbage-collector registration, or explicitly document and test that GC is intentionally singleton-only and not part of the scoped engine contract."
+      "line": 393,
+      "claim": "Provider-owned graph listeners and garbage collectors are started per store but have no cleanup path, so unmounted scoped graphs can remain retained by window listener closures and active GC intervals.",
+      "evidence": "The diff changes `attachGlobalListeners(storeApi)` to track stores in `focusListenerStores`, calls `restartGarbageCollector(storeApi)`, and captures `storeApi` in `revalidateAll`; React hooks call `ensureListeners(storeApi)` via a WeakSet, but neither `attachGlobalListeners` nor `ensureListeners` returns a disposer and no hook cleanup stops the store-specific collector.",
+      "suggested_fix": "Return a disposer from the listener/GC attachment path and have the provider or hook cleanup remove window listeners and call `stopGarbageCollector(storeApi)` when a scoped graph is unmounted."
     }
   ],
   "sycophancy_screen": {

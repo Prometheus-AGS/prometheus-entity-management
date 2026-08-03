@@ -14,6 +14,11 @@ For positioning against TanStack products, see [Detailed comparison with TanStac
 
 `startGarbageCollector(storeApi?)` / `stopGarbageCollector(storeApi?)` (and intervals via `configureEngine`) evict **unsubscribed** entities that exceed retention rules. Each application-owned graph has an independent collector; omitting `storeApi` targets the compatibility singleton. This is **not** reference-counting GC for JavaScript objects; it is **library-level eviction** of graph nodes to cap memory in long sessions.
 
+React hooks reference-count the selected graph's focus/reconnect listeners and
+collector. The last hook unmount removes those window listeners and stops that
+graph's interval, so a discarded `GraphStoreProvider` tree does not retain its
+request-owned graph.
+
 **Components** should not call these directly—prefer app bootstrap or a store module.
 
 ## Suspense

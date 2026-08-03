@@ -2,18 +2,10 @@ import { useEffect, useRef, useCallback, useMemo, useState } from "react";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { EMPTY_ENTITY_STATE, EMPTY_LIST_STATE, EMPTY_IDS } from "@prometheus-ags/entity-graph-core";
-import { fetchEntity, fetchList, serializeKey, registerSubscriber, unregisterSubscriber, getEngineOptions, attachGlobalListeners } from "@prometheus-ags/entity-graph-core";
+import { fetchEntity, fetchList, serializeKey, registerSubscriber, unregisterSubscriber, getEngineOptions } from "@prometheus-ags/entity-graph-core";
 import type { EntityType, EntityId, EntityState, ListState, GraphState, GraphStore } from "@prometheus-ags/entity-graph-core";
 import type { EntityQueryOptions, ListQueryOptions, ListFetchParams, ListResponse } from "@prometheus-ags/entity-graph-core";
 import { useGraphStoreApi } from "./graph-store";
-
-const listenerStores = new WeakSet<GraphStore>();
-function ensureListeners(store: GraphStore) {
-  if (!listenerStores.has(store)) {
-    attachGlobalListeners(store);
-    listenerStores.add(store);
-  }
-}
 
 /**
  * View-model for one entity row: merged canonical + patch data plus fetch lifecycle flags.
@@ -43,7 +35,6 @@ export interface UseEntityResult<T> {
 export function useEntity<TRaw, TEntity extends object>(opts: EntityQueryOptions<TRaw, TEntity>): UseEntityResult<TEntity> {
   const { type, id, staleTime = getEngineOptions().defaultStaleTime, enabled = true } = opts;
   const storeApi = useGraphStoreApi();
-  ensureListeners(storeApi);
   const fetchRef = useRef(opts.fetch); fetchRef.current = opts.fetch;
   const normalizeRef = useRef(opts.normalize); normalizeRef.current = opts.normalize;
   const dataSelector = useCallback((state: GraphState) => {
@@ -126,7 +117,6 @@ export function useEntityList<TRaw, TEntity extends object>(opts: ListQueryOptio
   }
   const { type, queryKey, staleTime = getEngineOptions().defaultStaleTime, enabled = true, mode = "replace" } = opts;
   const storeApi = useGraphStoreApi();
-  ensureListeners(storeApi);
   const key = useMemo(() => serializeKey(queryKey), [queryKey]);
   const fetchRef = useRef(opts.fetch); fetchRef.current = opts.fetch;
   const normalizeRef = useRef(opts.normalize); normalizeRef.current = opts.normalize;

@@ -16,8 +16,8 @@ ran a Next.js 16 production build, started `next start`, and executed Chromium.
 
 The retained receipt records:
 
-- 5/5 structural contract tests;
-- 7/7 core, 4/4 React, and 2/2 Next-focused unit tests;
+- 6/6 structural contract tests;
+- 8/8 core, 5/5 React, and 2/2 Next-focused unit tests;
 - 12 concurrent production requests with 12 unique request graph IDs;
 - zero duplicate hydration fetches and zero hydration errors;
 - client-route graph persistence and document-reload graph replacement;
@@ -25,9 +25,9 @@ The retained receipt records:
 - zero serious or critical axe violations;
 - one screenshot and two traces with SHA-256 hashes in the JSON report;
 - packed core SHA-256
-  `eff82155217dd1da4b7d85983caa851a8a2feb84dc66bbb99e5f1b698ee18fe3`;
+  `6f7b30420be61a7746671408812d41d792d8cb9a5627934286956ce092a833fc`;
 - packed React SHA-256
-  `8b020bc9dcd73c06bd50fb1686516bef44beea977fceff686ca8c820a174c604`.
+  `e1b39d490f949253d54a1594ef78cfee8d2071ca7b1a5a67b72df14182879c6e`.
 
 The first browser attempt observed four serious light-theme contrast failures.
 The light Prometheus ember token was changed from `224 78 40` to `180 57 8`;

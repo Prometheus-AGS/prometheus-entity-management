@@ -25,7 +25,7 @@ Generated from `src/index.ts`. Use this when scaffolding imports or explaining c
 | `createGraphStore` | function | Create an isolated vanilla graph StoreApi for an SSR request, test, worker, or other non-shared host. |
 | `graphStore` | store | Default process-wide vanilla graph singleton used by bindings and imperative consumers. |
 | `GraphStoreProvider` | React provider | Scope all descendant React hooks to an application-owned `GraphStore`; required for per-request SSR hydration instead of process-global request state. |
-| `useGraphStoreApi` | React hook | Resolve the nearest provider-owned `GraphStore`, falling back to `graphStore`; use in feature hooks and infrastructure. |
+| `useGraphStoreApi` | React hook | Resolve the nearest provider-owned `GraphStore`, falling back to `graphStore`; hook ownership releases scoped listeners and GC after the final unmount. |
 | `useGraphStore` | React hook/store | React-package hook over the nearest scoped graph, with the default singleton's StoreApi methods attached for compatibility. Core's same-named export is only a deprecated StoreApi alias; never call it as a hook. |
 | `GraphStoreProviderProps` | type | Provider input containing the application-owned `store` and React `children`. |
 | `GraphStore` | type | Vanilla StoreApi returned by `createGraphStore()`. |
@@ -144,6 +144,7 @@ Use [`release/binding-singleton-contract.md`](../../../release/binding-singleton
 | `dedupe` | function | Collapse an in-flight key within one graph; same keys in different request stores remain independent. |
 | `startGarbageCollector` | function | Starts optional TTL-based cleanup for a selected application-owned graph; defaults to the compatibility singleton. |
 | `stopGarbageCollector` | function | Stops the selected graph's garbage-collection loop; defaults to the compatibility singleton. |
+| `attachGlobalListeners` | function | Reference-count focus/reconnect listeners and GC for one graph; returns the matching disposer. React hooks own this lifecycle automatically. |
 | `EngineOptions` | type | Configuration object for `configureEngine`. |
 | `EntityQueryOptions` | type | Options for single-entity fetch pipeline (normalizer, subscriber behavior, etc.). |
 | `ListQueryOptions` | type | Options for list fetch (pagination mode, normalizer, merge strategy). |

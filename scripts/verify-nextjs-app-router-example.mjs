@@ -20,7 +20,7 @@ const reportFlag = process.argv.indexOf("--report");
 const reportArgument =
   reportFlag >= 0
     ? process.argv[reportFlag + 1]
-    : relative(root, resolve(evidenceDirectory, "task-3-verification.json"));
+    : relative(root, resolve(evidenceDirectory, "task-5-verification.json"));
 if (!reportArgument) throw new Error("--report requires a path");
 const reportPath = resolve(
   root,

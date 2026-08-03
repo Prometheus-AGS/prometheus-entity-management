@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "change": "v3-nextjs-app-router-example",
   "task": 5,
-  "recordedAt": "2026-08-03T15:38:26.316Z",
+  "recordedAt": "2026-08-03T16:00:57.022Z",
   "status": "pass",
   "evidenceBoundary": {
     "kind": "packed-package-nextjs-production-browser",
@@ -22,11 +22,11 @@
   "packages": [
     {
       "name": "prometheus-ags-entity-graph-core-3.0.0-rc.1.tgz",
-      "sha256": "eff82155217dd1da4b7d85983caa851a8a2feb84dc66bbb99e5f1b698ee18fe3"
+      "sha256": "6f7b30420be61a7746671408812d41d792d8cb9a5627934286956ce092a833fc"
     },
     {
       "name": "prometheus-ags-prometheus-entity-management-3.0.0-rc.1.tgz",
-      "sha256": "8b020bc9dcd73c06bd50fb1686516bef44beea977fceff686ca8c820a174c604"
+      "sha256": "e1b39d490f949253d54a1594ef78cfee8d2071ca7b1a5a67b72df14182879c6e"
     }
   ],
   "commands": [
@@ -34,80 +34,80 @@
       "label": "next-contract-tests",
       "command": "node --test tests/release/v3-nextjs-app-router-example.test.mjs",
       "cwd": ".",
-      "startedAt": "2026-08-03T15:37:54.762Z",
-      "completedAt": "2026-08-03T15:37:54.863Z",
+      "startedAt": "2026-08-03T16:00:24.646Z",
+      "completedAt": "2026-08-03T16:00:24.756Z",
       "exitCode": 0
     },
     {
       "label": "next-focused-units",
       "command": "pnpm run test:nextjs-app-router:unit",
       "cwd": ".",
-      "startedAt": "2026-08-03T15:37:54.863Z",
-      "completedAt": "2026-08-03T15:37:58.252Z",
+      "startedAt": "2026-08-03T16:00:24.756Z",
+      "completedAt": "2026-08-03T16:00:28.291Z",
       "exitCode": 0
     },
     {
       "label": "core-package-build",
       "command": "pnpm --filter @prometheus-ags/entity-graph-core build",
       "cwd": ".",
-      "startedAt": "2026-08-03T15:37:58.252Z",
-      "completedAt": "2026-08-03T15:38:00.029Z",
+      "startedAt": "2026-08-03T16:00:28.291Z",
+      "completedAt": "2026-08-03T16:00:29.941Z",
       "exitCode": 0
     },
     {
       "label": "react-package-build",
       "command": "pnpm --filter @prometheus-ags/prometheus-entity-management build",
       "cwd": ".",
-      "startedAt": "2026-08-03T15:38:00.029Z",
-      "completedAt": "2026-08-03T15:38:02.584Z",
+      "startedAt": "2026-08-03T16:00:29.941Z",
+      "completedAt": "2026-08-03T16:00:32.489Z",
       "exitCode": 0
     },
     {
       "label": "core-package-pack",
-      "command": "pnpm --dir /Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/packages/entity-graph-core pack --pack-destination /var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-next-packed-KQGwiY/tarballs --json",
+      "command": "pnpm --dir /Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/packages/entity-graph-core pack --pack-destination /var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-next-packed-2sjEeb/tarballs --json",
       "cwd": ".",
-      "startedAt": "2026-08-03T15:38:02.584Z",
-      "completedAt": "2026-08-03T15:38:02.820Z",
+      "startedAt": "2026-08-03T16:00:32.489Z",
+      "completedAt": "2026-08-03T16:00:32.730Z",
       "exitCode": 0
     },
     {
       "label": "react-package-pack",
-      "command": "pnpm --dir /Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/packages/entity-graph-react pack --pack-destination /var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-next-packed-KQGwiY/tarballs --json",
+      "command": "pnpm --dir /Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/packages/entity-graph-react pack --pack-destination /var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-next-packed-2sjEeb/tarballs --json",
       "cwd": ".",
-      "startedAt": "2026-08-03T15:38:02.820Z",
-      "completedAt": "2026-08-03T15:38:03.069Z",
+      "startedAt": "2026-08-03T16:00:32.730Z",
+      "completedAt": "2026-08-03T16:00:33.010Z",
       "exitCode": 0
     },
     {
       "label": "packed-consumer-install",
       "command": "pnpm install --ignore-scripts --strict-peer-dependencies",
-      "cwd": "../../../../../var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-next-packed-KQGwiY/nextjs-consumer",
-      "startedAt": "2026-08-03T15:38:03.138Z",
-      "completedAt": "2026-08-03T15:38:09.260Z",
+      "cwd": "../../../../../var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-next-packed-2sjEeb/nextjs-consumer",
+      "startedAt": "2026-08-03T16:00:33.078Z",
+      "completedAt": "2026-08-03T16:00:39.416Z",
       "exitCode": 0
     },
     {
       "label": "packed-consumer-typecheck",
       "command": "pnpm run typecheck",
-      "cwd": "../../../../../var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-next-packed-KQGwiY/nextjs-consumer",
-      "startedAt": "2026-08-03T15:38:09.260Z",
-      "completedAt": "2026-08-03T15:38:12.808Z",
+      "cwd": "../../../../../var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-next-packed-2sjEeb/nextjs-consumer",
+      "startedAt": "2026-08-03T16:00:39.416Z",
+      "completedAt": "2026-08-03T16:00:43.550Z",
       "exitCode": 0
     },
     {
       "label": "packed-consumer-production-build",
       "command": "pnpm run build",
-      "cwd": "../../../../../var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-next-packed-KQGwiY/nextjs-consumer",
-      "startedAt": "2026-08-03T15:38:12.808Z",
-      "completedAt": "2026-08-03T15:38:22.376Z",
+      "cwd": "../../../../../var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-next-packed-2sjEeb/nextjs-consumer",
+      "startedAt": "2026-08-03T16:00:43.550Z",
+      "completedAt": "2026-08-03T16:00:52.809Z",
       "exitCode": 0
     },
     {
       "label": "packed-consumer-browser",
       "command": "pnpm exec playwright test --config tests/browser/v3-nextjs-app-router-example.playwright.config.ts",
       "cwd": ".",
-      "startedAt": "2026-08-03T15:38:22.376Z",
-      "completedAt": "2026-08-03T15:38:26.315Z",
+      "startedAt": "2026-08-03T16:00:52.809Z",
+      "completedAt": "2026-08-03T16:00:57.021Z",
       "exitCode": 0
     }
   ],
@@ -167,15 +167,15 @@
   "artifacts": [
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/task-3-nextjs-ssr-hydration.png",
-      "sha256": "accb37f32e88e1f4cbdf49c88fb53deea7ffb75dedd5a66a4edce832549c98c7"
+      "sha256": "024ccbb540d617caae837dfb01f6efe3324cabb5b33e94c6ebcc72826d70144f"
     },
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/playwright-artifacts/v3-nextjs-app-router-examp-6c1f3-eive-isolated-server-graphs-chromium-desktop/trace.zip",
-      "sha256": "23a07124d9c52100a4b731cea64b4711e4ee5f2eef2db15af166aa54e5c372c1"
+      "sha256": "e65035a5660514934a59f9ab2dc572995253ae50164482dbc1837c015e0873a3"
     },
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/playwright-artifacts/v3-nextjs-app-router-examp-b80d3-ation-and-realtime-takeover-chromium-desktop/trace.zip",
-      "sha256": "0d4b75cbe8faa0c4e50bd10f660039be6cb0d1e20fd178753f7b6cb96287bf93"
+      "sha256": "aa9cd2b0e80f802272e7273a852f46f3973f8f3827c6153f87b99fca8477de7a"
     }
   ]
 }

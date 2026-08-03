@@ -1,9 +1,10 @@
-import { createContext, createElement, useContext, type ReactNode } from "react";
+import { createContext, createElement, useContext, useEffect, type ReactNode } from "react";
 import { useStore } from "zustand";
 import {
   createGraphStore,
   graphStore,
   graphSyncStatusStore,
+  attachGlobalListeners,
 } from "@prometheus-ags/entity-graph-core";
 import type {
   GraphState,
@@ -38,7 +39,9 @@ export function GraphStoreProvider({ store, children }: GraphStoreProviderProps)
 
 /** Resolve the nearest scoped graph, falling back to the public singleton. */
 export function useGraphStoreApi(): GraphStore {
-  return useContext(GraphStoreContext) ?? graphStore;
+  const store = useContext(GraphStoreContext) ?? graphStore;
+  useEffect(() => attachGlobalListeners(store), [store]);
+  return store;
 }
 
 /**

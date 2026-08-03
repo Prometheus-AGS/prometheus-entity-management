@@ -33,6 +33,18 @@ test("the production verifier creates an external app from candidate tarballs on
   assert.doesNotMatch(verifier, /workspace:\*/);
 });
 
+test("the advertised verifier writes the implemented task-5 receipt by default", () => {
+  const verifier = read("scripts/verify-nextjs-app-router-example.mjs");
+
+  assert.equal(
+    manifest.scripts["verify:nextjs-app-router"],
+    "node scripts/verify-nextjs-app-router-example.mjs",
+  );
+  assert.match(verifier, /resolve\(evidenceDirectory, "task-5-verification\.json"\)/);
+  assert.match(verifier, /task: 5/);
+  assert.doesNotMatch(verifier, /resolve\(evidenceDirectory, "task-3-verification\.json"\)/);
+});
+
 test("the browser gate proves concurrent SSR, hydration, routes, mutation, and takeover", () => {
   const browser = read("tests/browser/v3-nextjs-app-router-example.spec.ts");
 

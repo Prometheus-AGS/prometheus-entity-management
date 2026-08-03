@@ -395,16 +395,44 @@ export async function fetchList<TRaw, TEntity extends object>(
   await dedupe(isLoadMore ? `${key}:more` : key, () => attempt(0), storeApi);
 }
 
-const focusListenerStores = new WeakSet<GraphStore>();
+interface GlobalListenerAttachment {
+  references: number;
+  dispose: () => void;
+}
+
+const globalListenerAttachments = new WeakMap<GraphStore, GlobalListenerAttachment>();
+
+function releaseGlobalListenerAttachment(
+  storeApi: GraphStore,
+  attachment: GlobalListenerAttachment,
+): () => void {
+  let released = false;
+  return () => {
+    if (released) return;
+    released = true;
+    const current = globalListenerAttachments.get(storeApi);
+    if (current !== attachment) return;
+    current.references -= 1;
+    if (current.references > 0) return;
+    current.dispose();
+    globalListenerAttachments.delete(storeApi);
+  };
+}
+
 /**
  * Opt-in window listeners that mark **subscribed** entities stale on focus/reconnect so hooks can SWR-refetch.
- * Idempotent; safe for SSR (no-ops without `window`). Pair with `configureEngine` flags.
+ * Reference-counted per graph and safe for SSR (no-ops without `window`).
+ * @returns Disposer that releases this attachment and removes listeners plus GC when the last owner releases it.
  */
-export function attachGlobalListeners(storeApi: GraphStore = graphStore) {
-  if (typeof window === "undefined" || focusListenerStores.has(storeApi)) return;
-  focusListenerStores.add(storeApi);
-  // Start GC on first client attach so defaultGcTime applies even without configureEngine().
-  restartGarbageCollector(storeApi);
+export function attachGlobalListeners(storeApi: GraphStore = graphStore): () => void {
+  if (typeof window === "undefined") return () => {};
+  const existing = globalListenerAttachments.get(storeApi);
+  if (existing) {
+    existing.references += 1;
+    return releaseGlobalListenerAttachment(storeApi, existing);
+  }
+
+  const stopGc = startGarbageCollector(storeApi);
   const revalidateAll = () => {
     const state = storeApi.getState();
     for (const key of subscribersFor(storeApi).keys()) {
@@ -416,9 +444,30 @@ export function attachGlobalListeners(storeApi: GraphStore = graphStore) {
       state.setEntityStale(type, id, true);
     }
   };
-  if (engineOptions.revalidateOnFocus) {
-    window.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") revalidateAll(); });
+  const revalidateWhenVisible = () => {
+    if (document.visibilityState === "visible") revalidateAll();
+  };
+  const revalidateOnFocus = engineOptions.revalidateOnFocus;
+  const revalidateOnReconnect = engineOptions.revalidateOnReconnect;
+  if (revalidateOnFocus) {
+    window.addEventListener("visibilitychange", revalidateWhenVisible);
     window.addEventListener("focus", revalidateAll);
   }
-  if (engineOptions.revalidateOnReconnect) window.addEventListener("online", revalidateAll);
+  if (revalidateOnReconnect) window.addEventListener("online", revalidateAll);
+
+  const attachment: GlobalListenerAttachment = {
+    references: 1,
+    dispose: () => {
+      if (revalidateOnFocus) {
+        window.removeEventListener("visibilitychange", revalidateWhenVisible);
+        window.removeEventListener("focus", revalidateAll);
+      }
+      if (revalidateOnReconnect) {
+        window.removeEventListener("online", revalidateAll);
+      }
+      stopGc();
+    },
+  };
+  globalListenerAttachments.set(storeApi, attachment);
+  return releaseGlobalListenerAttachment(storeApi, attachment);
 }

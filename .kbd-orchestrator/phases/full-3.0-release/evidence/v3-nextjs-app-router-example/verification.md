@@ -21,17 +21,17 @@ Verdict: **PASS — IMPLEMENTATION EVIDENCE COMPLETE; QA/ARCHIVE PENDING**
 
 - `task-5-verification.json` — command-by-command packed consumer and browser
   receipt; SHA-256
-  `0f4f3d523402aaad25a506ebba51b4a7822fb1bc396005474fc2d441acf0ceda`.
+  `b9b976b974f78878a96ca412ee397af9e95f224d3c3d1e0646c25729caa3644d`.
 - `browser-evidence.json` — scenario proof and accessibility receipt; SHA-256
-  `5d4097e8963e9b9b28668c08190448e2cd11b66ab145b1a275893af06ad06824`.
+  `a666e49723d985312908bf7301e57456450788994fb8be3ef968c46e92bfaf4b`.
 - `playwright-report.json` — 2 expected, 0 unexpected, 0 flaky; SHA-256
-  `304f48170d922b6e1719bea261163f160382df77b9f0315f6f09995b734286c5`.
+  `d26e7f62b761baca2ec528bd9b0c1832de6b0680b0f10b949272b326d42216b9`.
 - `task-3-nextjs-ssr-hydration.png` — retained screenshot; SHA-256
-  `accb37f32e88e1f4cbdf49c88fb53deea7ffb75dedd5a66a4edce832549c98c7`.
+  `024ccbb540d617caae837dfb01f6efe3324cabb5b33e94c6ebcc72826d70144f`.
 - Concurrent-request trace — SHA-256
-  `23a07124d9c52100a4b731cea64b4711e4ee5f2eef2db15af166aa54e5c372c1`.
+  `e65035a5660514934a59f9ab2dc572995253ae50164482dbc1837c015e0873a3`.
 - Hydration/mutation/realtime trace — SHA-256
-  `0d4b75cbe8faa0c4e50bd10f660039be6cb0d1e20fd178753f7b6cb96287bf93`.
+  `aa9cd2b0e80f802272e7273a852f46f3973f8f3827c6153f87b99fca8477de7a`.
 - `task-5-clean-gates.md` — package, OpenSpec, coverage, Changesets,
   accessibility, security, and not-applicable gate disposition.
 - `release-impact.md` — React-first lane separation, package impact, stable
@@ -57,6 +57,14 @@ interval. The report now identifies task 5, and the engine maintains one
 collector per selected graph. The focused regression proves that collecting
 one graph does not mutate a sibling graph.
 
+The next complete review found that the advertised no-argument verifier still
+defaulted to the obsolete task-3 path, and that scoped listeners plus GC had no
+unmount cleanup. The no-argument command now writes task-5 evidence. Listener
+attachments are reference-counted per graph, React hooks own their lifecycle,
+and the final unmount removes window callbacks and stops that graph's interval.
+Focused core and React tests cover both the final-owner cleanup and idempotent
+release, and the exact no-argument packed verifier passes.
+
 ## Unresolved limits
 
 - Chromium desktop is the only browser runtime certified here.
@@ -74,7 +82,8 @@ These limits are exclusions, not waived acceptance criteria for this change.
 
 ## QA boundary
 
-Artifact-refiner cycle 2 passes with both prior review warnings corrected and
-eight of eight blocking constraints satisfied. A new complete fresh-context
-adversarial review remains mandatory before OpenSpec verification and archive;
-the earlier review cannot certify the corrected artifact.
+The second complete adversarial review correctly blocked the pre-cleanup
+artifact. Its critical path and lifecycle warning are now corrected. A new
+artifact-refiner cycle and complete fresh-context review remain mandatory
+before OpenSpec verification and archive; neither earlier review certifies the
+changed artifact.

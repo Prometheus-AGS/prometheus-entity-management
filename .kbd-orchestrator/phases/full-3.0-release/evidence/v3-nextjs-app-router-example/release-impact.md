@@ -15,6 +15,10 @@ can resolve the selected graph while preserving the default singleton for
 existing non-provider applications. Garbage collection now follows the same
 ownership boundary: each selected graph has its own interval and the public
 start/stop helpers accept an optional graph while retaining singleton defaults.
+React hooks reference-count each selected graph's focus/reconnect listeners and
+collector, then remove the window callbacks and stop GC after the final hook
+unmounts. Discarded provider trees therefore do not remain retained by engine
+lifecycle infrastructure.
 
 The checked-in Changeset requests a patch prerelease for:
 

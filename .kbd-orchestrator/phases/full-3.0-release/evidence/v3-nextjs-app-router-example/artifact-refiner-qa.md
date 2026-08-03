@@ -9,6 +9,11 @@ Current history: `.refiner/history/v3-nextjs-app-router-example-archive-qa/2026-
 Prior history: `.refiner/history/v3-nextjs-app-router-example-archive-qa/2026-08-03_15-22-06Z`
 Decision: **PASS — two review warnings corrected; eight of eight blocking constraints satisfied**
 
+Current certification status: **SUPERSEDED**. The next complete adversarial
+review found one critical verifier-path defect and one scoped-lifecycle warning.
+Both are corrected in the working artifact, but artifact-refiner cycle 3 and a
+new complete review are required before archive.
+
 ## Delta first
 
 The first isolated review contradicted cycle 1's “no implementation defect”
