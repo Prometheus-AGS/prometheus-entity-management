@@ -182,3 +182,22 @@
   with 6 structural tests, 15 focused units, 12/12 request isolation, 2/2
   browser flows, zero serious/critical accessibility findings, and regenerated
   hashes. The blocked review is retained and cannot be used for archive.
+
+## 2026-08-03 — Next.js final review and archive
+
+- Two later isolated reviews found additional evidence-boundary defects: the
+  packed verifier first substituted the checked-in Next config, then scanned
+  only that config while the copied Vitest config retained workspace aliases.
+- Preserved the real Next config, added provider-store rebinding and adapter
+  cleanup, excluded source-only tests/config only after their focused gate, and
+  scanned all 112 remaining copied TypeScript, JavaScript, JSON, and YAML files.
+- The final task-5 receipt records zero aliases, 9/9 structural checks, 16/16
+  focused runtime tests, 12/12 isolated requests, 2/2 browser flows, and zero
+  serious or critical accessibility findings.
+- Artifact-refiner cycle 5 (`eb548fe2-93fa-4cbf-a1d7-c8e067a2c188`) passed all
+  eight blocking constraints and six evidence hashes. The final REST review was
+  verified cross-model distinct, passed strict anti-sycophancy at 0.0, and
+  returned PASS with one retained queued-flush warning.
+- Synced the new main capability spec and archived the complete OpenSpec change
+  to `openspec/changes/archive/2026-08-03-v3-nextjs-app-router-example/`.
+  Stable 3.0 and npm publication remain separate gates.

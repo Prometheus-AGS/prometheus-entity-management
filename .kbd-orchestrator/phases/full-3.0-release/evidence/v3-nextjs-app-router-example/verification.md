@@ -2,7 +2,7 @@
 
 Date: 2026-08-03
 Implementation source through review corrections: `996750f`
-Verdict: **PASS — IMPLEMENTATION EVIDENCE COMPLETE; QA/ARCHIVE PENDING**
+Verdict: **PASS — VERIFIED AND ARCHIVED WITH ONE RETAINED WARNING**
 
 ## Acceptance matrix
 
@@ -98,10 +98,37 @@ These limits are exclusions, not waived acceptance criteria for this change.
 
 ## QA boundary
 
-The latest complete adversarial review correctly blocked the pre-correction
-artifact because its zero-alias scan covered only one config file.
-Artifact-refiner cycle 5 now passes after broadening that scan to all 112 copied
-command-relevant text files. A new complete
-fresh-context review remains
-mandatory before OpenSpec verification and archive; neither earlier review
-certifies the changed artifact.
+Artifact-refiner cycle 5 passes after broadening the alias scan to all 112
+copied command-relevant text files. The subsequent fresh-context REST review is
+cross-model verified-distinct and returns PASS with zero critical findings, one
+warning, and zero suggestions; its anti-sycophancy score is 0.0 under strict
+mode. OpenSpec verification may therefore proceed to archive.
+
+The retained warning is explicit: a replaced scoped `RealtimeManager` may
+flush already-queued changes into its now-abandoned old graph before the timer
+expires. Adapter cleanup prevents new events, and the manager does not write to
+the replacement graph. A later fixed-group prerelease may add an explicit
+manager disposal contract; this change does not report the warning as fixed.
+
+## OpenSpec verification report
+
+| Dimension | Status |
+| --- | --- |
+| Completeness | Pass — 6/6 tasks and 1/1 requirement complete |
+| Correctness | Pass — requirement and archive scenario map to direct source, focused runtime tests, packed production build, and browser evidence |
+| Coherence | Pass — follows the adopted App Router, per-request graph, server preload, hydration, and client-takeover design |
+
+Issues: 0 critical, 1 warning, 0 suggestions. The warning is the queued-flush
+lifecycle item above. Recommendation: add and test an explicit
+`RealtimeManager.dispose()`/pending-queue cancellation contract in the later
+prerelease that consumes this continuation's Changeset.
+
+## Archive disposition
+
+- Schema: `spec-driven`.
+- Artifacts: proposal, design, delta spec, and tasks all complete.
+- Tasks: 6/6 complete.
+- Main spec: synced to `openspec/specs/v3-nextjs-app-router-example/spec.md`
+  and strict-valid.
+- Archive: `openspec/changes/archive/2026-08-03-v3-nextjs-app-router-example/`.
+- Warning: retained without waiver or false fixed claim.

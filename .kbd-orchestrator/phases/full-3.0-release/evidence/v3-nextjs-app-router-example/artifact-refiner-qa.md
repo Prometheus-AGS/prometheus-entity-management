@@ -56,5 +56,8 @@ browsers, hosted integrations, or the remaining portfolio. The frozen React
   hygiene, and security pass.
 
 Cycles 1 through 4 remain retained as audit history, not current certification.
-Rebuild the complete fresh-context adversarial review packet. OpenSpec archive
-is allowed only after a non-blocking verdict on the corrected artifact.
+The complete fresh-context review now returns PASS with zero critical findings,
+one retained queued-flush warning, and strict anti-sycophancy score 0.0.
+OpenSpec verification passed and the change is archived at
+`openspec/changes/archive/2026-08-03-v3-nextjs-app-router-example/`; the warning
+remains visible for the later fixed-group prerelease.

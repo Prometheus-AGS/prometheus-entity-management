@@ -1,18 +1,18 @@
 {
   "mode": "diff",
-  "verdict": "BLOCK",
+  "verdict": "PASS",
   "judge_model": "kbd-judge",
   "producer_model": "gpt-5",
   "isolation_mode": "rest-gateway:http://localhost:8181/v1",
   "cross_model_check": "verified-distinct",
   "findings": [
     {
-      "severity": "CRITICAL",
-      "file": "scripts/verify-nextjs-app-router-example.mjs",
-      "line": 84,
-      "claim": "The packed-consumer verifier reports `workspaceSourceAliasesPresent: false` while only scanning `next.config.ts`, leaving copied workspace source aliases in the external app.",
-      "evidence": "The verifier copies the whole example app excluding only `node_modules` and `.next` (`scripts/verify-nextjs-app-router-example.mjs` lines 65-71), then checks `workspaceSourceAliases` only against `packedNextConfig` (`scripts/verify-nextjs-app-router-example.mjs` lines 84-93) and reports `workspaceSourceAliasesPresent: false` in the receipt; however the copied app includes `examples/nextjs-app/vitest.config.mts` lines 10-11 aliasing `@prometheus-ags/entity-graph-core` and `@prometheus-ags/prometheus-entity-management` to `../../packages/.../src/index.ts`. This violates the `packed-consumer-boundary` criterion requiring the exact command to reject workspace source aliases.",
-      "suggested_fix": "Scan all copied config/source files that can influence commands in the external app, or remove/rewrite `vitest.config.mts` during packing; fail if any copied file contains workspace source aliases before writing the report."
+      "severity": "WARNING",
+      "file": "examples/nextjs-app/src/features/next-runtime/use-scoped-realtime-manager.ts",
+      "line": 14,
+      "claim": "Replacing a provider store abandons the previous RealtimeManager without clearing any queued realtime flush, so a pending timer can still write into the old graph after adapter cleanup.",
+      "evidence": "The hook creates a new `RealtimeManager` whenever `[store, options.flushInterval]` changes, but returns only the manager and no cleanup/dispose path; `packages/entity-graph-core/src/adapters/realtime-manager.ts` keeps `pendingChanges` and `flushTimer` as private state, while `examples/nextjs-app/src/demo-pages/realtime/realtime-page.tsx` cleanup only calls `adapter.stop()` and `unregister()`.",
+      "suggested_fix": "Add a `dispose()`/`clearPending()` method to `RealtimeManager` that clears `flushTimer`, pending queues, and registered adapters, and call it from the hook/effect cleanup when the scoped manager is replaced or unmounted."
     }
   ],
   "sycophancy_screen": {

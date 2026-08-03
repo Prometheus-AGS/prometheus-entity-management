@@ -85,3 +85,7 @@ the Next.js verifier.
   separate main CI matrix owns Node 22/24/26 compatibility.
 - Dart/Melos, Cargo, Flutter devices, and Tauri platforms are not applicable to
   this Next.js-only change and were not run.
+- A replaced scoped realtime manager can still flush an already-queued batch
+  into its abandoned old graph before the timer expires. The review classifies
+  this as non-blocking because no write crosses into the replacement graph;
+  explicit manager disposal remains a later-prerelease follow-up.
