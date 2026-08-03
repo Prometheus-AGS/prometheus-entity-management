@@ -46,6 +46,8 @@ jobs:
             --manifest-path packages/entity-graph-tauri/rust-plugin/Cargo.toml
           cargo +1.88.0 fetch --locked \
             --manifest-path tests/fixtures/tauri-plugin-host/Cargo.toml
+      - name: Build the TypeScript workspace prerequisite
+        run: pnpm --filter @prometheus-ags/entity-graph-core build
       - name: Verify registered IPC, capability denial, and packed Rust host
         run: pnpm run verify:tauri-plugin
       - name: Run Tauri plugin BDD contract
