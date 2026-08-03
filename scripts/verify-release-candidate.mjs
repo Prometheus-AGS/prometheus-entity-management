@@ -199,6 +199,15 @@ function verifyWorkflow({ workflow, workflowSource, rootManifest }) {
   const versionAction = findStep(versionJob, ({ uses }) => /^changesets\/action@v1/.test(uses ?? ""));
   assert(versionAction?.with?.version, "Changesets version PR command is required");
   assert(!versionAction.with.publish, "Changesets action cannot publish from the version PR job");
+  const rehearsalUvAction = findStep(
+    rehearsalJob,
+    ({ uses }) => /^astral-sh\/setup-uv@[0-9a-f]{40}$/.test(uses ?? ""),
+  );
+  assert(rehearsalUvAction, "the rehearsal job must install uv for the A2A TCK");
+  assert(
+    rehearsalUvAction.with?.version === "0.12.1",
+    "the rehearsal uv runtime must use the certified 0.12.1 pin",
+  );
   assert(findStep(rehearsalJob, ({ run }) => /pnpm run ci/.test(run ?? "")), "full CI gate is required");
   assert(
     findStep(rehearsalJob, ({ run }) => /release:rc:rehearse/.test(run ?? "")),
@@ -225,6 +234,7 @@ function verifyWorkflow({ workflow, workflowSource, rootManifest }) {
   return {
     privateRootDenied: true,
     releaseNotes: "changesets-version-pr",
+    uvRuntime: "0.12.1",
     provenance: "actions-attest-v4",
     oidc: true,
     stageEnvironment: "npm-rc",
