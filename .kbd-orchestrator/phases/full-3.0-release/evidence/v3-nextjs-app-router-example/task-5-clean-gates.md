@@ -17,7 +17,7 @@ ran a Next.js 16 production build, started `next start`, and executed Chromium.
 The retained receipt records:
 
 - 5/5 structural contract tests;
-- 6/6 core, 4/4 React, and 2/2 Next-focused unit tests;
+- 7/7 core, 4/4 React, and 2/2 Next-focused unit tests;
 - 12 concurrent production requests with 12 unique request graph IDs;
 - zero duplicate hydration fetches and zero hydration errors;
 - client-route graph persistence and document-reload graph replacement;
@@ -25,7 +25,7 @@ The retained receipt records:
 - zero serious or critical axe violations;
 - one screenshot and two traces with SHA-256 hashes in the JSON report;
 - packed core SHA-256
-  `dc0694b0b6bab03b3355da9c8fded0f68a3eade88d311df561df3027544754f6`;
+  `eff82155217dd1da4b7d85983caa851a8a2feb84dc66bbb99e5f1b698ee18fe3`;
 - packed React SHA-256
   `8b020bc9dcd73c06bd50fb1686516bef44beea977fceff686ca8c820a174c604`.
 

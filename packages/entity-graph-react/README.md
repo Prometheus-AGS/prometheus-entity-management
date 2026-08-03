@@ -237,7 +237,7 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | `fetchEntity` | Imperative single-entity fetch with dedupe and graph write (for custom hooks/adapters). |
 | `fetchList` | Imperative list fetch with dedupe and graph write. |
 | `dedupe` | Process-global in-flight promise deduplication helper. |
-| `startGarbageCollector` / `stopGarbageCollector` | Periodic eviction of unsubscribed, stale entities (also started via `configureEngine`). |
+| `startGarbageCollector(storeApi?)` / `stopGarbageCollector(storeApi?)` | Periodic eviction of unsubscribed, stale entities in the selected graph; omitting the store targets the compatibility singleton. |
 
 ### Graph runtime
 

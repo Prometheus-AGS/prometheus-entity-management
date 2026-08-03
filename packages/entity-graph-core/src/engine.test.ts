@@ -1,6 +1,10 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { createGraphStore } from "./graph";
-import { dedupe } from "./engine";
+import {
+  configureEngine,
+  dedupe,
+  startGarbageCollector,
+} from "./engine";
 
 describe("engine dedupe", () => {
   it("returns the same promise for concurrent identical keys", async () => {
@@ -44,5 +48,32 @@ describe("engine dedupe", () => {
 
     expect([a, b]).toEqual([1, 2]);
     expect(calls).toBe(2);
+  });
+
+  it("garbage-collects the selected graph without touching sibling graphs", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2030-01-15T12:00:00.000Z"));
+    configureEngine({ defaultGcTime: 100, gcInterval: 10 });
+
+    const selected = createGraphStore();
+    const sibling = createGraphStore();
+    for (const store of [selected, sibling]) {
+      store.getState().upsertEntity("Task", "task-gc", { id: "task-gc" });
+      store.getState().setEntityFetched("Task", "task-gc");
+    }
+
+    vi.setSystemTime(new Date("2030-01-15T12:00:01.000Z"));
+    vi.stubGlobal("window", {});
+    const stop = startGarbageCollector(selected);
+
+    vi.advanceTimersByTime(10);
+
+    expect(selected.getState().entities.Task?.["task-gc"]).toBeUndefined();
+    expect(sibling.getState().entities.Task?.["task-gc"]).toEqual({ id: "task-gc" });
+
+    stop();
+    vi.unstubAllGlobals();
+    vi.useRealTimers();
+    configureEngine({});
   });
 });

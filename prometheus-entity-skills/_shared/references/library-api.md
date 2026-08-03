@@ -142,8 +142,8 @@ Use [`release/binding-singleton-contract.md`](../../../release/binding-singleton
 | `fetchEntity` | function | Loads/refreshes one entity through store-scoped dedupe and graph writes; accepts an optional application-owned graph. |
 | `fetchList` | function | Loads/refreshes a list into one selected graph, normalizes rows, and stores **IDs** under the list key. |
 | `dedupe` | function | Collapse an in-flight key within one graph; same keys in different request stores remain independent. |
-| `startGarbageCollector` | function | Starts optional TTL-based cleanup of unused graph data (when configured). |
-| `stopGarbageCollector` | function | Stops the garbage collection loop. |
+| `startGarbageCollector` | function | Starts optional TTL-based cleanup for a selected application-owned graph; defaults to the compatibility singleton. |
+| `stopGarbageCollector` | function | Stops the selected graph's garbage-collection loop; defaults to the compatibility singleton. |
 | `EngineOptions` | type | Configuration object for `configureEngine`. |
 | `EntityQueryOptions` | type | Options for single-entity fetch pipeline (normalizer, subscriber behavior, etc.). |
 | `ListQueryOptions` | type | Options for list fetch (pagination mode, normalizer, merge strategy). |

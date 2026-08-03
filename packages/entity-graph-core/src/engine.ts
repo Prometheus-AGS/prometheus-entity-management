@@ -253,7 +253,7 @@ export function notifyDevtools(event: DevtoolsEvent): void {
   }
 }
 
-let gcIntervalId: ReturnType<typeof setInterval> | null = null;
+const gcIntervalsByStore = new Map<GraphStore, ReturnType<typeof setInterval>>();
 
 /**
  * One GC pass: removes entities that are unobserved, older than `defaultGcTime`, not fetching,
@@ -289,35 +289,42 @@ function runGarbageCollection(storeApi: GraphStore = graphStore): void {
 }
 
 /**
- * Stops the periodic garbage-collection timer started by `startGarbageCollector` / `configureEngine`.
+ * Stops the periodic garbage-collection timer for the selected graph.
  */
-export function stopGarbageCollector(): void {
-  if (gcIntervalId != null && typeof clearInterval !== "undefined") {
-    clearInterval(gcIntervalId);
-    gcIntervalId = null;
+export function stopGarbageCollector(storeApi: GraphStore = graphStore): void {
+  const intervalId = gcIntervalsByStore.get(storeApi);
+  if (intervalId != null && typeof clearInterval !== "undefined") {
+    clearInterval(intervalId);
+    gcIntervalsByStore.delete(storeApi);
   }
 }
 
 /**
  * Starts periodic garbage collection using current `getEngineOptions().gcInterval`.
  * Stops any previous interval first. No-ops during SSR (`window` is undefined) or without `setInterval`.
- * @returns Disposer that stops this collector (equivalent to `stopGarbageCollector`).
+ * @returns Disposer that stops this graph's collector.
  */
-export function startGarbageCollector(): () => void {
-  stopGarbageCollector();
+export function startGarbageCollector(storeApi: GraphStore = graphStore): () => void {
+  stopGarbageCollector(storeApi);
   if (typeof window === "undefined" || typeof setInterval === "undefined") return () => {};
-  gcIntervalId = setInterval(() => runGarbageCollection(), getEngineOptions().gcInterval);
-  return () => stopGarbageCollector();
+  const intervalId = setInterval(
+    () => runGarbageCollection(storeApi),
+    getEngineOptions().gcInterval,
+  );
+  gcIntervalsByStore.set(storeApi, intervalId);
+  return () => stopGarbageCollector(storeApi);
 }
 
-function restartGarbageCollector() {
-  startGarbageCollector();
+function restartGarbageCollector(storeApi: GraphStore = graphStore) {
+  startGarbageCollector(storeApi);
 }
 
 /** Override global engine behavior (typically once at app bootstrap). Restarts GC with merged options. */
 export function configureEngine(opts: EngineOptions) {
   engineOptions = { ...DEFAULT_OPTIONS, ...opts };
-  restartGarbageCollector();
+  const activeStores = [...gcIntervalsByStore.keys()];
+  if (activeStores.length === 0) restartGarbageCollector();
+  else for (const storeApi of activeStores) restartGarbageCollector(storeApi);
 }
 /** Read merged engine options; hooks use this for default `staleTime` and retry behavior. */
 export function getEngineOptions() { return engineOptions; }
@@ -397,7 +404,7 @@ export function attachGlobalListeners(storeApi: GraphStore = graphStore) {
   if (typeof window === "undefined" || focusListenerStores.has(storeApi)) return;
   focusListenerStores.add(storeApi);
   // Start GC on first client attach so defaultGcTime applies even without configureEngine().
-  restartGarbageCollector();
+  restartGarbageCollector(storeApi);
   const revalidateAll = () => {
     const state = storeApi.getState();
     for (const key of subscribersFor(storeApi).keys()) {

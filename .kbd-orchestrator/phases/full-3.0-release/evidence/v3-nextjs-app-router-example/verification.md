@@ -21,17 +21,17 @@ Verdict: **PASS — IMPLEMENTATION EVIDENCE COMPLETE; QA/ARCHIVE PENDING**
 
 - `task-5-verification.json` — command-by-command packed consumer and browser
   receipt; SHA-256
-  `5f9cc4c281f2c4e735febe08766f0a1a19d5e464eb828c466d750e24f24a8db3`.
+  `0f4f3d523402aaad25a506ebba51b4a7822fb1bc396005474fc2d441acf0ceda`.
 - `browser-evidence.json` — scenario proof and accessibility receipt; SHA-256
-  `7fb59f5900b5e6a8b819712435bf7f03e16dd81eba9041140065a53c96eb9a5a`.
+  `5d4097e8963e9b9b28668c08190448e2cd11b66ab145b1a275893af06ad06824`.
 - `playwright-report.json` — 2 expected, 0 unexpected, 0 flaky; SHA-256
-  `97e5db01caa2ea19bc588e3958e4b3552ac0a01a6a22a86b78c65b9773a18896`.
+  `304f48170d922b6e1719bea261163f160382df77b9f0315f6f09995b734286c5`.
 - `task-3-nextjs-ssr-hydration.png` — retained screenshot; SHA-256
-  `28921eb3beb8348ef5d3edfc2ccb574e5a7de45ad058da69276a49c1b5097c5c`.
+  `accb37f32e88e1f4cbdf49c88fb53deea7ffb75dedd5a66a4edce832549c98c7`.
 - Concurrent-request trace — SHA-256
-  `e9617f21f50d32a7b9ad62220ab15949f999cb002101a6c6dbd22a0937e6f84f`.
+  `23a07124d9c52100a4b731cea64b4711e4ee5f2eef2db15af166aa54e5c372c1`.
 - Hydration/mutation/realtime trace — SHA-256
-  `1ec83a85bda4797ac436e040046e1a08c42f7a04e7c169e7d788f33164cc2ced`.
+  `0d4b75cbe8faa0c4e50bd10f660039be6cb0d1e20fd178753f7b6cb96287bf93`.
 - `task-5-clean-gates.md` — package, OpenSpec, coverage, Changesets,
   accessibility, security, and not-applicable gate disposition.
 - `release-impact.md` — React-first lane separation, package impact, stable
@@ -50,6 +50,12 @@ The first browser run then exposed four serious light-theme contrast failures.
 The light Prometheus ember token was darkened to a measured 4.63:1 worst
 relevant text/background combination. The clean rerun passed with zero serious
 or critical findings. No accessibility waiver was used.
+
+The isolated review then found that the report still identified task 3 and
+that provider-owned graphs did not receive their own garbage-collection
+interval. The report now identifies task 5, and the engine maintains one
+collector per selected graph. The focused regression proves that collecting
+one graph does not mutate a sibling graph.
 
 ## Unresolved limits
 

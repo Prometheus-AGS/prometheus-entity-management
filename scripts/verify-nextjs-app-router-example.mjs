@@ -153,7 +153,7 @@ try {
   const report = {
     schemaVersion: 1,
     change: "v3-nextjs-app-router-example",
-    task: 3,
+    task: 5,
     recordedAt: new Date().toISOString(),
     status: "pass",
     evidenceBoundary: {

@@ -12,7 +12,9 @@ The public React surface adds `GraphStoreProvider`, `useGraphStoreApi`, and
 `GraphStoreProviderProps`. Engine requests, subscribers, Suspense waiters,
 mutations, CRUD invalidation, GraphQL/ElectricSQL paths, DevTools, and realtime
 can resolve the selected graph while preserving the default singleton for
-existing non-provider applications.
+existing non-provider applications. Garbage collection now follows the same
+ownership boundary: each selected graph has its own interval and the public
+start/stop helpers accept an optional graph while retaining singleton defaults.
 
 The checked-in Changeset requests a patch prerelease for:
 
