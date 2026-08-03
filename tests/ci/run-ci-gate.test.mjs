@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import process from "node:process";
 import test from "node:test";
 
@@ -31,6 +32,12 @@ test("the checked-in gate inventory is complete and every gate has a finite time
     assert.ok(definition.timeoutMs > 0, name);
     assert.ok(definition.command.length >= 3, name);
   }
+});
+
+test("the aggregate test gate allows the cold multi-runtime BDD portfolio to finish", () => {
+  assert.ok(gateDefinitions.test.timeoutMs >= 30 * 60_000);
+  const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
+  assert.match(workflow, /library-and-examples:\n\s+timeout-minutes: 60/);
 });
 
 test("timeout configuration accepts positive integers and rejects ambiguous values", () => {

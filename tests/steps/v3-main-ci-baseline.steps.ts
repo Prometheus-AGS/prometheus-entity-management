@@ -169,6 +169,10 @@ Then("every CI gate has a finite timeout", function () {
     assert.equal(Number.isSafeInteger(definition.timeoutMs), true, name);
     assert.ok(definition.timeoutMs > 0, name);
   }
+  assert.ok(
+    gateDefinitions.test.timeoutMs >= 30 * 60_000,
+    "the aggregate test gate must outlive the cold multi-runtime BDD portfolio",
+  );
 });
 
 Then("a timed out gate reports its gate name, command, and timeout", async function () {
