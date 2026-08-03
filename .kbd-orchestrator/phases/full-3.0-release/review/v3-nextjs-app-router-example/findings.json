@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": "scripts/verify-nextjs-app-router-example.mjs",
+      "line": 185,
+      "claim": "The packed verification report is mislabeled as task 3 even when it is the task-5 clean gate receipt.",
+      "evidence": "The verifier writes `task: 3` in the generated report object, while the retained clean-gate evidence is `task-5-verification.json` and `task-5-clean-gates.md` describes the clean packed production boundary.",
+      "suggested_fix": "Set the report metadata to the actual verification task, or make the task number an explicit argument/default matching the task-5 clean gate."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/engine.ts",
+      "line": 388,
+      "claim": "Scoped stores attach focus/reconnect listeners but the garbage collector still starts without being bound to the scoped store.",
+      "evidence": "The diff changes `runGarbageCollection(storeApi: GraphStore = graphStore)` and `attachGlobalListeners(storeApi: GraphStore = graphStore)`, but `attachGlobalListeners` still calls `restartGarbageCollector()` without passing `storeApi`, so the defaulted GC path can continue to operate on `graphStore` rather than the provider-owned graph.",
+      "suggested_fix": "Thread the selected `GraphStore` through the garbage-collector registration, or explicitly document and test that GC is intentionally singleton-only and not part of the scoped engine contract."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

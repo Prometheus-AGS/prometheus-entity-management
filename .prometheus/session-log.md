@@ -144,3 +144,23 @@
 - The change is ready for artifact-refiner, isolated adversarial review, strict
   OpenSpec verification, and archive. Those certification results are not
   inferred from implementation evidence and remain the next gates.
+
+## 2026-08-03 — Next.js review corrections and refiner cycle 2
+
+- The first isolated review passed without critical findings but surfaced two
+  real warnings: task-5 output was mislabeled as task 3, and provider-owned
+  graphs attached listeners without receiving their own GC interval.
+- Corrected both at `9051b10`: final report metadata is task 5, garbage
+  collection is keyed by selected graph, and a focused regression proves that
+  collecting one graph does not mutate its sibling. Singleton defaults remain
+  backward compatible.
+- Regenerated the complete tarball-only Next.js receipt with the corrected core
+  bytes. All 10 commands, 13 focused units, 5 structural tests, 12/12 isolated
+  requests, 2/2 browser flows, and accessibility checks passed.
+- Updated advanced/package/skill API guidance and all six retained hashes.
+  React exports, semantic coverage, coverage regressions, strict OpenSpec,
+  Changesets, release contract, frozen install, diff hygiene, and security pass.
+- Artifact-refiner cycle 2 (`46725a52-9c0b-409b-bf20-26eb6447cb8e`) finalized
+  with 2/2 warnings corrected and 8/8 blocking constraints satisfied. A new
+  full-diff adversarial review remains required; the prior review cannot certify
+  the changed artifact.

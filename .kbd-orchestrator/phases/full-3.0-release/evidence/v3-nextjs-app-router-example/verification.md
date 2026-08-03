@@ -1,7 +1,7 @@
 # Verification — `v3-nextjs-app-router-example`
 
 Date: 2026-08-03  
-Implementation source: `3090304fc66c2670426b4f4fd60421bad5c55523`  
+Implementation source through review corrections: `9051b10f`
 Verdict: **PASS — IMPLEMENTATION EVIDENCE COMPLETE; QA/ARCHIVE PENDING**
 
 ## Acceptance matrix
@@ -74,6 +74,7 @@ These limits are exclusions, not waived acceptance criteria for this change.
 
 ## QA boundary
 
-Artifact-refiner and a fresh-context adversarial review remain mandatory before
-OpenSpec verification and archive. This verdict must be updated with those
-results; implementation evidence alone does not certify the archive.
+Artifact-refiner cycle 2 passes with both prior review warnings corrected and
+eight of eight blocking constraints satisfied. A new complete fresh-context
+adversarial review remains mandatory before OpenSpec verification and archive;
+the earlier review cannot certify the corrected artifact.
