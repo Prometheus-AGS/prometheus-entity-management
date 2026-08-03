@@ -22,6 +22,8 @@ jobs:
         node: [22, 24, 26]
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v4
 

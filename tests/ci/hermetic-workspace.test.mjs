@@ -52,6 +52,20 @@ test("CI uses a frozen install and covers every supported Node line and named ga
   }
 });
 
+test("workflows that verify source provenance check out the complete Git history", () => {
+  for (const path of [
+    ".github/workflows/ci.yml",
+    ".github/workflows/tauri-plugin-platform.yml",
+  ]) {
+    const workflow = readFileSync(new URL(path, root), "utf8");
+    assert.match(
+      workflow,
+      /uses: actions\/checkout@v5\n\s+with:\n\s+fetch-depth: 0/,
+      `${path} must fetch the pinned provenance commits used by its tests`,
+    );
+  }
+});
+
 test("intentional dependency holds are explicit and assigned a revisit change", () => {
   const policy = json("release/dependency-policy.json");
   assert.deepEqual(policy.intentionalHolds.map(({ package: name }) => name).sort(), [
