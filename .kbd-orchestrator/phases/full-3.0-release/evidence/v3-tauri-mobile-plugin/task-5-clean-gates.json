@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 2,
+  "change": "v3-tauri-mobile-plugin",
+  "generatedAt": "2026-08-02T10:08:24Z",
+  "overall": "pass-change-scoped",
+  "environment": {
+    "node": "24.16.0",
+    "pnpm": "10.33.0",
+    "rustHost": "stable and 1.88.0",
+    "tauriCli": "2.11.4",
+    "xcode": "26.6",
+    "androidDevice": "Samsung SM-S936U / Android 16 / API 36",
+    "iosSimulator": "iPhone 17 / iOS 26.5"
+  },
+  "gates": [
+    { "id": "pnpm-frozen-install", "status": "pass", "evidence": "15 workspace projects; lockfile current" },
+    { "id": "rust-bindings-clean-isolated", "status": "pass", "evidence": "stable toolchain completed from isolated build/cache directories without ENFILE; generated bindings current" },
+    { "id": "tauri-package", "status": "pass", "evidence": "typecheck pass; 2 files and 16 tests pass" },
+    { "id": "release-contract", "status": "pass", "evidence": "10 of 10 node:test checks pass" },
+    { "id": "packed-consumer", "status": "pass", "evidence": "41-file source/runtime candidate; packed-only Rust host tests pass; generated build state absent" },
+    { "id": "tauri-bdd", "status": "pass", "evidence": "5 scenarios, 18 steps, and 5 hooks pass" },
+    { "id": "android-native-runtime", "status": "pass", "evidence": "physical-device exact success plus capability-denial receipts and hashes" },
+    { "id": "ios-native-runtime", "status": "pass", "evidence": "simulator exact success plus capability-denial receipts, app executables, and hashes" },
+    { "id": "skills", "status": "pass", "evidence": "26 runtime and 57 declaration Tauri exports; all workspace skill ledgers pass" },
+    { "id": "example-coverage", "status": "pass", "evidence": "13 of 13 semantic scenarios; plugin quality gate implemented; full release remains in progress" },
+    { "id": "cargo-format", "status": "pass", "evidence": "cargo +stable fmt --check" },
+    { "id": "openspec", "status": "pass", "evidence": "strict active-change validation" },
+    { "id": "artifact-refiner", "status": "pass", "evidence": "schema, files, 6 blocking constraints, and 3-iteration consistency pass" },
+    { "id": "adversarial-review", "status": "pass", "evidence": "0 critical / 1 warning / 0 suggestions; warning remediated" },
+    { "id": "diff-json-integrity", "status": "pass", "evidence": "git diff --check and JSON parsing pass" }
+  ],
+  "outOfScopeObservedState": [
+    "The earlier Dart golden drift is not affected or certified by this Tauri-only change.",
+    "The universal example, full release evidence bundle, and publication gates remain downstream."
+  ]
+}

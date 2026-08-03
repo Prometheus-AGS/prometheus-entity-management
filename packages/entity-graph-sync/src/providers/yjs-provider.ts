@@ -224,7 +224,7 @@ export function createYjsProvider(opts: YjsProviderOptions = {}): SyncProvider {
   function getEntityMap(doc: YDocLike, id: EntityId): YMapLike<unknown> {
     // Two-level: root map → entity-id map
     const root = doc.getMap<YMapLike<unknown>>("entities");
-    let entityMap = root.get(id);
+    const entityMap = root.get(id);
     if (!entityMap) {
       // Yjs auto-creates nested maps; use a fresh Y.Map stored under the id.
       // We lazily access via the root map — if not present, the first set()

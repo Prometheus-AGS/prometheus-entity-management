@@ -1,12 +1,10 @@
 /**
  * table/types.ts
  *
- * Pure table engine type definitions — zero external dependencies.
+ * Pure table engine type definitions — zero framework dependencies.
  * Structurally compatible with TanStack Table v8 for easy migration,
  * but fully self-contained within the prometheus-entity-management library.
  */
-import type React from "react";
-
 // ---------------------------------------------------------------------------
 // View modes
 // ---------------------------------------------------------------------------
@@ -36,11 +34,11 @@ export type CellContext<TData> = {
 
 export type HeaderRenderer<TData> =
   | string
-  | ((context: HeaderContext<TData>) => React.ReactNode);
+  | ((context: HeaderContext<TData>) => unknown);
 
 export type CellRenderer<TData> =
   | string
-  | ((context: CellContext<TData>) => React.ReactNode);
+  | ((context: CellContext<TData>) => unknown);
 
 export type FilterFn<TData> = (
   row: Row<TData>,
@@ -482,92 +480,4 @@ export interface TableInstance<TData> {
   getIsSomeRowsExpanded: () => boolean;
   getCanSomeRowsExpand: () => boolean;
   getExpandedDepth: () => number;
-}
-
-// ---------------------------------------------------------------------------
-// Action definitions (shared across all view modes)
-// ---------------------------------------------------------------------------
-export interface ActionDef<TData> {
-  id: string;
-  label: string;
-  icon?: React.ComponentType<{ className?: string }>;
-  onClick: (item: TData) => void;
-  destructive?: boolean;
-  hidden?: (item: TData) => boolean;
-  disabled?: (item: TData) => boolean;
-  confirm?: string | ((item: TData) => string);
-  variant?: "primary" | "default" | "ghost" | "destructive";
-}
-
-// ---------------------------------------------------------------------------
-// Item descriptor (for gallery cards and list items)
-// ---------------------------------------------------------------------------
-export interface ItemDescriptorBadge<TData> {
-  field: keyof TData & string;
-  options?: Array<{ value: string; label: string; className?: string }>;
-}
-
-export interface ItemDescriptorMeta<TData> {
-  field: keyof TData & string;
-  label: string;
-  format?: (value: unknown) => string;
-}
-
-export interface ItemDescriptor<TData> {
-  title: keyof TData & string;
-  subtitle?: keyof TData & string;
-  image?: keyof TData & string;
-  icon?: (keyof TData & string) | React.ComponentType<{ className?: string }>;
-  avatar?: keyof TData & string;
-  badges?: ItemDescriptorBadge<TData>[];
-  metadata?: ItemDescriptorMeta<TData>[];
-  description?: keyof TData & string;
-}
-
-// ---------------------------------------------------------------------------
-// Item render context (passed to renderCard / renderItem overrides)
-// ---------------------------------------------------------------------------
-export interface ItemRenderContext<TData> {
-  isSelected: boolean;
-  isEditing: boolean;
-  isMultiSelectMode: boolean;
-  onToggleSelect: () => void;
-  onEdit: () => void;
-  onSave: (changes: Partial<TData>) => void;
-  onCancel: () => void;
-  actions: ActionDef<TData>[];
-  row: Row<TData>;
-}
-
-// ---------------------------------------------------------------------------
-// Empty state configuration
-// ---------------------------------------------------------------------------
-export interface EmptyStateConfig {
-  icon?: React.ComponentType<{ className?: string }>;
-  title?: string;
-  description?: string;
-  action?: { label: string; onClick: () => void };
-  filteredTitle?: string;
-  filteredDescription?: string;
-  filteredAction?: { label: string; onClick: () => void };
-}
-
-// ---------------------------------------------------------------------------
-// Batch action definition
-// ---------------------------------------------------------------------------
-export interface BatchActionDef {
-  id: string;
-  label: string;
-  icon?: React.ComponentType<{ className?: string }>;
-  destructive?: boolean;
-}
-
-// ---------------------------------------------------------------------------
-// Gallery column breakpoints
-// ---------------------------------------------------------------------------
-export interface GalleryColumns {
-  sm?: number;
-  md?: number;
-  lg?: number;
-  xl?: number;
 }

@@ -1,0 +1,62 @@
+{
+  "change": "v3-release-pipeline-rc",
+  "task": 1,
+  "checkedAt": "2026-08-02T00:00:00Z",
+  "verdict": "pass",
+  "method": "Each dependency must be DONE and COMPLETE in canonical phase progress, have a dated archived OpenSpec directory, contain no unchecked task, and expose retained verification evidence.",
+  "dependencies": [
+    {
+      "id": "v3-package-module-contracts",
+      "ledgerStatus": "DONE",
+      "implementationStatus": "COMPLETE",
+      "archive": "openspec/changes/archive/2026-08-01-v3-package-module-contracts",
+      "tasksSha256": "8f78bb0083ad8ff5fa03197e2996dc26ee938225247dcaacd4e8d51e86ed5b7e",
+      "verification": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-package-module-contracts/verification.md",
+      "verificationSha256": "4293b54b24976e7bea5f81952a102d024af3e3beac4a859437dfe20f512709cc"
+    },
+    {
+      "id": "v3-binding-singleton-contract",
+      "ledgerStatus": "DONE",
+      "implementationStatus": "COMPLETE",
+      "archive": "openspec/changes/archive/2026-08-01-v3-binding-singleton-contract",
+      "tasksSha256": "78290bbcd421ca2b42d81fef0d94fc915d78a8b94f804463d275b9f44d1e1d34",
+      "verification": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/verification.md",
+      "verificationSha256": "37988aea013cefb8386f1b66ad1622745168d3420164b14189a5cf4c42da8147"
+    },
+    {
+      "id": "v3-main-ci-baseline",
+      "ledgerStatus": "DONE",
+      "implementationStatus": "COMPLETE",
+      "archive": "openspec/changes/archive/2026-08-01-v3-main-ci-baseline",
+      "tasksSha256": "d77247009b0819374e084f17b7d42dc77013e5e8d5ea921466c14c0d1ed3c1d3",
+      "verification": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-main-ci-baseline/verification.md",
+      "verificationSha256": "f802344d1f6f6e9d0abe718b7665478fd999d17b57e602e2ed11b14216458f57"
+    },
+    {
+      "id": "v3-dart-graph-riverpod",
+      "ledgerStatus": "DONE",
+      "implementationStatus": "COMPLETE",
+      "archive": "openspec/changes/archive/2026-08-02-v3-dart-graph-riverpod",
+      "tasksSha256": "dbbbf0788160b36e96168cd77628dc26734eda024a88dd5631685ea0c1caedd3",
+      "verification": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/final-verification.json",
+      "verificationSha256": "aa0772b6392f93cbed419aa7b5ab92ac84a6a8926a83e67846f1f1e889588831"
+    },
+    {
+      "id": "v3-tauri-mobile-plugin",
+      "ledgerStatus": "DONE",
+      "implementationStatus": "COMPLETE",
+      "archive": "openspec/changes/archive/2026-08-02-v3-tauri-mobile-plugin",
+      "tasksSha256": "5dd795c5be0742e6d3b6a6ec223a6decb2667144232d833f3ab74785c643b0e8",
+      "verification": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/final-verification.json",
+      "verificationSha256": "43de1e041be1cb546544a4ffdea8025a0e4460f5f348ba0e2a7818ceb0898f28"
+    }
+  ],
+  "researchPackage": ".research/v3-release-pipeline-rc",
+  "visualEvidence": {
+    "svg": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-1-dependency-gate.svg",
+    "svgSha256": "2f750bfe24f33989875149cafaf723879ebaaca0936762a24b58c25d79b0ff55",
+    "png": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-1-dependency-gate.png",
+    "pngSha256": "3517a85ff7e6f4d1571ac6361d4ec2a318e712245d03bf62d3a220b1b725785a",
+    "inspectedAtOriginalResolution": true
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "format": "research-package",
+  "format_version": "1.0.0",
+  "okf_type": "research-session",
+  "job_id": "v3-flutter-source-provenance-20260801",
+  "query": "History-preserving licensed Flutter source consolidation",
+  "depth": "deep",
+  "created_at": "2026-08-01T22:49:00Z",
+  "completed_at": "2026-08-01T22:58:00Z",
+  "stages_completed": 10,
+  "sources_count": 10,
+  "claims_count": 8,
+  "confidence": 0.93,
+  "verification_status": "verified",
+  "feynman_grade": 0.96,
+  "feynman_gate_used": true,
+  "misconceptions_absent": 1.0,
+  "contradictions_resolved": 4,
+  "contradictions_unresolved": 0,
+  "surreal_memory_used": false,
+  "sycophancy_correction_used": true,
+  "citation_style": "APA",
+  "firecrawl_background_job": {
+    "job_id": "job-1785624582-6bbb31b1",
+    "status": "cancelled-after-three-stage-zero-checks",
+    "fallback": "official primary-source web retrieval"
+  },
+  "model_routing": {
+    "planner": "frontier-session",
+    "search": "prometheus-research-then-web-fallback",
+    "verify": "frontier-session",
+    "report": "frontier-session"
+  },
+  "files": {
+    "report": "report.md",
+    "graph": "graph.json",
+    "citations": "citations.json",
+    "contradictions": "contradictions.json",
+    "sources": "sources/registry.json",
+    "plan": "plan.json",
+    "corpus": "corpus.json",
+    "feynman_explanation": "feynman-explanation.md",
+    "sycophancy_review": "sycophancy-review.json",
+    "authority": "../../release/flutter-source-authority.json",
+    "task_1_dependency_receipt": "../../.kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/task-1-dependency-readiness.md"
+  }
+}

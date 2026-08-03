@@ -1,0 +1,43 @@
+{
+  "format": "research-package",
+  "format_version": "1.0.0",
+  "okf_type": "research-session",
+  "job_id": "v3-dart-graph-riverpod-20260802",
+  "query": "Stable Riverpod 3 and Dart-native entity graph release readiness",
+  "depth": "deep",
+  "created_at": "2026-08-02T00:20:00Z",
+  "completed_at": "2026-08-02T02:07:39Z",
+  "stages_completed": 10,
+  "sources_count": 14,
+  "claims_count": 10,
+  "confidence": 0.96,
+  "verification_status": "verified-pass-to-archive-library-not-full-release",
+  "feynman_grade": 0.95,
+  "feynman_gate_used": true,
+  "misconceptions_absent": 1.0,
+  "contradictions_resolved": 4,
+  "contradictions_unresolved": 0,
+  "surreal_memory_used": false,
+  "sycophancy_correction_used": true,
+  "citation_style": "APA",
+  "firecrawl": {
+    "status": "not-callable-in-session",
+    "fallback": "official primary-source web retrieval plus pub registry and disposable resolver evidence"
+  },
+  "files": {
+    "report": "report.md",
+    "graph": "graph.json",
+    "citations": "citations.json",
+    "contradictions": "contradictions.json",
+    "sources": "sources/registry.json",
+    "plan": "plan.json",
+    "corpus": "corpus.json",
+    "feynman_explanation": "feynman-explanation.md",
+    "sycophancy_review": "sycophancy-review.json",
+    "implementation_observation": "implementation-observation.md",
+    "declared_surface_observation": "declared-surface-observation.md",
+    "task_1_dependency_receipt": "../../.kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-1-dependency-readiness.md",
+    "final_verification": "../../.kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/final-verification.json",
+    "release_impact": "../../.kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/release-impact.md"
+  }
+}

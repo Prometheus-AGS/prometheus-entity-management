@@ -1,0 +1,45 @@
+{
+  "contradictions": [
+    {
+      "id": "contra-runtime-vs-template",
+      "topic": "hybrid-mobile source migration",
+      "claim_a": "The requested source directory contains Flutter libraries to move.",
+      "claim_b": "The repository identifies itself as templates, scripts, and references with no runnable application or canonical runtime package.",
+      "resolved": true,
+      "strategy": "local-primary-source inspection",
+      "resolution": "Treat hybrid-mobile-architecture-src as MIT reference-only; do not manufacture a runtime migration from templates.",
+      "confidence": 0.98
+    },
+    {
+      "id": "contra-request-vs-license",
+      "topic": "copy authority",
+      "claim_a": "The user explicitly requested that the KnowMe Flutter libraries move into this monorepo.",
+      "claim_b": "The KnowMe repository has no tracked root or package license, while the destination release contract requires MIT and blocks unlicensed source.",
+      "resolved": true,
+      "strategy": "scope authority plus explicit destination record",
+      "resolution": "Record the user's owner-directed move as source authority before copying, preserve Travis James/KnowMe attribution, apply the destination MIT license explicitly, and retain a path/commit manifest. This is a project authorization record, not general legal advice.",
+      "confidence": 0.82
+    },
+    {
+      "id": "contra-history-vs-hashes",
+      "topic": "history preservation",
+      "claim_a": "A history-preserving import should retain original commit identifiers.",
+      "claim_b": "Path filtering and renaming necessarily rewrites commit hashes.",
+      "resolved": true,
+      "strategy": "Git object model and official filter-repo documentation",
+      "resolution": "Preserve authors, dates, messages, file evolution, and an original-to-filtered commit map; do not claim SHA identity after rewriting.",
+      "confidence": 0.96
+    },
+    {
+      "id": "contra-latest-vs-compatible",
+      "topic": "dependency freshness",
+      "claim_a": "Every dependency should be changed to its highest version immediately.",
+      "claim_b": "Riverpod, Freezed, analyzer, and generators form a compatibility matrix; Riverpod 3 also changes retries and notifier APIs.",
+      "resolved": true,
+      "strategy": "official migration guide plus resolver evidence",
+      "resolution": "Target the newest mutually resolvable stable versions, prove code generation/analyze/tests, and record justified pins rather than equating numeric latest with compatibility.",
+      "confidence": 0.94
+    }
+  ],
+  "unresolved": []
+}

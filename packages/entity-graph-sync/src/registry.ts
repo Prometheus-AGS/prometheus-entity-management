@@ -8,10 +8,54 @@
  */
 
 import type { EntityType } from "@prometheus-ags/entity-graph-core";
-import type { RegisterSyncProviderOptions, SyncProvider } from "./types";
+import type {
+  RegisterSyncProviderOptions,
+  SyncProvider,
+  SyncProviderRegistry,
+} from "./types";
 
-/** Internal map: entity type → provider. */
-const providerByType = new Map<EntityType, SyncProvider>();
+/** Create a provider registry with client-local ownership. */
+export function createSyncProviderRegistry(): SyncProviderRegistry {
+  const providerByType = new Map<EntityType, SyncProvider>();
+
+  return {
+    register(opts) {
+      const { entityTypes, provider } = opts;
+      if (entityTypes.length === 0) {
+        throw new Error(
+          "[entity-graph-sync] registerSyncProvider: entityTypes must be non-empty.",
+        );
+      }
+      for (const type of entityTypes) providerByType.set(type, provider);
+    },
+    getProvider(type) {
+      return providerByType.get(type);
+    },
+    getAllProviders() {
+      return new Set(providerByType.values());
+    },
+    getRegisteredTypes() {
+      return Array.from(providerByType.keys());
+    },
+    getTypesForProvider(provider) {
+      const types: EntityType[] = [];
+      for (const [type, registered] of providerByType) {
+        if (registered === provider) types.push(type);
+      }
+      return types;
+    },
+    clear() {
+      providerByType.clear();
+    },
+  };
+}
+
+const defaultRegistry = createSyncProviderRegistry();
+
+/** Return the backwards-compatible process-wide default registry. */
+export function getDefaultSyncProviderRegistry(): SyncProviderRegistry {
+  return defaultRegistry;
+}
 
 /**
  * Register a provider for one or more entity types.
@@ -20,13 +64,7 @@ const providerByType = new Map<EntityType, SyncProvider>();
  * is NOT stopped automatically — call `stopSyncProvider` first if needed.
  */
 export function registerSyncProvider(opts: RegisterSyncProviderOptions): void {
-  const { entityTypes, provider } = opts;
-  if (entityTypes.length === 0) {
-    throw new Error("[entity-graph-sync] registerSyncProvider: entityTypes must be non-empty.");
-  }
-  for (const type of entityTypes) {
-    providerByType.set(type, provider);
-  }
+  defaultRegistry.register(opts);
 }
 
 /**
@@ -34,7 +72,7 @@ export function registerSyncProvider(opts: RegisterSyncProviderOptions): void {
  * Returns `undefined` if no provider is registered for that type.
  */
 export function getSyncProvider(type: EntityType): SyncProvider | undefined {
-  return providerByType.get(type);
+  return defaultRegistry.getProvider(type);
 }
 
 /**
@@ -42,25 +80,21 @@ export function getSyncProvider(type: EntityType): SyncProvider | undefined {
  * other types — the Set de-duplicates).
  */
 export function getAllSyncProviders(): Set<SyncProvider> {
-  return new Set(providerByType.values());
+  return defaultRegistry.getAllProviders();
 }
 
 /**
  * Return all entity types that have a provider registered.
  */
 export function getRegisteredSyncTypes(): EntityType[] {
-  return Array.from(providerByType.keys());
+  return defaultRegistry.getRegisteredTypes();
 }
 
 /**
  * Return all entity types managed by a specific provider instance.
  */
 export function getTypesForProvider(provider: SyncProvider): EntityType[] {
-  const types: EntityType[] = [];
-  for (const [type, p] of providerByType) {
-    if (p === provider) types.push(type);
-  }
-  return types;
+  return defaultRegistry.getTypesForProvider(provider);
 }
 
 /**
@@ -68,5 +102,5 @@ export function getTypesForProvider(provider: SyncProvider): EntityType[] {
  * Production code should never call this.
  */
 export function __resetSyncRegistry(): void {
-  providerByType.clear();
+  defaultRegistry.clear();
 }

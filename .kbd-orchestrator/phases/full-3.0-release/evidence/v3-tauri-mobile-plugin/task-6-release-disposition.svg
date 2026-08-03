@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Tauri plugin certified change disposition</title>
+  <desc id="desc">Implementation, mobile evidence, and this change's certification are complete. OpenSpec archive is ready. Full 3.0 publication remains blocked behind later release gates.</desc>
+  <rect width="1200" height="900" fill="#08111f"/>
+  <text x="72" y="82" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="42" font-weight="700">Tauri plugin certified disposition</text>
+  <text x="72" y="122" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="21">Real mobile proof closes this change without granting publication authority.</text>
+
+  <g transform="translate(72 170)">
+    <rect width="500" height="250" rx="22" fill="#111c2e" stroke="#4ade80" stroke-width="3"/>
+    <rect x="28" y="28" width="196" height="42" rx="21" fill="#14532d"/>
+    <text x="48" y="57" fill="#dcfce7" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700">1 · IMPLEMENTATION</text>
+    <text x="28" y="112" fill="#4ade80" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="700">COMPLETE</text>
+    <text x="28" y="154" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="20">Bindings · IPC · permissions · native hosts</text>
+    <text x="28" y="187" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="20">41-file source/runtime package boundary</text>
+    <text x="28" y="222" fill="#a7f3d0" font-family="Inter,Arial,sans-serif" font-size="18">All bounded tasks and fixes verified</text>
+  </g>
+
+  <g transform="translate(628 170)">
+    <rect width="500" height="250" rx="22" fill="#111c2e" stroke="#4ade80" stroke-width="3"/>
+    <rect x="28" y="28" width="150" height="42" rx="21" fill="#14532d"/>
+    <text x="48" y="57" fill="#dcfce7" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700">2 · EVIDENCE</text>
+    <text x="28" y="112" fill="#4ade80" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="700">COMPLETE</text>
+    <text x="28" y="154" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="20">Physical Android success + denial</text>
+    <text x="28" y="187" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="20">iOS simulator success + denial</text>
+    <text x="28" y="222" fill="#a7f3d0" font-family="Inter,Arial,sans-serif" font-size="18">Exact responses · visuals · SHA-256</text>
+  </g>
+
+  <g transform="translate(72 474)">
+    <rect width="500" height="250" rx="22" fill="#111c2e" stroke="#60a5fa" stroke-width="3"/>
+    <rect x="28" y="28" width="205" height="42" rx="21" fill="#1e3a8a"/>
+    <text x="48" y="57" fill="#dbeafe" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700">3 · CHANGE GATE</text>
+    <text x="28" y="112" fill="#93c5fd" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="700">ARCHIVE READY</text>
+    <text x="28" y="154" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="20">Clean verifier + packed consumer pass</text>
+    <text x="28" y="187" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="20">BDD · Refiner · adversarial review pass</text>
+    <text x="28" y="222" fill="#bfdbfe" font-family="Inter,Arial,sans-serif" font-size="18">OpenSpec may archive this change</text>
+  </g>
+
+  <g transform="translate(628 474)">
+    <rect width="500" height="250" rx="22" fill="#111c2e" stroke="#f87171" stroke-width="3"/>
+    <rect x="28" y="28" width="193" height="42" rx="21" fill="#7f1d1d"/>
+    <text x="48" y="57" fill="#fee2e2" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700">4 · PUBLICATION</text>
+    <text x="28" y="112" fill="#f87171" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="700">BLOCKED</text>
+    <text x="28" y="154" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="20">Package remains 3.0.0-alpha.0</text>
+    <text x="28" y="187" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="20">No npm or dist-tag mutation authorized</text>
+    <text x="28" y="222" fill="#fecaca" font-family="Inter,Arial,sans-serif" font-size="18">Full release gates remain downstream</text>
+  </g>
+
+  <rect x="72" y="772" width="1056" height="72" rx="18" fill="#172554" stroke="#60a5fa" stroke-width="2"/>
+  <text x="96" y="803" fill="#bfdbfe" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="700">SCOPE BOUNDARY</text>
+  <text x="96" y="831" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="19">Plugin change certified · universal example, full evidence bundle, registry and latest promotion still pending.</text>
+  <text x="1128" y="879" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="16">2026-08-02 · change evidence, not publication authority</text>
+</svg>

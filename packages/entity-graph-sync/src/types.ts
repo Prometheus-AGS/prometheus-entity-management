@@ -12,7 +12,11 @@
  *   deliberately transport-agnostic.
  */
 
-import type { EntityId, EntityType } from "@prometheus-ags/entity-graph-core";
+import type {
+  EntityId,
+  EntityType,
+  GraphStore,
+} from "@prometheus-ags/entity-graph-core";
 
 // ---------------------------------------------------------------------------
 // Core change shape that flows between providers and the graph bridge
@@ -119,6 +123,23 @@ export interface RegisterSyncProviderOptions {
   provider: SyncProvider;
 }
 
+/**
+ * Isolated provider registry used by one sync client.
+ *
+ * The package-level registration functions delegate to a default registry for
+ * backwards compatibility. Tests, SSR requests, workers, and applications
+ * hosting multiple graph clients should create and inject a dedicated registry
+ * instead of sharing process-global provider state.
+ */
+export interface SyncProviderRegistry {
+  register: (opts: RegisterSyncProviderOptions) => void;
+  getProvider: (type: EntityType) => SyncProvider | undefined;
+  getAllProviders: () => Set<SyncProvider>;
+  getRegisteredTypes: () => EntityType[];
+  getTypesForProvider: (provider: SyncProvider) => EntityType[];
+  clear: () => void;
+}
+
 // ---------------------------------------------------------------------------
 // Bridge options
 // ---------------------------------------------------------------------------
@@ -131,6 +152,19 @@ export interface SyncBridgeOptions {
    * Default: 16 (one animation frame).
    */
   pushDebounceMs?: number;
+
+  /**
+   * Graph store owned by this sync client. Defaults to core's process-wide
+   * `graphStore`. Inject an isolated `createGraphStore()` result for tests,
+   * workers, SSR requests, or multiple clients in one process.
+   */
+  store?: GraphStore;
+
+  /**
+   * Provider registry owned by this sync client. Defaults to the package-level
+   * registry used by `registerSyncProvider`.
+   */
+  registry?: SyncProviderRegistry;
 }
 
 /** Handle returned by `startSyncBridge`. */

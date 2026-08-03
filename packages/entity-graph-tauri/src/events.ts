@@ -23,10 +23,10 @@ import type {
 
 // ── Event name constants (match Rust side exactly) ───────────────────────────
 
-export const EVT_ENTITY_CHANGED = "entity-graph://entity-changed";
-export const EVT_SNAPSHOT_PERSISTED = "entity-graph://snapshot-persisted";
-export const EVT_SNAPSHOT_RESTORED = "entity-graph://snapshot-restored";
-export const EVT_PLUGIN_ERROR = "entity-graph://error";
+export const EVT_ENTITY_CHANGED = "plugin:entity-graph-tauri:entity-changed";
+export const EVT_SNAPSHOT_PERSISTED = "plugin:entity-graph-tauri:snapshot-persisted";
+export const EVT_SNAPSHOT_RESTORED = "plugin:entity-graph-tauri:snapshot-restored";
+export const EVT_PLUGIN_ERROR = "plugin:entity-graph-tauri:error";
 
 // ── Event subscriptions ──────────────────────────────────────────────────────
 

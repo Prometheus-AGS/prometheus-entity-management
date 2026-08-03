@@ -76,4 +76,15 @@ describe("merge strategy port", () => {
     const strategy = await createLoroMergeStrategy();
     expect(typeof strategy).toBe("function");
   });
+
+  it("createLoroMergeStrategy accepts a bundler-visible module loader", async () => {
+    let loaderCalls = 0;
+    const strategy = await createLoroMergeStrategy(async () => {
+      loaderCalls += 1;
+      return import("loro-crdt");
+    });
+
+    expect(typeof strategy).toBe("function");
+    expect(loaderCalls).toBe(1);
+  });
 });

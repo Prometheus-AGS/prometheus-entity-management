@@ -1,0 +1,8 @@
+{
+  "name": "entity-graph-tauri-host-contract-runner",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "tauri": "../../../node_modules/.bin/tauri"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "artifact_type": "content",
+  "variants": [
+    {"name": "final-verification", "file": "dist/final-verification.json", "format": "json", "description": "Machine-readable independent release-state disposition."},
+    {"name": "verification", "file": "dist/verification.md", "format": "markdown", "description": "Acceptance-to-evidence certification."},
+    {"name": "release-impact", "file": "dist/release-impact.md", "format": "markdown", "description": "Downstream work, authority limits, and React-first acceleration decision."},
+    {"name": "release-disposition-svg", "file": "dist/task-6-release-disposition.svg", "format": "svg", "description": "Accessible vector state visualization."},
+    {"name": "release-disposition-png", "file": "dist/task-6-release-disposition.png", "format": "png", "description": "Original-resolution raster proof."}
+  ],
+  "preview": {"required": false, "runs": []},
+  "validation": {
+    "preview_status": "pass",
+    "has_console_errors": false,
+    "has_request_failures": false,
+    "notes": ["Direct content artifact; browser preview is not required.", "The SVG and PNG were inspected at original 1400x960 resolution."]
+  },
+  "sizes": [1400, 960],
+  "generated_at": "2026-08-02T13:42:14Z"
+}

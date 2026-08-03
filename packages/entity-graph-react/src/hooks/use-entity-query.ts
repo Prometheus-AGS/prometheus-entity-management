@@ -183,10 +183,13 @@ export function useEntityQuery<T extends object>(
     useGraphStore,
     useShallow((state): EntityId[] => {
       const list = state.lists[baseKey] ?? EMPTY_LIST_STATE;
-      const sourceIds =
-        completenessMode !== "remote" && remoteResultKey
-          ? (state.lists[remoteResultKey]?.ids ?? EMPTY_IDS)
-          : list.ids;
+      const shouldUseRemoteIds =
+        remoteResultKey !== null &&
+        (completenessMode === "remote" ||
+          (completenessMode === "hybrid" && !isFetchingState));
+      const sourceIds = shouldUseRemoteIds
+        ? (state.lists[remoteResultKey]?.ids ?? EMPTY_IDS)
+        : list.ids;
       const getEntity = (id: EntityId): Record<string, unknown> | null =>
         state.readEntitySnapshot(type, id);
       return applyView(
@@ -275,8 +278,14 @@ export function useEntityQuery<T extends object>(
               nextCursor: typeof result.nextCursor === "string" ? result.nextCursor : null,
               hasNextPage: result.nextCursor !== null && result.nextCursor !== undefined,
             });
-            // Also stamp the base key as fresh
-            graphStore.setListFetching(baseKey, false);
+            // The first page is also the raw base list used by local and
+            // hybrid projections. Without this write, those modes have no
+            // source ids even though the transport returned rows.
+            graphStore.setListResult(baseKey, ids, {
+              total: result.total,
+              nextCursor: typeof result.nextCursor === "string" ? result.nextCursor : null,
+              hasNextPage: result.nextCursor !== null && result.nextCursor !== undefined,
+            });
           }
         } catch (err) {
           if (thisCount !== fetchCountRef.current) return;

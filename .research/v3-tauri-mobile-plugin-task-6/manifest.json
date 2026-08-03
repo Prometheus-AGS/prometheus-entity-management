@@ -1,0 +1,30 @@
+{
+  "format": "research-package",
+  "format_version": "1.0.0",
+  "okf_type": "research-session",
+  "job_id": "v3-tauri-mobile-plugin-task-6",
+  "query": "When may bounded Tauri plugin implementation be complete while stable mobile certification remains blocked?",
+  "depth": "focused-deep",
+  "created_at": "2026-08-02T06:49:03Z",
+  "completed_at": "2026-08-02T06:49:03Z",
+  "stages_completed": 10,
+  "sources_count": 9,
+  "claims_count": 5,
+  "confidence": 0.98,
+  "verification_status": "verified",
+  "feynman_grade": 0.963,
+  "feynman_gate_used": true,
+  "misconceptions_absent": 1.0,
+  "contradictions_resolved": 3,
+  "contradictions_unresolved": 0,
+  "surreal_memory_used": false,
+  "sycophancy_correction_used": true,
+  "citation_style": "inline-link",
+  "upstream_research": ".research/v3-tauri-mobile-plugin-task-5",
+  "model_routing": {
+    "planner": "active-frontier-session",
+    "search": "official-primary-sources",
+    "verify": "active-frontier-session",
+    "report": "active-frontier-session"
+  }
+}

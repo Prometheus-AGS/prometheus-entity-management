@@ -1,0 +1,17 @@
+{
+  "sources": [
+    {"id":"a2a-spec","title":"Agent2Agent Protocol Specification","url":"https://a2a-protocol.org/latest/specification/","publisher":"A2A Protocol Working Group","kind":"official-spec","credibility_score":99,"claims":["claim-001","claim-002","claim-003","claim-004","claim-005"]},
+    {"id":"a2a-v1","title":"What's New in A2A v1.0","url":"https://a2a-protocol.org/latest/whats-new-v1/","publisher":"A2A Protocol Working Group","kind":"official-docs","credibility_score":98,"claims":["claim-001","claim-002","claim-006"]},
+    {"id":"a2a-discovery","title":"Agent Discovery","url":"https://a2a-protocol.org/latest/topics/agent-discovery/","publisher":"A2A Protocol Working Group","kind":"official-docs","credibility_score":98,"claims":["claim-001","claim-004"]},
+    {"id":"a2a-concepts","title":"A2A Core Concepts","url":"https://a2a-protocol.org/latest/topics/key-concepts/","publisher":"A2A Protocol Working Group","kind":"official-docs","credibility_score":98,"claims":["claim-003","claim-004","claim-007"]},
+    {"id":"a2a-governance","title":"Extension and Binding Governance","url":"https://a2a-protocol.org/latest/topics/extension-and-binding-governance/","publisher":"A2A Protocol Working Group","kind":"official-docs","credibility_score":97,"claims":["claim-007"]},
+    {"id":"a2a-releases","title":"A2A protocol releases","url":"https://github.com/a2aproject/A2A/releases","publisher":"A2A Protocol Working Group","kind":"upstream-releases","credibility_score":97,"claims":["claim-008"]},
+    {"id":"a2a-js-release","title":"A2A JavaScript SDK releases","url":"https://github.com/a2aproject/a2a-js/releases","publisher":"A2A Protocol Working Group","kind":"upstream-releases","credibility_score":97,"claims":["claim-008","claim-009"]},
+    {"id":"a2a-js-source","title":"Official A2A JavaScript SDK","url":"https://github.com/a2aproject/a2a-js/tree/v1.0.1","publisher":"A2A Protocol Working Group","kind":"upstream-source","credibility_score":97,"claims":["claim-008","claim-009"]},
+    {"id":"a2a-tck","title":"Official A2A Technology Compatibility Kit","url":"https://github.com/a2aproject/a2a-tck","publisher":"A2A Protocol Working Group","kind":"upstream-source","credibility_score":97,"claims":["claim-010"]},
+    {"id":"a2ui-v091","title":"A2UI v0.9 stable protocol family","url":"https://a2ui.org/specification/v0.9-a2ui/","publisher":"A2UI","kind":"official-spec","credibility_score":98,"claims":["claim-011"]},
+    {"id":"a2ui-a2a-v08","title":"A2UI Extension for A2A Protocol v0.8","url":"https://a2ui.org/specification/v0.8-a2a-extension/","publisher":"A2UI","kind":"official-spec","credibility_score":98,"claims":["claim-007","claim-011"]},
+    {"id":"local-a2a","title":"Local entity-graph A2A alpha source","url":"packages/entity-graph-a2a/src","publisher":"Prometheus AGS","kind":"repository-source","credibility_score":95,"claims":["claim-006","claim-012"]}
+  ],
+  "retrieval_notes": "Official sources were checked on 2026-08-01. @a2a-js/sdk registry metadata was queried with pnpm and returned latest=1.0.1, Node >=20, jose ^6.2.3, and uuid ^11.1.0. The SDK v1.0.1 and TCK repositories were cloned to an ephemeral directory for read-only source inspection."
+}

@@ -1,21 +1,12 @@
-import { defineConfig } from "tsup";
+import { definePackageConfig } from "../../scripts/tsup-package-config";
 
-export default defineConfig({
-  entry: ["src/index.ts"],
-  format: ["esm", "cjs"],
-  dts: true,
-  outExtension({ format }) {
-    return { js: format === "esm" ? ".mjs" : ".js" };
-  },
+export default definePackageConfig({
   external: [
     "@prometheus-ags/entity-graph-core",
     "@prometheus-ags/entity-graph-sdl",
     "zustand",
     "immer",
   ],
-  treeshake: true,
-  sourcemap: true,
-  clean: true,
   // Node built-ins: mark as external so the bundle stays thin
   noExternal: [],
   platform: "node",

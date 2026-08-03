@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title description">
+  <title id="title">Prometheus Tauri public surface contract</title>
+  <desc id="description">Verification card showing API ledger, desktop capability, packed consumer, and open Android and iOS runtime evidence.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#06141f"/>
+      <stop offset="1" stop-color="#0b2a38"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000814" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="800" fill="url(#background)"/>
+  <circle cx="1080" cy="90" r="180" fill="#00c78c" opacity="0.07"/>
+  <circle cx="80" cy="750" r="230" fill="#4aa8ff" opacity="0.06"/>
+  <g filter="url(#shadow)">
+    <rect x="54" y="48" width="1092" height="704" rx="30" fill="#0d2230" stroke="#1e4558" stroke-width="2"/>
+  </g>
+  <rect x="86" y="82" width="14" height="76" rx="7" fill="#00c78c"/>
+  <text x="126" y="112" fill="#91a8b6" font-family="Inter, ui-sans-serif, system-ui" font-size="18" font-weight="650" letter-spacing="2">PROMETHEUS · RELEASE 3.0</text>
+  <text x="126" y="151" fill="#f4fbff" font-family="Inter, ui-sans-serif, system-ui" font-size="34" font-weight="760">Tauri public surface contract</text>
+  <text x="86" y="192" fill="#a8bdc9" font-family="Inter, ui-sans-serif, system-ui" font-size="18">Four independent locks. Evidence for one never substitutes for another.</text>
+
+  <g font-family="Inter, ui-sans-serif, system-ui">
+    <rect x="86" y="230" width="494" height="164" rx="20" fill="#102c3c" stroke="#256078"/>
+    <text x="116" y="270" fill="#91a8b6" font-size="15" font-weight="700" letter-spacing="1.5">01 · DECLARED API</text>
+    <text x="116" y="310" fill="#f4fbff" font-size="25" font-weight="720">26 runtime · 57 declarations</text>
+    <text x="116" y="344" fill="#a8bdc9" font-size="16">Built ESM and TypeScript ledger match</text>
+    <rect x="457" y="253" width="92" height="34" rx="17" fill="#073c31" stroke="#00c78c"/>
+    <text x="503" y="276" fill="#58e3b7" font-size="14" font-weight="760" text-anchor="middle">PASS</text>
+
+    <rect x="620" y="230" width="494" height="164" rx="20" fill="#102c3c" stroke="#256078"/>
+    <text x="650" y="270" fill="#91a8b6" font-size="15" font-weight="700" letter-spacing="1.5">02 · RUNTIME AUTHORITY</text>
+    <text x="650" y="310" fill="#f4fbff" font-size="25" font-weight="720">Desktop IPC + denial</text>
+    <text x="650" y="344" fill="#a8bdc9" font-size="16">Read-only default capability enforced</text>
+    <rect x="991" y="253" width="92" height="34" rx="17" fill="#073c31" stroke="#00c78c"/>
+    <text x="1037" y="276" fill="#58e3b7" font-size="14" font-weight="760" text-anchor="middle">PASS</text>
+
+    <rect x="86" y="426" width="494" height="164" rx="20" fill="#102c3c" stroke="#256078"/>
+    <text x="116" y="466" fill="#91a8b6" font-size="15" font-weight="700" letter-spacing="1.5">03 · DISTRIBUTION</text>
+    <text x="116" y="506" fill="#f4fbff" font-size="25" font-weight="720">Packed Rust consumer</text>
+    <text x="116" y="540" fill="#a8bdc9" font-size="16">Permissions + Android + iOS sources present</text>
+    <rect x="457" y="449" width="92" height="34" rx="17" fill="#073c31" stroke="#00c78c"/>
+    <text x="503" y="472" fill="#58e3b7" font-size="14" font-weight="760" text-anchor="middle">PASS</text>
+
+    <rect x="620" y="426" width="494" height="164" rx="20" fill="#2c291d" stroke="#8e6a26"/>
+    <text x="650" y="466" fill="#cbb98b" font-size="15" font-weight="700" letter-spacing="1.5">04 · PLATFORM NATIVE</text>
+    <text x="650" y="506" fill="#fff8e8" font-size="25" font-weight="720">Android + iOS runtime</text>
+    <text x="650" y="540" fill="#d9caa4" font-size="16">Real bridge command and denial receipts required</text>
+    <rect x="927" y="449" width="156" height="34" rx="17" fill="#3a2e13" stroke="#f5b342"/>
+    <text x="1005" y="472" fill="#ffd37a" font-size="13" font-weight="760" text-anchor="middle">EVIDENCE OPEN</text>
+  </g>
+
+  <line x1="86" y1="628" x2="1114" y2="628" stroke="#24495b"/>
+  <text x="86" y="669" fill="#58e3b7" font-family="Inter, ui-sans-serif, system-ui" font-size="17" font-weight="700">DEFAULT IS READ-ONLY</text>
+  <text x="325" y="669" fill="#698998" font-family="Inter, ui-sans-serif, system-ui" font-size="17">·</text>
+  <text x="350" y="669" fill="#d9e5eb" font-family="Inter, ui-sans-serif, system-ui" font-size="17">Native snapshots are in-memory</text>
+  <text x="650" y="669" fill="#698998" font-family="Inter, ui-sans-serif, system-ui" font-size="17">·</text>
+  <text x="675" y="669" fill="#d9e5eb" font-family="Inter, ui-sans-serif, system-ui" font-size="17">Durable SQLite stays in the core adapter</text>
+  <text x="86" y="714" fill="#7895a3" font-family="Inter, ui-sans-serif, system-ui" font-size="15">Task 4/6 · Surface synchronized · Overall Tauri gate remains PARTIAL</text>
+</svg>

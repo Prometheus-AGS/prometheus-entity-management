@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-a2a-conformance-agent",
+  "recordedAt": "2026-08-01T22:37:23Z",
+  "verdict": "pass-to-archive",
+  "acceptance": {
+    "officialSdkExactVersion": "pass",
+    "officialA2AVersionAndDiscovery": "pass",
+    "truthfulJsonRpcOnlyAgentCard": "pass",
+    "sendGetListHistoryAndTerminalLifecycle": "pass",
+    "orderedSseStreamingSubscriptionAndCancellation": "pass",
+    "authenticationRejectsBeforeDispatch": "pass",
+    "defaultDenyGraphPolicyAndAtomicBatchAuthorization": "pass",
+    "destructiveApprovalAndCallerScopedTaskVisibility": "pass",
+    "deterministicKeylessA2UIArtifacts": "pass",
+    "optionalExternalExecutorDiscoveryTransportAndIdRemapping": "pass",
+    "externalPlaintextRestrictedToLoopback": "pass",
+    "legacySlashMethodsIsolatedToExplicitSubpath": "pass",
+    "packedEsmCommonJsNodeNextAndNode16Consumers": "pass",
+    "officialPinnedTckApplicableMustFailures": 0,
+    "unexplainedSelectedBindingSkips": 0,
+    "publicApiCoverageSkillsAndDocsSynchronized": "pass",
+    "mandatorySkipOrTodoPaths": 0,
+    "visualEvidence": "not-applicable-headless-protocol-boundary"
+  },
+  "cleanState": {
+    "frozenInstall": "pass",
+    "node": "24.16.0",
+    "pnpm": "10.33.0",
+    "lockfileSha256": "19ef1dbfea784c871c163364524556595bbd3228fcf139e8f5b0cfb70c23aea2",
+    "buildOwnedOutputCleanup": "pass",
+    "tarballOnlyConsumers": "pass",
+    "workspaceAliases": "forbidden",
+    "freshPinnedTckCheckout": "pass",
+    "activeReleaseWorktreePreserved": true
+  },
+  "focused": {
+    "a2aRuntimePolicyLifecycleAndExternalTests": {
+      "status": "pass",
+      "tests": 16
+    },
+    "a2aReleaseGuards": {
+      "status": "pass",
+      "tests": 7
+    },
+    "a2aBdd": {
+      "status": "pass",
+      "scenarios": 7,
+      "steps": 38,
+      "hooks": 4
+    },
+    "a2aPackedConsumers": {
+      "status": "pass",
+      "modes": [
+        "esm",
+        "commonjs",
+        "typescript-nodenext",
+        "typescript-node16",
+        "official-root",
+        "legacy-subpath",
+        "external-executor"
+      ]
+    },
+    "allPackageTarballs": {
+      "status": "pass",
+      "packages": 12,
+      "consumerModes": [
+        "esm",
+        "commonjs",
+        "typescript-nodenext",
+        "typescript-node16",
+        "bundler"
+      ]
+    },
+    "officialTck": {
+      "status": "pass",
+      "commit": "5996b79f9cefa6fc390980e383e358a66fb9e49e",
+      "binding": "JSONRPC",
+      "applicableMustPassed": 59,
+      "applicableMustFailed": 0,
+      "explainedJsonRpcSkips": 14,
+      "unexplainedSelectedBindingSkips": 0
+    },
+    "candidateArtifacts": {
+      "indexMjsSha256": "28ca98db150cd836fe57c29682ac26dc7ebc1d33a3f825c9af1f68ee1c4bcce1",
+      "indexCjsSha256": "3bf364723109b8e0be754505229880abb67c43edce0d3964a3c582bc11d6dc95",
+      "indexDtsSha256": "1dec6104fb34941e4dbfb70caf112f8474fd21e0e25ec5fedd709c83b9320e33",
+      "indexDctsSha256": "3122ffc08294204667ca5808c0ab0618acee67d4f60054bd0d9b44cd4967e5f4"
+    },
+    "runtimeExportLedgers": {
+      "react": 201,
+      "sync": 16,
+      "a2uiRoot": 18,
+      "agUiCompatibility": 9,
+      "a2aRoot": 30,
+      "a2aLegacy": 2
+    },
+    "semanticCoverage": {
+      "status": "pass",
+      "passed": 13,
+      "total": 13,
+      "releaseCertified": false
+    },
+    "productionSecurity": {
+      "status": "pass-policy",
+      "critical": 0,
+      "high": 0,
+      "moderate": 0,
+      "low": 2,
+      "blockingAdvisories": 0
+    },
+    "strictOpenSpec": "pass",
+    "artifactRefinerQa": "pass",
+    "releaseContract": "pass",
+    "changesetStatus": "pass",
+    "gitDiffCheck": "pass"
+  },
+  "unresolvedLimits": [
+    "Certification is limited to the A2A 1.0 JSON-RPC binding and truthful AgentCard capabilities; REST and gRPC are not declared or tested.",
+    "Push notifications, signed or extended cards, and extension signing are not implemented capabilities.",
+    "The TCK receipt distinguishes applicable passes, explained inapplicable skips, and untested requirements; it is not a claim that every normative requirement or binding ran.",
+    "The bearer helper delegates real signature, expiry, issuer, audience, scope, revocation, tenant, and key-rotation decisions to the host application.",
+    "The optional external executor proves loopback deterministic interoperability and injectable transport behavior, not remote-service availability, production identity, or model quality.",
+    "A2UI v0.9.1 artifact metadata is certified headlessly; rendered browser, accessibility, keyboard, and visual behavior belongs to v3-agentic-a2ui-example.",
+    "Dart, Flutter, Cargo, Rust, Tauri, iOS, and Android behavior is outside this JavaScript protocol change.",
+    "The complete branded Docusaurus site and GitHub Pages deployment remain planned.",
+    "Two low-severity production dependency findings remain visible even though release-blocking critical/high advisories are zero.",
+    "The TCK binds a dirty working revision plus exact built-artifact hashes; immutable-commit release certification, provenance, RC recovery, registry authority, stable publication, and npm latest remain open."
+  ],
+  "publicationAuthorized": false
+}

@@ -2,6 +2,114 @@
 
 This workspace contains all runnable demo applications for `@prometheus-ags/prometheus-entity-management`.
 
+## 3.0 Showcase Status
+
+The [machine-readable coverage ledger](coverage.json) is the source of truth for example readiness and links back to the authoritative [3.0 release contract](../release/v3-release-contract.json). The release is still in progress; `implemented` identifies evidence-backed source or platform work, while `planned` remains required work.
+
+| Showcase | Planned path | Status |
+| --- | --- | --- |
+| React 19 + Vite 8 | `examples/vite-app` | Implemented (`v3-vite-react19-example`) |
+| Next.js App Router | `examples/nextjs-app` | Planned (`v3-nextjs-app-router-example`) |
+| Agentic A2UI | `examples/agentic-a2ui` | Planned (`v3-agentic-a2ui-example`) |
+| Flutter + Riverpod + A2UI | `examples/flutter-riverpod` | Planned (`v3-flutter-riverpod-a2ui-example`) |
+| Tauri desktop + mobile | `examples/tauri-app` | Planned (`v3-tauri-universal-example`) |
+
+The branded Docusaurus site and protected GitHub Pages deployment are separately tracked as planned work in `website/`, culminating in `v3-docs-github-pages`.
+
+## Implemented React 19 and Vite 8 showcase
+
+The `/release-showcase` route now exercises the normalized graph, optimistic
+confirmation and rollback, relationship invalidation, local/remote/hybrid
+views, REST/GraphQL seams, realtime coalescing, PGlite persistence, Loro
+convergence, Suspense/error boundaries, DevTools, and accessibility in a Vite
+production build. Run its complete gate from the repository root:
+
+```bash
+pnpm run bdd:vite-react19
+```
+
+See [`../release/vite-react19-example.md`](../release/vite-react19-example.md)
+for the scenario matrix, architecture, commands, loader guidance, and explicit
+evidence limits. The receipt is source-workspace browser evidence and does not
+replace packed core + React candidate verification or npm RC staging.
+
+The `release.ci.hermetic-main-baseline` quality gate in [`coverage.json`](coverage.json) is implemented and proves frozen installation, dependency/advisory policy, bounded CI gates, and upgraded example build configuration. It does not certify a showcase by itself; every showcase must satisfy its own BDD, platform, and visual-evidence contract.
+
+The `release.packages.packed-module-contracts` gate is also implemented. It proves that all twelve npm tarballs have valid ESM/CommonJS runtime and declaration routes, bounded payloads, strict package-lint results, and isolated Node/TypeScript consumers. It does not exercise or certify an example application; showcase status comes from each owning change.
+
+The `release.flutter.source-provenance` gate is implemented for licensed source lineage. It proves allowlisted KnowMe history, attribution, explicit path dispositions, and one canonical owner at `packages/entity_graph_flutter`. The import is not runnable and the Flutter showcase remains `planned`; Dart runtime/analyzer work and Flutter widget, golden, Android, iOS, accessibility, and visual receipts still belong to their downstream changes.
+
+## Implemented Shared Semantic Contract
+
+All five showcases now have one deterministic, keyless [shared example contract](shared/README.md). It defines the Project/User/Task/Comment/Activity domain, ID-only lists, security assumptions, eight transport fixtures, and thirteen expected outcomes spanning normalization, optimistic CRUD, invalidation, completeness modes, realtime, offline convergence, protocols, SSR, schema round-tripping, platform boundaries, and lifecycle security.
+
+Run it from the repository root:
+
+```bash
+pnpm run verify:example-coverage
+```
+
+The `release.examples.shared-semantic-contract` quality gate proves that every stable capability and release artifact is mapped to runnable semantic evidence and that missing/stale mappings fail closed. It is a headless contract, not browser, device, accessibility, or visual evidence. A showcase remains `planned` until its owning change implements these scenarios and records real runtime and visual receipts; React 19/Vite 8 now has those separate receipts.
+
+## Implemented headless sync evidence
+
+The `release.sync.persistence-convergence` quality gate is implemented for the
+`npm-core` and `npm-sync` portions of
+`graph.offline-persistence-sync`. It proves real PGlite close/reopen, two
+isolated Loro clients, deterministic conflict behavior, actual WebSocket
+termination/reconnect, and packed ESM/CommonJS/NodeNext consumers:
+
+```bash
+pnpm run test:sync-persistence
+pnpm run verify:sync-persistence
+pnpm run bdd:sync-persistence
+```
+
+The headless sync promotion did not itself change a showcase status. The React
+showcase now has separate rendered PGlite/Loro evidence; Flutter and Tauri
+persistence/device evidence remains planned, and overall coverage remains
+`in-progress`.
+
+## Implemented official A2UI bridge evidence
+
+The `release.protocol.a2ui-official` gate is implemented for the `npm-a2ui`
+portion of `protocol.a2a-a2ui` and the A2UI portion of
+`security.tenant-actions-secrets`. It proves official v0.9.1 processing and
+React rendering, a default-deny entity-graph action boundary, the explicit
+`./ag-ui` migration subpath, packed consumers, and real-browser keyboard and
+accessibility evidence:
+
+```bash
+pnpm run test:a2ui-bridge
+pnpm run verify:a2ui-bridge
+pnpm run bdd:a2ui-bridge
+```
+
+The `agentic-a2ui` showcase remains planned. The bridge fixture certifies the
+renderer package boundary, not the complete shared-domain showcase or its final
+visual receipts.
+
+## Implemented headless A2A evidence
+
+The `release.protocol.a2a-jsonrpc-v1` gate is implemented for the A2A portion
+of `protocol.a2a-a2ui` and `security.tenant-actions-secrets`. It proves official
+A2A v1 JSON-RPC discovery and task lifecycle, authenticated caller scoping,
+default-deny graph authority, streaming and cancellation, deterministic A2UI
+artifacts, isolated packed consumers, and the pinned applicable upstream TCK
+MUST suite:
+
+```bash
+pnpm run test:a2a-conformance
+pnpm run verify:a2a-conformance
+pnpm run test:a2a-tck
+pnpm run bdd:a2a-conformance
+```
+
+Protocol validity never grants application authority. The headless gate does
+not certify a rendered showcase, REST or gRPC bindings, push notifications,
+extension signing, full shared-domain flows, accessibility, or visual evidence.
+Those receipts remain owned by `v3-agentic-a2ui-example`.
+
 ## Shared Demo Infrastructure
 
 The examples share one Supabase project for demo purposes:

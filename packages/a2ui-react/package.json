@@ -1,62 +1,103 @@
 {
   "name": "@prometheus-ags/a2ui-react",
-  "version": "3.0.0-alpha.0",
-  "description": "A2UI React component library — EntityChat, EntityCopilot, EntityStream, EntityDiff, EntityApproval — built on the Prometheus entity graph core.",
+  "version": "3.0.0-rc.1",
+  "description": "Official A2UI v0.9.1 React renderer and default-deny Prometheus entity graph action bridge.",
+  "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "ag-ui": [
+        "dist/ag-ui.d.ts"
+      ]
+    }
+  },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./ag-ui": {
+      "import": {
+        "types": "./dist/ag-ui.d.ts",
+        "default": "./dist/ag-ui.mjs"
+      },
+      "require": {
+        "types": "./dist/ag-ui.d.cts",
+        "default": "./dist/ag-ui.cjs"
+      }
     }
   },
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
   ],
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && node ../../scripts/fix-a2ui-cjs-declarations.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "refresh:exports": "pnpm run build && node ../../scripts/refresh-exports-ledger.mjs --a2ui",
+    "verify:skills": "node ../../scripts/verify-skills-exports.mjs --a2ui"
   },
   "peerDependencies": {
     "@prometheus-ags/entity-graph-core": "workspace:*",
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+    "react": ">=19.0.0 <20.0.0",
+    "react-dom": ">=19.0.0 <20.0.0"
   },
   "dependencies": {
-    "@prometheus-ags/entity-graph-core": "workspace:*"
+    "@a2ui/markdown-it": "0.1.0",
+    "@a2ui/react": "0.10.2",
+    "@a2ui/web_core": "0.10.5",
+    "@prometheus-ags/entity-graph-core": "workspace:*",
+    "zod": "3.25.76"
   },
   "devDependencies": {
     "@testing-library/react": "^16.3.2",
-    "@types/react": ">=19",
-    "@types/react-dom": ">=19",
-    "jsdom": "^29.1.1",
-    "tsup": ">=8",
-    "typescript": ">=6",
-    "vitest": ">=4"
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "jsdom": "^30.0.1",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "tsup": "8.5.1",
+    "typescript": "6.0.2",
+    "vitest": "4.1.10"
   },
   "keywords": [
     "a2ui",
-    "ai-chat",
+    "a2ui-v0.9.1",
+    "agent-ui",
     "entity-graph",
     "react",
     "normalized-cache",
     "state-management",
     "zustand",
     "ag-ui",
-    "copilot",
-    "entity-diff"
+    "policy"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/prometheus-ags/prometheus-entity-management"
+    "url": "git+https://github.com/prometheus-ags/prometheus-entity-management.git",
+    "directory": "packages/a2ui-react"
+  },
+  "homepage": "https://github.com/prometheus-ags/prometheus-entity-management/tree/main/packages/a2ui-react#readme",
+  "bugs": {
+    "url": "https://github.com/prometheus-ags/prometheus-entity-management/issues"
+  },
+  "engines": {
+    "node": "^22.14.0 || ^24.0.0 || >=26.0.0"
   }
 }

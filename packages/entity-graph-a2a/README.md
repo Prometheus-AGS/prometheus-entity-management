@@ -1,10 +1,24 @@
 # @prometheus-ags/entity-graph-a2a
 
-A2A (Agent-to-Agent) v1.0 server for the [Prometheus entity graph](../../README.md).
+Official A2A 1.0 JSON-RPC and streaming SSE for the Prometheus normalized entity graph.
 
-Exposes an `AgentCard` advertising entity-graph capabilities, routes incoming
-A2A `Task` messages to graph mutations and queries, and returns structured
-`Artifact` results.
+The package uses `@a2a-js/sdk@1.0.1` for the wire model and transport dispatcher. Prometheus owns the application policy, graph adapter, deterministic reference executor, and its versioned A2UI artifact adapter.
+
+## Supported boundary
+
+| Surface | Stable 3.0 contract |
+| --- | --- |
+| Discovery | `GET /.well-known/agent-card.json` |
+| Binding | JSON-RPC only, A2A protocol `1.0` |
+| Methods | `SendMessage`, `SendStreamingMessage`, `GetTask`, `ListTasks`, `CancelTask`, `SubscribeToTask` |
+| Streaming | Ordered task, status, artifact, and terminal envelopes over SSE |
+| Graph authority | Default deny; application allowlists entity types, actions, and fields |
+| Destructive writes | `replace` and `remove` require an out-of-band approval decision |
+| A2UI | Prometheus-owned structured-data adapter carrying validated A2UI `v0.9.1` messages |
+| Reference agent | Deterministic and keyless, with injectable IDs, clock, and delay |
+| Remote agent | Optional HTTPS/loopback JSON-RPC executor seam; never required by default CI |
+
+The AgentCard truthfully disables push notifications and extended cards. REST, gRPC, signed AgentCards, hosted identity, and production multi-tenant routing are not certified by this package gate.
 
 ## Installation
 
@@ -12,158 +26,252 @@ A2A `Task` messages to graph mutations and queries, and returns structured
 pnpm add @prometheus-ags/entity-graph-a2a @prometheus-ags/entity-graph-core
 ```
 
-## Quick Start
+The A2A SDK is an exact production dependency of this package. Applications do not need to install a second SDK copy to use the public Prometheus API.
+
+## Quick start
 
 ```ts
 import {
-  createA2AServer,
   buildAgentCard,
-  DefaultEntityGraphHandler,
+  createA2AServer,
+  createBearerTokenAuthenticator,
+  createEntityGraphA2APolicy,
 } from "@prometheus-ags/entity-graph-a2a";
-import { registerEntityTransport, makeRestTransport } from "@prometheus-ags/entity-graph-core";
 
-// 1. Register entity transports (once at boot).
-registerEntityTransport("Invoice", makeRestTransport({ supabase, table: "invoice" }));
+const policy = createEntityGraphA2APolicy({
+  entities: {
+    Invoice: {
+      actions: ["upsert", "replace", "remove", "query", "snapshot"],
+      fields: ["id", "amount", "status"],
+    },
+    "*": { actions: ["snapshot"], fields: [] },
+  },
+  authorize: ({ caller, tenantId }) =>
+    caller.isAuthenticated &&
+    caller.scopes.includes("invoice:a2a") &&
+    tenantId === caller.claims?.tenantId,
+  requestApproval: async (context) =>
+    approvalService.decide({
+      callerId: context.caller.id,
+      operation: context.operation,
+      entityType: context.entityType,
+      entityId: context.entityId,
+    }),
+});
 
-// 2. Create the A2A server.
+const authenticator = createBearerTokenAuthenticator({
+  verify: async (token) => {
+    const identity = await verifyAccessToken(token);
+    return identity
+      ? {
+          id: identity.subject,
+          scopes: identity.scopes,
+          claims: { tenantId: identity.tenantId },
+        }
+      : null;
+  },
+});
+
 const server = createA2AServer({
   card: buildAgentCard({
     url: "https://api.example.com/a2a",
     name: "Invoice Graph Agent",
+    authentication: "bearer",
   }),
-  handler: new DefaultEntityGraphHandler(),
+  authenticator,
+  policy,
 });
 
-// 3a. Cloudflare Workers / Bun / Deno — use the Fetch API handler.
-export default { fetch: (req: Request) => server.fetch(req) };
-
-// 3b. Hono
-app.post("/a2a", (c) => server.fetch(c.req.raw));
-app.get("/.well-known/agent.json", (c) =>
-  c.json(server.getCard())
-);
-
-// 3c. Express / Fastify — use handleRequest() directly.
-app.post("/a2a", async (req, res) => {
-  const response = await server.handleRequest(req.body);
-  res.status("error" in response ? 400 : 200).json(response);
-});
+// Fetch-compatible runtimes: Workers, Bun, Deno, Hono, or a Node adapter.
+export default {
+  fetch(request: Request) {
+    return server.fetch(request);
+  },
+};
 ```
 
-## Supported A2A Methods
+`server.fetch()` serves both the discovery route and the configured JSON-RPC endpoint. Do not add a second, hand-written AgentCard route.
 
-| Method | Description |
-|--------|-------------|
-| `tasks/send` | Create or continue a task. Dispatches `Part`s to the handler. |
-| `tasks/get` | Retrieve a task by id, optionally trimming history. |
-| `tasks/cancel` | Cancel a non-terminal task. |
+## Security model
 
-## Built-in Graph Capabilities
+Protocol validity never grants application authority.
 
-| Capability | Description |
-|------------|-------------|
-| `graph/upsert` | Shallow-merge entities into the canonical graph. |
-| `graph/replace` | Full-replace entities (stale keys dropped). |
-| `graph/remove` | Remove entities from the graph. |
-| `graph/patch` | Apply UI-only patch fields (not sent to server). |
-| `graph/query` | Read entities or lists from the graph. |
-| `graph/snapshot` | Export the full entity graph as a structured artifact. |
+```text
+HTTP credential
+  -> caller identity
+  -> request/task visibility policy
+  -> official A2A dispatcher
+  -> graph entity/action/field policy
+  -> destructive approval
+  -> one atomic graph transaction
+```
 
-## Task Message Parts
+- `createDefaultDenyA2APolicy()` allows ordinary task protocol operations but denies every graph read and write.
+- `createDenyAllA2APolicy()` denies protocol dispatch and graph access.
+- `createEntityGraphA2APolicy()` builds explicit application rules.
+- A batch is authorized in full before its transaction begins. One forbidden field rejects the entire batch.
+- Hidden and nonexistent tasks have the same lookup error class for callers outside the owning scope.
+- Approval metadata supplied by an agent cannot approve its own destructive operation.
+- Bearer credentials are passed to the application's verifier and are never logged by the package.
 
-The `DefaultEntityGraphHandler` understands these Part types:
+The supplied bearer helper is an adapter, not a hosted identity system. Signature, issuer, audience, expiry, revocation, and tenant validation remain the host application's responsibility.
 
-### `graph/mutation`
+## Entity graph messages
+
+Graph operations use an ordinary official A2A data part plus the Prometheus extension URI. They do not add a private member to the A2A `Part` union.
 
 ```ts
-const mutation: GraphMutationPart = {
-  type: "graph/mutation",
+import {
+  PROMETHEUS_GRAPH_EXTENSION_URI,
+  Role,
+  type EntityGraphA2ARequest,
+  type Message,
+} from "@prometheus-ags/entity-graph-a2a";
+
+const request: EntityGraphA2ARequest = {
+  kind: "prometheus.entity-graph.request",
+  version: "1.0",
+  operation: "mutate",
   mutations: [
-    { op: "upsert", entityType: "Invoice", id: "inv-1", data: { id: "inv-1", amount: 100 } },
-    { op: "patch", entityType: "Invoice", id: "inv-1", patch: { _selected: true } },
-    { op: "remove", entityType: "Invoice", id: "inv-old" },
+    {
+      op: "upsert",
+      entityType: "Invoice",
+      id: "invoice-1",
+      data: { id: "invoice-1", amount: 100, status: "open" },
+    },
   ],
 };
-```
 
-### `graph/query`
-
-```ts
-const query: GraphQueryPart = {
-  type: "graph/query",
-  entityType: "Invoice",
-  id: "inv-1",           // single-entity lookup
-  // listKey: "invoices", // or list lookup
-  // limit: 10,
+const message: Message = {
+  role: Role.ROLE_USER,
+  messageId: crypto.randomUUID(),
+  taskId: "",
+  contextId: "",
+  parts: [{
+    content: { $case: "data", value: request },
+    mediaType: "application/json",
+    filename: "",
+    metadata: { extensionUri: PROMETHEUS_GRAPH_EXTENSION_URI },
+  }],
+  metadata: {},
+  extensions: [PROMETHEUS_GRAPH_EXTENSION_URI],
+  referenceTaskIds: [],
 };
 ```
 
-### `text`
+Supported graph operations are `upsert`, `replace`, `remove`, `patch`, `clearPatch`, `query`, and `snapshot`. Local patches remain graph-local and are never represented as server-confirmed canonical data.
 
-Text parts receive an "Acknowledged: …" echo reply.
+## Deterministic A2UI artifacts
 
-## Custom Handler
-
-```ts
-import type { A2ATaskHandler, TaskHandlerContext, TaskHandlerResult } from "@prometheus-ags/entity-graph-a2a";
-import { useGraphStore } from "@prometheus-ags/entity-graph-core";
-
-class MyHandler implements A2ATaskHandler {
-  async handle(ctx: TaskHandlerContext): Promise<TaskHandlerResult> {
-    const { message, graphState } = ctx;
-
-    // Read from graph, call APIs, compute results...
-
-    useGraphStore.getState().upsertEntity("Result", "r-1", { id: "r-1", value: 42 });
-
-    return {
-      status: { state: "completed" },
-      artifacts: [{
-        id: "my-artifact",
-        type: "data",
-        content: { answer: 42 },
-        mimeType: "application/json",
-        createdAt: new Date().toISOString(),
-      }],
-    };
-  }
-}
-```
-
-## AgentCard Discovery
-
-Serve the AgentCard at `GET /.well-known/agent.json`:
+The built-in executor can emit an A2UI surface without a model credential when the client requests `PROMETHEUS_A2UI_EXTENSION_URI`.
 
 ```ts
-// Express
-app.get("/.well-known/agent.json", (_req, res) => res.json(server.getCard()));
+import {
+  PROMETHEUS_A2UI_EXTENSION_URI,
+  PROMETHEUS_A2UI_PROTOCOL_VERSION,
+  createA2UIArtifact,
+  createDeterministicA2UIMessages,
+} from "@prometheus-ags/entity-graph-a2a";
 
-// Fetch API
-if (url.pathname === "/.well-known/agent.json") {
-  return Response.json(server.getCard());
+const messages = createDeterministicA2UIMessages(
+  "The invoice is ready for review.",
+  "invoice-review",
+);
+const artifact = createA2UIArtifact(messages, {
+  artifactId: "invoice-review-artifact",
+});
+
+if (PROMETHEUS_A2UI_PROTOCOL_VERSION !== "v0.9.1") {
+  throw new Error("unexpected protocol baseline");
 }
+void artifact;
+void PROMETHEUS_A2UI_EXTENSION_URI;
 ```
 
-## Architecture
+This is a Prometheus-owned versioned adapter. It does not claim that the legacy upstream A2UI-for-A2A v0.8 extension defines v0.9.1 transport semantics. Renderer action authorization is still enforced by `@prometheus-ags/a2ui-react`.
 
-```
-Client Agent ──POST /tasks──▶ A2AServer.handleRequest()
-                                      │
-                               tasks/send dispatcher
-                                      │
-                            A2ATaskHandler.handle(ctx)
-                                      │
-                        DefaultEntityGraphHandler
-                          ┌───────────┴────────────┐
-                   GraphMutationPart         GraphQueryPart
-                          │                        │
-                createGraphTransaction      useGraphStore.getState()
-                          │                        │
-                   Entity Graph (core)      Entity Graph (core)
+For repeatable tests, pass `deterministicExecutor` options to `createA2AServer`:
+
+```ts
+const server = createA2AServer({
+  card: buildAgentCard({ url: "http://127.0.0.1/a2a" }),
+  deterministicExecutor: {
+    clock: () => "2030-01-15T12:00:00.000Z",
+    idFactory: (() => {
+      let id = 0;
+      return () => `fixture-${++id}`;
+    })(),
+    stepDelayMs: 25,
+  },
+});
 ```
 
-Data flows strictly upward into the entity graph. The A2A server is a thin
-dispatch layer — it never reimplements graph logic.
+## Optional external executor
+
+`createExternalA2AExecutor()` discovers an AgentCard from an HTTPS or loopback base URL, selects JSON-RPC, streams the remote lifecycle, and remaps remote IDs into the local task boundary.
+
+```ts
+import {
+  buildAgentCard,
+  createA2AServer,
+  createExternalA2AExecutor,
+} from "@prometheus-ags/entity-graph-a2a";
+
+const server = createA2AServer({
+  card: buildAgentCard({ url: "https://gateway.example.com/a2a" }),
+  executor: createExternalA2AExecutor({
+    baseUrl: "https://agent.example.com",
+    serviceParameters: { Authorization: `Bearer ${await issueAgentToken()}` },
+  }),
+});
+```
+
+The external endpoint is an opt-in runtime dependency. Default CI and the reference agent remain keyless and local.
+
+## Migrating alpha consumers
+
+The pre-v3 slash methods are intentionally absent from the package root and the A2A 1.0 endpoint.
+
+| Alpha surface | Stable replacement |
+| --- | --- |
+| `/.well-known/agent.json` | `/.well-known/agent-card.json` |
+| `tasks/send` | `SendMessage` |
+| `tasks/sendSubscribe` | `SendStreamingMessage` over SSE |
+| `tasks/get` | `GetTask` |
+| `tasks/cancel` | `CancelTask` |
+| bespoke part/status/task types | official `@a2a-js/sdk` types re-exported from the package root |
+| `DefaultEntityGraphHandler` | `DeterministicEntityGraphExecutor` plus an application policy |
+
+For a bounded migration window, import the explicit adapter:
+
+```ts
+import { createLegacyA2AAdapter } from "@prometheus-ags/entity-graph-a2a/legacy";
+
+const legacy = createLegacyA2AAdapter({ server });
+const response = await legacy.handleRequest(oldSlashMethodRequest, {
+  requestedVersion: "1.0",
+});
+```
+
+The legacy adapter translates retained send/get/cancel shapes. It does not expose legacy streaming; migrate streaming callers to the official SSE method. New code must not use this subpath.
+
+## Verification
+
+From the repository root:
+
+```bash
+pnpm run test:a2a-conformance
+pnpm run verify:a2a-conformance
+pnpm run test:a2a-tck
+pnpm run bdd:a2a-conformance
+pnpm --filter @prometheus-ags/entity-graph-a2a run verify:skills
+```
+
+The upstream gate pins `a2aproject/a2a-tck` at commit `5996b79f9cefa6fc390980e383e358a66fb9e49e`. Its receipt separates MUST, SHOULD, MAY, binding, capability exclusions, and candidate artifact hashes. A failed applicable MUST or unexplained selected-binding skip blocks the gate.
+
+These checks certify the headless package boundary. Browser rendering, accessibility, and visual evidence are owned by the `v3-agentic-a2ui-example` showcase; no screenshot is evidence for a headless transport.
+
+The runtime export ledger is [`a2a-library-exports.json`](../../prometheus-entity-skills/_shared/references/a2a-library-exports.json). Public root or `./legacy` export changes must update it.
 
 ## License
 

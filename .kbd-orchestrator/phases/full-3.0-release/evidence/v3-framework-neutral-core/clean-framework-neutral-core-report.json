@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-01T15:19:40.721Z",
+  "artifact": {
+    "packageName": "@prometheus-ags/entity-graph-core",
+    "version": "3.0.0-alpha.0",
+    "tarballFiles": [
+      "CHANGELOG.md",
+      "README.md",
+      "dist/index.cjs",
+      "dist/index.cjs.map",
+      "dist/index.d.cts",
+      "dist/index.d.ts",
+      "dist/index.mjs",
+      "dist/index.mjs.map",
+      "package.json"
+    ],
+    "runtimeReactDependencies": "none",
+    "declarationReactDependencies": "none",
+    "resolvedReactPackages": "none"
+  },
+  "consumers": {
+    "installSource": "packed-tarball-only",
+    "nodeEsmSharedGraph": "pass",
+    "nodeCommonJsSharedGraph": "pass",
+    "isolatedGraphFactories": "pass",
+    "typescriptWithoutReactTypes": "pass"
+  }
+}

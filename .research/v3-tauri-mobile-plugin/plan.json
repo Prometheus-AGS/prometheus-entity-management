@@ -1,0 +1,23 @@
+{
+  "query": "What prerequisite, dependency, plugin architecture, capability, binding-generation, and desktop/mobile evidence is required before implementing v3-tauri-mobile-plugin?",
+  "depth": "deep",
+  "createdAt": "2026-08-02T02:34:32Z",
+  "constraints": [
+    "Use official Tauri documentation, official tauri-apps repositories, package registries, and tauri-specta upstream for current claims.",
+    "Treat host compilation, cross-compilation, simulator execution, and real-device execution as distinct evidence classes.",
+    "Do not implement OpenSpec task 2 while closing dependency task 1.",
+    "Preserve the v3 release contract's TypeScript <7 and Tauri >=2 <3 compatibility ranges."
+  ],
+  "subquestions": [
+    "Are v3-release-contract and v3-package-module-contracts complete and strictly valid?",
+    "What does an official Tauri 2 plugin build and permission boundary contain?",
+    "What additional Android and iOS source and registration seams are required?",
+    "Does the current generated-binding command actually regenerate the checked-in file?",
+    "Which dependencies are current, outdated, or intentionally constrained?",
+    "What evidence is still required before the plugin can be called stable?"
+  ],
+  "searchFallback": {
+    "firecrawlAvailable": false,
+    "fallback": "Prometheus Deep Research plus direct official-source web retrieval and local registry CLIs"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "concept": "Evidence classes for a Tauri mobile plugin",
+  "audience": "skeptical release engineer",
+  "phase1Explain": "A plugin request passes through four locks: the npm binding names the command, runtime authority authorizes the webview, Rust dispatches the registered handler, and mobile builds forward through PluginHandle to Kotlin or Swift. Evidence must say which lock it actually opened.",
+  "phase2Gaps": [
+    "A JavaScript IPC mock stops before runtime authority and Rust.",
+    "A plugin unit test can stop before the consumer's generated ACL manifest.",
+    "A mobile target build stops before native registration and command execution.",
+    "A development-only binding generator can have a newer toolchain need without raising the runtime plugin's declared MSRV, but only if it is truly optional and the default consumer is tested at the minimum."
+  ],
+  "phase3Relearn": [
+    "Tauri's official mocking guide explicitly distinguishes intercepted IPC from a real Rust backend.",
+    "The installed Tauri test source provides mock_builder and get_ipc_response for handler dispatch.",
+    "Official mobile docs require Kotlin/Swift registration and PluginHandle runtime calls."
+  ],
+  "phase4Simplified": "Compiling checks that a key was manufactured; an allowed host invocation checks the front-door lock; a denied invocation checks the guard; a phone or simulator invocation checks the last locked door into native code.",
+  "phase5Transfer": [
+    {
+      "problem": "The packed npm tarball contains Rust, Kotlin, Swift, and permissions, and its Rust host test passes. Is Android certified?",
+      "answer": "No. Packaging and desktop authorization are certified. Android remains blocked until a Tauri Android host returns the expected native ping and preserves the result."
+    },
+    {
+      "problem": "The allowed command passes but the no-capability case is never run. Is least privilege certified?",
+      "answer": "No. A positive path cannot show runtime authority fails closed. The denied webview must invoke the same command and record rejection."
+    }
+  ],
+  "status": "manual-transfer-pass-not-mastery-certification"
+}

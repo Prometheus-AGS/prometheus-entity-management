@@ -1,0 +1,30 @@
+{
+  "topics": [
+    {"id":"topic-prerequisites","name":"prerequisite truth","claims":["claim-prereqs"]},
+    {"id":"topic-ownership","name":"canonical graph ownership","claims":["claim-graph","claim-riverpod","claim-ffi"]},
+    {"id":"topic-toolchain","name":"stable dependency matrix","claims":["claim-unused","claim-conflict","claim-stable"]},
+    {"id":"topic-behavior","name":"Riverpod 3 behavior","claims":["claim-retry"]},
+    {"id":"topic-declared-surface","name":"public API and evidence truth","claims":["claim-ledger","claim-exclusions"]}
+  ],
+  "claims": [
+    {"id":"claim-prereqs","text":"Both declared dependencies are archived and their promoted specs validate, but neither certifies this change.","confidence":0.99,"sources":["src-provenance-evidence","src-package-evidence"]},
+    {"id":"claim-graph","text":"The hand-written Dart graph is the canonical normalized state owner.","confidence":0.98,"sources":["src-canonical-package","src-plan"]},
+    {"id":"claim-riverpod","text":"Riverpod families/controllers must select and orchestrate graph state rather than duplicate it.","confidence":0.97,"sources":["src-canonical-package","src-plan"]},
+    {"id":"claim-ffi","text":"KnowMe FFI is an optional transport pattern, not a public core dependency.","confidence":0.97,"sources":["src-imported-provenance","src-plan"]},
+    {"id":"claim-unused","text":"The canonical package contains no Freezed, JSON, or Riverpod generated declarations despite manifest claims.","confidence":0.99,"sources":["src-canonical-package"]},
+    {"id":"claim-conflict","text":"Current stable Riverpod and Freezed generators have incompatible analyzer constraints.","confidence":0.98,"sources":["src-riverpod-registry","src-freezed-registry","src-resolver-probe"]},
+    {"id":"claim-stable","text":"The newest mutually compatible Riverpod-only generator matrix resolves on the declared Flutter 3.44.8 stable floor after unused generators are removed.","confidence":1.0,"sources":["src-stable-floor-probe","src-flutter-archive-3448","src-dart-guidance"]},
+    {"id":"claim-retry","text":"Riverpod 3 automatic retry requires explicit terminal-error policy and bounded transient retry.","confidence":0.96,"sources":["src-riverpod-migration","src-imported-provenance"]},
+    {"id":"claim-ledger","text":"The canonical Dart barrel and generated provider part expose 81 mechanically verified public declarations.","confidence":0.99,"sources":["src-implementation-and-ledger"]},
+    {"id":"claim-exclusions","text":"The Dart library gate certifies a scoped widget harness but not the complete app, devices, accessibility, persistence, batching, pub.dev, or stable promotion.","confidence":0.99,"sources":["src-implementation-and-ledger","src-plan"]}
+  ],
+  "relations": [
+    {"from":"claim-prereqs","to":"claim-graph","type":"enables-not-certifies"},
+    {"from":"claim-riverpod","to":"claim-graph","type":"reads-and-orchestrates"},
+    {"from":"claim-ffi","to":"claim-graph","type":"optional-transport"},
+    {"from":"claim-unused","to":"claim-conflict","type":"permits-removal-resolution"},
+    {"from":"claim-conflict","to":"claim-stable","type":"resolved-by-scope-correction"},
+    {"from":"claim-ledger","to":"claim-riverpod","type":"records-public-surface"},
+    {"from":"claim-exclusions","to":"claim-ledger","type":"bounds-evidence-claims"}
+  ]
+}

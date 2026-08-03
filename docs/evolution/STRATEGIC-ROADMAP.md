@@ -553,6 +553,12 @@ Define a common schema format that all generators consume:
 
 *Priority: Medium-High. Duration: 6–9 months. Depends on Phase 3 (AI integration).*)
 
+> **3.0 boundary update:** the official A2UI v0.9.1 renderer now owns the
+> package root. The chat/copilot/diff/approval inventory below is the legacy
+> AG-UI compatibility surface at `@prometheus-ags/a2ui-react/ag-ui`; it must not
+> be presented as official A2UI protocol rendering. See
+> `../../release/a2ui-protocol-bridge.md`.
+
 ### 6.1 Vision: The "CopilotKit Alternative"
 
 **CopilotKit** is a React-specific library for adding AI copilots to apps. PEM's A2UI library should be:
@@ -581,9 +587,9 @@ A2UI Component
     └── Agent Interface (A2A messages, AG-UI events)
 ```
 
-**Example:** `EntityChat` in React
+**Example:** legacy AG-UI `EntityChat` in React
 ```tsx
-import { EntityChat } from '@prometheus-ags/a2ui-react'
+import { EntityChat } from '@prometheus-ags/a2ui-react/ag-ui'
 
 <EntityChat
   entityTypes={['user', 'order']}

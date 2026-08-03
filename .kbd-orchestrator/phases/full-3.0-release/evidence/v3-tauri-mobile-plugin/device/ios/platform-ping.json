@@ -1,0 +1,8 @@
+{
+  "command": "plugin:entity-graph-tauri|graph_platform_ping",
+  "response": {
+    "plugin": "entity-graph-tauri",
+    "platform": "ios"
+  },
+  "result": "pass"
+}

@@ -1,0 +1,22 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [],
+  "checked_classes": [
+    "Spec violations \u2014 compared the diff against the provided acceptance criteria for dependency completion, full React/Vite showcase implementation, verification evidence, ledger/doc updates, clean-gate evidence, and recorded limits; no unsupported criterion failure was evident from the packet.",
+    "Correctness \u2014 reviewed the modified React Suspense/query paths, Vite showcase store/service/page flow, Loro provider/loopback/WebSocket channel changes, verifier scripts, and BDD/Playwright tests for concrete logic defects; no packet-supported blocking defect was found.",
+    "Regressions \u2014 checked public export ledger updates, package contract extension correction, fixed-group release metadata, and example coverage transitions for contradicted or removed required behavior; no concrete regression was supported by the included evidence.",
+    "Security \u2014 checked live transport opt-in handling, WebSocket frame parsing, path/hash evidence recording, and release/publication boundary language for obvious injection, traversal, secret, or authorization defects; no packet-supported issue was found.",
+    "Constraint breaches \u2014 no project-level constraints were supplied, and the diff explicitly preserves pnpm-only, source-workspace-vs-packed evidence, and publication-boundary rules in the provided materials.",
+    "Silent failure \u2014 reviewed changed error handling in Loro import/export/WebSocket paths, verifier exit behavior, live REST/GraphQL missing-endpoint behavior, and evidence gates; no newly swallowed mandatory failure was evident from the packet."
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

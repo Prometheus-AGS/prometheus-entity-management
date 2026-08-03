@@ -1,0 +1,13 @@
+{
+  "style": "APA",
+  "citations": [
+    {"id":"cite-filter-repo","url":"https://github.com/newren/git-filter-repo","formatted":"Newren, E. (2024). git-filter-repo: Quickly rewrite Git repository history. GitHub.","credibility_score":92,"confidence":0.92},
+    {"id":"cite-github-split","url":"https://docs.github.com/en/get-started/using-git/splitting-a-subfolder-out-into-a-new-repository","formatted":"GitHub. (2026). Splitting a subfolder out into a new repository.","credibility_score":90,"confidence":0.90},
+    {"id":"cite-reuse","url":"https://reuse.software/spec/","formatted":"Free Software Foundation Europe. (2024). REUSE Specification, version 3.3.","credibility_score":94,"confidence":0.94},
+    {"id":"cite-dart-layout","url":"https://dart.dev/tools/pub/package-layout","formatted":"Dart project. (2026). Package layout conventions.","credibility_score":95,"confidence":0.95},
+    {"id":"cite-dart-publish","url":"https://dart.dev/tools/pub/publishing","formatted":"Dart project. (2026). Publishing packages.","credibility_score":95,"confidence":0.95},
+    {"id":"cite-riverpod","url":"https://riverpod.dev/docs/3.0_migration","formatted":"Riverpod. (2026). Migrating from 2.0 to 3.0.","credibility_score":95,"confidence":0.95},
+    {"id":"cite-pub","url":"https://pub.dev/packages/flutter_riverpod/versions","formatted":"pub.dev. (2026). flutter_riverpod package versions.","credibility_score":94,"confidence":0.94},
+    {"id":"cite-flutter","url":"https://docs.flutter.dev/install/archive","formatted":"Flutter project. (2026). Flutter SDK archive.","credibility_score":94,"confidence":0.94}
+  ]
+}

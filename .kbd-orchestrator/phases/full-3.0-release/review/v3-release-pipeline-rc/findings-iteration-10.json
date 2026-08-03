@@ -1,0 +1,18 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-critic",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "package.json",
+      "line": 86,
+      "claim": "The change modifies root dependencies without including the corresponding pnpm-lock.yaml update, so the workflow's frozen installs will fail.",
+      "evidence": "package.json adds and changes many devDependencies and pnpm overrides in the hunk starting at `\"devDependencies\"`, while the diff contains no pnpm-lock.yaml hunk; `.github/workflows/publish.yml` runs `pnpm install --frozen-lockfile` in version-pr, rehearse, and stage jobs, and the task acceptance criteria require running relevant pnpm gates from a clean state.",
+      "suggested_fix": "Commit the generated pnpm-lock.yaml changes produced by `pnpm install --lockfile-only` or revert the package.json dependency changes."
+    }
+  ]
+}

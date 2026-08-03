@@ -9,13 +9,13 @@
  * Architecture (strictly layered — never touches graph directly):
  *   Alpine template expression
  *     → $entity magic (this file)
- *       → useGraphStore.subscribe  (core Layer 1 read)
+ *       → graphStore.subscribe  (core Layer 1 read)
  *       → fetchEntity              (core engine, handles dedup + retry)
- *       → useGraphStore.getState() (synchronous graph reads only)
+ *       → graphStore.getState() (synchronous graph reads only)
  */
 
 import {
-  useGraphStore,
+  graphStore,
   fetchEntity,
   getEngineOptions,
   registerSubscriber,
@@ -107,7 +107,7 @@ export function createEntityBinding<T extends Record<string, unknown>>(
       cell.error = null;
       return;
     }
-    const s = useGraphStore.getState();
+    const s = graphStore.getState();
     const key = `${type}:${id}`;
     const entityState = s.entityStates[key] ?? EMPTY_ENTITY_STATE;
 
@@ -117,7 +117,7 @@ export function createEntityBinding<T extends Record<string, unknown>>(
   }
 
   // ── Subscribe to Zustand graph ─────────────────────────────────────────────
-  const unsubscribe = useGraphStore.subscribe(
+  const unsubscribe = graphStore.subscribe(
     (s) => ({
       data: id ? s.entities[type]?.[id] : null,
       patch: id ? s.patches[type]?.[id] : null,
@@ -134,7 +134,7 @@ export function createEntityBinding<T extends Record<string, unknown>>(
   function doFetch(): void {
     if (!id || !enabled) return;
 
-    const s = useGraphStore.getState();
+    const s = graphStore.getState();
     const key = `${type}:${id}`;
     const entityState = s.entityStates[key];
     const lastFetched = entityState?.lastFetched ?? 0;
@@ -168,7 +168,7 @@ export function createEntityBinding<T extends Record<string, unknown>>(
   // ── Imperative refetch ─────────────────────────────────────────────────────
   function refetch(): void {
     if (!id) return;
-    useGraphStore.getState().setEntityStale(type, id, true);
+    graphStore.getState().setEntityStale(type, id, true);
     doFetch();
   }
 

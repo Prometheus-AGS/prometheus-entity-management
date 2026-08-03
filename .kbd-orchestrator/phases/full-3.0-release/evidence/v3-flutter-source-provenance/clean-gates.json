@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-flutter-source-provenance",
+  "recordedAt": "2026-08-02T00:00:14Z",
+  "status": "pass",
+  "environment": {
+    "os": "Darwin 25.6.0 arm64",
+    "node": "26.5.0",
+    "pnpm": "10.33.0",
+    "flutter": "3.47.0-0.1.pre beta",
+    "flutterBundledDart": "3.13.0-282.1.beta",
+    "melos": "8.2.2",
+    "cargo": "1.99.0-nightly"
+  },
+  "source": {
+    "head": "eb3c9802da5ff10ad6db135fed761bd23ea80b3f",
+    "worktreeDirtyEntries": 259,
+    "certificationScope": "current source content, not an immutable release candidate, registry artifact, pub.dev artifact, npm tag, or GitHub Pages deployment",
+    "cleanRoom": "fresh Git-preserving source snapshot with current worktree content overlaid, committed only inside the disposable clone, and dependency trees, build output, caches, native targets, coverage, and tarballs excluded",
+    "cleanRoomSnapshotCommit": "125703172cb496eea3cbe64098e6856e9a0a380a",
+    "cleanRoomInitiallyDirty": false,
+    "excludedDirectoryCount": 0,
+    "provenanceMergeIsAncestor": true,
+    "lockfileSha256": "19ef1dbfea784c871c163364524556595bbd3228fcf139e8f5b0cfb70c23aea2"
+  },
+  "corrections": [
+    {
+      "attempt": 1,
+      "status": "fail",
+      "finding": "The aggregate release-contract BDD expectation still ended at the A2UI quality gate, although the release ledger now also owns A2A conformance and Flutter source provenance gates. Complete CI failed one of 61 scenarios; all other gates reached by that run passed.",
+      "correction": "Updated the release-contract step expectation with release.protocol.a2a-jsonrpc-v1 and release.flutter.source-provenance, proved the focused release contract, and created a new clean room from the corrected current source."
+    },
+    {
+      "attempt": 2,
+      "status": "pass",
+      "finding": "A new initially clean snapshot passed frozen installation, complete CI, focused provenance, package, documentation, security, OpenSpec, changeset, and integrity gates."
+    }
+  ],
+  "gates": [
+    {
+      "id": "frozen-install",
+      "command": "pnpm install --frozen-lockfile --prefer-offline",
+      "status": "pass",
+      "summary": "793 locked packages installed; 782 reused and zero downloaded"
+    },
+    {
+      "id": "complete-ci",
+      "command": "pnpm run ci",
+      "status": "pass",
+      "summary": "release and coverage validation, lint, typecheck, 14/14 build tasks, tests, skills, and security passed"
+    },
+    {
+      "id": "complete-bdd",
+      "command": "pnpm run bdd",
+      "status": "pass",
+      "summary": "61/61 scenarios, 313/313 steps, and 4/4 hooks"
+    },
+    {
+      "id": "focused-provenance-tests",
+      "command": "pnpm run test:flutter-source-provenance",
+      "status": "pass",
+      "summary": "12/12 verifier tests passed"
+    },
+    {
+      "id": "focused-provenance-bdd",
+      "command": "pnpm run bdd:flutter-source-provenance",
+      "status": "pass",
+      "summary": "14/14 scenarios and 56/56 steps",
+      "report": "clean-cucumber.json",
+      "reportSha256": "2656f7d28db7fec80c48d9cdafab7f55eafdd3f21ca3e9246a383ea527e0be46"
+    },
+    {
+      "id": "source-provenance-verifier",
+      "command": "pnpm run verify:flutter-source-provenance -- --report ...",
+      "status": "pass",
+      "summary": "8 retained commits with 218 pruned from 226 examined; canonical Dart package, licenses, source authority, public ledgers, portable history, and deterministic lineage visual passed",
+      "report": "clean-provenance-verification.json",
+      "reportSha256": "386dd1db6db696d873c1b4b12821b3b403146ddbe3e2c211a3e002065a45895f"
+    },
+    {
+      "id": "packed-package-contract",
+      "command": "pnpm run verify:package-contracts -- --report ...",
+      "status": "pass",
+      "summary": "12/12 npm tarballs passed payload and manifest policy, Publint, ATTW, ESM, CommonJS, NodeNext, Node16, Bundler, and tarball-only consumers",
+      "report": "clean-package-contract-report.json",
+      "reportSha256": "7ecd48ae0be60339d0487afa8e0d84506382a2bb9e9c63b30fa4b66a646e5bb3"
+    },
+    {
+      "id": "skills-export-ledgers",
+      "command": "pnpm run verify:skills",
+      "status": "pass",
+      "summary": "201 React, 16 sync, 18 A2UI root, 9 AG-UI compatibility, 30 A2A root, and 2 A2A legacy runtime exports match their ledgers"
+    },
+    {
+      "id": "release-and-example-validation",
+      "command": "pnpm run verify:example-coverage && pnpm run validate:release-contract",
+      "status": "pass",
+      "summary": "13/13 semantic scenarios; 16 stable artifacts; 12 npm packages; 1 Dart package; 3 Rust surfaces; release remains in progress and uncertified",
+      "report": "clean-example-coverage-report.json",
+      "reportSha256": "7756ee456a24bdf255d047d353e54449f709e4f3c2d52a4da1a32ddef8aac45b"
+    },
+    {
+      "id": "production-security",
+      "command": "pnpm run security:audit",
+      "status": "pass",
+      "summary": "325 dependencies; 2 low; 0 moderate/high/critical; 0 blocking advisories"
+    },
+    {
+      "id": "openspec",
+      "command": "pnpm exec openspec validate v3-flutter-source-provenance --strict --no-interactive",
+      "status": "pass",
+      "summary": "active Flutter source provenance change is strictly valid"
+    },
+    {
+      "id": "changeset-status",
+      "command": "pnpm changeset status",
+      "status": "pass",
+      "summary": "all 12 npm packages have patch release entries; no publication was attempted"
+    },
+    {
+      "id": "whitespace",
+      "command": "git diff --check",
+      "status": "pass",
+      "summary": "the original current-content worktree has no whitespace errors"
+    }
+  ],
+  "applicability": {
+    "dartFlutterProbe": {
+      "status": "downstream-observation",
+      "reason": "The canonical packages/entity_graph_flutter package resolved its committed lockfile offline, passed dart analyze with zero issues, and passed all 54 Flutter tests in a separate pristine copy. Dart 3.13 formatting would change six source/test files, Flutter 3.47 beta adds platform/build exclusions to analysis_options.yaml, and Riverpod 3.3.2 is newer than the pinned 2.6.1. Those runtime, formatting, manifest, and dependency migrations belong to v3-dart-graph-riverpod; none was silently applied here."
+    },
+    "melos": {
+      "status": "not-applicable",
+      "reason": "No melos.yaml exists yet. Introducing the Dart workspace and its aggregate commands belongs to v3-dart-graph-riverpod."
+    },
+    "cargo": {
+      "status": "not-applicable",
+      "reason": "This provenance change owns no Rust source, Cargo manifest, Tauri capability, generated binding, or native command behavior. Native Cargo and device gates remain with the Tauri desktop/mobile changes."
+    },
+    "docusaurus": {
+      "status": "not-applicable",
+      "reason": "The planned website directory does not exist yet. Documentation foundation, branded content, visual certification, and GitHub Pages changes retain site build, link, accessibility, and deployment gates."
+    },
+    "visual": {
+      "status": "pass-headless",
+      "reason": "The deterministic lineage SVG and reviewed PNG prove source flow and are hash-bound. They explicitly do not claim Flutter rendering, device behavior, or accessibility certification; those remain with the Flutter showcase."
+    }
+  },
+  "knownNonBlockingOutput": [
+    "Flint live integration was skipped because the sibling SDK was not resolvable in the isolated clean room.",
+    "One core benchmark remains marked todo.",
+    "Vite emitted a native loader warning and Turbo emitted output warnings; neither represented a failed gate."
+  ],
+  "publicationAuthorized": false
+}

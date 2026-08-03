@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".github/workflows/publish.yml",
+      "line": 60,
+      "claim": "The release-candidate workflow declares an unsupported GitHub Actions permission key, so the workflow will fail validation before running the rehearsal or staging jobs.",
+      "evidence": "The rehearse job permissions block adds `artifact-metadata: write` alongside `contents`, `id-token`, and `attestations`; `artifact-metadata` is not a valid GitHub Actions `permissions` scope.",
+      "suggested_fix": "Remove `artifact-metadata: write` from the job permissions block and keep only supported scopes required by the attestation/upload steps, e.g. `contents: read`, `id-token: write`, and `attestations: write`."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

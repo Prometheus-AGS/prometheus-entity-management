@@ -14,6 +14,8 @@ drilling, full cross-view reactivity.
 pnpm add @prometheus-ags/entity-graph-svelte @prometheus-ags/entity-graph-core
 ```
 
+`@prometheus-ags/entity-graph-core` is a required peer: install it explicitly so the application owns the one compatible graph instance. The Svelte binding must not install a private core copy. See the [binding singleton contract](../../release/binding-singleton-contract.md).
+
 ---
 
 ## Quick start
@@ -191,7 +193,7 @@ cache invalidation needed.
 ```
 Svelte component
   └── createEntityStore / createEntityList  (this package)
-        └── useGraphStore.subscribe()       (entity-graph-core)
+        └── graphStore.subscribe()          (entity-graph-core)
               ├── fetchEntity / fetchList   (core engine)
               └── graph mutations           (core graph.ts)
 ```

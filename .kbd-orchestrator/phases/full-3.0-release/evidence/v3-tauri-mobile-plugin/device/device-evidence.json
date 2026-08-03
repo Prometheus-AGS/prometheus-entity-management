@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-tauri-mobile-plugin",
+  "recordedAt": "2026-08-02T09:29:57Z",
+  "candidateCommit": "eb3c9802da5ff10ad6db135fed761bd23ea80b3f",
+  "workspaceState": "dirty-change-candidate",
+  "command": "plugin:entity-graph-tauri|graph_platform_ping",
+  "platforms": {
+    "android": {
+      "targetKind": "physical-device",
+      "model": "Samsung SM-S936U",
+      "serial": "R5GYB4AZD7A",
+      "os": "Android 16",
+      "apiLevel": 36,
+      "success": {
+        "response": {
+          "plugin": "entity-graph-tauri",
+          "platform": "android"
+        },
+        "installedApkSha256": "762a4ddfed89c87b3977e092cafcf09ab2c9ae4528dc9abe35412ce867990046",
+        "artifacts": [
+          {
+            "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/android/platform-ping.json",
+            "sha256": "6de3c87c26b65e08be04549648372c2f0396c68c7101d8035d9cf507eeb3c667"
+          },
+          {
+            "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/android/platform-ping.png",
+            "sha256": "ce3642ff825866f51f87d0193a7f0c41923ee660e86e474c9886eaca652afb31"
+          },
+          {
+            "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/android/platform-ping-ui.xml",
+            "sha256": "c13faa30e445f955cf84ce0894ec80abf7a9103600b4ee3614b08fa952a2a0d4"
+          },
+          {
+            "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/android/platform-ping-logcat.txt",
+            "sha256": "8cc5a23ebc38e686384cff21ec0bdaba64024e444220219ff271e34a2560ffd0"
+          }
+        ]
+      },
+      "denial": {
+        "error": "entity-graph-tauri.graph_platform_ping not allowed. Permissions associated with this command: entity-graph-tauri:allow-graph-platform-ping, entity-graph-tauri:default",
+        "installedApkSha256": "52d432a054c568fdc68861daab413830b60688a2aef514bec8b931ec40647fdf",
+        "artifacts": [
+          {
+            "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/android/capability-denial.json",
+            "sha256": "45bea4189d11abac538c744d31b5d07c5a92b20783ebce1e8273c1c3cfa915ff"
+          },
+          {
+            "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/android/capability-denial.png",
+            "sha256": "4d3be15d369210fa8d3fa4b5394f5f673920b9f0d88a705605a018b3ebcb5a18"
+          },
+          {
+            "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/android/capability-denial-ui.xml",
+            "sha256": "efd972b131e8a4bd50df29087007c2d883d9dddcc6c8b5eea2606b06ffb5117f"
+          },
+          {
+            "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/android/capability-denial-logcat.txt",
+            "sha256": "e2a6c2c102a6af1ce0fccacd46ac657ab13e63d6149592cfe5429419270274ff"
+          }
+        ]
+      }
+    },
+    "ios": {
+      "targetKind": "simulator",
+      "model": "iPhone 17",
+      "udid": "7F63354E-3475-4158-BB5E-F75D5E7ECFBA",
+      "os": "iOS 26.5",
+      "success": {
+        "response": {
+          "plugin": "entity-graph-tauri",
+          "platform": "ios"
+        },
+        "artifacts": [
+          {
+            "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/ios/platform-ping.json",
+            "sha256": "8363c5fd3fa28bced60cb50d02b923b607ed9fbf566d1fa49a5f65d2970b9198"
+          },
+          {
+            "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/ios/platform-ping.png",
+            "sha256": "bc071e7f2705d50b1f8aa15a0e2f81d7abe745cc2eb24cda19810536ca75da06"
+          },
+          {
+            "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/ios/artifacts/success.app/Entity Graph Tauri Host Contract",
+            "sha256": "6f7dd0229cd522e0e5e9966c3c5dd88d6250628a8e7ce457d2288fdeaaa627a6"
+          }
+        ]
+      },
+      "denial": {
+        "error": "entity-graph-tauri.graph_platform_ping not allowed. Permissions associated with this command: entity-graph-tauri:allow-graph-platform-ping, entity-graph-tauri:default",
+        "artifacts": [
+          {
+            "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/ios/capability-denial.json",
+            "sha256": "45bea4189d11abac538c744d31b5d07c5a92b20783ebce1e8273c1c3cfa915ff"
+          },
+          {
+            "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/ios/capability-denial.png",
+            "sha256": "b5f68419c01b8386acf515fb3521330353897526472803f26d4ee85abc02ecd6"
+          },
+          {
+            "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/ios/artifacts/denial.app/Entity Graph Tauri Host Contract",
+            "sha256": "d0bdc3ebfb4cb2209962aabd09b9ec931aecfa10f229824e15337cfd9121dae1"
+          }
+        ]
+      },
+      "diagnostics": {
+        "initialCapture": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/ios/platform-ping-initial-blank.png",
+        "disposition": "capture raced the first meaningful WebView paint; the settled receipt is authoritative"
+      }
+    }
+  },
+  "independentChecks": {
+    "hashesRecomputed": true,
+    "screenshotsInspectedAtOriginalResolution": true,
+    "exactResponsesMatched": true,
+    "exactDenialsMatched": true
+  },
+  "scope": "Closes the v3-tauri-mobile-plugin Android/iOS bridge and permission-denial evidence gate; it does not certify the full 3.0.0 release or authorize publication."
+}

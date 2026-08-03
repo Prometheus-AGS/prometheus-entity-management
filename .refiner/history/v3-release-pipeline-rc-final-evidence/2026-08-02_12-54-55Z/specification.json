@@ -1,0 +1,42 @@
+{
+  "specification": {
+    "artifact_name": "v3-release-pipeline-rc-final-evidence",
+    "artifact_type": "content",
+    "clarified_intent": {
+      "description": "Certify that the bounded RC-pipeline change is evidence-complete and archive-ready while keeping full-release certification and publication authority explicitly independent.",
+      "domain": "release evidence and disposition"
+    },
+    "constraint_source": "generic artifact-refiner constraints because .kbd-orchestrator/constraints.md is present but empty",
+    "constraints": [
+      "release-state-dimensions-independent",
+      "no-publication-overclaim",
+      "acceptance-has-direct-evidence",
+      "visual-accessible-and-legible",
+      "ledgers-synchronized",
+      "deterministic-integrity"
+    ],
+    "target_state": {
+      "description": "A reproducible evidence bundle that passes all blocking constraints and makes no public-release claim.",
+      "success_criteria": [
+        "Every bounded plan criterion maps to direct evidence.",
+        "Archive readiness is not conflated with release certification or publication authority.",
+        "The state visual is valid, legible, accessible, and hash-addressed.",
+        "Coverage and final evidence agree that the full 3.0 release is pending.",
+        "All required JSON, Markdown, SVG, and PNG artifacts exist and validate."
+      ],
+      "measurable_outcomes": [
+        {"metric": "blocking violations", "threshold": "0"},
+        {"metric": "BDD scenarios", "threshold": "10/10"},
+        {"metric": "unit contract tests", "threshold": "15/15"},
+        {"metric": "minimum visual contrast", "threshold": ">= 4.5:1"},
+        {"metric": "visual dimensions", "threshold": "1400x960"}
+      ]
+    },
+    "content_type": "direct:content",
+    "unknowns": [
+      "External npm/GitHub/Pub.dev/crates.io authority cannot be established from repository files and remains unproven."
+    ],
+    "requires_code_execution": true,
+    "likely_tools": ["JSON schema validator", "XML validator", "image metadata inspector", "test runner", "SHA-256 calculator"]
+  }
+}

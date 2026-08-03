@@ -1,0 +1,270 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-01T14:38:48.275Z",
+  "packageCount": 12,
+  "packages": [
+    {
+      "name": "@prometheus-ags/a2ui-react",
+      "directory": "packages/a2ui-react",
+      "tarball": "prometheus-ags-a2ui-react-3.0.0-alpha.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.cjs",
+        "dist/index.cjs.map",
+        "dist/index.d.cts",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-a2a",
+      "directory": "packages/entity-graph-a2a",
+      "tarball": "prometheus-ags-entity-graph-a2a-3.0.0-alpha.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.cjs",
+        "dist/index.cjs.map",
+        "dist/index.d.cts",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-alpine",
+      "directory": "packages/entity-graph-alpine",
+      "tarball": "prometheus-ags-entity-graph-alpine-3.0.0-alpha.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.cjs",
+        "dist/index.cjs.map",
+        "dist/index.d.cts",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-core",
+      "directory": "packages/entity-graph-core",
+      "tarball": "prometheus-ags-entity-graph-core-3.0.0-alpha.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.cjs",
+        "dist/index.cjs.map",
+        "dist/index.d.cts",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-htmx",
+      "directory": "packages/entity-graph-htmx",
+      "tarball": "prometheus-ags-entity-graph-htmx-3.0.0-alpha.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.cjs",
+        "dist/index.cjs.map",
+        "dist/index.d.cts",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/prometheus-entity-management",
+      "directory": "packages/entity-graph-react",
+      "tarball": "prometheus-ags-prometheus-entity-management-3.0.0-alpha.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.cjs",
+        "dist/index.cjs.map",
+        "dist/index.d.cts",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-sdl",
+      "directory": "packages/entity-graph-sdl",
+      "tarball": "prometheus-ags-entity-graph-sdl-3.0.0-alpha.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.cjs",
+        "dist/index.cjs.map",
+        "dist/index.d.cts",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-solid",
+      "directory": "packages/entity-graph-solid",
+      "tarball": "prometheus-ags-entity-graph-solid-3.0.0-alpha.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.cjs",
+        "dist/index.cjs.map",
+        "dist/index.d.cts",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-svelte",
+      "directory": "packages/entity-graph-svelte",
+      "tarball": "prometheus-ags-entity-graph-svelte-3.0.0-alpha.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.cjs",
+        "dist/index.cjs.map",
+        "dist/index.d.cts",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-sync",
+      "directory": "packages/entity-graph-sync",
+      "tarball": "prometheus-ags-entity-graph-sync-3.0.0-alpha.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/chunk-YUSM3I7H.mjs",
+        "dist/chunk-YUSM3I7H.mjs.map",
+        "dist/index.cjs",
+        "dist/index.cjs.map",
+        "dist/index.d.cts",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "dist/registry-DMT3ZKMQ.mjs",
+        "dist/registry-DMT3ZKMQ.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-tauri",
+      "directory": "packages/entity-graph-tauri",
+      "tarball": "prometheus-ags-entity-graph-tauri-3.0.0-alpha.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.cjs",
+        "dist/index.cjs.map",
+        "dist/index.d.cts",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json",
+        "rust-plugin/Cargo.toml",
+        "rust-plugin/build.rs",
+        "rust-plugin/gen/schemas/acl-manifests.json",
+        "rust-plugin/gen/schemas/capabilities.json",
+        "rust-plugin/gen/schemas/desktop-schema.json",
+        "rust-plugin/gen/schemas/macOS-schema.json",
+        "rust-plugin/src/commands.rs",
+        "rust-plugin/src/lib.rs",
+        "rust-plugin/src/state.rs",
+        "rust-plugin/src/types.rs",
+        "rust-plugin/tauri.conf.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-web-components",
+      "directory": "packages/entity-graph-web-components",
+      "tarball": "prometheus-ags-entity-graph-web-components-3.0.0-alpha.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.cjs",
+        "dist/index.cjs.map",
+        "dist/index.d.cts",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    }
+  ],
+  "consumers": {
+    "candidateSet": "tarballs-only",
+    "nodeEsm": "pass",
+    "nodeCommonJs": "pass",
+    "typescriptNodeNext": "pass",
+    "typescriptNode16": "pass",
+    "typescriptBundler": "pass"
+  }
+}

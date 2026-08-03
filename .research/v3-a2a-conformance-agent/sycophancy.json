@@ -1,0 +1,31 @@
+{
+  "skill_id": "sycophancy.correction",
+  "version": "1.0.0",
+  "strictness": "strict",
+  "target": "implementation-recommendation",
+  "executed_at": "2026-08-01T21:00:00Z",
+  "initial_result": {
+    "score": 0.18,
+    "correction_mandatory": true,
+    "classifications": [
+      {
+        "pattern_id": "S-03",
+        "severity": "high",
+        "rationale": "The preliminary recommendation selected the official SDK without making its dependency cost, API break, new-stability risk, and deliberately narrow binding claim explicit."
+      }
+    ]
+  },
+  "corrected_result": {
+    "score": 0.0,
+    "correction_mandatory": false,
+    "classifications": []
+  },
+  "material_corrections": [
+    "State plainly that the current package is not A2A v1 despite its labels.",
+    "Pin @a2a-js/sdk@1.0.1 while acknowledging jose/uuid, breaking migration, and newly stable API risk.",
+    "Declare JSON-RPC only and prohibit implied REST, gRPC, push, signing, or multi-tenant claims.",
+    "Require auth and graph policy to run before mutation.",
+    "Treat the A2UI v0.9.1 versus legacy v0.8 extension mismatch as a governed boundary.",
+    "Pin the TCK commit and scope every report to executed normative scenarios."
+  ]
+}

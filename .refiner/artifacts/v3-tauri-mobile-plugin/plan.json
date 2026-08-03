@@ -1,0 +1,71 @@
+{
+  "plan": {
+    "stages": [
+      {
+        "id": "audit",
+        "description": "Map every Tauri criterion to task evidence, current clean-state evidence, or an explicit blocker.",
+        "requires_execution": false
+      },
+      {
+        "id": "correct",
+        "description": "Remove false equivalence between a documented mobile procedure and an executed native bridge.",
+        "requires_execution": true,
+        "tool": "BDD contract edit and focused release tests"
+      },
+      {
+        "id": "visual",
+        "description": "Render and inspect the four-dimension release disposition.",
+        "requires_execution": true,
+        "tool": "SVG validation, contrast calculation, rendering, image inspection, and SHA-256"
+      },
+      {
+        "id": "validate",
+        "description": "Run all deterministic gates not dependent on the host-exhausted Rust lane.",
+        "requires_execution": true,
+        "tool": "repository scripts"
+      },
+      {
+        "id": "persist",
+        "description": "Record QA convergence, release impact, exact blockers, and the no-archive decision.",
+        "requires_execution": false
+      }
+    ],
+    "tool_invocations": [
+      {
+        "stage_id": "correct",
+        "tool": "BDD contract edit and focused release tests",
+        "purpose": "Ensure a documented lane never masquerades as target-host execution."
+      },
+      {
+        "stage_id": "visual",
+        "tool": "SVG validation, contrast calculation, rendering, image inspection, and SHA-256",
+        "purpose": "Make the asymmetric completion state legible and honest."
+      },
+      {
+        "stage_id": "validate",
+        "tool": "repository scripts",
+        "purpose": "Validate the final evidence and synchronized public boundary deterministically."
+      }
+    ],
+    "state_updates": {
+      "files_to_create": [
+        "dist/artifact-refiner-qa.md",
+        "artifact_manifest.json",
+        "constraints.json",
+        "refinement_log.md",
+        "decisions.md",
+        "reflection.json"
+      ],
+      "files_to_update": ["state.json"],
+      "directories_required": ["dist", "checkpoints"]
+    },
+    "validation_plan": [
+      { "constraint_id": "c1", "validation_method": "acceptance matrix and task receipts", "execution_required": true },
+      { "constraint_id": "c2", "validation_method": "BDD wording and missing-receipt assertion", "execution_required": true },
+      { "constraint_id": "c3", "validation_method": "dimension, coverage, package version, and OpenSpec assertions", "execution_required": true },
+      { "constraint_id": "c4", "validation_method": "original-resolution review, XML/ARIA, contrast, and hashes", "execution_required": true },
+      { "constraint_id": "c5", "validation_method": "release tests, lint, coverage, ledgers, OpenSpec, JSON/XML, and diff hygiene", "execution_required": true },
+      { "constraint_id": "c6", "validation_method": "receipt absence, false archive/publication flags, and downstream owners", "execution_required": true }
+    ]
+  }
+}

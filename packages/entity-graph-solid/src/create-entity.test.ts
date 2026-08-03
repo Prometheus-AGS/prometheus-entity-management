@@ -64,7 +64,7 @@ vi.mock("solid-js/store", () => {
 });
 
 import {
-  useGraphStore,
+  graphStore,
   __resetEntityTransports,
   registerEntityTransport,
 } from "@prometheus-ags/entity-graph-core";
@@ -72,7 +72,7 @@ import { createEntity } from "./create-entity";
 
 beforeEach(() => {
   // Reset the graph between tests.
-  const s = useGraphStore.getState();
+  const s = graphStore.getState();
   for (const type of Object.keys(s.entities)) {
     for (const id of Object.keys(s.entities[type])) {
       s.removeEntity(type, id);
@@ -101,11 +101,11 @@ describe("createEntity", () => {
 
   it("reads entity from the graph when it is pre-populated", () => {
     // Pre-populate the graph to test cache-hit path.
-    useGraphStore.getState().upsertEntity("Invoice", "inv-2", {
+    graphStore.getState().upsertEntity("Invoice", "inv-2", {
       id: "inv-2",
       amount: 250,
     });
-    useGraphStore.getState().setEntityFetched("Invoice", "inv-2");
+    graphStore.getState().setEntityFetched("Invoice", "inv-2");
 
     const entity = createEntity({
       type: "Invoice",
@@ -119,7 +119,7 @@ describe("createEntity", () => {
     const data = entity.data();
     // data may be null in unit test (store mock doesn't wire subscriptions),
     // but the graph should have the entity.
-    const graphData = useGraphStore.getState().readEntity("Invoice", "inv-2");
+    const graphData = graphStore.getState().readEntity("Invoice", "inv-2");
     expect(graphData).toEqual({ id: "inv-2", amount: 250 });
   });
 
@@ -160,7 +160,7 @@ describe("createEntity", () => {
     expect(fetchFn).toHaveBeenCalledWith("inv-3");
     expect(onSuccess).toHaveBeenCalledWith({ id: "inv-3", status: "paid" });
     expect(
-      useGraphStore.getState().readEntity("Invoice", "inv-3"),
+      graphStore.getState().readEntity("Invoice", "inv-3"),
     ).toEqual({ id: "inv-3", status: "paid" });
   });
 });

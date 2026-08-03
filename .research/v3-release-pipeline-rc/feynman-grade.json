@@ -1,0 +1,22 @@
+{
+  "concept_id": "release-candidate-recovery",
+  "scores": {
+    "completeness": 0.96,
+    "accuracy": 0.98,
+    "clarity": 0.93,
+    "misconceptions_absent": 1.0
+  },
+  "overall_score": 0.968,
+  "passed": true,
+  "pass_threshold": 0.7,
+  "gaps": [],
+  "feedback": "No substantive errors or corpus-level misconceptions detected. The explanation covers the core recovery model. Its remaining weakness is density, not correctness.",
+  "goal_id": "full-3.0-release",
+  "grader_model": "gpt-5.5",
+  "grader_url": "http://localhost:8181/v1",
+  "iterations": [
+    {"iteration": 1, "score": 0.95, "gap": "Missing explicit restartable state machine."},
+    {"iteration": 2, "score": 0.958, "gap": "Latest-tag snapshot and stable-promotion boundary needed operational detail."},
+    {"iteration": 3, "score": 0.968, "gap": null}
+  ]
+}

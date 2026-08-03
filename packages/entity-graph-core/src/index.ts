@@ -30,9 +30,17 @@ export type {
 } from "./transport/rest";
 
 // ── Core graph store ──────────────────────────────────────────────────────
-export { useGraphStore, EMPTY_IDS, EMPTY_ENTITY_STATE, EMPTY_SYNC_METADATA, EMPTY_LIST_STATE } from "./graph";
+export {
+  createGraphStore,
+  graphStore,
+  useGraphStore,
+  EMPTY_IDS,
+  EMPTY_ENTITY_STATE,
+  EMPTY_SYNC_METADATA,
+  EMPTY_LIST_STATE,
+} from "./graph";
 export type {
-  GraphState, EntityState, ListState, EntityType, EntityId,
+  GraphState, GraphStore, EntityState, ListState, EntityType, EntityId,
   EntitySyncMetadata, EntitySnapshot, QueryKey, SyncOrigin,
 } from "./graph";
 
@@ -44,7 +52,7 @@ export {
   registerMergeStrategy, setDefaultMergeStrategy, getMergeStrategy,
   hasMergeStrategy, lwwStrategy, createLoroMergeStrategy,
 } from "./merge";
-export type { MergeStrategy, MergeContext } from "./merge";
+export type { MergeStrategy, MergeContext, LoroModuleLoader } from "./merge";
 
 // ── Graph runtime extensions ──────────────────────────────────────────────
 export { queryOnce, selectGraph } from "./graph-query";
@@ -58,7 +66,8 @@ export type { GraphSnapshotExportOptions, GraphToolContext, SchemaGraphToolConte
 
 // ── Local-first runtime ───────────────────────────────────────────────────
 export {
-  startLocalFirstGraph, hydrateGraphFromStorage, persistGraphToStorage, replayActionWithRetry, useGraphSyncStatus,
+  startLocalFirstGraph, hydrateGraphFromStorage, persistGraphToStorage,
+  replayActionWithRetry, graphSyncStatusStore, getGraphSyncStatus,
 } from "./local-first-runtime";
 export type {
   GraphPersistenceAdapter, GraphSyncStatus, GraphSnapshotPayload,
@@ -165,11 +174,10 @@ export {
 export { getFacetedRowModel, getFacetedMinMaxValues, getFacetedUniqueValues } from "./table/faceting";
 export type {
   ColumnDef, ColumnDef as PureColumnDef, TableState, TableOptions, TableInstance, Row, Cell, Column,
-  Header, HeaderGroup, RowModel, ViewMode, ActionDef, ItemDescriptor, ItemRenderContext,
-  EmptyStateConfig, BatchActionDef, GalleryColumns, SortingState, ColumnFiltersState,
+  Header, HeaderGroup, RowModel, ViewMode, SortingState, ColumnFiltersState,
   RowSelectionState, ColumnVisibilityState, ColumnOrderState, ColumnPinningState,
   ColumnSizingState, ColumnSizingInfoState, ExpandedState, GroupingState, PaginationState,
   ColumnMeta, ColumnMeta as PureColumnMeta,
   Updater, FilterFn, SortingFn, AggregationFn, CellContext, HeaderContext, CellRenderer,
-  HeaderRenderer, AccessorFn, ItemDescriptorBadge, ItemDescriptorMeta,
+  HeaderRenderer, AccessorFn,
 } from "./table/types";

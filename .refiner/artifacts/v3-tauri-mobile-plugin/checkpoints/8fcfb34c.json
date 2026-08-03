@@ -1,0 +1,49 @@
+{
+  "refinement_id": "191c0ff7-67f2-4e35-9f9c-1424c768a5fa",
+  "artifact_name": "v3-tauri-mobile-plugin",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-02T06:59:42Z",
+  "updated_at": "2026-08-02T07:16:35Z",
+  "current_iteration": 2,
+  "max_iterations": 5,
+  "goals": [
+    "Prove the bounded Tauri implementation disposition without overclaiming native mobile execution, OpenSpec archive readiness, registry publication, or the wider 3.0 release."
+  ],
+  "constraints": [
+    { "id": "c1" },
+    { "id": "c2" },
+    { "id": "c3" },
+    { "id": "c4" },
+    { "id": "c5" },
+    { "id": "c6" }
+  ],
+  "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "blocking_satisfied": 6,
+      "blocking_violated": 0,
+      "decision": "terminate",
+      "timestamp": "2026-08-02T06:59:42Z"
+    },
+    {
+      "iteration": 2,
+      "blocking_satisfied": 6,
+      "blocking_violated": 0,
+      "decision": "terminate",
+      "timestamp": "2026-08-02T07:16:35Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "b49dd6d6",
+      "phase": "persist",
+      "iteration": 1,
+      "timestamp": "2026-08-02T06:59:42Z"
+    }
+  ],
+  "prior_cycle_id": null
+}

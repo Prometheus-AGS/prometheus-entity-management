@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-a2ui-protocol-bridge",
+  "recordedAt": "2026-08-01T20:49:17Z",
+  "taskDriver": {
+    "tasksDone": 6,
+    "tasksTotal": 6,
+    "verify": "pass"
+  },
+  "openspec": {
+    "archive": "openspec/changes/archive/2026-08-01-v3-a2ui-protocol-bridge",
+    "activeChangeRemoved": true,
+    "promotedSpec": "openspec/specs/v3-a2ui-protocol-bridge/spec.md",
+    "strictValidation": "pass"
+  },
+  "canonicalKbdTransition": {
+    "status": "pass",
+    "transitionPath": [
+      "pending",
+      "in-progress",
+      "complete"
+    ],
+    "committedRevision": 18,
+    "projectionRevision": 19,
+    "projection": "8/28",
+    "nextCommand": "/kbd-apply v3-a2a-conformance-agent",
+    "manualProjectionEditPerformed": false,
+    "reconciliation": {
+      "reason": "The migrated canonical ledger was still at revision 2 while the compatibility ledger recorded seven evidenced completions. Typed, revision-checked transitions reconciled exactly those seven archived changes before committing A2UI as the eighth.",
+      "legacyProgressBackup": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/control-plane-reconciliation/legacy-progress.json",
+      "legacyTasksBackup": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/control-plane-reconciliation/legacy-tasks.md",
+      "projectionOwner": "kbd-runtime"
+    }
+  },
+  "publicationAuthorized": false
+}

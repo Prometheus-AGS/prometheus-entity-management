@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "package.json",
+      "line": 11,
+      "claim": "The workflow's frozen installs will fail because package.json changes scripts/devDependencies without any corresponding pnpm-lock.yaml update in the diff.",
+      "evidence": "The package.json hunk adds many new dependencies and scripts, including @cucumber/cucumber, eslint, semver, tsx, yaml, etc., while .github/workflows/publish.yml runs `pnpm install --frozen-lockfile` in all jobs; the packet contains no pnpm-lock.yaml diff.",
+      "suggested_fix": "Regenerate and commit pnpm-lock.yaml with pnpm 10.33.0 after the package.json changes, or remove the package.json dependency changes."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

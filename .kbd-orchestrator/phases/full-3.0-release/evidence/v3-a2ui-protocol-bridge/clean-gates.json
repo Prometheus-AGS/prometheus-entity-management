@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-a2ui-protocol-bridge",
+  "recordedAt": "2026-08-01T20:20:00Z",
+  "status": "pass",
+  "environment": {
+    "os": "Darwin 25.6.0 arm64",
+    "node": "26.5.0",
+    "pnpm": "10.33.0"
+  },
+  "source": {
+    "head": "dd5d70c9954381d3af4519ccedeb5cb565d6027e",
+    "worktreeDirtyEntries": 228,
+    "certificationScope": "current source content, not an immutable commit, release candidate, registry artifact, or npm tag",
+    "cleanRoom": "fresh 26 MB source-only copy excluding .git, dependency trees, build output, caches, native targets, coverage, and tarballs",
+    "lockfileSha256": "a3f3a2d26c99b39b895a3e678ebec606c4e46f2bd0b3d4e682cda2f8a5470ab2"
+  },
+  "corrections": [
+    {
+      "attempt": 1,
+      "status": "fail",
+      "finding": "The aggregate packed Node16/CommonJS TypeScript consumer rejected the A2UI CommonJS declarations because they statically referenced the ESM-only @a2ui/web_core/v0_9 entry point. Four package-contract scenarios failed, and one release-ledger scenario retained the pre-A2UI quality-gate list.",
+      "correction": "Added a fail-closed post-build declaration normalization using TypeScript import-mode resolution, extended the dedicated packed A2UI verifier with a strict Node16 consumer, and updated the release quality-gate expectation."
+    },
+    {
+      "attempt": 2,
+      "status": "fail",
+      "finding": "The package correction passed, but one release-contract BDD assertion still required React-only src/index.ts ledger wording after the skill reference had gained separate React, sync, and A2UI ledgers.",
+      "correction": "Updated the assertion to the publishable-entry-point invariant and proved the complete aggregate BDD contract before creating a third clean room."
+    },
+    {
+      "attempt": 3,
+      "status": "pass",
+      "finding": "A new unbuilt source-only copy passed frozen installation, complete CI, focused packaging, visual, documentation, security, OpenSpec, changeset, and integrity gates."
+    }
+  ],
+  "gates": [
+    {
+      "id": "frozen-install",
+      "command": "pnpm install --frozen-lockfile --prefer-offline",
+      "status": "pass",
+      "summary": "790 locked packages installed across 15 workspaces; 779 reused and zero downloaded"
+    },
+    {
+      "id": "complete-ci",
+      "command": "pnpm run ci",
+      "status": "pass",
+      "summary": "validate, lint, 17/17 typecheck tasks, 14/14 build tasks, tests, skills, and security passed"
+    },
+    {
+      "id": "complete-bdd",
+      "command": "pnpm run bdd",
+      "status": "pass",
+      "summary": "40/40 scenarios, 219/219 steps, and 4/4 hooks"
+    },
+    {
+      "id": "focused-a2ui-tests",
+      "command": "pnpm run test:a2ui-bridge",
+      "status": "pass",
+      "summary": "13 official runtime/policy/React tests and 6 release guards passed"
+    },
+    {
+      "id": "focused-packed-a2ui-consumers",
+      "command": "node scripts/verify-a2ui-protocol-bridge.mjs --report ...",
+      "status": "pass",
+      "summary": "packed core/A2UI payloads plus ESM, CommonJS, TypeScript NodeNext, TypeScript Node16, and server-render consumers passed without workspace aliases",
+      "report": "clean-a2ui-packed-consumer-report.json",
+      "reportSha256": "98a66ab8dd40dc388aaac33d21e39c6853b2ea6b97605bcf94713be18dc3a896"
+    },
+    {
+      "id": "packed-package-contract",
+      "command": "pnpm run verify:package-contracts -- --report ...",
+      "status": "pass",
+      "summary": "12/12 tarballs passed payload and manifest policy, Publint, ATTW, ESM, CommonJS, NodeNext, Node16, and Bundler consumers",
+      "report": "clean-package-contract-report.json",
+      "reportSha256": "05474bcc7bbd5f91b27c2bf922195af961c6587ec397dc27b224c31826ae97a2"
+    },
+    {
+      "id": "browser-visual-evidence",
+      "command": "pnpm run verify:a2ui-visual",
+      "status": "pass",
+      "summary": "fresh runtime artifact matched the captured Chrome 150 desktop/mobile screenshots, keyboard trace, video, WCAG checklist, and zero-critical/serious axe receipt",
+      "artifactSha256": "24ad752b2e48555badbe30c7b9406231745dcee00beee194270d10f9b5a58ee6"
+    },
+    {
+      "id": "skills-export-ledgers",
+      "command": "pnpm run verify:skills",
+      "status": "pass",
+      "summary": "201 React, 16 sync, 18 A2UI root, and 9 AG-UI compatibility runtime exports match their ledgers"
+    },
+    {
+      "id": "release-and-example-validation",
+      "command": "pnpm run verify:example-coverage && pnpm run validate:release-contract",
+      "status": "pass",
+      "summary": "13/13 semantic scenarios; 16 artifacts; 12 npm packages; release remains in progress and uncertified"
+    },
+    {
+      "id": "production-security",
+      "command": "pnpm run security:audit",
+      "status": "pass",
+      "summary": "322 dependencies; 2 low; 0 moderate/high/critical; 0 blocking or accepted blocking advisories"
+    },
+    {
+      "id": "openspec",
+      "command": "openspec validate <item> --strict --no-interactive",
+      "status": "pass",
+      "summary": "active A2UI change plus promoted release-contract and package-module-contract specifications are valid"
+    },
+    {
+      "id": "changeset-status",
+      "command": "pnpm changeset status",
+      "status": "pass",
+      "summary": "the original git worktree recognizes patch bumps for all 12 npm packages, including @prometheus-ags/a2ui-react"
+    },
+    {
+      "id": "whitespace",
+      "command": "git diff --check",
+      "status": "pass",
+      "summary": "the original current-content worktree has no whitespace errors"
+    }
+  ],
+  "applicability": {
+    "dartMelos": {
+      "status": "not-applicable",
+      "reason": "This change owns no Dart/Flutter source, pubspec, lockfile, generated code, or Dart package boundary. Dedicated Dart/Riverpod and Flutter showcase changes retain those gates."
+    },
+    "cargo": {
+      "status": "not-applicable",
+      "reason": "This change owns no Rust source, Cargo manifest, Tauri capability, generated binding, or native command behavior. The package contract still verified the packed Tauri npm boundary; native Cargo and device gates remain with the Tauri changes."
+    },
+    "docusaurus": {
+      "status": "not-applicable",
+      "reason": "The planned website directory does not exist yet. Documentation foundation, content, visual certification, and GitHub Pages changes retain site build, link, accessibility, and deployment gates."
+    },
+    "browserVisual": {
+      "status": "pass",
+      "reason": "A2UI renders an interface, so real Chrome desktop/mobile, keyboard, video, accessibility, artifact-hash, and screenshot-hash evidence is mandatory and passed."
+    }
+  },
+  "publicationAuthorized": false
+}

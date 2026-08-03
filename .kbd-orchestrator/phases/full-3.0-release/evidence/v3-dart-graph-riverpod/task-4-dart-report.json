@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1",
+  "package": "entity_graph_flutter@3.0.0",
+  "result": "pass",
+  "flutter": {
+    "executed": true,
+    "command": "flutter test --reporter compact",
+    "passed": true
+  },
+  "contracts": {
+    "normalizedGraph": "pass",
+    "idOnlyLists": "pass",
+    "generatedRiverpod": "pass",
+    "localRemoteHybridViews": "pass",
+    "optimisticCrudRollback": "pass",
+    "boundedRetry": "pass",
+    "realtimeBridge": "pass",
+    "pluggableTransport": "pass",
+    "optionalFfi": "pass",
+    "publicApiLedger": "pass",
+    "declaredSurface": "pass"
+  },
+  "publicApiDeclarations": 81,
+  "visualEvidence": {
+    "scope": "Flutter widget harness for cross-view optimistic propagation; not full app, device, or accessibility certification",
+    "inspected": true,
+    "initial": {
+      "path": "packages/entity_graph_flutter/test/goldens/cross-view-initial.png",
+      "sha256": "6436bdfedd0dd3770ba17912537830b441f436f720f662e7318a035f7dec0627"
+    },
+    "optimistic": {
+      "path": "packages/entity_graph_flutter/test/goldens/cross-view-optimistic.png",
+      "sha256": "5ac52a873ef0ac63d9dbbe9d69a22cec7bb1e83b92ad7a4e7b33f6f471ff6a39"
+    }
+  },
+  "requiredFiles": [
+    "packages/entity_graph_flutter/lib/entity_graph_flutter.dart",
+    "packages/entity_graph_flutter/lib/src/graph.dart",
+    "packages/entity_graph_flutter/lib/src/providers.dart",
+    "packages/entity_graph_flutter/lib/src/providers.g.dart",
+    "packages/entity_graph_flutter/lib/src/view.dart",
+    "packages/entity_graph_flutter/lib/src/transport.dart",
+    "packages/entity_graph_flutter/lib/src/ffi-transport.dart",
+    "packages/entity_graph_flutter/test/view-contract_test.dart",
+    "packages/entity_graph_flutter/test/provider-contract_test.dart",
+    "packages/entity_graph_flutter/test/ffi-transport-contract_test.dart",
+    "packages/entity_graph_flutter/test/cross-view-widget_test.dart",
+    "packages/entity_graph_flutter/test/goldens/cross-view-initial.png",
+    "packages/entity_graph_flutter/test/goldens/cross-view-optimistic.png",
+    "prometheus-entity-skills/_shared/references/dart-library-exports.json",
+    "prometheus-entity-skills/_shared/references/dart-graph-riverpod.md",
+    "release/dart-graph-riverpod.md"
+  ]
+}

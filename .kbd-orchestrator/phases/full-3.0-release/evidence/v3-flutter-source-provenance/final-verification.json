@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-flutter-source-provenance",
+  "recordedAt": "2026-08-02T00:08:00Z",
+  "verdict": "pass-to-archive",
+  "acceptance": {
+    "licenseAuthorityRecordedBeforeCopy": "pass",
+    "exactCommittedSourceRevisionRecorded": "pass",
+    "dirtySourceWorktreeExcluded": "pass",
+    "freshDisposableFilteredClone": "pass",
+    "authorsDatesMessagesAndFileEvolutionRetained": "pass",
+    "oldToFilteredCommitMapComplete": "pass",
+    "approvedSourcePathManifestComplete": "pass",
+    "productGeneratedSecretBuildAndFfiExclusionsEnforced": "pass",
+    "destinationAttributionAndMitBoundaries": "pass",
+    "oneCanonicalDartGraphOwner": "pass",
+    "provenanceImportNonBuildableNonWorkspaceNonPublic": "pass",
+    "hybridMobileArchitectureReferenceOnly": "pass",
+    "publicRuntimeExportImpact": "none",
+    "tamperAndOverclaimRejection": "pass",
+    "documentationCoverageAndSkillsSynchronized": "pass",
+    "mandatoryTaskOwnedSkipOrTodoPaths": 0,
+    "visualEvidence": "pass-deterministic-headless-lineage-only"
+  },
+  "history": {
+    "sourceRevision": "68f7ab83b72c8bed37d1e7d19a5371a45b4f8f52",
+    "filteredTip": "cb318ddb2beb2948a1b26e5e589cff3145b788cc",
+    "filteredTree": "6bd3c232073687b774e444f4196c1a4f4da2c39c",
+    "destinationMerge": "eb3c9802da5ff10ad6db135fed761bd23ea80b3f",
+    "sourceCommitsExamined": 226,
+    "retainedCommits": 8,
+    "prunedCommits": 218,
+    "approvedFiles": 12,
+    "commitHashesClaimedIdentical": false
+  },
+  "cleanState": {
+    "status": "pass",
+    "snapshotCommit": "125703172cb496eea3cbe64098e6856e9a0a380a",
+    "head": "eb3c9802da5ff10ad6db135fed761bd23ea80b3f",
+    "lockfileSha256": "19ef1dbfea784c871c163364524556595bbd3228fcf139e8f5b0cfb70c23aea2",
+    "frozenInstall": "pass-793-packages-782-reused-zero-downloaded",
+    "completeCi": "pass",
+    "tarballOnlyConsumers": "pass-12-packages",
+    "publicationAuthorized": false
+  },
+  "focused": {
+    "provenanceTests": { "status": "pass", "tests": 12 },
+    "provenanceBdd": { "status": "pass", "scenarios": 14, "steps": 56 },
+    "aggregateBdd": { "status": "pass", "scenarios": 61, "steps": 313, "hooks": 4 },
+    "semanticCoverage": { "status": "pass", "passed": 13, "total": 13, "releaseCertified": false },
+    "packageContracts": { "status": "pass", "packages": 12 },
+    "runtimeExportLedgers": {
+      "react": 201,
+      "sync": 16,
+      "a2uiRoot": 18,
+      "agUiCompatibility": 9,
+      "a2aRoot": 30,
+      "a2aLegacy": 2
+    },
+    "productionSecurity": {
+      "status": "pass-policy",
+      "dependencies": 325,
+      "critical": 0,
+      "high": 0,
+      "moderate": 0,
+      "low": 2,
+      "blockingAdvisories": 0
+    },
+    "strictOpenSpec": "pass",
+    "changesetStatus": "pass",
+    "gitDiffCheck": "pass"
+  },
+  "dartFlutterObservation": {
+    "scope": "separate-pristine-package-probe-not-provenance-certification",
+    "flutter": "3.47.0-0.1.pre beta",
+    "bundledDart": "3.13.0-282.1.beta",
+    "lockedOfflineResolution": "pass",
+    "analysis": "pass-zero-issues",
+    "tests": "pass-54",
+    "format": "downstream-six-files-would-change",
+    "analysisOptions": "downstream-flutter-beta-adds-build-and-platform-exclusions",
+    "riverpod": "downstream-2.6.1-resolved-3.3.2-observed-available",
+    "ownerChange": "v3-dart-graph-riverpod"
+  },
+  "visual": {
+    "kind": "deterministic-headless-lineage-diagram",
+    "svg": "release/evidence/flutter-source-provenance-lineage.svg",
+    "svgSha256": "af434e9163f49dea8afa219dd685c5d859b43ca05c1a38f7b75a72692880d03a",
+    "reviewRaster": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/task-2-lineage-review.png",
+    "reviewRasterSha256": "d70e598046617f70aa3556b37bf83f916c40cc33804e3c53cb64aa7f9d031e06",
+    "dimensions": "1200x680",
+    "inspection": "pass-no-clipping-overlap-or-boundary-ambiguity",
+    "claimsFlutterRendering": false,
+    "claimsAccessibilityCertification": false
+  },
+  "research": {
+    "confidence": 0.93,
+    "feynmanGrade": 0.96,
+    "sycophancyScore": 0.01785714365541935,
+    "unresolvedContradictions": 0
+  },
+  "postArchive": {
+    "archivePath": "openspec/changes/archive/2026-08-02-v3-flutter-source-provenance",
+    "promotedSpec": "openspec/specs/v3-flutter-source-provenance/spec.md",
+    "promotedSpecValidation": "pass",
+    "generatedSpecPurposeAndStaleActivePathCorrected": true,
+    "provenanceVerifier": "pass",
+    "exampleCoverage": "pass-13-of-13-release-not-certified",
+    "releaseContract": "pass",
+    "gitDiffCheck": "pass",
+    "globalOpenSpecValidation": {
+      "status": "repository-wide-pre-existing-failures-outside-this-change",
+      "passed": 28,
+      "failed": 6,
+      "failedItems": [
+        "change/2026-06-22-v3-universal-platform-evolution",
+        "change/2026-07-13-v4-prometheus-entity-sync",
+        "change/v4-dart-sdk",
+        "change/v4-entity-sync-skill",
+        "change/v4-pem-sync-transport",
+        "change/v4-tauri-plugin"
+      ]
+    }
+  },
+  "unresolvedLimits": [
+    "The imported provenance tree is intentionally not a buildable or publishable Dart package and cannot be used as a second canonical graph owner.",
+    "The canonical Dart package still needs Riverpod 3 adaptation, mutually compatible generator/analyzer dependencies, Dart 3.13 formatting, analyzer-policy adoption, Melos workspace setup, generation, and complete package certification under v3-dart-graph-riverpod.",
+    "Flutter widget, golden, keyboard, accessibility, Android, iOS, and device rendering evidence remains owned by v3-flutter-riverpod-a2ui-example.",
+    "Cargo, Rust, Tauri desktop/mobile capabilities, platform signing, and device behavior are outside this provenance change.",
+    "The full Prometheus-branded Docusaurus site, link and accessibility proof, and protected GitHub Pages deployment remain planned changes.",
+    "The full five-showcase contract, Flint portable contracts, skills ecosystem, RC recovery rehearsal, immutable-SHA certification, registry authority, stable publication, and npm latest promotion remain incomplete.",
+    "The source authority record is an owner-directed engineering provenance decision, not a general legal opinion or pub.dev publication grant.",
+    "The clean receipt certifies current source content from an active dirty release worktree, not an immutable release candidate or registry artifact.",
+    "Two low-severity production dependency findings remain visible even though no critical, high, moderate, or blocking advisory was reported."
+  ],
+  "publicationAuthorized": false
+}

@@ -1,0 +1,44 @@
+{
+  "contradictions": [
+    {
+      "id": "generation-command",
+      "topic": "reproducible TypeScript binding generation",
+      "claimA": "The README and generated file say cargo build --features generate-bindings regenerates the file.",
+      "claimB": "build.rs only calls tauri_build::build; export code lives inside EntityGraphPlugin::new and is not invoked by cargo build.",
+      "resolved": true,
+      "resolution": "claimB",
+      "confidence": 0.99,
+      "auditTrail": "Direct control-flow inspection outranks comments: Cargo runs build.rs, which never calls the export code inside EntityGraphPlugin::new. A disposable-copy build was bounded and interrupted after 120 seconds with the source hash still unchanged; that probe is recorded as non-certifying. Task 2 must create a generation entry point and deterministic drift test."
+    },
+    {
+      "id": "compile-versus-runtime",
+      "topic": "mobile readiness",
+      "claimA": "The prerequisite release evidence cross-compiles the Rust crate for iOS and Android.",
+      "claimB": "The plan requires real command invocation and the repository has no Android library, iOS Swift package, or mobile registration path.",
+      "resolved": true,
+      "resolution": "claimB",
+      "confidence": 0.99,
+      "auditTrail": "Cross-compilation proves Rust target compatibility only. It cannot exercise Kotlin/Swift initialization, capability authorization, IPC, lifecycle, simulator, or device behavior."
+    },
+    {
+      "id": "latest-typescript",
+      "topic": "dependency upgrades",
+      "claimA": "The registry reports TypeScript 7.0.2 as latest.",
+      "claimB": "The ratified v3 contract supports TypeScript >=6 <7.",
+      "resolved": true,
+      "resolution": "claimB",
+      "confidence": 1.0,
+      "auditTrail": "A latest-version preference cannot silently revise the compatibility contract. TypeScript 7 requires a separate contract change and evidence."
+    },
+    {
+      "id": "specta-stability",
+      "topic": "binding generator maturity",
+      "claimA": "tauri-specta 2.0.0-rc.25 is the latest available registry version.",
+      "claimB": "A stable Prometheus artifact should avoid pretending a prerelease generator is a stable runtime guarantee.",
+      "resolved": true,
+      "resolution": "Retain the exact generator version as build/dev tooling only, generate deterministic checked-in output, and keep it out of the runtime boundary; re-evaluate if a stable release exists during task 2.",
+      "confidence": 0.94,
+      "auditTrail": "Latest and stable are different properties. Generated output plus drift verification contains the prerelease tool risk without mislabeling it."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "contradictions": [
+    {
+      "id": "documented-means-executed",
+      "topic": "mobile runtime evidence",
+      "claim_a": "A written device procedure is itself proof that the native bridge executed.",
+      "claim_b": "A written procedure makes the lane reproducible, but only a target-host response and denial receipt prove execution.",
+      "resolved": true,
+      "resolution": "claim_b",
+      "confidence": 0.99,
+      "audit_trail": "The prior BDD wording was corrected because it asserted invocation while checking only documentation metadata."
+    },
+    {
+      "id": "implementation-equals-certification",
+      "topic": "completion dimensions",
+      "claim_a": "Completing the bounded source implementation authorizes stable publication.",
+      "claim_b": "Implementation, evidence, certification, and publication are independent fail-closed dimensions.",
+      "resolved": true,
+      "resolution": "claim_b",
+      "confidence": 0.99,
+      "audit_trail": "The package remains alpha, coverage remains partial, mobile receipts are absent, and registry authority belongs to later changes."
+    },
+    {
+      "id": "host-pressure-equals-product-failure",
+      "topic": "clean verification",
+      "claim_a": "The current ENFILE result proves the plugin code is broken.",
+      "claim_b": "The current rerun is inconclusive because unrelated virtualization processes hold more than 240,000 descriptors; earlier same-candidate checks passed and CI must rerun the clean lane.",
+      "resolved": true,
+      "resolution": "claim_b",
+      "confidence": 0.98,
+      "audit_trail": "Task 5 captured macOS ENFILE while two Virtualization.framework processes held approximately 180,376 and 62,738 descriptors."
+    }
+  ]
+}

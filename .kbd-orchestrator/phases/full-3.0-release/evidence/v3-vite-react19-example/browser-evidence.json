@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-vite-react19-example",
+  "recordedAt": "2026-08-03T06:50:01.983Z",
+  "status": "pass",
+  "evidenceKind": "source-workspace-production-browser",
+  "countsAsPackedPackageEvidence": false,
+  "expectedScenarioIds": [
+    "example.graph.normalized-cross-view",
+    "example.crud.optimistic-confirm",
+    "example.crud.optimistic-rollback",
+    "example.relationship.cascade-invalidation",
+    "example.view.local-remote-hybrid",
+    "example.transport.rest-graphql-equivalence",
+    "example.realtime.coalesced-cross-view",
+    "example.offline.persistence-convergence",
+    "example.runtime.lifecycle-security",
+    "example.runtime.devtools"
+  ],
+  "scenarios": {
+    "example.graph.normalized-cross-view": {
+      "status": "pass",
+      "proof": {
+        "firstTitle": "Implement Iroh QUIC transport layer",
+        "selectedTitle": "Tauri v2 shell integration",
+        "listAndDetailShareGraph": true
+      }
+    },
+    "example.view.local-remote-hybrid": {
+      "status": "pass",
+      "proof": {
+        "modes": [
+          "local",
+          "remote",
+          "hybrid"
+        ],
+        "oneTypedViewContract": true
+      }
+    },
+    "example.transport.rest-graphql-equivalence": {
+      "status": "pass",
+      "proof": {
+        "modes": [
+          "demo-rest",
+          "demo-graphql"
+        ],
+        "liveModesRemainExplicitOptIn": true
+      }
+    },
+    "example.crud.optimistic-confirm": {
+      "status": "pass",
+      "proof": {
+        "outcome": "confirmed",
+        "patchClearedAfterConfirmation": true
+      }
+    },
+    "example.crud.optimistic-rollback": {
+      "status": "pass",
+      "proof": {
+        "outcome": "rolled-back",
+        "patchClearedAfterRejection": true
+      }
+    },
+    "example.relationship.cascade-invalidation": {
+      "status": "pass",
+      "proof": {
+        "priorProject": "p1",
+        "relationEdgesInvalidated": true
+      }
+    },
+    "example.realtime.coalesced-cross-view": {
+      "status": "pass",
+      "proof": {
+        "receivedChanges": 3,
+        "graphWrites": 1,
+        "finalStatus": "review"
+      }
+    },
+    "example.offline.persistence-convergence": {
+      "status": "pass",
+      "proof": {
+        "pglitePersisted": true,
+        "pgliteHydrated": true,
+        "loroConverged": true
+      }
+    },
+    "example.runtime.lifecycle-security": {
+      "status": "pass",
+      "proof": {
+        "suspenseResolved": true,
+        "errorContainedByNearestBoundary": true,
+        "seriousAccessibilityViolations": 0,
+        "criticalAccessibilityViolations": 0
+      }
+    },
+    "example.runtime.devtools": {
+      "status": "pass",
+      "proof": {
+        "metrics": [
+          "Entities",
+          "Lists",
+          "Subscribers",
+          "Patches"
+        ],
+        "projectsLiveGraphOnly": true
+      }
+    }
+  },
+  "accessibility": {
+    "status": "pass",
+    "serious": 0,
+    "critical": 0
+  },
+  "artifacts": {
+    "screenshots": [
+      "task-3-browser-graph-and-transports.png",
+      "task-3-browser-mutations-and-realtime.png",
+      "task-3-browser-offline-lifecycle-a11y.png"
+    ],
+    "tracePolicy": "on",
+    "playwrightReport": "playwright-report.json",
+    "playwrightOutput": "playwright-artifacts"
+  }
+}

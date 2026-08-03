@@ -7,7 +7,8 @@
  */
 import { useState, useCallback } from "react";
 import type { StoreApi } from "zustand";
-import type { TableInstance, Row, ActionDef, ColumnDef } from "@prometheus-ags/entity-graph-core";
+import type { TableInstance, Row, ColumnDef } from "@prometheus-ags/entity-graph-core";
+import type { ActionDef } from "../table/react-types";
 import type { SelectionStoreState } from "../table/selection-store";
 import { useSelectionStore, selectionStorePlaceholder } from "../table/selection-store";
 import {

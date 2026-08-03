@@ -1,0 +1,724 @@
+{
+  "phase": "full-3.0-release",
+  "generated_at": "2026-08-01T10:43:46Z",
+  "research_budget": {
+    "max_queries_per_tier": 8,
+    "max_minutes": 20,
+    "queries_used": {
+      "tier_1_github": 8,
+      "tier_2_context7_docfork": 0,
+      "tier_3_registries": 8,
+      "tier_4_web": 8,
+      "tier_2_note": "Context7 and docfork were unavailable; official project documentation was verified in tier 4."
+    }
+  },
+  "gaps_addressed": [
+    "release-packaging-and-certification",
+    "react-19-vite-8-full-example",
+    "nextjs-ssr-full-example",
+    "standards-compliant-agentic-a2ui-example",
+    "flutter-riverpod-3-package-and-example",
+    "flutter-source-consolidation",
+    "tauri-desktop-mobile-example",
+    "cross-ecosystem-monorepo-orchestration",
+    "feature-to-example-coverage-proof"
+  ],
+  "candidates": [
+    {
+      "id": "cand-001",
+      "name": "Vite 8",
+      "kind": "framework",
+      "repo_url": "https://github.com/vitejs/vite",
+      "registry": "npm",
+      "fit_for_gap": "React 19 browser example and shared frontend for the Tauri example",
+      "verdict": "adopt",
+      "coverage_estimate": 0.95,
+      "license": "MIT",
+      "maintenance": {
+        "last_release": "8.2.0 (registry observed 2026-08-01)"
+      },
+      "evidence": [
+        {
+          "tier": 3,
+          "source_url": "https://www.npmjs.com/package/vite",
+          "claim": "The npm registry reported Vite 8.2.0 and active maintenance."
+        },
+        {
+          "tier": 4,
+          "source_url": "https://v8.vite.dev/guide/",
+          "claim": "Vite 8 documents React scaffolding and requires Node 20.19+ or 22.12+."
+        }
+      ],
+      "risks": [
+        "The current example is already on Vite 8 but its full build is nondeterministic and its sibling link dependencies are not portable."
+      ],
+      "decision_rationale": "Keep and harden the existing Vite app rather than replace it with a third-party starter."
+    },
+    {
+      "id": "cand-002",
+      "name": "Next.js 16 App Router",
+      "kind": "framework",
+      "repo_url": "https://github.com/vercel/next.js",
+      "registry": "npm",
+      "fit_for_gap": "SSR, React Server Components, hydration, and client graph boundary example",
+      "verdict": "adopt",
+      "coverage_estimate": 0.95,
+      "license": "MIT",
+      "maintenance": {
+        "last_release": "16.2.12 (registry observed 2026-08-01)"
+      },
+      "evidence": [
+        {
+          "tier": 3,
+          "source_url": "https://www.npmjs.com/package/next",
+          "claim": "The npm registry reported Next.js 16.2.12, newer than the example's 16.2.1."
+        },
+        {
+          "tier": 4,
+          "source_url": "https://nextjs.org/docs/app/getting-started/server-and-client-components",
+          "claim": "The App Router defines explicit Server and Client Component boundaries suitable for demonstrating server preload plus client graph hydration."
+        },
+        {
+          "tier": 4,
+          "source_url": "https://nextjs.org/docs/app/guides/testing",
+          "claim": "Next recommends end-to-end testing for async Server Components where unit tooling is incomplete."
+        }
+      ],
+      "risks": [
+        "A global browser graph cannot be shared across server requests; the example must create request-local preload state and hydrate a client singleton.",
+        "Current remote main has a frozen-lock failure in this example."
+      ],
+      "decision_rationale": "Retain the existing App Router example but make SSR/hydration the reason it exists instead of duplicating the Vite UI wholesale."
+    },
+    {
+      "id": "cand-003",
+      "name": "Official A2UI web stack (@a2ui/react + @a2ui/web_core)",
+      "kind": "framework",
+      "repo_url": "https://github.com/a2ui-project/a2ui",
+      "registry": "npm",
+      "fit_for_gap": "Standards-compliant React rendering of agent-generated A2UI surfaces",
+      "verdict": "adopt",
+      "coverage_estimate": 0.9,
+      "license": "Apache-2.0",
+      "maintenance": {
+        "last_release": "@a2ui/react 0.10.2; @a2ui/web_core 0.10.5 (2026-07-17)"
+      },
+      "evidence": [
+        {
+          "tier": 3,
+          "source_url": "https://www.npmjs.com/package/@a2ui/react",
+          "claim": "The official React renderer was published as 0.10.2 from a2ui-project/a2ui."
+        },
+        {
+          "tier": 4,
+          "source_url": "https://a2ui.org/guides/renderer-development/",
+          "claim": "Official guidance says web renderers should reuse web_core for JSONL parsing, schemas, surface state, data binding, and actions instead of reimplementing roughly 3,000 lines."
+        },
+        {
+          "tier": 4,
+          "source_url": "https://a2ui.org/guides/renderer-development/",
+          "claim": "The version-aware official guide labels protocol v0.9.1 current production, v0.9 previous stable, and v1.0 candidate; the 0.10.x npm distribution version is a separate version axis."
+        }
+      ],
+      "risks": [
+        "The current production protocol is v0.9.1 while v1.0 is still candidate; the integration needs an explicit protocol pin and version adapter.",
+        "Pre-1.0 renderer APIs can change."
+      ],
+      "decision_rationale": "Adopt the maintained 0.10.x package distributions, target their documented v0.9.1/current-production protocol entry point, and keep v1.0 candidate support behind a version adapter. Prometheus should own only graph projection, transport, policy, and themed catalog integration."
+    },
+    {
+      "id": "cand-004",
+      "name": "Existing @prometheus-ags/a2ui-react alpha",
+      "kind": "library",
+      "repo_url": "https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/packages/a2ui-react",
+      "registry": "npm",
+      "fit_for_gap": "Existing chat, AG-UI state projection, graph diff, and approval primitives",
+      "verdict": "adapt",
+      "coverage_estimate": 0.45,
+      "license": "MIT",
+      "maintenance": {
+        "last_release": "3.0.0-alpha.0"
+      },
+      "evidence": [
+        {
+          "tier": 1,
+          "source_url": "https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/packages/a2ui-react/src",
+          "claim": "The package consumes MESSAGE_* and STATE_* AG-UI-style events and has no A2UI surface/catalog/data-model protocol implementation."
+        }
+      ],
+      "risks": [
+        "Its package name currently implies A2UI compliance that the implementation does not provide.",
+        "It duplicates chat lifecycle that KnowMe already delegates to assistant-ui."
+      ],
+      "decision_rationale": "Move reusable AG-UI projection and approval behavior to an accurately named package; rebuild @prometheus-ags/a2ui-react as a thin official-A2UI integration before stable release."
+    },
+    {
+      "id": "cand-005",
+      "name": "Flutter GenUI (genui)",
+      "kind": "framework",
+      "repo_url": "https://github.com/flutter/genui",
+      "fit_for_gap": "Standards-compliant native Flutter A2UI renderer",
+      "verdict": "adopt",
+      "coverage_estimate": 0.9,
+      "license": "BSD-3-Clause",
+      "maintenance": {
+        "last_release": "0.10.1 (2026-07-20)",
+        "stars": 1732
+      },
+      "evidence": [
+        {
+          "tier": 1,
+          "source_url": "https://github.com/flutter/genui",
+          "claim": "The official Flutter repository is active and provides the maintained GenUI/A2UI implementation."
+        },
+        {
+          "tier": 3,
+          "source_url": "https://pub.dev/packages/genui",
+          "claim": "pub.dev reported genui 0.10.1 with Dart >=3.10 and Flutter >=3.35.7."
+        },
+        {
+          "tier": 4,
+          "source_url": "https://pub.dev/documentation/genui/latest/genui/",
+          "claim": "GenUI implements A2UI parsing, surface lifecycle, reactive data binding, catalogs, rendering, and user-action emission."
+        }
+      ],
+      "risks": [
+        "The package is pre-1.0 and has recent breaking changes.",
+        "Its transport examples may perform networking in Dart; the imported KnowMe adapter must route actions through Riverpod to the approved transport/FFI boundary."
+      ],
+      "decision_rationale": "Reuse the official protocol engine and adapt KnowMe's safe catalog/action wrapper rather than own a second Flutter protocol parser."
+    },
+    {
+      "id": "cand-006",
+      "name": "Riverpod 3 code-generation stack",
+      "kind": "framework",
+      "repo_url": "https://github.com/rrousselGit/riverpod",
+      "fit_for_gap": "Flutter normalized provider families, CRUD controllers, change invalidation, and application wiring",
+      "verdict": "adopt",
+      "coverage_estimate": 0.95,
+      "license": "MIT",
+      "maintenance": {
+        "last_release": "flutter_riverpod 3.4.2; riverpod_annotation 4.0.6 (2026-07-28)",
+        "stars": 7347
+      },
+      "evidence": [
+        {
+          "tier": 1,
+          "source_url": "https://github.com/rrousselGit/riverpod",
+          "claim": "Riverpod is the maintained reactive caching/data-binding framework selected by both existing Flutter implementations."
+        },
+        {
+          "tier": 3,
+          "source_url": "https://pub.dev/packages/flutter_riverpod",
+          "claim": "pub.dev reported flutter_riverpod 3.4.2 with Dart ^3.12.0."
+        },
+        {
+          "tier": 4,
+          "source_url": "https://riverpod.dev/docs/3.0_migration",
+          "claim": "Riverpod 3 automatically retries failed providers by default, so terminal entity/FFI errors must explicitly opt out."
+        }
+      ],
+      "risks": [
+        "Latest Riverpod, Freezed, json_serializable, and analyzer versions must resolve as one tested set; the KnowMe pins document prior incompatibilities.",
+        "A stable public package should avoid a beta-only Flutter floor unless required and certified."
+      ],
+      "decision_rationale": "Adopt Riverpod 3, but determine a coherent generated-code toolchain from a clean stable Flutter SDK instead of independently bumping packages."
+    },
+    {
+      "id": "cand-007",
+      "name": "KnowMe prometheus_entity_management Flutter package",
+      "kind": "library",
+      "repo_url": "https://github.com/Know-Me-Tools/know-me-system/tree/main/flutter_packages/prometheus_entity_management",
+      "fit_for_gap": "Riverpod 3 provider families, view descriptors, transport seam, change bridge, and optimistic CRUD",
+      "verdict": "adapt",
+      "coverage_estimate": 0.7,
+      "license": "UNRESOLVED",
+      "maintenance": {
+        "last_release": "Unpublished 0.1.0 source at local commit 68f7ab8"
+      },
+      "evidence": [
+        {
+          "tier": 1,
+          "source_url": "file:///Users/gqadonis/Projects/know-me/know-me-system/flutter_packages/prometheus_entity_management",
+          "claim": "The 2,704-line source package contains Riverpod 3 provider families, transport, view, sync, generated models, and CRUD, but no package-local test directory."
+        }
+      ],
+      "risks": [
+        "It assumes Rust/gen_ui_core is the canonical store and is not a general drop-in Flutter graph.",
+        "The source repository has no root LICENSE file; public redistribution provenance must be resolved before copying.",
+        "The package is unpublished and uses beta Flutter/Dart floors."
+      ],
+      "decision_rationale": "Import its generic provider/view/CRUD concepts with history, then decouple them from the KnowMe-specific FFI implementation behind an adapter package."
+    },
+    {
+      "id": "cand-008",
+      "name": "Existing entity_graph_flutter alpha",
+      "kind": "library",
+      "repo_url": "https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/packages/entity_graph_flutter",
+      "fit_for_gap": "Dart-native normalized graph, SDL parser, transport registry, and tested cross-view behavior",
+      "verdict": "adapt",
+      "coverage_estimate": 0.7,
+      "license": "MIT",
+      "maintenance": {
+        "last_release": "3.0.0-alpha.0 source"
+      },
+      "evidence": [
+        {
+          "tier": 1,
+          "source_url": "https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/packages/entity_graph_flutter",
+          "claim": "The 2,211-line package has graph, provider, SDL, transport, and error tests, but its manifest claims Riverpod 3 while depending on Riverpod 2.6.1."
+        }
+      ],
+      "risks": [
+        "Keeping it alongside the KnowMe package would produce two canonical-store models and duplicate public APIs.",
+        "Flutter-specific dependencies are mixed with concepts that could be pure Dart."
+      ],
+      "decision_rationale": "Preserve its tested graph/SDL behavior as a pure-Dart lower layer or fixture transport, then expose one Riverpod 3 public Flutter binding."
+    },
+    {
+      "id": "cand-009",
+      "name": "KnowMe gen_ui_widgets",
+      "kind": "library",
+      "repo_url": "https://github.com/Know-Me-Tools/know-me-system/tree/main/flutter_packages/gen_ui_widgets",
+      "fit_for_gap": "Safe Flutter A2UI surface wrapper, content-block renderers, media resolver boundary, and shadcn-compatible UI",
+      "verdict": "adapt",
+      "coverage_estimate": 0.75,
+      "license": "UNRESOLVED",
+      "maintenance": {
+        "last_release": "Unpublished 0.1.0 source at local commit 68f7ab8"
+      },
+      "evidence": [
+        {
+          "tier": 1,
+          "source_url": "file:///Users/gqadonis/Projects/know-me/know-me-system/flutter_packages/gen_ui_widgets",
+          "claim": "The 2,701-line package delegates A2UI parsing/state/schema work to genui and forwards typed actions to the host, but has no package-local tests and includes broader KnowMe ContentBlock/media concerns."
+        }
+      ],
+      "risks": [
+        "The A2UI wrapper and general chat ContentBlock renderer should not be forced into one public dependency.",
+        "Source licensing/provenance is unresolved."
+      ],
+      "decision_rationale": "Extract the safe A2UI wrapper into a focused Flutter A2UI integration; keep or separately package generic ContentBlock widgets only if their public scope is approved."
+    },
+    {
+      "id": "cand-010",
+      "name": "KnowMe gen_ui_flutter placeholder",
+      "kind": "library",
+      "repo_url": "https://github.com/Know-Me-Tools/know-me-system/tree/main/flutter_packages/gen_ui_flutter",
+      "fit_for_gap": "Potential Flutter Rust Bridge adapter package",
+      "verdict": "reject",
+      "coverage_estimate": 0.1,
+      "license": "UNRESOLVED",
+      "maintenance": {
+        "last_release": "Unpublished 0.1.0 source at local commit 68f7ab8"
+      },
+      "evidence": [
+        {
+          "tier": 1,
+          "source_url": "file:///Users/gqadonis/Projects/know-me/know-me-system/flutter_packages/gen_ui_flutter",
+          "claim": "The package contains roughly 30 lines, says it is not imported by the app, and leaves generated bindings/native linking in KnowMe mobile."
+        }
+      ],
+      "risks": [
+        "Moving it would create a public-looking dead package without the Rust core it describes."
+      ],
+      "decision_rationale": "Do not move it as-is. Define a generic entity transport contract here; keep the KnowMe-specific FRB implementation with gen_ui_core until a genuinely reusable adapter is extracted."
+    },
+    {
+      "id": "cand-011",
+      "name": "Tauri 2 + create-tauri-app React template",
+      "kind": "skeleton",
+      "repo_url": "https://github.com/tauri-apps/tauri",
+      "registry": "npm",
+      "fit_for_gap": "One React/Vite application targeting desktop, iOS, and Android",
+      "verdict": "adopt",
+      "coverage_estimate": 0.9,
+      "license": "Apache-2.0 OR MIT",
+      "maintenance": {
+        "last_release": "@tauri-apps/cli 2.11.4 (2026-06-28)",
+        "stars": 109766
+      },
+      "evidence": [
+        {
+          "tier": 1,
+          "source_url": "https://github.com/tauri-apps/tauri",
+          "claim": "Tauri officially targets major desktop and mobile platforms."
+        },
+        {
+          "tier": 4,
+          "source_url": "https://v2.tauri.app/start/create-project/",
+          "claim": "create-tauri-app provides an officially maintained React template and pnpm workflow."
+        },
+        {
+          "tier": 4,
+          "source_url": "https://v2.tauri.app/develop/plugins/develop-mobile/",
+          "claim": "Mobile-capable plugins require explicit Android/iOS initialization, native modules when needed, permissions, and capabilities."
+        }
+      ],
+      "risks": [
+        "A desktop-only Rust plugin does not become mobile-certified merely because the shell compiles.",
+        "iOS builds require macOS/Xcode and Android builds require the Android toolchain; CI must be platform-aware."
+      ],
+      "decision_rationale": "Scaffold a clean universal example from the official template, then integrate the local plugin and prove each platform lane."
+    },
+    {
+      "id": "cand-012",
+      "name": "Existing @prometheus-ags/entity-graph-tauri alpha",
+      "kind": "library",
+      "repo_url": "https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/packages/entity-graph-tauri",
+      "registry": "npm",
+      "fit_for_gap": "Typed commands/events, Rust graph state, snapshot persistence, and frontend mirroring",
+      "verdict": "adapt",
+      "coverage_estimate": 0.65,
+      "license": "MIT",
+      "maintenance": {
+        "last_release": "3.0.0-alpha.0"
+      },
+      "evidence": [
+        {
+          "tier": 1,
+          "source_url": "https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/packages/entity-graph-tauri",
+          "claim": "The package has TS command/event wrappers and a Rust plugin but checked-in generated bindings are currently a stub and no runnable Tauri example exists."
+        }
+      ],
+      "risks": [
+        "Mobile plugin initialization, capability files, and real binding generation are not proven.",
+        "The package currently has the shared broken CommonJS configuration."
+      ],
+      "decision_rationale": "Use it as the subject of the universal Tauri example, but require generated bindings and real desktop/mobile runtime tests."
+    },
+    {
+      "id": "cand-013",
+      "name": "KnowMe desktop and mobile applications",
+      "kind": "pattern",
+      "repo_url": "https://github.com/Know-Me-Tools/know-me-system",
+      "registry": "none",
+      "fit_for_gap": "Reference implementation for React/Tauri layering, Flutter/Riverpod layering, A2UI actions, and shared domain UI",
+      "verdict": "reference",
+      "coverage_estimate": 0.55,
+      "license": "UNRESOLVED",
+      "maintenance": {
+        "last_release": "Local branch feat/embedded-memory-crud at 68f7ab8"
+      },
+      "evidence": [
+        {
+          "tier": 1,
+          "source_url": "file:///Users/gqadonis/Projects/know-me/know-me-system",
+          "claim": "KnowMe contains a production-scale React 19/Tauri desktop, Flutter/Riverpod mobile app, A2UI adapters, and entity runtime boundary patterns."
+        }
+      ],
+      "risks": [
+        "The applications carry UAR, local inference, persistence, auth, product UI, and native dependencies far beyond an entity-management example.",
+        "The working tree contains unrelated user changes and a dirty submodule."
+      ],
+      "decision_rationale": "Port small boundary patterns and scenario slices, not entire product directories. Never copy from the dirty working tree."
+    },
+    {
+      "id": "cand-014",
+      "name": "KnowMe Builder Flutter/A2UI templates as a migration source",
+      "kind": "skeleton",
+      "repo_url": "https://github.com/Know-Me-Tools/hybrid-mobile-architecture-skill",
+      "registry": "none",
+      "fit_for_gap": "Determine whether hybrid-mobile-architecture-src contains reusable Flutter/A2UI libraries to move, and reuse governed scaffolding patterns where appropriate",
+      "verdict": "reference",
+      "coverage_estimate": 0.5,
+      "license": "MIT",
+      "maintenance": {
+        "last_release": "2.0.0-alpha.1 source at local commit e641c25"
+      },
+      "evidence": [
+        {
+          "tier": 1,
+          "source_url": "file:///Users/gqadonis/Projects/hybrid-mobile-architecture-src/builder.manifest.json",
+          "claim": "The repository is a generator/template package, explicitly contains no runnable product application, and defines sovereign-hybrid, Flutter mobile, and Tauri desktop profiles."
+        },
+        {
+          "tier": 1,
+          "source_url": "file:///Users/gqadonis/Projects/hybrid-mobile-architecture-src/assets/templates",
+          "claim": "Inspected Flutter material is under assets/templates/flutter-feature and assets/templates/profiles/*/mobile; no reusable top-level Flutter package/lib source exists to migrate. A2UI material is likewise template/skill guidance rather than a canonical runtime library."
+        }
+      ],
+      "risks": [
+        "Moving its templates into this monorepo would create duplicate authorities and break Builder's ownership-aware upgrade model."
+      ],
+      "decision_rationale": "There is no Flutter/A2UI runtime library in this repository to move. Reject it as a code-migration source while retaining a reference verdict for its templates, audits, and downstream package-consumer updates."
+    },
+    {
+      "id": "cand-015",
+      "name": "Melos 8",
+      "kind": "service",
+      "repo_url": "https://github.com/invertase/melos/tree/main/packages/melos",
+      "fit_for_gap": "Dart/Flutter package discovery and workspace scripts inside the pnpm monorepo",
+      "verdict": "adopt",
+      "coverage_estimate": 0.8,
+      "license": "MIT",
+      "maintenance": {
+        "last_release": "8.2.2 (2026-07-13)"
+      },
+      "evidence": [
+        {
+          "tier": 3,
+          "source_url": "https://pub.dev/packages/melos",
+          "claim": "Melos 8.2.2 is maintained specifically for multi-package Dart and Flutter repositories."
+        }
+      ],
+      "risks": [
+        "It adds a second workspace orchestrator; pnpm/Turbo should remain authoritative for JavaScript and Melos should be scoped to Dart only."
+      ],
+      "decision_rationale": "Use Melos as a thin Dart sub-workspace runner, called from root pnpm release scripts, rather than forcing Flutter packages into Turbo."
+    },
+    {
+      "id": "cand-016",
+      "name": "assistant-ui React shell",
+      "kind": "library",
+      "repo_url": "https://github.com/assistant-ui/assistant-ui",
+      "registry": "npm",
+      "fit_for_gap": "Accessible agent thread, composer, streaming, attachments, and message actions around A2UI surfaces",
+      "verdict": "reference",
+      "coverage_estimate": 0.7,
+      "license": "MIT",
+      "maintenance": {
+        "last_release": "KnowMe source consumes @assistant-ui/react 0.14.x"
+      },
+      "evidence": [
+        {
+          "tier": 1,
+          "source_url": "file:///Users/gqadonis/Projects/know-me/know-me-system/desktop/package.json",
+          "claim": "KnowMe already uses assistant-ui as its React chat shell while custom code handles A2UI artifacts and entity projection."
+        }
+      ],
+      "risks": [
+        "It should be example-level UI infrastructure, not a required dependency of the graph or A2UI adapter package.",
+        "Current registry/repository maintenance was not checked before the research cap."
+      ],
+      "decision_rationale": "Use only if Spec/Plan verifies a maintained current version. The fallback is a small accessible example-owned thread/composer shell; the official A2UI renderer and graph bridge do not depend on assistant-ui."
+    },
+    {
+      "id": "cand-017",
+      "name": "Changesets release workflow",
+      "kind": "service",
+      "repo_url": "https://github.com/changesets/action",
+      "registry": "npm",
+      "fit_for_gap": "Coordinated versioning and publication of the npm package family",
+      "verdict": "adopt",
+      "coverage_estimate": 0.85,
+      "license": "MIT",
+      "evidence": [
+        {
+          "tier": 4,
+          "source_url": "https://github.com/changesets/action",
+          "claim": "The action maintains a release PR and can run a repository-defined publish command."
+        }
+      ],
+      "risks": [
+        "Dart and crates.io releases require separate tooling and should not be hidden behind npm Changesets state.",
+        "Fixed/linked package policy must be explicitly selected."
+      ],
+      "maintenance": {
+        "last_release": "Local workspace resolves @changesets/cli 2.31.0; assessment observed 2.31.1 as current on 2026-08-01"
+      },
+      "decision_rationale": "Use Changesets for npm only, with a root certification command gating all ecosystems before publication."
+    },
+    {
+      "id": "cand-018",
+      "name": "Publint + Are The Types Wrong",
+      "kind": "service",
+      "repo_url": "https://github.com/publint/publint",
+      "registry": "npm",
+      "fit_for_gap": "Packed npm artifact metadata, module-format, and conditional-types certification",
+      "verdict": "reference",
+      "coverage_estimate": 0.95,
+      "license": "MIT",
+      "maintenance": {
+        "last_release": "Maintenance metadata not captured before the Tier 3 query cap; Publint itself executed successfully on 2026-08-01"
+      },
+      "evidence": [
+        {
+          "tier": 4,
+          "source_url": "https://publint.dev/docs/",
+          "claim": "Publint validates package compatibility and already detected the shared broken CommonJS entries in this repository."
+        },
+        {
+          "tier": 4,
+          "source_url": "https://www.npmjs.com/package/@arethetypeswrong/cli",
+          "claim": "The CLI checks packed package type resolution across module modes."
+        }
+      ],
+      "risks": [],
+      "decision_rationale": "The checks are technically valuable and Publint found a real blocker, but final adoption remains conditional on a maintenance/version check in Spec/Plan because Analyze exhausted its registry-query budget."
+    },
+    {
+      "id": "cand-019",
+      "name": "Existing @prometheus-ags/entity-graph-a2a alpha",
+      "kind": "library",
+      "repo_url": "https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/packages/entity-graph-a2a",
+      "registry": "npm",
+      "fit_for_gap": "Deterministic reference agent endpoint, AgentCard discovery, task lifecycle, graph query/mutation parts, and artifacts for the agentic A2UI example",
+      "verdict": "adapt",
+      "coverage_estimate": 0.65,
+      "license": "MIT",
+      "maintenance": {
+        "last_release": "3.0.0-alpha.0; maintained in the assessed monorepo"
+      },
+      "evidence": [
+        {
+          "tier": 1,
+          "source_url": "https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/packages/entity-graph-a2a",
+          "claim": "The package implements AgentCard creation, tasks/send|get|cancel, graph mutation/query parts, in-memory task storage, and artifact responses over a Fetch-compatible server."
+        }
+      ],
+      "risks": [
+        "Its self-described A2A v1.0 types were not compared with the current upstream A2A specification within the exhausted research budget.",
+        "It has no direct A2UI extension/capabilities contract, streaming task path, durable task store, or auth policy evidence in this analysis.",
+        "Its npm module output shares the release-blocking CommonJS defect."
+      ],
+      "decision_rationale": "Use it as the deterministic local reference-agent base only after an upstream A2A conformance/version check. Add an A2UI artifact/metadata adapter rather than inventing a second task server."
+    },
+    {
+      "id": "cand-020",
+      "name": "Existing @prometheus-ags/entity-graph-sync with Loro + PGlite persistence",
+      "kind": "library",
+      "repo_url": "https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/packages/entity-graph-sync",
+      "registry": "npm",
+      "fit_for_gap": "One deterministic local-first path for example and release certification",
+      "verdict": "adapt",
+      "coverage_estimate": 0.7,
+      "license": "MIT",
+      "maintenance": {
+        "last_release": "3.0.0-alpha.0; local Loro dev dependency resolves 1.13.6"
+      },
+      "evidence": [
+        {
+          "tier": 1,
+          "source_url": "https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/packages/entity-graph-sync",
+          "claim": "The package defines SyncProvider, a graph bridge, Yjs WebSocket/WebRTC providers, and a Loro provider/channel with registry and bridge tests."
+        },
+        {
+          "tier": 1,
+          "source_url": "https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/packages/entity-graph-core/src/adapters",
+          "claim": "Core already exports PGlite persistence and Electric adapters, so persistence can be certified separately from peer convergence."
+        }
+      ],
+      "risks": [
+        "Current Loro tests can skip when the optional dependency is unavailable, so the release job must install it and fail rather than skip.",
+        "The built-in WebSocket channel needs a real two-client convergence/reconnect test.",
+        "The sibling prometheus-entity-sync link integration is not portable and should remain an opt-in external contract job."
+      ],
+      "decision_rationale": "Use PGlite for deterministic local persistence and Loro with an in-process/loopback channel for mandatory two-client convergence; add WebSocket/reconnect as an integration lane. Keep Yjs as a secondary consumer fixture, not the sole stable example path."
+    },
+    {
+      "id": "cand-021",
+      "name": "Docusaurus 3.10.2",
+      "kind": "framework",
+      "repo_url": "https://github.com/facebook/docusaurus",
+      "registry": "npm",
+      "fit_for_gap": "A versioned, searchable, statically generated documentation portal deployable below the repository GitHub Pages base path",
+      "verdict": "adopt",
+      "coverage_estimate": 0.9,
+      "license": "MIT",
+      "maintenance": {
+        "last_release": "Official installation documentation reported Docusaurus 3.10.2 on 2026-08-01"
+      },
+      "evidence": [
+        {
+          "tier": 1,
+          "source_url": "https://docusaurus.io/docs/installation",
+          "claim": "Docusaurus builds static output suitable for GitHub Pages and requires all @docusaurus packages to stay on one version."
+        },
+        {
+          "tier": 1,
+          "source_url": "https://docusaurus.io/docs/versioning",
+          "claim": "Docusaurus supports release-aware documentation routes, version selectors, banners, and bounded retained versions."
+        },
+        {
+          "tier": 1,
+          "source_url": "file:///Users/gqadonis/Projects/prometheus/prometheus-skill-pack/site/docusaurus.config.js",
+          "claim": "The sibling Prometheus skill-pack site supplies a proven Prometheus organization/base-path, local search, Mermaid, canonical-content, and pinned Pages workflow donor pattern."
+        }
+      ],
+      "risks": [
+        "Docusaurus brings its own React build dependency and must remain isolated from the framework-neutral runtime packages.",
+        "Full version snapshots duplicate content and increase build time, so the plan should version major/minor release lines rather than every patch."
+      ],
+      "decision_rationale": "Adopt the current official Docusaurus line and adapt the existing Prometheus skill-pack Pages pattern, while keeping documentation dependencies in a private workspace package."
+    },
+    {
+      "id": "cand-022",
+      "name": "TypeDoc packages-mode API model",
+      "kind": "framework",
+      "repo_url": "https://github.com/TypeStrong/typedoc",
+      "registry": "npm",
+      "fit_for_gap": "Generated, checked TypeScript API reference across the multi-package public export surface",
+      "verdict": "adapt",
+      "coverage_estimate": 0.8,
+      "license": "Apache-2.0",
+      "maintenance": {
+        "last_release": "Maintained TypeDoc 0.28 line documented on 2026-08-01"
+      },
+      "evidence": [
+        {
+          "tier": 1,
+          "source_url": "https://typedoc.org/documents/Options.Package_Options.html",
+          "claim": "TypeDoc packages mode converts package entry points independently and merges them into one API model."
+        },
+        {
+          "tier": 1,
+          "source_url": "https://typedoc.org/documents/Options.Input.html",
+          "claim": "TypeDoc can discover package entry points from exports and supports explicit package-level entry point configuration."
+        }
+      ],
+      "risks": [
+        "Generated API output can become noisy or drift from handwritten conceptual docs unless generation and broken-link checks are release gates.",
+        "A Docusaurus markdown integration adds a third-party plugin seam that must be pinned and smoke-tested before adoption."
+      ],
+      "decision_rationale": "Use TypeDoc as the authoritative export-derived API model; adapt its output into Docusaurus only after a small proof confirms stable routes and source links."
+    }
+  ],
+  "build_required": [
+    {
+      "need": "A shared Project/User/Task/Activity example domain, deterministic transport fixtures, scenario IDs, and a feature-to-example coverage manifest",
+      "why_no_candidate": "The value is repository-specific traceability between Prometheus public APIs and its example suite.",
+      "capability_gap_id": "build-example-coverage-contract"
+    },
+    {
+      "need": "A single Flutter/Dart entity architecture combining the tested Dart graph/SDL behavior with Riverpod 3 provider families and pluggable Dart/Rust transports",
+      "why_no_candidate": "The two local implementations choose incompatible canonical stores; neither is a complete general-purpose stable package as-is.",
+      "capability_gap_id": "build-flutter-consolidation"
+    },
+    {
+      "need": "A Prometheus A2UI graph bridge that maps official surface data/actions to entities without owning protocol parsing or agent runtime authority",
+      "why_no_candidate": "Official A2UI handles surfaces, while Prometheus-specific normalized graph projection and approval policy are unique integration concerns.",
+      "capability_gap_id": "build-a2ui-graph-bridge"
+    },
+    {
+      "need": "A deterministic reference agent for the A2UI example with no API key requirement and an optional external A2A/agent endpoint",
+      "why_no_candidate": "The example must exercise Prometheus graph mutations, approvals, and protocol actions in CI; a generic demo agent cannot encode those acceptance scenarios.",
+      "capability_gap_id": "build-reference-agent"
+    },
+    {
+      "need": "Mobile completion of entity-graph-tauri: real generated bindings, capabilities, Android/iOS initialization where required, and desktop/mobile runtime fixtures",
+      "why_no_candidate": "The plugin is repository-specific and its current Rust/TypeScript contract must be completed rather than replaced.",
+      "capability_gap_id": "build-tauri-mobile-contract"
+    },
+    {
+      "need": "A provenance-preserving migration of reusable KnowMe Flutter sources plus license/relicensing documentation and removal of duplicate ownership",
+      "why_no_candidate": "This is a source-history and governance operation across user-owned repositories, not a third-party library choice.",
+      "capability_gap_id": "build-flutter-source-migration"
+    },
+    {
+      "need": "One root release certification command spanning pnpm/Turbo, Dart/Melos, Cargo, example E2E, packed consumer fixtures, skills, and registry dry runs",
+      "why_no_candidate": "Existing orchestrators cover individual ecosystems; the cross-ecosystem release contract is specific to this monorepo.",
+      "capability_gap_id": "build-release-certification"
+    },
+    {
+      "need": "An upstream A2A conformance/version matrix plus A2UI-over-A2A artifact/metadata adapter, streaming task scenario, and authenticated policy boundary",
+      "why_no_candidate": "The existing package provides a useful custom A2A-shaped server, but its current protocol conformance and A2UI extension coverage were not established within the research cap.",
+      "capability_gap_id": "build-a2a-conformance"
+    },
+    {
+      "need": "A repository-specific documentation information architecture, Prometheus visual system, content completeness ledger, runnable-snippet verification, and release-to-docs version policy",
+      "why_no_candidate": "Docusaurus and TypeDoc provide infrastructure, but the product narrative, brand implementation, coverage policy, and verified content must be designed for this package ecosystem.",
+      "capability_gap_id": "build-docs-product"
+    }
+  ]
+}

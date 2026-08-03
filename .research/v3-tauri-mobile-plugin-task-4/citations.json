@@ -1,0 +1,10 @@
+{
+  "citations": [
+    {"claim": "Capabilities grant or deny permissions per window or webview and overlapping capabilities merge authority.", "sourceId": "tauri-capabilities", "confidence": 0.99},
+    {"claim": "Plugin permissions use a default set and individual command identifiers.", "sourceId": "tauri-permissions", "confidence": 0.99},
+    {"claim": "Android and iOS plugins use Kotlin and Swift implementations behind the Rust mobile bridge.", "sourceId": "tauri-mobile-plugin", "confidence": 0.99},
+    {"claim": "MockRuntime is a Tauri test runtime, not an Android or iOS runtime.", "sourceId": "tauri-test", "confidence": 0.98},
+    {"claim": "Tauri Specta v2 is the supported pairing for Tauri v2 and generates event types in addition to commands.", "sourceId": "tauri-specta-v2", "confidence": 0.98},
+    {"claim": "The package default is read-only and its snapshot state is currently in-memory.", "sourceId": "local-plugin-source", "confidence": 1.0}
+  ]
+}

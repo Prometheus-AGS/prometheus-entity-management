@@ -1,0 +1,79 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    {
+      "id": "acceptance-traceability",
+      "description": "Every phase-plan detail and acceptance criterion maps to direct semantic-contract, coverage-ledger, validator, unit, BDD, or clean-gate evidence.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Run the focused validator and BDD suite, then map the shared domain, scenarios, capabilities, artifacts, and showcases to the phase plan."
+      }
+    },
+    {
+      "id": "evidence-integrity",
+      "description": "All declared evidence paths exist and are non-empty, JSON reports parse, strict OpenSpec validation passes, and no task remains unchecked before archive.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Parse ledgers and reports, stat every evidence path, scan tasks, and run strict OpenSpec validation."
+      }
+    },
+    {
+      "id": "fail-closed-validator",
+      "description": "The validator rejects missing, stale, duplicate, malformed, and nonexistent implemented evidence rather than throwing or silently accepting drift.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Run the adversarial mutation test suite and focused Cucumber feature."
+      }
+    },
+    {
+      "id": "release-boundary",
+      "description": "Semantic coverage readiness is not presented as completed showcase behavior, browser/device proof, full 3.0 certification, registry authority, or npm latest readiness.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Require in-progress coverage, five planned showcase evidence states, explicit downstream owners, and publication denial."
+      }
+    },
+    {
+      "id": "visual-honesty",
+      "description": "Screenshots are non-applicable only for this headless contract; real browser, device, accessibility, trace, video, and hash evidence remains mandatory for downstream examples and Docusaurus.",
+      "severity": "high",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Review the evidence medium and every showcase's downstream visual owner."
+      }
+    },
+    {
+      "id": "architecture-preservation",
+      "description": "The contract preserves canonical normalized entities, ID-only lists, separate local patches, and component-to-hook-to-store or adapter I/O ownership.",
+      "severity": "high",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Validate scenario invariants and compare the documentation language with repository architecture rules."
+      }
+    }
+  ],
+  "global_rules": [
+    "Use pnpm-only deterministic evidence.",
+    "Do not authorize or perform registry publication.",
+    "Do not count planned paths as implemented runtime or visual evidence.",
+    "Do not weaken or reinterpret the phase-plan acceptance criteria.",
+    "Do not fabricate screenshots for a headless data contract."
+  ],
+  "termination_conditions": [
+    "All blocking constraints are satisfied.",
+    "Focused validator and BDD gates pass from the current worktree.",
+    "Strict OpenSpec validation and evidence-integrity checks pass.",
+    "No unsupported showcase, platform, visual, certification, or publication claim remains."
+  ]
+}
+

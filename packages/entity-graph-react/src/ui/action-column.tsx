@@ -6,7 +6,7 @@
  * cards and list items.
  */
 import { useState, useRef, useEffect } from "react";
-import type { ActionDef } from "@prometheus-ags/entity-graph-core";
+import type { ActionDef } from "../table/react-types";
 import { cn } from "./utils";
 
 // ---------------------------------------------------------------------------

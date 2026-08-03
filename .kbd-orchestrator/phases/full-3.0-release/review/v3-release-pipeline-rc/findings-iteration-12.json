@@ -1,0 +1,26 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-critic",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".github/workflows/publish.yml",
+      "line": 55,
+      "claim": "The workflow declares an unsupported GitHub Actions permission key, which makes the release-candidate workflow invalid before any job can run.",
+      "evidence": "The review incorrectly claimed artifact-metadata is unsupported.",
+      "suggested_fix": "Remove artifact-metadata: write."
+    },
+    {
+      "severity": "WARNING",
+      "file": "scripts/release-candidate-pipeline.mjs",
+      "line": 840,
+      "claim": "Exact-version absence can be misclassified as a hard registry failure because the npm 404 parser only reads JSON from stderr.",
+      "evidence": "lookupNpmVersion parsed only result.stderr as JSON before checking E404.",
+      "suggested_fix": "Parse npm error details from stdout and stderr and recognize plain npm E404 text."
+    }
+  ]
+}

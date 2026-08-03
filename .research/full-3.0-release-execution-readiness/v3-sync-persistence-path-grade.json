@@ -1,0 +1,32 @@
+{
+  "grade_id": "grade-v3-sync-persistence-path-1785605666",
+  "goal_id": "full-3.0-release-execution-readiness",
+  "concept_id": "deterministic-persistence-and-convergence",
+  "learner_id": "codex-root",
+  "graded_at": "2026-08-01T17:34:26Z",
+  "explanation_excerpt": "PGlite is the durable notebook; Loro is the reconciliation protocol; the graph is the canonical current view.",
+  "scores": {
+    "completeness": 0.94,
+    "accuracy": 0.97,
+    "clarity": 0.95,
+    "misconceptions_absent": 1.0
+  },
+  "overall_score": 0.965,
+  "gaps": [
+    {
+      "dimension": "completeness",
+      "description": "The exact reconnect queue and resynchronization API remains an implementation decision for task 2; the required observable behavior is frozen here.",
+      "corpus_ref": "v3-sync-persistence-path-feynman"
+    }
+  ],
+  "transfer_problems": [
+    "A PGlite reopen test passes while two Loro peers diverge. Can the release gate pass?",
+    "Loopback convergence passes while disconnected WebSocket writes are dropped. What may the package claim?",
+    "A sibling repository passes sync tests while this workspace skips missing dependencies. Can that evidence satisfy the mandatory gate?"
+  ],
+  "transfer_scores": [0.98, 0.96, 0.98],
+  "passed": true,
+  "pass_threshold": 0.7,
+  "misconception_review": "The explanation keeps durable storage, CRDT merge semantics, transport recovery, and canonical graph projection as separate proof obligations.",
+  "grading_method": "Source-grounded self-assessment for autonomous execution; no claim of human learner mastery is made."
+}

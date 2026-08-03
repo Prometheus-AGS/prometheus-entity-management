@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-sync-persistence-path",
+  "recordedAt": "2026-08-01T18:31:00Z",
+  "verdict": "pass",
+  "acceptance": {
+    "mandatoryDependenciesInstalled": "pass",
+    "realPgliteCloseReopen": "pass",
+    "idOnlyListRestored": "pass",
+    "twoClientOfflineWrites": "pass",
+    "fifoAndReverseConvergence": "pass",
+    "deterministicSameFieldConflict": "pass",
+    "inboundEchoSuppression": "pass",
+    "disconnectedWriteQueue": "pass",
+    "reconnectSnapshotRequest": "pass",
+    "realWebSocketTerminationRecovery": "pass",
+    "mandatorySkipOrTodoPaths": 0,
+    "packedEsmCommonJsNodeNext": "pass",
+    "manualExternalContract": "pass",
+    "publicLedgersSynchronized": "pass",
+    "visualClaim": "not-applicable-headless"
+  },
+  "finalCleanRoom": {
+    "sourceOnly": true,
+    "frozenInstall": "pass",
+    "packagesInstalled": 777,
+    "downloads": 0,
+    "completeCi": "pass",
+    "bddScenarios": 34,
+    "bddSteps": 185,
+    "reactRuntimeExports": 201,
+    "syncRuntimeExports": 16,
+    "productionDependenciesAudited": 309,
+    "blockingAdvisories": 0
+  },
+  "focused": {
+    "syncReleaseGuards": { "status": "pass", "tests": 9 },
+    "syncBdd": { "status": "pass", "scenarios": 6, "steps": 31 },
+    "syncImplementationTests": { "status": "pass", "tests": 9 },
+    "syncPackedConsumers": "pass",
+    "allPackageTarballs": { "status": "pass", "packages": 12 },
+    "externalSiblingContract": "pass",
+    "workflowActionlint": "pass",
+    "strictOpenSpec": "pass",
+    "gitDiffCheck": "pass"
+  },
+  "publicationAuthorized": false
+}

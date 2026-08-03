@@ -1,0 +1,127 @@
+{
+  "sources": [
+    {
+      "id": "npm-trusted-publishers",
+      "title": "Trusted publishing for npm packages",
+      "url": "https://docs.npmjs.com/trusted-publishers/",
+      "publisher": "npm",
+      "kind": "official-documentation",
+      "credibilityScore": 98,
+      "claims": [
+        "Trusted publishing requires an exact workflow trust relationship and id-token: write",
+        "npm CLI 11.5.1 or later and Node 22.14.0 or later are required",
+        "GitHub-hosted trusted publishing generates npm provenance automatically for public packages in public repositories"
+      ]
+    },
+    {
+      "id": "npm-staged-publishing",
+      "title": "Staged publishing for npm packages",
+      "url": "https://docs.npmjs.com/staged-publishing/",
+      "publisher": "npm",
+      "kind": "official-documentation",
+      "credibilityScore": 98,
+      "claims": [
+        "npm stage publish separates upload from a later human 2FA approval",
+        "Staging requires npm CLI 11.15.0 or later",
+        "Only an already-existing package can be staged"
+      ]
+    },
+    {
+      "id": "npm-stage-cli",
+      "title": "npm stage command",
+      "url": "https://docs.npmjs.com/cli/v11/commands/npm-stage/",
+      "publisher": "npm",
+      "kind": "official-cli-reference",
+      "credibilityScore": 98,
+      "claims": [
+        "npm stage is workspace-unaware",
+        "The selected tag is immutable for a staged package",
+        "private packages are refused rather than staged"
+      ]
+    },
+    {
+      "id": "changesets-action",
+      "title": "Changesets release action",
+      "url": "https://github.com/changesets/action",
+      "publisher": "changesets",
+      "kind": "official-upstream-source",
+      "credibilityScore": 96,
+      "claims": [
+        "The action can maintain a version PR or invoke a repository-defined publish command",
+        "Custom publish logic must explicitly tolerate versions that already exist after prior or partial publication"
+      ]
+    },
+    {
+      "id": "changesets-prereleases",
+      "title": "Changesets prereleases",
+      "url": "https://github.com/changesets/changesets/blob/main/docs/prereleases.md",
+      "publisher": "changesets",
+      "kind": "official-upstream-documentation",
+      "credibilityScore": 96,
+      "claims": [
+        "Prerelease mode should normally run on a branch separate from the default branch",
+        "The prerelease identifier also becomes the npm dist-tag",
+        "A first publish of a brand-new package can still acquire latest despite prerelease mode"
+      ]
+    },
+    {
+      "id": "changesets-config",
+      "title": "Changesets configuration options",
+      "url": "https://github.com/changesets/changesets/blob/main/docs/config-file-options.md",
+      "publisher": "changesets",
+      "kind": "official-upstream-documentation",
+      "credibilityScore": 96,
+      "claims": [
+        "private: true is the durable way to prevent package publication",
+        "linked groups share a version but do not force every member to publish on every release"
+      ]
+    },
+    {
+      "id": "github-attestations",
+      "title": "Using artifact attestations to establish provenance for builds",
+      "url": "https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations",
+      "publisher": "GitHub",
+      "kind": "official-documentation",
+      "credibilityScore": 97,
+      "claims": [
+        "Non-npm binary provenance requires attestations: write and id-token: write",
+        "An attestation binds an artifact digest to workflow provenance but does not validate product behavior"
+      ]
+    },
+    {
+      "id": "cargo-publish",
+      "title": "cargo publish",
+      "url": "https://doc.rust-lang.org/cargo/commands/cargo-publish.html",
+      "publisher": "Rust Project",
+      "kind": "official-cli-reference",
+      "credibilityScore": 98,
+      "claims": [
+        "cargo publish --dry-run performs packaging and verification without upload",
+        "Cargo publication can be restricted or disabled by manifest metadata"
+      ]
+    },
+    {
+      "id": "dart-automated-publishing",
+      "title": "Automated publishing of packages to pub.dev",
+      "url": "https://dart.dev/tools/pub/automated-publishing",
+      "publisher": "Dart Project",
+      "kind": "official-documentation",
+      "credibilityScore": 98,
+      "claims": [
+        "pub.dev supports OIDC-based GitHub Actions publishing only for existing packages",
+        "GitHub Actions publication must be triggered by a matching pushed tag"
+      ]
+    },
+    {
+      "id": "local-release-contract",
+      "title": "Prometheus v3 release contract",
+      "path": "release/v3-release-contract.json",
+      "kind": "local-authoritative-contract",
+      "credibilityScore": 100,
+      "claims": [
+        "The stable artifact set, registry decisions, and publication conditions are machine-readable",
+        "Publication is a distinct completion dimension and remains unauthorized during the RC change"
+      ]
+    }
+  ]
+}

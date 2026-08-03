@@ -64,7 +64,13 @@ export { prometheusEntityLayeringRule } from "./lint/layering-rule";
 export type { LayeringRuleOptions, FlatConfigEntry } from "./lint/layering-rule";
 
 // ── Core graph ────────────────────────────────────────────────────────────
-export { useGraphStore } from "@prometheus-ags/entity-graph-core";
+export {
+  createGraphStore,
+  graphStore,
+  graphSyncStatusStore,
+  useGraphStore,
+} from "./graph-store";
+export type { GraphStore } from "./graph-store";
 export type {
   GraphState,
   EntityState,
@@ -112,9 +118,10 @@ export {
   startLocalFirstGraph,
   hydrateGraphFromStorage,
   persistGraphToStorage,
-  useGraphSyncStatus,
+  getGraphSyncStatus,
   replayActionWithRetry,
 } from "@prometheus-ags/entity-graph-core";
+export { useGraphSyncStatus } from "./graph-store";
 export type {
   GraphPersistenceAdapter,
   GraphActionRecord as PersistedGraphActionRecord,
@@ -438,12 +445,6 @@ export type {
   HeaderGroup,
   RowModel,
   ViewMode,
-  ActionDef,
-  ItemDescriptor,
-  ItemRenderContext,
-  EmptyStateConfig,
-  BatchActionDef,
-  GalleryColumns,
   SortingState,
   ColumnFiltersState,
   RowSelectionState,
@@ -461,12 +462,20 @@ export type {
   AggregationFn,
   CellContext,
   HeaderContext,
+  AccessorFn,
+} from "@prometheus-ags/entity-graph-core";
+export type {
+  ActionDef,
+  ItemDescriptor,
+  ItemRenderContext,
+  EmptyStateConfig,
+  BatchActionDef,
+  GalleryColumns,
   CellRenderer,
   HeaderRenderer,
-  AccessorFn,
   ItemDescriptorBadge,
   ItemDescriptorMeta,
-} from "@prometheus-ags/entity-graph-core";
+} from "./table/react-types";
 
 // ── Preset system ────────────────────────────────────────────────────────
 export type {

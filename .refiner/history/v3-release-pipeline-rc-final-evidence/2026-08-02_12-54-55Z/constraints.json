@@ -1,0 +1,59 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    {
+      "id": "release-state-dimensions-independent",
+      "description": "Implementation, evidence, archive readiness, full-release certification, and publication authority must remain independently represented.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {"requires_code_execution": true, "validation_method": "BDD and final JSON assertions"}
+    },
+    {
+      "id": "no-publication-overclaim",
+      "description": "The artifacts must not claim or perform registry upload, stable promotion, tag movement, GitHub Release creation, or other public mutation.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {"requires_code_execution": true, "validation_method": "negative-claim and registry-mutation assertions"}
+    },
+    {
+      "id": "acceptance-has-direct-evidence",
+      "description": "Every bounded plan acceptance criterion must map to a reproducible, existing evidence artifact.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {"requires_code_execution": true, "validation_method": "acceptance matrix and path existence"}
+    },
+    {
+      "id": "visual-accessible-and-legible",
+      "description": "The 1400x960 disposition visual must be valid XML, accessible by title/description/ARIA, unclipped, legible, and meet at least 4.5:1 text contrast.",
+      "severity": "blocking",
+      "type": "accessibility",
+      "validation": {"requires_code_execution": true, "validation_method": "XML, metadata, contrast, and original-resolution inspection"},
+      "target_metric": {"metric": "minimum contrast ratio", "operator": ">=", "value": 4.5}
+    },
+    {
+      "id": "ledgers-synchronized",
+      "description": "examples/coverage.json, final verification, release impact, and evidence paths must agree on implemented versus pending state.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {"requires_code_execution": true, "validation_method": "coverage validator and cross-file assertions"}
+    },
+    {
+      "id": "deterministic-integrity",
+      "description": "Required JSON, Markdown, SVG, and PNG outputs must exist, validate, pass tests, and have reproducible integrity hashes.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {"requires_code_execution": true, "validation_method": "schema validation, tests, and SHA-256"}
+    }
+  ],
+  "global_rules": [
+    "Use repository evidence as authoritative.",
+    "Do not convert unproven external authority into a passing claim.",
+    "Do not mutate a registry or public release state."
+  ],
+  "termination_conditions": [
+    "All six blocking constraints pass.",
+    "All manifest variants exist in dist.",
+    "Artifact and state schemas validate.",
+    "No further material correction is identified."
+  ]
+}

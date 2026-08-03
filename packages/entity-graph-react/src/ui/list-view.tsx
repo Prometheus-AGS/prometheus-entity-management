@@ -9,11 +9,9 @@ import type { KeyboardEvent, ReactNode } from "react";
 import type { StoreApi } from "zustand";
 import type {
   Row,
-  ActionDef,
   ColumnDef,
-  ItemDescriptor,
-  ItemRenderContext,
 } from "@prometheus-ags/entity-graph-core";
+import type { ActionDef, ItemDescriptor, ItemRenderContext } from "../table/react-types";
 import type { SelectionStoreState } from "../table/selection-store";
 import { useSelectionStore, selectionStorePlaceholder } from "../table/selection-store";
 import { ActionButtonRow } from "./action-column";

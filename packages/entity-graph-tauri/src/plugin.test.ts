@@ -170,7 +170,7 @@ describe("listenEntityChanged", () => {
 
     await listenEntityChanged(listen);
 
-    fire("entity-graph://entity-changed", {
+    fire("plugin:entity-graph-tauri:entity-changed", {
       entityType: "Product",
       entityId: "prod-1",
       operation: "upsert",
@@ -186,7 +186,7 @@ describe("listenEntityChanged", () => {
     const { listen, fire } = makeFakeListen();
     await listenEntityChanged(listen);
 
-    fire("entity-graph://entity-changed", {
+    fire("plugin:entity-graph-tauri:entity-changed", {
       entityType: "Order",
       entityId: "o-1",
       operation: "remove",
@@ -201,7 +201,7 @@ describe("listenEntityChanged", () => {
     const { listen, fire } = makeFakeListen();
     await listenEntityChanged(listen);
 
-    fire("entity-graph://entity-changed", {
+    fire("plugin:entity-graph-tauri:entity-changed", {
       entityType: "Item",
       entityId: "i-1",
       operation: "patch",
@@ -218,7 +218,7 @@ describe("listenEntityChanged", () => {
 
     await listenEntityChanged(listen, onEvent);
 
-    fire("entity-graph://entity-changed", {
+    fire("plugin:entity-graph-tauri:entity-changed", {
       entityType: "Tag",
       entityId: "tag-5",
       operation: "upsert",
@@ -286,7 +286,7 @@ describe("TauriGraphPlugin — lifecycle", () => {
       lists: {},
     });
     const { invoke } = makeFakeInvoke({
-      "plugin:entity_graph|graph_restore_snapshot": { snapshot },
+      "plugin:entity-graph-tauri|graph_restore_snapshot": { snapshot },
     });
     const { listen } = makeFakeListen();
 

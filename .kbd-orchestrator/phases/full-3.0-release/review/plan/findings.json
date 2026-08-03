@@ -1,0 +1,43 @@
+{
+  "mode": "artifact",
+  "verdict": "PASS",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": "plan.md",
+      "claim": "The release-candidate pipeline is specified to decide Dart/Rust release inclusion before formally depending on the Dart and Rust/Tauri artifact work it must package or exclude.",
+      "evidence": "`v3-release-pipeline-rc` details require \"Rust/Dart inclusion or explicit exclusion\" but its dependencies are only `v3-package-module-contracts`, `v3-binding-singleton-contract`, and `v3-main-ci-baseline`; the Dart/Rust artifact-defining changes are `v3-dart-graph-riverpod` and `v3-tauri-mobile-plugin`.",
+      "suggested_fix": "Add `v3-dart-graph-riverpod` and `v3-tauri-mobile-plugin` as dependencies of `v3-release-pipeline-rc`, or narrow the release-pipeline change to npm-only and move Dart/Rust inclusion/exclusion into a later cross-registry release workflow."
+    },
+    {
+      "severity": "WARNING",
+      "file": "plan.md",
+      "claim": "The conceptual docs change can be scheduled without the sync implementation it is required to document and test.",
+      "evidence": "`v3-docs-concepts-packages` says it will write tested guides for \"sync\" and \"realtime batching\", but its dependencies are only `v3-framework-neutral-core`, `v3-binding-singleton-contract`, and `v3-docs-foundation-brand`; it does not depend on `v3-sync-persistence-path`.",
+      "suggested_fix": "Add `v3-sync-persistence-path` as a dependency of `v3-docs-concepts-packages` so sync/realtime documentation is based on the certified implementation and tests."
+    },
+    {
+      "severity": "WARNING",
+      "file": "plan.md",
+      "claim": "The Next.js example claims realtime behavior without depending on the plan's mandatory sync/realtime path.",
+      "evidence": "`v3-nextjs-app-router-example` details include \"realtime client takeover\", but its dependencies are only `v3-framework-neutral-core`, `v3-binding-singleton-contract`, and `v3-example-coverage-contract`; the deterministic realtime/offline path is handled by `v3-sync-persistence-path`.",
+      "suggested_fix": "Either add `v3-sync-persistence-path` as a dependency of `v3-nextjs-app-router-example` or remove realtime certification from the Next.js example and leave it to another example with the proper dependency."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "plan.md",
+      "claim": "The release contract includes KBD waypoint/project alias reconciliation that is not tied to any stated release goal.",
+      "evidence": "`v3-release-contract` details include \"Reconcile the stale KBD waypoint/project aliases\", while the goals cover production-ready 3.0 publication, examples, Flutter consolidation, machine-verifiable coverage, and Docusaurus documentation; no goal mentions KBD orchestration metadata.",
+      "suggested_fix": "Remove this from the release contract or explicitly justify it as a prerequisite for reproducible release governance."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

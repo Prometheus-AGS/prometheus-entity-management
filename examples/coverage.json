@@ -1,0 +1,839 @@
+{
+  "schemaVersion": "1.0.0",
+  "release": "3.0.0",
+  "contract": "release/v3-release-contract.json",
+  "status": "in-progress",
+  "semanticContract": {
+    "id": "prometheus.entity-management.shared-example",
+    "version": "1.0.0",
+    "status": "implemented",
+    "path": "examples/shared/scenario-contract.json",
+    "schema": "examples/shared/scenario-contract.schema.json",
+    "command": "pnpm run verify:example-coverage",
+    "report": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/task-2-example-coverage-report.json"
+  },
+  "contractChecks": [
+    {
+      "id": "release.contract.inventory-and-gates",
+      "status": "implemented",
+      "feature": "tests/features/release/v3-release-contract.feature",
+      "tags": ["@release", "@v3-release-contract"],
+      "evidence": [
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-contract/bdd-red.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-contract/task-3-tests.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-contract/gate-results.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-contract/verification.md"
+      ]
+    }
+  ],
+  "qualityGates": [
+    {
+      "id": "release.ci.hermetic-main-baseline",
+      "status": "implemented",
+      "change": "v3-main-ci-baseline",
+      "feature": "tests/features/ci/v3-main-ci-baseline.feature",
+      "tags": ["@ci", "@v3-main-ci-baseline"],
+      "policies": [
+        "release/dependency-policy.json",
+        "security/advisory-policy.json"
+      ],
+      "evidence": [
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-main-ci-baseline/dependency-gate.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-main-ci-baseline/task-2-implementation.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-main-ci-baseline/bdd-red.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-main-ci-baseline/task-3-tests.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-main-ci-baseline/task-4-ledgers-docs.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-main-ci-baseline/task-5-clean-gates.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-main-ci-baseline/clean-gates.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-main-ci-baseline/verification.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-main-ci-baseline/release-impact.md"
+      ]
+    },
+    {
+      "id": "release.packages.packed-module-contracts",
+      "status": "implemented",
+      "change": "v3-package-module-contracts",
+      "feature": "tests/features/release/v3-package-module-contracts.feature",
+      "tags": ["@release", "@v3-package-module-contracts"],
+      "command": "pnpm run verify:package-contracts",
+      "policies": [
+        "release/v3-release-contract.json"
+      ],
+      "evidence": [
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-package-module-contracts/dependency-gate.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-package-module-contracts/implementation.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-package-module-contracts/bdd-red.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-package-module-contracts/task-3-tests.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-package-module-contracts/task-3-package-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-package-module-contracts/task-4-ledgers-docs.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-package-module-contracts/task-5-clean-gates.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-package-module-contracts/clean-gates.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-package-module-contracts/verification.md"
+      ]
+    },
+    {
+      "id": "release.core.framework-neutral",
+      "status": "implemented",
+      "change": "v3-framework-neutral-core",
+      "feature": "tests/features/release/v3-framework-neutral-core.feature",
+      "tags": ["@release", "@v3-framework-neutral-core"],
+      "command": "pnpm run verify:framework-neutral-core",
+      "policies": [
+        "release/v3-release-contract.json"
+      ],
+      "evidence": [
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-framework-neutral-core/dependency-gate.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-framework-neutral-core/task-2-implementation.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-framework-neutral-core/task-3-verification-tests.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-framework-neutral-core/framework-neutral-core-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-framework-neutral-core/task-4-ledgers-docs.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-framework-neutral-core/task-5-clean-gates.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-framework-neutral-core/clean-gates.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-framework-neutral-core/clean-framework-neutral-core-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-framework-neutral-core/release-impact.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-framework-neutral-core/verification.md"
+      ]
+    },
+    {
+      "id": "release.bindings.one-core-singleton",
+      "status": "implemented",
+      "change": "v3-binding-singleton-contract",
+      "feature": "tests/features/release/v3-binding-singleton-contract.feature",
+      "tags": ["@release", "@v3-binding-singleton-contract"],
+      "command": "pnpm run verify:binding-singletons",
+      "policies": [
+        "release/v3-release-contract.json",
+        ".changeset/config.json"
+      ],
+      "evidence": [
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/dependency-gate.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/task-2-implementation.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/task-2-binding-singletons-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/bdd-red.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/task-3-verification-tests.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/task-3-binding-singletons-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/task-4-bdd-red.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/task-4-ledgers-docs.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/task-5-clean-gates.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/clean-gates.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/clean-binding-singletons-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/final-binding-singletons-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/artifact-refiner-qa.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/verification.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/release-impact.md"
+      ]
+    },
+    {
+      "id": "release.examples.shared-semantic-contract",
+      "status": "implemented",
+      "change": "v3-example-coverage-contract",
+      "feature": "tests/features/release/v3-example-coverage-contract.feature",
+      "tags": ["@release", "@v3-example-coverage-contract"],
+      "command": "pnpm run verify:example-coverage",
+      "policies": [
+        "release/v3-release-contract.json",
+        "examples/coverage.schema.json",
+        "examples/shared/scenario-contract.json",
+        "examples/shared/scenario-contract.schema.json"
+      ],
+      "evidence": [
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/dependency-gate.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/task-2-implementation.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/task-2-example-coverage-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/task-3-bdd-red.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/task-3-tests.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/task-3-cucumber.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/task-4-bdd-red.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/task-4-ledgers-docs.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/task-4-cucumber.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/task-5-clean-gates.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/clean-gates.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/clean-example-coverage-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/clean-cucumber.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/clean-package-contract-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/final-example-coverage-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/final-cucumber.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/artifact-refiner-qa.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/verification.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/release-impact.md"
+      ]
+    },
+    {
+      "id": "release.sync.persistence-convergence",
+      "status": "implemented",
+      "change": "v3-sync-persistence-path",
+      "feature": "tests/features/release/v3-sync-persistence-path.feature",
+      "tags": ["@release", "@v3-sync-persistence-path"],
+      "command": "pnpm run test:sync-persistence",
+      "policies": [
+        "release/v3-release-contract.json",
+        "examples/coverage.json"
+      ],
+      "evidence": [
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-sync-persistence-path/dependency-gate.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-sync-persistence-path/implementation.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-sync-persistence-path/task-3-certification.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-sync-persistence-path/packed-consumer-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-sync-persistence-path/task-4-ledgers-docs.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-sync-persistence-path/task-5-clean-gates.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-sync-persistence-path/clean-gates.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-sync-persistence-path/clean-package-contract-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-sync-persistence-path/clean-sync-packed-consumer-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-sync-persistence-path/external-entity-sync-contract.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-sync-persistence-path/final-verification.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-sync-persistence-path/artifact-refiner-qa.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-sync-persistence-path/verification.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-sync-persistence-path/release-impact.md",
+        ".github/workflows/entity-sync-contract.yml",
+        "scripts/verify-sync-persistence.mjs",
+        "tests/release/v3-sync-persistence-path.test.mjs"
+      ]
+    },
+    {
+      "id": "release.protocol.a2ui-official",
+      "status": "implemented",
+      "change": "v3-a2ui-protocol-bridge",
+      "feature": "tests/features/release/v3-a2ui-protocol-bridge.feature",
+      "tags": ["@release", "@v3-a2ui-protocol-bridge"],
+      "command": "pnpm run verify:a2ui-bridge",
+      "policies": [
+        "release/v3-release-contract.json",
+        "examples/coverage.json"
+      ],
+      "evidence": [
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/bdd-red.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/task-3-test-receipt.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/packed-consumer-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/visual-evidence.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/task-4-bdd-red.md",
+    ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/task-4-ledgers-docs.md",
+    ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/task-4-example-coverage-report.json",
+    ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/clean-gates.json",
+    ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/task-5-clean-gates.md",
+    ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/clean-a2ui-packed-consumer-report.json",
+    ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/clean-package-contract-report.json",
+    ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/final-verification.json",
+    ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/verification.md",
+    ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/release-impact.md",
+        "release/a2ui-protocol-bridge.md"
+      ]
+    },
+    {
+      "id": "release.protocol.a2a-jsonrpc-v1",
+      "status": "implemented",
+      "change": "v3-a2a-conformance-agent",
+      "feature": "tests/features/release/v3-a2a-conformance-agent.feature",
+      "tags": ["@release", "@v3-a2a-conformance-agent"],
+      "command": "pnpm run verify:a2a-conformance",
+      "policies": [
+        "release/v3-release-contract.json",
+        "examples/coverage.json"
+      ],
+      "evidence": [
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2a-conformance-agent/implementation.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2a-conformance-agent/bdd-red.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2a-conformance-agent/task-3-test-receipt.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2a-conformance-agent/packed-consumer-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2a-conformance-agent/tck/receipt.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2a-conformance-agent/task-4-ledgers-docs.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2a-conformance-agent/task-5-clean-state-verification.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2a-conformance-agent/final-verification.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2a-conformance-agent/verification.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2a-conformance-agent/artifact-refiner-qa.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2a-conformance-agent/release-impact.md",
+        "release/a2a-conformance-agent.md"
+      ]
+    },
+    {
+      "id": "release.flutter.source-provenance",
+      "status": "implemented",
+      "change": "v3-flutter-source-provenance",
+      "feature": "tests/features/release/v3-flutter-source-provenance.feature",
+      "tags": ["@release", "@v3-flutter-source-provenance"],
+      "command": "pnpm run verify:flutter-source-provenance",
+      "policies": [
+        "release/v3-release-contract.json",
+        "release/flutter-source-authority.json",
+        "release/flutter-source-provenance.json",
+        "examples/coverage.json"
+      ],
+      "evidence": [
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/task-1-dependency-readiness.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/task-2-history-import.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/task-2-cucumber.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/task-2-visual-evidence.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/task-3-test-matrix.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/task-3-combined-cucumber.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/task-4-bdd-red.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/task-4-bdd-green.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/task-4-cucumber.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/task-4-example-coverage-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/task-4-ledgers-docs.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/task-5-clean-gates.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/clean-gates.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/clean-provenance-verification.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/clean-example-coverage-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/clean-cucumber.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/clean-package-contract-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/final-verification.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/verification.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/visual-certification.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/artifact-refiner-qa.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/release-impact.md",
+        "release/evidence/flutter-source-provenance-lineage.svg",
+        "release/flutter-source-provenance.md"
+      ]
+    },
+    {
+      "id": "release.platform.dart-riverpod",
+      "status": "implemented",
+      "change": "v3-dart-graph-riverpod",
+      "feature": "tests/features/release/v3-dart-graph-riverpod.feature",
+      "tags": ["@release", "@v3-dart-graph-riverpod"],
+      "command": "pnpm run verify:dart-graph-riverpod",
+      "policies": [
+        "release/v3-release-contract.json",
+        "prometheus-entity-skills/_shared/references/dart-library-exports.json",
+        "examples/coverage.json"
+      ],
+      "evidence": [
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-1-dependency-readiness.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-2-implementation.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-verification-tests.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-dart-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-cucumber.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-4-cucumber.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-4-dart-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-4-ledgers-docs.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-5-clean-gates.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-5-clean-gates.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-5-clean-dart-report.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-5-cucumber.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-6-bdd-red.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-6-cucumber.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/verification.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/visual-certification.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/release-impact.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/final-verification.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/artifact-refiner-qa.md",
+        "prometheus-entity-skills/_shared/references/dart-library-exports.json",
+        "release/dart-graph-riverpod.md"
+      ]
+    },
+    {
+      "id": "release.platform.tauri-plugin",
+      "status": "implemented",
+      "change": "v3-tauri-mobile-plugin",
+      "feature": "tests/features/release/v3-tauri-mobile-plugin.feature",
+      "tags": ["@release", "@v3-tauri-mobile-plugin"],
+      "command": "pnpm run verify:tauri-plugin",
+      "policies": [
+        "release/v3-release-contract.json",
+        "prometheus-entity-skills/_shared/references/tauri-library-exports.json",
+        "examples/coverage.json"
+      ],
+      "evidence": [
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-3-checks.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-3-verification.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-3-host-contract.svg",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-4-bdd-red.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-4-ledgers-docs.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-4-surface-contract.svg",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-4-surface-contract.png",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-4-visual-validation.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/verification.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/release-impact.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/final-verification.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-6-release-disposition.svg",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-6-release-disposition.png",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-6-visual-validation.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/device-evidence.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/artifact-refiner-qa.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/adversarial-review.md",
+        "prometheus-entity-skills/_shared/references/tauri-library-exports.json",
+        "release/tauri-mobile-plugin.md",
+        "release/tauri-mobile-device-lane.md"
+      ]
+    },
+    {
+      "id": "release.pipeline.recoverable-rc",
+      "status": "implemented",
+      "change": "v3-release-pipeline-rc",
+      "feature": "tests/features/release/v3-release-pipeline-rc.feature",
+      "tags": ["@release", "@v3-release-pipeline-rc"],
+      "command": "pnpm run verify:release-pipeline",
+      "policies": [
+        "release/v3-release-contract.json",
+        "release/release-candidate-policy.json",
+        ".github/workflows/publish.yml",
+        "examples/coverage.json"
+      ],
+      "evidence": [
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-3-verification.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-3-packed-consumers.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-3-certification.svg",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-4-ledgers-docs.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-5-clean-gates.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/final-verification.json",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-bdd.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-adversarial-bdd-red.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-rc-version-bdd-red.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-pnpm-forwarding-bdd-red.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/verification.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/release-impact.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-release-disposition.svg",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-release-disposition.png",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-visual-validation.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/artifact-refiner-qa.md",
+        ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/adversarial-review.md",
+        "tests/release/v3-release-pipeline-rc.test.mjs",
+        "tests/features/release/v3-release-pipeline-rc.feature",
+        "release/release-candidate-pipeline.md",
+        "prometheus-entity-skills/_shared/references/release-candidate-pipeline.md"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "graph.normalized-identity",
+      "title": "Normalized entities and ID-only lists",
+      "stability": "stable",
+      "artifactIds": ["npm-core", "npm-react", "npm-svelte", "npm-solid", "npm-web-components", "npm-alpine", "npm-htmx", "dart-flutter"],
+      "scenarioIds": ["example.graph.normalized-cross-view"],
+      "runnableEvidence": [
+        {
+          "kind": "semantic",
+          "status": "implemented",
+          "ownerChange": "v3-example-coverage-contract",
+          "command": "pnpm run verify:example-coverage",
+          "paths": ["examples/shared/scenario-contract.json", "examples/shared/scenario-contract.schema.json", "scripts/verify-example-coverage.mjs"],
+          "applicability": "Runs the presentation-neutral canonical entity and ID-only list outcome."
+        }
+      ],
+      "releaseEvidence": [
+        { "kind": "browser", "status": "implemented", "ownerChange": "v3-vite-react19-example", "command": "pnpm run verify:vite-react19", "paths": ["tests/browser/v3-vite-react19-example.spec.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-verification.json"], "applicability": "Proves list and detail views rejoin the same normalized Task in the production Vite application." },
+        {
+          "kind": "integration", "status": "implemented", "ownerChange": "v3-dart-graph-riverpod", "command": "pnpm run verify:dart-graph-riverpod",
+          "paths": ["packages/entity_graph_flutter/test/provider-contract_test.dart", "packages/entity_graph_flutter/test/cross-view-widget_test.dart", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-dart-report.json"],
+          "applicability": "Proves the Dart list retains IDs and list/detail providers both rejoin one canonical graph update, including a scoped rendered harness."
+        }
+      ]
+    },
+    {
+      "id": "graph.local-patches",
+      "title": "Local patches remain separate and globally visible",
+      "stability": "stable",
+      "artifactIds": ["npm-core", "npm-react", "dart-flutter"],
+      "scenarioIds": ["example.crud.optimistic-confirm", "example.crud.optimistic-rollback"],
+      "runnableEvidence": [
+        {
+          "kind": "semantic", "status": "implemented", "ownerChange": "v3-example-coverage-contract", "command": "pnpm run verify:example-coverage",
+          "paths": ["examples/shared/scenario-contract.json", "examples/shared/scenario-contract.schema.json", "scripts/verify-example-coverage.mjs"],
+          "applicability": "Runs patch isolation, confirmation, clearing, and rollback outcomes."
+        }
+      ],
+      "releaseEvidence": [
+        { "kind": "browser", "status": "implemented", "ownerChange": "v3-vite-react19-example", "command": "pnpm run verify:vite-react19", "paths": ["tests/browser/v3-vite-react19-example.spec.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-verification.json"], "applicability": "Proves optimistic patches are visible through the shared graph and are cleared after confirmation or rejection." },
+        {
+          "kind": "integration", "status": "implemented", "ownerChange": "v3-dart-graph-riverpod", "command": "pnpm run verify:dart-graph-riverpod",
+          "paths": ["packages/entity_graph_flutter/test/provider-contract_test.dart", "packages/entity_graph_flutter/test/cross-view-widget_test.dart"],
+          "applicability": "Proves Dart patches remain separate from canonical fields and an optimistic overlay is visible through both provider joins."
+        }
+      ]
+    },
+    {
+      "id": "graph.crud-optimistic",
+      "title": "CRUD with optimistic confirm and rollback",
+      "stability": "stable",
+      "artifactIds": ["npm-core", "npm-react", "dart-flutter"],
+      "scenarioIds": ["example.crud.optimistic-confirm", "example.crud.optimistic-rollback"],
+      "runnableEvidence": [
+        {
+          "kind": "semantic", "status": "implemented", "ownerChange": "v3-example-coverage-contract", "command": "pnpm run verify:example-coverage",
+          "paths": ["examples/shared/scenario-contract.json", "examples/shared/scenario-contract.schema.json", "scripts/verify-example-coverage.mjs"],
+          "applicability": "Runs deterministic successful and rejected optimistic mutation paths."
+        }
+      ],
+      "releaseEvidence": [
+        { "kind": "browser", "status": "implemented", "ownerChange": "v3-vite-react19-example", "command": "pnpm run verify:vite-react19", "paths": ["tests/browser/v3-vite-react19-example.spec.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-verification.json"], "applicability": "Proves deterministic optimistic confirmation and exact rollback in the rendered React showcase; broader CRUD workspaces remain linked separately." },
+        {
+          "kind": "integration", "status": "implemented", "ownerChange": "v3-dart-graph-riverpod", "command": "pnpm run verify:dart-graph-riverpod",
+          "paths": ["packages/entity_graph_flutter/test/provider-contract_test.dart", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-dart-report.json"],
+          "applicability": "Proves Dart optimistic create/update/delete confirmation plus exact failed update patch, sync metadata, entity, placeholder, and list-index rollback."
+        },
+        { "kind": "mobile", "status": "planned", "ownerChange": "v3-flutter-riverpod-a2ui-example", "applicability": "Complete Flutter application and Android/iOS optimistic mutation receipts remain downstream." }
+      ]
+    },
+    {
+      "id": "graph.relationship-invalidation",
+      "title": "Relationship traversal and cascade invalidation",
+      "stability": "stable",
+      "artifactIds": ["npm-core", "npm-react", "dart-flutter"],
+      "scenarioIds": ["example.relationship.cascade-invalidation"],
+      "runnableEvidence": [
+        {
+          "kind": "semantic", "status": "implemented", "ownerChange": "v3-example-coverage-contract", "command": "pnpm run verify:example-coverage",
+          "paths": ["examples/shared/scenario-contract.json", "examples/shared/scenario-contract.schema.json", "scripts/verify-example-coverage.mjs"],
+          "applicability": "Runs the old/new foreign-key invalidation outcome for Task to Project."
+        }
+      ],
+      "releaseEvidence": [
+        { "kind": "browser", "status": "implemented", "ownerChange": "v3-vite-react19-example", "command": "pnpm run verify:vite-react19", "paths": ["tests/browser/v3-vite-react19-example.spec.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-verification.json"], "applicability": "Proves a rendered Task reassignment invalidates the prior and next Project relationship edges." }
+      ]
+    },
+    {
+      "id": "graph.views-completeness",
+      "title": "Local remote and hybrid view completeness",
+      "stability": "stable",
+      "artifactIds": ["npm-core", "npm-react", "npm-svelte", "npm-solid", "npm-web-components", "npm-alpine", "npm-htmx", "dart-flutter"],
+      "scenarioIds": ["example.view.local-remote-hybrid"],
+      "runnableEvidence": [
+        {
+          "kind": "semantic", "status": "implemented", "ownerChange": "v3-example-coverage-contract", "command": "pnpm run verify:example-coverage",
+          "paths": ["examples/shared/scenario-contract.json", "examples/shared/scenario-contract.schema.json", "scripts/verify-example-coverage.mjs"],
+          "applicability": "Runs one filter specification through local, remote, and hybrid outcomes."
+        }
+      ],
+      "releaseEvidence": [
+        { "kind": "browser", "status": "implemented", "ownerChange": "v3-vite-react19-example", "command": "pnpm run verify:vite-react19", "paths": ["packages/entity-graph-react/src/hooks/use-entity-query.test.ts", "tests/browser/v3-vite-react19-example.spec.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-verification.json"], "applicability": "Proves local, remote, and hybrid execution of one typed view contract, including local rows retained during remote reconciliation." },
+        {
+          "kind": "integration", "status": "implemented", "ownerChange": "v3-dart-graph-riverpod", "command": "pnpm run verify:dart-graph-riverpod",
+          "paths": ["packages/entity_graph_flutter/test/view-contract_test.dart", "packages/entity_graph_flutter/test/provider-contract_test.dart"],
+          "applicability": "Proves all Dart local filter operators, search, stable multi-sort, limit, remote normalization, zero-I/O local mode, and local-first hybrid replacement."
+        }
+      ]
+    },
+    {
+      "id": "graph.realtime-batching",
+      "title": "Realtime batching and cross-view updates",
+      "stability": "stable",
+      "artifactIds": ["npm-core", "npm-react", "npm-htmx", "dart-flutter"],
+      "scenarioIds": ["example.realtime.coalesced-cross-view"],
+      "runnableEvidence": [
+        {
+          "kind": "semantic", "status": "implemented", "ownerChange": "v3-example-coverage-contract", "command": "pnpm run verify:example-coverage",
+          "paths": ["examples/shared/scenario-contract.json", "examples/shared/scenario-contract.schema.json", "scripts/verify-example-coverage.mjs"],
+          "applicability": "Runs three transport events through two-entity coalescing and one graph flush."
+        }
+      ],
+      "releaseEvidence": [
+        { "kind": "integration", "status": "planned", "ownerChange": "v3-flint-portable-contracts", "applicability": "Portable realtime contract and live opt-in evidence remain downstream." },
+        { "kind": "browser", "status": "implemented", "ownerChange": "v3-vite-react19-example", "command": "pnpm run verify:vite-react19", "paths": ["packages/entity-graph-core/src/realtime-manager.test.ts", "tests/browser/v3-vite-react19-example.spec.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-verification.json"], "applicability": "Proves three rendered realtime changes to one entity coalesce into one graph write and one final cross-view state." },
+        { "kind": "integration", "status": "partial", "ownerChange": "v3-dart-graph-riverpod", "applicability": "The Dart change bridge proves realtime normalization, typed-list invalidation, and deletion, but does not implement or certify event coalescing." }
+      ]
+    },
+    {
+      "id": "graph.offline-persistence-sync",
+      "title": "Offline persistence reconnect and convergence",
+      "stability": "stable",
+      "artifactIds": ["npm-core", "npm-sync", "dart-flutter"],
+      "scenarioIds": ["example.offline.persistence-convergence"],
+      "runnableEvidence": [
+        {
+          "kind": "semantic", "status": "implemented", "ownerChange": "v3-example-coverage-contract", "command": "pnpm run verify:example-coverage",
+          "paths": ["examples/shared/scenario-contract.json", "examples/shared/scenario-contract.schema.json", "scripts/verify-example-coverage.mjs"],
+          "applicability": "Runs deterministic two-client field merge, persistence, reconnect, and reload outcomes."
+        }
+      ],
+      "releaseEvidence": [
+        {
+          "kind": "integration", "status": "implemented", "ownerChange": "v3-sync-persistence-path", "command": "pnpm run test:sync-persistence",
+          "paths": ["packages/entity-graph-core/src/adapters/pglite-persistence.integration.test.ts", "packages/entity-graph-sync/src/providers/loro-convergence.test.ts", "packages/entity-graph-sync/src/providers/loro-websocket.integration.test.ts", "tests/features/release/v3-sync-persistence-path.feature"],
+          "applicability": "Proves real PGlite close/reopen, deterministic two-client Loro convergence, conflict behavior, echo suppression, and actual WebSocket termination/reconnect without mandatory skips."
+        },
+        {
+          "kind": "packed-consumer", "status": "implemented", "ownerChange": "v3-sync-persistence-path", "command": "pnpm run verify:sync-persistence",
+          "paths": ["scripts/verify-sync-persistence.mjs", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-sync-persistence-path/packed-consumer-report.json"],
+          "applicability": "Proves tarball-only ESM convergence, CommonJS exports, and NodeNext declarations for the core and sync package candidates."
+        },
+        {
+          "kind": "browser", "status": "implemented", "ownerChange": "v3-vite-react19-example", "command": "pnpm run verify:vite-react19",
+          "paths": ["tests/browser/v3-vite-react19-example.spec.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-verification.json"],
+          "applicability": "Proves browser PGlite persist/hydrate and two-peer Loro convergence in the production React showcase; it does not replace the packed sync receipt."
+        },
+        {
+          "kind": "mobile", "status": "planned", "ownerChange": "v3-flutter-riverpod-a2ui-example",
+          "applicability": "Flutter persistence, reconnect, and device evidence remains owned by the Flutter showcase."
+        },
+        {
+          "kind": "platform", "status": "planned", "ownerChange": "v3-tauri-universal-example",
+          "applicability": "Tauri desktop/mobile restart and reconnect evidence remains owned by the universal Tauri showcase."
+        }
+      ]
+    },
+    {
+      "id": "transport.rest-graphql",
+      "title": "REST and GraphQL normalization equivalence",
+      "stability": "stable",
+      "artifactIds": ["npm-core", "npm-react"],
+      "scenarioIds": ["example.transport.rest-graphql-equivalence"],
+      "runnableEvidence": [
+        {
+          "kind": "semantic", "status": "implemented", "ownerChange": "v3-example-coverage-contract", "command": "pnpm run verify:example-coverage",
+          "paths": ["examples/shared/scenario-contract.json", "examples/shared/scenario-contract.schema.json", "scripts/verify-example-coverage.mjs"],
+          "applicability": "Runs fixed REST and GraphQL results through one normalized identity comparison."
+        }
+      ],
+      "releaseEvidence": [
+        { "kind": "browser", "status": "implemented", "ownerChange": "v3-vite-react19-example", "command": "pnpm run verify:vite-react19", "paths": ["tests/browser/v3-vite-react19-example.spec.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-verification.json"], "applicability": "Proves demo REST and GraphQL modes normalize through the same hook/store contract; live services remain explicit opt-in modes." }
+      ]
+    },
+    {
+      "id": "framework.binding-singleton",
+      "title": "One application-owned graph across JavaScript bindings",
+      "stability": "stable",
+      "artifactIds": ["npm-core", "npm-react", "npm-svelte", "npm-solid", "npm-web-components", "npm-alpine", "npm-htmx"],
+      "scenarioIds": ["example.graph.normalized-cross-view"],
+      "runnableEvidence": [
+        {
+          "kind": "semantic", "status": "implemented", "ownerChange": "v3-example-coverage-contract", "command": "pnpm run verify:example-coverage",
+          "paths": ["examples/shared/scenario-contract.json", "examples/shared/scenario-contract.schema.json", "scripts/verify-example-coverage.mjs"],
+          "applicability": "Runs the shared single-canonical-copy semantic outcome."
+        },
+        {
+          "kind": "packed-consumer", "status": "implemented", "ownerChange": "v3-binding-singleton-contract", "command": "pnpm run verify:binding-singletons",
+          "paths": ["scripts/verify-binding-singletons.mjs", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/final-binding-singletons-report.json"],
+          "applicability": "Proves six packed bindings resolve one physical core and observe one graph."
+        }
+      ],
+      "releaseEvidence": [
+        {
+          "kind": "packed-consumer", "status": "implemented", "ownerChange": "v3-binding-singleton-contract", "command": "pnpm run verify:binding-singletons",
+          "paths": ["scripts/verify-binding-singletons.mjs", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/verification.md"],
+          "applicability": "The six stable JavaScript binding singleton boundary is archived; native bindings remain separate capabilities."
+        }
+      ]
+    },
+    {
+      "id": "protocol.a2a-a2ui",
+      "title": "A2A task and A2UI policy-controlled surface flow",
+      "stability": "stable",
+      "artifactIds": ["npm-a2a", "npm-a2ui", "rust-mcp"],
+      "scenarioIds": ["example.protocol.a2a-a2ui-policy"],
+      "runnableEvidence": [
+        {
+          "kind": "semantic", "status": "implemented", "ownerChange": "v3-example-coverage-contract", "command": "pnpm run verify:example-coverage",
+          "paths": ["examples/shared/scenario-contract.json", "examples/shared/scenario-contract.schema.json", "scripts/verify-example-coverage.mjs"],
+          "applicability": "Runs keyless task states, A2UI 0.9.1 surface identity, allowlist approval, denial, and malformed rejection."
+        }
+      ],
+      "releaseEvidence": [
+        {
+          "kind": "protocol", "status": "implemented", "ownerChange": "v3-a2ui-protocol-bridge", "command": "pnpm run verify:a2ui-bridge",
+          "paths": ["packages/a2ui-react/src/official/runtime.ts", "packages/a2ui-react/src/policy/entity-graph-policy.ts", "scripts/verify-a2ui-protocol-bridge.mjs", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/visual-evidence.json"],
+          "applicability": "Official v0.9.1 messages render through the official engine and graph actions cross an allowlisted, default-deny application policy in packed and real-browser receipts. A2A transport conformance is certified by its separate implemented gate."
+        },
+        {
+          "kind": "protocol", "status": "implemented", "ownerChange": "v3-a2a-conformance-agent", "command": "pnpm run verify:a2a-conformance",
+          "paths": ["packages/entity-graph-a2a/src/server.ts", "packages/entity-graph-a2a/src/handler.ts", "packages/entity-graph-a2a/src/policy.ts", "scripts/run-a2a-tck.mjs", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2a-conformance-agent/tck/receipt.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2a-conformance-agent/packed-consumer-report.json"],
+          "applicability": "Proves the A2A 1.0 JSON-RPC discovery, send/get/list/cancel/stream/subscribe lifecycle, deterministic A2UI artifact metadata, explicit legacy seam, and pinned upstream TCK scope. REST, gRPC, push notifications, signed cards, and rendered showcase evidence remain excluded."
+        }
+      ]
+    },
+    {
+      "id": "runtime.ssr-hydration",
+      "title": "Per-request SSR graph isolation and hydration",
+      "stability": "stable",
+      "artifactIds": ["npm-core", "npm-react", "npm-htmx"],
+      "scenarioIds": ["example.runtime.ssr-isolation-hydration"],
+      "runnableEvidence": [
+        {
+          "kind": "semantic", "status": "implemented", "ownerChange": "v3-example-coverage-contract", "command": "pnpm run verify:example-coverage",
+          "paths": ["examples/shared/scenario-contract.json", "examples/shared/scenario-contract.schema.json", "scripts/verify-example-coverage.mjs"],
+          "applicability": "Runs two isolated request graphs and serializable hydration without duplicate fetches."
+        }
+      ],
+      "releaseEvidence": [
+        { "kind": "browser", "status": "planned", "ownerChange": "v3-nextjs-app-router-example", "applicability": "Concurrent Next.js request, RSC, hydration, and client takeover evidence remain downstream." }
+      ]
+    },
+    {
+      "id": "platform.tauri",
+      "title": "Tauri desktop and mobile adapter boundary",
+      "stability": "stable",
+      "artifactIds": ["npm-tauri", "rust-tauri"],
+      "scenarioIds": ["example.platform.adapter-boundary"],
+      "runnableEvidence": [
+        {
+          "kind": "semantic", "status": "implemented", "ownerChange": "v3-example-coverage-contract", "command": "pnpm run verify:example-coverage",
+          "paths": ["examples/shared/scenario-contract.json", "examples/shared/scenario-contract.schema.json", "scripts/verify-example-coverage.mjs"],
+          "applicability": "Runs canonical graph ownership, allowed native commands, and denied undeclared command semantics."
+        }
+      ],
+      "releaseEvidence": [
+        {
+          "kind": "desktop", "status": "implemented", "ownerChange": "v3-tauri-mobile-plugin", "command": "pnpm run verify:tauri-plugin",
+          "paths": ["tests/fixtures/tauri-plugin-host/src/lib.rs", "scripts/verify-tauri-mobile-plugin.mjs", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-3-verification.json"],
+          "applicability": "Executes the registered plugin platform command through Tauri MockRuntime and proves the exact desktop response; it is not an Android or iOS runtime."
+        },
+        {
+          "kind": "packed-consumer", "status": "implemented", "ownerChange": "v3-tauri-mobile-plugin", "command": "pnpm run verify:tauri-plugin",
+          "paths": ["packages/entity-graph-tauri/package.json", "tests/fixtures/tauri-plugin-host/Cargo.toml", "scripts/verify-tauri-mobile-plugin.mjs", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-3-verification.json"],
+          "applicability": "Compiles and runs the Rust host against the extracted npm candidate and checks Rust, permission, Android, and iOS source payloads; source presence is not mobile execution."
+        },
+        {
+          "kind": "security", "status": "implemented", "ownerChange": "v3-tauri-mobile-plugin", "command": "pnpm run verify:tauri-plugin",
+          "paths": ["tests/fixtures/tauri-plugin-host/capabilities/entity-graph-allowed.json", "tests/fixtures/tauri-plugin-host/capabilities/entity-graph-denied.json", "packages/entity-graph-tauri/rust-plugin/permissions/default.toml", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-3-verification.json"],
+          "applicability": "Proves desktop webview capability denial and a read-only default permission; the mobile evidence manifest independently proves Android and iOS denial."
+        },
+        {
+          "kind": "mobile", "status": "implemented", "ownerChange": "v3-tauri-mobile-plugin", "command": "pnpm run verify:tauri-plugin",
+          "paths": ["tests/fixtures/tauri-plugin-host/frontend/main.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/device-evidence.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/android/platform-ping.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/android/capability-denial.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/ios/platform-ping.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/ios/capability-denial.png"],
+          "applicability": "Executes the Rust-generated binding through packaged Kotlin on a physical Android device and packaged Swift on an iOS simulator, with exact success, fail-closed permission-denial, visual, environment, executable, and hash receipts."
+        },
+        { "kind": "visual", "status": "planned", "ownerChange": "v3-tauri-universal-example", "applicability": "Desktop/mobile rendered application and device receipts remain downstream." }
+      ]
+    },
+    {
+      "id": "platform.flutter-riverpod",
+      "title": "Flutter graph and Riverpod adapter boundary",
+      "stability": "stable",
+      "artifactIds": ["dart-flutter"],
+      "scenarioIds": ["example.platform.adapter-boundary"],
+      "runnableEvidence": [
+        {
+          "kind": "semantic", "status": "implemented", "ownerChange": "v3-example-coverage-contract", "command": "pnpm run verify:example-coverage",
+          "paths": ["examples/shared/scenario-contract.json", "examples/shared/scenario-contract.schema.json", "scripts/verify-example-coverage.mjs"],
+          "applicability": "Runs application-owned canonical graph and experimental genui maturity semantics."
+        }
+      ],
+      "releaseEvidence": [
+        {
+          "kind": "documentation", "status": "implemented", "ownerChange": "v3-flutter-source-provenance", "command": "pnpm run verify:flutter-source-provenance",
+          "paths": ["release/flutter-source-authority.json", "release/flutter-source-provenance.json", "provenance/imports/knowme-flutter/commit-map.tsv", "release/evidence/flutter-source-provenance-lineage.svg"],
+          "applicability": "Certifies licensed, history-preserving source lineage and one canonical Dart owner only; it does not certify Dart runtime behavior, Flutter rendering, pub.dev authority, or stable 3.0 publication."
+        },
+        {
+          "kind": "platform", "status": "implemented", "ownerChange": "v3-dart-graph-riverpod", "command": "pnpm run verify:dart-graph-riverpod",
+          "paths": ["packages/entity_graph_flutter/lib/entity_graph_flutter.dart", "packages/entity_graph_flutter/test/provider-contract_test.dart", "packages/entity_graph_flutter/test/ffi-transport-contract_test.dart", "tests/features/release/v3-dart-graph-riverpod.feature", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-dart-report.json"],
+          "applicability": "Certifies the canonical Dart graph, generated Riverpod lifecycle, views, optimistic CRUD, bounded retry, realtime invalidation, pluggable transport, and optional FFI seam."
+        },
+        {
+          "kind": "visual", "status": "implemented", "ownerChange": "v3-dart-graph-riverpod", "command": "pnpm run verify:dart-graph-riverpod",
+          "paths": ["packages/entity_graph_flutter/test/cross-view-widget_test.dart", "packages/entity_graph_flutter/test/goldens/cross-view-initial.png", "packages/entity_graph_flutter/test/goldens/cross-view-optimistic.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-dart-report.json"],
+          "applicability": "Proves a scoped list/detail widget harness renders the same optimistic graph patch without layout collapse; it is not complete app, device, or accessibility evidence."
+        },
+        { "kind": "visual", "status": "planned", "ownerChange": "v3-flutter-riverpod-a2ui-example", "applicability": "Complete Flutter/A2UI phone/tablet, accessibility, Android/iOS, and device visual receipts remain downstream." }
+      ]
+    },
+    {
+      "id": "schema.sdl-codegen",
+      "title": "SDL and generated artifact structural round-trip",
+      "stability": "stable",
+      "artifactIds": ["npm-sdl", "rust-cli", "rust-mcp"],
+      "scenarioIds": ["example.schema.roundtrip"],
+      "runnableEvidence": [
+        {
+          "kind": "semantic", "status": "implemented", "ownerChange": "v3-example-coverage-contract", "command": "pnpm run verify:example-coverage",
+          "paths": ["examples/shared/scenario-contract.json", "examples/shared/scenario-contract.schema.json", "scripts/verify-example-coverage.mjs"],
+          "applicability": "Runs a stable structural signature across all five entity definitions and relationships."
+        }
+      ],
+      "releaseEvidence": [
+        { "kind": "integration", "status": "partial", "ownerChange": "v3-skills-ecosystem", "applicability": "Existing SDL and CLI tests are present; complete packed snippet/codegen ledgers remain downstream." }
+      ]
+    },
+    {
+      "id": "runtime.engine-suspense-errors-devtools",
+      "title": "Engine lifecycle Suspense errors and diagnostics",
+      "stability": "stable",
+      "artifactIds": ["npm-core", "npm-react"],
+      "scenarioIds": ["example.runtime.lifecycle-security"],
+      "runnableEvidence": [
+        {
+          "kind": "semantic", "status": "implemented", "ownerChange": "v3-example-coverage-contract", "command": "pnpm run verify:example-coverage",
+          "paths": ["examples/shared/scenario-contract.json", "examples/shared/scenario-contract.schema.json", "scripts/verify-example-coverage.mjs"],
+          "applicability": "Runs deterministic stale, fetching, success, terminal-error, and diagnostic event expectations."
+        }
+      ],
+      "releaseEvidence": [
+        { "kind": "browser", "status": "implemented", "ownerChange": "v3-vite-react19-example", "command": "pnpm run verify:vite-react19", "paths": ["packages/entity-graph-react/src/hooks-suspense.test.tsx", "tests/browser/v3-vite-react19-example.spec.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-verification.json"], "applicability": "Proves cache-miss Suspense resolution, nearest-boundary error containment, live graph diagnostics, and zero serious or critical axe violations." }
+      ]
+    },
+    {
+      "id": "security.tenant-actions-secrets",
+      "title": "Tenant action approval and secret safety boundaries",
+      "stability": "stable",
+      "artifactIds": ["npm-core", "npm-a2a", "npm-a2ui", "npm-tauri", "rust-mcp", "rust-tauri"],
+      "scenarioIds": ["example.runtime.lifecycle-security", "example.protocol.a2a-a2ui-policy", "example.platform.adapter-boundary"],
+      "runnableEvidence": [
+        {
+          "kind": "semantic", "status": "implemented", "ownerChange": "v3-example-coverage-contract", "command": "pnpm run verify:example-coverage",
+          "paths": ["examples/shared/scenario-contract.json", "examples/shared/scenario-contract.schema.json", "scripts/verify-example-coverage.mjs"],
+          "applicability": "Runs tenant mismatch denial, destructive approval, malformed action, capability denial, and fixture secret scan expectations."
+        }
+      ],
+      "releaseEvidence": [
+        { "kind": "security", "status": "planned", "ownerChange": "v3-flint-portable-contracts", "applicability": "Issuer, tenant, key, role, RLS, and provisioning evidence remain downstream." },
+        {
+          "kind": "security", "status": "implemented", "ownerChange": "v3-a2ui-protocol-bridge", "command": "pnpm run test:a2ui-bridge",
+          "paths": ["packages/a2ui-react/src/policy/action-policy.ts", "packages/a2ui-react/src/policy/entity-graph-policy.ts", "packages/a2ui-react/src/official-a2ui.test.tsx", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/task-3-test-receipt.md"],
+          "applicability": "Unknown actions, tenants, entity types, and fields fail closed; replace and remove require out-of-band approval. Native capability and portable-contract security remain separately planned."
+        },
+        {
+          "kind": "security", "status": "implemented", "ownerChange": "v3-a2a-conformance-agent", "command": "pnpm run test:a2a-conformance",
+          "paths": ["packages/entity-graph-a2a/src/policy.ts", "packages/entity-graph-a2a/src/server.ts", "packages/entity-graph-a2a/src/a2a-server.test.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2a-conformance-agent/task-3-test-receipt.md"],
+          "applicability": "Proves credential rejection before dispatch, caller-scoped task visibility, atomic batch denial, entity/action/field allowlists, and out-of-band approval before destructive graph writes. Hosted identity, portable issuer/RLS, and native capability evidence remain separate."
+        },
+        {
+          "kind": "security", "status": "implemented", "ownerChange": "v3-tauri-mobile-plugin", "command": "pnpm run verify:tauri-plugin",
+          "paths": ["tests/fixtures/tauri-plugin-host/capabilities/entity-graph-allowed.json", "tests/fixtures/tauri-plugin-host/capabilities/entity-graph-denied.json", "packages/entity-graph-tauri/rust-plugin/permissions/default.toml", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-3-verification.json"],
+          "applicability": "A Tauri webview without the platform-ping permission is denied and the default set remains read-only. This does not establish mobile-native denial or portable issuer, tenant, RLS, or provisioning policy."
+        },
+        { "kind": "security", "status": "planned", "ownerChange": "v3-tauri-mobile-plugin", "applicability": "Android and iOS capability-denial receipts remain required from the documented device lane." }
+      ]
+    }
+  ],
+  "showcases": [
+    {
+      "id": "react-19-vite-8",
+      "status": "implemented",
+      "change": "v3-vite-react19-example",
+      "path": "examples/vite-app",
+      "scenarioIds": ["example.graph.normalized-cross-view", "example.crud.optimistic-confirm", "example.crud.optimistic-rollback", "example.relationship.cascade-invalidation", "example.view.local-remote-hybrid", "example.transport.rest-graphql-equivalence", "example.realtime.coalesced-cross-view", "example.offline.persistence-convergence", "example.runtime.lifecycle-security"],
+      "runtimeEvidence": { "kind": "browser", "status": "implemented", "ownerChange": "v3-vite-react19-example", "command": "pnpm run verify:vite-react19", "paths": ["scripts/verify-vite-react19-example.mjs", "tests/browser/v3-vite-react19-example.spec.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-verification.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-vite-verification.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-gates.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/final-verification.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/artifact-refiner-qa.md", ".kbd-orchestrator/phases/full-3.0-release/review/v3-vite-react19-example/findings.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/verification.md"], "applicability": "Production build, React/Vite typechecks, targeted units, all declared browser scenarios, and source-workspace evidence pass without claiming packed-package coverage." },
+      "visualEvidence": { "kind": "visual", "status": "implemented", "ownerChange": "v3-vite-react19-example", "command": "pnpm run verify:vite-react19", "paths": [".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-browser-graph-and-transports.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-browser-mutations-and-realtime.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-browser-offline-lifecycle-a11y.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-verification.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-browser-graph-and-transports.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-browser-mutations-and-realtime.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-browser-offline-lifecycle-a11y.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-vite-verification.json"], "applicability": "The implementation and deletion-aware clean-room runs each retain three hash-matched Chromium screenshots and traces; both report zero serious or critical axe violations." }
+    },
+    {
+      "id": "nextjs",
+      "status": "planned",
+      "change": "v3-nextjs-app-router-example",
+      "path": "examples/nextjs-app",
+      "scenarioIds": ["example.graph.normalized-cross-view", "example.crud.optimistic-confirm", "example.relationship.cascade-invalidation", "example.view.local-remote-hybrid", "example.realtime.coalesced-cross-view", "example.runtime.ssr-isolation-hydration", "example.runtime.lifecycle-security"],
+      "runtimeEvidence": { "kind": "browser", "status": "planned", "ownerChange": "v3-nextjs-app-router-example", "applicability": "Concurrent SSR, hydration, route, mutation, and browser BDD evidence remain owned by the Next.js change." },
+      "visualEvidence": { "kind": "visual", "status": "planned", "ownerChange": "v3-nextjs-app-router-example", "applicability": "Pinned SSR/client screenshots, accessibility, trace, and video/hash receipt remain owned by the Next.js change." }
+    },
+    {
+      "id": "agentic-a2ui",
+      "status": "planned",
+      "change": "v3-agentic-a2ui-example",
+      "path": "examples/agentic-a2ui",
+      "scenarioIds": ["example.graph.normalized-cross-view", "example.crud.optimistic-confirm", "example.realtime.coalesced-cross-view", "example.protocol.a2a-a2ui-policy", "example.runtime.lifecycle-security"],
+      "runtimeEvidence": { "kind": "protocol", "status": "planned", "ownerChange": "v3-agentic-a2ui-example", "applicability": "Keyless happy, denied, malformed, streaming, approval, and cancellation browser BDD remains owned by the agentic example." },
+      "visualEvidence": { "kind": "visual", "status": "planned", "ownerChange": "v3-agentic-a2ui-example", "applicability": "A2UI surface screenshots, accessibility, trace, and video/hash receipt remain owned by the agentic example." }
+    },
+    {
+      "id": "flutter-riverpod",
+      "status": "planned",
+      "change": "v3-flutter-riverpod-a2ui-example",
+      "path": "examples/flutter-riverpod",
+      "scenarioIds": ["example.graph.normalized-cross-view", "example.crud.optimistic-confirm", "example.crud.optimistic-rollback", "example.relationship.cascade-invalidation", "example.view.local-remote-hybrid", "example.realtime.coalesced-cross-view", "example.offline.persistence-convergence", "example.protocol.a2a-a2ui-policy", "example.platform.adapter-boundary", "example.runtime.lifecycle-security"],
+      "runtimeEvidence": { "kind": "mobile", "status": "planned", "ownerChange": "v3-flutter-riverpod-a2ui-example", "applicability": "Analyze, widget/golden, protocol denial, and Android/iOS smoke evidence remain owned by the Flutter example." },
+      "visualEvidence": { "kind": "visual", "status": "planned", "ownerChange": "v3-flutter-riverpod-a2ui-example", "applicability": "Pinned phone/tablet golden images, accessibility, and device receipt remain owned by the Flutter example." }
+    },
+    {
+      "id": "tauri-desktop-mobile",
+      "status": "planned",
+      "change": "v3-tauri-universal-example",
+      "path": "examples/tauri-app",
+      "scenarioIds": ["example.graph.normalized-cross-view", "example.crud.optimistic-confirm", "example.relationship.cascade-invalidation", "example.realtime.coalesced-cross-view", "example.offline.persistence-convergence", "example.platform.adapter-boundary", "example.runtime.lifecycle-security"],
+      "runtimeEvidence": { "kind": "platform", "status": "planned", "ownerChange": "v3-tauri-universal-example", "applicability": "Desktop command E2E, permission denial, offline restart, and Android/iOS build/smoke evidence remain owned by the Tauri example." },
+      "visualEvidence": { "kind": "visual", "status": "planned", "ownerChange": "v3-tauri-universal-example", "applicability": "Pinned desktop/mobile screenshots, accessibility, trace, and device receipt remain owned by the Tauri example." }
+    }
+  ],
+  "documentationSite": {
+    "status": "planned",
+    "change": "v3-docs-github-pages",
+    "path": "website"
+  }
+}

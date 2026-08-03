@@ -17,3 +17,4 @@ export {
   hasMergeStrategy,
 } from "./registry";
 export { createLoroMergeStrategy } from "./loro";
+export type { LoroModuleLoader } from "./loro";

@@ -1,0 +1,23 @@
+{
+  "job_id": "v3-dart-graph-riverpod-20260802",
+  "query": "What is the smallest stable, honest migration that preserves the Dart-native graph while providing Riverpod 3 families/controllers and optional transports?",
+  "depth": "deep",
+  "sub_questions": [
+    "Are both OpenSpec prerequisites complete and promoted?",
+    "Which implementation owns canonical entity state today?",
+    "Which declared Dart dependencies are actually used by source?",
+    "What changed in Riverpod 3 provider retry, lifecycle, notifier, Ref, and equality behavior?",
+    "Can the newest stable Riverpod and Freezed generator stacks coexist?",
+    "Should KnowMe FFI own the graph or remain an optional transport?",
+    "Which stable Flutter, Dart, Riverpod, analyzer, and Melos matrix can be reproduced?",
+    "What RED behavior should precede implementation?"
+  ],
+  "adversarial_questions": [
+    "Does satisfying prerequisites imply this package is release-ready?",
+    "Would provider-family caching accidentally create a second normalized graph?",
+    "Does latest mean highest version regardless of resolver conflicts?",
+    "Would adopting the KnowMe implementation make a public FFI dependency mandatory?"
+  ],
+  "confidence_threshold": 0.7,
+  "stages": ["planner", "search", "retrieve", "collect", "verify", "resolve", "graph", "cite", "report", "export"]
+}

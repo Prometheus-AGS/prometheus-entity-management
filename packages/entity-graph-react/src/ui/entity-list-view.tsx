@@ -11,13 +11,15 @@ import type {
   ColumnDef,
   TableOptions,
   ViewMode,
+} from "@prometheus-ags/entity-graph-core";
+import type {
   ActionDef,
   ItemDescriptor,
   ItemRenderContext,
   EmptyStateConfig,
   BatchActionDef,
   GalleryColumns,
-} from "@prometheus-ags/entity-graph-core";
+} from "../table/react-types";
 import { useTable } from "../table/use-table";
 import {
   createSelectionStore,

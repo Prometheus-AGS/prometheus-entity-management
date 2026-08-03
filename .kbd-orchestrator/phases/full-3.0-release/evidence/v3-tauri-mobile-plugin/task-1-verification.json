@@ -1,0 +1,51 @@
+{
+  "change": "v3-tauri-mobile-plugin",
+  "task": 1,
+  "verifiedAt": "2026-08-02T02:37:34Z",
+  "candidateRevision": "eb3c9802da5ff10ad6db135fed761bd23ea80b3f",
+  "result": "pass",
+  "dependencyGate": {
+    "v3-release-contract": {
+      "archive": "openspec/changes/archive/2026-08-01-v3-release-contract",
+      "promotedSpec": "openspec/specs/v3-release-contract/spec.md",
+      "strictValidation": "pass",
+      "pendingTasks": 0
+    },
+    "v3-package-module-contracts": {
+      "archive": "openspec/changes/archive/2026-08-01-v3-package-module-contracts",
+      "promotedSpec": "openspec/specs/v3-package-module-contracts/spec.md",
+      "strictValidation": "pass",
+      "pendingTasks": 0
+    }
+  },
+  "activeChangeStrictValidation": "pass",
+  "researchPackage": {
+    "path": ".research/v3-tauri-mobile-plugin",
+    "jsonParse": "pass",
+    "sources": 12,
+    "claims": 7,
+    "citations": 8,
+    "contradictionsResolved": 4,
+    "contradictionsUnresolved": 0,
+    "sycophancyScore": 0.01785714365541935,
+    "feynmanGrade": null
+  },
+  "toolFallbacks": {
+    "firecrawl": "not exposed; used direct official-source retrieval",
+    "prometheusResearchJob": "cancelled after remaining at initializing with zero progress",
+    "learnGrade": "not exposed; no mastery claim",
+    "sycophancyCorrection": "strict detection completed; no correction mandatory"
+  },
+  "boundedGenerationProbe": {
+    "result": "interrupted",
+    "durationSeconds": 120,
+    "exitCode": 130,
+    "sourceHashAtInterruption": "d810c67506419e83a9020f8224b16fc7064e53d783d8d8c90e56c2888715fa75",
+    "countsAsPassingEvidence": false
+  },
+  "nonClaims": [
+    "No task-2 implementation was performed.",
+    "No desktop or mobile command runtime was certified.",
+    "No publication or stable promotion was authorized."
+  ]
+}

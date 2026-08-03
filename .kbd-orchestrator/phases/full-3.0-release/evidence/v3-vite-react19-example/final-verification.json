@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-vite-react19-example",
+  "task": 6,
+  "recordedAt": "2026-08-03T08:07:17Z",
+  "status": "pass-archived",
+  "archiveEligibleAfterQualityGates": true,
+  "acceptance": {
+    "cleanProductionBuildTypecheckAndUnitTests": "pass",
+    "targetedTests": 14,
+    "playwrightTests": 3,
+    "ownedScenarioIds": 9,
+    "ownedScenarioIdsPassed": 9,
+    "devToolsDiagnostics": "pass",
+    "screenshots": 3,
+    "playwrightTraces": 3,
+    "seriousAccessibilityViolations": 0,
+    "criticalAccessibilityViolations": 0,
+    "sourceWorkspaceCountedAsPackedEvidence": false,
+    "separatePackedPackageContract": "pass",
+    "ledgersDocsAndChangesetSynchronized": true
+  },
+  "packageBoundary": {
+    "status": "pass",
+    "tarballs": 12,
+    "singletonContract": "pass",
+    "consumerModes": [
+      "Node ESM",
+      "Node CommonJS",
+      "TypeScript NodeNext",
+      "TypeScript Node16",
+      "TypeScript Bundler"
+    ]
+  },
+  "qualityGates": {
+    "artifactRefiner": "pass",
+    "adversarialReview": "pass",
+    "openSpecVerify": "pass",
+    "openSpecArchive": "pass"
+  },
+  "archive": {
+    "status": "pass",
+    "path": "openspec/changes/archive/2026-08-03-v3-vite-react19-example"
+  },
+  "adversarialEvidence": {
+    "verdict": "PASS",
+    "judgeModel": "kbd-judge",
+    "producerModel": "gpt-5",
+    "crossModelCheck": "verified-distinct",
+    "isolationMode": "rest-gateway:http://localhost:8181/v1",
+    "sycophancyScore": 0,
+    "critical": 0,
+    "warning": 0,
+    "suggestion": 0,
+    "reviewIterations": 4,
+    "confirmedCorrection": "release/v3-release-contract.json now declares .mjs and the validator cross-checks every public package module loader"
+  },
+  "publication": {
+    "authorized": false,
+    "reactRegistryCandidateLive": false,
+    "fastestContractCompliantPath": "Stage the coordinated twelve-package 3.0.0-rc.N fixed group to the protected npm next tag; React consumers install only core and the React binding.",
+    "requirements": [
+      "immutable committed source SHA",
+      "complete RC rehearsal from that SHA",
+      "GitHub Actions OIDC trusted publishing",
+      "protected npm-rc environment approval",
+      "post-stage registry version, integrity, provenance, and dist-tag verification"
+    ]
+  }
+}

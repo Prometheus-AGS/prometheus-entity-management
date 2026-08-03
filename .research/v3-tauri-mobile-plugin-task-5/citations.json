@@ -1,0 +1,11 @@
+{
+  "style": "inline-link",
+  "citations": [
+    {"id": "cite-pnpm", "url": "https://pnpm.io/cli/install", "credibility_score": 95, "confidence": 0.97},
+    {"id": "cite-cargo-clean", "url": "https://doc.rust-lang.org/cargo/commands/cargo-clean.html", "credibility_score": 98, "confidence": 0.97},
+    {"id": "cite-cargo-test", "url": "https://doc.rust-lang.org/cargo/commands/cargo-test.html", "credibility_score": 98, "confidence": 0.98},
+    {"id": "cite-tauri-tests", "url": "https://v2.tauri.app/develop/tests/", "credibility_score": 96, "confidence": 0.99},
+    {"id": "cite-tauri-mobile", "url": "https://v2.tauri.app/develop/plugins/develop-mobile/", "credibility_score": 96, "confidence": 0.98},
+    {"id": "cite-tauri-prerequisites", "url": "https://v2.tauri.app/start/prerequisites/", "credibility_score": 96, "confidence": 0.97}
+  ]
+}

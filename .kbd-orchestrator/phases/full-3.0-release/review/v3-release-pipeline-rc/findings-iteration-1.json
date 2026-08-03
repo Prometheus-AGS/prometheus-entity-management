@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".github/workflows/publish.yml",
+      "line": 53,
+      "claim": "The publish workflow requests an invalid GitHub Actions permission key, which makes the workflow syntactically invalid.",
+      "evidence": "The rehearse job permissions include `artifact-metadata: write`; GitHub Actions permissions support keys such as `contents`, `id-token`, and `attestations`, but not `artifact-metadata`.",
+      "suggested_fix": "Remove `artifact-metadata: write` or replace it with a valid permission required by the attestation/upload steps."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/release-candidate.mjs",
+      "line": 55,
+      "claim": "The stage command reuses tarball paths recorded during the rehearsal job, so staging in a later workflow job can point at nonexistent paths from the previous runner workspace.",
+      "evidence": "The stage branch builds `candidates` from `packed.path` in `rehearsal.journal.artifacts[...]` and passes those paths directly to `stageReleaseCandidate`; the workflow rehearses in one job, uploads `.release-candidate`, then downloads it in a separate `stage` job at a different workspace path.",
+      "suggested_fix": "Store package artifact paths relative to the candidate bundle during rehearsal, and in `stage` resolve them under the downloaded `.release-candidate/packages` directory before calling `stageReleaseCandidate`."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

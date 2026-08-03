@@ -1,0 +1,13 @@
+{
+  "citations": [
+    {"id": "npm-trusted-publishers", "url": "https://docs.npmjs.com/trusted-publishers/", "confidence": 0.98},
+    {"id": "npm-staged-publishing", "url": "https://docs.npmjs.com/staged-publishing/", "confidence": 0.98},
+    {"id": "npm-stage-cli", "url": "https://docs.npmjs.com/cli/v11/commands/npm-stage/", "confidence": 0.98},
+    {"id": "changesets-action", "url": "https://github.com/changesets/action", "confidence": 0.96},
+    {"id": "changesets-prereleases", "url": "https://github.com/changesets/changesets/blob/main/docs/prereleases.md", "confidence": 0.96},
+    {"id": "changesets-config", "url": "https://github.com/changesets/changesets/blob/main/docs/config-file-options.md", "confidence": 0.96},
+    {"id": "github-attestations", "url": "https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations", "confidence": 0.97},
+    {"id": "cargo-publish", "url": "https://doc.rust-lang.org/cargo/commands/cargo-publish.html", "confidence": 0.98},
+    {"id": "dart-automated-publishing", "url": "https://dart.dev/tools/pub/automated-publishing", "confidence": 0.98}
+  ]
+}

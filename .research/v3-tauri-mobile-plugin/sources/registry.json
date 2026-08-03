@@ -1,0 +1,110 @@
+{
+  "sources": [
+    {
+      "id": "tauri-mobile-docs",
+      "title": "Mobile Plugin Development",
+      "url": "https://v2.tauri.app/develop/plugins/develop-mobile/",
+      "publisher": "Tauri",
+      "kind": "official-documentation",
+      "credibilityScore": 96,
+      "claims": ["Mobile plugins include Kotlin/Java Android and Swift iOS projects", "Existing plugins can bootstrap Android and iOS libraries", "Plugin event access is capability gated"]
+    },
+    {
+      "id": "tauri-permissions-docs",
+      "title": "Permissions",
+      "url": "https://v2.tauri.app/security/permissions/",
+      "publisher": "Tauri",
+      "kind": "official-documentation",
+      "credibilityScore": 96,
+      "claims": ["Plugin command privileges are declared in permission files", "Plugin developers ship named permission sets", "Capabilities grant or deny permissions"]
+    },
+    {
+      "id": "tauri-capabilities-docs",
+      "title": "Capabilities",
+      "url": "https://v2.tauri.app/security/capabilities/",
+      "publisher": "Tauri",
+      "kind": "official-documentation",
+      "credibilityScore": 96,
+      "claims": ["Capabilities constrain commands by window/webview and platform", "Desktop and mobile capabilities can be separated", "Generated schemas do not themselves grant permissions"]
+    },
+    {
+      "id": "tauri-store-build",
+      "title": "Official store plugin build.rs",
+      "url": "https://github.com/tauri-apps/plugins-workspace/blob/v2/plugins/store/build.rs",
+      "publisher": "tauri-apps",
+      "kind": "official-source",
+      "credibilityScore": 98,
+      "claims": ["Official plugins build command manifests with tauri_plugin::Builder"]
+    },
+    {
+      "id": "tauri-store-manifest",
+      "title": "Official store plugin Cargo.toml",
+      "url": "https://github.com/tauri-apps/plugins-workspace/blob/v2/plugins/store/Cargo.toml",
+      "publisher": "tauri-apps",
+      "kind": "official-source",
+      "credibilityScore": 98,
+      "claims": ["Official plugin crates declare a links key", "tauri-plugin with build feature is a build dependency", "Platform support is explicit metadata"]
+    },
+    {
+      "id": "tauri-barcode-build",
+      "title": "Official barcode-scanner mobile plugin build.rs",
+      "url": "https://github.com/tauri-apps/plugins-workspace/blob/v2/plugins/barcode-scanner/build.rs",
+      "publisher": "tauri-apps",
+      "kind": "official-source",
+      "credibilityScore": 98,
+      "claims": ["Mobile plugins declare android_path and ios_path", "Command manifests include permission-relevant command names"]
+    },
+    {
+      "id": "tauri-barcode-runtime",
+      "title": "Official barcode-scanner mobile runtime registration",
+      "url": "https://github.com/tauri-apps/plugins-workspace/blob/v2/plugins/barcode-scanner/src/lib.rs",
+      "publisher": "tauri-apps",
+      "kind": "official-source",
+      "credibilityScore": 98,
+      "claims": ["Android plugins register a package/class pair", "iOS plugins use an ios_plugin_binding and register_ios_plugin"]
+    },
+    {
+      "id": "crates-tauri",
+      "title": "tauri crate registry record",
+      "url": "https://crates.io/crates/tauri",
+      "publisher": "crates.io / tauri-apps",
+      "kind": "registry",
+      "credibilityScore": 94,
+      "claims": ["Latest observed tauri version on 2026-08-02 is 2.11.5", "Minimum Rust version remains 1.77.2"]
+    },
+    {
+      "id": "crates-tauri-plugin",
+      "title": "tauri-plugin crate registry record",
+      "url": "https://crates.io/crates/tauri-plugin",
+      "publisher": "crates.io / tauri-apps",
+      "kind": "registry",
+      "credibilityScore": 94,
+      "claims": ["Latest observed tauri-plugin version is 2.6.3", "The build feature supplies plugin build support"]
+    },
+    {
+      "id": "tauri-specta",
+      "title": "tauri-specta upstream",
+      "url": "https://github.com/specta-rs/tauri-specta",
+      "publisher": "specta-rs",
+      "kind": "upstream-source",
+      "credibilityScore": 88,
+      "claims": ["Latest registry release remains 2.0.0-rc.25", "Binding generation must be explicitly executed and verified"]
+    },
+    {
+      "id": "local-release-contract",
+      "title": "Prometheus v3 release contract",
+      "path": "release/v3-release-contract.json",
+      "kind": "local-authoritative-contract",
+      "credibilityScore": 100,
+      "claims": ["Tauri >=2 <3", "TypeScript >=6 <7", "The npm binding and bundled Rust plugin are stable release artifacts"]
+    },
+    {
+      "id": "local-package-contract-evidence",
+      "title": "v3 package/module contract verification",
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-package-module-contracts/verification.md",
+      "kind": "local-verification",
+      "credibilityScore": 100,
+      "claims": ["Packed Tauri crate host compilation passes", "Runtime/mobile/capability evidence is explicitly deferred"]
+    }
+  ]
+}

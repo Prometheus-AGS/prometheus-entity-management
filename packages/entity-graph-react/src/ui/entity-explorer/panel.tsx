@@ -48,10 +48,12 @@ function TabBar() {
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   function handleKeyDown(e: React.KeyboardEvent, index: number) {
-    let next = index;
-    if (e.key === "ArrowRight") next = (index + 1) % TABS.length;
-    else if (e.key === "ArrowLeft") next = (index - 1 + TABS.length) % TABS.length;
-    else return;
+    const next = e.key === "ArrowRight"
+      ? (index + 1) % TABS.length
+      : e.key === "ArrowLeft"
+        ? (index - 1 + TABS.length) % TABS.length
+        : null;
+    if (next === null) return;
     e.preventDefault();
     const nextTab = TABS[next]!;
     dispatch({ type: "SET_TAB", tab: nextTab.id });

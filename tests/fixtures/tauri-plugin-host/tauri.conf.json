@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Entity Graph Tauri Host Contract",
+  "version": "0.0.1",
+  "identifier": "com.prometheusags.entitygraph.hostcontract",
+  "build": {
+    "frontendDist": "fixtures"
+  },
+  "bundle": {
+    "icon": []
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Prometheus Entity Graph · Native Bridge",
+        "width": 720,
+        "height": 720
+      }
+    ],
+    "security": {
+      "csp": null,
+      "capabilities": ["entity-graph-allowed", "entity-graph-denied", "mobile-allowed"]
+    }
+  }
+}

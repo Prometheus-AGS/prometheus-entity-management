@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-tauri/README.md",
+      "line": 159,
+      "claim": "The README describes `generatedCommands` and `generatedEvents` as raw generated maps even though the exported values are executable Tauri Specta helper objects, not command/event-name maps.",
+      "evidence": "README hunk says the package exposes \"the raw generated maps (`generatedCommands`, `generatedEvents`)\"; `src/index.ts` re-exports `commands as generatedCommands` and `events as generatedEvents` from `./generated-bindings`, and `src/generated-bindings.ts` defines `commands` as functions invoking `__TAURI_INVOKE` and `events` as `makeEvent(...)` listener/emitter helpers.",
+      "suggested_fix": "Change the README wording to describe these as generated command/event helpers, or export separate raw name maps if raw maps are the intended public API."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

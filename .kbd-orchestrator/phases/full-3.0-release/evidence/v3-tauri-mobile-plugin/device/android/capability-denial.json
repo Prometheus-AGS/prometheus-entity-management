@@ -1,0 +1,5 @@
+{
+  "command": "plugin:entity-graph-tauri|graph_platform_ping",
+  "error": "entity-graph-tauri.graph_platform_ping not allowed. Permissions associated with this command: entity-graph-tauri:allow-graph-platform-ping, entity-graph-tauri:default",
+  "result": "denied"
+}

@@ -1,0 +1,19 @@
+{
+  "concept": "release-candidate recovery",
+  "audience": "skeptic",
+  "transferProblems": [
+    {
+      "problem": "Eight of twelve npm packages published before a timeout. What may a retry do?",
+      "answer": "Reclassify every exact name/version against the registry. Skip only versions whose registry integrity matches the recorded candidate digest, continue only absent versions whose dependencies are complete, and block any conflicting digest.",
+      "score": 1.0
+    },
+    {
+      "problem": "The RC includes a package that has never existed on npm. Is an rc dist-tag sufficient protection for latest?",
+      "answer": "No. Changesets documents a first-publish latest hazard. Keep the rehearsal local or require a separately authorized and verified bootstrap strategy before any real-registry RC action.",
+      "score": 1.0
+    }
+  ],
+  "retentionScheduled": true,
+  "retentionDueAfter": "2026-08-03T00:00:00Z",
+  "masteryStatus": "grade-and-transfer-pass-retention-scheduled"
+}

@@ -13,7 +13,8 @@ import {
   useId,
 } from "react";
 import type { KeyboardEvent } from "react";
-import type { ColumnDef, ItemDescriptor } from "@prometheus-ags/entity-graph-core";
+import type { ColumnDef } from "@prometheus-ags/entity-graph-core";
+import type { ItemDescriptor } from "../table/react-types";
 import { cn } from "./utils";
 
 // ---------------------------------------------------------------------------

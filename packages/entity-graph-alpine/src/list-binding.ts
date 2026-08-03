@@ -10,11 +10,11 @@
  *   Alpine template
  *     → $entityList magic (this file)
  *       → fetchList (core engine)
- *       → useGraphStore.subscribe (core Layer 1 read)
+ *       → graphStore.subscribe (core Layer 1 read)
  */
 
 import {
-  useGraphStore,
+  graphStore,
   fetchList,
   getEngineOptions,
   serializeKey,
@@ -36,7 +36,7 @@ function resolveItems<T extends Record<string, unknown>>(
   type: EntityType,
   ids: EntityId[],
 ): T[] {
-  const s = useGraphStore.getState();
+  const s = graphStore.getState();
   const entities = s.entities[type] ?? {};
   const patches = s.patches[type] ?? {};
   const items: T[] = [];
@@ -116,7 +116,7 @@ export function createListBinding<T extends Record<string, unknown>>(
 
   // ── Sync from graph ────────────────────────────────────────────────────────
   function syncFromGraph(): void {
-    const s = useGraphStore.getState();
+    const s = graphStore.getState();
     const listState = s.lists[listKey] ?? EMPTY_LIST_STATE;
 
     cell.items = resolveItems<T>(type, listState.ids);
@@ -129,7 +129,7 @@ export function createListBinding<T extends Record<string, unknown>>(
   }
 
   // ── Subscribe to graph changes ─────────────────────────────────────────────
-  const unsubscribe = useGraphStore.subscribe(
+  const unsubscribe = graphStore.subscribe(
     (s) => ({
       listSlice: s.lists[listKey] ?? EMPTY_LIST_STATE,
       entities: s.entities[type],
@@ -175,7 +175,7 @@ export function createListBinding<T extends Record<string, unknown>>(
     const fetchOpts = buildFetchOpts();
     if (!fetchOpts) return;
 
-    const s = useGraphStore.getState();
+    const s = graphStore.getState();
     const listState = s.lists[listKey];
     const lastFetched = listState?.lastFetched ?? 0;
     const isStale = Date.now() - lastFetched > effectiveStaleTime;
@@ -193,7 +193,7 @@ export function createListBinding<T extends Record<string, unknown>>(
   function refetch(): void {
     const fetchOpts = buildFetchOpts();
     if (!fetchOpts) return;
-    useGraphStore.getState().invalidateLists(listKey);
+    graphStore.getState().invalidateLists(listKey);
     fetchList({ ...fetchOpts, mode: "replace" }, {}, engineOpts, false).then(() => {
       syncFromGraph();
     });
@@ -203,7 +203,7 @@ export function createListBinding<T extends Record<string, unknown>>(
   function loadMore(): void {
     const fetchOpts = buildFetchOpts();
     if (!fetchOpts) return;
-    const s = useGraphStore.getState();
+    const s = graphStore.getState();
     const listState = s.lists[listKey] ?? EMPTY_LIST_STATE;
     if (!listState.hasNextPage) return;
     if (listState.isFetchingMore || listState.isFetching) return;

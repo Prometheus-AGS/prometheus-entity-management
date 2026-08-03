@@ -1,13 +1,11 @@
 ---
 name: prometheus-entity-skills
 description: >
-  Bundle index for Agent Skills that teach coding agents how to build and operate apps with
-  @prometheus-ags/prometheus-entity-management (normalized Zustand entity graph, hooks, GraphQL,
-  CRUD, realtime, Prisma, and performance). Use when working in this monorepo, installing Claude Code
-  plugins for entity-graph workflows, or aligning agent docs with the library public API. Load the
-  plugin that matches the task (setup, CRUD, GraphQL, realtime, Prisma, optimize); open nested
-  SKILL.md files for narrow scopes. Always verify agent references against
-  prometheus-entity-skills/_shared/references/library-exports.json after API changes.
+  Bundle index for Agent Skills that teach coding agents the Prometheus normalized entity graph
+  across its React ecosystem and canonical Dart/Flutter companion. Use for graph, CRUD, GraphQL,
+  realtime, Prisma, performance, Riverpod, or public-ledger work. Load the matching plugin or shared
+  Dart reference, then verify agent guidance against the package-specific ledgers under
+  prometheus-entity-skills/_shared/references/ after API changes.
 license: MIT
 metadata:
   bundle: prometheus-entity-management
@@ -69,7 +67,28 @@ All paths below are relative to the **repository root** of `prometheus-entity-ma
 | Path | Role |
 | ---- | ---- |
 | `prometheus-entity-skills/_shared/references/library-exports.json` | Sorted list of **runtime export names** from `dist/index.mjs`; must match `pnpm run verify:skills` |
+| `prometheus-entity-skills/_shared/references/sync-library-exports.json` | Sorted runtime exports for the companion `entity-graph-sync` package; verified by its package skill gate |
+| `prometheus-entity-skills/_shared/references/a2ui-library-exports.json` | Root and `./ag-ui` runtime exports for `a2ui-react`; verified by its package skill gate |
+| `prometheus-entity-skills/_shared/references/a2a-library-exports.json` | Official root and `./legacy` runtime exports for `entity-graph-a2a`; verified by its package skill gate |
+| `prometheus-entity-skills/_shared/references/dart-library-exports.json` | Public declarations from the canonical Dart barrel and generated Riverpod part; verified against source |
+| `prometheus-entity-skills/_shared/references/tauri-library-exports.json` | Runtime and declaration exports for `entity-graph-tauri`; verified against its built ESM and declaration entry points |
 | `prometheus-entity-skills/_shared/references/library-api.md` | Human-oriented API notes for agents |
+| `prometheus-entity-skills/_shared/references/sync-persistence-path.md` | Certified PGlite/Loro persistence, convergence, reconnect, API, and evidence boundary |
+| `prometheus-entity-skills/_shared/references/a2ui-protocol-bridge.md` | Official v0.9.1/AG-UI boundary, graph action policy, migration, and evidence limits |
+| `prometheus-entity-skills/_shared/references/a2a-conformance-agent.md` | Official A2A v1 JSON-RPC lifecycle, application authority, TCK scope, migration, and evidence limits |
+| `prometheus-entity-skills/_shared/references/dart-graph-riverpod.md` | Canonical Dart graph/Riverpod architecture, API, commands, and evidence limits |
+| `prometheus-entity-skills/_shared/references/tauri-mobile-plugin.md` | Tauri v2 bindings, capabilities, in-memory mirror, desktop/packed proof, and Android/iOS evidence boundary |
+| `prometheus-entity-skills/_shared/references/release-candidate-pipeline.md` | Contract-derived RC manifest, non-mutating rehearsal, OIDC staging, protected tags, and restart recovery boundary |
+| `prometheus-entity-skills/_shared/references/v3-release-contract.md` | Entry point for authoritative 3.0 artifact, compatibility, maturity, promotion, and recovery rules |
+| `release/ci-baseline.md` | Implemented hermetic main-CI guarantees and explicit certification limits |
+| `release/package-contracts.md` | Implemented twelve-tarball module/type/payload gate and explicit certification limits |
+| `release/framework-neutral-core.md` | Implemented vanilla-core boundary, React migration map, and packed non-React gate |
+| `release/binding-singleton-contract.md` | Implemented required-peer policy and packed six-binding singleton gate |
+| `examples/shared/README.md` | Implemented deterministic shared example domain, scenarios, and evidence boundary |
+| `prometheus-entity-skills/_shared/references/example-coverage-contract.md` | Agent guidance for applying and extending the shared example contract |
+| `prometheus-entity-skills/_shared/references/vite-react19-example.md` | Implemented React 19/Vite 8 architecture, scenario gate, optional-peer loader, and evidence boundary |
+| `release/dependency-policy.json` | Machine-readable compatible-current dependency holds and revisit owners |
+| `security/advisory-policy.json` | Machine-readable critical/high production advisory dispositions |
 | `prometheus-entity-skills/_shared/references/architecture-rules.md` | Non-negotiable layering (Components → Hooks → Stores) |
 | `prometheus-entity-skills/_shared/references/branding.md` | Example UI tokens for generated demos |
 | `prometheus-entity-skills/_shared/references/schemas/*.schema.json` | JSON Schemas for manifests and filters |
@@ -85,8 +104,9 @@ pnpm run refresh:exports
 - **Components** must not call the graph store directly; **hooks** orchestrate; **stores/adapters** own I/O.
 - **Lists store entity IDs only**; entity data lives once in the graph.
 - Skills that generate code must follow `AGENTS.md` / `CLAUDE.md` in the library repo.
+- Skills that claim 3.0 readiness must use `release/v3-release-contract.json`, consult the dependency/advisory policies for currentness or security claims, require packed-candidate evidence for npm module/type claims, require the framework-neutral verifier for React-free core claims, require the binding verifier for six-binding singleton claims, require `pnpm run verify:example-coverage` for shared scenario claims, require `pnpm run bdd:vite-react19` for the implemented React/Vite showcase, require the exact official SDK/TCK and explicit application authority for A2A claims, keep Tauri desktop/packed/mobile evidence distinct, and load `release-candidate-pipeline.md` for RC or recovery claims. An implemented showcase proves only its declared evidence boundary and never authorizes publication by itself.
 
 ## Validation
 
-- **Library ↔ ledger:** `pnpm run verify:skills` (requires `pnpm run build` first).
+- **Library ↔ ledgers:** `pnpm run verify:skills` after building React, sync, A2UI, A2A, and Tauri packages; this also verifies the Dart source declaration ledger.
 - **Leaf skills:** Prefer the official validator from the Agent Skills ecosystem when packaging for external marketplaces (`skills-ref validate ./path` per [agentskills.io](https://agentskills.io/specification)).

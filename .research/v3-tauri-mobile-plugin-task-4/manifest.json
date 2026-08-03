@@ -1,0 +1,20 @@
+{
+  "okfVersion": "0.1",
+  "id": "v3-tauri-mobile-plugin-task-4",
+  "title": "Tauri plugin public-surface certification",
+  "createdAt": "2026-08-02T05:31:00Z",
+  "verificationStatus": "verified",
+  "confidence": 0.97,
+  "sourcesCount": 7,
+  "contradictionsResolved": 4,
+  "feynmanGrade": 0.92,
+  "artifacts": [
+    "plan.json",
+    "sources/registry.json",
+    "contradictions.json",
+    "graph.json",
+    "citations.json",
+    "feynman-transfer.json",
+    "report.md"
+  ]
+}

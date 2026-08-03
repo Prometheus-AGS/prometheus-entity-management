@@ -1,0 +1,18 @@
+{
+  "style": "APA",
+  "citations": [
+    {"id":"cite-riverpod-migration","url":"https://riverpod.dev/docs/3.0_migration","formatted":"Riverpod. (2026). Migrating from 2.0 to 3.0.","credibility_score":96,"confidence":0.96},
+    {"id":"cite-dart-outdated","url":"https://dart.dev/tools/pub/cmd/pub-outdated","formatted":"Dart project. (2026). dart pub outdated.","credibility_score":96,"confidence":0.96},
+    {"id":"cite-dart-dependencies","url":"https://dart.dev/tools/pub/dependencies","formatted":"Dart project. (2026). Package dependencies.","credibility_score":96,"confidence":0.96},
+    {"id":"cite-flutter-upgrade","url":"https://docs.flutter.dev/install/upgrade","formatted":"Flutter project. (2026). Upgrade Flutter.","credibility_score":95,"confidence":0.95},
+    {"id":"cite-flutter-release-notes","url":"https://docs.flutter.dev/release/release-notes","formatted":"Flutter project. (2026). Flutter release notes.","credibility_score":95,"confidence":0.95},
+    {"id":"cite-riverpod-registry","url":"https://pub.dev/api/packages/riverpod_generator","formatted":"pub.dev. (2026). riverpod_generator registry metadata.","credibility_score":95,"confidence":0.95},
+    {"id":"cite-freezed-registry","url":"https://pub.dev/api/packages/freezed","formatted":"pub.dev. (2026). freezed registry metadata.","credibility_score":95,"confidence":0.95},
+    {"id":"cite-build-runner-registry","url":"https://pub.dev/api/packages/build_runner","formatted":"pub.dev. (2026). build_runner registry metadata.","credibility_score":95,"confidence":0.95},
+    {"id":"cite-json-serializable-registry","url":"https://pub.dev/api/packages/json_serializable","formatted":"pub.dev. (2026). json_serializable registry metadata.","credibility_score":95,"confidence":0.95},
+    {"id":"cite-melos-registry","url":"https://pub.dev/packages/melos","formatted":"pub.dev. (2026). Melos package.","credibility_score":94,"confidence":0.94},
+    {"id":"cite-flutter-archive","url":"https://docs.flutter.dev/install/archive","formatted":"Flutter project. (2026). Flutter SDK archive.","credibility_score":98,"confidence":0.98},
+    {"id":"cite-riverpod-generator-404","url":"https://pub.dev/packages/riverpod_generator/versions/4.0.4","formatted":"pub.dev. (2026). riverpod_generator 4.0.4 metadata.","credibility_score":95,"confidence":0.95},
+    {"id":"cite-flutter-riverpod-332","url":"https://pub.dev/packages/flutter_riverpod/versions/3.3.2","formatted":"pub.dev. (2026). flutter_riverpod 3.3.2 metadata.","credibility_score":95,"confidence":0.95}
+  ]
+}

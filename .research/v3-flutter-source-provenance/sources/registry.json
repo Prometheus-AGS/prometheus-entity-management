@@ -1,0 +1,121 @@
+{
+  "sources": [
+    {
+      "id": "src-knowme-git",
+      "kind": "local-primary",
+      "ref": "file:///Users/gqadonis/Projects/know-me/know-me-system/.git",
+      "revision": "68f7ab83b72c8bed37d1e7d19a5371a45b4f8f52",
+      "credibility_score": 98,
+      "claims": [
+        "KnowMe contains committed prometheus_entity_management and gen_ui_widgets package histories.",
+        "The active KnowMe worktree is dirty and must not be copied directly.",
+        "No root or package-local license is tracked for those Flutter packages.",
+        "The reusable package history begins in commit 2b1647ec9eb3914d6088a312b783fb651d3a8da4."
+      ]
+    },
+    {
+      "id": "src-hybrid-git",
+      "kind": "local-primary",
+      "ref": "file:///Users/gqadonis/Projects/hybrid-mobile-architecture-src",
+      "revision": "e641c25d5c99ac04c3c872626099583c29ac568c",
+      "credibility_score": 98,
+      "claims": [
+        "The repository is MIT licensed.",
+        "Its AGENTS.md and builder manifest identify it as a scaffolding/template skill, not a runnable application or canonical Flutter runtime library.",
+        "It is reference-only for this migration."
+      ]
+    },
+    {
+      "id": "src-target-contract",
+      "kind": "local-primary",
+      "ref": "release/v3-release-contract.json",
+      "credibility_score": 100,
+      "claims": [
+        "The destination release contract is MIT and declares entity_graph_flutter as the one stable Dart graph/Riverpod artifact.",
+        "Unlicensed Flutter source is a release blocker.",
+        "pub.dev publication is deferred and cannot be inferred from source import."
+      ]
+    },
+    {
+      "id": "src-filter-repo",
+      "kind": "web-primary",
+      "url": "https://github.com/newren/git-filter-repo",
+      "credibility_score": 92,
+      "claims": [
+        "git-filter-repo supports extracting a directory and moving it under a destination subdirectory.",
+        "Filtering rewrites commit hashes and should run in a fresh disposable clone.",
+        "The commit-map provides an audit mapping between original and rewritten commits."
+      ]
+    },
+    {
+      "id": "src-github-split",
+      "kind": "web-primary",
+      "url": "https://docs.github.com/en/get-started/using-git/splitting-a-subfolder-out-into-a-new-repository",
+      "credibility_score": 90,
+      "claims": [
+        "GitHub documents git-filter-repo path extraction for splitting subdirectory history.",
+        "The operation creates rewritten history and belongs in a separate clone."
+      ]
+    },
+    {
+      "id": "src-reuse",
+      "kind": "web-primary",
+      "url": "https://reuse.software/spec/",
+      "credibility_score": 94,
+      "claims": [
+        "REUSE 3.3 requires unambiguous copyright and license information for covered files.",
+        "SPDX identifiers and REUSE.toml can associate licensing information with imported paths.",
+        "License text must exist for each declared license."
+      ]
+    },
+    {
+      "id": "src-dart-package-layout",
+      "kind": "web-primary",
+      "url": "https://dart.dev/tools/pub/package-layout",
+      "credibility_score": 95,
+      "claims": [
+        "A published Dart package includes a LICENSE file.",
+        "Package layout distinguishes public source, tests, examples, and tooling."
+      ]
+    },
+    {
+      "id": "src-riverpod-migration",
+      "kind": "web-primary",
+      "url": "https://riverpod.dev/docs/3.0_migration",
+      "credibility_score": 95,
+      "claims": [
+        "Riverpod 3 enables automatic provider retry by default.",
+        "AutoDispose interfaces and family notifier variants changed.",
+        "Terminal failures therefore require an explicit retry policy rather than an assumed 2.x behavior."
+      ]
+    },
+    {
+      "id": "src-pub-riverpod",
+      "kind": "registry-primary",
+      "url": "https://pub.dev/packages/flutter_riverpod/versions",
+      "observed_at": "2026-08-01",
+      "credibility_score": 94,
+      "claims": [
+        "flutter_riverpod 3.4.2 is the latest and resolvable version observed by flutter pub outdated.",
+        "The destination currently resolves 2.6.1 while the KnowMe source pins 3.3.1."
+      ]
+    },
+    {
+      "id": "src-flutter-sdk",
+      "kind": "local-and-web-primary",
+      "url": "https://docs.flutter.dev/install/archive",
+      "observed_at": "2026-08-01",
+      "credibility_score": 94,
+      "claims": [
+        "The installed Flutter beta is 3.47.0-0.1.pre with Dart 3.13 beta.",
+        "The standalone Dart executable is 3.12.2 stable, so commands must record which toolchain resolved packages."
+      ]
+    }
+  ],
+  "sycophancy_review": {
+    "status": "pass-with-low-verbosity-note",
+    "focus": ["blanket-copy assumption", "latest-is-always-best assumption", "unchanged-hash assumption", "implicit-license assumption"],
+    "score": 0.01785714365541935,
+    "correction_mandatory": false
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-example-coverage-contract",
+  "recordedAt": "2026-08-01T17:09:00.000Z",
+  "status": "pass",
+  "environment": {
+    "os": "Darwin 25.6.0 arm64",
+    "node": "26.5.0",
+    "pnpm": "10.33.0"
+  },
+  "source": {
+    "head": "dd5d70c9954381d3af4519ccedeb5cb565d6027e",
+    "worktreeDirtyEntries": 189,
+    "certificationScope": "current source content, not an immutable commit or registry artifact",
+    "cleanRoom": "two fresh source-only copies excluding .git, dependencies, build output, caches, native targets, coverage, and tarballs; the second contained the final task-5 ledger",
+    "finalContentRerun": true,
+    "initialSourceBytesApproximate": 20971520,
+    "lockfileSha256": "5f09387a332476c5d055c83f6e68b337c0f1bb3ca809fb98a7032a7d73b38836",
+    "coverageSha256": "37b85bd4ae3dd8bc20c89280fef0a4db7db6107f14a2752ec9e5623a94995817",
+    "scenarioContractSha256": "96436c6ea07530d630da1aff1011d0133c01391b2957433beaf07b3897b6696b"
+  },
+  "gates": [
+    {
+      "id": "frozen-install",
+      "command": "pnpm install --frozen-lockfile --prefer-offline",
+      "status": "pass",
+      "summary": "774 packages installed into each new dependency tree"
+    },
+    {
+      "id": "complete-ci",
+      "command": "pnpm run ci",
+      "status": "pass",
+      "summary": "validate, lint, typecheck, build, test, skills, and security all passed again against the final task-5 ledger"
+    },
+    {
+      "id": "release-and-example-validation",
+      "command": "pnpm run validate",
+      "status": "pass",
+      "summary": "16 artifacts, 13/13 semantic scenarios, 16 capabilities/artifacts, 5 planned showcases, releaseCertified false"
+    },
+    {
+      "id": "lint",
+      "command": "pnpm run lint",
+      "status": "pass",
+      "summary": "zero ESLint warnings or errors"
+    },
+    {
+      "id": "typecheck",
+      "command": "pnpm run typecheck",
+      "status": "pass",
+      "summary": "17/17 Turbo tasks"
+    },
+    {
+      "id": "build",
+      "command": "pnpm run build",
+      "status": "pass",
+      "summary": "14/14 Turbo tasks, including Vite and Next.js production builds"
+    },
+    {
+      "id": "tests",
+      "command": "pnpm run test",
+      "status": "pass",
+      "summary": "365 workspace tests; release 14/14; CI 17/17; package 8/8; framework 4/4; singleton 5/5; example coverage 13/13; one explicit Flint skip and one benchmark todo"
+    },
+    {
+      "id": "full-bdd",
+      "command": "pnpm run bdd",
+      "status": "pass",
+      "summary": "28/28 scenarios and 154/154 steps"
+    },
+    {
+      "id": "focused-example-bdd",
+      "command": "cucumber --tags @v3-example-coverage-contract",
+      "status": "pass",
+      "summary": "4/4 scenarios and 27/27 steps",
+      "report": "clean-cucumber.json"
+    },
+    {
+      "id": "focused-semantic-contract",
+      "command": "pnpm run verify:example-coverage -- --report ...",
+      "status": "pass",
+      "summary": "13/13 scenarios; zero errors; coverage remains in-progress and uncertified",
+      "report": "clean-example-coverage-report.json"
+    },
+    {
+      "id": "packed-package-contract",
+      "command": "pnpm run verify:package-contracts -- --report ...",
+      "status": "pass",
+      "summary": "12/12 tarballs; Publint/ATTW; ESM/CJS; TypeScript NodeNext/Node16/Bundler; tarball-only candidate set",
+      "report": "clean-package-contract-report.json"
+    },
+    {
+      "id": "skills-export-ledger",
+      "command": "pnpm run verify:skills",
+      "status": "pass",
+      "summary": "201 runtime exports match"
+    },
+    {
+      "id": "production-security",
+      "command": "pnpm run security:audit",
+      "status": "pass",
+      "summary": "309 dependencies; 1 low; 0 moderate/high/critical; 0 blocking or accepted blocking advisories"
+    },
+    {
+      "id": "openspec",
+      "command": "openspec validate v3-example-coverage-contract --strict && openspec validate v3-release-contract --strict",
+      "status": "pass",
+      "summary": "active change and promoted dependency specification valid"
+    },
+    {
+      "id": "documentation-traceability",
+      "command": "BDD assertions plus nonempty path audit",
+      "status": "pass",
+      "summary": "9/9 declared documentation/skill paths present and nonempty"
+    },
+    {
+      "id": "whitespace",
+      "command": "git diff --check",
+      "status": "pass",
+      "summary": "original current-content worktree has no whitespace errors"
+    }
+  ],
+  "applicability": {
+    "dartMelos": {
+      "status": "not-applicable",
+      "reason": "The change scope is examples, fixtures, coverage tooling, documentation, and tests; it changes no Dart/Flutter source, pubspec, lockfile, generated code, or package boundary. v3-dart-graph-riverpod and v3-flutter-riverpod-a2ui-example own these gates."
+    },
+    "cargo": {
+      "status": "not-applicable",
+      "reason": "The change modifies no Rust source, Cargo manifest, capability, plugin binding, or native behavior. v3-tauri-mobile-plugin and v3-tauri-universal-example own Cargo and device gates."
+    },
+    "docusaurus": {
+      "status": "not-applicable",
+      "reason": "The planned website directory does not exist yet; v3-docs-foundation-brand through v3-docs-github-pages own site builds and deployment."
+    },
+    "browserDeviceVisual": {
+      "status": "not-applicable",
+      "reason": "This change is a headless semantic contract and renders no UI. The five showcase changes must still provide browser/device, accessibility, screenshot, trace, video, golden, and hash receipts."
+    }
+  },
+  "knownOutput": [
+    "One external Flint live integration remains explicitly skipped and is not used as release evidence.",
+    "One core benchmark remains todo.",
+    "Existing Next.js deprecation messages, a Vite chunk-size warning, Vitest native-loader warnings, and Turbo output warnings remain visible and assigned to later owners."
+  ],
+  "publicationAuthorized": false
+}

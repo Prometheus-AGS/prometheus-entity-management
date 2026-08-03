@@ -56,18 +56,6 @@ describe("LoroProvider", () => {
   });
 
   it("sends binary bytes via channel when pushLocalChange is called (loro-crdt installed)", async () => {
-    // Conditionally skip if loro-crdt is not installed in the test environment.
-    let loroAvailable = true;
-    try {
-      await import("loro-crdt");
-    } catch {
-      loroAvailable = false;
-    }
-    if (!loroAvailable) {
-      console.warn("[test] skipping loro-provider test: loro-crdt not installed");
-      return;
-    }
-
     const { createLoroProvider } = await import("./loro-provider");
     const channel = makeMockChannel();
     const provider = createLoroProvider({ channel, registerMergeStrategies: false });
@@ -86,17 +74,6 @@ describe("LoroProvider", () => {
   });
 
   it("calls onPeerChange when channel receives bytes from peer (loro-crdt installed)", async () => {
-    let loroAvailable = true;
-    try {
-      await import("loro-crdt");
-    } catch {
-      loroAvailable = false;
-    }
-    if (!loroAvailable) {
-      console.warn("[test] skipping loro-provider test: loro-crdt not installed");
-      return;
-    }
-
     const { createLoroProvider } = await import("./loro-provider");
     const channelA = makeMockChannel();
     const channelB = makeMockChannel();
@@ -124,21 +101,27 @@ describe("LoroProvider", () => {
     providerB.stop();
   });
 
-  it("throws if loro-crdt is absent (simulated via missing-module error)", async () => {
-    // We can't actually uninstall loro-crdt in tests, so we test the error
-    // path by providing a wrong module specifier at the wrong call site.
-    // This test just verifies the error message shape:
+  it("exposes provider identity before the mandatory test dependency loads lazily", async () => {
     const { createLoroProvider } = await import("./loro-provider");
     const channel = makeMockChannel();
     const provider = createLoroProvider({ channel });
-
-    // Mock the dynamic import to reject (simulate absent peer dep).
-    // We do this by temporarily replacing the global with a spy that throws.
-    // NOTE: vitest doesn't support mocking dynamic imports of optional peers
-    // easily, so we assert the error type in an integration sense: if loro is
-    // installed, start() succeeds; if absent, it throws with our message.
-    // This test verifies structural integrity rather than the error branch.
     expect(provider.name).toBe("loro");
+  });
+
+  it("uses an explicit module loader for bundler-visible browser integration", async () => {
+    const { createLoroProvider } = await import("./loro-provider");
+    const channel = makeMockChannel();
+    const loadLoro = vi.fn(() => import("loro-crdt"));
+    const provider = createLoroProvider({
+      channel,
+      registerMergeStrategies: false,
+      loadLoro,
+    });
+
+    await provider.start(["Document"], vi.fn());
+
+    expect(loadLoro).toHaveBeenCalledOnce();
+    provider.stop();
   });
 
   it("stop() cleans up without errors even before start()", async () => {

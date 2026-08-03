@@ -1,0 +1,87 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    {
+      "id": "acceptance-traceability",
+      "description": "Every phase-plan detail and acceptance criterion maps to direct implementation, test, BDD, package, clean-room, or external-contract evidence.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Compare the plan section with the verification matrix and execute focused receipts."
+      }
+    },
+    {
+      "id": "deterministic-storage-convergence",
+      "description": "Real persistence, two-client convergence, conflict behavior, echo suppression, and reconnect recovery are executable and deterministic.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Run the focused PGlite, Loro loopback, WebSocket channel, and real relay suites."
+      }
+    },
+    {
+      "id": "mandatory-no-skip",
+      "description": "Mandatory dependency and behavior lanes cannot pass through skip, todo, environment gates, or missing-dependency early returns.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Run source guards and inspect focused test output for zero skip/todo results."
+      }
+    },
+    {
+      "id": "evidence-integrity",
+      "description": "Every declared evidence path exists and is non-empty, JSON parses, strict OpenSpec and whitespace checks pass, and no task remains unchecked before archive.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Parse ledgers and reports, stat evidence, validate OpenSpec, and scan the task surface."
+      }
+    },
+    {
+      "id": "external-contract-boundary",
+      "description": "The sibling gateway job is manual-only, tarball-backed, free of local links, and never substituted for the mandatory local release gate.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Run actionlint, release/BDD guards, and the workflow-equivalent packed sibling contract."
+      }
+    },
+    {
+      "id": "release-boundary",
+      "description": "Headless npm-sync readiness is not presented as Flutter, Tauri, production relay, showcase, Docusaurus, full-release, registry, or npm latest readiness.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Require in-progress coverage, planned downstream evidence, and explicit publication denial."
+      }
+    },
+    {
+      "id": "visual-honesty",
+      "description": "Screenshots are non-applicable only because this change renders no surface; real browser, device, accessibility, trace, video/golden, and hash evidence remains mandatory downstream.",
+      "severity": "high",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Review the changed artifact types and downstream visual owners."
+      }
+    }
+  ],
+  "global_rules": [
+    "Use pnpm-only repository evidence.",
+    "Do not authorize or perform registry publication.",
+    "Do not count the manual sibling job as mandatory stable evidence.",
+    "Do not weaken the phase-plan acceptance criteria.",
+    "Do not fabricate screenshots for a headless storage and sync contract."
+  ],
+  "termination_conditions": [
+    "All blocking constraints are satisfied.",
+    "Focused tests, BDD, actionlint, evidence validation, strict OpenSpec, and clean CI pass.",
+    "No unsupported platform, visual, relay, certification, or publication claim remains."
+  ]
+}

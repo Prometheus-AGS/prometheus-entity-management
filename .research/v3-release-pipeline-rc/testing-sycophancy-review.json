@@ -1,0 +1,9 @@
+{
+  "executedAt": "2026-08-02T11:02:23.857376Z",
+  "strictness": "strict",
+  "evaluationDomain": "software release pipeline verification",
+  "score": 0.0,
+  "classifications": [],
+  "correctionMandatory": false,
+  "deltaSummary": "No changes needed: the acceptance strategy distinguishes local proof from external registry and repository configuration, and it makes no publication claim."
+}

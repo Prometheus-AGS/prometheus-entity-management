@@ -51,11 +51,22 @@ Patterns for moving from TanStack Query, Apollo, Redux, or SWR to **@prometheus-
 
 ## 7. SSR hydration (Next.js)
 
-- Server fetches **JSON**; client receives props.
+- Create one isolated `createGraphStore()` instance per server request; never reuse the process-wide `graphStore` across requests.
+- Server fetches **JSON**; client receives a serializable snapshot/props.
 - On client mount, call **`upsertEntities`** for the payload batch before or alongside first `useEntityList` fetch to avoid flash.
 - Prefer a small dedicated **`GraphHydrationProvider`** pattern (see library Next.js example).
 
-## 8. Rollback
+## 8. Core/React store imports for 3.0
+
+- Non-React modules import `graphStore` or `createGraphStore` from `@prometheus-ags/entity-graph-core`.
+- React hooks import callable `useGraphStore` from `@prometheus-ags/prometheus-entity-management` only when no domain hook covers the use case.
+- Replace early-alpha core imports of `useGraphSyncStatus` with `getGraphSyncStatus()` for imperative code or the React-package hook for components/custom hooks.
+- Import React table/view presentation types from the React package, not core.
+- Core's deprecated `useGraphStore` alias may ease an imperative migration, but new code must not treat it as callable.
+- Install `@prometheus-ags/entity-graph-core` explicitly with every framework binding. It is the application's required compatible peer; do not add a second core version under a binding or suppress peer-resolution failures.
+- When multiple JavaScript bindings coexist, run `pnpm run verify:binding-singletons` in the library workspace before claiming one physical packed core. Matching source aliases or version strings are not singleton evidence.
+
+## 9. Rollback
 
 Each plan should name:
 

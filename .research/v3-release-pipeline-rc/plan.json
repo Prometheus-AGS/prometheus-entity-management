@@ -1,0 +1,19 @@
+{
+  "coreQuestion": "How can an RC rehearsal prove publication correctness while preserving a hard no-latest-mutation boundary?",
+  "subQuestions": [
+    "Which artifacts are publishable and which roots or fixtures must be denied?",
+    "What do current npm trusted and staged publishing flows actually authorize?",
+    "How should Changesets prerelease state and dist-tags be separated?",
+    "How is dependency order derived and checked?",
+    "How can a rerun distinguish already-published versions from genuine failures?",
+    "Which Dart and Rust artifacts are included now, dry-run only, or explicitly excluded?",
+    "Which proof can run locally without registry mutation?"
+  ],
+  "sourcePolicy": "Prefer current official registry, platform, and upstream project documentation. Local ratified contracts outrank generic upstream defaults for project-specific scope.",
+  "skepticQuestions": [
+    "Does Changesets alone guarantee safe partial-publish recovery?",
+    "Does OIDC provenance prove that the intended files were published?",
+    "Can npm stage publish be treated as a universal RC mechanism?",
+    "Can a dry run legitimately be called a registry rehearsal?"
+  ]
+}

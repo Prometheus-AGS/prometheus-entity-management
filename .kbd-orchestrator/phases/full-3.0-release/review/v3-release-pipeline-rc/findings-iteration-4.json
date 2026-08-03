@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "tests/steps/v3-release-pipeline-rc.steps.ts",
+      "line": 104,
+      "claim": "The new BDD contract requires `.github/workflows/publish.yml`, but the provided repository tree contains no `.github` directory or workflow file, so the scenario setup fails immediately.",
+      "evidence": "The Given step asserts `existsSync(join(root, \".github/workflows/publish.yml\"))` while the packet `file_tree` lists no `.github` entry, and the diff does not add `.github/workflows/publish.yml`.",
+      "suggested_fix": "Add the referenced `.github/workflows/publish.yml` workflow in this change or remove/adjust the tests and release-pipeline contract that require it."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/release-candidate-pipeline.mjs",
+      "line": 576,
+      "claim": "RC staging authority is not enforced before staging begins, allowing `stageReleaseCandidate` to perform npm registry lookups and even complete an all-matching retry without GitHub OIDC or the protected `npm-rc` environment.",
+      "evidence": "`stageReleaseCandidate` only requires `snapshotTags`, `lookupNpmVersion`, and `stageNpm`, then calls `adapters.snapshotTags(manifest)` and `adapters.lookupNpmVersion(...)`; `assertRcStageAuthority` is only called inside `createReleaseCommandAdapters().stageNpm`, so the matching-version path never checks authority. This contradicts `release/release-candidate-pipeline.md` line 52, which says the mutating `pnpm run release:rc:stage` command requires GitHub Actions OIDC, the protected `npm-rc` environment, matching SHA, and explicit `stage-rc` authority.",
+      "suggested_fix": "Require an authority adapter or environment parameter and call `assertRcStageAuthority(manifest, env)` at the start of the stage CLI/path before any `snapshotTags` or registry lookup."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

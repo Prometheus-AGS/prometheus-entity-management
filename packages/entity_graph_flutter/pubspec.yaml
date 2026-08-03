@@ -1,35 +1,34 @@
 name: entity_graph_flutter
 description: >
   Flutter/Dart mirror of the Prometheus entity graph — normalized, reactive
-  entity store with Riverpod 3 AsyncNotifier providers, Freezed immutable
-  models, and a transport registry whose contract mirrors the SDL.
-version: 3.0.0-alpha.0
+  entity store with generated Riverpod 3 provider families, optimistic CRUD,
+  local/remote/hybrid views, and pluggable transports.
+version: 3.0.0
 homepage: https://github.com/Prometheus-AGS/prometheus-entity-management
 
 environment:
-  sdk: ">=3.3.0 <4.0.0"
-  flutter: ">=3.22.0"
+  sdk: ">=3.12.0 <4.0.0"
+  flutter: ">=3.44.0"
+
+resolution: workspace
 
 dependencies:
   flutter:
     sdk: flutter
-  # Riverpod 3 with codegen
-  flutter_riverpod: ^2.6.1
-  riverpod_annotation: ^2.3.5
-  # Freezed for immutable models
-  freezed_annotation: ^2.4.4
-  json_annotation: ^4.9.0
+  # Bounded ranges retain the newest Riverpod generation line that resolves on
+  # Flutter 3.44 stable. The 3.4/4.0.6 line targets the newer Flutter test
+  # dependency matrix and cannot resolve against Flutter 3.44.8.
+  flutter_riverpod: ">=3.3.2 <3.4.0"
+  riverpod_annotation: ">=4.0.3 <4.0.5"
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  # Riverpod + Freezed code generation
-  build_runner: ^2.4.12
-  riverpod_generator: ^2.4.3
-  freezed: ^2.5.7
-  json_serializable: ^6.8.0
-  # Linting
-  flutter_lints: ^4.0.0
+  # build_runner 2.15.2+ forces analyzer 13.3+, while Riverpod generator
+  # 4.0.4 uses analyzer 12 and remains compatible with Flutter 3.44.8.
+  build_runner: 2.15.1
+  riverpod_generator: 4.0.4
+  flutter_lints: ^6.0.0
 
 flutter:
   # Library package — no assets or fonts needed.

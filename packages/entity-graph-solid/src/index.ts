@@ -6,7 +6,7 @@
  * Architecture:
  *   Component (SolidJS) → createEntity / createEntityList (this package, Layer 2)
  *     → core engine fetchEntity / fetchList (Layer 1)
- *       → useGraphStore (Layer 0 / Zustand)
+ *       → graphStore (Layer 0 / Zustand)
  *
  * This package only contains the SolidJS reactive layer. All entity data
  * lives in @prometheus-ags/entity-graph-core — never re-implemented here.
@@ -44,5 +44,6 @@ export type {
 export {
   TerminalError,
   TransientError,
+  graphStore,
   useGraphStore,
 } from "@prometheus-ags/entity-graph-core";

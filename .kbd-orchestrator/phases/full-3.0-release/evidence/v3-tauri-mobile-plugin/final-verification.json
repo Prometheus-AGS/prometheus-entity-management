@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 2,
+  "change": "v3-tauri-mobile-plugin",
+  "recordedAt": "2026-08-02T10:08:24Z",
+  "candidateCommit": "eb3c9802da5ff10ad6db135fed761bd23ea80b3f",
+  "workspaceState": "dirty-change-candidate",
+  "verdict": "pass-change-certified-archive-ready-publication-blocked",
+  "dimensions": {
+    "implementation": "complete",
+    "evidence": "complete",
+    "changeCertification": "pass",
+    "openSpecArchive": "ready",
+    "fullReleaseCertification": "pending",
+    "publication": "blocked"
+  },
+  "acceptance": {
+    "rustDerivedBindings": "pass",
+    "minimalNpmRustBoundary": "pass-41-source-runtime-files-no-generated-build-state",
+    "capabilitiesAndPermissions": "pass",
+    "desktopInitializationCommandAndDenial": "pass",
+    "androidRealBridgeCommand": "pass-physical-device",
+    "androidCapabilityDenial": "pass-physical-device",
+    "iosRealBridgeCommand": "pass-simulator",
+    "iosCapabilityDenial": "pass-simulator",
+    "cargoJavaScriptReleaseAndBddTests": "pass",
+    "publicLedgersCoverageSkillsDocs": "pass",
+    "allPlanCriteriaHaveReproducibleEvidence": true
+  },
+  "authoritativeEvidence": {
+    "verifier": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-3-verification.json",
+    "cleanGates": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-5-clean-gates.json",
+    "deviceLane": "release/tauri-mobile-device-lane.md",
+    "deviceReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/device-evidence.json",
+    "bddReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/certification-bdd.md",
+    "coverageStatus": "implemented",
+    "runtimeExports": 26,
+    "declarationExports": 57,
+    "packedFiles": 41
+  },
+  "mobile": {
+    "android": {
+      "target": "Samsung SM-S936U physical device",
+      "os": "Android 16 / API 36",
+      "successScreenshotSha256": "ce3642ff825866f51f87d0193a7f0c41923ee660e86e474c9886eaca652afb31",
+      "denialScreenshotSha256": "4d3be15d369210fa8d3fa4b5394f5f673920b9f0d88a705605a018b3ebcb5a18"
+    },
+    "ios": {
+      "target": "iPhone 17 simulator",
+      "os": "iOS 26.5",
+      "successScreenshotSha256": "bc071e7f2705d50b1f8aa15a0e2f81d7abe745cc2eb24cda19810536ca75da06",
+      "denialScreenshotSha256": "b5f68419c01b8386acf515fb3521330353897526472803f26d4ee85abc02ecd6",
+      "successExecutableSha256": "6f7dd0229cd522e0e5e9966c3c5dd88d6250628a8e7ce457d2288fdeaaa627a6",
+      "denialExecutableSha256": "d0bdc3ebfb4cb2209962aabd09b9ec931aecfa10f229824e15337cfd9121dae1"
+    },
+    "manifestSha256": "2fc06b1bf5112c64609e29f06eea3d1816eb89fde8f80897174039564caaf9d6",
+    "screenshotsInspectedAtOriginalResolution": true
+  },
+  "hostConstraintResolution": {
+    "previous": "host-wide ENFILE from unrelated virtualization descriptor pressure",
+    "resolution": "stable/offline Cargo runs with isolated build and target directories",
+    "cleanCurrentCandidateResult": "pass",
+    "productFailureInferred": false
+  },
+  "bdd": {
+    "feature": "tests/features/release/v3-tauri-mobile-plugin.feature",
+    "scenarios": 5,
+    "steps": 18,
+    "hooks": 5,
+    "status": "pass",
+    "truthCorrection": "device receipts, not a documented procedure or their absence, are required"
+  },
+  "research": {
+    "package": ".research/v3-tauri-mobile-plugin-mobile-host-unblock",
+    "depth": "focused-deep",
+    "feynmanGrade": 0.965,
+    "misconceptionsAbsent": 1.0,
+    "transfers": 1.0,
+    "formalMasteryClaimed": false
+  },
+  "artifactRefiner": {
+    "iteration": 3,
+    "blockingConstraints": 6,
+    "blockingViolations": 0,
+    "schema": "pass",
+    "files": "pass",
+    "constraints": "pass",
+    "consistency": "pass",
+    "checkpoint": "c3179a20",
+    "qaSha256": "0453480c1cea2e0390b9d5b781886835d420bf15717d6e78222f3b5d46ce4f9f"
+  },
+  "adversarialReview": {
+    "mode": "diff",
+    "verdict": "pass",
+    "judgeModel": "kbd-judge",
+    "producerModel": "gpt-5",
+    "crossModelCheck": "verified-distinct",
+    "isolationMode": "rest-gateway:http://localhost:8181/v1",
+    "antiTheaterScore": 0.0803571417927742,
+    "critical": 0,
+    "warning": 1,
+    "suggestion": 0,
+    "warningDisposition": "generated helper wording corrected and regression-tested",
+    "packetSha256": "4a8bb0ded662ec751d3c239d4f4ef7a8b3364da9a7ebbd3ce41df47556d838b5",
+    "findingsSha256": "b2da8fdef82c5e7dc78e04b16c65bd3e5ac74244b4ecd148a8879d454e7d84a8"
+  },
+  "unresolvedLimits": [
+    { "limit": "The universal desktop/mobile showcase and its restart, reconnect, deep-link, accessibility, and responsive application evidence remain pending.", "ownerChange": "v3-tauri-universal-example" },
+    { "limit": "The earlier Dart golden drift remains outside this Tauri change.", "ownerChange": "v3-flutter-riverpod-a2ui-example" },
+    { "limit": "One immutable cross-ecosystem release evidence bundle does not yet exist.", "ownerChange": "v3-release-certification" },
+    { "limit": "Registry ownership, credentials, publish, post-publish consumers, GitHub Release, and stable dist-tag promotion remain unauthorized.", "ownerChange": "v3-stable-publication" }
+  ],
+  "openSpec": {
+    "verifyReady": true,
+    "archiveReady": true,
+    "reason": "Every bounded plan criterion has current direct evidence and both required quality gates pass."
+  },
+  "registryDecision": "deferred",
+  "publicationAuthorized": false,
+  "changeCertified": true,
+  "fullReleaseCertified": false
+}

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title description">
+  <title id="title">Prometheus 3.0 release-candidate certification</title>
+  <desc id="description">Visual evidence for declared artifacts, packed consumers, protected latest tag, recovery, workflow provenance, and native registry dispositions.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#090b18"/>
+      <stop offset="1" stop-color="#18112d"/>
+    </linearGradient>
+    <style>
+      .eyebrow { fill: #f5a524; font: 700 22px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 2px; }
+      .title { fill: #ffffff; font: 800 52px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .subtitle { fill: #b8b4cc; font: 400 22px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .metric { fill: #ffffff; font: 800 48px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .label { fill: #c9c4dc; font: 600 19px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .section { fill: #f5a524; font: 700 24px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .row { fill: #e9e5f4; font: 500 19px ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .order { fill: #aba5c2; font: 500 15px ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .stamp { fill: #0a2b1d; stroke: #48d597; stroke-width: 2; }
+      .stamp-text { fill: #7df1bc; font: 800 20px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 1px; }
+    </style>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#background)"/>
+  <circle cx="1450" cy="110" r="230" fill="#f5a524" opacity="0.08"/>
+  <text x="90" y="92" class="eyebrow">PROMETHEUS · RELEASE EVIDENCE</text>
+  <text x="90" y="160" class="title">3.0 release-candidate pipeline</text>
+  <text x="90" y="205" class="subtitle">Packed artifacts, guarded staging, restartable recovery, and protected stable tags</text>
+
+  <g transform="translate(90 270)" aria-label="16 declared artifacts">
+    <rect width="430" height="150" rx="20" fill="#201a38" stroke="#3b315e"/>
+    <text x="34" y="66" class="metric">16</text>
+    <text x="34" y="108" class="label">declared artifacts</text>
+  </g>
+  <g transform="translate(550 270)" aria-label="12 packed npm consumers">
+    <rect width="430" height="150" rx="20" fill="#201a38" stroke="#3b315e"/>
+    <text x="34" y="66" class="metric">12</text>
+    <text x="34" y="108" class="label">packed npm consumers</text>
+  </g>
+  <g transform="translate(1010 270)">
+    <rect width="500" height="150" rx="20" fill="#112a23" stroke="#32775f"/>
+    <text x="34" y="66" class="metric">latest protected</text>
+    <text x="34" y="108" class="label">before/after snapshots are identical</text>
+  </g>
+
+  <text x="90" y="480" class="section">Workflow contract</text>
+  <text x="90" y="528" class="row">✓ Changesets version PR + release notes</text>
+  <text x="90" y="576" class="row">✓ actions/attest@v4 + OIDC permissions</text>
+  <text x="90" y="624" class="row">✓ protected npm-rc environment</text>
+  <text x="90" y="672" class="row">✓ no long-lived npm write token</text>
+
+  <text x="930" y="480" class="section">Native dispositions</text>
+  <text x="930" y="528" class="row">Dart / Flutter  ·  dry-run-only</text>
+<text x="930" y="576" class="row">Rust CLI  ·  dry-run-only</text>
+<text x="930" y="624" class="row">Rust MCP  ·  dry-run-only</text>
+<text x="930" y="672" class="row">Tauri Rust  ·  embedded-in-npm</text>
+
+  <rect x="90" y="720" width="1420" height="125" rx="18" fill="#121527" stroke="#353a59"/>
+  <text x="120" y="760" class="section">Dependency-first package order</text>
+  <text x="120" y="795" class="order">1. entity-graph-core  →  2. a2ui-react  →  3. entity-graph-a2a  →  4. entity-graph-alpine  →  5. entity-graph-sdl  →  6. entity-graph-htmx</text>
+<text x="120" y="823" class="order">7. entity-graph-solid  →  8. entity-graph-svelte  →  9. entity-graph-sync  →  10. entity-graph-tauri  →  11. entity-graph-web-components  →  12. prometheus-entity-management</text>
+
+  <g transform="translate(90 875)">
+    <rect width="430" height="58" rx="12" class="stamp"/>
+    <text x="25" y="37" class="stamp-text">NO REGISTRY MUTATION</text>
+  </g>
+  <text x="550" y="912" class="row">matching → skip  ·  absent → stage  ·  conflict → block</text>
+</svg>

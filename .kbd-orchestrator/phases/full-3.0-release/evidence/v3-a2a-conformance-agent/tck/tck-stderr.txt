@@ -1,0 +1,5 @@
+Using CPython 3.13.1
+Creating virtual environment at: /var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-a2a-tck-UDB0mt/a2a-tck/.venv
+   Building a2a-tck @ file:///var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-a2a-tck-UDB0mt/a2a-tck
+      Built a2a-tck @ file:///var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-a2a-tck-UDB0mt/a2a-tck
+Installed 27 packages in 43ms

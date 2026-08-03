@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">Flutter source provenance lineage</title>
+  <desc id="desc">Deterministic headless evidence showing KnowMe committed source passing through an allowlist into a non-buildable provenance import before future adaptation into the single canonical Flutter package. The architecture repository remains reference-only.</desc>
+  <rect width="1200" height="680" fill="#0b1020"/>
+  <text x="64" y="70" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="34" font-weight="700">Prometheus Flutter source lineage</text>
+  <text x="64" y="104" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="17">History, authority, and canonical ownership boundaries for the 3.0 release</text>
+
+  <g font-family="system-ui, sans-serif">
+    <rect x="64" y="160" width="270" height="170" rx="18" fill="#172554" stroke="#60a5fa" stroke-width="2"/>
+    <text x="88" y="198" fill="#bfdbfe" font-size="15" font-weight="700">COMMITTED SOURCE</text>
+    <text x="88" y="235" fill="#f8fafc" font-size="22" font-weight="700">KnowMe Flutter</text>
+    <text x="88" y="270" fill="#cbd5e1" font-size="14">revision 68f7ab83b72c</text>
+    <text x="88" y="298" fill="#cbd5e1" font-size="14">dirty worktree excluded</text>
+
+    <rect x="382" y="160" width="270" height="170" rx="18" fill="#3b1d0f" stroke="#fb923c" stroke-width="2"/>
+    <text x="406" y="198" fill="#fed7aa" font-size="15" font-weight="700">DISPOSABLE FILTER</text>
+    <text x="406" y="235" fill="#f8fafc" font-size="22" font-weight="700">Explicit allowlist</text>
+    <text x="406" y="270" fill="#cbd5e1" font-size="14">8 retained commits · 12 files</text>
+    <text x="406" y="298" fill="#cbd5e1" font-size="14">commit map + metadata retained</text>
+
+    <rect x="700" y="160" width="270" height="170" rx="18" fill="#312e0e" stroke="#facc15" stroke-width="2"/>
+    <text x="724" y="198" fill="#fef08a" font-size="15" font-weight="700">PROVENANCE ONLY</text>
+    <text x="724" y="235" fill="#f8fafc" font-size="22" font-weight="700">Filtered import</text>
+    <text x="724" y="270" fill="#cbd5e1" font-size="14">tip cb318ddb2beb</text>
+    <text x="724" y="298" fill="#cbd5e1" font-size="14">non-buildable · non-publishable</text>
+
+    <rect x="856" y="418" width="280" height="170" rx="18" fill="#052e2b" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="880" y="456" fill="#99f6e4" font-size="15" font-weight="700">CANONICAL OWNER</text>
+    <text x="880" y="493" fill="#f8fafc" font-size="21" font-weight="700">entity_graph_flutter</text>
+    <text x="880" y="528" fill="#cbd5e1" font-size="14">future adaptation in task 12</text>
+    <text x="880" y="556" fill="#cbd5e1" font-size="14">one tested public Dart package</text>
+
+    <rect x="64" y="418" width="340" height="170" rx="18" fill="#1f2937" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8 8"/>
+    <text x="88" y="456" fill="#e2e8f0" font-size="15" font-weight="700">REFERENCE ONLY</text>
+    <text x="88" y="493" fill="#f8fafc" font-size="20" font-weight="700">hybrid-mobile-architecture-src</text>
+    <text x="88" y="528" fill="#cbd5e1" font-size="14">MIT templates, scripts, and docs</text>
+    <text x="88" y="556" fill="#cbd5e1" font-size="14">no runtime library fabricated</text>
+
+    <path d="M334 245 H382" stroke="#60a5fa" stroke-width="4" marker-end="url(#arrow)"/>
+    <path d="M652 245 H700" stroke="#fb923c" stroke-width="4" marker-end="url(#arrow)"/>
+    <path d="M970 330 C970 370 996 378 996 418" fill="none" stroke="#facc15" stroke-width="4" stroke-dasharray="10 8" marker-end="url(#arrow)"/>
+    <path d="M404 503 H856" stroke="#64748b" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arrow)"/>
+    <text x="512" y="489" fill="#94a3b8" font-size="14">design reference, never imported as runtime</text>
+
+    <text x="64" y="638" fill="#94a3b8" font-size="14">Headless lineage evidence only — no claim of Flutter rendering or accessibility certification.</text>
+  </g>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#cbd5e1"/>
+    </marker>
+  </defs>
+</svg>

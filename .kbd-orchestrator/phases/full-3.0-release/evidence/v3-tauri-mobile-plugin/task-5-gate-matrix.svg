@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Prometheus Tauri task 5 clean-state gate matrix</title>
+  <desc id="desc">Ten local gates pass. The clean Rust and BDD lanes are blocked by host file descriptor exhaustion, Dart golden tests fail, and Android and iOS native runtime evidence remains open because no runnable mobile host exists.</desc>
+  <rect width="1200" height="900" fill="#071425"/>
+  <rect x="32" y="32" width="1136" height="836" rx="28" fill="#0D2138" stroke="#2B557D" stroke-width="2"/>
+
+  <text x="76" y="92" fill="#42E09A" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="700" letter-spacing="2.5">PROMETHEUS 3.0 · EVIDENCE</text>
+  <text x="76" y="140" fill="#F6FAFF" font-family="Inter,Arial,sans-serif" font-size="36" font-weight="750">Tauri clean-state gate matrix</text>
+  <text x="76" y="176" fill="#A7BCD5" font-family="Inter,Arial,sans-serif" font-size="18">Task 5 executed · partial, fail-closed result</text>
+
+  <rect x="76" y="212" width="322" height="104" rx="18" fill="#102B45" stroke="#42E09A"/>
+  <text x="100" y="248" fill="#A7BCD5" font-family="Inter,Arial,sans-serif" font-size="16">LOCAL CONTRACTS</text>
+  <text x="100" y="292" fill="#42E09A" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="750">10 PASS</text>
+
+  <rect x="422" y="212" width="322" height="104" rx="18" fill="#102B45" stroke="#FF7A8A"/>
+  <text x="446" y="248" fill="#A7BCD5" font-family="Inter,Arial,sans-serif" font-size="16">FAILED</text>
+  <text x="446" y="292" fill="#FF7A8A" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="750">1 DART</text>
+
+  <rect x="768" y="212" width="356" height="104" rx="18" fill="#102B45" stroke="#FFBF69"/>
+  <text x="792" y="248" fill="#A7BCD5" font-family="Inter,Arial,sans-serif" font-size="16">BLOCKED / OPEN</text>
+  <text x="792" y="292" fill="#FFBF69" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="750">4 LANES</text>
+
+  <text x="76" y="366" fill="#F6FAFF" font-family="Inter,Arial,sans-serif" font-size="21" font-weight="700">Gate</text>
+  <text x="1100" y="366" text-anchor="end" fill="#F6FAFF" font-family="Inter,Arial,sans-serif" font-size="21" font-weight="700">Result</text>
+  <line x1="76" y1="382" x2="1124" y2="382" stroke="#2B557D"/>
+
+  <g font-family="Inter,Arial,sans-serif" font-size="18">
+    <text x="76" y="422" fill="#DCE9F8">Frozen pnpm · TypeScript · 16 package tests</text><text x="1100" y="422" text-anchor="end" fill="#42E09A" font-weight="700">PASS</text>
+    <text x="76" y="466" fill="#DCE9F8">API / skills ledgers · 13/13 coverage · OpenSpec</text><text x="1100" y="466" text-anchor="end" fill="#42E09A" font-weight="700">PASS</text>
+    <text x="76" y="510" fill="#DCE9F8">Security · package payload · Cargo / Dart format</text><text x="1100" y="510" text-anchor="end" fill="#42E09A" font-weight="700">PASS</text>
+    <text x="76" y="554" fill="#DCE9F8">Clean Rust bindings + packed consumer</text><text x="1100" y="554" text-anchor="end" fill="#FFBF69" font-weight="700">HOST ENFILE</text>
+    <text x="76" y="598" fill="#DCE9F8">Tagged Tauri BDD clean verifier</text><text x="1100" y="598" text-anchor="end" fill="#FFBF69" font-weight="700">TIMEOUT</text>
+    <text x="76" y="642" fill="#DCE9F8">Dart / Flutter widget golden suite</text><text x="1100" y="642" text-anchor="end" fill="#FF7A8A" font-weight="700">69 PASS · 1 FAIL</text>
+    <text x="76" y="686" fill="#DCE9F8">Android native graphPlatformPing + denial</text><text x="1100" y="686" text-anchor="end" fill="#FFBF69" font-weight="700">HOST REQUIRED</text>
+    <text x="76" y="730" fill="#DCE9F8">iOS native graphPlatformPing + denial</text><text x="1100" y="730" text-anchor="end" fill="#FFBF69" font-weight="700">HOST REQUIRED</text>
+  </g>
+
+  <rect x="76" y="772" width="1048" height="58" rx="14" fill="#102B45"/>
+  <text x="100" y="807" fill="#F6FAFF" font-family="Inter,Arial,sans-serif" font-size="17" font-weight="650">Stable release certification remains blocked; no failed or unavailable lane was converted to green.</text>
+  <text x="1124" y="854" text-anchor="end" fill="#7893B2" font-family="Inter,Arial,sans-serif" font-size="13">2026-08-02 · machine-readable source: task-5-clean-gates.json</text>
+</svg>

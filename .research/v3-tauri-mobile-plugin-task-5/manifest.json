@@ -1,0 +1,29 @@
+{
+  "format": "research-package",
+  "format_version": "1.0.0",
+  "okf_type": "research-session",
+  "job_id": "v3-tauri-mobile-plugin-task-5",
+  "query": "Clean-state verification and native-platform evidence boundary for the v3 Tauri plugin",
+  "depth": "focused-deep",
+  "created_at": "2026-08-02T06:03:00Z",
+  "completed_at": "2026-08-02T06:08:00Z",
+  "stages_completed": 10,
+  "sources_count": 7,
+  "claims_count": 4,
+  "confidence": 0.97,
+  "verification_status": "verified",
+  "feynman_grade": 0.963,
+  "feynman_gate_used": true,
+  "misconceptions_absent": 1.0,
+  "contradictions_resolved": 2,
+  "contradictions_unresolved": 0,
+  "surreal_memory_used": false,
+  "sycophancy_correction_used": true,
+  "citation_style": "inline-link",
+  "model_routing": {
+    "planner": "active-frontier-session",
+    "search": "web-primary-sources",
+    "verify": "active-frontier-session",
+    "report": "active-frontier-session"
+  }
+}

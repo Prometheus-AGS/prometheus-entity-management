@@ -1,0 +1,25 @@
+{
+  "resolved": [
+    {
+      "claimA": "A frontend mock proves graph_platform_ping works.",
+      "claimB": "Tauri documents mockIPC as an interceptor with no real Rust backend.",
+      "resolution": "Use a generated consumer context with mock_builder/get_ipc_response for desktop Rust IPC; reserve frontend mocks for binding-shape tests."
+    },
+    {
+      "claimA": "Registering the plugin is enough for commands to run.",
+      "claimB": "The initial red host run registered the plugin but runtime authority returned 'Plugin not found' because no generated ACL manifest existed.",
+      "resolution": "Build a consumer fixture with tauri-build and explicit allowed/denied capabilities."
+    },
+    {
+      "claimA": "Android/iOS compilation certifies the native bridge.",
+      "claimB": "Tauri's mobile contract crosses Rust PluginHandle into Kotlin or Swift at runtime.",
+      "resolution": "Keep cross-compile evidence separate and block stable release until simulator/device response artifacts exist."
+    },
+    {
+      "claimA": "The newest tauri-specta/Specta release candidate is compatible with the declared Rust 1.88 minimum.",
+      "claimB": "The pinned Rust 1.88 check fails because Specta rc.24/rc.25 uses fmt::from_fn and const TypeId APIs stabilized later.",
+      "resolution": "Keep the current generator cohort optional behind generate-bindings, run generation on current stable Rust, and prove the default packed plugin consumer under Rust 1.88 instead of weakening the MSRV contract."
+    }
+  ],
+  "unresolved": []
+}

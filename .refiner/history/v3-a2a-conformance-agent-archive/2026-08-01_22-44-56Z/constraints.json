@@ -1,0 +1,19 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    { "id": "c1", "description": "Every claimed A2A behavior has executable evidence.", "severity": "blocking", "type": "technical", "validation": { "requires_code_execution": true, "validation_method": "focused and BDD tests" } },
+    { "id": "c2", "description": "Public API, declarations, packed artifacts, skills, examples, and release docs agree.", "severity": "blocking", "type": "structural", "validation": { "requires_code_execution": true, "validation_method": "contract and ledger verifiers" } },
+    { "id": "c3", "description": "Protocol, platform, security, and publication limits remain explicit.", "severity": "blocking", "type": "semantic", "validation": { "requires_code_execution": true, "validation_method": "structured evidence assertions" } },
+    { "id": "c4", "description": "No visual proof is fabricated for this headless protocol change.", "severity": "high", "type": "visual", "validation": { "requires_code_execution": false, "validation_method": "applicability review" } },
+    { "id": "c5", "description": "All deterministic archive gates pass without hiding mandatory tests.", "severity": "blocking", "type": "technical", "validation": { "requires_code_execution": true, "validation_method": "tests, typecheck, lint, security, OpenSpec, and diff checks" } }
+  ],
+  "global_rules": [
+    "pnpm is the only package manager.",
+    "Archiving this change cannot authorize publication.",
+    "A selected-binding TCK pass cannot be described as universal A2A certification."
+  ],
+  "termination_conditions": [
+    "Terminate only when blocking validation failures are zero.",
+    "Terminate with publicationAuthorized=false."
+  ]
+}

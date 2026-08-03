@@ -29,6 +29,7 @@ import {
   setList,
   getEntity,
   getList,
+  platformPing,
   persistSnapshot,
   restoreSnapshot,
   clearGraph,
@@ -42,6 +43,7 @@ import type {
   SetListPayload,
   PersistSnapshotPayload,
   RestoreSnapshotPayload,
+  PlatformPing,
 } from "./types";
 
 const DEFAULT_STORAGE_KEY = "entity-graph:snapshot";
@@ -54,6 +56,7 @@ export interface GraphCommands {
   setList(payload: SetListPayload): Promise<void>;
   getEntity(entityType: string, entityId: string): Promise<Record<string, unknown> | null>;
   getList(queryKey: string): Promise<{ ids: string[]; total: number | null } | null>;
+  platformPing(): Promise<PlatformPing>;
   persistSnapshot(payload?: PersistSnapshotPayload): Promise<void>;
   restoreSnapshot(payload?: RestoreSnapshotPayload): Promise<void>;
   clearGraph(): Promise<void>;
@@ -96,6 +99,7 @@ export class TauriGraphPlugin {
       setList: (p) => setList(invoke, p),
       getEntity: (t, id) => getEntity(invoke, t, id),
       getList: (k) => getList(invoke, k),
+      platformPing: () => platformPing(invoke),
       persistSnapshot: (p) => persistSnapshot(invoke, { storageKey: this.storageKey, ...p }),
       restoreSnapshot: (p) => restoreSnapshot(invoke, { storageKey: this.storageKey, ...p }),
       clearGraph: () => clearGraph(invoke),

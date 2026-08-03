@@ -101,7 +101,8 @@ export function useEntityCRUD<TEntity extends object>(opts: CRUDOptions<TEntity>
     store.setEntitySyncMetadata(type, selectedId, { synced: false, origin: "optimistic", updatedAt: Date.now() });
   }, [type, selectedId, editBuffer]);
   const save = useCallback(async (): Promise<TEntity | null> => {
-    if (!selectedId || !onUpdate) return null;
+    const updateEntity = optsRef.current.onUpdate;
+    if (!selectedId || !updateEntity) return null;
     setIsSaving(true); setSaveError(null);
     const store = useGraphStore.getState();
     const previous = store.readEntity<TEntity>(type, selectedId);
@@ -109,7 +110,7 @@ export function useEntityCRUD<TEntity extends object>(opts: CRUDOptions<TEntity>
     store.upsertEntity(type, selectedId, editBuffer as Record<string, unknown>);
     store.setEntitySyncMetadata(type, selectedId, { synced: false, origin: "optimistic", updatedAt: Date.now() });
     try {
-      const result = await onUpdate(selectedId, editBuffer);
+      const result = await updateEntity(selectedId, editBuffer);
       const { id, data } = normalize(result);
       store.replaceEntity(type, id, data as Record<string, unknown>);
       store.clearPatch(type, id);
@@ -131,7 +132,8 @@ export function useEntityCRUD<TEntity extends object>(opts: CRUDOptions<TEntity>
   const startCreate = useCallback(() => { resetCreateBuffer(); setCreateError(null); setMode("create"); }, [resetCreateBuffer]);
   const cancelCreate = useCallback(() => { resetCreateBuffer(); setMode("list"); setCreateError(null); }, [resetCreateBuffer]);
   const create = useCallback(async (): Promise<TEntity | null> => {
-    if (!onCreate) return null;
+    const createEntity = optsRef.current.onCreate;
+    if (!createEntity) return null;
     setIsCreating(true); setCreateError(null);
     const tempId = `__temp__${Date.now()}`;
     const optimisticData = { ...createBuffer, id: tempId, _optimistic: true };
@@ -140,7 +142,7 @@ export function useEntityCRUD<TEntity extends object>(opts: CRUDOptions<TEntity>
     store.setEntitySyncMetadata(type, tempId, { synced: false, origin: "optimistic", updatedAt: Date.now() });
     store.insertIdInList(serializeKey(listQueryKey), tempId, "start");
     try {
-      const result = await onCreate(createBuffer);
+      const result = await createEntity(createBuffer);
       const { id: realId, data } = normalize(result);
       store.removeEntity(type, tempId);
       store.upsertEntity(type, realId, data as Record<string, unknown>);
@@ -157,12 +159,13 @@ export function useEntityCRUD<TEntity extends object>(opts: CRUDOptions<TEntity>
   }, [type, createBuffer, normalize, listQueryKey, selectAfterCreate, resetCreateBuffer]);
   const [isDeleting, setIsDeleting] = useState(false); const [deleteError, setDeleteError] = useState<string | null>(null);
   const deleteEntity = useCallback(async (id?: EntityId) => {
-    const targetId = id ?? selectedId; if (!targetId || !onDelete) return;
+    const deleteRemoteEntity = optsRef.current.onDelete;
+    const targetId = id ?? selectedId; if (!targetId || !deleteRemoteEntity) return;
     setIsDeleting(true); setDeleteError(null);
     const previous = useGraphStore.getState().readEntity<TEntity>(type, targetId);
     useGraphStore.getState().removeIdFromAllLists(type, targetId);
     try {
-      await onDelete(targetId); useGraphStore.getState().removeEntity(type, targetId);
+      await deleteRemoteEntity(targetId); useGraphStore.getState().removeEntity(type, targetId);
       cascadeInvalidation({ type, id: targetId, previous: previous as Record<string, unknown> | null, next: null, op: "delete" });
       if (clearSelectionAfterDelete && targetId === selectedId) { setSelectedId(null); setMode("list"); }
       optsRef.current.onDeleteSuccess?.(targetId);

@@ -289,6 +289,8 @@ export function useTable<TData extends object>(
   options: TableOptions<TData>,
 ): TableInstance<TData> {
   const { data, columns: columnDefs } = options;
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
 
   // Internal state — seeded by initialState (uncontrolled) or state (controlled, initial only)
   const ini = options.initialState;
@@ -357,70 +359,82 @@ export function useTable<TData extends object>(
 
   // State setters that respect controlled/uncontrolled
   const setSorting = useCallback((updater: Updater<SortingState>) => {
-    options.onSortingChange?.(updater);
-    if (!options.state?.sorting) _setSorting((prev) => resolveUpdater(updater, prev));
-  }, [options.onSortingChange, options.state?.sorting]);
+    const current = optionsRef.current;
+    current.onSortingChange?.(updater);
+    if (!current.state?.sorting) _setSorting((prev) => resolveUpdater(updater, prev));
+  }, []);
 
   const setColumnFilters = useCallback((updater: Updater<ColumnFiltersState>) => {
-    options.onColumnFiltersChange?.(updater);
-    if (!options.state?.columnFilters) _setColumnFilters((prev) => resolveUpdater(updater, prev));
-    if (options.autoResetPageIndex !== false) {
+    const current = optionsRef.current;
+    current.onColumnFiltersChange?.(updater);
+    if (!current.state?.columnFilters) _setColumnFilters((prev) => resolveUpdater(updater, prev));
+    if (current.autoResetPageIndex !== false) {
       _setPagination((prev) => ({ ...prev, pageIndex: 0 }));
     }
-  }, [options.onColumnFiltersChange, options.state?.columnFilters, options.autoResetPageIndex]);
+  }, []);
 
   const setGlobalFilter = useCallback((value: unknown) => {
-    options.onGlobalFilterChange?.(value as Updater<unknown>);
-    if (!options.state?.globalFilter) _setGlobalFilter(value);
-    if (options.autoResetPageIndex !== false) {
+    const current = optionsRef.current;
+    current.onGlobalFilterChange?.(value as Updater<unknown>);
+    if (!current.state?.globalFilter) _setGlobalFilter(value);
+    if (current.autoResetPageIndex !== false) {
       _setPagination((prev) => ({ ...prev, pageIndex: 0 }));
     }
-  }, [options.onGlobalFilterChange, options.state?.globalFilter, options.autoResetPageIndex]);
+  }, []);
 
   const setRowSelection = useCallback((updater: Updater<RowSelectionState>) => {
-    options.onRowSelectionChange?.(updater);
-    if (!options.state?.rowSelection) _setRowSelection((prev) => resolveUpdater(updater, prev));
-  }, [options.onRowSelectionChange, options.state?.rowSelection]);
+    const current = optionsRef.current;
+    current.onRowSelectionChange?.(updater);
+    if (!current.state?.rowSelection) _setRowSelection((prev) => resolveUpdater(updater, prev));
+  }, []);
 
   const setColumnVisibility = useCallback((updater: Updater<ColumnVisibilityState>) => {
-    options.onColumnVisibilityChange?.(updater);
-    if (!options.state?.columnVisibility) _setColumnVisibility((prev) => resolveUpdater(updater, prev));
-  }, [options.onColumnVisibilityChange, options.state?.columnVisibility]);
+    const current = optionsRef.current;
+    current.onColumnVisibilityChange?.(updater);
+    if (!current.state?.columnVisibility) _setColumnVisibility((prev) => resolveUpdater(updater, prev));
+  }, []);
 
   const setColumnOrder = useCallback((updater: Updater<ColumnOrderState>) => {
-    options.onColumnOrderChange?.(updater);
-    if (!options.state?.columnOrder) _setColumnOrder((prev) => resolveUpdater(updater, prev));
-  }, [options.onColumnOrderChange, options.state?.columnOrder]);
+    const current = optionsRef.current;
+    current.onColumnOrderChange?.(updater);
+    if (!current.state?.columnOrder) _setColumnOrder((prev) => resolveUpdater(updater, prev));
+  }, []);
 
   const setColumnPinning = useCallback((updater: Updater<ColumnPinningState>) => {
-    options.onColumnPinningChange?.(updater);
-    if (!options.state?.columnPinning) _setColumnPinning((prev) => resolveUpdater(updater, prev));
-  }, [options.onColumnPinningChange, options.state?.columnPinning]);
+    const current = optionsRef.current;
+    current.onColumnPinningChange?.(updater);
+    if (!current.state?.columnPinning) _setColumnPinning((prev) => resolveUpdater(updater, prev));
+  }, []);
 
   const setColumnSizing = useCallback((updater: Updater<ColumnSizingState>) => {
-    options.onColumnSizingChange?.(updater);
-    if (!options.state?.columnSizing) _setColumnSizing((prev) => resolveUpdater(updater, prev));
-  }, [options.onColumnSizingChange, options.state?.columnSizing]);
+    const current = optionsRef.current;
+    current.onColumnSizingChange?.(updater);
+    if (!current.state?.columnSizing) _setColumnSizing((prev) => resolveUpdater(updater, prev));
+  }, []);
 
   const setColumnSizingInfo = useCallback((updater: Updater<ColumnSizingInfoState>) => {
-    options.onColumnSizingInfoChange?.(updater);
-    if (!options.state?.columnSizingInfo) _setColumnSizingInfo((prev) => resolveUpdater(updater, prev));
-  }, [options.onColumnSizingInfoChange, options.state?.columnSizingInfo]);
+    const current = optionsRef.current;
+    current.onColumnSizingInfoChange?.(updater);
+    if (!current.state?.columnSizingInfo) _setColumnSizingInfo((prev) => resolveUpdater(updater, prev));
+  }, []);
 
   const setExpanded = useCallback((updater: Updater<ExpandedState>) => {
-    options.onExpandedChange?.(updater);
-    if (!options.state?.expanded) _setExpanded((prev) => resolveUpdater(updater, prev));
-  }, [options.onExpandedChange, options.state?.expanded]);
+    const current = optionsRef.current;
+    current.onExpandedChange?.(updater);
+    if (!current.state?.expanded) _setExpanded((prev) => resolveUpdater(updater, prev));
+  }, []);
 
   const setGrouping = useCallback((updater: Updater<GroupingState>) => {
-    options.onGroupingChange?.(updater);
-    if (!options.state?.grouping) _setGrouping((prev) => resolveUpdater(updater, prev));
-  }, [options.onGroupingChange, options.state?.grouping]);
+    const current = optionsRef.current;
+    current.onGroupingChange?.(updater);
+    if (!current.state?.grouping) _setGrouping((prev) => resolveUpdater(updater, prev));
+  }, []);
 
   const setPagination = useCallback((updater: Updater<PaginationState>) => {
-    options.onPaginationChange?.(updater);
-    if (!options.state?.pagination) _setPagination((prev) => resolveUpdater(updater, prev));
-  }, [options.onPaginationChange, options.state?.pagination]);
+    const current = optionsRef.current;
+    current.onPaginationChange?.(updater);
+    if (!current.state?.pagination) _setPagination((prev) => resolveUpdater(updater, prev));
+  }, []);
 
   const stateSetters = useMemo(() => ({
     setSorting: setSorting as (u: Updater<unknown>) => void,

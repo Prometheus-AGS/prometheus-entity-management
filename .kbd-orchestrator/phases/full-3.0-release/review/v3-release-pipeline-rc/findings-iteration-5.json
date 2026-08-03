@@ -1,0 +1,30 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".github/workflows/publish.yml",
+      "line": 49,
+      "claim": "The workflow declares an unsupported permissions key, which can make the release-candidate workflow fail validation before any job runs.",
+      "evidence": "The rehearse job permissions include `artifact-metadata: write`; GitHub Actions job permissions support `attestations: write` for artifact attestations, but not an `artifact-metadata` permission key.",
+      "suggested_fix": "Remove `artifact-metadata: write` and keep the required `id-token: write` and `attestations: write` permissions."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/release-candidate-pipeline.mjs",
+      "claim": "Published-version recovery can reject a genuinely matching npm version because the adapter requests `dist.integrity` but only reads a nested `dist.integrity` object path.",
+      "evidence": "In `lookupNpmVersion`, the command requests fields `\"version\", \"dist.integrity\", \"--json\"`, but the return value is `{ version: registry.version, integrity: registry.dist?.integrity }`; npm's JSON for an explicitly requested dotted field may be keyed as `\"dist.integrity\"`, leaving `integrity` undefined and causing `classifyRegistryVersion` to throw `registry integrity is missing` instead of performing the required matching skip.",
+      "suggested_fix": "Read both shapes, e.g. `const integrity = registry.dist?.integrity ?? registry[\"dist.integrity\"]`, and add a regression test using the flat `{\"version\":\"...\",\"dist.integrity\":\"...\"}` npm output shape."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

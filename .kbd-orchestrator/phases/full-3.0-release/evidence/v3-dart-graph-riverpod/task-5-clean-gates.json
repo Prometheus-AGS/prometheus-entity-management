@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "1",
+  "change": "v3-dart-graph-riverpod",
+  "task": 5,
+  "result": "pass",
+  "candidate": {
+    "repository": "/private/tmp/prometheus-dart-clean.qZKfyU/repo-history",
+    "commit": "9c341c22c158e3c685860ab3b60e649d29367f87",
+    "historyRetained": true,
+    "trackedSourceCleanBeforeGates": true,
+    "trackedSourceCleanAfterGates": true,
+    "postGateGeneratedEvidenceChanges": 10
+  },
+  "toolchain": {
+    "platform": "macOS arm64",
+    "node": "24.16.0",
+    "pnpm": "10.33.0",
+    "flutter": "3.44.8 stable",
+    "flutterRevision": "058e0af2c2b57e369d905a03ac9748b0ebf543c6",
+    "dart": "3.12.2",
+    "flutterArchiveSha256": "c3d6fe95078f7001d947a31d42527de91d5bfe62e4cf444a1493a2e8f1fb199d"
+  },
+  "dependencyResolution": {
+    "flutter_riverpod": ">=3.3.2 <3.4.0",
+    "riverpod_annotation": ">=4.0.3 <4.0.5",
+    "riverpod_generator": "4.0.4",
+    "build_runner": "2.15.1",
+    "reason": "The newer Riverpod/build_runner line does not resolve against Flutter 3.44.8 stable's analyzer, meta, and test pins."
+  },
+  "gates": {
+    "pnpmFrozenInstall": "pass",
+    "dartFrozenBootstrap": "pass",
+    "dartGenerationDeterminism": "pass",
+    "dartFormat": "pass",
+    "dartAnalyze": "pass",
+    "dartCi": "pass-70-tests",
+    "dartExamples": "pass-no-example-packages",
+    "dartPackageDryRun": "pass-0-warnings-84KB",
+    "rootValidate": "pass",
+    "rootLint": "pass",
+    "rootTypecheck": "pass",
+    "rootBuild": "pass",
+    "rootTests": "pass",
+    "rootSkills": "pass",
+    "rootSecurity": "pass-0-blocking",
+    "fullBdd": "pass-68-scenarios-335-steps",
+    "targetedNodeTests": "pass-4-of-4",
+    "targetedBdd": "pass-7-scenarios-22-steps",
+    "openSpecStrict": "pass",
+    "cargo": "not-applicable"
+  },
+  "visualEvidence": {
+    "inspected": true,
+    "scope": "Flutter host widget harness only; not application, device, or accessibility certification",
+    "initialSha256": "cf8cafe9e6ef51f7138f74f73ae732d7286d695b9c3bad1afb46a8730f648e3a",
+    "optimisticSha256": "e1e6ea7a4e4f4fe9339111f2a4ec1a1bbe9d81ca3c3a993b60bf58cb8ca8aac3"
+  },
+  "receipts": {
+    "dartReportSha256": "4b37d80ae377ebad1b971f1d9c813e0c7c04ef876f75328c5e103289ed3a944e",
+    "cucumberReportSha256": "1ad2416a86187f7268b1351593d5031603cf66805bd5a1cdce727645e56b3157"
+  }
+}

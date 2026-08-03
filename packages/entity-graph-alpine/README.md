@@ -8,8 +8,10 @@ Alpine's reactive system via `Alpine.reactive()`.
 ## Installation
 
 ```bash
-pnpm add @prometheus-ags/entity-graph-alpine alpinejs
+pnpm add @prometheus-ags/entity-graph-core @prometheus-ags/entity-graph-alpine alpinejs
 ```
+
+`@prometheus-ags/entity-graph-core` is a required peer: install it explicitly so the application owns the one compatible graph instance. The Alpine binding must not install a private core copy. See the [binding singleton contract](../../release/binding-singleton-contract.md).
 
 ## Quick Start
 
@@ -125,7 +127,7 @@ Alpine.plugin(
 
 1. The plugin calls `Alpine.magic(name, factory)` for each magic.
 2. Each factory creates an internal reactive cell via `Alpine.reactive({})`.
-3. The cell subscribes to `useGraphStore` from `@prometheus-ags/entity-graph-core`
+3. The cell subscribes to `graphStore` from `@prometheus-ags/entity-graph-core`
    using Zustand's `subscribe` with a selector. When the graph slice changes,
    the cell properties are updated — Alpine's reactivity system detects the
    mutation and schedules re-renders for any template expression that read them.
@@ -136,7 +138,7 @@ Alpine.plugin(
 ## Prerequisites
 
 - `alpinejs >= 3.13`
-- `@prometheus-ags/entity-graph-core` at the same version (already a dependency)
+- one compatible `@prometheus-ags/entity-graph-core` version installed by the application (required peer)
 
 Entity fetching requires at least one transport registered via
 `registerEntityTransport(type, transport)` before Alpine starts. See

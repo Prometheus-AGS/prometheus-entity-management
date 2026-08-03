@@ -10,7 +10,6 @@
 
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -53,7 +52,7 @@
 
   /* Brand — light */
   --primary: 224 78 40;
-  --primary-foreground: 255 255 255;
+  --primary-foreground: 11 15 20;
   --secondary: 17 24 39;
   --secondary-foreground: 255 255 255;
   --accent: 242 214 207;

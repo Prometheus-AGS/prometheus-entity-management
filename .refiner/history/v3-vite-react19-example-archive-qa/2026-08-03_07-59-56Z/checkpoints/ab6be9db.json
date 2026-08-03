@@ -1,0 +1,31 @@
+{
+  "refinement_id": "31a632be-4a57-4ea5-a22b-7c752cff1731",
+  "artifact_name": "v3-vite-react19-example-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-03T07:54:23Z",
+  "updated_at": "2026-08-03T07:54:23Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Re-evaluate the React archive constraints after the first adversarial BLOCK.",
+    "Distinguish packet omissions from observed implementation defects using direct evidence."
+  ],
+  "constraints": [
+    {"id": "acceptance-direct-evidence", "severity": "blocking", "status": "satisfied"},
+    {"id": "clean-and-packed-boundaries-distinct", "severity": "blocking", "status": "satisfied"},
+    {"id": "scenario-surface-complete", "severity": "blocking", "status": "satisfied"},
+    {"id": "visual-and-hash-integrity", "severity": "blocking", "status": "satisfied"},
+    {"id": "ledgers-and-evidence-synchronized", "severity": "blocking", "status": "satisfied"},
+    {"id": "limits-and-broader-blockers-explicit", "severity": "blocking", "status": "satisfied"},
+    {"id": "no-publication-overclaim", "severity": "blocking", "status": "satisfied"}
+  ],
+  "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {"iteration": 1, "phases_completed": ["specify", "plan", "execute", "reflect", "persist"], "constraints_satisfied": 7, "constraints_total": 7, "decision": "terminate", "timestamp": "2026-08-03T07:54:23Z"}
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [],
+  "prior_cycle_id": "f0185915-054a-41d6-af2b-02963ae2cb27"
+}

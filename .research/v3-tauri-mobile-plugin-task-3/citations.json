@@ -1,0 +1,11 @@
+{
+  "style": "APA",
+  "claims": [
+    {"claim": "Frontend mockIPC cannot certify Rust command execution.", "sources": ["tauri-mocking"]},
+    {"claim": "Capability denial must be tested at runtime authority, where denied commands are not invoked.", "sources": ["tauri-runtime-authority", "tauri-capabilities"]},
+    {"claim": "Desktop host tests can dispatch real InvokeRequest values through a registered plugin under MockRuntime.", "sources": ["tauri-test-source"]},
+    {"claim": "Mobile certification must cross PluginHandle into annotated Kotlin or Swift code.", "sources": ["tauri-mobile"]},
+    {"claim": "Specta rc.24/rc.25 cannot satisfy the repository's Rust 1.88 minimum because it uses standard-library APIs stabilized later.", "sources": ["rust-1-95-release", "local-plan"]},
+    {"claim": "Stable release remains blocked without mobile runtime artifacts.", "sources": ["local-plan", "tauri-mobile"]}
+  ]
+}
