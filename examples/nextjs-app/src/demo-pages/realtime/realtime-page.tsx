@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { RealtimeManager, useGraphDevTools } from "@prometheus-ags/prometheus-entity-management";
+import { useGraphDevTools } from "@prometheus-ags/prometheus-entity-management";
 import type {
   AdapterStatus,
   ChangeSet,
@@ -122,9 +122,9 @@ export function RealtimePage() {
   const [intervalMs, setIntervalMs] = useState(2000);
   const feedIdRef = useRef(0);
 
-  const managerRef = useRef<RealtimeManager | null>(null);
   const adapterRef = useRef<ReturnType<typeof createMockRealtimeAdapter> | null>(null);
   const unregisterRef = useRef<UnsubscribeFn | null>(null);
+  const shouldRunRef = useRef(false);
 
   const devTools = useGraphDevTools();
 
@@ -144,42 +144,33 @@ export function RealtimePage() {
     },
   });
 
-  // Create the RealtimeManager once. No adapter here — the second effect owns that.
+  // Replace the adapter whenever its cadence or provider-owned graph changes.
   useEffect(() => {
-    managerRef.current = scopedManager;
-
-    return () => {
-      adapterRef.current?.stop();
-      unregisterRef.current?.();
-    };
-  }, [scopedManager]);
-
-  // Create/replace the adapter whenever intervalMs changes (runs on mount too).
-  // React runs effects in declaration order, so managerRef is always populated here.
-  useEffect(() => {
-    const manager = managerRef.current;
-    if (!manager) return;
-
-    const prevAdapter = adapterRef.current;
-    const wasRunning = prevAdapter?.isRunning() ?? false;
-    prevAdapter?.stop();
-    unregisterRef.current?.();
-
     const adapter = createMockRealtimeAdapter({ intervalMs });
     adapterRef.current = adapter;
-    const unsub = manager.register(adapter, [{ type: "Task" }]);
-    unregisterRef.current = unsub;
+    const unregister = scopedManager.register(adapter, [{ type: "Task" }]);
+    unregisterRef.current = unregister;
 
-    if (wasRunning) adapter.start();
-  }, [intervalMs]);
+    if (shouldRunRef.current) adapter.start();
+
+    return () => {
+      shouldRunRef.current = adapter.isRunning();
+      adapter.stop();
+      unregister();
+      if (adapterRef.current === adapter) adapterRef.current = null;
+      if (unregisterRef.current === unregister) unregisterRef.current = null;
+    };
+  }, [intervalMs, scopedManager]);
 
   const handleToggle = useCallback(() => {
     const adapter = adapterRef.current;
     if (!adapter) return;
     if (adapter.isRunning()) {
+      shouldRunRef.current = false;
       adapter.stop();
       return;
     }
+    shouldRunRef.current = true;
     adapter.start();
   }, []);
 

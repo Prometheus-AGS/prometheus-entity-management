@@ -33,6 +33,30 @@ test("the production verifier creates an external app from candidate tarballs on
   assert.doesNotMatch(verifier, /workspace:\*/);
 });
 
+test("the packed verifier preserves and validates the checked-in Next.js config", () => {
+  const verifier = read("scripts/verify-nextjs-app-router-example.mjs");
+
+  assert.match(verifier, /packedNextConfig !== sourceNextConfig/);
+  assert.match(verifier, /workspaceSourceAliases\.some/);
+  assert.match(verifier, /preserved: true/);
+  assert.doesNotMatch(
+    verifier,
+    /writeFile\(\s*join\(packedAppDirectory, "next\.config\.ts"\)/s,
+  );
+});
+
+test("scoped realtime follows provider replacement and unregisters the prior adapter", () => {
+  const hook = read(
+    "examples/nextjs-app/src/features/next-runtime/use-scoped-realtime-manager.ts",
+  );
+  const page = read("examples/nextjs-app/src/demo-pages/realtime/realtime-page.tsx");
+
+  assert.match(hook, /useMemo/);
+  assert.match(hook, /\[store, options\.flushInterval\]/);
+  assert.match(page, /\[intervalMs, scopedManager\]/);
+  assert.match(page, /unregister\(\)/);
+});
+
 test("the advertised verifier writes the implemented task-5 receipt by default", () => {
   const verifier = read("scripts/verify-nextjs-app-router-example.mjs");
 

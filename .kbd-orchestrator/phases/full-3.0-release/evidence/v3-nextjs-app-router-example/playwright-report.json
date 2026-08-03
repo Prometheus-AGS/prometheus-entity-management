@@ -64,7 +64,7 @@
     "version": "1.62.1",
     "workers": 1,
     "webServer": {
-      "command": "pnpm --dir \"/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-next-packed-2sjEeb/nextjs-consumer\" start --hostname 127.0.0.1 --port 4182",
+      "command": "pnpm --dir \"/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-next-packed-cFEXdd/nextjs-consumer\" start --hostname 127.0.0.1 --port 4182",
       "url": "http://127.0.0.1:4182/next-runtime",
       "reuseExistingServer": false,
       "timeout": 120000
@@ -93,12 +93,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 134,
+                  "duration": 152,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-03T16:00:54.603Z",
+                  "startTime": "2026-08-03T16:18:26.141Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -133,12 +133,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1055,
+                  "duration": 1166,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-03T16:00:54.776Z",
+                  "startTime": "2026-08-03T16:18:26.335Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -162,8 +162,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-08-03T16:00:53.360Z",
-    "duration": 3646.054,
+    "startTime": "2026-08-03T16:18:24.876Z",
+    "duration": 3230.9159999999997,
     "expected": 2,
     "skipped": 0,
     "unexpected": 0,

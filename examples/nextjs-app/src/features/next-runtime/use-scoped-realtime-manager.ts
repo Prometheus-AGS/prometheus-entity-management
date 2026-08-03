@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import {
   RealtimeManager,
   useGraphStoreApi,
@@ -12,7 +12,7 @@ export function useScopedRealtimeManager(options: Omit<ManagerOptions, "store">)
   const optionsRef = useRef(options);
   optionsRef.current = options;
 
-  const [manager] = useState(
+  const manager = useMemo(
     () =>
       new RealtimeManager({
         store,
@@ -20,6 +20,7 @@ export function useScopedRealtimeManager(options: Omit<ManagerOptions, "store">)
         onStatusChange: (...args) => optionsRef.current.onStatusChange?.(...args),
         onChangeReceived: (...args) => optionsRef.current.onChangeReceived?.(...args),
       }),
+    [store, options.flushInterval],
   );
 
   return manager;

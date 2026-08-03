@@ -9,18 +9,18 @@
     {
       "severity": "CRITICAL",
       "file": "scripts/verify-nextjs-app-router-example.mjs",
-      "line": 23,
-      "claim": "The advertised verifier command does not write the task-5 evidence file that the coverage ledger and release evidence claim.",
-      "evidence": "The script defaults `reportArgument` to `.../task-3-verification.json` when `--report` is omitted, while `package.json` defines `\"verify:nextjs-app-router\": \"node scripts/verify-nextjs-app-router-example.mjs\"` and `examples/coverage.json` records `.kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/task-5-verification.json` as the implemented evidence path.",
-      "suggested_fix": "Change the default report path to `task-5-verification.json`, or update the package script to pass `--report .kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/task-5-verification.json`."
+      "line": 95,
+      "claim": "The packed verifier does not certify the checked-in Next.js example configuration because it overwrites the copied app's `next.config.ts` with an empty config before typecheck/build/browser execution.",
+      "evidence": "The acceptance criteria require clean or packed-artifact consumer evidence for the `v3-nextjs-app-router-example`; the verifier copies `examples/nextjs-app` and then writes `next.config.ts` as `const nextConfig: NextConfig = {};`, so any defect in the repository's actual Next config is excluded from the release receipt.",
+      "suggested_fix": "Preserve the checked-in `next.config.ts` in the copied app, or transform only the specific workspace aliases that must be removed and assert no workspace aliases remain."
     },
     {
       "severity": "WARNING",
-      "file": "packages/entity-graph-core/src/engine.ts",
-      "line": 393,
-      "claim": "Provider-owned graph listeners and garbage collectors are started per store but have no cleanup path, so unmounted scoped graphs can remain retained by window listener closures and active GC intervals.",
-      "evidence": "The diff changes `attachGlobalListeners(storeApi)` to track stores in `focusListenerStores`, calls `restartGarbageCollector(storeApi)`, and captures `storeApi` in `revalidateAll`; React hooks call `ensureListeners(storeApi)` via a WeakSet, but neither `attachGlobalListeners` nor `ensureListeners` returns a disposer and no hook cleanup stops the store-specific collector.",
-      "suggested_fix": "Return a disposer from the listener/GC attachment path and have the provider or hook cleanup remove window listeners and call `stopGarbageCollector(storeApi)` when a scoped graph is unmounted."
+      "file": "examples/nextjs-app/src/features/next-runtime/use-scoped-realtime-manager.ts",
+      "line": 15,
+      "claim": "`useScopedRealtimeManager` keeps a manager bound to the initial provider store and will write realtime events to the wrong graph if the provider store changes.",
+      "evidence": "The hook reads `const store = useGraphStoreApi()` but creates `new RealtimeManager({ store, ... })` inside a `useState` initializer, which never reruns for a later `store` value.",
+      "suggested_fix": "Create the manager with `useMemo(() => new RealtimeManager({ store, ... }), [store])` and ensure callers unregister old adapters when the manager changes."
     }
   ],
   "sycophancy_screen": {

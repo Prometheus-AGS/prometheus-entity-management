@@ -72,6 +72,25 @@ try {
     },
   });
 
+  const sourceNextConfig = readFileSync(
+    resolve(root, "examples/nextjs-app/next.config.ts"),
+    "utf8",
+  );
+  const packedNextConfig = readFileSync(
+    join(packedAppDirectory, "next.config.ts"),
+    "utf8",
+  );
+  if (packedNextConfig !== sourceNextConfig) {
+    throw new Error("packed consumer must preserve the checked-in Next.js config");
+  }
+  const workspaceSourceAliases = [
+    /packages\/entity-graph-(?:core|react)\/src\//,
+    /@prometheus-ags\/(?:entity-graph-core|prometheus-entity-management)["']\s*:\s*["'][^"']*\/src\//,
+  ];
+  if (workspaceSourceAliases.some((pattern) => pattern.test(packedNextConfig))) {
+    throw new Error("packed Next.js config contains a workspace source alias");
+  }
+
   const sourceManifest = readJson("examples/nextjs-app/package.json");
   const rootManifest = readJson("package.json");
   const consumerManifest = {
@@ -92,11 +111,6 @@ try {
     join(packedAppDirectory, "package.json"),
     `${JSON.stringify(consumerManifest, null, 2)}\n`,
   );
-  await writeFile(
-    join(packedAppDirectory, "next.config.ts"),
-    `import type { NextConfig } from "next";\n\nconst nextConfig: NextConfig = {};\n\nexport default nextConfig;\n`,
-  );
-
   run(
     "packed-consumer-install",
     "pnpm",
@@ -181,6 +195,11 @@ try {
       build: "pass",
       server: "next-start",
       workspaceLinksPresent: false,
+      nextConfig: {
+        preserved: true,
+        workspaceSourceAliasesPresent: false,
+        sha256: sha256Text(packedNextConfig),
+      },
     },
     browser: {
       status: "pass",
@@ -248,6 +267,10 @@ function readJson(path) {
 
 function sha256(path) {
   return createHash("sha256").update(readFileSync(path)).digest("hex");
+}
+
+function sha256Text(value) {
+  return createHash("sha256").update(value).digest("hex");
 }
 
 function walk(path) {
