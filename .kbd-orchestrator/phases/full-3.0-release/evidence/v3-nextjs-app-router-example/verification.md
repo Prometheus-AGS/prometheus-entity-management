@@ -1,7 +1,7 @@
 # Verification — `v3-nextjs-app-router-example`
 
 Date: 2026-08-03
-Implementation source through review corrections: `499ef73`
+Implementation source through review corrections: `996750f`
 Verdict: **PASS — IMPLEMENTATION EVIDENCE COMPLETE; QA/ARCHIVE PENDING**
 
 ## Acceptance matrix
@@ -21,17 +21,17 @@ Verdict: **PASS — IMPLEMENTATION EVIDENCE COMPLETE; QA/ARCHIVE PENDING**
 
 - `task-5-verification.json` — command-by-command packed consumer and browser
   receipt; SHA-256
-  `8c7878519e71964d17aca7edd7723f2808a99b116accd5255c207ad3093a7d3e`.
+  `569b6d8e2d6687478167299ca62a90f03c6e3b7d648925e764d7f67f76c4f62c`.
 - `browser-evidence.json` — scenario proof and accessibility receipt; SHA-256
-  `a5b0721a6eaff427b2425cd0d8efdf005235a67b0afeda676d284bd7580da664`.
+  `61e6850611de77cffa75fe9ee97630ae1be9a784db68005fb5263bb74a601978`.
 - `playwright-report.json` — 2 expected, 0 unexpected, 0 flaky; SHA-256
-  `6ab040d130b430d9d27945242d16df362b45a25a80074f8499179e23d62bbd37`.
+  `953bd98d4c798b9a8ce37f624d59ad5eca30b76b31e1585b419eb1c1f3649a3c`.
 - `task-3-nextjs-ssr-hydration.png` — retained screenshot; SHA-256
-  `c11fb1431ae5a6c20604dd4f4a7deb570146b4af9176f8bcc3b47285b0b70497`.
+  `de0e5002ed0fceacb9e6c6253aec92e2b9f8de5260274fe3604214534535d38b`.
 - Concurrent-request trace — SHA-256
-  `d95324e306cd565ed01b70045bfd2974bd5a5f15b92a53f85eca0171527677d7`.
+  `bd5ca69766797fb62e825e9b8b27838f062d0cdc971c0e91c3427204a7b38479`.
 - Hydration/mutation/realtime trace — SHA-256
-  `a6b41f75f913b8071cce6a8d72da2e4692213d7c100cb45a4452042f9f30dfca`.
+  `f01a28c19992dfe0067e83c38d32d3caf7c3d5364b2bf7087e531ac7310b10e6`.
 - `task-5-clean-gates.md` — package, OpenSpec, coverage, Changesets,
   accessibility, security, and not-applicable gate disposition.
 - `release-impact.md` — React-first lane separation, package impact, stable
@@ -74,6 +74,13 @@ the old adapter when that manager changes, and a runtime regression proves
 events write only to the replacement graph. The exact packed gate now passes
 8/8 structural tests and 16/16 focused runtime tests with the checked-in config.
 
+The next review showed that the zero-alias claim was still too narrow because
+the copied app retained source-only Vitest aliases outside `next.config.ts`.
+The packed boundary now excludes test files and their Vitest config after the
+focused source tests pass, scans all 112 remaining TypeScript, JavaScript, JSON,
+and YAML files, and fails with the exact offending paths if an alias remains.
+The fresh receipt records zero aliases and passes 9/9 structural tests.
+
 ## Unresolved limits
 
 - Chromium desktop is the only browser runtime certified here.
@@ -92,8 +99,9 @@ These limits are exclusions, not waived acceptance criteria for this change.
 ## QA boundary
 
 The latest complete adversarial review correctly blocked the pre-correction
-artifact. Artifact-refiner cycle 4 now passes after correcting its
-config-certification critical and provider-rebinding warning. A new complete
+artifact because its zero-alias scan covered only one config file.
+Artifact-refiner cycle 5 now passes after broadening that scan to all 112 copied
+command-relevant text files. A new complete
 fresh-context review remains
 mandatory before OpenSpec verification and archive; neither earlier review
 certifies the changed artifact.

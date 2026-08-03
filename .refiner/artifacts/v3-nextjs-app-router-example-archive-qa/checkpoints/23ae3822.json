@@ -1,14 +1,14 @@
 {
-  "refinement_id": "002133fd-50f7-45e4-b762-9693aa8f442b",
+  "refinement_id": "eb548fe2-93fa-4cbf-a1d7-c8e067a2c188",
   "artifact_name": "v3-nextjs-app-router-example-archive-qa",
   "artifact_type": "content",
   "content_type": "direct:content",
-  "started_at": "2026-08-03T16:21:10Z",
-  "updated_at": "2026-08-03T16:22:04Z",
+  "started_at": "2026-08-03T16:31:55Z",
+  "updated_at": "2026-08-03T16:31:55Z",
   "current_iteration": 1,
   "max_iterations": 5,
   "goals": [
-    "Correct the cycle-3 critical and warning with direct config and provider-replacement evidence.",
+    "Correct the cycle-4 incomplete-alias-scan critical with complete copied-tree evidence.",
     "Preserve the frozen React rc.1 lane and avoid publication overclaim."
   ],
   "constraints": [
@@ -30,10 +30,10 @@
       "constraints_satisfied": 8,
       "constraints_total": 8,
       "decision": "terminate",
-      "timestamp": "2026-08-03T16:22:04Z"
+      "timestamp": "2026-08-03T16:31:55Z"
     }
   ],
   "workflow_triggers": [],
   "checkpoints": [],
-  "prior_cycle_id": "07d31533-e25a-4bab-ba32-e1065c1901e2"
+  "prior_cycle_id": "002133fd-50f7-45e4-b762-9693aa8f442b"
 }

@@ -1,7 +1,7 @@
 # Release impact — `v3-nextjs-app-router-example`
 
 Date: 2026-08-03
-Implementation source through review corrections: `499ef73`
+Implementation source through review corrections: `996750f`
 Change status: implementation evidence complete; certification and archive are
 separate quality gates
 
@@ -24,6 +24,9 @@ The example's scoped realtime manager also follows provider replacement: a new
 manager is created for the new graph, the prior adapter is unregistered, and
 running intent survives adapter recreation. The packed verifier preserves the
 checked-in Next config rather than substituting an empty release-only config.
+After focused source tests run, the packed boundary excludes their files and
+Vitest config, then scans all 112 remaining command-relevant text files and
+fails if any workspace source alias remains.
 
 The checked-in Changeset requests a patch prerelease for:
 

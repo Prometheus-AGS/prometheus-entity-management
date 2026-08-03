@@ -17,7 +17,7 @@ build, started `next start`, and executed Chromium.
 
 The retained receipt records:
 
-- 8/8 structural contract tests;
+- 9/9 structural contract tests;
 - 8/8 core, 5/5 React, and 3/3 Next-focused unit tests;
 - 12 concurrent production requests with 12 unique request graph IDs;
 - zero duplicate hydration fetches and zero hydration errors;
