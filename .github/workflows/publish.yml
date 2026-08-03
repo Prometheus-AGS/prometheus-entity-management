@@ -149,6 +149,7 @@ jobs:
           name: prometheus-entity-management-rc-${{ github.sha }}
           path: .release-candidate
           if-no-files-found: error
+          include-hidden-files: true
           retention-days: 30
 
   stage:
@@ -200,4 +201,5 @@ jobs:
           name: prometheus-entity-management-rc-stage-${{ github.sha }}
           path: .release-candidate/stage-report.json
           if-no-files-found: error
+          include-hidden-files: true
           retention-days: 30
