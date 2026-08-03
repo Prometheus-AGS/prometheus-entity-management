@@ -19,6 +19,7 @@
   },
   "changesets": [
     "certify-sync-persistence",
+    "certify-vite-react19",
     "enforce-binding-singleton"
   ]
 }
