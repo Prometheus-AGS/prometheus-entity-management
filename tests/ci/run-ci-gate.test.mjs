@@ -35,9 +35,15 @@ test("the checked-in gate inventory is complete and every gate has a finite time
 });
 
 test("the aggregate test gate allows the cold multi-runtime BDD portfolio to finish", () => {
-  assert.ok(gateDefinitions.test.timeoutMs >= 30 * 60_000);
+  assert.ok(gateDefinitions.test.timeoutMs >= 45 * 60_000);
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
   assert.match(workflow, /library-and-examples:\n\s+timeout-minutes: 60/);
+  assert.match(workflow, /uses: subosito\/flutter-action@v2[\s\S]*flutter-version: "3\.44\.8"/);
+  assert.match(workflow, /uses: dtolnay\/rust-toolchain@stable/);
+
+  const releaseWorkflow = readFileSync(".github/workflows/publish.yml", "utf8");
+  assert.match(releaseWorkflow, /uses: subosito\/flutter-action@v2[\s\S]*flutter-version: "3\.44\.8"/);
+  assert.match(releaseWorkflow, /uses: dtolnay\/rust-toolchain@stable/);
 });
 
 test("timeout configuration accepts positive integers and rejects ambiguous values", () => {

@@ -157,7 +157,10 @@ Then(
     assert.ok(capability);
     assert.deepEqual(
       capability.releaseEvidence
-        .filter(({ status }: { status: string }) => status === "implemented")
+        .filter(
+          ({ ownerChange, status }: { ownerChange: string; status: string }) =>
+            ownerChange === "v3-sync-persistence-path" && status === "implemented",
+        )
         .map(({ kind, command }: { kind: string; command: string }) => [kind, command]),
       [
         ["integration", "pnpm run test:sync-persistence"],

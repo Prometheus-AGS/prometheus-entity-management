@@ -229,6 +229,19 @@ test("the mobile certification host pins the known-good stable Rust toolchain", 
   assert.match(toolchain, /profile\s*=\s*"minimal"/);
 });
 
+test("the cold verifier terminates its process tree before enclosing timeouts", () => {
+  const verifier = readFileSync(join(root, "scripts/verify-tauri-mobile-plugin.mjs"), "utf8");
+  const steps = readFileSync(join(root, "tests/steps/v3-tauri-mobile-plugin.steps.ts"), "utf8");
+
+  assert.match(verifier, /const COMMAND_TIMEOUT_MS = 15 \* 60 \* 1_000/);
+  assert.match(verifier, /detached: process\.platform !== "win32"/);
+  assert.match(verifier, /process\.kill\(-child\.pid, signal\)/);
+  assert.match(verifier, /process\.once\("SIGTERM", terminateWithParent\)/);
+  assert.match(steps, /setDefaultTimeout\(30 \* 60 \* 1_000\)/);
+  assert.match(steps, /timeout: 25 \* 60 \* 1_000/);
+  assert.match(steps, /let reportError: unknown/);
+});
+
 test("the iOS Swift product matches the Cargo package name used by Tauri's linker", () => {
   const cargoManifest = readFileSync(
     join(root, "packages/entity-graph-tauri/rust-plugin/Cargo.toml"),

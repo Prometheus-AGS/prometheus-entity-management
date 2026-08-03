@@ -170,7 +170,7 @@ Then("every CI gate has a finite timeout", function () {
     assert.ok(definition.timeoutMs > 0, name);
   }
   assert.ok(
-    gateDefinitions.test.timeoutMs >= 30 * 60_000,
+    gateDefinitions.test.timeoutMs >= 45 * 60_000,
     "the aggregate test gate must outlive the cold multi-runtime BDD portfolio",
   );
 });

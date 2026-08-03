@@ -1,12 +1,13 @@
-import { execFile } from "node:child_process";
+import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
 import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { promisify } from "node:util";
 
-const execFileAsync = promisify(execFile);
+const COMMAND_TIMEOUT_MS = 15 * 60 * 1_000;
+const MAX_BUFFER_BYTES = 30 * 1024 * 1024;
+const TERMINATION_GRACE_MS = 2_000;
 const workspaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const packageDirectory = join(workspaceRoot, "packages/entity-graph-tauri");
 const fixtureDirectory = join(workspaceRoot, "tests/fixtures/tauri-plugin-host");
@@ -224,22 +225,122 @@ function option(name) {
 }
 
 async function run(command, args, options = {}) {
-  const result = await execFileAsync(command, args, {
-    cwd: options.cwd ?? workspaceRoot,
-    env: {
-      ...process.env,
-      FORCE_COLOR: "0",
-      CARGO_NET_OFFLINE: "true",
-      CARGO_BUILD_BUILD_DIR: cargoBuildDirectory,
-      ...options.env,
-    },
-    encoding: "utf8",
-    maxBuffer: 30 * 1024 * 1024,
-    timeout: 10 * 60 * 1_000,
+  const result = await new Promise((resolveResult, rejectResult) => {
+    const child = spawn(command, args, {
+      cwd: options.cwd ?? workspaceRoot,
+      detached: process.platform !== "win32",
+      env: {
+        ...process.env,
+        FORCE_COLOR: "0",
+        CARGO_NET_OFFLINE: "true",
+        CARGO_BUILD_BUILD_DIR: cargoBuildDirectory,
+        ...options.env,
+      },
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    let stdout = "";
+    let stderr = "";
+    let outputBytes = 0;
+    let timedOut = false;
+    let outputExceeded = false;
+    let parentTerminated = false;
+    let killTimer;
+
+    const terminateWithParent = () => {
+      parentTerminated = true;
+      terminateProcessTree(child, "SIGTERM");
+      killTimer = setTimeout(
+        () => terminateProcessTree(child, "SIGKILL"),
+        TERMINATION_GRACE_MS,
+      );
+      killTimer.unref();
+    };
+    process.once("SIGTERM", terminateWithParent);
+    process.once("SIGINT", terminateWithParent);
+
+    const append = (stream, chunk) => {
+      outputBytes += chunk.length;
+      if (outputBytes > MAX_BUFFER_BYTES) {
+        outputExceeded = true;
+        terminateProcessTree(child, "SIGTERM");
+        return stream;
+      }
+      return stream + chunk.toString("utf8");
+    };
+    child.stdout.on("data", (chunk) => {
+      stdout = append(stdout, chunk);
+    });
+    child.stderr.on("data", (chunk) => {
+      stderr = append(stderr, chunk);
+    });
+
+    const timeout = setTimeout(() => {
+      timedOut = true;
+      terminateProcessTree(child, "SIGTERM");
+      killTimer = setTimeout(
+        () => terminateProcessTree(child, "SIGKILL"),
+        TERMINATION_GRACE_MS,
+      );
+      killTimer.unref();
+    }, COMMAND_TIMEOUT_MS);
+
+    const cleanup = () => {
+      clearTimeout(timeout);
+      if (killTimer) clearTimeout(killTimer);
+      process.removeListener("SIGTERM", terminateWithParent);
+      process.removeListener("SIGINT", terminateWithParent);
+    };
+    const rejectCommand = (message) => {
+      const error = new Error(message);
+      error.stdout = stdout;
+      error.stderr = stderr;
+      rejectResult(error);
+    };
+
+    child.once("error", (error) => {
+      cleanup();
+      rejectResult(error);
+    });
+    child.once("close", (code, signal) => {
+      cleanup();
+      const renderedCommand = `${command} ${args.join(" ")}`;
+      if (parentTerminated) {
+        rejectCommand(`Verifier terminated while running: ${renderedCommand}`);
+        return;
+      }
+      if (timedOut) {
+        rejectCommand(`Command timed out after ${COMMAND_TIMEOUT_MS}ms: ${renderedCommand}`);
+        return;
+      }
+      if (outputExceeded) {
+        rejectCommand(`Command exceeded ${MAX_BUFFER_BYTES} output bytes: ${renderedCommand}`);
+        return;
+      }
+      if (code !== 0) {
+        rejectCommand(
+          `Command failed with code ${code ?? "null"} and signal ${signal ?? "none"}: ${renderedCommand}\n${stderr || stdout}`,
+        );
+        return;
+      }
+      resolveResult({ stdout, stderr });
+    });
   });
   process.stdout.write(result.stdout);
   process.stderr.write(result.stderr);
   return result;
+}
+
+function terminateProcessTree(child, signal) {
+  if (child.pid === undefined) return;
+  if (process.platform === "win32") {
+    child.kill(signal);
+    return;
+  }
+  try {
+    process.kill(-child.pid, signal);
+  } catch (error) {
+    if (error.code !== "ESRCH") throw error;
+  }
 }
 
 function assertOutput(result, expected) {

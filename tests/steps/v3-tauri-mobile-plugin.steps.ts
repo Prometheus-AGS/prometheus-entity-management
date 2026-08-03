@@ -38,8 +38,9 @@ const temporaryDirectory = mkdtempSync(join(tmpdir(), "tauri-plugin-bdd-"));
 const reportPath = join(temporaryDirectory, "report.json");
 const visualPath = join(temporaryDirectory, "host-contract.svg");
 let report: Report | undefined;
+let reportError: unknown;
 
-setDefaultTimeout(10 * 60 * 1_000);
+setDefaultTimeout(30 * 60 * 1_000);
 
 AfterAll(function () {
   rmSync(temporaryDirectory, { recursive: true, force: true });
@@ -47,20 +48,26 @@ AfterAll(function () {
 
 function ensureReport(): Report {
   if (report) return report;
-  execFileSync(
-    "node",
-    ["scripts/verify-tauri-mobile-plugin.mjs", "--report", reportPath, "--visual", visualPath],
-    {
-      cwd: root,
-      env: { ...process.env, FORCE_COLOR: "0" },
-      encoding: "utf8",
-      maxBuffer: 30 * 1024 * 1024,
-      stdio: ["ignore", "pipe", "pipe"],
-      timeout: 10 * 60 * 1_000,
-    },
-  );
-  report = JSON.parse(readFileSync(reportPath, "utf8")) as Report;
-  return report;
+  if (reportError) throw reportError;
+  try {
+    execFileSync(
+      "node",
+      ["scripts/verify-tauri-mobile-plugin.mjs", "--report", reportPath, "--visual", visualPath],
+      {
+        cwd: root,
+        env: { ...process.env, FORCE_COLOR: "0" },
+        encoding: "utf8",
+        maxBuffer: 30 * 1024 * 1024,
+        stdio: ["ignore", "pipe", "pipe"],
+        timeout: 25 * 60 * 1_000,
+      },
+    );
+    report = JSON.parse(readFileSync(reportPath, "utf8")) as Report;
+    return report;
+  } catch (error) {
+    reportError = error;
+    throw error;
+  }
 }
 
 Given("the v3 Tauri plugin repository is available", function () {
