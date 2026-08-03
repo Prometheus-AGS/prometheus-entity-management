@@ -102,3 +102,25 @@
 - Test design exposed that request-owned state alone was insufficient if Next
   statically prerendered the layout. The root layout now forces dynamic document
   rendering, making the per-request contract testable rather than aspirational.
+
+## 2026-08-03 — Next.js task 5 clean packed verification
+
+- Added the Next example's missing direct Vitest development dependency after
+  the clean external consumer exposed its accidental reliance on the root
+  workspace installation.
+- Corrected an observed light-theme WCAG contrast failure by darkening the
+  Prometheus ember token; the clean browser rerun reported zero serious or
+  critical axe findings.
+- Passed the tarball-only production verifier with 5 structural checks, 12
+  focused units, core and React `3.0.0-rc.1` builds/packs, external strict-peer
+  install, typecheck, Next.js production build, 12-request SSR isolation, and
+  both Playwright flows.
+- Promoted the Next.js showcase and SSR/browser receipts to `implemented` only
+  after checking in the JSON, screenshot, Playwright report, and trace evidence.
+- The 203-export ledger, all three TypeScript scopes, 13/13 semantic scenarios,
+  14/14 coverage regressions, strict OpenSpec, Changesets, release contract,
+  diff hygiene, and security gate all passed. Security reported zero critical,
+  high, or blocking advisories and two low advisories.
+- Dart/Melos, Cargo, Flutter, and Tauri gates were not applicable to this
+  Next.js task. Overall release coverage remains in progress with three planned
+  showcases.

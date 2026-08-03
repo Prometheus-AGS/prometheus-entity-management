@@ -9,7 +9,7 @@ The [machine-readable coverage ledger](coverage.json) is the source of truth for
 | Showcase | Planned path | Status |
 | --- | --- | --- |
 | React 19 + Vite 8 | `examples/vite-app` | Implemented (`v3-vite-react19-example`) |
-| Next.js App Router | `examples/nextjs-app` | Planned (`v3-nextjs-app-router-example`) |
+| Next.js App Router | `examples/nextjs-app` | Implemented (`v3-nextjs-app-router-example`) |
 | Agentic A2UI | `examples/agentic-a2ui` | Planned (`v3-agentic-a2ui-example`) |
 | Flutter + Riverpod + A2UI | `examples/flutter-riverpod` | Planned (`v3-flutter-riverpod-a2ui-example`) |
 | Tauri desktop + mobile | `examples/tauri-app` | Planned (`v3-tauri-universal-example`) |
@@ -33,6 +33,23 @@ for the scenario matrix, architecture, commands, loader guidance, and explicit
 evidence limits. The receipt is source-workspace browser evidence and does not
 replace packed core + React candidate verification or npm RC staging.
 
+## Implemented Next.js App Router showcase
+
+The `/next-runtime` route proves one server graph per request, structured-clone
+safe RSC hydration into one browser-owned graph, persistence across client
+navigation, reload replacement, validated Server Action mutation, and scoped
+realtime takeover. Its clean verifier builds and packs core plus React, installs
+only those tarballs into an external Next.js 16 production app, and records
+concurrent-request, browser, accessibility, screenshot, and trace evidence:
+
+```bash
+pnpm run verify:nextjs-app-router
+```
+
+See [`../release/nextjs-app-router-example.md`](../release/nextjs-app-router-example.md)
+for the ownership boundary, verification contract, evidence disposition, and
+explicit release limits.
+
 The `release.ci.hermetic-main-baseline` quality gate in [`coverage.json`](coverage.json) is implemented and proves frozen installation, dependency/advisory policy, bounded CI gates, and upgraded example build configuration. It does not certify a showcase by itself; every showcase must satisfy its own BDD, platform, and visual-evidence contract.
 
 The `release.packages.packed-module-contracts` gate is also implemented. It proves that all twelve npm tarballs have valid ESM/CommonJS runtime and declaration routes, bounded payloads, strict package-lint results, and isolated Node/TypeScript consumers. It does not exercise or certify an example application; showcase status comes from each owning change.
@@ -49,7 +66,7 @@ Run it from the repository root:
 pnpm run verify:example-coverage
 ```
 
-The `release.examples.shared-semantic-contract` quality gate proves that every stable capability and release artifact is mapped to runnable semantic evidence and that missing/stale mappings fail closed. It is a headless contract, not browser, device, accessibility, or visual evidence. A showcase remains `planned` until its owning change implements these scenarios and records real runtime and visual receipts; React 19/Vite 8 now has those separate receipts.
+The `release.examples.shared-semantic-contract` quality gate proves that every stable capability and release artifact is mapped to runnable semantic evidence and that missing/stale mappings fail closed. It is a headless contract, not browser, device, accessibility, or visual evidence. A showcase remains `planned` until its owning change implements these scenarios and records real runtime and visual receipts; React 19/Vite 8 and Next.js now have those separate receipts.
 
 ## Implemented headless sync evidence
 

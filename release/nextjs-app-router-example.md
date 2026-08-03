@@ -72,8 +72,16 @@ installs the external application, type-checks and builds it, starts
 
 ## Current evidence disposition
 
-Implementation and the verifier are present. The showcase remains `planned` in
-`examples/coverage.json` until the clean task-5 command succeeds and its packed
-production/browser artifacts are checked in and validated. This document does
-not claim that npm `next`, stable 3.0.0, external provider configuration, or the
-remaining example portfolio is complete.
+The clean task-5 command passed against an external Next.js 16 production app
+that installed only the packed core and React `3.0.0-rc.1` candidates. The
+receipt proves twelve isolated concurrent request graphs, zero hydration
+refetches or errors, route persistence, reload replacement, Server Action
+confirmation, realtime takeover, zero serious or critical axe findings, and
+hash-verified screenshot and trace artifacts. The showcase is therefore
+`implemented` in `examples/coverage.json`.
+
+The authoritative receipts are
+`task-5-verification.json`, `browser-evidence.json`, the Playwright JSON report,
+the screenshot, and both retained traces under the change evidence directory.
+This does not claim that npm `next`, stable 3.0.0, external provider
+configuration, or the remaining example portfolio is complete.

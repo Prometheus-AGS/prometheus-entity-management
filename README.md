@@ -6,7 +6,7 @@ Update a post in one screen and every list row, detail panel, and badge that rea
 
 ### 3.0 release program status
 
-The full 3.0 release is **in progress**, not yet certified or promoted to npm's `latest` tag. The authoritative [3.0 release contract](release/v3-release-contract.json) defines the complete artifact inventory, compatibility matrix, stability labels, required evidence, promotion approvals, and recovery policy. The [example coverage ledger](examples/coverage.json) records the React 19/Vite 8 showcase as implemented. The Next.js implementation and packed verification command are present, but its clean production/browser receipt is still pending; agentic A2UI, Flutter/Riverpod, and universal Tauri remain planned. A planned entry is not release evidence, and one implemented showcase is not full-release certification.
+The full 3.0 release is **in progress**, not yet certified or promoted to npm's `latest` tag. The authoritative [3.0 release contract](release/v3-release-contract.json) defines the complete artifact inventory, compatibility matrix, stability labels, required evidence, promotion approvals, and recovery policy. The [example coverage ledger](examples/coverage.json) records both the React 19/Vite 8 and Next.js App Router showcases as implemented with browser evidence; agentic A2UI, Flutter/Riverpod, and universal Tauri remain planned. A planned entry is not release evidence, and two implemented showcases are not full-release certification.
 
 Native Dart and Rust sources are included in the 3.0 inventory, while first publication to pub.dev and crates.io remains deferred until registry ownership and native release workflows are established. npm publication and the branded GitHub Pages documentation site are required release outcomes.
 
@@ -45,13 +45,14 @@ source-workspace evidence, not packed-package or npm staging evidence; it is
 the application proof used to prioritize a core + React preview RC while the
 remaining portfolio is completed.
 
-The [Next.js App Router implementation](release/nextjs-app-router-example.md)
+The [Next.js App Router showcase](release/nextjs-app-router-example.md)
 adds per-request vanilla graphs, serializable RSC hydration, a scoped React
 provider, route persistence, validated Server Action mutation, and client-only
-realtime takeover. Its focused tests and tarball-only production verifier are
-present. The coverage ledger remains planned until the clean packed command
-produces the required concurrent-request, browser, accessibility, screenshot,
-and trace receipts.
+realtime takeover. Its clean tarball-only production verifier installs packed
+core and React `3.0.0-rc.1` candidates into an external app and proves the
+concurrent-request, browser, accessibility, screenshot, and trace contract. The
+coverage ledger records it as implemented without claiming npm publication or
+completion of the remaining showcase portfolio.
 
 ### Documentation map
 
@@ -73,7 +74,7 @@ and trace receipts.
 | [release/dart-graph-riverpod.md](release/dart-graph-riverpod.md) | Canonical Dart graph, Riverpod 3, public API ledger, behavioral evidence, and exclusions |
 | [release/release-candidate-pipeline.md](release/release-candidate-pipeline.md) | Contract-derived RC manifest, rehearsal, OIDC staging boundary, and recovery |
 | [release/vite-react19-example.md](release/vite-react19-example.md) | Implemented React 19/Vite 8 scenarios, architecture, verification, and evidence limits |
-| [release/nextjs-app-router-example.md](release/nextjs-app-router-example.md) | Next.js request isolation, RSC hydration, packed verification command, and pending evidence boundary |
+| [release/nextjs-app-router-example.md](release/nextjs-app-router-example.md) | Implemented Next.js request isolation, RSC hydration, packed production verification, and browser evidence |
 | [examples/shared/README.md](examples/shared/README.md) | Deterministic shared showcase domain, semantic scenarios, and evidence boundary |
 | [release/dependency-policy.json](release/dependency-policy.json) | Machine-readable compatible-current dependency holds |
 | [security/advisory-policy.json](security/advisory-policy.json) | Critical/high production advisory dispositions |

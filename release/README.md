@@ -119,16 +119,17 @@ the application gate for a core + React preview RC while other showcases are
 finished; a new tarball-only report, immutable rehearsal, and protected npm
 approval remain required before `next` can be used from the registry.
 
-## Next.js App Router implementation
+## Implemented Next.js App Router showcase
 
 [`nextjs-app-router-example.md`](nextjs-app-router-example.md) documents the
 request-owned graph, RSC serialization, scoped React hydration, route
 persistence, Server Action, and client realtime boundaries now implemented in
-the Next.js 16 example. Its focused test surface and packed tarball-only
-production verifier are present. The coverage entry remains planned until the
-clean verifier produces and validates the browser, accessibility, screenshot,
-and trace receipts; documentation does not promote source presence into
-release evidence.
+the Next.js 16 example. Its clean packed tarball-only production verifier
+installs core and React `3.0.0-rc.1` candidates into an external application
+and validates concurrent request isolation, hydration, route persistence,
+Server Action mutation, realtime takeover, accessibility, screenshot, and
+trace receipts. The evidence-backed coverage entry is implemented; npm
+publication and the remaining showcases remain separate gates.
 
 ## Registry decision
 

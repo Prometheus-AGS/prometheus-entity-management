@@ -84,9 +84,11 @@ IDs, zero duplicate client fetches, zero hydration errors, route persistence,
 Server Action confirmation, realtime takeover, zero serious or critical axe
 findings, a screenshot, and a trace.
 
-Until that clean command writes and validates its receipt, the implementation
-exists but the showcase remains `planned` in `examples/coverage.json`. Source
-presence or focused unit success is not packed-package release evidence.
+The clean command now passes against an external production app installed only
+from packed core and React `3.0.0-rc.1` candidates. Its checked-in receipt,
+screenshot, Playwright report, and traces promote this showcase to
+`implemented` in `examples/coverage.json`; source presence or focused unit
+success alone would not have been sufficient.
 
 ## Layering
 
