@@ -183,8 +183,8 @@
       "last_task_completed": null,
       "next_task_pending": null,
       "status": "PENDING",
-      "tasks_done": 0,
-      "tasks_total": 0,
+      "tasks_done": 2,
+      "tasks_total": 6,
       "title": "v3-flutter-riverpod-a2ui-example"
     },
     {

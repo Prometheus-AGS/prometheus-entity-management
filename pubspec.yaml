@@ -6,6 +6,7 @@ environment:
 
 workspace:
   - packages/entity_graph_flutter
+  - examples/flutter-riverpod
 
 dev_dependencies:
   melos: ^8.2.2

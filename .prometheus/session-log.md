@@ -326,3 +326,26 @@
   optional native transport that does not own graph state.
 - No Flutter application code or dependency version changed in this task.
   Tasks 2–6 remain, and publication remains unauthorized.
+
+## 2026-08-03 — Flutter/Riverpod A2UI implementation boundary
+
+- Added the complete `examples/flutter-riverpod` Android/iOS application on the
+  shared Task/Project/User fixture domain and registered it in the root Pub
+  workspace.
+- Implemented one canonical application graph, generated Riverpod list/entity/
+  CRUD/mutation/realtime flows, ID-only list projections, project and assignee
+  joins, optimistic confirmation/rollback, relationship invalidation, offline
+  queue convergence, and deterministic realtime changes.
+- Added an optional `FfiEntityTransportAdapter` demonstration whose callback
+  bridge forwards I/O without owning graph state.
+- Exact-pinned official `genui 0.10.1`, adapted the shared A2UI semantic fixture
+  to GenUI's required `v0.9` wire identifier, and isolated the experimental API
+  behind an app-local renderer.
+- Added atomic untrusted-JSONL preflight plus application action policy at the
+  real agent-output, tenant, mutation, and native-transport trust boundaries.
+  Unknown components/client functions fail before surface mutation; tenant and
+  payload mismatches fail before graph mutation; archive requires approval;
+  delete is denied.
+- Scoped formatting and fatal-info/fatal-warning Dart analysis pass with no
+  issues. Tests, goldens, stable Flutter 3.44.8 resolution, Android/iOS smoke,
+  coverage promotion, docs, and publication remain explicitly unclaimed.

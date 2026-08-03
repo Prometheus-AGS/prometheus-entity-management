@@ -30,6 +30,18 @@
   `pending` at the change projection. Treat the immutable task event and exact
   next-work pointer as authoritative; do not hand-edit the projected status.
 
+## KBD task completion can diverge before after-hooks
+
+- `kbd-apply end-task` marks the OpenSpec checkbox before it commits the signed
+  task transition. If that local mutation makes runtime-authority detection
+  fail, the driver can print a completion signal while the signed task and
+  `task:after` hooks remain unchanged.
+- After every task boundary, verify the signed task status and both expected
+  after-hook records. If the signed transition is missing, commit the exact
+  typed task completion using the driver's idempotent command ID, restore the
+  incomplete change to `in-progress`, then rerun `end-task` so its idempotent
+  transition can fire the missing hooks. Never hand-edit the signed journal.
+
 ## Process inspection and secret-bearing arguments
 
 - Do not use `pgrep -fl`, `ps e`, or other full-command inspection against agent

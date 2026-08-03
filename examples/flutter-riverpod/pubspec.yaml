@@ -1,0 +1,31 @@
+name: prometheus_entity_showcase
+description: >
+  Prometheus 3.0 Flutter and Riverpod showcase for normalized entity graphs,
+  offline CRUD, realtime relationships, and policy-gated A2UI surfaces.
+publish_to: none
+version: 3.0.0
+
+environment:
+  sdk: ">=3.12.0 <4.0.0"
+  flutter: ">=3.44.0"
+
+resolution: workspace
+
+dependencies:
+  entity_graph_flutter:
+    path: ../../packages/entity_graph_flutter
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ">=3.3.2 <3.4.0"
+  genui: 0.10.1
+  riverpod_annotation: ">=4.0.3 <4.0.5"
+
+dev_dependencies:
+  build_runner: 2.15.1
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  riverpod_generator: 4.0.4
+
+flutter:
+  uses-material-design: true
