@@ -349,3 +349,22 @@
 - Scoped formatting and fatal-info/fatal-warning Dart analysis pass with no
   issues. Tests, goldens, stable Flutter 3.44.8 resolution, Android/iOS smoke,
   coverage promotion, docs, and publication remain explicitly unclaimed.
+
+## 2026-08-03 — Flutter task-3 test and mobile-smoke surface
+
+- Added 25 passing Flutter host tests covering atomic A2UI validation, policy
+  decisions, official GenUI rendering/actions, the normalized graph, generated
+  Riverpod CRUD/mutations, optimistic confirmation and rollback, offline queue
+  convergence, realtime updates, relationships, FFI forwarding, lifecycle
+  states, accessibility semantics, and complete widget action flows.
+- Added and inspected three deterministic phone/tablet goldens, with their
+  SHA-256 receipts recorded in task evidence.
+- Added one shared integration test plus manually dispatched Android API 35 and
+  iOS simulator workflow lanes pinned to Flutter 3.44.8 stable. Static workflow
+  validation passes; native execution remains task 5 and is not claimed here.
+- The tests found and corrected three runtime defects: duplicate GenUI button
+  labels, auto-disposed CRUD/mutation notifiers losing their `Ref` during async
+  operations, and seeded relationship rows lacking invalidatable entity state.
+- Fatal Dart analysis and the complete 25-test app suite pass. Coverage ledger
+  promotion, stable-toolchain/device certification, and publication remain
+  pending.

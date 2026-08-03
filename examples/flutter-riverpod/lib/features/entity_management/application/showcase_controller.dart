@@ -113,33 +113,30 @@ final class ShowcaseController extends _$ShowcaseController {
     );
   }
 
-  Future<void> createTask() => _execute(
-    'Task created and normalized.',
-    () async {
-      final optimisticId = 'optimistic-mobile';
-      final data = <String, Object?>{
-        'id': optimisticId,
-        'tenantId': demoTenantId,
-        'projectId': 'project-atlas',
-        'assigneeId': 'user-grace',
-        'title': 'Review mobile entity graph',
-        'status': 'todo',
-        'priority': 'medium',
-        'version': 0,
-        'updatedAt': '2030-01-15T12:00:00.000Z',
-        'pendingSync': !state.repositoryStatus.isOnline,
-      };
-      final created = await ref
-          .read(
-            entityMutationsProvider<DemoTask>(
-              type: demoTaskType,
-              toGraph: demoTaskToGraph,
-            ).notifier,
-          )
-          .create(data, optimisticId: optimisticId, queryKey: demoTaskListKey);
-      state = state.copyWith(selectedTaskId: created.id);
-    },
-  );
+  Future<void> createTask() =>
+      _execute('Task created and normalized.', () async {
+        final optimisticId = 'optimistic-mobile';
+        final data = <String, Object?>{
+          'id': optimisticId,
+          'tenantId': demoTenantId,
+          'projectId': 'project-atlas',
+          'assigneeId': 'user-grace',
+          'title': 'Review mobile entity graph',
+          'status': 'todo',
+          'priority': 'medium',
+          'version': 0,
+          'updatedAt': '2030-01-15T12:00:00.000Z',
+          'pendingSync': !state.repositoryStatus.isOnline,
+        };
+        final created = await _withMutations(
+          (controller) => controller.create(
+            data,
+            optimisticId: optimisticId,
+            queryKey: demoTaskListKey,
+          ),
+        );
+        state = state.copyWith(selectedTaskId: created.id);
+      });
 
   Future<void> renameSelectedTask() async {
     final id = state.selectedTaskId;
@@ -148,11 +145,12 @@ final class ShowcaseController extends _$ShowcaseController {
       final graph = ref.read(entityGraphProvider);
       final current = graph.readEntity(demoTaskType, id);
       if (current == null) return;
-      final controller = _crud(id);
-      controller.edit('tenantId', demoTenantId);
-      controller.edit('title', '${current['title']} · mobile');
-      controller.applyOptimistic();
-      await controller.save();
+      await _withCrud(id, (controller) async {
+        controller.edit('tenantId', demoTenantId);
+        controller.edit('title', '${current['title']} · mobile');
+        controller.applyOptimistic();
+        await controller.save();
+      });
     });
   }
 
@@ -169,11 +167,12 @@ final class ShowcaseController extends _$ShowcaseController {
         final newProject = oldProject == 'project-atlas'
             ? 'project-hermes'
             : 'project-atlas';
-        final controller = _crud(id);
-        controller.edit('tenantId', demoTenantId);
-        controller.edit('projectId', newProject);
-        controller.applyOptimistic();
-        await controller.save();
+        await _withCrud(id, (controller) async {
+          controller.edit('tenantId', demoTenantId);
+          controller.edit('projectId', newProject);
+          controller.applyOptimistic();
+          await controller.save();
+        });
         graph.setListStale('tasks:$oldProject', stale: true);
         graph.setListStale('tasks:$newProject', stale: true);
         graph.invalidateEntity(demoProjectType, id: oldProject);
@@ -189,11 +188,12 @@ final class ShowcaseController extends _$ShowcaseController {
     await _execute(
       'The deterministic rejection restored canonical state and patches.',
       () async {
-        final controller = _crud(id);
-        controller.edit('tenantId', demoTenantId);
-        controller.edit('priority', 'blocked');
-        controller.applyOptimistic();
-        await controller.save();
+        await _withCrud(id, (controller) async {
+          controller.edit('tenantId', demoTenantId);
+          controller.edit('priority', 'blocked');
+          controller.applyOptimistic();
+          await controller.save();
+        });
       },
       expectedFailure: true,
     );
@@ -203,7 +203,7 @@ final class ShowcaseController extends _$ShowcaseController {
     final id = state.selectedTaskId;
     if (id == null) return;
     await _execute('Task deleted from the graph and all ID lists.', () async {
-      await _crud(id).deleteEntity();
+      await _withCrud(id, (controller) => controller.deleteEntity());
       state = state.copyWith(selectedTaskId: null);
     });
   }
@@ -250,11 +250,12 @@ final class ShowcaseController extends _$ShowcaseController {
       'Human-approved archive updated the canonical task.',
       () async {
         final taskId = approval.decision.intent.context['taskId']! as String;
-        final controller = _crud(taskId);
-        controller.edit('tenantId', demoTenantId);
-        controller.edit('status', 'archived');
-        controller.applyOptimistic();
-        await controller.save();
+        await _withCrud(taskId, (controller) async {
+          controller.edit('tenantId', demoTenantId);
+          controller.edit('status', 'archived');
+          controller.applyOptimistic();
+          await controller.save();
+        });
       },
     );
   }
@@ -266,24 +267,49 @@ final class ShowcaseController extends _$ShowcaseController {
     );
   }
 
-  EntityCrud<DemoTask> _crud(String id) => ref.read(
-    entityCrudProvider<DemoTask>(
+  Future<T> _withCrud<T>(
+    String id,
+    Future<T> Function(EntityCrud<DemoTask> controller) operation,
+  ) async {
+    final provider = entityCrudProvider<DemoTask>(
       type: demoTaskType,
       id: id,
       toGraph: demoTaskToGraph,
-    ).notifier,
-  );
+    );
+    final subscription = ref.listen(provider, (_, _) {});
+    try {
+      return await operation(ref.read(provider.notifier));
+    } finally {
+      subscription.close();
+    }
+  }
+
+  Future<T> _withMutations<T>(
+    Future<T> Function(EntityMutations<DemoTask> controller) operation,
+  ) async {
+    final provider = entityMutationsProvider<DemoTask>(
+      type: demoTaskType,
+      toGraph: demoTaskToGraph,
+    );
+    final subscription = ref.listen(provider, (_, _) {});
+    try {
+      return await operation(ref.read(provider.notifier));
+    } finally {
+      subscription.close();
+    }
+  }
 
   Future<void> _updateTaskFromAgent(A2uiPolicyDecision decision) => _execute(
     'Allowlisted A2UI update reached list and detail projections.',
     () async {
       final context = decision.intent.context;
       final taskId = context['taskId']! as String;
-      final controller = _crud(taskId);
-      controller.edit('tenantId', demoTenantId);
-      controller.edit('status', context['status']);
-      controller.applyOptimistic();
-      await controller.save();
+      await _withCrud(taskId, (controller) async {
+        controller.edit('tenantId', demoTenantId);
+        controller.edit('status', context['status']);
+        controller.applyOptimistic();
+        await controller.save();
+      });
       state = state.copyWith(selectedTaskId: taskId);
     },
   );

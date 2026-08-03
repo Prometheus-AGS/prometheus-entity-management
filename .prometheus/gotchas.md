@@ -48,3 +48,17 @@
   runtimes. Their command lines can contain connector credentials. Query a
   specific launchd plist key with `plutil -extract` when only a configured path
   is needed, and never print the key file contents.
+
+## Riverpod operation and graph-invalidation lifetimes
+
+- Reading an auto-disposed generated notifier does not keep it alive across an
+  async transport gap. An application controller that orchestrates a CRUD or
+  mutation notifier must retain a non-weak `ref.listen` subscription through
+  the awaited operation and close it afterward; otherwise the notifier can lose
+  its `Ref` before confirmation or rollback.
+- `EntityGraph.invalidateEntity` only changes an existing `EntityState`.
+  Deterministically seeded transport rows must be marked fetched (or otherwise
+  assigned state) before relationship invalidation can make them stale.
+- In official GenUI component trees, a Text component referenced as a Button's
+  child must not also appear as a sibling in the parent Column; doing both
+  renders the action label twice.

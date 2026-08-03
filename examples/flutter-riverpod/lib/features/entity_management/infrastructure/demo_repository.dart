@@ -132,18 +132,27 @@ final class DemoRepository {
           .map((task) => (id: task.id, data: demoTaskToGraph(task)))
           .toList(),
     );
+    for (final id in _tasks.keys) {
+      graph.setEntityFetched(demoTaskType, id);
+    }
     graph.upsertEntities(
       demoProjectType,
       _projects.values
           .map((project) => (id: project.id, data: demoProjectToGraph(project)))
           .toList(),
     );
+    for (final id in _projects.keys) {
+      graph.setEntityFetched(demoProjectType, id);
+    }
     graph.upsertEntities(
       demoUserType,
       _users.values
           .map((user) => (id: user.id, data: demoUserToGraph(user)))
           .toList(),
     );
+    for (final id in _users.keys) {
+      graph.setEntityFetched(demoUserType, id);
+    }
     final todoIds =
         _tasks.values
             .where((task) => task.status == 'todo')

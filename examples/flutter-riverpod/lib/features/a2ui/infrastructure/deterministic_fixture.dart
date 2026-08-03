@@ -32,11 +32,8 @@ final String sharedTaskReviewFixture = [
             'heading',
             'summary',
             'update-button',
-            'update-label',
             'archive-button',
-            'archive-label',
             'delete-button',
-            'delete-label',
           ],
         },
         {
