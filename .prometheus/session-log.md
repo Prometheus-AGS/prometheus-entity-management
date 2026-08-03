@@ -48,3 +48,13 @@
   `v3-vite-react19-example` was archived on 2026-08-03. npm publication remains
   unauthorized; immutable source, aggregate CI, protected staging, and registry
   verification remain downstream.
+- Froze the certified React RC source and PR at `c06ffe0`, then created the
+  isolated `codex/full-3.0-continue` worktree so continued 3.0 development
+  cannot move the React candidate SHA.
+- Recorded KBD plan revision 4 with `v3-nextjs-app-router-example` as the exact
+  next work and registered its complete six-task surface through the enrolled
+  service signer before starting task 1.
+- Confirmed all four Next.js prerequisites from their archived 6/6 OpenSpec
+  task surfaces and merged strict-valid specifications. The signed legacy
+  import still projects those historical changes as pending; direct archive
+  evidence, not that stale projection, is the dependency-readiness authority.

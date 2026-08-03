@@ -13,3 +13,14 @@
   runtime correctly derives change completion from all *registered* tasks; lazy
   one-at-a-time registration can therefore transiently report a change complete
   when later backend tasks have not been registered yet.
+- In runtime revision 39, registering and transitioning a task preserved the
+  task event but reset `v3-nextjs-app-router-example` from `in_progress` to
+  `pending` at the change projection. Treat the immutable task event and exact
+  next-work pointer as authoritative; do not hand-edit the projected status.
+
+## Process inspection and secret-bearing arguments
+
+- Do not use `pgrep -fl`, `ps e`, or other full-command inspection against agent
+  runtimes. Their command lines can contain connector credentials. Query a
+  specific launchd plist key with `plutil -extract` when only a configured path
+  is needed, and never print the key file contents.
