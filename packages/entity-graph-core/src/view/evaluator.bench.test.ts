@@ -28,6 +28,7 @@ function makeRows(n: number): { ids: string[]; get: (id: string) => Record<strin
 
 const filter: FilterSpec = [{ field: "status", op: "eq", value: "open" }];
 const sort: SortSpec = [{ field: "n", direction: "asc" }];
+const ciSchedulingMultiplier = process.env.CI === "true" ? 2 : 1;
 
 describe("view evaluator scale (C7 baseline)", () => {
   it("filters + sorts 1k rows correctly and quickly", () => {
@@ -36,8 +37,7 @@ describe("view evaluator scale (C7 baseline)", () => {
     const out = applyView(ids, get, filter, sort);
     const ms = performance.now() - t0;
     expect(out.length).toBe(Math.ceil(1000 / 3)); // every 3rd row is "open"
-    // Generous CI-safe budget; documents the ceiling, not a hard SLA.
-    expect(ms).toBeLessThan(50);
+    expect(ms).toBeLessThan(50 * ciSchedulingMultiplier);
   });
 
   it("filters + sorts 10k rows within the documented ceiling", () => {
@@ -46,9 +46,7 @@ describe("view evaluator scale (C7 baseline)", () => {
     const out = applyView(ids, get, filter, sort);
     const ms = performance.now() - t0;
     expect(out.length).toBe(Math.ceil(10000 / 3));
-    // Shared CI runners execute this alongside the 100k incremental proof.
-    // Keep the documented local ceiling while allowing scheduling contention.
-    expect(ms).toBeLessThan(process.env.CI === "true" ? 500 : 250);
+    expect(ms).toBeLessThan(250 * ciSchedulingMultiplier);
   });
 
   it("produces a stable sort order (deterministic)", () => {

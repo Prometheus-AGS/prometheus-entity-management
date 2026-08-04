@@ -4,8 +4,9 @@ Date: 2026-08-04
 
 ## Symptom
 
-The Node 22 CI matrix leg failed the 10k evaluator scale assertion after a
-correct result took 306 ms against the documented 250 ms ceiling.
+Two Node 22 CI matrix runs failed evaluator scale assertions despite correct
+results: the 10k case took 306 ms against its 250 ms ceiling, then the 1k case
+took 59.7 ms against its 50 ms ceiling.
 
 ## Root cause
 
@@ -17,10 +18,10 @@ time.
 
 ## Fix
 
-Retain the documented 250 ms ceiling for focused/local execution and allow a
-500 ms CI ceiling for scheduling contention. The result-size correctness
-assertion remains unchanged, and the CI ceiling still detects material scale
-regressions.
+Retain the documented 50 ms and 250 ms ceilings for focused/local execution and
+apply an explicit 2× multiplier only when `CI` is exactly `true`. The result-size
+correctness assertions remain unchanged, and the CI ceilings still detect
+material scale regressions.
 
 ## Prevention
 

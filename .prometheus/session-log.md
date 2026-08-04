@@ -545,5 +545,6 @@
   behavior or security boundary changed in either follow-up.
 - A subsequent Node 22 runner exposed contention in the 10k wall-clock scale
   assertion (306 ms versus 250 ms) while the parallel 100k proof occupied the
-  same suite. Preserved the 250 ms focused/local ceiling and added a 500 ms
-  CI-only scheduling allowance.
+  same suite. The next run reproduced the same issue at 1k (59.7 ms versus 50
+  ms). Preserved both focused/local ceilings and applied an explicit 2×
+  scheduling allowance only when `CI` is exactly `true`.
