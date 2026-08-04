@@ -661,3 +661,25 @@
   the known projection reset.
 - Preserved frozen React candidate `main@1c40eaa`; npm and dist-tags remain
   unchanged.
+
+## 2026-08-04 — Flint portable contracts task-5 clean gates
+
+- Verified candidate `bcecaed160c2c16928a7dd9eac8b4fdabb6a0e1b` from a
+  detached worktree with a frozen 17-workspace pnpm install and one serialized
+  complete `CI=true pnpm run ci` pass.
+- Built the pinned Flint Realtime Fabric SDK and entity-management packages at
+  `cfc1bb2`, then passed the real-SDK graph round trip 1/1.
+- Passed the portable/external verifier against hash-bound Realtime Fabric,
+  Gate `2438892`, and Forge `2289d15` sources, strict OpenSpec validation, and
+  actionlint. No client secrets or machine-specific default paths were found.
+- Confirmed PR #10 green on Node 22, 24, and 26 plus the Tauri permissions and
+  packed-consumer job at the exact candidate SHA.
+- Recorded a verification postmortem after overlapping package-output writers
+  produced a non-reproducible partial-tarball failure. The exact focused gate
+  and serialized full CI passed without a source change.
+- Dart/Cargo/native platform builds were not relevant to the Flint-only source
+  delta and are not claimed. Remote `main` remains frozen at `1c40eaa`; npm
+  `next`, `latest`, and all registry versions remain unchanged.
+- Signed task 5 completed at revision 143 with both after-hooks green; the
+  known parent reset was restored through typed revision 144. Task 6 remains
+  pending and the Flint change remains in progress.
