@@ -543,3 +543,7 @@
   Updated it to the ledger's `implemented` status and verifier command.
 - Recorded both observed defects in `.prometheus/postmortems/`; no production
   behavior or security boundary changed in either follow-up.
+- A subsequent Node 22 runner exposed contention in the 10k wall-clock scale
+  assertion (306 ms versus 250 ms) while the parallel 100k proof occupied the
+  same suite. Preserved the 250 ms focused/local ceiling and added a 500 ms
+  CI-only scheduling allowance.
