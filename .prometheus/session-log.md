@@ -589,3 +589,27 @@
 - Preserved the frozen React `3.0.0-rc.1` source at remote `main` commit
   `1c40eaa08da210cbe3e20a77c5db211712b5c3a1`; no package or registry state
   changed.
+
+## 2026-08-04 — Flint portable contracts task-2 implementation
+
+- Removed the default test's absolute sibling paths and silent skip. Default
+  CI now executes a checked fixture pinned to Flint Realtime Fabric revision
+  `cfc1bb2bfc5db3b152967e0383aeaaf5207a4b89` through the normalized graph.
+- Added a dedicated real-SDK test and manual GitHub workflow that require an
+  immutable commit, frozen installs, built SDK artifacts, compatible exports,
+  and the expected entity-change kind. Missing or incompatible inputs fail the
+  lane.
+- Proved the negative lane exits nonzero without its required external root and
+  proved the positive lane 1/1 against a clean detached worktree at the pinned
+  revision. Portable tests passed 2/2; core typecheck, focused lint, actionlint,
+  default discovery, and diff hygiene pass.
+- Corrected an observed TypeScript include defect by naming the Node-only lane
+  as an integration test and excluding only that file from default Vitest.
+- Kept the public Flint adapter API and dependency graph unchanged. Security
+  matrix tests, Forge/Gate documentation, coverage/skills synchronization,
+  clean gates, and final QA remain tasks 3–6.
+- Signed task 2 complete at revision 134 with both after-hooks successful, then
+  restored the parent change to `in_progress` through a typed revision-135
+  transition after the known projection reset.
+- Preserved remote `main` and the frozen React RC source; npm and all registry
+  tags remain untouched.

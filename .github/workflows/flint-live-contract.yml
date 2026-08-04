@@ -1,0 +1,67 @@
+name: Flint live contract
+
+on:
+  workflow_dispatch:
+    inputs:
+      flint_ref:
+        description: Immutable flint-realtime-fabric commit SHA to verify
+        required: true
+        default: cfc1bb2bfc5db3b152967e0383aeaaf5207a4b89
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  real-sdk-round-trip:
+    name: Real Flint SDK → normalized graph
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out entity-management candidate
+        uses: actions/checkout@v6
+        with:
+          path: entity-management
+
+      - name: Check out immutable Flint SDK source
+        uses: actions/checkout@v6
+        with:
+          repository: Prometheus-AGS/flint-realtime-fabric
+          ref: ${{ inputs.flint_ref }}
+          path: flint-realtime-fabric
+
+      - name: Reject mutable or mismatched Flint refs
+        env:
+          FLINT_REF: ${{ inputs.flint_ref }}
+        run: |
+          [[ "$FLINT_REF" =~ ^[0-9a-f]{40}$ ]]
+          test "$(git -C flint-realtime-fabric rev-parse HEAD)" = "$FLINT_REF"
+
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: entity-management/package.json
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: pnpm
+          cache-dependency-path: |
+            entity-management/pnpm-lock.yaml
+            flint-realtime-fabric/pnpm-lock.yaml
+
+      - name: Install frozen workspaces
+        run: |
+          pnpm --dir entity-management install --frozen-lockfile
+          pnpm --dir flint-realtime-fabric install --frozen-lockfile
+
+      - name: Build the pinned Flint SDK packages
+        run: |
+          pnpm --dir flint-realtime-fabric \
+            --filter @prometheusags/frf-sdk \
+            --filter @prometheusags/frf-entity-management \
+            build
+
+      - name: Run the fail-closed real-SDK contract
+        env:
+          FLINT_REALTIME_FABRIC_ROOT: ${{ github.workspace }}/flint-realtime-fabric
+        run: pnpm --dir entity-management test:flint-live

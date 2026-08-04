@@ -32,7 +32,8 @@
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:flint-live": "vitest run --config vitest.flint-live.config.ts --reporter verbose"
   },
   "peerDependencies": {
     "@ag-ui/core": ">=0.0.30",

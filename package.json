@@ -46,6 +46,7 @@
     "test:dart-graph-riverpod": "node --test tests/release/v3-dart-graph-riverpod.test.mjs",
     "test:tauri-plugin": "node --test tests/release/v3-tauri-mobile-plugin.test.mjs",
     "test:release-pipeline": "node --test tests/release/v3-release-pipeline-rc.test.mjs",
+    "test:flint-live": "pnpm --filter @prometheus-ags/entity-graph-core test:flint-live",
     "test:vite-react19:unit": "pnpm --filter @prometheus-ags/prometheus-entity-management exec vitest run src/hooks/use-entity-query.test.ts src/hooks-suspense.test.tsx --reporter verbose",
     "test:vite-react19:browser": "pnpm --filter @prometheus-ags/entity-graph-core build && pnpm --filter @prometheus-ags/prometheus-entity-management build && pnpm --filter @prometheus-ags/entity-graph-sync build && pnpm --filter prometheus-entity-management-vite build && pnpm exec playwright test --config tests/browser/v3-vite-react19-example.playwright.config.ts",
     "test:a2a-tck": "node scripts/run-a2a-tck.mjs",
