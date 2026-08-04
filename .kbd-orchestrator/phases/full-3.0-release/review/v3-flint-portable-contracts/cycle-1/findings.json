@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".refiner/artifacts/v3-flint-portable-contracts-archive-qa/artifact_manifest.json",
+      "line": 8,
+      "claim": "The artifact manifest declares required variant files that are not added by the diff, so the archive artifact is not actually reproducible.",
+      "evidence": "The termination condition requires \"Both manifest variants exist and are non-empty,\" while the manifest points to `dist/artifact-refiner-qa.md` and `dist/validation.json` but the diff adds no `.refiner/artifacts/v3-flint-portable-contracts-archive-qa/dist/*` files.",
+      "suggested_fix": "Add the referenced `dist/artifact-refiner-qa.md` and `dist/validation.json` files with non-empty contents, or change the manifest to point at files that are present in the diff."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flint-portable-contracts/task-5-clean-gates.md",
+      "line": 5,
+      "claim": "The clean and remote gate evidence is for an older candidate SHA, not the cumulative head under review.",
+      "evidence": "`task-5-clean-gates.md` declares candidate `bcecaed160c2c16928a7dd9eac8b4fdabb6a0e1b`, while the review packet head is `5ef6ea30598839b87e1879b8b78e4f8af47526c7` and `verification.md` says implementation commits run through `5ef6ea3`; this violates the blocking `clean-and-remote-gates-current` constraint requiring green evidence at the declared candidate SHA for the cumulative change.",
+      "suggested_fix": "Rerun the clean CI, focused checks, external verifier, live lane, and remote matrix at `5ef6ea30598839b87e1879b8b78e4f8af47526c7`, then update the evidence files and URLs to that exact SHA."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

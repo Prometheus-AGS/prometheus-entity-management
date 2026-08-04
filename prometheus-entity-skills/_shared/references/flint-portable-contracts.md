@@ -54,4 +54,18 @@ pnpm run verify:flint-contracts
 
 Live compatibility uses the manual `.github/workflows/flint-live-contract.yml`
 lane with exact Realtime Fabric, Gate, and Forge revisions. Missing or drifting
-external inputs fail rather than skip.
+external inputs fail rather than skip: every supplied root must be a Git
+worktree whose `HEAD` equals the declared revision before file hashes are
+accepted. The verifier hashes both `HEAD:<path>` and the working-tree bytes, so
+a dirty pinned file cannot inherit the commit's evidence.
+
+Client-secret verification scans every repository-owned text-like file and
+generated output under `examples/`, including `.next`, `build`, `dist`,
+`target`, `.env*`, YAML, TOML, native configuration, and extensionless text.
+Binary files are detected and reported separately. Third-party `node_modules`,
+Git metadata, and `.gradle` caches are excluded explicitly and enumerated in
+the receipt rather than silently counted as inspected example code. Generic
+service-role assignments such as `SUPABASE_SERVICE_ROLE_KEY=...` are rejected,
+not only Flint-prefixed variable names. JWT values are decoded for credential
+classification, so a `service_role` payload cannot be hidden behind a
+public-looking variable name.

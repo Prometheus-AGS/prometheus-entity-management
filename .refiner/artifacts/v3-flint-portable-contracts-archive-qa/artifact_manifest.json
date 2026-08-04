@@ -1,0 +1,33 @@
+{
+  "artifact_type": "content",
+  "variants": [
+    {
+      "name": "artifact-refiner-qa",
+      "file": "dist/artifact-refiner-qa.md",
+      "format": "markdown",
+      "description": "Constraint-by-constraint QA verdict for the portable Flint realtime, security, provisioning, evidence, and React-release boundaries."
+    },
+    {
+      "name": "validation",
+      "file": "dist/validation.json",
+      "format": "json",
+      "description": "Machine-readable deterministic QA results and explicit scope limits."
+    }
+  ],
+  "preview": {
+    "required": false,
+    "runs": []
+  },
+  "validation": {
+    "preview_status": "pass",
+    "has_console_errors": false,
+    "has_request_failures": false,
+    "notes": [
+      "This is a direct content/code QA artifact; the Flint change adds no visual UI surface.",
+      "Validation uses current focused tests, exact-head serialized full CI, cross-platform path rejection, repository-owned source/generated-output secret scanning with explicit dependency/cache exclusions, immutable external-source hashes, exact-head remote matrix state, strict OpenSpec, workflow lint, registry state, and diff hygiene.",
+      "The real SDK remains an explicit fail-closed immutable-source lane; the checked fixture remains the default portable CI contract."
+    ]
+  },
+  "sizes": [],
+  "generated_at": "2026-08-04T13:56:01Z"
+}

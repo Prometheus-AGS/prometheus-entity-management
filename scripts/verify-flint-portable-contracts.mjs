@@ -1,34 +1,43 @@
 #!/usr/bin/env node
 
 import { createHash } from "node:crypto";
-import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import { mkdir, open, readFile, readdir, writeFile } from "node:fs/promises";
 import { dirname, extname, join, relative, resolve } from "node:path";
+import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 
 const workspaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const execFileAsync = promisify(execFile);
 const defaultContractPath = join(
   workspaceRoot,
   "tests/fixtures/flint/portable-contract.json",
 );
 const ignoredDirectories = new Set([
   ".git",
+  ".gradle",
   ".next",
   "build",
   "dist",
   "node_modules",
   "target",
 ]);
-const clientSourceExtensions = new Set([
-  ".dart",
-  ".html",
-  ".js",
-  ".jsx",
-  ".json",
-  ".md",
-  ".mjs",
-  ".rs",
-  ".ts",
-  ".tsx",
+const clientDependencyDirectories = new Set([".git", ".gradle", "node_modules"]);
+const generatedExampleDirectories = [".next", "build", "dist", "target"];
+const clientBinaryExtensions = new Set([
+  ".a",
+  ".bin",
+  ".gif",
+  ".icns",
+  ".ico",
+  ".jar",
+  ".jpeg",
+  ".jpg",
+  ".pdf",
+  ".png",
+  ".so",
+  ".wasm",
+  ".zip",
 ]);
 
 export async function verifyFlintPortableContracts(options = {}) {
@@ -38,7 +47,7 @@ export async function verifyFlintPortableContracts(options = {}) {
 
   const portableFiles = await repositoryContractFiles();
   await assertNoMachineSpecificPaths(portableFiles);
-  await assertLiveLaneIsExplicit();
+  await assertLiveLaneIsExplicit(contract, contractPath === defaultContractPath);
   const clientSecretScan = await scanClientExamples(
     resolve(options.examplesRoot ?? join(workspaceRoot, "examples")),
   );
@@ -99,17 +108,37 @@ export async function verifyFlintPortableContracts(options = {}) {
 }
 
 export async function scanClientExamples(examplesRoot) {
-  const files = await collectFiles(examplesRoot, (path) =>
-    clientSourceExtensions.has(extname(path)),
+  const excludedDependencyDirectories = [];
+  const files = await collectFiles(
+    examplesRoot,
+    () => true,
+    clientDependencyDirectories,
+    excludedDependencyDirectories,
   );
   const forbidden = [
     ["service-role environment variable", /FLINT_SERVICE_ROLE_KEY/],
+    [
+      "service-role environment assignment",
+      /\b(?:[A-Z0-9]+_)*SERVICE_ROLE(?:_[A-Z0-9]+)*\s*=/i,
+    ],
     ["service-role key identifier", /service[_-]?role[_-]?key/i],
     ["server-only Flint key", /flint_sk_[A-Za-z0-9_-]+/],
     ["client-bundled secret variable", /VITE_[A-Z0-9_]*(?:SECRET|PRIVATE|SERVICE)[A-Z0-9_]*/],
   ];
+  let inspectedFiles = 0;
+  let skippedBinaryFiles = 0;
   for (const path of files) {
-    const source = await readFile(path, "utf8");
+    const source = await readTextLikeFile(path);
+    if (source === null) {
+      skippedBinaryFiles += 1;
+      continue;
+    }
+    inspectedFiles += 1;
+    if (containsServiceRoleJwt(source)) {
+      throw new Error(
+        `client example exposes service-role JWT value: ${relative(workspaceRoot, path)}`,
+      );
+    }
     for (const [label, pattern] of forbidden) {
       if (pattern.test(source)) {
         throw new Error(
@@ -118,7 +147,78 @@ export async function scanClientExamples(examplesRoot) {
       }
     }
   }
-  return { status: "pass", inspectedFiles: files.length, exposedCredentials: 0 };
+  return {
+    status: "pass",
+    scope: "repository-owned-example-tree-including-generated-outputs",
+    inspectedFiles,
+    skippedBinaryFiles,
+    traversedGeneratedDirectories: generatedExampleDirectories,
+    excludedDependencyDirectories,
+    exposedCredentials: 0,
+  };
+}
+
+export function containsServiceRoleJwt(source) {
+  const candidates = source.matchAll(
+    /(?<![A-Za-z0-9_-])([A-Za-z0-9_-]+)\.([A-Za-z0-9_-]+)\.([A-Za-z0-9_-]*)(?![A-Za-z0-9_-])/g,
+  );
+  for (const candidate of candidates) {
+    try {
+      const header = JSON.parse(
+        Buffer.from(candidate[1], "base64url").toString("utf8"),
+      );
+      const payload = JSON.parse(
+        Buffer.from(candidate[2], "base64url").toString("utf8"),
+      );
+      if (
+        header &&
+        typeof header === "object" &&
+        typeof header.alg === "string" &&
+        containsServiceRoleClaim(payload)
+      ) {
+        return true;
+      }
+    } catch {
+      // A token-shaped string that is not a JSON JWT payload is not a credential claim.
+    }
+  }
+  return false;
+}
+
+function containsServiceRoleClaim(value) {
+  if (!value || typeof value !== "object") return false;
+  for (const [key, claim] of Object.entries(value)) {
+    if (["role", "roles"].includes(key.toLowerCase())) {
+      const roles = Array.isArray(claim) ? claim : [claim];
+      if (
+        roles.some(
+          (role) =>
+            typeof role === "string" &&
+            role
+              .toLowerCase()
+              .split(/[\s,;|]+/)
+              .some((token) => ["service_role", "service-role"].includes(token)),
+        )
+      ) {
+        return true;
+      }
+    }
+    if (containsServiceRoleClaim(claim)) return true;
+  }
+  return false;
+}
+
+async function readTextLikeFile(path) {
+  if (clientBinaryExtensions.has(extname(path).toLowerCase())) return null;
+  const handle = await open(path, "r");
+  try {
+    const probe = Buffer.alloc(8192);
+    const { bytesRead } = await handle.read(probe, 0, probe.length, 0);
+    if (probe.subarray(0, bytesRead).includes(0)) return null;
+  } finally {
+    await handle.close();
+  }
+  return readFile(path, "utf8");
 }
 
 function validateContract(contract) {
@@ -245,13 +345,36 @@ async function repositoryContractFiles() {
 async function assertNoMachineSpecificPaths(files) {
   for (const path of files) {
     const source = await readFile(path, "utf8");
-    if (/\/Users\/[^/]+\//.test(source) || /[A-Za-z]:\\Users\\[^\\]+\\/.test(source)) {
-      throw new Error(`machine-specific path in ${relative(workspaceRoot, path)}`);
+    const machinePath = findMachineSpecificPath(source);
+    if (machinePath) {
+      throw new Error(
+        `machine-specific path ${machinePath} in ${relative(workspaceRoot, path)}`,
+      );
     }
   }
 }
 
-async function assertLiveLaneIsExplicit() {
+export function findMachineSpecificPath(source) {
+  const workstationPatterns = [
+    /\/Users\/[^/\s"'`]+(?:\/|$)/,
+    /\/home\/[^/\s"'`]+(?:\/|$)/,
+    /\/root(?:\/|$)/,
+    /[A-Za-z]:[\\/]Users[\\/][^\\/\s"'`]+(?:[\\/]|$)/i,
+    /[A-Za-z]:[\\/](?:[^\\/\s"'`]+[\\/])*?(?:flint-realtime-fabric|flint-gate|flint-forge)(?:[\\/]|$)/i,
+    /\\\\[^\\\s"'`]+\\(?:[^\\\s"'`]+\\)*?(?:flint-realtime-fabric|flint-gate|flint-forge)(?:\\|$)/i,
+  ];
+  for (const pattern of workstationPatterns) {
+    const match = source.match(pattern);
+    if (match) return match[0];
+  }
+
+  const absoluteFlintRoot = source.match(
+    /(?:^|[\s"'`=(])((?:\/[^/\s"'`]+)+\/(?:flint-realtime-fabric|flint-gate|flint-forge)(?:\/[^\s"'`]*)?)/i,
+  );
+  return absoluteFlintRoot?.[1] ?? null;
+}
+
+async function assertLiveLaneIsExplicit(contract, requirePinnedDefaults) {
   const livePath = join(
     workspaceRoot,
     "packages/entity-graph-core/src/adapters/flint-live.integration.test.ts",
@@ -293,6 +416,14 @@ async function assertLiveLaneIsExplicit() {
     "test:flint-live",
   ]) {
     requireCondition(workflow.includes(required), `live workflow is missing ${required}`);
+  }
+  if (requirePinnedDefaults) {
+    for (const [name, source] of Object.entries(contract.externalSources)) {
+      requireCondition(
+        workflow.includes(`default: ${source.revision}`),
+        `live workflow default omits pinned ${name} revision`,
+      );
+    }
   }
   requireCondition(!/^\s*(?:push|pull_request):/m.test(workflow), "live workflow is not opt-in");
 
@@ -400,34 +531,91 @@ async function verifyExternalSources(sources, roots) {
   }
 
   let files = 0;
+  const revisions = {};
   for (const [name, source] of Object.entries(sources)) {
     const root = resolve(roots[name]);
+    let actualRevision;
+    try {
+      const { stdout } = await execFileAsync(
+        "git",
+        ["-C", root, "rev-parse", "--verify", "HEAD^{commit}"],
+        { encoding: "utf8" },
+      );
+      actualRevision = stdout.trim();
+    } catch {
+      throw new Error(
+        `external ${name} root is not a Git worktree at pinned revision ${source.revision}`,
+      );
+    }
+    if (actualRevision !== source.revision) {
+      throw new Error(
+        `external ${name} revision mismatch: expected ${source.revision}, received ${actualRevision}`,
+      );
+    }
+    revisions[name] = actualRevision;
     for (const [path, expected] of Object.entries(source.files)) {
+      let committedContents;
+      try {
+        const { stdout } = await execFileAsync(
+          "git",
+          ["-C", root, "show", `${source.revision}:${path}`],
+          { encoding: "buffer", maxBuffer: 10 * 1024 * 1024 },
+        );
+        committedContents = stdout;
+      } catch {
+        throw new Error(
+          `external ${name} pinned commit does not contain ${path}`,
+        );
+      }
+      const committedHash = createHash("sha256")
+        .update(committedContents)
+        .digest("hex");
+      if (committedHash !== expected) {
+        throw new Error(
+          `external ${name} committed source hash mismatch for ${path}: expected ${expected}, received ${committedHash}`,
+        );
+      }
       const contents = await readFile(join(root, path));
       const actual = createHash("sha256").update(contents).digest("hex");
       if (actual !== expected) {
         throw new Error(
-          `external ${name} source hash mismatch for ${path}: expected ${expected}, received ${actual}`,
+          `external ${name} working source hash mismatch for ${path}: expected ${expected}, received ${actual}`,
         );
       }
       files += 1;
     }
   }
-  return { status: "pass", disposition: "hash-bound", files };
+  return {
+    status: "pass",
+    disposition: "revision-commit-and-worktree-hash-bound",
+    revisions,
+    committedFiles: files,
+    workingFiles: files,
+    files,
+  };
 }
 
-async function collectFiles(root, include) {
+async function collectFiles(
+  root,
+  include,
+  excludedDirectoryNames = ignoredDirectories,
+  excludedDirectories = [],
+) {
   const files = [];
   async function visit(directory) {
     const entries = await readdir(directory, { withFileTypes: true });
     for (const entry of entries) {
-      if (entry.isDirectory() && ignoredDirectories.has(entry.name)) continue;
       const path = join(directory, entry.name);
+      if (entry.isDirectory() && excludedDirectoryNames.has(entry.name)) {
+        excludedDirectories.push(relative(root, path));
+        continue;
+      }
       if (entry.isDirectory()) await visit(path);
       else if (entry.isFile() && include(path)) files.push(path);
     }
   }
   await visit(root);
+  excludedDirectories.sort();
   return files.sort();
 }
 

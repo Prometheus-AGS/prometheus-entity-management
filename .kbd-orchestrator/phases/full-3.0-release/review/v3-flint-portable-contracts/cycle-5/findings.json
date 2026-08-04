@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-flint-portable-contracts.mjs",
+      "line": 27,
+      "claim": "The client-secret verifier can silently pass service-role material in common example environment files because it only scans a narrow extension allowlist.",
+      "evidence": "The plan acceptance requires \"client examples never expose service-role credentials,\" but `clientSourceExtensions` only includes `.dart/.html/.js/.jsx/.json/.md/.mjs/.rs/.ts/.tsx`, and `scanClientExamples` collects files only when `clientSourceExtensions.has(extname(path))`, so files such as `examples/**/.env`, `.env.example`, `.env.local`, `.toml`, `.yaml`, or `.yml` are excluded from the reported 297-file scan.",
+      "suggested_fix": "Scan all text-like files under `examples` by default with explicit binary/large-file exclusions, or at minimum include env/config extensions and dotfiles such as `.env`, `.env.example`, `.env.local`, `.toml`, `.yaml`, and `.yml`."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

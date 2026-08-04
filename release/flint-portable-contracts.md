@@ -103,10 +103,13 @@ pnpm run verify:flint-contracts
 ```
 
 The manual `Flint live contract` GitHub workflow checks out Realtime Fabric,
-Gate, and Forge at exact 40-character revisions, verifies the checked SHA-256
-file set, builds the real entity-management SDK, and runs the fail-closed live
-adapter test. Enabling the lane without all required repositories or with a
-mismatched source file fails; it never silently skips.
+Gate, and Forge at exact 40-character revisions. The verifier first requires
+each supplied Git worktree's `HEAD` to equal its declared pinned revision, then
+verifies both the pinned commit blobs and the working-tree bytes against the
+checked SHA-256 file set, builds the real entity-management SDK, and runs the
+fail-closed live adapter test. Enabling the lane without all required
+repositories, at a different commit, with a dirty pinned file, or with a
+mismatched committed source file fails; it never silently skips.
 
 The authoritative checked fixture is
 `tests/fixtures/flint/portable-contract.json`. Coverage and task receipts are
@@ -118,6 +121,16 @@ recorded under
 - The default lane proves the checked structural contract and security policy;
   it does not claim network availability or deploy Flint services.
 - The opt-in lane proves compatibility with its pinned revisions only.
-- No client example contains service-role credentials.
+- No repository-owned text-like client example file or generated example
+  output contains service-role credentials. The scan traverses `.next`,
+  `build`, `dist`, and `target`, includes dot-env files, YAML, TOML, native
+  configuration, and extensionless text, and explicitly identifies binary
+  artifacts. Third-party `node_modules`, Git metadata, and `.gradle` caches are
+  excluded by name and listed in the machine receipt rather than silently
+  counted as inspected example code. Generic assignments such as
+  `SUPABASE_SERVICE_ROLE_KEY=...` are rejected alongside Flint-specific server
+  keys. Token values are also inspected: a JWT whose decoded payload contains
+  a `service_role` role is rejected even when assigned to a public-looking
+  variable name.
 - No Forge adapter, hosted identity provider, deployment, npm publication, or
   full 3.0 certification is implied by this gate.

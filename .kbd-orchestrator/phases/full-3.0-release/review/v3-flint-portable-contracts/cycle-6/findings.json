@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-flint-portable-contracts.mjs",
+      "line": 276,
+      "claim": "The machine-specific path verifier only rejects macOS `/Users/...` and Windows `C:\\Users\\...` paths, so Linux home-directory absolute Flint paths can still pass default-CI evidence.",
+      "evidence": "The plan acceptance requires \"Default CI contains no machine-specific paths,\" but `assertNoMachineSpecificPaths` only tests `/\\/Users\\/[^/]+\\//` and `/[A-Za-z]:\\\\Users\\\\[^\\\\]+\\\\/`, missing common absolute developer paths such as `/home/alice/.../flint-realtime-fabric`.",
+      "suggested_fix": "Reject absolute home/workstation paths across supported environments, e.g. `/\\/home\\/[^/]+\\//`, `/\\/Users\\/[^/]+\\//`, Windows user profiles, and absolute Flint sibling repository paths, or use a stricter rule that forbids absolute paths to external Flint roots in default-CI files."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-flint-portable-contracts.mjs",
+      "line": 17,
+      "claim": "The client-secret scan still silently skips whole example subtrees such as `build`, `dist`, `.next`, and `target` instead of classifying all text-like example files.",
+      "evidence": "The blocking `security-and-secret-boundaries` constraint requires service-role credential boundaries across all text-like example files, but `ignoredDirectories` includes `\".next\"`, `\"build\"`, `\"dist\"`, `\"node_modules\"`, and `\"target\"`, and `collectFiles` omits those directories entirely before `readTextLikeFile` can classify text versus binary.",
+      "suggested_fix": "Do not globally skip example subtrees when making an \"all text-like example files\" claim; traverse them and classify binary/generated files explicitly, or narrow the documented claim and acceptance evidence to the checked source/config subset."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

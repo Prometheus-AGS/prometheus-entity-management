@@ -25,7 +25,7 @@
     },
     "forge": {
       "repository": "Prometheus-AGS/flint-forge",
-      "revision": "2289d1527f13f7b72c317ec374f4dc0ff366a136",
+      "revision": "0135946cec589c1059a9f82ac373c7cb6c12e387",
       "files": {
         "docs/api/schema-provisioning.md": "da71a207997ca7dde7a72b7f7490bc6d8403b0509261ca7edc1df928000e3107",
         "crates/fdb-app/src/provision/ddl.rs": "18a0bfe8382a2ee079886bca8de5fe3b4c89d33309f8c3271bb76bd0b3a0d41c",

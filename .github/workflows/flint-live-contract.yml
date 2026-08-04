@@ -16,7 +16,7 @@ on:
       forge_ref:
         description: Immutable flint-forge commit SHA to verify
         required: true
-        default: 2289d1527f13f7b72c317ec374f4dc0ff366a136
+        default: 0135946cec589c1059a9f82ac373c7cb6c12e387
         type: string
 
 permissions:
