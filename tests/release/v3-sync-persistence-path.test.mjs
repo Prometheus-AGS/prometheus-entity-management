@@ -97,7 +97,7 @@ test("coverage promotes only certified npm sync receipts", async () => {
       { kind: "integration", status: "implemented", command: "pnpm run test:sync-persistence" },
       { kind: "packed-consumer", status: "implemented", command: "pnpm run verify:sync-persistence" },
       { kind: "browser", status: "implemented", command: "pnpm run verify:vite-react19" },
-      { kind: "integration", status: "partial", command: "cd examples/flutter-riverpod && flutter test test" },
+      { kind: "integration", status: "partial", command: "pnpm run dart:ci" },
       { kind: "platform", status: "planned", command: undefined },
     ],
   );

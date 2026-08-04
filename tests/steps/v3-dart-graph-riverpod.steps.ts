@@ -129,7 +129,7 @@ Then(
     assert.ok(
       capability.releaseEvidence.some(
         ({ ownerChange, status }: { ownerChange: string; status: string }) =>
-          ownerChange === "v3-flutter-riverpod-a2ui-example" && status === "partial",
+          ownerChange === "v3-flutter-riverpod-a2ui-example" && status === "implemented",
       ),
     );
   },

@@ -1,0 +1,18 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".github/workflows/flutter-example-platform.yml",
+      "line": 34,
+      "claim": "The platform smoke workflow resolves dependencies in the Flutter example directory but runs `flutter test` from the repository root, so the Android/iOS smoke lanes do not reliably exercise the `examples/flutter-riverpod` application package they are cited as evidence for.",
+      "evidence": "The workflow runs `flutter pub get` with `working-directory: examples/flutter-riverpod`, but the Android smoke step invokes `flutter test examples/flutter-riverpod/integration_test/mobile_smoke_test.dart -d emulator-5554` without a working directory, and the iOS smoke step similarly runs `flutter test examples/flutter-riverpod/integration_test/mobile_smoke_test.dart -d \"${{ steps.simulator.outputs.device_id }}\"` from the repository root. Acceptance criterion requires platform checks for the Flutter example, and multiple ledger entries cite `.github/workflows/flutter-example-platform.yml` and `integration_test/mobile_smoke_test.dart` as implemented Android/iOS evidence.",
+      "suggested_fix": "Run both smoke commands from `examples/flutter-riverpod` and pass the package-relative test path, e.g. set `working-directory: examples/flutter-riverpod` for the smoke steps and run `flutter test integration_test/mobile_smoke_test.dart -d ...`."
+    }
+  ]
+}

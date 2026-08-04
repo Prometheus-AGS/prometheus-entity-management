@@ -217,12 +217,12 @@ Then("the overall example coverage remains in progress", function () {
   assert.equal(ensureReport().summary.overallCoverageStatus, "in-progress");
 });
 
-Then("implemented showcases, partial Flutter evidence, and planned Tauri evidence remain distinct", function () {
+Then("implemented showcases and planned Tauri evidence remain distinct", function () {
   const expectedStatuses = new Map([
     ["react-19-vite-8", "implemented"],
     ["nextjs", "implemented"],
     ["agentic-a2ui", "implemented"],
-    ["flutter-riverpod", "partial"],
+    ["flutter-riverpod", "implemented"],
     ["tauri-desktop-mobile", "planned"],
   ]);
   for (const showcase of readExampleCoverage().showcases) {

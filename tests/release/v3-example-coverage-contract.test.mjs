@@ -238,9 +238,12 @@ test("coverage cannot claim completion until release and showcase evidence is im
 
   const dishonestPartial = structuredClone(coverage);
   const partialShowcase = dishonestPartial.showcases.find(
-    (showcase) => showcase.status === "partial",
+    (showcase) => showcase.id === "flutter-riverpod",
   );
-  assert.ok(partialShowcase, "the fixture must retain the partial Flutter showcase");
+  assert.ok(partialShowcase, "the fixture must retain the Flutter showcase");
+  partialShowcase.status = "partial";
+  partialShowcase.runtimeEvidence.status = "partial";
+  partialShowcase.visualEvidence.status = "partial";
   partialShowcase.runtimeEvidence.status = "planned";
   assert.match(
     joined(validateExampleCoverage(dishonestPartial, contract)),

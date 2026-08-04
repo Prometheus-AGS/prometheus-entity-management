@@ -289,7 +289,7 @@ Then("the example coverage ledger references the {float} release contract", func
   }
 });
 
-Then("the coverage ledger distinguishes implemented, partial, and planned showcases", function () {
+Then("the coverage ledger distinguishes implemented and planned showcases", function () {
   const coverage = readCoverage();
   assert.deepEqual(
     coverage.showcases.map(({ id }) => id),
@@ -301,7 +301,7 @@ Then("the coverage ledger distinguishes implemented, partial, and planned showca
       { id: "react-19-vite-8", status: "implemented" },
       { id: "nextjs", status: "implemented" },
       { id: "agentic-a2ui", status: "implemented" },
-      { id: "flutter-riverpod", status: "partial" },
+      { id: "flutter-riverpod", status: "implemented" },
       { id: "tauri-desktop-mobile", status: "planned" },
     ],
   );

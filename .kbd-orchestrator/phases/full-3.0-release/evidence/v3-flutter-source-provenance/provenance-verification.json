@@ -54,7 +54,7 @@
       },
       {
         "ownerChange": "v3-flutter-riverpod-a2ui-example",
-        "status": "partial",
+        "status": "implemented",
         "kind": "visual"
       }
     ],

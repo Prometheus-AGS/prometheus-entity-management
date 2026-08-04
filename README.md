@@ -6,7 +6,7 @@ Update a post in one screen and every list row, detail panel, and badge that rea
 
 ### 3.0 release program status
 
-The full 3.0 release is **in progress**, not yet certified or promoted to npm's `latest` tag. The authoritative [3.0 release contract](release/v3-release-contract.json) defines the complete artifact inventory, compatibility matrix, stability labels, required evidence, promotion approvals, and recovery policy. The [example coverage ledger](examples/coverage.json) records React 19/Vite 8, Next.js App Router, and agentic A2UI as implemented with browser evidence; Flutter/Riverpod is partial with host test/golden evidence but pending stable-SDK and Android/iOS receipts; universal Tauri remains planned. Partial evidence is not platform certification, and completed showcase work is not full-release certification.
+The full 3.0 release is **in progress**, not yet certified or promoted to npm's `latest` tag. The authoritative [3.0 release contract](release/v3-release-contract.json) defines the complete artifact inventory, compatibility matrix, stability labels, required evidence, promotion approvals, and recovery policy. The [example coverage ledger](examples/coverage.json) records React 19/Vite 8, Next.js App Router, agentic A2UI, and Flutter/Riverpod as implemented with their runtime and visual evidence; universal Tauri remains planned. Completed showcase work is not full-release certification.
 
 Native Dart and Rust sources are included in the 3.0 inventory, while first publication to pub.dev and crates.io remains deferred until registry ownership and native release workflows are established. npm publication and the branded GitHub Pages documentation site are required release outcomes.
 

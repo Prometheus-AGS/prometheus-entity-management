@@ -388,3 +388,25 @@
   all reached ledgers and the directly affected Dart ledger pass.
 - Stable Flutter 3.44.8 and Android/iOS execution remain task 5. No publication
   authority changed, and the React RC lane remains frozen.
+
+## 2026-08-04 — Flutter showcase verification and archive
+
+- Stable Flutter 3.44.8 / Dart 3.12.2 passed generation, analysis, 70 package
+  tests, 25 showcase tests, and three goldens. The shared mobile smoke passed
+  once on an iPhone 17/iOS 26.5 simulator and once on an Android API 35 arm64
+  emulator.
+- Promoted only the evidence-backed Flutter showcase, CRUD, visual, and platform
+  capabilities to implemented. Durable offline persistence remains partial,
+  overall coverage remains in progress, and release certification remains
+  false.
+- Artifact-refiner passed 8/8 blocking constraints. Three isolated review
+  cycles corrected a stale KBD projection/incomplete packet and then a real
+  workflow working-directory defect; the final review and 0.0 sycophancy screen
+  passed.
+- Final root CI passed 90/90 BDD scenarios and 428/428 steps with zero blocking
+  production advisories. All 17 promoted OpenSpec specifications pass strict
+  validation.
+- Synchronized the bounded main spec and archived the completed 6/6 change at
+  `openspec/changes/archive/2026-08-04-v3-flutter-riverpod-a2ui-example/`.
+- Preserved the frozen React `3.0.0-rc.1` source on remote `main`; no registry,
+  npm tag, pub.dev, app-store, or stable-release authority changed.

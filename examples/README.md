@@ -11,7 +11,7 @@ The [machine-readable coverage ledger](coverage.json) is the source of truth for
 | React 19 + Vite 8 | `examples/vite-app` | Implemented (`v3-vite-react19-example`) |
 | Next.js App Router | `examples/nextjs-app` | Implemented (`v3-nextjs-app-router-example`) |
 | Agentic A2UI | `examples/agentic-a2ui-app` | Implemented (`v3-agentic-a2ui-example`) |
-| Flutter + Riverpod + A2UI | `examples/flutter-riverpod` | Partial: 25 host tests + 3 goldens; stable SDK and Android/iOS pending (`v3-flutter-riverpod-a2ui-example`) |
+| Flutter + Riverpod + A2UI | `examples/flutter-riverpod` | Implemented: Flutter 3.44.8 host gates, 3 goldens, iOS simulator, and Android API 35 emulator (`v3-flutter-riverpod-a2ui-example`) |
 | Tauri desktop + mobile | `examples/tauri-app` | Planned (`v3-tauri-universal-example`) |
 
 The branded Docusaurus site and protected GitHub Pages deployment are separately tracked as planned work in `website/`, culminating in `v3-docs-github-pages`.
@@ -54,9 +54,9 @@ The `release.ci.hermetic-main-baseline` quality gate in [`coverage.json`](covera
 
 The `release.packages.packed-module-contracts` gate is also implemented. It proves that all twelve npm tarballs have valid ESM/CommonJS runtime and declaration routes, bounded payloads, strict package-lint results, and isolated Node/TypeScript consumers. It does not exercise or certify an example application; showcase status comes from each owning change.
 
-The `release.flutter.source-provenance` gate is implemented for licensed source lineage. It proves allowlisted KnowMe history, attribution, explicit path dispositions, and one canonical owner at `packages/entity_graph_flutter`. The import is not runnable. The separate Dart library gate is implemented, while the Flutter showcase is `partial`: host runtime, policy, widget, accessibility-semantic, and golden evidence exists; stable-SDK and Android/iOS receipts remain downstream.
+The `release.flutter.source-provenance` gate is implemented for licensed source lineage. It proves allowlisted KnowMe history, attribution, explicit path dispositions, and one canonical owner at `packages/entity_graph_flutter`. The import is not runnable. The separate Dart library and Flutter showcase gates are implemented: Flutter 3.44.8 host runtime, policy, widget, accessibility-semantic, stable goldens, iOS simulator, and Android emulator receipts are retained independently of the provenance import.
 
-## Partial Flutter, Riverpod, and A2UI showcase
+## Implemented Flutter, Riverpod, and A2UI showcase
 
 The [`flutter-riverpod`](flutter-riverpod/README.md) application now composes
 the canonical Dart graph, generated Riverpod 3 controllers, local/remote/hybrid
@@ -64,16 +64,16 @@ views, optimistic/offline CRUD, relationship and realtime invalidation,
 policy-controlled official GenUI rendering, responsive phone/tablet UI, and an
 optional FFI transport seam.
 
-Run the current host boundary from the example directory:
+Run the stable host boundary from the repository root:
 
 ```bash
-dart analyze --fatal-infos --fatal-warnings
-flutter test test
+pnpm run dart:ci
 ```
 
-The 25 host tests and three hash-recorded goldens are real evidence, but the
-active run did not use the release floor SDK and did not execute the authored
-Android API 35 or iOS simulator lanes. See
+The Flutter 3.44.8 gate passes generation, formatting, analysis, 70 package
+tests, 25 showcase tests, and three regenerated hash-recorded goldens. The
+shared smoke flow also passes on an iOS 26.5 simulator and clean Android API 35
+emulator. See
 [`../release/flutter-riverpod-a2ui-example.md`](../release/flutter-riverpod-a2ui-example.md)
 for the exact architecture, scenario matrix, and exclusions.
 
@@ -87,7 +87,7 @@ Run it from the repository root:
 pnpm run verify:example-coverage
 ```
 
-The `release.examples.shared-semantic-contract` quality gate proves that every stable capability and release artifact is mapped to runnable semantic evidence and that missing/stale mappings fail closed. It is a headless contract, not browser, device, accessibility, or visual evidence. React 19/Vite 8, Next.js, and agentic A2UI have complete declared showcase receipts; Flutter has partial host receipts with named stable-SDK/device gates remaining; Tauri remains planned.
+The `release.examples.shared-semantic-contract` quality gate proves that every stable capability and release artifact is mapped to runnable semantic evidence and that missing/stale mappings fail closed. It is a headless contract, not browser, device, accessibility, or visual evidence. React 19/Vite 8, Next.js, agentic A2UI, and Flutter/Riverpod have complete declared showcase receipts; Tauri remains planned.
 
 ## Implemented headless sync evidence
 
@@ -104,8 +104,8 @@ pnpm run bdd:sync-persistence
 ```
 
 The headless sync promotion did not itself change a showcase status. The React
-showcase has rendered PGlite/Loro evidence; Flutter has partial in-memory
-queue/reconnect evidence without durable or device claims; Tauri remains
+showcase has rendered PGlite/Loro evidence; Flutter has implemented in-memory
+queue/reconnect and Android/iOS smoke evidence but no durable-persistence claim; Tauri remains
 planned; and overall coverage remains `in-progress`.
 
 ## Implemented official A2UI bridge evidence

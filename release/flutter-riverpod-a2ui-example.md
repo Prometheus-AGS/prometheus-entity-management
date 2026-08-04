@@ -5,10 +5,10 @@ application at `examples/flutter-riverpod`. It demonstrates the canonical
 `entity_graph_flutter` package in a complete phone/tablet UI while keeping
 experimental GenUI protocol handling behind an application-local boundary.
 
-The showcase is currently **partial** release evidence. Host analysis, 25
-tests, and three deterministic goldens pass. Flutter 3.44.8 stable resolution
-and Android/iOS integration execution remain required before the showcase can
-be marked implemented.
+The showcase is **implemented** release evidence. Flutter 3.44.8 stable passes
+generation, formatting, analysis, 70 package tests, 25 showcase tests, and
+three deterministic goldens. The shared application smoke flow also passes on
+an iOS 26.5 simulator and clean Android API 35 emulator.
 
 ## Runtime architecture
 
@@ -37,17 +37,17 @@ IDs remain graph-owned; transports own external I/O. The optional
 
 ## Demonstrated scenarios
 
-| Scenario | Host evidence | Remaining certification |
+| Scenario | Certified evidence | Explicit limit |
 | --- | --- | --- |
-| Normalized list/detail identity | Controller and widget tests | Stable-SDK/device execution |
-| Optimistic create/update/delete | Generated CRUD/mutation controller tests | Android/iOS smoke |
-| Exact rollback | Deterministic rejected-write test | Android/iOS smoke |
-| Relationship invalidation | Old/new project list and entity invalidation test | Device execution |
-| Local/remote/hybrid views | Controller and rendered workspace tests | Stable-SDK reconciliation |
-| Realtime projection | Typed callback change test | Native runtime receipt |
+| Normalized list/detail identity | Stable controller/widget tests plus both platform smoke lanes | Physical devices are not certified |
+| Optimistic create/update/delete | Generated CRUD/mutation tests plus both platform smoke lanes | Hosted backends are not exercised |
+| Exact rollback | Deterministic rejected-write test | Demo transport only |
+| Relationship invalidation | Old/new project list and entity invalidation test | Hosted realtime is not exercised |
+| Local/remote/hybrid views | Stable controller and rendered workspace tests | Deterministic fixtures only |
+| Realtime projection | Typed callback change test | No hosted native runtime claim |
 | Offline queue/reconnect | In-memory queued-write convergence test | Durable persistence is not claimed |
-| Policy-gated A2UI | Official renderer, malformed/unknown/denied/approved tests | Device rendering |
-| Responsive and accessible UI | Phone/tablet widgets, semantic lifecycle assertions | Platform accessibility receipt |
+| Policy-gated A2UI | Official renderer, malformed/unknown/denied/approved tests plus device smoke | GenUI remains exact-pinned and experimental |
+| Responsive and accessible UI | Stable phone/tablet goldens and semantic lifecycle assertions | Native assistive-technology certification is not claimed |
 | Optional native transport | Typed FFI bridge test | No bundled Rust runtime is claimed |
 
 ## A2UI trust boundary
@@ -70,15 +70,13 @@ Application policy then verifies tenant and task scope. Update is allowed,
 archive requires trusted human approval, and delete is denied for the
 deterministic fixture. Agent-supplied context cannot authorize itself.
 
-## Run the current host boundary
+## Run the certified host boundary
 
-From `examples/flutter-riverpod`:
+From the repository root with Flutter 3.44.8 stable:
 
 ```bash
-flutter pub get
-dart analyze --fatal-infos --fatal-warnings
-flutter test test
-flutter run
+pnpm run dart:bootstrap:frozen
+pnpm run dart:ci
 ```
 
 Focused visual verification:
@@ -87,17 +85,20 @@ Focused visual verification:
 flutter test test/showcase_golden_test.dart
 ```
 
-The host suite contains 25 tests. The retained phone entity, tablet entity,
-and phone A2UI goldens and their SHA-256 values are recorded in
-`.kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-riverpod-a2ui-example/task-3-tests.md`.
+The showcase suite contains 25 tests. The retained phone entity, tablet
+entity, and phone A2UI goldens and the stable host/platform receipts are
+recorded under
+`.kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-riverpod-a2ui-example/`.
 
 ## Platform lane
 
 `.github/workflows/flutter-example-platform.yml` defines a Flutter 3.44.8
 stable Android API 35 emulator lane and an available-iPhone simulator lane.
-Both invoke `integration_test/mobile_smoke_test.dart`. The workflow definition
-has passed `actionlint`, but neither platform lane has executed for this change
-yet. Its presence is not a device receipt.
+Both invoke `integration_test/mobile_smoke_test.dart`. Task 5 executed that
+same flow locally on an iPhone 17/iOS 26.5 simulator and a clean Android API 35
+AOSP ATD arm64 emulator; both built, installed, rendered, rejected the hostile
+A2UI fixture, and passed 1/1. The checked-in workflow remains the repeatable CI
+surface rather than evidence that a separate hosted run occurred.
 
 ## Evidence and publication boundary
 
@@ -108,11 +109,9 @@ stable 3.0.0 publication.
 
 Current evidence does not prove:
 
-- frozen resolution or all tests under Flutter 3.44.8 stable;
-- Android or iOS runtime, rendering, accessibility, or physical-device behavior;
+- physical-device behavior or native assistive-technology certification;
 - durable offline persistence—the deterministic example queue is in memory;
 - a bundled Rust runtime or `flutter_rust_bridge` dependency;
 - pub.dev ownership, immutable release-wide certification, or registry promotion.
 
-Those claims remain owned by the clean/platform gate and later release
-certification tasks.
+Those claims remain owned by later release-certification and publication tasks.

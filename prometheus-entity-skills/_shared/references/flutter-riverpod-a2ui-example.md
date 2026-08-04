@@ -45,20 +45,21 @@ A2UI JSONL -> atomic validation -> official GenUI renderer
 - Do not claim byte-identical React/Flutter A2UI output: this example adapts
   the shared 0.9.1 baseline to GenUI's official `v0.9` wire identifier.
 
-## Current evidence
+## Certified evidence
 
 ```bash
-cd examples/flutter-riverpod
-dart analyze --fatal-infos --fatal-warnings
-flutter test test
+pnpm run dart:bootstrap:frozen
+pnpm run dart:ci
 ```
 
-The host boundary currently proves 25 tests plus phone/tablet golden baselines.
-Consult `examples/coverage.json` for the exact paths. The showcase status is
-`partial` until the same candidate is resolved and tested under Flutter 3.44.8
-stable and its Android/iOS integration lanes pass.
+Flutter 3.44.8 stable proves 70 package tests, 25 showcase tests, and
+phone/tablet golden baselines. The shared smoke flow also passes on an iOS 26.5
+simulator and Android API 35 emulator. Consult `examples/coverage.json` and the
+task-5 clean-gate receipt for the exact paths and platform identifiers. The
+showcase status is `implemented`; the overall release remains `in-progress`.
 
 The example changes no package declaration. Do not refresh
 `dart-library-exports.json` unless `packages/entity_graph_flutter/lib` actually
-changes its public declarations. Do not describe host tests, authored workflow
-lanes, or goldens as Android/iOS execution or publication authority.
+changes its public declarations. Do not describe an authored workflow alone as
+a hosted execution receipt, or simulator/emulator smoke as physical-device,
+native accessibility, durable-persistence, or publication authority.

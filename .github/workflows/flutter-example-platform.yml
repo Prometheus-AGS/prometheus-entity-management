@@ -41,8 +41,9 @@ jobs:
           profile: pixel_6
           disable-animations: true
           script: >-
+            cd examples/flutter-riverpod &&
             flutter test
-            examples/flutter-riverpod/integration_test/mobile_smoke_test.dart
+            integration_test/mobile_smoke_test.dart
             -d emulator-5554
 
   ios-smoke:
@@ -74,7 +75,8 @@ jobs:
           echo "device_id=$device_id" >> "$GITHUB_OUTPUT"
 
       - name: Run the iOS integration smoke test
+        working-directory: examples/flutter-riverpod
         run: >-
           flutter test
-          examples/flutter-riverpod/integration_test/mobile_smoke_test.dart
+          integration_test/mobile_smoke_test.dart
           -d "${{ steps.simulator.outputs.device_id }}"

@@ -62,3 +62,13 @@
 - In official GenUI component trees, a Text component referenced as a Button's
   child must not also appear as a sibling in the parent Column; doing both
   renders the action label twice.
+
+## OpenSpec validation after pre-sync
+
+- Once a same-named main spec is synchronized before archive, the shorthand
+  `openspec validate <name>` can match both the active change and the promoted
+  spec. Validate the change explicitly with `--type change`.
+- If that main spec is already synchronized and strictly validated, archive the
+  active change with `--skip-specs`; otherwise archive attempts to add the same
+  requirement twice. Retain proof of both the explicit change validation and
+  the full strict specification pass.

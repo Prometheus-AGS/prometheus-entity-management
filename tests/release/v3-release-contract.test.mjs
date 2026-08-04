@@ -28,8 +28,8 @@ test("the checked-in release contract passes schema and workspace validation", (
   assert.equal(result.summary.npmPackages, 12);
   assert.equal(result.summary.requiredRegistries, 3);
   assert.equal(result.summary.plannedShowcases, 1);
-  assert.equal(result.summary.partialShowcases, 1);
-  assert.equal(result.summary.implementedShowcases, 3);
+  assert.equal(result.summary.partialShowcases, 0);
+  assert.equal(result.summary.implementedShowcases, 4);
 });
 
 test("coverage links the contract and keeps unfinished showcases honest", () => {

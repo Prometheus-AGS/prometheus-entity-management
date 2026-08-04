@@ -5,10 +5,11 @@ Riverpod 3 providers, normalized CRUD and relationships, local-first queueing,
 realtime changes, an optional FFI transport, and policy-gated official GenUI
 surfaces in one Prometheus-branded example.
 
-The example is currently **partial 3.0 evidence**: analyzer, 25 host tests, and
-three deterministic goldens pass. Flutter 3.44.8 stable plus Android and iOS
-integration lanes remain pending, so this README makes no native certification
-or publication claim.
+The example is **implemented 3.0 showcase evidence**: Flutter 3.44.8 stable
+passes generation, formatting, analysis, 70 package tests, 25 showcase tests,
+and three deterministic goldens. The shared integration flow also passes on an
+iOS 26.5 simulator and Android API 35 emulator. This does not authorize
+publication or certify physical devices.
 
 ## Architecture
 
@@ -57,13 +58,16 @@ flutter test test/showcase_golden_test.dart
 
 The shared Android/iOS smoke flow is
 `integration_test/mobile_smoke_test.dart`; platform execution is defined in
-`.github/workflows/flutter-example-platform.yml`. Do not treat the authored
-workflow as a passing device receipt.
+`.github/workflows/flutter-example-platform.yml`. Its task-5 receipt records
+the passing local iOS simulator and Android emulator executions; the workflow
+file alone is not treated as a hosted-run receipt.
 
 ## Evidence boundary
 
 - The app is `publish_to: none` and adds no public Dart declaration.
 - The deterministic offline queue is in memory; durable persistence is not
+  claimed.
+- Physical-device and native assistive-technology certification are not
   claimed.
 - `FfiEntityTransportAdapter` demonstrates a typed optional boundary; no Rust
   runtime is bundled.
@@ -71,5 +75,4 @@ workflow as a passing device receipt.
   Prometheus package surface.
 
 See [the release guide](../../release/flutter-riverpod-a2ui-example.md) for the
-scenario matrix, trust boundaries, evidence paths, and remaining platform
-gates.
+scenario matrix, trust boundaries, evidence paths, and remaining limits.
