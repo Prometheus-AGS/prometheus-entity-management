@@ -19,6 +19,22 @@ export interface PlatformSnapshot {
   deepLink: string | null;
 }
 
+export interface RelationshipProof {
+  taskId: string;
+  previousProjectId: string;
+  nextProjectId: string;
+  previousProjectStale: boolean;
+  nextProjectStale: boolean;
+  taskListStale: boolean;
+}
+
+export interface RealtimeProof {
+  taskId: string;
+  receivedChanges: number;
+  graphWrites: number;
+  finalStatus: TaskStatus;
+}
+
 export interface PlatformServiceCallbacks {
   onSnapshot: (snapshot: PlatformSnapshot) => void;
   onDeepLinkTask: (taskId: string, sourceUrl: string) => void;
@@ -28,6 +44,8 @@ export interface PlatformService {
   initialize(): Promise<PlatformSnapshot>;
   setConnection(mode: ConnectionMode): Promise<PlatformSnapshot>;
   updateTaskStatus(taskId: string, status: TaskStatus): Promise<PlatformSnapshot>;
+  reassignTaskProject(taskId: string, projectId: string): Promise<RelationshipProof>;
+  runRealtimeBurst(taskId: string): Promise<RealtimeProof>;
   persist(): Promise<PlatformSnapshot>;
   restore(): Promise<PlatformSnapshot>;
   proveDestructiveCommandDenied(): Promise<string>;

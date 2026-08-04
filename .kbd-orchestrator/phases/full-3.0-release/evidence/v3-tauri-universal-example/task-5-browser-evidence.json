@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-tauri-universal-example",
+  "status": "pass",
+  "evidenceKind": "source-workspace-browser-preview",
+  "countsAsNativeDesktopEvidence": false,
+  "countsAsMobileDeviceEvidence": false,
+  "flows": {
+    "normalized-cross-view": {
+      "entity": "task-native-persistence",
+      "listStatus": "review",
+      "detailStatus": "review",
+      "pendingMutations": 0
+    },
+    "relationship-cascade-invalidation": {
+      "taskId": "task-native-persistence",
+      "previousProjectId": "project-release",
+      "nextProjectId": "project-mobile",
+      "previousProjectStale": true,
+      "nextProjectStale": true,
+      "taskListStale": true
+    },
+    "realtime-coalesced-cross-view": {
+      "taskId": "task-native-persistence",
+      "receivedChanges": 3,
+      "graphWrites": 1,
+      "finalStatus": "review"
+    },
+    "offline-restart-convergence": {
+      "restoredQueuedMutation": true,
+      "convergedStatus": "done",
+      "pendingMutations": 0
+    },
+    "responsive-accessibility": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "mobileNavigation": true,
+      "serious": 0,
+      "critical": 0
+    }
+  },
+  "artifacts": {
+    "screenshots": [
+      "task-5-browser-desktop-graph.png",
+      "task-5-browser-relationship-invalidation.png",
+      "task-5-browser-realtime-coalescing.png",
+      "task-5-browser-offline-restart.png",
+      "task-5-browser-mobile-responsive.png"
+    ],
+    "tracePolicy": "on",
+    "playwrightReport": "task-5-playwright-report.json",
+    "playwrightOutput": "task-5-playwright-artifacts"
+  }
+}

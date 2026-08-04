@@ -1,9 +1,9 @@
 # Prometheus universal Tauri example
 
 One React 19/Vite 8 application targets macOS, Windows, Linux, Android, and
-iOS through Tauri 2. The application is implemented in the workspace, but its
-release showcase status remains `planned` until task 5 produces the clean
-desktop, browser, Android, iOS, accessibility, screenshot, and trace receipts.
+iOS through Tauri 2. Its declared showcase evidence is implemented with five
+Chromium flows, a packaged macOS runtime, Android API 36 emulator execution,
+and iOS 26.5 simulator execution.
 
 This is deliberately different from the already-certified Tauri plugin. The
 plugin receipts prove the packaged Kotlin/Swift command bridge and capability
@@ -64,16 +64,16 @@ React, and Tauri packages.
 
 | Surface | Current evidence | Remaining release evidence |
 | --- | --- | --- |
-| Normalized graph and ID-only list | Vitest unit and source-contract checks | Clean browser/desktop receipt |
-| Project/User relationship joins | Source and rendered component implementation | Cascade-invalidation application scenario |
-| Optimistic status mutation | Unit test covers graph patch and confirmation | Clean browser interaction |
-| Durable offline queue | Unit test covers dispose, reload, reconnect, and convergence | Native SQLite restart on a packaged host |
-| Native graph commands | Stable-Rust Tauri MockRuntime upsert/read round trip | Packaged desktop command E2E |
-| Capability denial | Stable-Rust MockRuntime denies `graph_clear` | Packaged application denial on required targets |
-| Deep links and lifecycle | Fail-closed parser tests and source contract | Real host open/focus/background/restore flows |
-| Realtime coalescing | Shared semantic mapping only | Universal application event/coalescing scenario |
-| Responsive UI and accessibility | Three Playwright flows authored and discovered | Executed screenshots, traces, and axe receipt |
-| Android and iOS shells | Official generated projects are checked in | Clean build and application smoke per platform |
+| Normalized graph and ID-only list | Unit, Chromium, and native runtime receipts | Physical-device certification is separate |
+| Project/User relationship joins | Chromium cascade invalidates old/new Project and Task list | Hosted data is not exercised |
+| Optimistic status mutation | Unit and rendered confirmation flows | Hosted mutation APIs are not exercised |
+| Durable offline queue | Browser reload/reconnect plus packaged macOS process restart | Mobile durable restart is not claimed |
+| Native graph commands | Stable-Rust MockRuntime and packaged macOS round trip | Windows/Linux bundles are not executed |
+| Capability denial | MockRuntime, packaged macOS, and Android deny `graph_clear` | Portable issuer/RLS policy is separate |
+| Deep links and lifecycle | Fail-closed parser plus generated mobile deep-link state | External universal-link hosting is not claimed |
+| Realtime coalescing | Three changes collapse to one graph write | Hosted realtime is not exercised |
+| Responsive UI and accessibility | Five screenshots/traces; zero serious/critical axe findings | Native assistive-technology certification is separate |
+| Android and iOS shells | Android API 36 emulator and iOS 26.5 simulator build/runtime | Physical devices, signing, and stores are not claimed |
 
 The checked-in generated shells are source artifacts, not platform-build
 evidence. Browser preview cannot fabricate a native IPC denial, and the source
@@ -89,15 +89,16 @@ pnpm run test:tauri-universal:contract
 pnpm run verify:tauri-universal
 ```
 
-The browser command is a later clean gate:
+Run the browser evidence gate with:
 
 ```bash
 pnpm run test:tauri-universal:browser
 ```
 
-Do not report it as passing from test discovery alone. Desktop bundle,
-Android/iOS build and smoke, signing, app-store configuration, registry
-publication, and npm `latest` are separate release authorities.
+The hash-verified platform receipt is retained under
+`.kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/`.
+Signing, physical-device certification, app-store configuration, registry
+publication, and npm `latest` remain separate release authorities.
 
 See [`../../release/tauri-universal-example.md`](../../release/tauri-universal-example.md)
 for the release disposition and exact evidence boundary.

@@ -12,7 +12,7 @@ The [machine-readable coverage ledger](coverage.json) is the source of truth for
 | Next.js App Router | `examples/nextjs-app` | Implemented (`v3-nextjs-app-router-example`) |
 | Agentic A2UI | `examples/agentic-a2ui-app` | Implemented (`v3-agentic-a2ui-example`) |
 | Flutter + Riverpod + A2UI | `examples/flutter-riverpod` | Implemented: Flutter 3.44.8 host gates, 3 goldens, iOS simulator, and Android API 35 emulator (`v3-flutter-riverpod-a2ui-example`) |
-| Tauri desktop + mobile | `examples/tauri-universal` | Source and focused tests implemented; clean platform/visual certification planned (`v3-tauri-universal-example`) |
+| Tauri desktop + mobile | `examples/tauri-universal` | Implemented browser, packaged macOS, Android emulator, and iOS simulator evidence (`v3-tauri-universal-example`) |
 
 The branded Docusaurus site and protected GitHub Pages deployment are separately tracked as planned work in `website/`, culminating in `v3-docs-github-pages`.
 
@@ -77,7 +77,7 @@ emulator. See
 [`../release/flutter-riverpod-a2ui-example.md`](../release/flutter-riverpod-a2ui-example.md)
 for the exact architecture, scenario matrix, and exclusions.
 
-## Universal Tauri source and focused test boundary
+## Implemented universal Tauri application boundary
 
 The [`tauri-universal`](tauri-universal/README.md) workspace now contains one
 React 19/Vite 8 frontend and Tauri configuration for desktop, Android, and iOS.
@@ -95,9 +95,12 @@ pnpm run test:tauri-universal:contract
 pnpm run verify:tauri-universal
 ```
 
-These checks do not promote the showcase. Clean Playwright visuals, packaged
-desktop command E2E, Android/iOS app smoke, relationship invalidation, and
-realtime coalescing remain required. See
+The verifier hash-checks the separate task-5 receipt: five Chromium flows,
+packaged macOS command/denial/offline restart, Android API 36 emulator
+build/runtime/denial, and iOS 26.5 simulator archive/runtime. The source check
+does not itself count as platform execution, and the receipt does not claim
+Windows/Linux, physical-device, signing, store, registry, or stable-release
+certification. See
 [`../release/tauri-universal-example.md`](../release/tauri-universal-example.md)
 for the exact disposition.
 
@@ -111,7 +114,7 @@ Run it from the repository root:
 pnpm run verify:example-coverage
 ```
 
-The `release.examples.shared-semantic-contract` quality gate proves that every stable capability and release artifact is mapped to runnable semantic evidence and that missing/stale mappings fail closed. It is a headless contract, not browser, device, accessibility, or visual evidence. React 19/Vite 8, Next.js, agentic A2UI, and Flutter/Riverpod have complete declared showcase receipts; Tauri remains planned.
+The `release.examples.shared-semantic-contract` quality gate proves that every stable capability and release artifact is mapped to runnable semantic evidence and that missing/stale mappings fail closed. It is a headless contract, not browser, device, accessibility, or visual evidence. All five requested showcases now have implemented evidence entries; each remains limited to its separately declared commands, paths, platforms, and exclusions.
 
 ## Implemented headless sync evidence
 
@@ -130,9 +133,9 @@ pnpm run bdd:sync-persistence
 The headless sync promotion did not itself change a showcase status. The React
 showcase has rendered PGlite/Loro evidence; Flutter has implemented in-memory
 queue/reconnect and Android/iOS smoke evidence but no durable-persistence claim.
-Tauri now has a passing browser-runtime reload/reconnect unit, while native
-SQLite restart and full application platform receipts remain planned; overall
-coverage remains `in-progress`.
+Tauri now has browser-runtime reload/reconnect evidence plus packaged macOS
+native SQLite restart/reconnect and Android/iOS application smoke receipts.
+Mobile durable restart is not claimed; overall coverage remains `in-progress`.
 
 ## Implemented official A2UI bridge evidence
 

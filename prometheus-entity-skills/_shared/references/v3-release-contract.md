@@ -45,7 +45,7 @@ This gate remains headless and does not certify native Tauri/Flutter behavior, b
 
 The implemented presentation-neutral contract is documented in [`examples/shared/README.md`](../../../examples/shared/README.md), declared as `release.examples.shared-semantic-contract` in the coverage ledger, and taught to agents in [`example-coverage-contract.md`](example-coverage-contract.md). Require `pnpm run verify:example-coverage` before claiming that a stable capability or artifact is mapped to the shared 3.0 scenario vocabulary.
 
-The verifier proves deterministic fixtures, expected semantic outcomes, mapping completeness, and honest evidence-state transitions. It is deliberately headless. Do not translate a passing semantic scenario into a framework claim; require the owning showcase's runtime, platform, accessibility, and visual receipts. React 19/Vite 8 now has those separate receipts in `vite-react19-example.md`; the other showcase entries remain planned.
+The verifier proves deterministic fixtures, expected semantic outcomes, mapping completeness, and honest evidence-state transitions. It is deliberately headless. Do not translate a passing semantic scenario into a framework claim; require the owning showcase's runtime, platform, accessibility, and visual receipts. All five showcases now have implemented evidence entries, each bounded by its own commands, paths, and exclusions. This does not complete documentation, release certification, or publication.
 
 ## Official A2UI bridge claims
 

@@ -7,15 +7,15 @@ plugin; it does not reuse plugin bridge receipts as application certification.
 
 ## Current disposition
 
-The source, generated platform shells, focused browser-runtime tests, source
-contract, and stable-Rust Tauri MockRuntime tests are implemented. The machine
-showcase entry remains `planned` because clean browser visuals, a packaged
-desktop command E2E, and Android/iOS application build/smoke receipts have not
-yet run. Task 5 owns those gates.
+The showcase is `implemented` at its declared evidence boundary. Five Chromium
+flows, a packaged macOS runtime, an Android API 36 emulator build/runtime, and
+an unsigned iOS 26.5 simulator archive/runtime passed. The retained receipt
+hash-binds screenshots and traces and separately records package executable
+hashes.
 
-The coverage ledger separately records `partial` evidence for the tested
-offline/restart service contract and the desktop MockRuntime command/capability
-boundary. This preserves observed progress without promoting the application.
+This is application evidence, not release certification. Windows/Linux
+bundles, physical devices, distribution signing, app stores, npm publication,
+and stable 3.0.0 remain outside this change.
 
 ## Ownership boundary
 
@@ -55,13 +55,13 @@ described as restart durability.
 | Destructive command denied | Implemented mock host | Main webview `graph_clear` denial |
 | Deep-link policy fails closed | Implemented unit | Scheme, tenant, known ID, malformed encoding |
 | One desktop/mobile Tauri configuration | Implemented source | Config/capability/generated-shell verifier |
-| Responsive browser flows | Authored, not executed | Three discovered Playwright tests |
-| Desktop package and command E2E | Pending task 5 | No receipt claimed |
-| Android application build/smoke | Pending task 5 | Generated shell is not execution |
-| iOS application build/smoke | Pending task 5 | Generated shell is not execution |
-| Relationship cascade invalidation | Pending application receipt | Shared scenario remains mapped |
-| Realtime coalesced cross-view update | Pending application receipt | Shared scenario remains mapped |
-| Accessibility, screenshots, and traces | Pending task 5 | No visual promotion claimed |
+| Responsive browser flows | Passed | Five Chromium flows and screenshots |
+| Desktop package and command E2E | Passed on macOS | Real WebView, native SQLite, IPC denial, offline restart, reconnect |
+| Android application build/smoke | Passed on emulator | API 36 arm64 APK, runtime, native SQLite, capability denial |
+| iOS application build/smoke | Passed on simulator | iOS 26.5 arm64 unsigned archive and runtime |
+| Relationship cascade invalidation | Passed | Old/new Project plus Task-list invalidation receipt |
+| Realtime coalesced cross-view update | Passed | Three changes, one graph write, final cross-view state |
+| Accessibility, screenshots, and traces | Passed at declared level | Zero serious/critical axe findings; hash-bound browser/native artifacts |
 
 ## Commands
 
@@ -75,8 +75,10 @@ pnpm run test:tauri-universal:contract
 pnpm run verify:tauri-universal
 ```
 
-Task 5 runs the clean browser and platform gates. A green source verifier is
-not interchangeable with a Tauri bundle or device receipt.
+The source verifier deliberately remains
+`countsAsPlatformBuildEvidence: false`; it validates the separate
+`task-5-platform-evidence.json` receipt rather than recasting source inspection
+as platform execution. The receipt records the exact target limits.
 
 ## Public API and release impact
 

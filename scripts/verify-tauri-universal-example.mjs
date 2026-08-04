@@ -1,4 +1,5 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { dirname, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -16,6 +17,8 @@ export function verifyTauriUniversalExample({
   };
   const readJson = (path) => JSON.parse(readText(path));
   const exists = (path) => !missingPaths.has(path) && existsSync(resolve(root, path));
+  const sha256 = (path) =>
+    createHash("sha256").update(readFileSync(resolve(root, path))).digest("hex");
   const pass = (id, detail) => checks.push({ id, status: "pass", detail });
   const requireValue = (condition, message) => {
     if (!condition) throw new Error(message);
@@ -64,6 +67,7 @@ export function verifyTauriUniversalExample({
 
   const config = readJson(`${APP_ROOT}/src-tauri/tauri.conf.json`);
   requireValue(config.identifier === "com.prometheusags.entitygraph.universal", "application identifier drifted");
+  requireValue(config.version === "0.0.1", "mobile application version must remain buildable at 0.0.1");
   requireValue(config.plugins?.sql?.preload?.includes("sqlite:prometheus-entity-graph.db"), "native SQLite preload is missing");
   requireValue(
     config.plugins?.["deep-link"]?.desktop?.schemes?.includes("prometheus-entity"),
@@ -75,7 +79,21 @@ export function verifyTauriUniversalExample({
     ),
     "mobile deep-link scheme is missing",
   );
-  pass("configuration", "one config owns desktop/mobile storage and deep-link routes");
+  const rustToolchain = readText(`${APP_ROOT}/src-tauri/rust-toolchain.toml`);
+  const androidBuildTask = readText(
+    `${APP_ROOT}/src-tauri/gen/android/buildSrc/src/main/java/com/prometheusags/entitygraph/universal/kotlin/BuildTask.kt`,
+  );
+  const iosProject = readText(`${APP_ROOT}/src-tauri/gen/apple/project.yml`);
+  requireValue(rustToolchain.includes('channel = "stable"'), "mobile Rust toolchain must remain stable");
+  requireValue(
+    androidBuildTask.includes('environment("RUSTUP_TOOLCHAIN", "stable")'),
+    "Android Gradle Rust build must force the stable toolchain",
+  );
+  requireValue(
+    iosProject.includes("RUSTUP_TOOLCHAIN=stable pnpm tauri ios xcode-script"),
+    "iOS Xcode Rust build must force the stable toolchain",
+  );
+  pass("configuration", "one buildable config owns desktop/mobile routes and stable Rust selection");
 
   const capability = readJson(`${APP_ROOT}/src-tauri/capabilities/universal-main.json`);
   const permissions = new Set(capability.permissions);
@@ -125,8 +143,11 @@ export function verifyTauriUniversalExample({
     "createTauriSqlPersistenceAdapter",
     "startLocalFirstGraph",
     "QUEUE_STORAGE_KEY",
+    "CONNECTION_MODE_STORAGE_KEY",
     "parseTaskDeepLink",
     "flushQueue",
+    "cascadeInvalidation",
+    "RealtimeManager",
     'state.patchEntity(ENTITY_TYPES.task, taskId, { status, pendingSync: true })',
   ]) {
     requireValue(service.includes(contract), `offline or boundary contract is missing: ${contract}`);
@@ -145,12 +166,30 @@ export function verifyTauriUniversalExample({
   }
   pass("platform-shells", "desktop icon plus Android and iOS generated application shells");
 
+  const receiptPath =
+    ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-platform-evidence.json";
+  requireValue(exists(receiptPath), "task-5 platform evidence receipt is missing");
+  const receipt = readJson(receiptPath);
+  requireValue(receipt.status === "pass", "task-5 platform evidence must pass");
+  requireValue(receipt.desktop?.runtime === "pass", "desktop packaged runtime evidence is incomplete");
+  requireValue(receipt.desktop?.offlineRestart === "pass", "desktop offline restart evidence is incomplete");
+  requireValue(receipt.desktop?.capabilityDenial === "pass", "desktop capability denial evidence is incomplete");
+  requireValue(receipt.android?.runtime === "pass", "Android application runtime evidence is incomplete");
+  requireValue(receipt.android?.capabilityDenial === "pass", "Android capability denial evidence is incomplete");
+  requireValue(receipt.ios?.runtime === "pass", "iOS application runtime evidence is incomplete");
+  for (const artifact of receipt.retainedArtifacts ?? []) {
+    requireValue(exists(artifact.path), `retained platform artifact is missing: ${artifact.path}`);
+    requireValue(sha256(artifact.path) === artifact.sha256, `retained platform artifact hash drifted: ${artifact.path}`);
+  }
+  pass("platform-evidence", "hash-verified browser, desktop, Android, and iOS task-5 receipts");
+
   return {
     schemaVersion: 1,
     change: "v3-tauri-universal-example",
     status: "pass",
     evidenceKind: "source-workspace-contract",
     countsAsPlatformBuildEvidence: false,
+    separatePlatformEvidence: receiptPath,
     checks,
   };
 }

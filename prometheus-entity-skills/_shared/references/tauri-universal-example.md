@@ -50,17 +50,19 @@ pnpm run verify:tauri-universal
 ```
 
 The source verifier deliberately returns
-`countsAsPlatformBuildEvidence: false`. Playwright `--list`, generated Android
-Studio/Xcode projects, Cargo cross-compilation, and plugin-only device receipts
-do not prove the full application.
+`countsAsPlatformBuildEvidence: false`. It now requires and hash-verifies the
+separate task-5 platform receipt, which proves:
 
-Before calling the showcase implemented, require clean evidence for:
+- five Chromium graph, relationship, realtime, offline-restart, responsive,
+  and accessibility flows with screenshots and traces;
+- a packaged macOS command, capability-denial, native SQLite restart, and
+  reconnect flow;
+- Android API 36 emulator build/runtime and capability denial;
+- iOS 26.5 simulator archive/runtime.
 
-- the authored Playwright graph, offline-restart, responsive, and accessibility
-  flows with screenshots and traces;
-- a packaged desktop command/capability flow;
-- Android and iOS application build/smoke;
-- the still-mapped relationship invalidation and realtime coalescing scenarios.
+Require `pnpm run verify:tauri-universal` before repeating those claims. Keep
+Windows/Linux, physical-device, signing, app-store, registry, and stable-release
+claims separate.
 
 Read `release/tauri-universal-example.md` and `examples/coverage.json` for the
 current disposition. Do not infer npm publication, `latest`, app-store

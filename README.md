@@ -6,7 +6,7 @@ Update a post in one screen and every list row, detail panel, and badge that rea
 
 ### 3.0 release program status
 
-The full 3.0 release is **in progress**, not yet certified or promoted to npm's `latest` tag. The authoritative [3.0 release contract](release/v3-release-contract.json) defines the complete artifact inventory, compatibility matrix, stability labels, required evidence, promotion approvals, and recovery policy. The [example coverage ledger](examples/coverage.json) records React 19/Vite 8, Next.js App Router, agentic A2UI, and Flutter/Riverpod as implemented with their runtime and visual evidence. The universal Tauri source and focused tests now exist, but its showcase remains planned until clean desktop/mobile and visual receipts pass. Completed showcase work is not full-release certification.
+The full 3.0 release is **in progress**, not yet certified or promoted to npm's `latest` tag. The authoritative [3.0 release contract](release/v3-release-contract.json) defines the complete artifact inventory, compatibility matrix, stability labels, required evidence, promotion approvals, and recovery policy. The [example coverage ledger](examples/coverage.json) records all five requested showcases—React 19/Vite 8, Next.js App Router, agentic A2UI, Flutter/Riverpod, and universal Tauri—as implemented at their explicitly bounded runtime and visual evidence levels. Completed showcase work is not full-release certification.
 
 Native Dart and Rust sources are included in the 3.0 inventory, while first publication to pub.dev and crates.io remains deferred until registry ownership and native release workflows are established. npm publication and the branded GitHub Pages documentation site are required release outcomes.
 
@@ -62,14 +62,14 @@ concurrent-request, browser, accessibility, screenshot, and trace contract. The
 coverage ledger records it as implemented without claiming npm publication or
 completion of the remaining showcase portfolio.
 
-The [universal Tauri application](release/tauri-universal-example.md) now has
-one shared React/Vite frontend, normalized graph, SQLite/localStorage adapter
+The [universal Tauri application](release/tauri-universal-example.md) uses one
+shared React/Vite frontend, normalized graph, SQLite/localStorage adapter
 boundary, durable offline queue, deep-link/lifecycle handling, least-privilege
-capability, and generated Android/iOS shells. Five browser-runtime units, four
-source-contract regressions, and two stable-Rust Tauri MockRuntime tests pass.
-The ledger does not promote the showcase yet: clean browser visuals, packaged
-desktop E2E, app-level Android/iOS smoke, relationship invalidation, and
-realtime coalescing receipts remain task-5 acceptance work.
+capability, and generated Android/iOS shells. Five Chromium flows, packaged
+macOS native IPC/offline restart, Android API 36 emulator runtime/denial, and
+iOS 26.5 simulator runtime receipts pass and are hash-bound. Windows/Linux,
+physical-device, signing, app-store, registry, and stable-release evidence
+remain separate.
 
 ### Documentation map
 
@@ -94,7 +94,7 @@ realtime coalescing receipts remain task-5 acceptance work.
 | [release/release-candidate-pipeline.md](release/release-candidate-pipeline.md) | Contract-derived RC manifest, rehearsal, OIDC staging boundary, and recovery |
 | [release/vite-react19-example.md](release/vite-react19-example.md) | Implemented React 19/Vite 8 scenarios, architecture, verification, and evidence limits |
 | [release/nextjs-app-router-example.md](release/nextjs-app-router-example.md) | Implemented Next.js request isolation, RSC hydration, packed production verification, and browser evidence |
-| [release/tauri-universal-example.md](release/tauri-universal-example.md) | Universal React/Tauri architecture, focused evidence, remaining desktop/mobile gates, and release limits |
+| [release/tauri-universal-example.md](release/tauri-universal-example.md) | Implemented universal React/Tauri architecture, browser/native evidence, platform limits, and release boundaries |
 | [examples/tauri-universal/README.md](examples/tauri-universal/README.md) | Run and verify the shared desktop/Android/iOS example without overclaiming platform evidence |
 | [examples/shared/README.md](examples/shared/README.md) | Deterministic shared showcase domain, semantic scenarios, and evidence boundary |
 | [release/dependency-policy.json](release/dependency-policy.json) | Machine-readable compatible-current dependency holds |

@@ -216,6 +216,35 @@ export function PlatformDashboard() {
                       onChange={(status) => void board.updateStatus(status)}
                     />
                   </div>
+                  <div className="detail-action">
+                    <span className="eyebrow">Relationship and realtime proofs</span>
+                    <div className="button-row">
+                      <button
+                        type="button"
+                        onClick={() => void board.reassignProject("project-mobile")}
+                        data-testid="reassign-project"
+                      >
+                        Move to Universal runtime
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => void board.runRealtimeBurst()}
+                        data-testid="realtime-burst"
+                      >
+                        Apply realtime burst
+                      </button>
+                    </div>
+                    {platform.relationshipProof ? (
+                      <output data-testid="relationship-proof">
+                        {`${platform.relationshipProof.previousProjectId} → ${platform.relationshipProof.nextProjectId} · old/new/list stale`}
+                      </output>
+                    ) : null}
+                    {platform.realtimeProof ? (
+                      <output data-testid="realtime-proof">
+                        {`${platform.realtimeProof.receivedChanges} changes · ${platform.realtimeProof.graphWrites} graph write · ${platform.realtimeProof.finalStatus}`}
+                      </output>
+                    ) : null}
+                  </div>
                 </>
               ) : (
                 <p>Hydrating the normalized task graph…</p>

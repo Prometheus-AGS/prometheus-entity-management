@@ -144,7 +144,7 @@ describe("TauriGraphPlugin — commands", () => {
   });
 
   it("setList fires IPC and sets list ids in graph store", async () => {
-    const { invoke } = makeFakeInvoke();
+    const { invoke, calls } = makeFakeInvoke();
     const { listen } = makeFakeListen();
 
     const plugin = new TauriGraphPlugin({ invoke, listen, options: { autoRestore: false } });
@@ -154,6 +154,16 @@ describe("TauriGraphPlugin — commands", () => {
       queryKey: "users:all",
       ids: ["u-1", "u-2"],
       total: 2,
+    });
+
+    expect(calls.find((call) => call.cmd.includes("graph_set_list"))?.args).toEqual({
+      payload: {
+        queryKey: "users:all",
+        ids: ["u-1", "u-2"],
+        total: 2,
+        nextCursor: null,
+        hasNextPage: false,
+      },
     });
 
     const list = useGraphStore.getState().lists["users:all"];

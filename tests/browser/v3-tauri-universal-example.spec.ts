@@ -10,6 +10,7 @@ const flows = new Map<string, Record<string, unknown>>();
 const screenshots: string[] = [];
 
 async function capture(page: import("@playwright/test").Page, name: string) {
+  await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: resolve(evidenceDirectory, name), fullPage: true });
   screenshots.push(name);
 }
@@ -18,12 +19,12 @@ test.describe.configure({ mode: "serial" });
 test.beforeAll(() => mkdirSync(evidenceDirectory, { recursive: true }));
 test.afterAll(() => {
   writeFileSync(
-    resolve(evidenceDirectory, "task-3-browser-evidence.json"),
+    resolve(evidenceDirectory, "task-5-browser-evidence.json"),
     `${JSON.stringify(
       {
         schemaVersion: 1,
         change: "v3-tauri-universal-example",
-        status: flows.size === 3 ? "pass" : "fail",
+        status: flows.size === 5 ? "pass" : "fail",
         evidenceKind: "source-workspace-browser-preview",
         countsAsNativeDesktopEvidence: false,
         countsAsMobileDeviceEvidence: false,
@@ -31,8 +32,8 @@ test.afterAll(() => {
         artifacts: {
           screenshots,
           tracePolicy: "on",
-          playwrightReport: "playwright-report.json",
-          playwrightOutput: "playwright-artifacts",
+          playwrightReport: "task-5-playwright-report.json",
+          playwrightOutput: "task-5-playwright-artifacts",
         },
       },
       null,
@@ -58,12 +59,54 @@ test("projects one normalized task graph through list and detail views", async (
     detailStatus: "review",
     pendingMutations: 0,
   });
-  await capture(page, "task-3-browser-desktop-graph.png");
+  await capture(page, "task-5-browser-desktop-graph.png");
 });
 
-test("restores an offline mutation after reload and converges after reconnect", async ({ context, page }) => {
-  await context.setOffline(true);
+test("invalidates both project relationships when a task is reassigned", async ({ page }) => {
   await page.goto("/");
+  const card = page.getByTestId("task-card-task-native-persistence");
+  await expect(card).toContainText("3.0 release");
+
+  await page.getByTestId("reassign-project").click();
+  await expect(card).toContainText("Universal runtime");
+  await expect(page.getByTestId("relationship-proof")).toContainText(
+    "project-release → project-mobile · old/new/list stale",
+  );
+
+  flows.set("relationship-cascade-invalidation", {
+    taskId: "task-native-persistence",
+    previousProjectId: "project-release",
+    nextProjectId: "project-mobile",
+    previousProjectStale: true,
+    nextProjectStale: true,
+    taskListStale: true,
+  });
+  await capture(page, "task-5-browser-relationship-invalidation.png");
+});
+
+test("coalesces a realtime burst into one cross-view graph write", async ({ page }) => {
+  await page.goto("/");
+  const card = page.getByTestId("task-card-task-native-persistence");
+  await expect(card).toContainText("Active");
+
+  await page.getByTestId("realtime-burst").click();
+  await expect(card).toContainText("Review");
+  await expect(page.getByTestId("realtime-proof")).toContainText(
+    "3 changes · 1 graph write · review",
+  );
+
+  flows.set("realtime-coalesced-cross-view", {
+    taskId: "task-native-persistence",
+    receivedChanges: 3,
+    graphWrites: 1,
+    finalStatus: "review",
+  });
+  await capture(page, "task-5-browser-realtime-coalescing.png");
+});
+
+test("restores an offline mutation after reload and converges after reconnect", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("connection-toggle").click();
   await expect(page.getByText("browser-preview · offline")).toBeVisible();
 
   await page.getByTestId("status-done").click();
@@ -75,7 +118,6 @@ test("restores an offline mutation after reload and converges after reconnect", 
   await expect(page.getByTestId("task-card-task-native-persistence")).toContainText("Done");
   await expect(page.getByTestId("task-card-task-native-persistence")).toContainText("Queued");
 
-  await context.setOffline(false);
   await page.getByTestId("connection-toggle").click();
   await expect(page.getByTestId("pending-count")).toHaveText("0");
   await expect(page.getByTestId("task-card-task-native-persistence")).not.toContainText("Queued");
@@ -89,7 +131,7 @@ test("restores an offline mutation after reload and converges after reconnect", 
     convergedStatus: "done",
     pendingMutations: 0,
   });
-  await capture(page, "task-3-browser-offline-restart.png");
+  await capture(page, "task-5-browser-offline-restart.png");
 });
 
 test("keeps the mobile projection operable and free of serious accessibility findings", async ({ page }) => {
@@ -118,5 +160,5 @@ test("keeps the mobile projection operable and free of serious accessibility fin
     serious: 0,
     critical: 0,
   });
-  await capture(page, "task-3-browser-mobile-responsive.png");
+  await capture(page, "task-5-browser-mobile-responsive.png");
 });

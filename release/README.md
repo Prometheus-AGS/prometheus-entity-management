@@ -106,15 +106,15 @@ bridge, not the universal application. Full application restart/offline
 behavior, accessibility, visual parity, and desktop/mobile packaging remain
 owned by `v3-tauri-universal-example`.
 
-## Universal Tauri application in progress
+## Implemented universal Tauri application gate
 
 [`tauri-universal-example.md`](tauri-universal-example.md) documents the shared
-React/Vite application, normalized graph, persistence/queue boundary, native
-host, generated Android/iOS shells, and focused task-3 tests. The coverage
-ledger records tested offline and MockRuntime evidence as partial capability
-receipts while keeping the showcase planned. Task 5 still owns clean browser
-visuals, packaged desktop E2E, Android/iOS application smoke, and the remaining
-relationship/realtime scenario receipts.
+React/Vite application, normalized graph, persistence/queue boundary, and
+native host. Five Chromium flows, packaged macOS IPC/denial/offline restart,
+Android API 36 emulator build/runtime/denial, and iOS 26.5 simulator
+archive/runtime passed. The coverage ledger records the showcase as
+implemented while explicitly excluding Windows/Linux bundles, physical
+devices, signing, stores, npm publication, and stable-release certification.
 
 ## Implemented recoverable release-candidate gate
 

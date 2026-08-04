@@ -11,7 +11,43 @@ test("the universal Tauri source contract is complete and honest about platform 
   assert.equal(report.countsAsPlatformBuildEvidence, false);
   assert.deepEqual(
     report.checks.map(({ id }) => id),
-    ["workspace", "native-host", "configuration", "capability", "layering", "offline-runtime", "platform-shells"],
+    [
+      "workspace",
+      "native-host",
+      "configuration",
+      "capability",
+      "layering",
+      "offline-runtime",
+      "platform-shells",
+      "platform-evidence",
+    ],
+  );
+});
+
+test("the verifier rejects an Android-invalid zero application version", () => {
+  const path = "examples/tauri-universal/src-tauri/tauri.conf.json";
+  const config = JSON.parse(readFileSync(path, "utf8"));
+  config.version = "0.0.0";
+  assert.throws(
+    () =>
+      verifyTauriUniversalExample({
+        root,
+        overrides: new Map([[path, JSON.stringify(config)]]),
+      }),
+    /must remain buildable at 0\.0\.1/,
+  );
+});
+
+test("the verifier rejects a mobile build phase that can fall back to nightly", () => {
+  const path = "examples/tauri-universal/src-tauri/gen/apple/project.yml";
+  const source = readFileSync(path, "utf8");
+  assert.throws(
+    () =>
+      verifyTauriUniversalExample({
+        root,
+        overrides: new Map([[path, source.replace("RUSTUP_TOOLCHAIN=stable ", "")]]),
+      }),
+    /iOS Xcode Rust build must force the stable toolchain/,
   );
 });
 

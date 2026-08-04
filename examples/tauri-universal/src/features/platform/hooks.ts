@@ -28,11 +28,15 @@ export function useUniversalPlatform() {
       lifecycle: store.lifecycle,
       deepLink: store.deepLink,
       capabilityProof: store.capabilityProof,
+      relationshipProof: store.relationshipProof,
+      realtimeProof: store.realtimeProof,
       selectedTaskId: store.selectedTaskId,
       initialize: store.initialize,
       selectTask: store.selectTask,
       setConnection: store.setConnection,
       updateTaskStatus: store.updateTaskStatus,
+      reassignTaskProject: store.reassignTaskProject,
+      runRealtimeBurst: store.runRealtimeBurst,
       persist: store.persist,
       restore: store.restore,
       proveDestructiveCommandDenied: store.proveDestructiveCommandDenied,
@@ -54,11 +58,19 @@ export function useTaskBoard() {
   const taskPatches = useGraphStore((state) => state.patches[ENTITY_TYPES.task] ?? EMPTY_ROWS);
   const projectsById = useGraphStore((state) => state.entities[ENTITY_TYPES.project] ?? EMPTY_ROWS);
   const usersById = useGraphStore((state) => state.entities[ENTITY_TYPES.user] ?? EMPTY_ROWS);
-  const { selectedTaskId, selectTask, updateTaskStatus } = usePlatformStore(
+  const {
+    selectedTaskId,
+    selectTask,
+    updateTaskStatus,
+    reassignTaskProject,
+    runRealtimeBurst,
+  } = usePlatformStore(
     useShallow((state) => ({
       selectedTaskId: state.selectedTaskId,
       selectTask: state.selectTask,
       updateTaskStatus: state.updateTaskStatus,
+      reassignTaskProject: state.reassignTaskProject,
+      runRealtimeBurst: state.runRealtimeBurst,
     })),
   );
 
@@ -103,5 +115,9 @@ export function useTaskBoard() {
     selectTask,
     updateStatus: (status: TaskStatus) =>
       selectedTask ? updateTaskStatus(selectedTask.id, status) : Promise.resolve(),
+    reassignProject: (projectId: string) =>
+      selectedTask ? reassignTaskProject(selectedTask.id, projectId) : Promise.resolve(),
+    runRealtimeBurst: () =>
+      selectedTask ? runRealtimeBurst(selectedTask.id) : Promise.resolve(),
   };
 }

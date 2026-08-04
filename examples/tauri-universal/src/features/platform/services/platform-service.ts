@@ -1,9 +1,14 @@
 import {
+  RealtimeManager,
+  cascadeInvalidation,
   createTauriSqlPersistenceAdapter,
   graphStore,
+  registerSchema,
   startLocalFirstGraph,
+  type ChangeSet,
   type GraphPersistenceAdapter,
   type LocalFirstGraphRuntime,
+  type RealtimeAdapter,
 } from "@prometheus-ags/entity-graph-core";
 import {
   createTauriGraphPlugin,
@@ -23,12 +28,27 @@ import type {
   PlatformService,
   PlatformServiceCallbacks,
   PlatformSnapshot,
+  RealtimeProof,
+  RelationshipProof,
   RuntimePlatform,
 } from "../types";
 
 const GRAPH_STORAGE_KEY = "prometheus:tauri-universal:graph:v1";
 const QUEUE_STORAGE_KEY = "prometheus:tauri-universal:queue:v1";
+const CONNECTION_MODE_STORAGE_KEY = "prometheus:tauri-universal:connection-mode:v1";
 const DEEP_LINK_TENANT = "prometheus-labs";
+
+registerSchema({
+  type: ENTITY_TYPES.task,
+  globalListKeys: [TASK_LIST_KEY],
+  relations: {
+    project: {
+      cardinality: "belongsTo",
+      foreignKey: "projectId",
+      targetType: ENTITY_TYPES.project,
+    },
+  },
+});
 
 export function parseTaskDeepLink(
   sourceUrl: string,
@@ -63,7 +83,7 @@ interface OnlineSource {
 }
 
 function createOnlineSource(): OnlineSource {
-  let forcedOffline = false;
+  let forcedOffline = window.localStorage.getItem(CONNECTION_MODE_STORAGE_KEY) === "offline";
   const listeners = new Set<(online: boolean) => void>();
   const getIsOnline = () => !forcedOffline && window.navigator.onLine;
   const publish = () => listeners.forEach((listener) => listener(getIsOnline()));
@@ -80,6 +100,7 @@ function createOnlineSource(): OnlineSource {
     },
     setMode(mode) {
       forcedOffline = mode === "offline";
+      window.localStorage.setItem(CONNECTION_MODE_STORAGE_KEY, mode);
       publish();
     },
     dispose() {
@@ -224,6 +245,103 @@ class UniversalPlatformService implements PlatformService {
     return this.publishSnapshot();
   }
 
+  async reassignTaskProject(taskId: string, projectId: string): Promise<RelationshipProof> {
+    const state = graphStore.getState();
+    const previous = state.entities[ENTITY_TYPES.task]?.[taskId] as
+      | (TaskEntity & Record<string, unknown>)
+      | undefined;
+    if (!previous) throw new Error(`Task ${taskId} is not present in the normalized graph.`);
+    if (!state.entities[ENTITY_TYPES.project]?.[projectId]) {
+      throw new Error(`Project ${projectId} is not present in the normalized graph.`);
+    }
+
+    const previousProjectId = previous.projectId;
+    const next: TaskEntity & Record<string, unknown> = {
+      ...previous,
+      projectId,
+      updatedAt: new Date().toISOString(),
+    };
+    await this.writeEntity(ENTITY_TYPES.task, taskId, next);
+    state.upsertEntity(ENTITY_TYPES.task, taskId, next);
+    cascadeInvalidation({
+      type: ENTITY_TYPES.task,
+      id: taskId,
+      previous,
+      next,
+      op: "update",
+    });
+    await this.runtime?.persistNow();
+
+    const invalidated = graphStore.getState();
+    return {
+      taskId,
+      previousProjectId,
+      nextProjectId: projectId,
+      previousProjectStale:
+        invalidated.entityStates[`${ENTITY_TYPES.project}:${previousProjectId}`]?.stale === true,
+      nextProjectStale:
+        invalidated.entityStates[`${ENTITY_TYPES.project}:${projectId}`]?.stale === true,
+      taskListStale: invalidated.lists[TASK_LIST_KEY]?.stale === true,
+    };
+  }
+
+  async runRealtimeBurst(taskId: string): Promise<RealtimeProof> {
+    const current = graphStore.getState().entities[ENTITY_TYPES.task]?.[taskId];
+    if (!current) throw new Error(`Task ${taskId} is not present in the normalized graph.`);
+
+    let emit: (changeset: ChangeSet) => void = () => undefined;
+    let receivedChanges = 0;
+    let graphWrites = 0;
+    const adapter: RealtimeAdapter = {
+      name: "tauri-universal-burst",
+      subscribe(_config, next) {
+        emit = next;
+        return () => {
+          emit = () => undefined;
+        };
+      },
+    };
+    const manager = new RealtimeManager({
+      flushInterval: 16,
+      onChangeReceived: () => {
+        receivedChanges += 1;
+      },
+    });
+    const unsubscribeGraph = graphStore.subscribe(() => {
+      graphWrites += 1;
+    });
+    const unregister = manager.register(adapter, [{ type: ENTITY_TYPES.task }]);
+    emit({
+      changes: [
+        { op: "update", type: ENTITY_TYPES.task, id: taskId, patch: { status: "backlog" } },
+        { op: "update", type: ENTITY_TYPES.task, id: taskId, patch: { status: "active" } },
+        { op: "update", type: ENTITY_TYPES.task, id: taskId, patch: { status: "review" } },
+      ],
+    });
+    manager.forceFlush();
+    unregister();
+    unsubscribeGraph();
+
+    const finalTask = graphStore.getState().entities[ENTITY_TYPES.task]?.[taskId] as unknown as
+      | TaskEntity
+      | undefined;
+    if (!finalTask) throw new Error(`Realtime burst removed Task ${taskId} unexpectedly.`);
+    if (this.plugin) {
+      await this.plugin.commands.upsertEntity({
+        entityType: ENTITY_TYPES.task,
+        entityId: taskId,
+        data: { ...finalTask },
+      });
+    }
+    await this.runtime?.persistNow();
+    return {
+      taskId,
+      receivedChanges,
+      graphWrites,
+      finalStatus: finalTask.status,
+    };
+  }
+
   async persist(): Promise<PlatformSnapshot> {
     await this.persistQueue();
     await this.runtime?.persistNow();
@@ -334,9 +452,18 @@ class UniversalPlatformService implements PlatformService {
   }
 
   private async seedGraph(): Promise<void> {
-    for (const project of SEED_PROJECTS) await this.writeEntity(ENTITY_TYPES.project, project.id, { ...project });
-    for (const user of SEED_USERS) await this.writeEntity(ENTITY_TYPES.user, user.id, { ...user });
-    for (const task of SEED_TASKS) await this.writeEntity(ENTITY_TYPES.task, task.id, { ...task });
+    for (const project of SEED_PROJECTS) {
+      await this.writeEntity(ENTITY_TYPES.project, project.id, { ...project });
+      graphStore.getState().setEntityFetched(ENTITY_TYPES.project, project.id);
+    }
+    for (const user of SEED_USERS) {
+      await this.writeEntity(ENTITY_TYPES.user, user.id, { ...user });
+      graphStore.getState().setEntityFetched(ENTITY_TYPES.user, user.id);
+    }
+    for (const task of SEED_TASKS) {
+      await this.writeEntity(ENTITY_TYPES.task, task.id, { ...task });
+      graphStore.getState().setEntityFetched(ENTITY_TYPES.task, task.id);
+    }
     await this.writeList(TASK_LIST_KEY, SEED_TASKS.map((task) => task.id));
   }
 

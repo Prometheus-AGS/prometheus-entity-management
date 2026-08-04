@@ -4,6 +4,8 @@ import type {
   ConnectionMode,
   PlatformService,
   PlatformSnapshot,
+  RealtimeProof,
+  RelationshipProof,
 } from "../types";
 import type { TaskStatus } from "@/features/tasks/types";
 
@@ -14,11 +16,15 @@ interface PlatformState extends PlatformSnapshot {
   error: string | null;
   selectedTaskId: string | null;
   capabilityProof: string | null;
+  relationshipProof: RelationshipProof | null;
+  realtimeProof: RealtimeProof | null;
   service: PlatformService | null;
   initialize(): Promise<void>;
   selectTask(taskId: string): void;
   setConnection(mode: ConnectionMode): Promise<void>;
   updateTaskStatus(taskId: string, status: TaskStatus): Promise<void>;
+  reassignTaskProject(taskId: string, projectId: string): Promise<void>;
+  runRealtimeBurst(taskId: string): Promise<void>;
   persist(): Promise<void>;
   restore(): Promise<void>;
   proveDestructiveCommandDenied(): Promise<void>;
@@ -44,6 +50,8 @@ export const usePlatformStore = create<PlatformState>((set, get) => ({
   error: null,
   selectedTaskId: null,
   capabilityProof: null,
+  relationshipProof: null,
+  realtimeProof: null,
   service: null,
 
   async initialize() {
@@ -82,6 +90,28 @@ export const usePlatformStore = create<PlatformState>((set, get) => ({
     set({ error: null });
     try {
       set(await service.updateTaskStatus(taskId, status));
+    } catch (error) {
+      set({ error: errorMessage(error) });
+    }
+  },
+
+  async reassignTaskProject(taskId, projectId) {
+    const service = get().service;
+    if (!service) return;
+    set({ error: null, relationshipProof: null });
+    try {
+      set({ relationshipProof: await service.reassignTaskProject(taskId, projectId) });
+    } catch (error) {
+      set({ error: errorMessage(error) });
+    }
+  },
+
+  async runRealtimeBurst(taskId) {
+    const service = get().service;
+    if (!service) return;
+    set({ error: null, realtimeProof: null });
+    try {
+      set({ realtimeProof: await service.runRealtimeBurst(taskId) });
     } catch (error) {
       set({ error: errorMessage(error) });
     }

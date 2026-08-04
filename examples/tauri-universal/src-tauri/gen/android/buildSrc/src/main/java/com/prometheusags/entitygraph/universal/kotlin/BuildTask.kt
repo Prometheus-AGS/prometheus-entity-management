@@ -52,6 +52,7 @@ open class BuildTask : DefaultTask() {
 
         project.exec {
             workingDir(File(project.projectDir, rootDirRel))
+            environment("RUSTUP_TOOLCHAIN", "stable")
             executable(executable)
             args(args)
             if (project.logger.isEnabled(LogLevel.DEBUG)) {

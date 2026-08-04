@@ -49,6 +49,15 @@
   specific launchd plist key with `plutil -extract` when only a configured path
   is needed, and never print the key file contents.
 
+## Build diagnostics can serialize inherited credentials
+
+- Tauri/Gradle/Xcode diagnostic failures can include inherited environment
+  values in captured output. Remove unrelated registry credentials from child
+  environments before platform builds, even when the build is not expected to
+  use them.
+- For this repository's mobile lanes, unset `CARGO_REGISTRY_TOKEN`, `NPM_TOKEN`,
+  and `NODE_AUTH_TOKEN`; never record their values in receipts or postmortems.
+
 ## Riverpod operation and graph-invalidation lifetimes
 
 - Reading an auto-disposed generated notifier does not keep it alive across an

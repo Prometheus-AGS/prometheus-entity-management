@@ -14,10 +14,10 @@ export default defineConfig({
   retries: 0,
   timeout: 90_000,
   expect: { timeout: 15_000 },
-  outputDir: `${evidenceRoot}/playwright-artifacts`,
+  outputDir: `${evidenceRoot}/task-5-playwright-artifacts`,
   reporter: [
     ["line"],
-    ["json", { outputFile: `${evidenceRoot}/playwright-report.json` }],
+    ["json", { outputFile: `${evidenceRoot}/task-5-playwright-report.json` }],
   ],
   use: {
     baseURL: "http://127.0.0.1:4181",

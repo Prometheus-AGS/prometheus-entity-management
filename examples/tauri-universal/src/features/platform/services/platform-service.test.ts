@@ -145,6 +145,38 @@ describe("universal platform service", () => {
     );
   });
 
+  it("reassigns a task and invalidates both relationship targets plus its list", async () => {
+    const runtime = service();
+    await runtime.initialize();
+
+    await expect(runtime.reassignTaskProject(TASK_ID, "project-mobile")).resolves.toEqual({
+      taskId: TASK_ID,
+      previousProjectId: "project-release",
+      nextProjectId: "project-mobile",
+      previousProjectStale: true,
+      nextProjectStale: true,
+      taskListStale: true,
+    });
+    expect(graphStore.getState().entities[ENTITY_TYPES.task][TASK_ID]).toMatchObject({
+      projectId: "project-mobile",
+    });
+  });
+
+  it("coalesces three realtime changes into one graph write and final projection", async () => {
+    const runtime = service();
+    await runtime.initialize();
+
+    await expect(runtime.runRealtimeBurst(TASK_ID)).resolves.toEqual({
+      taskId: TASK_ID,
+      receivedChanges: 3,
+      graphWrites: 1,
+      finalStatus: "review",
+    });
+    expect(graphStore.getState().readEntity(ENTITY_TYPES.task, TASK_ID)).toMatchObject({
+      status: "review",
+    });
+  });
+
   it("reports that browser preview cannot fabricate an IPC denial", async () => {
     const runtime = service();
     await runtime.initialize();

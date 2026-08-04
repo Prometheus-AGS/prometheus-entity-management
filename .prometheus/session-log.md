@@ -489,3 +489,32 @@
 - Signed task completion committed at revision 116 with both after-hooks green.
   The known parent-projection reset was corrected through a typed transition at
   revision 117; tasks 5 and 6 remain pending and the change remains in progress.
+
+## 2026-08-04 — Universal Tauri task-5 platform and clean gates
+
+- Executed five Chromium flows with zero serious/critical axe findings and
+  retained hash-bound screenshots/traces for normalized identity, relationship
+  invalidation, realtime coalescing, offline restart/reconnect, and responsive
+  accessibility.
+- Built and ran the complete application as a packaged macOS app, Android API
+  36 arm64 emulator APK, and unsigned iOS 26.5 arm64 simulator archive. macOS
+  proved native SQLite across process restart and reconnect; macOS and Android
+  proved real capability denial.
+- Corrected the Tauri list IPC optional-metadata mismatch, persisted browser
+  connection mode, application version `0.0.1`, and stable Rust selection in
+  generated Android/iOS build phases. Added a patch changeset only for the
+  public Tauri package correction.
+- Promoted the fifth and final requested showcase to `implemented` at its
+  declared evidence boundary. Overall 3.0 coverage remains `in-progress` and
+  Windows/Linux, physical devices, signing, app stores, documentation,
+  certification, and publication remain separate.
+- Frozen install, app/package typechecks, 7 application tests, 6 contract
+  regressions, 16 Tauri package tests, 2 stable-Rust host tests, both builds,
+  package dry-run, coverage/BDD, release-contract/BDD, skills, security,
+  Changesets, strict OpenSpec, and diff hygiene passed.
+- Recorded a redacted postmortem after a failed diagnostic exposed an inherited
+  Cargo registry credential in tool output. Subsequent builds removed registry
+  credentials from child environments; the external credential owner must
+  rotate the exposed value.
+- The frozen React `3.0.0-rc.1` source, remote `main`, npm `next`, and npm
+  `latest` were not changed.
