@@ -3,7 +3,8 @@ import React from "react";
 import { describe, it, expect, vi, beforeAll, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, act, cleanup } from "@testing-library/react";
 import { EntityExplorerProvider, EntityExplorerFAB, EntityExplorerPanel, useEntityExplorer } from "./index";
-import { __resetStoreRegistry } from "@prometheus-ags/entity-graph-core";
+import { __resetStoreRegistry, createGraphStore, graphStore } from "@prometheus-ags/entity-graph-core";
+import { GraphStoreProvider } from "../../graph-store";
 
 // ── jsdom polyfills ────────────────────────────────────────────────────────────
 
@@ -24,6 +25,13 @@ afterEach(() => {
 
 beforeEach(() => {
   __resetStoreRegistry();
+  graphStore.setState({
+    entities: {},
+    patches: {},
+    entityStates: {},
+    syncMetadata: {},
+    lists: {},
+  });
 });
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -85,6 +93,24 @@ describe("EntityExplorerFAB", () => {
 // ── Panel tests ────────────────────────────────────────────────────────────────
 
 describe("EntityExplorerPanel", () => {
+  it("reads entities from the nearest GraphStoreProvider", () => {
+    const scoped = createGraphStore();
+    scoped.getState().upsertEntity("ScopedProject", "scoped", { name: "Scoped" });
+    scoped.getState().patchEntity("ScopedProject", "scoped", { selected: true });
+    graphStore.getState().upsertEntity("SingletonProject", "singleton", { name: "Singleton" });
+
+    render(
+      <GraphStoreProvider store={scoped}>
+        <Wrapper><EntityExplorerFAB /><EntityExplorerPanel /></Wrapper>
+      </GraphStoreProvider>,
+    );
+    fireEvent.click(document.body.querySelector(".ee-fab") as HTMLButtonElement);
+
+    expect(screen.getAllByText("ScopedProject").length).toBeGreaterThan(0);
+    expect(screen.getByText("scoped")).toBeTruthy();
+    expect(screen.queryByText("SingletonProject")).toBeNull();
+  });
+
   it("panel mounts into document.body via portal", () => {
     render(<Wrapper><EntityExplorerFAB /><EntityExplorerPanel /></Wrapper>);
     fireEvent.click(document.body.querySelector(".ee-fab") as HTMLButtonElement);

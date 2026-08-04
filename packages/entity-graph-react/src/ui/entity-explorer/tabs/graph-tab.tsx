@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
-import { useStore } from "zustand";
 import { useEntityExplorer } from "../context";
-import { useGraphStore } from "@prometheus-ags/entity-graph-core";
+import { useGraphStore } from "../../../graph-store";
 import { getSchema } from "@prometheus-ags/entity-graph-core";
 
 /**
@@ -34,7 +33,7 @@ interface GraphEdge {
 
 export function GraphTab() {
   const { dispatch } = useEntityExplorer();
-  const entities = useStore(useGraphStore, (s) => s.entities);
+  const entities = useGraphStore((s) => s.entities);
 
   const { nodes, edges, truncated, totalTypes } = useMemo(() => {
     const allTypes = Object.keys(entities).filter((t) => Object.keys(entities[t] ?? {}).length > 0);

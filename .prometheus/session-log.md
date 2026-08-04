@@ -518,3 +518,17 @@
   rotate the exposed value.
 - The frozen React `3.0.0-rc.1` source, remote `main`, npm `next`, and npm
   `latest` were not changed.
+
+## 2026-08-04 — PR #10 merge-readiness repair
+
+- Confirmed the PR remains required: its 56 commits contain the active 3.0
+  release implementation that is absent from `main`.
+- Merged the four newer `main` commits without reintroducing stale active
+  OpenSpec copies, preserving the Flutter provenance, `uv`, and hidden release
+  artifact hotfixes plus their postmortems.
+- Corrected scoped graph persistence, hydration, offline replay, Entity
+  Explorer projections, and time-travel restore behavior while retaining the
+  singleton defaults for existing callers.
+- Full repository CI passed, including validation, lint, workspace typechecks,
+  builds, tests, skills verification, and security checks. An isolated
+  adversarial review reported no actionable findings.

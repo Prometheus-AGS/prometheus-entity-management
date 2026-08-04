@@ -1272,8 +1272,10 @@ test("the release verifier certifies workflow, packed consumers, recovery, and v
   assert.equal(report.artifacts.npm, 12);
   assert.equal(report.workflow.privateRootDenied, true);
   assert.equal(report.workflow.releaseNotes, "changesets-version-pr");
+  assert.equal(report.workflow.uvRuntime, "0.12.1");
   assert.equal(report.workflow.provenance, "actions-attest-v4");
   assert.equal(report.workflow.stageEnvironment, "npm-rc");
+  assert.equal(report.workflow.hiddenReleaseArtifacts, true);
   assert.equal(report.workflow.longLivedNpmToken, false);
   assert.equal(report.recovery.partialRetry, "matching-skip-absent-stage-conflict-block");
   assert.equal(report.recovery.candidateBundle, "bundle-relative-cross-job");

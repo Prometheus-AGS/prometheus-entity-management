@@ -1,5 +1,5 @@
 import { createStore } from "zustand/vanilla";
-import { graphStore } from "./graph";
+import { graphStore, type GraphStore } from "./graph";
 import { replayRegisteredGraphAction, subscribeGraphActionEvents } from "./graph-actions";
 
 export interface GraphPersistenceAdapter {
@@ -41,12 +41,14 @@ export interface GraphSnapshotPayload {
 export interface PersistGraphToStorageOptions {
   storage: GraphPersistenceAdapter;
   key: string;
+  store?: GraphStore;
   pendingActions?: GraphActionRecord[];
 }
 
 export interface HydrateGraphFromStorageOptions {
   storage: GraphPersistenceAdapter;
   key: string;
+  store?: GraphStore;
 }
 
 /**
@@ -72,6 +74,7 @@ export interface ReplayRetryPolicy {
 
 export interface StartLocalFirstGraphOptions {
   storage: GraphPersistenceAdapter;
+  store?: GraphStore;
   key?: string;
   replayPendingActions?: boolean;
   onlineSource?: {
@@ -120,9 +123,10 @@ export function getGraphSyncStatus() {
 }
 
 export async function persistGraphToStorage(opts: PersistGraphToStorageOptions) {
+  const storeApi = opts.store ?? graphStore;
   const payload: GraphSnapshotPayload = {
     version: 1,
-    snapshot: cloneGraphSnapshot(),
+    snapshot: cloneGraphSnapshot(storeApi),
     pendingActions: opts.pendingActions ?? Array.from(pendingActions.values()),
   };
   const json = JSON.stringify(payload);
@@ -142,6 +146,7 @@ export async function persistGraphToStorage(opts: PersistGraphToStorageOptions) 
 }
 
 export async function hydrateGraphFromStorage(opts: HydrateGraphFromStorageOptions) {
+  const storeApi = opts.store ?? graphStore;
   const raw = await opts.storage.get(opts.key);
   if (!raw) {
     return {
@@ -155,7 +160,7 @@ export async function hydrateGraphFromStorage(opts: HydrateGraphFromStorageOptio
 
   try {
     const parsed = JSON.parse(raw) as GraphSnapshotPayload;
-    graphStore.setState(parsed.snapshot as Partial<ReturnType<typeof graphStore.getState>>);
+    storeApi.setState(parsed.snapshot as Partial<ReturnType<typeof graphStore.getState>>);
     pendingActions.clear();
     for (const action of parsed.pendingActions ?? []) pendingActions.set(action.id, action);
     const hydratedAt = new Date().toISOString();
@@ -192,6 +197,7 @@ export async function hydrateGraphFromStorage(opts: HydrateGraphFromStorageOptio
 }
 
 export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFirstGraphRuntime {
+  const storeApi = opts.store ?? graphStore;
   const key = opts.key ?? DEFAULT_STORAGE_KEY;
   const persistDebounceMs = opts.persistDebounceMs ?? 50;
   const statusStore = graphSyncStatusStore.getState();
@@ -207,11 +213,11 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
   const schedulePersist = () => {
     if (persistTimer) clearTimeout(persistTimer);
     persistTimer = setTimeout(() => {
-      void persistGraphToStorage({ storage: opts.storage, key });
+      void persistGraphToStorage({ storage: opts.storage, key, store: storeApi });
     }, persistDebounceMs);
   };
 
-  const graphUnsub = graphStore.subscribe(() => {
+  const graphUnsub = storeApi.subscribe(() => {
     schedulePersist();
   });
 
@@ -234,7 +240,7 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
   });
 
   const ready = (async () => {
-    const hydrated = await hydrateGraphFromStorage({ storage: opts.storage, key });
+    const hydrated = await hydrateGraphFromStorage({ storage: opts.storage, key, store: storeApi });
     if (opts.replayPendingActions && hydrated.ok && pendingActions.size > 0) {
       graphSyncStatusStore.getState().setStatus({
         phase: "syncing",
@@ -242,12 +248,12 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
       });
       const policy = resolveRetryPolicy(opts.retryPolicy);
       for (const action of Array.from(pendingActions.values())) {
-        await replayActionWithRetry(action, policy);
+        await replayActionWithRetry(action, policy, storeApi);
         // Whether it succeeded or was poisoned, remove from pending — the
         // poison handler (if any) owns escalation from here.
         pendingActions.delete(action.id);
       }
-      await persistGraphToStorage({ storage: opts.storage, key });
+      await persistGraphToStorage({ storage: opts.storage, key, store: storeApi });
     }
 
     const online = onlineSource.getIsOnline();
@@ -268,10 +274,10 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
       if (persistTimer) clearTimeout(persistTimer);
     },
     async persistNow() {
-      await persistGraphToStorage({ storage: opts.storage, key });
+      await persistGraphToStorage({ storage: opts.storage, key, store: storeApi });
     },
     hydrate() {
-      return hydrateGraphFromStorage({ storage: opts.storage, key });
+      return hydrateGraphFromStorage({ storage: opts.storage, key, store: storeApi });
     },
     getStatus() {
       return graphSyncStatusStore.getState().status;
@@ -279,8 +285,8 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
   };
 }
 
-function cloneGraphSnapshot() {
-  const state = graphStore.getState();
+function cloneGraphSnapshot(storeApi: GraphStore) {
+  const state = storeApi.getState();
   return {
     entities: structuredClone(state.entities),
     patches: structuredClone(state.patches),
@@ -340,11 +346,12 @@ function sleep(ms: number): Promise<void> {
 export async function replayActionWithRetry(
   action: GraphActionRecord,
   policy: ResolvedRetryPolicy,
+  storeApi: GraphStore = graphStore,
 ): Promise<{ ok: true } | { ok: false; poisoned: true; error: unknown }> {
   let lastError: unknown = null;
   for (let attempt = 1; attempt <= policy.maxAttempts; attempt++) {
     try {
-      await replayRegisteredGraphAction(action);
+      await replayRegisteredGraphAction(action, storeApi);
       return { ok: true };
     } catch (error) {
       lastError = error;
