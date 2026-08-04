@@ -613,3 +613,26 @@
   transition after the known projection reset.
 - Preserved remote `main` and the frozen React RC source; npm and all registry
   tags remain untouched.
+
+## 2026-08-04 — Flint portable contracts task-3 verification
+
+- Added a hash-bound Flint contract fixture plus six Node regressions and five
+  BDD scenarios for realtime, issuer/tenant/`kid`/JWKS, role/key separation,
+  and Forge provisioning semantics.
+- Extended the opt-in live workflow to pin and verify Realtime Fabric, Gate,
+  and Forge together. Clean detached worktrees at revisions `cfc1bb2`,
+  `2438892`, and `2289d15` passed all 14 source-file digests.
+- The first BDD run exposed a CommonJS-loader failure from CLI top-level await;
+  wrapping the entrypoint in async `main()` corrected the observed boundary.
+  The rerun passed 5/5 scenarios and 16/16 steps.
+- Corrected the stale strict-JWK assessment: current RSA publication contains
+  standard `n` and `e`, while EC still lacks `crv`, `x`, and `y`. No unbuilt
+  Forge or JWK adapter is claimed.
+- Task-scoped units, BDD, verifier receipts, focused lint, core typecheck,
+  actionlint, JSON parsing, and diff hygiene pass. Aggregate clean gates and
+  final QA remain tasks 5 and 6.
+- Signed task 3 complete at revision 137 with both after-hooks successful, then
+  restored the parent change to `in_progress` through typed revision 138 after
+  the known projection reset.
+- Preserved frozen React candidate `main@1c40eaa`; npm `next`, `latest`, and
+  every registry version remain unchanged.
