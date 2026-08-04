@@ -114,6 +114,7 @@ describe("official A2UI v0.9.1 runtime", () => {
     });
 
     await waitFor(() => expect(screen.getByText("Reactive official update")).toBeTruthy());
+    expect(messages[2].updateDataModel.value.body).toBe("Versioned data model");
     runtime.dispose();
   });
 

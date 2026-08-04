@@ -127,11 +127,11 @@ export class PrometheusA2uiRuntime {
   processMessages(input: PrometheusA2uiMessageInput): void {
     this.assertActive();
     const messages = parseMessages(input);
-    this.preflight(messages);
+    this.preflight(structuredClone(messages));
 
     for (const message of messages) {
       this.assertAllowedComponents(message);
-      this.processor.processMessages([message]);
+      this.processor.processMessages([structuredClone(message)]);
     }
     this.refreshSnapshot();
   }

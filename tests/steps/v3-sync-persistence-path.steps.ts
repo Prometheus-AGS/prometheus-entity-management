@@ -227,7 +227,7 @@ Then("overall example and visual coverage remains in progress", function () {
         runtimeEvidence: { status: string };
         visualEvidence: { status: string };
       }) =>
-        ["planned", "implemented"].includes(status) &&
+        ["planned", "partial", "implemented"].includes(status) &&
         runtimeEvidence.status === status &&
         visualEvidence.status === status,
     ),

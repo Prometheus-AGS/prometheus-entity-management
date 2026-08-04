@@ -83,7 +83,7 @@ final class ShowcaseControllerProvider
 }
 
 String _$showcaseControllerHash() =>
-    r'd20d6f4671f5693029a72b6d0936b16d4ba19f3e';
+    r'303bbd331ea60612491934b2c7983c132702d98d';
 
 abstract class _$ShowcaseController extends $Notifier<ShowcaseState> {
   ShowcaseState build();
