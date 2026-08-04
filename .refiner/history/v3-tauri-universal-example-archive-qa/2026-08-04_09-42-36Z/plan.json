@@ -1,0 +1,50 @@
+{
+  "plan": {
+    "stages": [
+      {
+        "id": "audit",
+        "description": "Map the bounded Tauri plan and OpenSpec scenario to task receipts, current source, platform evidence, and explicit limits.",
+        "requires_execution": false
+      },
+      {
+        "id": "visual",
+        "description": "Inspect representative browser, macOS denial, Android dual-denial, and iOS runtime images at original resolution.",
+        "requires_execution": true,
+        "tool": "local original-resolution image inspection"
+      },
+      {
+        "id": "validate",
+        "description": "Rerun focused application, source, coverage, release, skills, OpenSpec, Changesets, artifact-integrity, signed-state, React-lane, and diff checks.",
+        "requires_execution": true,
+        "tool": "repository and KBD commands"
+      },
+      {
+        "id": "persist",
+        "description": "Write the constraint verdict, delta-first reflection, release boundary, and archive recommendation to persistent refiner state.",
+        "requires_execution": false
+      }
+    ],
+    "tool_invocations": [
+      {
+        "stage_id": "visual",
+        "tool": "local original-resolution image inspection",
+        "purpose": "Confirm branding, host labels, responsive composition, and denial evidence remain legible and correctly scoped."
+      },
+      {
+        "stage_id": "validate",
+        "tool": "repository and KBD commands",
+        "purpose": "Recompute current structural, behavioral, ledger, artifact, control-plane, and release-isolation evidence."
+      }
+    ],
+    "validation_plan": [
+      { "constraint_id": "acceptance-direct-evidence", "validation_method": "acceptance matrix, focused tests, strict OpenSpec, and signed task state", "execution_required": true },
+      { "constraint_id": "one-graph-layered-adapter-boundary", "validation_method": "source verifier and application units", "execution_required": true },
+      { "constraint_id": "platform-evidence-integrity", "validation_method": "receipt parsing, SHA-256, and image inspection", "execution_required": true },
+      { "constraint_id": "trust-boundaries-fail-closed", "validation_method": "unit/source denial regressions and native receipts", "execution_required": true },
+      { "constraint_id": "visual-accessibility-integrity", "validation_method": "image inspection and axe receipt", "execution_required": true },
+      { "constraint_id": "ledgers-and-release-contract-synchronized", "validation_method": "coverage/release/skills/Changesets gates", "execution_required": true },
+      { "constraint_id": "react-rc-lane-preserved", "validation_method": "remote-main and npm-next checks", "execution_required": true },
+      { "constraint_id": "limits-and-publication-truthful", "validation_method": "evidence wording and registry-state cross-check", "execution_required": true }
+    ]
+  }
+}

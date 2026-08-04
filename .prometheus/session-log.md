@@ -548,3 +548,25 @@
   same suite. The next run reproduced the same issue at 1k (59.7 ms versus 50
   ms). Preserved both focused/local ceilings and applied an explicit 2×
   scheduling allowance only when `CI` is exactly `true`.
+
+## 2026-08-04 — Universal Tauri task-6 certification and archive
+
+- Tightened durable offline-queue hydration so retained mutations must use the
+  canonical `task-status:<taskId>` identifier, a canonical ISO timestamp, and
+  one queued mutation per task before they can enter application state.
+- Rebuilt and re-ran the current macOS, Android API 36 emulator, and iOS 26.5
+  simulator lanes against the remediated source. The retained 30-file source
+  bundle is bound by SHA-256
+  `c52fabe6890b49bd04a4d283f9f2d06ef9c3f0bdf92ae14ecaa93181f9764ee6`.
+- Artifact-refiner passed all 8 blocking constraints. The isolated REST judge
+  returned PASS with 0 critical, 1 warning, and 0 suggestions; the strict
+  anti-sycophancy screen passed at 0.0. The retained warning identifies the
+  lack of an in-process retry after a transient initialization failure and did
+  not expand the bounded lifecycle contract.
+- Promoted the universal-example specification and archived the completed 6/6
+  change at
+  `openspec/changes/archive/2026-08-04-v3-tauri-universal-example/`. All 18
+  promoted OpenSpec specifications pass strict validation.
+- The frozen React RC source remains remote `main` commit
+  `1c40eaa08da210cbe3e20a77c5db211712b5c3a1`; no npm tag or registry state was
+  changed by this work.

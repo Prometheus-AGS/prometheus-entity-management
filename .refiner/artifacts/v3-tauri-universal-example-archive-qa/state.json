@@ -1,0 +1,68 @@
+{
+  "refinement_id": "bcd18b18-3e4f-4085-8106-493727da382a",
+  "artifact_name": "v3-tauri-universal-example-archive-qa",
+  "artifact_type": "code",
+  "content_type": "direct:code",
+  "started_at": "2026-08-04T10:22:33Z",
+  "updated_at": "2026-08-04T10:26:01Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Close the latest review's canonical persisted-queue ID, timestamp, and uniqueness defects.",
+    "Keep the bounded Tauri archive and frozen React RC release lane truthful and independent."
+  ],
+  "constraints": [
+    {
+      "id": "acceptance-direct-evidence"
+    },
+    {
+      "id": "one-graph-layered-adapter-boundary"
+    },
+    {
+      "id": "platform-evidence-integrity"
+    },
+    {
+      "id": "trust-boundaries-fail-closed"
+    },
+    {
+      "id": "visual-accessibility-integrity"
+    },
+    {
+      "id": "ledgers-and-release-contract-synchronized"
+    },
+    {
+      "id": "react-rc-lane-preserved"
+    },
+    {
+      "id": "limits-and-publication-truthful"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T10:24:00Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [],
+  "prior_cycle_id": "8867e162-4947-46dc-9b2f-b9d784e2bb5f",
+  "finalized_at": "2026-08-04T10:26:01Z"
+}

@@ -1,0 +1,39 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "examples/tauri-universal/src/features/platform/services/platform-service.ts",
+      "line": 173,
+      "claim": "Persisted queue validation does not fail closed before graph mutation because the graph runtime is started and hydrated before the queue is parsed.",
+      "evidence": "The trust-boundaries criterion requires persisted queue validation to fail closed before graph mutation; in `initialize()`, the diff calls `this.runtime = startLocalFirstGraph(...)` and `await this.runtime.ready` before `this.queue = parseQueue(await this.requireStorage().get(QUEUE_STORAGE_KEY))`.",
+      "suggested_fix": "Initialize storage, read and validate `QUEUE_STORAGE_KEY`, and only then start/hydrate the local-first graph or seed/mirror graph state."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "examples/coverage.json",
+      "line": 839,
+      "claim": "The coverage ledger claims implemented Android/iOS runtime evidence for the current showcase even though the current source changed after task-5 and no new Android/iOS runtime receipt was produced.",
+      "evidence": "`examples/coverage.json` marks `tauri-desktop-mobile.runtimeEvidence` as implemented with Android API 36 and iOS 26.5 runtime paths, while `task-6-current-source-build.md` states the shared service changed after task 5 and explicitly says the task-6 evidence is `not a new Android/iOS runtime receipt`; constraint `platform-evidence-integrity` forbids substituting source inference for runtime proof.",
+      "suggested_fix": "Rerun Android and iOS build/smoke on the current source and update hashes, or downgrade the current Android/iOS runtime claims to retained prior-scope evidence."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": ".kbd-orchestrator/phases/full-3.0-release/progress.json",
+      "line": 197,
+      "claim": "The tracked progress projection still records the change as only 5 of 6 tasks complete and `PENDING` while the archive evidence claims signed 6/6 completion.",
+      "evidence": "The hunk changes `tasks_done` to 5 and `tasks_total` to 6 while leaving `status` as `PENDING`; acceptance requires every task complete with reproducible evidence, and `task-6-kbd-control-plane.md` claims signed revision 122 records all six tasks complete.",
+      "suggested_fix": "Regenerate or update the authoritative checked-in progress projection to match the signed 6/6 completed state, or remove it from archive inputs if it is not authoritative."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

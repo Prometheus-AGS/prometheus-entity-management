@@ -121,7 +121,7 @@ function RuntimePanel() {
       <div className="boundary-proof">
         <span className="eyebrow">Capability boundary</span>
         <p>
-          Clear and remove are intentionally absent from the main webview. {nativeRuntime ? "Invoke the real denied command." : "Run inside Tauri for an IPC proof."}
+          Clear and remove are intentionally absent from the main webview. {nativeRuntime ? "Invoke both denied commands." : "Run inside Tauri for an IPC proof."}
         </p>
         <button
           type="button"
@@ -129,7 +129,7 @@ function RuntimePanel() {
           disabled={platform.phase !== "ready"}
           data-testid="prove-denial"
         >
-          Prove clear is denied
+          Prove clear and remove are denied
         </button>
         {platform.capabilityProof ? <output className="proof-output">{platform.capabilityProof}</output> : null}
       </div>

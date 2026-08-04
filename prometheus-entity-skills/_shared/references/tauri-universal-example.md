@@ -6,8 +6,10 @@ claims about `examples/tauri-universal`.
 ## Preserve one application and one graph
 
 - Keep one React 19/Vite 8 frontend for desktop, Android, and iOS.
-- Components use hooks; hooks use the platform store; the store calls the
-  platform service. Components and hooks do not import Tauri APIs.
+- Components use hooks. Hooks select reactive entity projections from the
+  canonical graph store and submit intents through the platform store; only
+  the platform store calls the platform service. Components import no store,
+  and components/hooks import no Tauri API or platform service.
 - Use the canonical graph singleton required by the current Tauri facade. Do
   not create a second UI or native graph.
 - Lists contain entity IDs only. Project and User details are joined from the

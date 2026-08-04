@@ -110,13 +110,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B786E31F8069DADE26E735F8 /* Externals */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Externals;
-			sourceTree = "<group>";
-		};
 		D3014153B08C715E8D412B95 /* src */ = {
 			isa = PBXGroup;
 			children = (
@@ -141,7 +134,6 @@
 				6F829A89FCE2F268E92F58CE /* assets */,
 				CBC89A49BD00A16D0F49B675 /* Assets.xcassets */,
 				4A000EBE36950B69BF480917 /* LaunchScreen.storyboard */,
-				B786E31F8069DADE26E735F8 /* Externals */,
 				3DB9092280C8BDCB58DC6AA4 /* prometheus-tauri-universal-example_iOS */,
 				E9EE572A6542ED4470C4ABB5 /* Sources */,
 				D3014153B08C715E8D412B95 /* src */,
@@ -236,7 +228,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "RUSTUP_TOOLCHAIN=stable pnpm tauri ios xcode-script -v --platform ${PLATFORM_DISPLAY_NAME:?} --sdk-root ${SDKROOT:?} --framework-search-paths \"${FRAMEWORK_SEARCH_PATHS:?}\" --header-search-paths \"${HEADER_SEARCH_PATHS:?}\" --gcc-preprocessor-definitions \"${GCC_PREPROCESSOR_DEFINITIONS:-}\" --configuration ${CONFIGURATION:?} ${FORCE_COLOR} ${ARCHS:?}";
+			shellScript = "unset CARGO_REGISTRY_TOKEN NPM_TOKEN NODE_AUTH_TOKEN\nRUSTUP_TOOLCHAIN=stable pnpm tauri ios xcode-script -v --platform ${PLATFORM_DISPLAY_NAME:?} --sdk-root ${SDKROOT:?} --framework-search-paths \"${FRAMEWORK_SEARCH_PATHS:?}\" --header-search-paths \"${HEADER_SEARCH_PATHS:?}\" --gcc-preprocessor-definitions \"${GCC_PREPROCESSOR_DEFINITIONS:-}\" --configuration ${CONFIGURATION:?} ${FORCE_COLOR} ${ARCHS:?}\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

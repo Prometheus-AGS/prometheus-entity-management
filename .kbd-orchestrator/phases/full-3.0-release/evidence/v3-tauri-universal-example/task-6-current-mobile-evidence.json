@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-tauri-universal-example",
+  "status": "pass",
+  "recordedAt": "2026-08-04T10:18:04Z",
+  "sourceBase": "0de1e81f63dace24142bc139c0da6584a698c74d",
+  "workingTreeSourcePatchSha256": "d94644e966f6003c1eebfcddac7fb66b9639da3bc8932538aaa8cf7248e20725",
+  "currentSourceBundleSha256": "c52fabe6890b49bd04a4d283f9f2d06ef9c3f0bdf92ae14ecaa93181f9764ee6",
+  "currentSourceFileCount": 30,
+  "credentialsRemovedFromBuildChildren": [
+    "CARGO_REGISTRY_TOKEN",
+    "NPM_TOKEN",
+    "NODE_AUTH_TOKEN"
+  ],
+  "macos": {
+    "build": "pass",
+    "platform": "macOS arm64",
+    "applicationExecutableSha256": "92ecae0f9b3b157339b44614453a249519af9d1fad4aec2ca6291c752ea2c263",
+    "applicationExecutableBytes": 15177872,
+    "dmgSha256": "7f06df59542b5467c6831c637ad406f9f9803c98979de460389a5ec92c1262ea",
+    "dmgBytes": 4312437,
+    "runtimeClassification": "task-5 historical runtime retained; task-6 proves the corrected current source bundles"
+  },
+  "android": {
+    "build": "pass",
+    "runtime": "pass",
+    "capabilityDenial": "pass-exact-error-shape",
+    "platform": "Android 16 API 36 arm64 Pixel_9_Pro_XL emulator",
+    "package": "com.prometheusags.entitygraph.universal",
+    "version": "0.0.1",
+    "minSdk": 24,
+    "targetSdk": 36,
+    "apkSha256": "34c6d827019a7bef10a478b470eb96076a0dd3241d42f66470ecdcd9bd382bc7",
+    "apkBytes": 82125302,
+    "observedDenials": {
+      "clear": "entity-graph-tauri.graph_clear not allowed. Permissions associated with this command: entity-graph-tauri:allow-graph-clear",
+      "remove": "entity-graph-tauri.graph_remove_entity not allowed. Permissions associated with this command: entity-graph-tauri:allow-graph-remove-entity"
+    }
+  },
+  "ios": {
+    "build": "pass",
+    "runtime": "pass",
+    "platform": "iPhone 17 iOS 26.5 arm64 simulator",
+    "bundleIdentifier": "com.prometheusags.entitygraph.universal",
+    "version": "0.0.1",
+    "signing": "simulator-local-sign-only-not-distribution",
+    "executableSha256": "e8612fabded4d24dcec13afe76c98f4bfc46cf95222d224a4c8952d015405344",
+    "executableBytes": 37603520,
+    "launcherExecutableSha256": "7c3b896a0ab184918614ee755011f53e80d645284a36cfe4b1faaeba1f2eb749",
+    "launcherExecutableBytes": 72480
+  },
+  "retainedArtifacts": [
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-6-current-android-runtime.png",
+      "sha256": "be5d10cdca947d8375cb66979951abd5768a312ab87d2728ae68ac4238eb434f"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-6-current-android-runtime.xml",
+      "sha256": "84c15aa9bcba104f6209530a89bb24870b24093ba61775838eaa840621e9434f"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-6-current-android-capability-denial.png",
+      "sha256": "3aea3452de15b4d2e91ea4c99fdc5a0082d6c60601f087481fcfda6c10f37bf4"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-6-current-android-capability-denial.xml",
+      "sha256": "e919322b0e5a68359a3bc080c4dfcd7e3aae0a963f0d96331a2a7da93b2ce1f0"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-6-current-ios-runtime.png",
+      "sha256": "34bedde2b64acb29cbf35bfdc5c0f2b841c78fc557eed29562f0bddba4e87c47"
+    }
+  ],
+  "limits": [
+    "The current macOS task-6 receipt is build evidence; task-5 retains the executed macOS runtime flow.",
+    "Android evidence is emulator evidence, not a physical-device receipt.",
+    "iOS evidence is unsigned simulator evidence, not physical-device or distribution-signing proof.",
+    "Windows, Linux, native assistive technology, app stores, npm publication, and stable 3.0 certification remain outside this receipt.",
+    "The independently frozen React 3.0.0-rc.1 source and npm tags are unchanged."
+  ]
+}

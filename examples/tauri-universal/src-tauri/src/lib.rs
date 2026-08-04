@@ -22,6 +22,7 @@ mod tests {
     const UPSERT_ENTITY: &str = "plugin:entity-graph-tauri|graph_upsert_entity";
     const GET_ENTITY: &str = "plugin:entity-graph-tauri|graph_get_entity";
     const CLEAR_GRAPH: &str = "plugin:entity-graph-tauri|graph_clear";
+    const REMOVE_ENTITY: &str = "plugin:entity-graph-tauri|graph_remove_entity";
 
     fn request(command: &str, body: Value) -> InvokeRequest {
         InvokeRequest {
@@ -97,6 +98,33 @@ mod tests {
 
         let error = get_ipc_response(&webview, request(CLEAR_GRAPH, json!({})))
             .expect_err("graph_clear must remain outside the main capability");
+        let message = error.to_string();
+        assert!(
+            message.contains("not allowed") || message.contains("denied"),
+            "denial should identify the missing authorization: {message}"
+        );
+    }
+
+    #[test]
+    fn main_webview_denies_the_destructive_remove_command() {
+        let app = host();
+        let webview = WebviewWindowBuilder::new(&app, "main", Default::default())
+            .build()
+            .expect("main mock webview should build");
+
+        let error = get_ipc_response(
+            &webview,
+            request(
+                REMOVE_ENTITY,
+                json!({
+                    "payload": {
+                        "entityType": "Task",
+                        "entityId": "task-denied-capability"
+                    }
+                }),
+            ),
+        )
+        .expect_err("graph_remove_entity must remain outside the main capability");
         let message = error.to_string();
         assert!(
             message.contains("not allowed") || message.contains("denied"),

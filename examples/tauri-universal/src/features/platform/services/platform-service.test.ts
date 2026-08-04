@@ -2,7 +2,12 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { graphStore } from "@prometheus-ags/entity-graph-core";
 import { ENTITY_TYPES, TASK_LIST_KEY } from "@/features/tasks/types";
 import type { PlatformService } from "../types";
-import { createPlatformService, parseTaskDeepLink } from "./platform-service";
+import {
+  createPlatformService,
+  isGraphClearCapabilityDenial,
+  isGraphRemoveCapabilityDenial,
+  parseTaskDeepLink,
+} from "./platform-service";
 
 const QUEUE_STORAGE_KEY = "prometheus:tauri-universal:queue:v1";
 const TASK_ID = "task-native-persistence";
@@ -143,6 +148,90 @@ describe("universal platform service", () => {
     await expect(service().initialize()).rejects.toThrow(
       "The persisted task queue does not match the universal example contract.",
     );
+    expect(graphStore.getState().entities).toEqual({});
+    expect(graphStore.getState().lists).toEqual({});
+  });
+
+  it("rejects an unknown queued task before hydrating the graph", async () => {
+    window.localStorage.setItem(
+      QUEUE_STORAGE_KEY,
+      JSON.stringify([
+        {
+          id: "task-status:task-injected",
+          taskId: "task-injected",
+          status: "review",
+          enqueuedAt: "2026-08-04T00:00:00.000Z",
+        },
+      ]),
+    );
+
+    await expect(service().initialize()).rejects.toThrow(
+      "The persisted task queue does not match the universal example contract.",
+    );
+    expect(graphStore.getState().entities).toEqual({});
+    expect(graphStore.getState().lists).toEqual({});
+  });
+
+  it("rejects noncanonical, non-ISO, or duplicate queued mutations before hydration", async () => {
+    const invalidQueues = [
+      [
+        {
+          id: "forged-mutation-id",
+          taskId: TASK_ID,
+          status: "review",
+          enqueuedAt: "2026-08-04T00:00:00.000Z",
+        },
+      ],
+      [
+        {
+          id: `task-status:${TASK_ID}`,
+          taskId: TASK_ID,
+          status: "review",
+          enqueuedAt: "not-an-iso-timestamp",
+        },
+      ],
+      [
+        {
+          id: `task-status:${TASK_ID}`,
+          taskId: TASK_ID,
+          status: "review",
+          enqueuedAt: "2026-08-04T00:00:00.000Z",
+        },
+        {
+          id: `task-status:${TASK_ID}`,
+          taskId: TASK_ID,
+          status: "done",
+          enqueuedAt: "2026-08-04T00:01:00.000Z",
+        },
+      ],
+    ];
+
+    for (const queue of invalidQueues) {
+      window.localStorage.clear();
+      resetGraph();
+      window.localStorage.setItem(QUEUE_STORAGE_KEY, JSON.stringify(queue));
+      const runtime = service();
+      await expect(runtime.initialize()).rejects.toThrow(
+        "The persisted task queue does not match the universal example contract.",
+      );
+      expect(graphStore.getState().entities).toEqual({});
+      expect(graphStore.getState().lists).toEqual({});
+      await runtime.dispose();
+      services.delete(runtime);
+    }
+  });
+
+  it("validates a restored mutation queue before hydrating the graph", async () => {
+    const runtime = service();
+    await runtime.initialize();
+    resetGraph();
+    window.localStorage.setItem(QUEUE_STORAGE_KEY, JSON.stringify({ taskId: TASK_ID }));
+
+    await expect(runtime.restore()).rejects.toThrow(
+      "The persisted task queue does not match the universal example contract.",
+    );
+    expect(graphStore.getState().entities).toEqual({});
+    expect(graphStore.getState().lists).toEqual({});
   });
 
   it("reassigns a task and invalidates both relationship targets plus its list", async () => {
@@ -183,6 +272,55 @@ describe("universal platform service", () => {
     await expect(runtime.proveDestructiveCommandDenied()).resolves.toBe(
       "Browser preview has no native IPC capability boundary to test.",
     );
+  });
+
+  it("accepts only the observed destructive capability errors as denial proof", () => {
+    expect(
+      isGraphClearCapabilityDenial(
+        new Error(
+          "entity-graph-tauri.graph_clear not allowed. Permissions associated with this command: entity-graph-tauri:allow-graph-clear",
+        ),
+      ),
+    ).toBe(true);
+    expect(isGraphClearCapabilityDenial(new Error("native IPC transport disconnected"))).toBe(false);
+    expect(
+      isGraphClearCapabilityDenial(
+        new Error(
+          "prefix entity-graph-tauri.graph_clear not allowed. Permissions associated with this command: entity-graph-tauri:allow-graph-clear",
+        ),
+      ),
+    ).toBe(false);
+    expect(
+      isGraphClearCapabilityDenial(
+        new Error(
+          "entity-graph-tauri.graph_remove_entity not allowed. Permissions associated with this command: entity-graph-tauri:allow-graph-remove-entity",
+        ),
+      ),
+    ).toBe(false);
+    expect(
+      isGraphRemoveCapabilityDenial(
+        new Error(
+          "entity-graph-tauri.graph_remove_entity not allowed. Permissions associated with this command: entity-graph-tauri:allow-graph-remove-entity",
+        ),
+      ),
+    ).toBe(true);
+    expect(
+      isGraphRemoveCapabilityDenial(
+        new Error(
+          "entity-graph-tauri.graph_clear not allowed. Permissions associated with this command: entity-graph-tauri:allow-graph-clear",
+        ),
+      ),
+    ).toBe(false);
+    expect(isGraphRemoveCapabilityDenial(new Error("native IPC transport disconnected"))).toBe(
+      false,
+    );
+    expect(
+      isGraphRemoveCapabilityDenial(
+        new Error(
+          "entity-graph-tauri.graph_remove_entity not allowed. Permissions associated with this command: entity-graph-tauri:allow-graph-remove-entity suffix",
+        ),
+      ),
+    ).toBe(false);
   });
 });
 

@@ -1,0 +1,22 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "examples/tauri-universal/src-tauri/capabilities/universal-main.json",
+      "claim": "The change withholds multiple destructive IPC permissions but only tests `graph_clear`, so the denied-permissions acceptance boundary is only partially covered.",
+      "evidence": "Acceptance requires \"denied permissions ... are tested\" and the blocking constraint says \"Withheld destructive IPC permissions ... fail closed\"; `universal-main.json` omits both `entity-graph-tauri:allow-graph-clear` and `entity-graph-tauri:allow-graph-remove-entity`, but the implemented denial paths only invoke/test clear: `examples/tauri-universal/src/features/platform/services/platform-service.ts` calls `this.plugin.commands.clearGraph()`, `examples/tauri-universal/src-tauri/src/lib.rs` defines only `CLEAR_GRAPH`, and `tests/release/v3-tauri-universal-example.test.mjs` only rejects granting `allow-graph-clear`.",
+      "suggested_fix": "Add an application/native denial path and retained evidence for the withheld remove-entity permission, or stop declaring removal as part of the withheld permission boundary for this showcase."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "reflection": {
+    "iteration": 5,
+    "max_iterations": 5,
+    "delta": "The fourth isolated review correctly found that persisted queue input was parsed after graph hydration and that task-5 mobile binaries no longer proved the corrected current source. Cycle 5 moves queue parsing before runtime hydration, rebuilds macOS/Android/iOS from the current source, executes Android and iOS again, and binds five new runtime artifacts without editing the stale generated KBD projection.",
+    "constraint_evaluation": [
+      { "constraint_id": "acceptance-direct-evidence", "status": "satisfied", "notes": "Signed revision 122, current generated artifacts, 8 units, 15 source contracts, and current macOS/Android/iOS builds plus Android/iOS runtime evidence provide direct evidence without substituting stale projections." },
+      { "constraint_id": "one-graph-layered-adapter-boundary", "status": "satisfied", "notes": "Components use hooks only. Hooks select the canonical graph store for reactive entity reads and the platform store for intents; only the platform store calls the service. The verifier rejects hook-to-service bypass and any second graph." },
+      { "constraint_id": "platform-evidence-integrity", "status": "satisfied", "notes": "All 18 task-5 artifacts remain hash-bound and scoped. Five additional task-6 Android/iOS artifacts plus current macOS, APK, and iOS executable hashes bind the corrected source without relabeling the historical macOS runtime." },
+      { "constraint_id": "trust-boundaries-fail-closed", "status": "satisfied", "notes": "Persisted queue input is parsed before graph hydration. Only the observed entity-graph-tauri.graph_clear not-allowed error paired with allow-graph-clear is accepted. Transport and other-command errors fail; native build environments remove registry credentials." },
+      { "constraint_id": "visual-accessibility-integrity", "status": "satisfied", "notes": "Historical visuals remain hash-identical. Current Android runtime/denial and iOS runtime screenshots were inspected at original resolution and remain explicitly emulator/simulator evidence." },
+      { "constraint_id": "ledgers-and-release-contract-synchronized", "status": "satisfied", "notes": "Coverage, release, skills, docs, and the revised architecture wording agree with the actual graph/platform store boundaries." },
+      { "constraint_id": "react-rc-lane-preserved", "status": "satisfied", "notes": "Remote main remains the rehearsed rc.1 SHA and npm next remains absent." },
+      { "constraint_id": "limits-and-publication-truthful", "status": "satisfied", "notes": "Current desktop build proof is separated from historical runtime proof; current Android/iOS receipts remain emulator/simulator-only. Physical devices, signing, rotation, registries, aggregate certification, and publication remain explicit limits." }
+    ],
+    "deterministic_validation": "Universal verifier 8/8; application 8/8; source contract 15/15; TypeScript and ESLint pass; current macOS app/DMG, Android APK/runtime/exact denial, and iOS simulator app/runtime pass; coverage 13/13 and 15/15 plus 4/4 BDD; release 16/16 plus 5/5 BDD; skills ledgers; strict OpenSpec; Changesets; 23/23 hashes; signed revision 122; React/npm isolation; diff hygiene all pass.",
+    "target_alignment": "Untrusted durable queue input now fails before hydration, every current target build is bound to the corrected source, and the independently frozen React RC lane remains untouched.",
+    "regression_check": "The service test keeps malformed queues from hydrating entities/lists; the source verifier rejects hydration-before-parse and missing current-source evidence; Android visibly proves the exact denial; all current platform artifact hashes match the task-6 receipt.",
+    "convergence": {
+      "decision": "terminate",
+      "reason": "All eight blocking constraints have current direct evidence at the maximum fifth iteration after queue-order and current-mobile correction.",
+      "next_focus": "Run the final isolated cumulative-diff review; archive only on a non-blocking verdict."
+    }
+  }
+}

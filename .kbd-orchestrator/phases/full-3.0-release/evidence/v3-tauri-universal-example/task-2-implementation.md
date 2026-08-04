@@ -12,10 +12,11 @@ Task: 2 of 6
 - Added one React/Vite application shared by desktop, Android, and iOS. The
   application domain is Task/Project/User, with entities stored once and the
   task list represented only by ordered IDs.
-- Preserved the required layering:
-  `components -> hooks -> platform store -> platform service -> graph/native`.
-  A scoped scan confirms that the component directory imports neither the
-  graph store nor the platform service.
+- Preserved the required layering. Components use hooks only; hooks select
+  entity projections from the canonical graph store and submit platform
+  intents to the platform store; the platform store alone calls the platform
+  service, which owns graph writes and native I/O. A scoped scan confirms that
+  components import neither store/service and hooks import no service.
 - Added one platform service boundary. Tauri detection, commands, SQL,
   deep-link APIs, window lifecycle APIs, and the browser-preview fallback are
   all isolated there; application/domain behavior is not forked by platform.
@@ -48,7 +49,7 @@ Task: 2 of 6
 - The main webview capability grants core event/window, deep-link, SQL default
   plus execute, entity-graph read defaults, upsert, and list writes.
 - `graph_clear` and entity removal permissions are deliberately absent. The UI
-  invokes the real clear command so Tauri can prove it is denied without
+  invokes both real commands so Tauri can prove each is denied without
   mutating the graph.
 - Deep links are untrusted input. Only the registered
   `prometheus-entity://task/<known-id>?tenant=prometheus-labs` shape is accepted,

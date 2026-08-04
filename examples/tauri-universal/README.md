@@ -14,14 +14,18 @@ denial; this example must prove the complete application on each target.
 ```text
 React components
   -> application hooks
-  -> platform store
-  -> platform service
-       -> canonical entity graph
-       -> local-first persistence runtime
-       -> Tauri graph, SQL, deep-link, and lifecycle APIs
+       -> canonical entity graph store (reactive reads)
+       -> platform store (intents and platform state)
+            -> platform service
+                 -> canonical entity graph writes
+                 -> local-first persistence runtime
+                 -> Tauri graph, SQL, deep-link, and lifecycle APIs
 ```
 
 - Components import hooks only; they do not import the graph or Tauri APIs.
+- Hooks select normalized entity projections from the canonical graph store
+  and submit intents through the platform store; they do not call the platform
+  service or native APIs directly.
 - Tasks, Projects, and Users live once in the canonical normalized graph.
   The task list stores ordered task IDs, and task views join related Project
   and User entities at read time.

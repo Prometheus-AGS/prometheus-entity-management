@@ -52,6 +52,9 @@ open class BuildTask : DefaultTask() {
 
         project.exec {
             workingDir(File(project.projectDir, rootDirRel))
+            environment.remove("CARGO_REGISTRY_TOKEN")
+            environment.remove("NPM_TOKEN")
+            environment.remove("NODE_AUTH_TOKEN")
             environment("RUSTUP_TOOLCHAIN", "stable")
             executable(executable)
             args(args)

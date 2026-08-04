@@ -30,7 +30,6 @@ targets:
     sources:
       - path: Sources
       - path: Assets.xcassets
-      - path: Externals
       - path: prometheus-tauri-universal-example_iOS
       - path: assets
         buildPhase: resources
@@ -51,8 +50,12 @@ targets:
           - UIInterfaceOrientationPortraitUpsideDown
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
-        CFBundleShortVersionString: 0.0.0
-        CFBundleVersion: "0.0.0"
+        CFBundleShortVersionString: 0.0.1
+        CFBundleVersion: "0.0.1"
+        CFBundleURLTypes:
+          - CFBundleURLName: prometheus-entity
+            CFBundleURLSchemes:
+              - prometheus-entity
     entitlements:
       path: prometheus-tauri-universal-example_iOS/prometheus-tauri-universal-example_iOS.entitlements
     scheme:
@@ -80,7 +83,9 @@ targets:
       - sdk: UIKit.framework
       - sdk: WebKit.framework
     preBuildScripts:
-      - script: RUSTUP_TOOLCHAIN=stable pnpm tauri ios xcode-script -v --platform ${PLATFORM_DISPLAY_NAME:?} --sdk-root ${SDKROOT:?} --framework-search-paths "${FRAMEWORK_SEARCH_PATHS:?}" --header-search-paths "${HEADER_SEARCH_PATHS:?}" --gcc-preprocessor-definitions "${GCC_PREPROCESSOR_DEFINITIONS:-}" --configuration ${CONFIGURATION:?} ${FORCE_COLOR} ${ARCHS:?}
+      - script: |
+          unset CARGO_REGISTRY_TOKEN NPM_TOKEN NODE_AUTH_TOKEN
+          RUSTUP_TOOLCHAIN=stable pnpm tauri ios xcode-script -v --platform ${PLATFORM_DISPLAY_NAME:?} --sdk-root ${SDKROOT:?} --framework-search-paths "${FRAMEWORK_SEARCH_PATHS:?}" --header-search-paths "${HEADER_SEARCH_PATHS:?}" --gcc-preprocessor-definitions "${GCC_PREPROCESSOR_DEFINITIONS:-}" --configuration ${CONFIGURATION:?} ${FORCE_COLOR} ${ARCHS:?}
         name: Build Rust Code
         basedOnDependencyAnalysis: false
         outputFiles:

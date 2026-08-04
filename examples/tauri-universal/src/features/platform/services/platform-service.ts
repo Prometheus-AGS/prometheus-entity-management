@@ -37,6 +37,11 @@ const GRAPH_STORAGE_KEY = "prometheus:tauri-universal:graph:v1";
 const QUEUE_STORAGE_KEY = "prometheus:tauri-universal:queue:v1";
 const CONNECTION_MODE_STORAGE_KEY = "prometheus:tauri-universal:connection-mode:v1";
 const DEEP_LINK_TENANT = "prometheus-labs";
+const KNOWN_TASK_IDS = new Set(SEED_TASKS.map((task) => task.id));
+const GRAPH_CLEAR_CAPABILITY_DENIAL =
+  "entity-graph-tauri.graph_clear not allowed. Permissions associated with this command: entity-graph-tauri:allow-graph-clear";
+const GRAPH_REMOVE_CAPABILITY_DENIAL =
+  "entity-graph-tauri.graph_remove_entity not allowed. Permissions associated with this command: entity-graph-tauri:allow-graph-remove-entity";
 
 registerSchema({
   type: ENTITY_TYPES.task,
@@ -125,7 +130,11 @@ function isQueuedTaskMutation(value: unknown): value is QueuedTaskMutation {
   return (
     typeof candidate.id === "string" &&
     typeof candidate.taskId === "string" &&
+    KNOWN_TASK_IDS.has(candidate.taskId) &&
+    candidate.id === `task-status:${candidate.taskId}` &&
     typeof candidate.enqueuedAt === "string" &&
+    Number.isFinite(Date.parse(candidate.enqueuedAt)) &&
+    new Date(candidate.enqueuedAt).toISOString() === candidate.enqueuedAt &&
     typeof candidate.status === "string" &&
     TASK_STATUSES.includes(candidate.status as TaskStatus)
   );
@@ -137,11 +146,24 @@ function parseQueue(raw: string | null): QueuedTaskMutation[] {
   if (!Array.isArray(value) || !value.every(isQueuedTaskMutation)) {
     throw new Error("The persisted task queue does not match the universal example contract.");
   }
+  const hasUniqueTaskIds =
+    new Set(value.map((mutation) => mutation.taskId)).size === value.length;
+  if (!hasUniqueTaskIds) {
+    throw new Error("The persisted task queue does not match the universal example contract.");
+  }
   return value;
 }
 
 function formatError(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
+}
+
+export function isGraphClearCapabilityDenial(error: unknown): boolean {
+  return formatError(error) === GRAPH_CLEAR_CAPABILITY_DENIAL;
+}
+
+export function isGraphRemoveCapabilityDenial(error: unknown): boolean {
+  return formatError(error) === GRAPH_REMOVE_CAPABILITY_DENIAL;
 }
 
 class UniversalPlatformService implements PlatformService {
@@ -171,6 +193,7 @@ class UniversalPlatformService implements PlatformService {
       this.attachWebLifecycle();
     }
 
+    this.queue = parseQueue(await this.requireStorage().get(QUEUE_STORAGE_KEY));
     this.runtime = startLocalFirstGraph({
       storage: this.requireStorage(),
       key: GRAPH_STORAGE_KEY,
@@ -178,7 +201,6 @@ class UniversalPlatformService implements PlatformService {
       replayPendingActions: false,
     });
     await this.runtime.ready;
-    this.queue = parseQueue(await this.requireStorage().get(QUEUE_STORAGE_KEY));
 
     if (!graphStore.getState().lists[TASK_LIST_KEY]?.ids.length) {
       await this.seedGraph();
@@ -349,8 +371,9 @@ class UniversalPlatformService implements PlatformService {
   }
 
   async restore(): Promise<PlatformSnapshot> {
+    const restoredQueue = parseQueue(await this.requireStorage().get(QUEUE_STORAGE_KEY));
     await this.runtime?.hydrate();
-    this.queue = parseQueue(await this.requireStorage().get(QUEUE_STORAGE_KEY));
+    this.queue = restoredQueue;
     await this.mirrorGraphToNative();
     if (this.onlineSource.getIsOnline()) await this.flushQueue();
     return this.publishSnapshot();
@@ -360,12 +383,32 @@ class UniversalPlatformService implements PlatformService {
     if (!this.plugin) {
       return "Browser preview has no native IPC capability boundary to test.";
     }
+    const denials: string[] = [];
     try {
       await this.plugin.commands.clearGraph();
     } catch (error) {
-      return `Denied as configured: ${formatError(error)}`;
+      if (!isGraphClearCapabilityDenial(error)) throw error;
+      denials.push(`clear: ${formatError(error)}`);
     }
-    throw new Error("graph_clear unexpectedly succeeded; the capability is over-privileged.");
+    if (denials.length === 0) {
+      throw new Error("graph_clear unexpectedly succeeded; the capability is over-privileged.");
+    }
+
+    try {
+      await this.plugin.commands.removeEntity({
+        entityType: ENTITY_TYPES.task,
+        entityId: "task-denied-capability",
+      });
+    } catch (error) {
+      if (!isGraphRemoveCapabilityDenial(error)) throw error;
+      denials.push(`remove: ${formatError(error)}`);
+    }
+    if (denials.length !== 2) {
+      throw new Error(
+        "graph_remove_entity unexpectedly succeeded; the capability is over-privileged.",
+      );
+    }
+    return `Denied as configured: ${denials.join(" | ")}`;
   }
 
   async dispose(): Promise<void> {
