@@ -62,8 +62,8 @@ or offline-sync claim for the native mirror.
 | Missing capability rejects the command | Implemented | denied-webview host test |
 | npm tarball is a usable Rust dependency | Implemented | extracted-candidate Cargo host test |
 | Rust, permission, Android, and iOS sources are packaged | Implemented | tarball payload verifier |
-| Android Kotlin bridge executes and rejects without permission | Required | documented physical-device lane |
-| iOS Swift bridge executes and rejects without permission | Required | documented simulator/device lane |
+| Android Kotlin bridge executes and rejects without permission | Implemented | hash-verified Samsung Android 16 physical-device receipts |
+| iOS Swift bridge executes and rejects without permission | Implemented | hash-verified iPhone 17/iOS 26.5 simulator receipts |
 | Complete Tauri application UX and restart/offline flow | Downstream | `v3-tauri-universal-example` |
 
 Run the implemented host boundary with:
@@ -74,13 +74,14 @@ pnpm run bdd:tauri-plugin
 ```
 
 Android/iOS runtime receipts follow
-[`tauri-mobile-device-lane.md`](tauri-mobile-device-lane.md). Until both are
-captured, `examples/coverage.json` keeps the gate `partial` and stable 3.0.0
-mobile certification remains open.
+[`tauri-mobile-device-lane.md`](tauri-mobile-device-lane.md) and are retained
+under the plugin change's device evidence directory. `examples/coverage.json`
+records the plugin bridge gate as implemented. Stable 3.0.0 remains open for
+the separately owned universal application, aggregate certification, and
+publication gates.
 
 ## What this does not certify
 
-- Kotlin or Swift execution from source presence or cross-compilation alone;
 - a full desktop/mobile showcase, rendered accessibility, or device UX;
 - process-restart persistence, synchronization, or remote server availability;
 - registry authority, provenance, release-candidate recovery, or npm `latest`.

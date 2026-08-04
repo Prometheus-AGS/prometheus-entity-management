@@ -466,3 +466,26 @@
 - The machine's default Rust 1.99.0 nightly hit a compiler ICE in Tokio; the
   unchanged locked suite passed 2/2 on certified Rust 1.97.1 stable. The frozen
   React RC source and npm registry state remain untouched.
+
+## 2026-08-04 — Universal Tauri task-4 declared surface
+
+- Corrected the Tauri showcase path to `examples/tauri-universal` and recorded
+  partial capability evidence for browser-runtime durable queue/reload and
+  stable-Rust MockRuntime command/denial checks.
+- Kept the showcase planned because browser visuals, desktop packaging,
+  Android/iOS app smoke, relationship invalidation, and realtime coalescing
+  remain unexecuted task-5 gates.
+- Added complete example, release, and agent-reference documentation for the
+  one-graph/service-boundary architecture and its evidence limits.
+- Reconciled stale plugin prose with the existing hash-verified Android
+  physical-device and iOS simulator receipts without using those receipts as
+  universal-app certification.
+- Confirmed no package API changed: all JS, Tauri, and Dart ledgers pass; the
+  Tauri ledger remains 26 runtime and 57 declaration exports with its prior
+  hash intact.
+- Coverage, coverage/release BDD, strict OpenSpec, focused lint, stable root
+  Rust tests, source verification, and diff hygiene pass. The React RC source
+  and registry state remain independent and untouched.
+- Signed task completion committed at revision 116 with both after-hooks green.
+  The known parent-projection reset was corrected through a typed transition at
+  revision 117; tasks 5 and 6 remain pending and the change remains in progress.

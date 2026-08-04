@@ -111,6 +111,7 @@ Cross-cutting schemas and patterns used by all sub-skills:
 - [Dart graph and Riverpod 3](_shared/references/dart-graph-riverpod.md) — canonical graph ownership, generated providers, views, optimistic rollback, retry, transports, API ledger, and evidence limits
 - [Flutter/Riverpod/A2UI showcase](_shared/references/flutter-riverpod-a2ui-example.md) — complete app composition, safe GenUI boundary, Flutter 3.44.8 host evidence, and passing iOS/Android smoke lanes
 - [Tauri desktop/mobile plugin](_shared/references/tauri-mobile-plugin.md) — generated bindings, least-privilege capabilities, in-memory mirror ownership, packed host proof, and mobile evidence limits
+- [Universal Tauri application](_shared/references/tauri-universal-example.md) — shared React/Tauri architecture, durable queue, deep-link/capability policy, focused checks, and pending platform/visual gates
 - [Recoverable release-candidate pipeline](_shared/references/release-candidate-pipeline.md) — contract-derived artifacts, non-mutating rehearsal, OIDC staging boundary, protected tags, and restart recovery
 - [Entity Schema Reference](/_shared/references/schemas/entity-schema.md) — registerSchema contract
 - [3.0 Release Contract](_shared/references/v3-release-contract.md) — authoritative packaging, compatibility, maturity, promotion, and recovery rules
@@ -130,6 +131,13 @@ load the Tauri reference and require `pnpm run verify:tauri-plugin` plus the
 Tauri package `verify:skills` gate. Keep `entity-graph-tauri:default` read-only,
 do not describe the in-memory snapshot mirror as durable SQLite, and never use
 desktop or packed-source proof as Android/iOS runtime certification.
+
+For the complete universal Tauri application, also load the universal example
+reference. Preserve one React frontend, one canonical normalized graph, the
+component-to-hook-to-store-to-service boundary, SQL-owned durability, and the
+default-deny deep-link/capability policy. Focused unit, MockRuntime, or source
+checks do not authorize browser visual, desktop bundle, Android/iOS application,
+registry, or stable-release claims.
 
 For React 19/Vite 8 showcase or React-first RC readiness claims, load the React
 showcase reference and require `pnpm run bdd:vite-react19`. Preserve its

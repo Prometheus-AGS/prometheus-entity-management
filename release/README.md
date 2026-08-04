@@ -92,7 +92,7 @@ behavior. The shared mobile integration test and workflow lanes are authored,
 but execution remains the next platform gate. The example adds no public Dart
 declaration and authorizes no registry publication.
 
-## Partial Tauri desktop/mobile plugin gate
+## Implemented Tauri desktop/mobile plugin gate
 
 [`tauri-mobile-plugin.md`](tauri-mobile-plugin.md) documents the implemented
 Rust-derived binding, registered desktop IPC, capability-denial, and packed
@@ -100,11 +100,21 @@ native-payload evidence. The plugin default permission is read-only, and its
 native snapshot map is explicitly in-memory; durable SQLite remains owned by
 the core adapter.
 
-The gate remains partial because packaged Kotlin and Swift sources are not
-Android/iOS execution evidence. Stable mobile certification requires the
-documented simulator/device command and denial receipts. The full Tauri
-application, restart/offline behavior, accessibility, and visual parity remain
+The plugin gate includes hash-verified Android physical-device and iOS
+simulator command/denial receipts. Those receipts certify the packaged native
+bridge, not the universal application. Full application restart/offline
+behavior, accessibility, visual parity, and desktop/mobile packaging remain
 owned by `v3-tauri-universal-example`.
+
+## Universal Tauri application in progress
+
+[`tauri-universal-example.md`](tauri-universal-example.md) documents the shared
+React/Vite application, normalized graph, persistence/queue boundary, native
+host, generated Android/iOS shells, and focused task-3 tests. The coverage
+ledger records tested offline and MockRuntime evidence as partial capability
+receipts while keeping the showcase planned. Task 5 still owns clean browser
+visuals, packaged desktop E2E, Android/iOS application smoke, and the remaining
+relationship/realtime scenario receipts.
 
 ## Implemented recoverable release-candidate gate
 

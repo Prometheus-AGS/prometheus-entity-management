@@ -557,8 +557,9 @@
           "applicability": "Flutter 3.44.8 stable host tests and Android/iOS smoke execution prove queued local writes and deterministic reconnect convergence through the example's in-memory transport. Durable persistence remains outside this showcase and is not claimed."
         },
         {
-          "kind": "platform", "status": "planned", "ownerChange": "v3-tauri-universal-example",
-          "applicability": "Tauri desktop/mobile restart and reconnect evidence remains owned by the universal Tauri showcase."
+          "kind": "platform", "status": "partial", "ownerChange": "v3-tauri-universal-example", "command": "pnpm run test:tauri-universal:unit",
+          "paths": ["examples/tauri-universal/src/features/platform/services/platform-service.ts", "examples/tauri-universal/src/features/platform/services/platform-service.test.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-3-tests.md"],
+          "applicability": "Five browser-runtime units prove ID-normalized hydration, a separately durable queued mutation across reload, reconnect convergence, and malformed persisted-queue rejection through the universal service contract. Native SQLite restart plus desktop and mobile application execution remain pending."
         }
       ]
     },
@@ -687,7 +688,12 @@
           "paths": ["tests/fixtures/tauri-plugin-host/frontend/main.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/device-evidence.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/android/platform-ping.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/android/capability-denial.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/ios/platform-ping.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/ios/capability-denial.png"],
           "applicability": "Executes the Rust-generated binding through packaged Kotlin on a physical Android device and packaged Swift on an iOS simulator, with exact success, fail-closed permission-denial, visual, environment, executable, and hash receipts."
         },
-        { "kind": "visual", "status": "planned", "ownerChange": "v3-tauri-universal-example", "applicability": "Desktop/mobile rendered application and device receipts remain downstream." }
+        {
+          "kind": "desktop", "status": "partial", "ownerChange": "v3-tauri-universal-example", "command": "pnpm run test:tauri-universal:rust",
+          "paths": ["examples/tauri-universal/src-tauri/src/lib.rs", "examples/tauri-universal/src-tauri/capabilities/universal-main.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-3-tests.md"],
+          "applicability": "The universal host registers the real plugin under stable-Rust Tauri MockRuntime, executes platform ping plus entity upsert/read, and proves the main webview is denied destructive clear. This is not a desktop bundle, real WebView, Android, or iOS application receipt."
+        },
+        { "kind": "visual", "status": "planned", "ownerChange": "v3-tauri-universal-example", "applicability": "Universal application desktop/mobile screenshots, accessibility output, traces, and device receipts remain task-5 work." }
       ]
     },
     {
@@ -831,10 +837,10 @@
       "id": "tauri-desktop-mobile",
       "status": "planned",
       "change": "v3-tauri-universal-example",
-      "path": "examples/tauri-app",
+      "path": "examples/tauri-universal",
       "scenarioIds": ["example.graph.normalized-cross-view", "example.crud.optimistic-confirm", "example.relationship.cascade-invalidation", "example.realtime.coalesced-cross-view", "example.offline.persistence-convergence", "example.platform.adapter-boundary", "example.runtime.lifecycle-security"],
-      "runtimeEvidence": { "kind": "platform", "status": "planned", "ownerChange": "v3-tauri-universal-example", "applicability": "Desktop command E2E, permission denial, offline restart, and Android/iOS build/smoke evidence remain owned by the Tauri example." },
-      "visualEvidence": { "kind": "visual", "status": "planned", "ownerChange": "v3-tauri-universal-example", "applicability": "Pinned desktop/mobile screenshots, accessibility, trace, and device receipt remain owned by the Tauri example." }
+      "runtimeEvidence": { "kind": "platform", "status": "planned", "ownerChange": "v3-tauri-universal-example", "applicability": "The source, focused browser runtime, and Tauri MockRuntime boundaries exist, but showcase promotion waits for clean desktop command E2E plus Android and iOS application build/smoke receipts." },
+      "visualEvidence": { "kind": "visual", "status": "planned", "ownerChange": "v3-tauri-universal-example", "applicability": "Three Playwright flows are authored but unexecuted; pinned desktop/mobile screenshots, accessibility output, traces, and app-level device receipts remain task-5 work." }
     }
   ],
   "documentationSite": {

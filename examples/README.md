@@ -12,7 +12,7 @@ The [machine-readable coverage ledger](coverage.json) is the source of truth for
 | Next.js App Router | `examples/nextjs-app` | Implemented (`v3-nextjs-app-router-example`) |
 | Agentic A2UI | `examples/agentic-a2ui-app` | Implemented (`v3-agentic-a2ui-example`) |
 | Flutter + Riverpod + A2UI | `examples/flutter-riverpod` | Implemented: Flutter 3.44.8 host gates, 3 goldens, iOS simulator, and Android API 35 emulator (`v3-flutter-riverpod-a2ui-example`) |
-| Tauri desktop + mobile | `examples/tauri-app` | Planned (`v3-tauri-universal-example`) |
+| Tauri desktop + mobile | `examples/tauri-universal` | Source and focused tests implemented; clean platform/visual certification planned (`v3-tauri-universal-example`) |
 
 The branded Docusaurus site and protected GitHub Pages deployment are separately tracked as planned work in `website/`, culminating in `v3-docs-github-pages`.
 
@@ -77,6 +77,30 @@ emulator. See
 [`../release/flutter-riverpod-a2ui-example.md`](../release/flutter-riverpod-a2ui-example.md)
 for the exact architecture, scenario matrix, and exclusions.
 
+## Universal Tauri source and focused test boundary
+
+The [`tauri-universal`](tauri-universal/README.md) workspace now contains one
+React 19/Vite 8 frontend and Tauri configuration for desktop, Android, and iOS.
+It uses one normalized graph, ID-only task lists, joined relationships, native
+SQLite/browser localStorage persistence, a durable offline mutation queue,
+least-privilege capabilities, and platform-service-owned deep links/lifecycle.
+
+Run the focused boundary from the repository root:
+
+```bash
+pnpm run typecheck:tauri-universal
+pnpm run test:tauri-universal:unit
+pnpm run test:tauri-universal:rust
+pnpm run test:tauri-universal:contract
+pnpm run verify:tauri-universal
+```
+
+These checks do not promote the showcase. Clean Playwright visuals, packaged
+desktop command E2E, Android/iOS app smoke, relationship invalidation, and
+realtime coalescing remain required. See
+[`../release/tauri-universal-example.md`](../release/tauri-universal-example.md)
+for the exact disposition.
+
 ## Implemented Shared Semantic Contract
 
 All five showcases now have one deterministic, keyless [shared example contract](shared/README.md). It defines the Project/User/Task/Comment/Activity domain, ID-only lists, security assumptions, eight transport fixtures, and thirteen expected outcomes spanning normalization, optimistic CRUD, invalidation, completeness modes, realtime, offline convergence, protocols, SSR, schema round-tripping, platform boundaries, and lifecycle security.
@@ -105,8 +129,10 @@ pnpm run bdd:sync-persistence
 
 The headless sync promotion did not itself change a showcase status. The React
 showcase has rendered PGlite/Loro evidence; Flutter has implemented in-memory
-queue/reconnect and Android/iOS smoke evidence but no durable-persistence claim; Tauri remains
-planned; and overall coverage remains `in-progress`.
+queue/reconnect and Android/iOS smoke evidence but no durable-persistence claim.
+Tauri now has a passing browser-runtime reload/reconnect unit, while native
+SQLite restart and full application platform receipts remain planned; overall
+coverage remains `in-progress`.
 
 ## Implemented official A2UI bridge evidence
 

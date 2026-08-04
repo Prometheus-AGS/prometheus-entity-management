@@ -192,6 +192,32 @@ test("the exact five showcase identities are required", () => {
   );
 });
 
+test("the universal Tauri ledger records tested source progress without platform overclaim", () => {
+  const showcase = coverage.showcases.find(({ id }) => id === "tauri-desktop-mobile");
+  assert.ok(showcase);
+  assert.equal(showcase.path, "examples/tauri-universal");
+  assert.equal(showcase.status, "planned");
+  assert.equal(showcase.runtimeEvidence.status, "planned");
+  assert.equal(showcase.visualEvidence.status, "planned");
+
+  const offline = coverage.capabilities.find(
+    ({ id }) => id === "graph.offline-persistence-sync",
+  );
+  const offlineEvidence = offline.releaseEvidence.find(
+    ({ ownerChange }) => ownerChange === "v3-tauri-universal-example",
+  );
+  assert.equal(offlineEvidence.status, "partial");
+  assert.equal(offlineEvidence.command, "pnpm run test:tauri-universal:unit");
+
+  const platform = coverage.capabilities.find(({ id }) => id === "platform.tauri");
+  const hostEvidence = platform.releaseEvidence.find(
+    ({ ownerChange, kind }) =>
+      ownerChange === "v3-tauri-universal-example" && kind === "desktop",
+  );
+  assert.equal(hostEvidence.status, "partial");
+  assert.equal(hostEvidence.command, "pnpm run test:tauri-universal:rust");
+});
+
 test("invalid transports, list payloads, and tenant fixtures fail closed", () => {
   const transport = structuredClone(contract);
   transport.transports[0].deterministic = false;
