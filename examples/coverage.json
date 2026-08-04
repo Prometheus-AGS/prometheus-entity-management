@@ -517,7 +517,11 @@
         }
       ],
       "releaseEvidence": [
-        { "kind": "integration", "status": "planned", "ownerChange": "v3-flint-portable-contracts", "applicability": "Portable realtime contract and live opt-in evidence remain downstream." },
+        {
+          "kind": "integration", "status": "implemented", "ownerChange": "v3-flint-portable-contracts", "command": "pnpm run verify:flint-contracts",
+          "paths": ["packages/entity-graph-core/src/adapters/flint-portable.test.ts", "packages/entity-graph-core/src/adapters/flint-live.integration.test.ts", "tests/fixtures/flint/portable-contract.json", ".github/workflows/flint-live-contract.yml", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flint-portable-contracts/task-3-external-source-verification.json"],
+          "applicability": "Proves the checked watchEntities/mutateEntity bridge locally and binds the opt-in real-SDK lane to immutable Realtime Fabric, Gate, and Forge sources. The live workflow remains explicit rather than part of default CI."
+        },
         { "kind": "browser", "status": "implemented", "ownerChange": "v3-vite-react19-example", "command": "pnpm run verify:vite-react19", "paths": ["packages/entity-graph-core/src/realtime-manager.test.ts", "tests/browser/v3-vite-react19-example.spec.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-verification.json"], "applicability": "Proves three rendered realtime changes to one entity coalesce into one graph write and one final cross-view state." },
         { "kind": "integration", "status": "partial", "ownerChange": "v3-dart-graph-riverpod", "applicability": "The Dart change bridge proves realtime normalization, typed-list invalidation, and deletion, but does not implement or certify event coalescing." }
       ]
@@ -776,7 +780,11 @@
         }
       ],
       "releaseEvidence": [
-        { "kind": "security", "status": "planned", "ownerChange": "v3-flint-portable-contracts", "applicability": "Issuer, tenant, key, role, RLS, and provisioning evidence remain downstream." },
+        {
+          "kind": "security", "status": "implemented", "ownerChange": "v3-flint-portable-contracts", "command": "pnpm run verify:flint-contracts",
+          "paths": ["tests/fixtures/flint/portable-contract.json", "scripts/verify-flint-portable-contracts.mjs", "tests/release/v3-flint-portable-contracts.test.mjs", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flint-portable-contracts/task-3-verification.json"],
+          "applicability": "Proves production issuer, tenant UUID/equality/isolation, asymmetric kid, RSA/EC JWKS boundaries, role and key separation, client secret absence, and external Forge plan/apply/RLS/audit/restart semantics without claiming a Prometheus Forge adapter."
+        },
         {
           "kind": "security", "status": "implemented", "ownerChange": "v3-a2ui-protocol-bridge", "command": "pnpm run test:a2ui-bridge",
           "paths": ["packages/a2ui-react/src/policy/action-policy.ts", "packages/a2ui-react/src/policy/entity-graph-policy.ts", "packages/a2ui-react/src/official-a2ui.test.tsx", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/task-3-test-receipt.md"],

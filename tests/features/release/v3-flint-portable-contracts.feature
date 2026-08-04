@@ -27,3 +27,8 @@ Feature: Portable Flint realtime and security contracts
   Scenario: External source verification is explicit and immutable
     Then the portable run records external source verification as not requested
     And every external source file has a pinned revision and SHA-256 digest
+
+  Scenario: Coverage API skills and release guidance are synchronized
+    Then Flint realtime and security coverage are implemented
+    And the existing Flint runtime exports remain in the public ledger
+    And the skills and release guide preserve security and provisioning exclusions

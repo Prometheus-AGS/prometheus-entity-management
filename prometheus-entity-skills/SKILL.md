@@ -112,6 +112,7 @@ Cross-cutting schemas and patterns used by all sub-skills:
 - [Flutter/Riverpod/A2UI showcase](_shared/references/flutter-riverpod-a2ui-example.md) — complete app composition, safe GenUI boundary, Flutter 3.44.8 host evidence, and passing iOS/Android smoke lanes
 - [Tauri desktop/mobile plugin](_shared/references/tauri-mobile-plugin.md) — generated bindings, least-privilege capabilities, in-memory mirror ownership, packed host proof, and mobile evidence limits
 - [Universal Tauri application](_shared/references/tauri-universal-example.md) — shared React/Tauri architecture, durable queue, deep-link/capability policy, focused checks, and pending platform/visual gates
+- [Flint portable contracts](_shared/references/flint-portable-contracts.md) — structural realtime client, issuer/tenant/key/JWKS rules, immutable live lane, and external Forge provisioning boundary
 - [Recoverable release-candidate pipeline](_shared/references/release-candidate-pipeline.md) — contract-derived artifacts, non-mutating rehearsal, OIDC staging boundary, protected tags, and restart recovery
 - [Entity Schema Reference](/_shared/references/schemas/entity-schema.md) — registerSchema contract
 - [3.0 Release Contract](_shared/references/v3-release-contract.md) — authoritative packaging, compatibility, maturity, promotion, and recovery rules
@@ -143,6 +144,12 @@ For React 19/Vite 8 showcase or React-first RC readiness claims, load the React
 showcase reference and require `pnpm run bdd:vite-react19`. Preserve its
 source-workspace evidence boundary; for installability or registry claims also
 require new packed-candidate and immutable RC-rehearsal receipts.
+
+For Flint realtime, authentication, JWKS, or Forge provisioning claims, load
+the Flint portable-contract reference and require
+`pnpm run verify:flint-contracts`. Keep service-role material out of client
+code, do not generalize RSA compatibility to EC, and do not claim a Forge
+adapter. The manual live lane proves only its exact pinned source revisions.
 
 When a task makes a 3.0 compatibility or publication claim, load the 3.0 release contract reference first. For dependency-currentness or vulnerability claims, also follow its links to `release/dependency-policy.json` and `security/advisory-policy.json`. For npm module or type claims, require the packed-candidate procedure in `release/package-contracts.md`; workspace aliases are not release evidence. For cross-binding singleton claims, require `pnpm run verify:binding-singletons`. For PGlite/Loro durability, convergence, or reconnect claims, read the certified sync reference and require `pnpm run test:sync-persistence` plus `pnpm run verify:sync-persistence`; persistence, CRDT merge, graph projection, and transport recovery are separate receipts. For official A2UI work, read the A2UI bridge reference, use the package root for official v0.9.1 only, move alpha chat/state APIs to `./ag-ui`, and require explicit application authority after protocol validation. For A2A work, read the A2A conformance reference, use the package root for official v1 JSON-RPC and `./legacy` only for pre-v3 slash-method migration, require `pnpm run test:a2a-conformance`, `pnpm run verify:a2a-conformance`, and the pinned TCK receipt, and never infer application authority from protocol validity. For Tauri work, preserve the four separate gates for public declarations, Rust-derived bindings, webview capability authority, and platform-native execution. For example-coverage claims, read the shared contract and require `pnpm run verify:example-coverage`; semantic evidence is a flight plan, not framework, browser, device, accessibility, or visual certification. Treat `planned` entries in `examples/coverage.json` as work remaining. An `implemented` showcase proves only the commands and paths declared on that entry; it does not automatically prove packed installation, another platform, or publication authority.
 

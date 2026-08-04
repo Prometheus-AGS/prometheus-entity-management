@@ -71,6 +71,14 @@ iOS 26.5 simulator runtime receipts pass and are hash-bound. Windows/Linux,
 physical-device, signing, app-store, registry, and stable-release evidence
 remain separate.
 
+The [portable Flint contract](release/flint-portable-contracts.md) now binds
+the graph adapter to immutable Realtime Fabric, Gate, and Forge sources. It
+proves the `watchEntities`/`mutateEntity` seam, tenant/issuer/key boundaries,
+strict RSA and qualified EC JWKS behavior, client secret separation, and the
+external Forge plan/apply/RLS/audit contract. The live lane is opt-in and
+fail-closed; no Forge adapter, hosted deployment, or registry publication is
+claimed.
+
 ### Documentation map
 
 | Doc | Purpose |
@@ -95,6 +103,7 @@ remain separate.
 | [release/vite-react19-example.md](release/vite-react19-example.md) | Implemented React 19/Vite 8 scenarios, architecture, verification, and evidence limits |
 | [release/nextjs-app-router-example.md](release/nextjs-app-router-example.md) | Implemented Next.js request isolation, RSC hydration, packed production verification, and browser evidence |
 | [release/tauri-universal-example.md](release/tauri-universal-example.md) | Implemented universal React/Tauri architecture, browser/native evidence, platform limits, and release boundaries |
+| [release/flint-portable-contracts.md](release/flint-portable-contracts.md) | Portable Flint realtime, JWT/JWKS, key-separation, and Forge provisioning boundaries |
 | [examples/tauri-universal/README.md](examples/tauri-universal/README.md) | Run and verify the shared desktop/Android/iOS example without overclaiming platform evidence |
 | [examples/shared/README.md](examples/shared/README.md) | Deterministic shared showcase domain, semantic scenarios, and evidence boundary |
 | [release/dependency-policy.json](release/dependency-policy.json) | Machine-readable compatible-current dependency holds |
@@ -371,6 +380,8 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | `createSupabaseRealtimeAdapter` | Supabase Realtime payloads → graph. |
 | `createConvexAdapter` | Convex-shaped streams → graph. |
 | `createGraphQLSubscriptionAdapter` | GraphQL over WebSocket subscriptions → graph. |
+| `createFlintAdapter` | Flint `watchEntities` stream → graph through the structural client contract. |
+| `publishFlintMutation` | Publish one entity record through the caller-owned Flint client. |
 
 ### GraphQL
 

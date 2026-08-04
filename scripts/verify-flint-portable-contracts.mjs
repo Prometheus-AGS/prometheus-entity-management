@@ -42,6 +42,7 @@ export async function verifyFlintPortableContracts(options = {}) {
   const clientSecretScan = await scanClientExamples(
     resolve(options.examplesRoot ?? join(workspaceRoot, "examples")),
   );
+  const documentation = await assertDocumentationContracts();
   const externalSources = await verifyExternalSources(
     contract.externalSources,
     options.externalRoots,
@@ -84,6 +85,7 @@ export async function verifyFlintPortableContracts(options = {}) {
         adapterClaimed: contract.provisioning.prometheusForgeAdapterImplemented,
       },
       clientSecrets: clientSecretScan,
+      documentation,
       externalSources,
     },
   };
@@ -301,6 +303,91 @@ async function assertLiveLaneIsExplicit() {
     rootManifest.scripts.test.includes("pnpm run test:flint-contracts"),
     "default test chain omits Flint contract regressions",
   );
+}
+
+async function assertDocumentationContracts() {
+  const coverage = JSON.parse(
+    await readFile(join(workspaceRoot, "examples/coverage.json"), "utf8"),
+  );
+  const realtime = coverage.capabilities.find(
+    (capability) => capability.id === "graph.realtime-batching",
+  );
+  const security = coverage.capabilities.find(
+    (capability) => capability.id === "security.tenant-actions-secrets",
+  );
+  const realtimeEvidence = realtime?.releaseEvidence.find(
+    (evidence) => evidence.ownerChange === "v3-flint-portable-contracts",
+  );
+  const securityEvidence = security?.releaseEvidence.find(
+    (evidence) => evidence.ownerChange === "v3-flint-portable-contracts",
+  );
+  for (const [label, evidence] of [
+    ["realtime coverage", realtimeEvidence],
+    ["security coverage", securityEvidence],
+  ]) {
+    requireEqual(evidence?.status, "implemented", `${label} status`);
+    requireEqual(
+      evidence?.command,
+      "pnpm run verify:flint-contracts",
+      `${label} command`,
+    );
+    requireCondition(
+      Array.isArray(evidence?.paths) && evidence.paths.length > 0,
+      `${label} paths are missing`,
+    );
+  }
+
+  const exportsLedger = JSON.parse(
+    await readFile(
+      join(
+        workspaceRoot,
+        "prometheus-entity-skills/_shared/references/library-exports.json",
+      ),
+      "utf8",
+    ),
+  );
+  for (const name of ["createFlintAdapter", "publishFlintMutation"]) {
+    requireCondition(exportsLedger.includes(name), `runtime export ledger omits ${name}`);
+  }
+
+  const requiredDocumentation = new Map([
+    [
+      "release/flint-portable-contracts.md",
+      ["watchEntities", "mutateEntity", "FLINT_ANON_KEY", "crv", "/schema/v1"],
+    ],
+    [
+      "prometheus-entity-skills/_shared/references/flint-portable-contracts.md",
+      ["createFlintAdapter", "publishFlintMutation", "service-role", "Forge"],
+    ],
+    [
+      "prometheus-entity-skills/_shared/references/library-api.md",
+      ["createFlintAdapter", "publishFlintMutation", "FlintClientLike"],
+    ],
+    [
+      "prometheus-entity-skills/entity-graph-realtime/SKILL.md",
+      ["createFlintAdapter", "flint-portable-contracts.md"],
+    ],
+    [
+      "prometheus-entity-skills/entity-graph-realtime/references/adapter-catalog.md",
+      ["CreateFlintAdapterOptions", "publishFlintMutation", "strict EC"],
+    ],
+    ["README.md", ["release/flint-portable-contracts.md", "publishFlintMutation"]],
+    ["packages/entity-graph-react/README.md", ["createFlintAdapter", "publishFlintMutation"]],
+  ]);
+  for (const [path, required] of requiredDocumentation) {
+    const source = await readFile(join(workspaceRoot, path), "utf8");
+    for (const token of required) {
+      requireCondition(source.includes(token), `${path} omits ${token}`);
+    }
+  }
+
+  return {
+    status: "pass",
+    coverageEntries: 2,
+    documentedFiles: requiredDocumentation.size,
+    runtimeExports: ["createFlintAdapter", "publishFlintMutation"],
+    runtimeLedgerChanged: false,
+  };
 }
 
 async function verifyExternalSources(sources, roots) {

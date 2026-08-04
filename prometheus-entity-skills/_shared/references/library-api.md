@@ -239,6 +239,8 @@ Use [`release/binding-singleton-contract.md`](../../../release/binding-singleton
 | `createSupabaseRealtimeAdapter` | function | Adapter for Supabase Realtime channels. |
 | `createConvexAdapter` | function | Adapter for Convex subscription-style feeds. |
 | `createGraphQLSubscriptionAdapter` | function | Adapter bridging GraphQL subscriptions to `ChangeSet`s. |
+| `createFlintAdapter` | function | Bridge a caller-owned Flint client's `watchEntities` stream into `RealtimeManager`. |
+| `publishFlintMutation` | function | Delegate one `FlintEntityRecord` to the caller-owned client's `mutateEntity` method. |
 | `ManagerOptions` | type | Options for realtime manager construction. |
 | `WebSocketAdapterOptions` | type | WebSocket adapter configuration. |
 | `SupabaseAdapterOptions` | type | Supabase-specific adapter options. |
@@ -251,6 +253,10 @@ Use [`release/binding-singleton-contract.md`](../../../release/binding-singleton
 | `AdapterStatus` | type | Connection health enum / union. |
 | `UnsubscribeFn` | type | Teardown function returned from subscriptions. |
 | `SubscriptionConfig` | type | Subscription parameters. |
+| `FlintClientLike` | type | Structural `watchEntities` / `mutateEntity` client boundary; no Flint SDK is bundled. |
+| `CreateFlintAdapterOptions` | type | Channel, consumer, entity filter, checkpoint store, and operation resolver. |
+| `FlintEntityEvent`, `FlintEntityQuery`, `FlintEntityRecord` | types | Decoded event, subscription query, and mutation record contracts. |
+| `FlintCheckpointStore` | type | Optional per-channel/consumer bigint resume-offset persistence. |
 
 ---
 

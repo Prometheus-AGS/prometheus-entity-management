@@ -319,6 +319,8 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | `createSupabaseRealtimeAdapter` | Supabase Realtime payloads → graph. |
 | `createConvexAdapter` | Convex-shaped streams → graph. |
 | `createGraphQLSubscriptionAdapter` | GraphQL over WebSocket subscriptions → graph. |
+| `createFlintAdapter` | Flint `watchEntities` stream → graph through the structural client contract. |
+| `publishFlintMutation` | Publish one entity record through the caller-owned Flint client. |
 
 ### GraphQL
 

@@ -636,3 +636,28 @@
   the known projection reset.
 - Preserved frozen React candidate `main@1c40eaa`; npm `next`, `latest`, and
   every registry version remain unchanged.
+
+## 2026-08-04 — Flint portable contracts task-4 synchronization
+
+- Promoted the Flint-owned realtime and security evidence in
+  `examples/coverage.json` from planned to implemented with exact commands,
+  source paths, and portable-versus-live applicability.
+- Added release and agent references for the structural client, tenant and key
+  boundaries, precise RSA/EC JWK behavior, and external Forge
+  plan/apply/RLS/audit/restart semantics. The skills explicitly reject client
+  service-role material and any unbuilt Forge adapter claim.
+- Updated the human API and React README tables. The machine export ledger was
+  not regenerated because the package entry point did not change; its existing
+  `createFlintAdapter` and `publishFlintMutation` entries remain authoritative.
+- Focused verification passed: 7/7 Node tests, 6/6 BDD scenarios and 20/20
+  steps, 13/13 shared scenarios, all 16 coverage capabilities and artifacts,
+  React's 203 runtime exports, all companion ledgers, ESLint, JSON, syntax, and
+  diff hygiene.
+- The task begin signal's display-only title lost a backticked path through
+  shell command substitution; signed task identity and state were unaffected,
+  and subsequent task boundaries use literal-safe quoting.
+- Signed task 4 complete at revision 140 with both after-hooks successful, then
+  restored the parent change to `in_progress` through typed revision 141 after
+  the known projection reset.
+- Preserved frozen React candidate `main@1c40eaa`; npm and dist-tags remain
+  unchanged.

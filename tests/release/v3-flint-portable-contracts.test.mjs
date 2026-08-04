@@ -22,6 +22,13 @@ test("portable Flint contracts cover realtime, security, provisioning, and clien
   assert.equal(report.checks.security.roleAndKeySeparation, "service-role-server-only");
   assert.equal(report.checks.provisioning.adapterClaimed, false);
   assert.equal(report.checks.clientSecrets.exposedCredentials, 0);
+  assert.equal(report.checks.documentation.coverageEntries, 2);
+  assert.equal(report.checks.documentation.documentedFiles, 7);
+  assert.deepEqual(report.checks.documentation.runtimeExports, [
+    "createFlintAdapter",
+    "publishFlintMutation",
+  ]);
+  assert.equal(report.checks.documentation.runtimeLedgerChanged, false);
   assert.deepEqual(report.checks.externalSources, {
     status: "not-requested",
     disposition: "explicit-opt-in",
@@ -106,4 +113,12 @@ test("Forge contract requires plan-before-apply without claiming a Prometheus ad
   }
   assert.equal(contract.provisioning.rawSqlAccepted, false);
   assert.equal(contract.provisioning.prometheusForgeAdapterImplemented, false);
+});
+
+test("coverage, public API, skills, and release guidance stay synchronized", async () => {
+  const report = await verifyFlintPortableContracts();
+  assert.equal(report.checks.documentation.status, "pass");
+  assert.equal(report.checks.documentation.coverageEntries, 2);
+  assert.equal(report.checks.documentation.documentedFiles, 7);
+  assert.equal(report.checks.documentation.runtimeLedgerChanged, false);
 });

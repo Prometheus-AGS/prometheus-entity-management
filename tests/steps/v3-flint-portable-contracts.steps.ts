@@ -100,3 +100,25 @@ Then("every external source file has a pinned revision and SHA-256 digest", func
     for (const hash of Object.values(source.files)) assert.match(hash, /^[a-f0-9]{64}$/);
   }
 });
+
+Then("Flint realtime and security coverage are implemented", function () {
+  assert.equal(report.checks.documentation.coverageEntries, 2);
+  assert.equal(report.checks.documentation.status, "pass");
+});
+
+Then("the existing Flint runtime exports remain in the public ledger", function () {
+  assert.deepEqual(report.checks.documentation.runtimeExports, [
+    "createFlintAdapter",
+    "publishFlintMutation",
+  ]);
+  assert.equal(report.checks.documentation.runtimeLedgerChanged, false);
+});
+
+Then(
+  "the skills and release guide preserve security and provisioning exclusions",
+  function () {
+    assert.equal(report.checks.documentation.documentedFiles, 7);
+    assert.equal(contract.provisioning.prometheusForgeAdapterImplemented, false);
+    assert.equal(contract.security.keySeparation.serviceRoleServerOnly, true);
+  },
+);

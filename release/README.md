@@ -171,6 +171,21 @@ The evidence-backed coverage entry is implemented. The receipt remains
 source-workspace evidence and does not add a package export, packed-consumer or
 external-agent claim, registry authority, or stable-release certification.
 
+## Implemented portable Flint contract gate
+
+[`flint-portable-contracts.md`](flint-portable-contracts.md) documents the
+structural `watchEntities`/`mutateEntity` bridge, immutable Realtime
+Fabric/Gate/Forge source pins, production issuer and tenant isolation, key and
+role separation, current RSA/EC JWKS compatibility boundary, and external
+Forge plan/apply/RLS/audit/restart semantics. Default CI uses checked fixtures;
+the real-SDK lane is explicit, immutable, and fail-closed.
+
+The gate adds no public runtime export: `createFlintAdapter` and
+`publishFlintMutation` were already in the React facade's machine export
+ledger. It does not implement Forge provisioning, deploy Flint services, prove
+unpinned future source compatibility, authorize npm staging, or certify the
+full 3.0 release.
+
 ## Registry decision
 
 The stable 3.0.0 release requires all twelve npm packages, a GitHub Release, and the production GitHub Pages documentation site. Dart and standalone Rust artifacts remain versioned and certified in the monorepo, while first publication to pub.dev/crates.io is deferred until registry ownership is verified. The Tauri Rust crate is embedded in the npm plugin tarball.
