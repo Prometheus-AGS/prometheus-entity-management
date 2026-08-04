@@ -1,6 +1,6 @@
 # Tasks: v3-tauri-universal-example
 
-- [ ] Confirm dependencies are complete: v3-tauri-mobile-plugin; v3-example-coverage-contract; v3-sync-persistence-path.
+- [x] Confirm dependencies are complete: v3-tauri-mobile-plugin; v3-example-coverage-contract; v3-sync-persistence-path.
 - [ ] Implement the full scope in the `v3-tauri-universal-example` plan section without weakening its explicit exclusions.
 - [ ] Add or update unit, integration, consumer, platform, documentation, and/or E2E checks required by the plan acceptance criteria.
 - [ ] Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface.

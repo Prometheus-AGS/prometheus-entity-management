@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-tauri-universal-example",
+  "task": 1,
+  "recordedAt": "2026-08-04T02:00:00Z",
+  "status": "pass",
+  "dependencies": [
+    {
+      "id": "v3-tauri-mobile-plugin",
+      "archive": "openspec/changes/archive/2026-08-02-v3-tauri-mobile-plugin",
+      "tasks": { "completed": 6, "total": 6 },
+      "promotedSpec": "openspec/specs/v3-tauri-mobile-plugin/spec.md",
+      "strictSpec": "pass",
+      "verification": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/final-verification.json"
+    },
+    {
+      "id": "v3-example-coverage-contract",
+      "archive": "openspec/changes/archive/2026-08-01-v3-example-coverage-contract",
+      "tasks": { "completed": 6, "total": 6 },
+      "promotedSpec": "openspec/specs/v3-example-coverage-contract/spec.md",
+      "strictSpec": "pass",
+      "verification": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-example-coverage-contract/verification.md"
+    },
+    {
+      "id": "v3-sync-persistence-path",
+      "archive": "openspec/changes/archive/2026-08-01-v3-sync-persistence-path",
+      "tasks": { "completed": 6, "total": 6 },
+      "promotedSpec": "openspec/specs/v3-sync-persistence-path/spec.md",
+      "strictSpec": "pass",
+      "verification": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-sync-persistence-path/final-verification.json"
+    }
+  ],
+  "currentShowcases": {
+    "implemented": 4,
+    "planned": 1,
+    "next": "tauri-desktop-mobile"
+  },
+  "implementationStillRequired": true,
+  "publicationAuthorized": false,
+  "reactRc1Source": "1c40eaa08da210cbe3e20a77c5db211712b5c3a1"
+}

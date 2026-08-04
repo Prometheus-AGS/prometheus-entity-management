@@ -410,3 +410,21 @@
   `openspec/changes/archive/2026-08-04-v3-flutter-riverpod-a2ui-example/`.
 - Preserved the frozen React `3.0.0-rc.1` source on remote `main`; no registry,
   npm tag, pub.dev, app-store, or stable-release authority changed.
+
+## 2026-08-04 — Universal Tauri example dependency gate
+
+- Reconciled the stale KBD next-work pointer against signed revision 98 and the
+  immutable plan sequence, then activated `v3-tauri-universal-example`.
+- Registered its complete six-task surface before starting task 1. Signed
+  revision 108 records task 1 complete and the parent change restored to
+  in-progress after task registration reproduced the known pending-reset seam.
+- Verified all three dependencies from archived 6/6 task surfaces, promoted
+  strict specifications, and retained verification receipts. The legacy signed
+  pending projections for imported dependency changes were not treated as
+  completion evidence.
+- Preserved the remaining application boundary: shared desktop/mobile Tauri
+  runtime, restart/offline behavior, capability denial, lifecycle/deep-link UI,
+  responsive interaction, desktop E2E, and separate Android/iOS build/smoke
+  receipts remain implementation work.
+- No package, application, coverage, public API, or registry state changed; the
+  frozen React RC source remains independent.
