@@ -19,3 +19,6 @@ tauri-plugin-sql = { version = "2.4.0", features = ["sqlite"] }
 
 [build-dependencies]
 tauri-build = { version = "2.6.3", features = [] }
+
+[dev-dependencies]
+tauri = { version = "2.11.5", features = ["test"] }

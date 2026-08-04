@@ -448,3 +448,21 @@
   Runtime/E2E/restart tests, docs/ledgers, clean builds, and platform smoke stay
   assigned to tasks 3–5. The frozen React RC and all registry state remain
   untouched.
+
+## 2026-08-04 — Universal Tauri example task-3 test boundary
+
+- Added five passing browser-runtime units for normalized ID-only graph state,
+  durable offline restart/reconnect convergence, malformed persisted queue
+  denial, truthful browser/native capability reporting, and fail-closed deep
+  links.
+- Added two passing stable-Rust Tauri mock-host tests that prove registered
+  graph IPC commands work and the main webview is denied destructive clear.
+- Added a seven-check source verifier with four rejection regressions for
+  capabilities, layering, and generated mobile shells; it cannot be mistaken
+  for native platform build evidence.
+- Authored and discovered three Playwright flows for graph reactivity, offline
+  reload/convergence, and responsive accessibility. Their execution remains at
+  the clean task-5 boundary alongside desktop and Android/iOS platform lanes.
+- The machine's default Rust 1.99.0 nightly hit a compiler ICE in Tokio; the
+  unchanged locked suite passed 2/2 on certified Rust 1.97.1 stable. The frozen
+  React RC source and npm registry state remain untouched.

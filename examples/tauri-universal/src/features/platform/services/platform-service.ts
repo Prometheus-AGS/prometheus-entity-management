@@ -30,6 +30,24 @@ const GRAPH_STORAGE_KEY = "prometheus:tauri-universal:graph:v1";
 const QUEUE_STORAGE_KEY = "prometheus:tauri-universal:queue:v1";
 const DEEP_LINK_TENANT = "prometheus-labs";
 
+export function parseTaskDeepLink(
+  sourceUrl: string,
+  knownTaskIds: ReadonlySet<string>,
+): string | null {
+  try {
+    const parsed = new URL(sourceUrl);
+    const taskId = decodeURIComponent(parsed.pathname.replace(/^\//, ""));
+    const isAllowed =
+      parsed.protocol === "prometheus-entity:" &&
+      parsed.hostname === "task" &&
+      parsed.searchParams.get("tenant") === DEEP_LINK_TENANT &&
+      knownTaskIds.has(taskId);
+    return isAllowed ? taskId : null;
+  } catch {
+    return null;
+  }
+}
+
 interface QueuedTaskMutation {
   id: string;
   taskId: string;
@@ -305,19 +323,11 @@ class UniversalPlatformService implements PlatformService {
   }
 
   private acceptDeepLink(sourceUrl: string): void {
-    let parsed: URL;
-    try {
-      parsed = new URL(sourceUrl);
-    } catch {
-      return;
-    }
-    const taskId = decodeURIComponent(parsed.pathname.replace(/^\//, ""));
-    const isAllowed =
-      parsed.protocol === "prometheus-entity:" &&
-      parsed.hostname === "task" &&
-      parsed.searchParams.get("tenant") === DEEP_LINK_TENANT &&
-      Boolean(graphStore.getState().entities[ENTITY_TYPES.task]?.[taskId]);
-    if (!isAllowed) return;
+    const taskId = parseTaskDeepLink(
+      sourceUrl,
+      new Set(Object.keys(graphStore.getState().entities[ENTITY_TYPES.task] ?? {})),
+    );
+    if (!taskId) return;
     this.deepLink = sourceUrl;
     this.callbacks.onDeepLinkTask(taskId, sourceUrl);
     this.publishSnapshot();
