@@ -532,3 +532,14 @@
 - Full repository CI passed, including validation, lint, workspace typechecks,
   builds, tests, skills verification, and security checks. An isolated
   adversarial review reported no actionable findings.
+
+## 2026-08-04 — PR #10 remote CI follow-up
+
+- The first remote matrix run exposed a GitHub-hosted runner timeout in the
+  100k incremental parity proof; retained the workload and bounded that one
+  test to 15 seconds.
+- The next Node 22 run exposed a stale sync/persistence contract assertion that
+  still described the now-certified Tauri platform receipt as `planned`.
+  Updated it to the ledger's `implemented` status and verifier command.
+- Recorded both observed defects in `.prometheus/postmortems/`; no production
+  behavior or security boundary changed in either follow-up.

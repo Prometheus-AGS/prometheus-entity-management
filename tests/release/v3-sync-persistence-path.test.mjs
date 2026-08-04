@@ -98,7 +98,11 @@ test("coverage promotes only certified npm sync receipts", async () => {
       { kind: "packed-consumer", status: "implemented", command: "pnpm run verify:sync-persistence" },
       { kind: "browser", status: "implemented", command: "pnpm run verify:vite-react19" },
       { kind: "integration", status: "partial", command: "pnpm run dart:ci" },
-      { kind: "platform", status: "planned", command: undefined },
+      {
+        kind: "platform",
+        status: "implemented",
+        command: "pnpm run verify:tauri-universal",
+      },
     ],
   );
   assert.equal(coverage.status, "in-progress");
