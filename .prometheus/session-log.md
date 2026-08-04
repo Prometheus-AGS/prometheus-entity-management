@@ -570,3 +570,22 @@
 - The frozen React RC source remains remote `main` commit
   `1c40eaa08da210cbe3e20a77c5db211712b5c3a1`; no npm tag or registry state was
   changed by this work.
+
+## 2026-08-04 — Flint portable contracts dependency gate
+
+- Activated `v3-flint-portable-contracts`, registered its complete six-task
+  surface, and completed task 1 through the KBD-owned apply driver. Signed
+  revision 132 retains task 1 complete and restores the parent change to
+  `in_progress` after the known task-transition projection reset.
+- Verified both plan dependencies from archived changes, retained verification
+  receipts, and promoted specifications that pass strict OpenSpec validation.
+  Legacy signed pending projections were not used as completion evidence.
+- Refreshed the fetched `origin/main` revisions for Flint Realtime Fabric, Flint
+  Gate, and Flint Forge and confirmed the realtime SDK still exposes the
+  structural `watchEntities`/`mutateEntity` contract consumed locally.
+- Refreshed official JWT, JWKS/signing-key, and RBAC research through Firecrawl.
+  The portable fixture, explicit fail-closed live lane, auth/provisioning tests,
+  documentation, clean gates, QA, review, and archive remain tasks 2–6.
+- Preserved the frozen React `3.0.0-rc.1` source at remote `main` commit
+  `1c40eaa08da210cbe3e20a77c5db211712b5c3a1`; no package or registry state
+  changed.
