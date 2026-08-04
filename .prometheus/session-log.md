@@ -428,3 +428,23 @@
   receipts remain implementation work.
 - No package, application, coverage, public API, or registry state changed; the
   frozen React RC source remains independent.
+
+## 2026-08-04 — Universal Tauri example task-2 implementation
+
+- Added one React 19/Vite 8/Tauri 2 application shared by desktop, Android, and
+  iOS, including official generated mobile shells and Prometheus icon assets.
+- Kept the application on the canonical singleton normalized graph with ID-only
+  task lists and strict component-to-hook-to-store-to-service layering.
+- Added native SQLite and browser-preview persistence behind one adapter
+  boundary, plus a separately durable offline mutation queue with optimistic
+  graph patches and reconnect convergence.
+- Added lifecycle/deep-link handling, responsive desktop/mobile UI, and a real
+  least-privilege capability-denial path while withholding destructive graph
+  permissions.
+- Corrected observed TypeScript record-shape, hook dependency, error-cause,
+  Tauri icon, serde_json, and executable-runtime integration defects.
+- Scoped TypeScript, ESLint, Rust formatting, stable locked Cargo check, diff
+  hygiene, component layering, and Android/iOS initialization all pass.
+  Runtime/E2E/restart tests, docs/ledgers, clean builds, and platform smoke stay
+  assigned to tasks 3–5. The frozen React RC and all registry state remain
+  untouched.

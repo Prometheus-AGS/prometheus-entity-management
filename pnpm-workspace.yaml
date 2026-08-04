@@ -3,6 +3,7 @@ packages:
   - "examples/vite-app"
   - "examples/nextjs-app"
   - "examples/agentic-a2ui-app"
+  - "examples/tauri-universal"
 allowBuilds:
   better-sqlite3: true
   esbuild: true
