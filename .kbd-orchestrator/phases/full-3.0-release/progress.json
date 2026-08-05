@@ -179,12 +179,12 @@
     {
       "blockers": [],
       "id": "v3-flutter-riverpod-a2ui-example",
-      "implementation_status": "PENDING",
-      "last_task_completed": null,
+      "implementation_status": "COMPLETE",
+      "last_task_completed": "Record verification evidence, unresolved platform/manual limits, and release impact before archive.",
       "next_task_pending": null,
-      "status": "PENDING",
-      "tasks_done": 0,
-      "tasks_total": 0,
+      "status": "DONE",
+      "tasks_done": 6,
+      "tasks_total": 6,
       "title": "v3-flutter-riverpod-a2ui-example"
     },
     {
@@ -194,8 +194,8 @@
       "last_task_completed": null,
       "next_task_pending": null,
       "status": "PENDING",
-      "tasks_done": 0,
-      "tasks_total": 0,
+      "tasks_done": 5,
+      "tasks_total": 6,
       "title": "v3-tauri-universal-example"
     },
     {
@@ -309,7 +309,7 @@
       "title": "v3-stable-publication"
     }
   ],
-  "changes_completed": 2,
+  "changes_completed": 3,
   "changes_total": 28,
   "children": {},
   "completion": {
@@ -324,7 +324,7 @@
       "summary": null
     },
     "implementation": {
-      "completed": 2,
+      "completed": 3,
       "status": "IN_PROGRESS",
       "total": 28
     },
@@ -336,19 +336,19 @@
     }
   },
   "conflictCount": 0,
-  "derivedRevision": 28,
+  "derivedRevision": 98,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 28
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 98
   },
   "generatedBy": "kbd-runtime",
-  "implementation_completed": 2,
+  "implementation_completed": 3,
   "implementation_total": 28,
-  "last_updated": "2026-08-03T08:14:05.069372Z",
-  "last_updated_by": "kbd-runtime",
+  "last_updated": "2026-08-04T01:08:00Z",
+  "last_updated_by": "codex-signed-ledger-reconciliation",
   "migrationStatus": null,
   "parentPhase": null,
   "phase": "full-3.0-release",
   "phaseId": "full-3.0-release",
   "schemaVersion": "2",
-  "sourceRevision": 28
+  "sourceRevision": 98
 }

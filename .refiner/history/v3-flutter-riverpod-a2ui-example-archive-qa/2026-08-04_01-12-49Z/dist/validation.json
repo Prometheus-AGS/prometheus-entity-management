@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "artifact": "v3-flutter-riverpod-a2ui-example-archive-qa",
+  "refinementId": "4ffe7ac2-7028-42d2-ab7d-57c5eb71ffc8",
+  "priorCycleId": "719c5485-c5fa-48af-a984-d04503614147",
+  "implementationSource": "99d97c2",
+  "recordedAt": "2026-08-04T01:11:12Z",
+  "status": "pass",
+  "blockingConstraints": {"passed": 8, "total": 8},
+  "checks": {
+    "semanticScenarios": {"passed": 13, "total": 13},
+    "capabilities": {"passed": 16, "total": 16},
+    "stableArtifacts": {"passed": 16, "total": 16},
+    "focusedReleaseTests": {"passed": 44, "total": 44},
+    "a2uiPackageTests": {"passed": 26, "total": 26},
+    "stableFlutterPackageTests": {"passed": 70, "total": 70},
+    "stableShowcaseTests": {"passed": 25, "total": 25},
+    "mobileSmoke": {"passed": 2, "total": 2, "ios": "simulator", "android": "emulator-api35"},
+    "goldens": {"matchedHashes": 3, "total": 3},
+    "flutterProvenance": "pass",
+    "openSpecStrict": "pass",
+    "diffHygiene": "pass",
+    "progressProjection": {"status": "pass", "tasksDone": 6, "tasksTotal": 6, "implementationStatus": "COMPLETE"},
+    "signedLedger": {"status": "pass", "revision": 98, "implementationCompleted": 30, "implementationTotal": 53},
+    "trackedPlatformWorkflow": "pass",
+    "task5A2uiCommitAncestor": "pass",
+    "dartPublicDeclarations": {"matched": 81, "total": 81}
+  },
+  "coverage": {
+    "status": "in-progress",
+    "releaseCertified": false,
+    "showcasesImplemented": 4,
+    "showcasesPlanned": 1,
+    "flutterDurablePersistence": "partial"
+  },
+  "evidenceHashes": {
+    "task5Report": "d5cf2ada0f76bdaed20cf00e9db7f031d45e6f74668219f39e31021bd63adc1b",
+    "phoneEntityGolden": "9d5a7bc3c0b847d9f1e52cfa262c82c5e5e186a479f5d7b20e01d10377922bd5",
+    "tabletEntityGolden": "6acb25a55610a86e74093e3a27ff900f1e733bd02baeff6104ec185ed017fe8d",
+    "phoneA2uiGolden": "7206f21d6672836ae6b2483aa81e508160939d7485e68221c62fc5227c11eac5",
+    "coverage": "10d9c651b7751d1c21ae21f053268506233bbb80ead52fa0bdddac86b7d3b777",
+    "flutterProvenance": "abdbd8c296bd78d4b25e96fab3366d4b99f1e45ca04608c81916f78898240581",
+    "platformWorkflow": "c59e4d7bc66cb811065815090e64eda8cf15a46640fcb4e5abac2b07cc93e247"
+  },
+  "publication": {
+    "reactRc1Source": "1c40eaa08da210cbe3e20a77c5db211712b5c3a1",
+    "reactRc1SourceMoved": false,
+    "npmMutated": false,
+    "pubDevMutated": false,
+    "appStoreMutated": false,
+    "stableReleaseComplete": false,
+    "continuationRequiresLaterPrerelease": true
+  },
+  "explicitLimits": [
+    "physical devices",
+    "native assistive-technology certification",
+    "durable offline persistence",
+    "hosted services and external agents",
+    "stable GenUI package surface",
+    "bundled Rust runtime",
+    "registry and app-store publication",
+    "universal Tauri and full stable 3.0"
+  ]
+}

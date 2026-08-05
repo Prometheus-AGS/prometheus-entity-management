@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
-import { useStore } from "zustand";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { useGraphStore } from "@prometheus-ags/entity-graph-core";
+import { useGraphStore } from "../../../graph-store";
 import { useEntityExplorer } from "../context";
 
 interface EntityRow {
@@ -11,7 +10,7 @@ interface EntityRow {
 
 export function EntitiesTab() {
   const { state, dispatch } = useEntityExplorer();
-  const entities = useStore(useGraphStore, (s) => s.entities);
+  const entities = useGraphStore((s) => s.entities);
 
   // Flatten entity map into a list of rows
   const rows: EntityRow[] = [];

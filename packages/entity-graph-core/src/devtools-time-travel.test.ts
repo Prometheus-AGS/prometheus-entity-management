@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { useGraphStore } from "./graph";
+import { createGraphStore, useGraphStore } from "./graph";
 import { __resetMergeStrategies } from "./merge/registry";
 import {
   recordGraphSnapshot,
@@ -80,5 +80,16 @@ describe("G4: true time-travel (rewind + replay the live graph)", () => {
       recordGraphSnapshot();
     }
     expect(getTimeTravelState().snapshots.length).toBe(3);
+  });
+
+  it("records and restores an explicitly scoped graph without mutating the singleton", () => {
+    const scoped = createGraphStore();
+    scoped.getState().upsertEntity("TT", "scoped", { v: 1 });
+    const seq = recordGraphSnapshot("scoped", scoped);
+    scoped.getState().upsertEntity("TT", "scoped", { v: 2 });
+
+    expect(restoreGraphSnapshotBySeq(seq, scoped)).toBe(true);
+    expect(scoped.getState().readEntity<Record<string, unknown>>("TT", "scoped")?.v).toBe(1);
+    expect(useGraphStore.getState().readEntity("TT", "scoped")).toBeNull();
   });
 });

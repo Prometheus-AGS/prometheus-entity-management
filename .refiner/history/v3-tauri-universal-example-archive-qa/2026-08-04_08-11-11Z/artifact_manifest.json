@@ -1,0 +1,32 @@
+{
+  "artifact_type": "content",
+  "variants": [
+    {
+      "name": "artifact-refiner-qa",
+      "file": "dist/artifact-refiner-qa.md",
+      "format": "markdown",
+      "description": "Converged QA verdict for the bounded universal Tauri example, native platform receipts, explicit limits, and independent React RC/publication boundary."
+    }
+  ],
+  "preview": {
+    "required": false,
+    "runs": []
+  },
+  "validation": {
+    "preview_status": "pass",
+    "has_console_errors": false,
+    "has_request_failures": false,
+    "notes": [
+      "Direct content validation uses retained artifact hashes, current source/coverage/ledger verifiers, focused tests, signed KBD state, strict OpenSpec, Changesets, registry state, and diff hygiene.",
+      "Desktop, mobile, capability-denial, and responsive screenshots were inspected at original resolution; five Chromium flows report zero serious or critical axe findings.",
+      "Cycle 2 compiles the sanitized Android Gradle build task, regenerates the sanitized Xcode build phase, synchronizes iOS version and deep-link metadata, and passes ten fail-closed source-contract tests.",
+      "Cycle 3 regenerates the checked-in Xcode project itself, rejects native archives as application resources, and passes twelve fail-closed source-contract tests.",
+      "Cycle 4 accepts only the observed graph-clear capability error as denial proof, clarifies canonical graph-store reads in hooks, passes eight service units and thirteen source contracts, and rebuilds the current macOS bundle/DMG.",
+      "Cycle 5 parses persisted queue input before initial graph hydration, requires a current-source mobile receipt, passes eight service units and fifteen source contracts, rebuilds all three target artifacts, and hash-verifies 23 retained files.",
+      "Continuation cycle 1 closes the fifth review's manual-restore ordering defect, binds the receipt to the reviewed source bundle, passes nine service units and seventeen source contracts, rebuilds all targets, reruns Android/iOS, and refreshes all five current runtime artifacts.",
+      "Continuation cycle 2 resolves the sixth review's packet-inventory ambiguity by binding 27 current source/resource files, requiring the tracked Gradle wrapper and iOS resources, and proving that Tauri recreates the source-empty iOS web-assets directory before a clean simulator bundle build.",
+      "Windows/Linux, physical devices, native assistive technology, distribution signing, registries, and stable 3.0 remain explicitly outside this bounded change."
+    ]
+  },
+  "generated_at": "2026-08-04T08:09:22Z"
+}

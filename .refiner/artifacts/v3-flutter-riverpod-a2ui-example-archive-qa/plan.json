@@ -1,0 +1,41 @@
+{
+  "plan": {
+    "stages": [
+      {"id": "s1", "description": "Map every Flutter plan and OpenSpec criterion to current task-5, runtime, platform, coverage, skills, and release evidence.", "requires_execution": false},
+      {"id": "s2", "description": "Run focused coverage, provenance, release-regression, OpenSpec, and diff-hygiene checks.", "requires_execution": true, "tool": "focused repository commands"},
+      {"id": "s3", "description": "Recompute stable receipt, golden, coverage, provenance, and frozen React-main hashes or references.", "requires_execution": true, "tool": "SHA-256 and git reference checks"},
+      {"id": "s4", "description": "Evaluate durable-persistence, physical-device, accessibility, hosted-service, package-publication, and full-release exclusions.", "requires_execution": false},
+      {"id": "s5", "description": "Persist, schema-check, checkpoint, and finalize the artifact-refiner QA bundle.", "requires_execution": true, "tool": "artifact-refiner scripts"}
+    ],
+    "tool_invocations": [
+      {"stage_id": "s2", "tool": "focused repository commands", "purpose": "Prove the promoted coverage state is accepted by all current contract regressions and strict OpenSpec."},
+      {"stage_id": "s3", "tool": "SHA-256 and git reference checks", "purpose": "Bind the QA result to retained stable evidence and the unchanged React rc.1 source."},
+      {"stage_id": "s5", "tool": "artifact-refiner scripts", "purpose": "Validate durable artifact state before independent review."}
+    ],
+    "state_updates": {
+      "files_to_create": [
+        "specification.json",
+        "plan.json",
+        "constraints.json",
+        "artifact_manifest.json",
+        "reflection.json",
+        "refinement_log.md",
+        "decisions.md",
+        "dist/archive-qa-report.md",
+        "dist/validation.json"
+      ],
+      "files_to_update": ["state.json", ".refiner/registry.json"],
+      "directories_required": ["dist"]
+    },
+    "validation_plan": [
+      {"constraint_id": "acceptance-direct-evidence", "validation_method": "acceptance matrix and evidence path checks", "execution_required": true},
+      {"constraint_id": "stable-host-and-platform-evidence", "validation_method": "task-5 receipt hash and recorded gate/device assertions", "execution_required": true},
+      {"constraint_id": "visual-and-accessibility-integrity", "validation_method": "three golden SHA-256 checks and explicit accessibility boundary", "execution_required": true},
+      {"constraint_id": "normalized-graph-and-policy-boundary", "validation_method": "task-5 tests and security-boundary evidence", "execution_required": true},
+      {"constraint_id": "ledgers-synchronized", "validation_method": "coverage, provenance, release, skills, Changesets, and public declaration checks", "execution_required": true},
+      {"constraint_id": "durability-and-device-limits-explicit", "validation_method": "cross-file semantic review", "execution_required": false},
+      {"constraint_id": "react-rc-lane-preserved", "validation_method": "remote main SHA and release-impact review", "execution_required": true},
+      {"constraint_id": "no-publication-overclaim", "validation_method": "coverage status, publication language, and registry-boundary review", "execution_required": true}
+    ]
+  }
+}

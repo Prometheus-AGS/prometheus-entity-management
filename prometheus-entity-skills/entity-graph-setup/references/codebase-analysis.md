@@ -23,7 +23,10 @@ Ordered checklist for scanning a consumer repository before integration.
 
 - Server: `app/**/page.tsx`, `layout.tsx`, `route.ts`
 - Client: `'use client'` modules — **hooks and graph live here**
-- **Rule**: do not import `useGraphStore` in Server Components; hydrate on client
+- **Rule**: do not import React graph hooks in Server Components or write request data to the process-wide `graphStore`.
+- Locate the request-owned `createGraphStore()` factory, the serializable snapshot boundary, and the client `GraphStoreProvider`.
+- Confirm adapters and realtime infrastructure resolve the provider store through `useGraphStoreApi()` and start only after mount.
+- Use `_shared/references/nextjs-app-router.md` as the acceptance contract.
 
 ### Next.js Pages Router
 

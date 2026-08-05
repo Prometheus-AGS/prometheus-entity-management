@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".refiner/artifacts/v3-flint-portable-contracts-archive-qa/dist/validation.json",
+      "line": 13,
+      "claim": "The recorded clean/full CI and remote evidence is pinned to `5ef6ea3` even though later verifier/test/source corrections are included in this diff, so the cumulative change is not proven from a clean state.",
+      "evidence": "`validation.json` records `fullCi: {\"status\": \"pass-exact-head-5ef6ea3\"}` and `remoteCandidateMatrix: \"pass-exact-head-5ef6ea3-node-22-24-26-tauri\"`, while later artifact history documents source corrections through iteration 12 and the diff modifies `scripts/verify-flint-portable-contracts.mjs` and `tests/release/v3-flint-portable-contracts.test.mjs`; acceptance requires running the relevant gates from a clean state for the change under review.",
+      "suggested_fix": "Rerun the required clean CI, focused checks, external verifier, and remote matrix at the actual post-iteration-12 commit, then update the evidence and URLs to that exact candidate SHA."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-flint-portable-contracts.mjs",
+      "line": 117,
+      "claim": "The client-secret scanner still allows opaque service-role token assignments such as `SUPABASE_SERVICE_ROLE_TOKEN=...` in example files.",
+      "evidence": "The blocking `security-and-secret-boundaries` constraint requires client service-role credential boundaries, but the forbidden assignment regex only accepts `SERVICE_ROLE`, `SERVICE_ROLE_KEY`, or `SERVICE_ROLE_SECRET` before `=`, and the other name rule only matches `service[_-]?role[_-]?key`; therefore `SUPABASE_SERVICE_ROLE_TOKEN=server-only` is not rejected unless its value happens to be a decoded service-role JWT.",
+      "suggested_fix": "Broaden the service-role assignment detector to reject common credential suffixes such as `_TOKEN`, `_JWT`, `_PASSWORD`, or any `SERVICE_ROLE_[A-Z0-9_]+=` assignment in scanned client/example files, and add a regression for `SUPABASE_SERVICE_ROLE_TOKEN`."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

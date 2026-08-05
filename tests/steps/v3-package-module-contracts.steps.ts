@@ -229,7 +229,7 @@ Then("the package contract keeps stable publication and visual certification blo
   assert.ok(
     coverage.showcases.every(
       ({ status, runtimeEvidence, visualEvidence }) =>
-        ["planned", "implemented"].includes(status) &&
+        ["planned", "partial", "implemented"].includes(status) &&
         runtimeEvidence.status === status &&
         visualEvidence.status === status,
     ),

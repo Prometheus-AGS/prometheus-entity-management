@@ -75,8 +75,35 @@ test("coverage, package, release, and skill guidance match the certified Dart bo
   assert.ok(
     capability.releaseEvidence.some(
       ({ ownerChange, status }) =>
-        ownerChange === "v3-flutter-riverpod-a2ui-example" && status === "planned",
+        ownerChange === "v3-flutter-riverpod-a2ui-example" && status === "implemented",
     ),
+  );
+});
+
+test("Flutter platform smoke runs from the showcase package root", () => {
+  const workflow = readFileSync(
+    join(root, ".github/workflows/flutter-example-platform.yml"),
+    "utf8",
+  );
+  const androidStep = workflow
+    .split("- name: Run the Android integration smoke test", 2)[1]
+    ?.split("  ios-smoke:", 1)[0];
+  const iosStep = workflow.split("- name: Run the iOS integration smoke test", 2)[1];
+
+  assert.ok(androidStep, "Android smoke step is missing");
+  assert.match(androidStep, /cd examples\/flutter-riverpod &&/);
+  assert.match(androidStep, /flutter test\s+integration_test\/mobile_smoke_test\.dart/);
+  assert.doesNotMatch(
+    androidStep,
+    /flutter test\s+examples\/flutter-riverpod\/integration_test\/mobile_smoke_test\.dart/,
+  );
+
+  assert.ok(iosStep, "iOS smoke step is missing");
+  assert.match(iosStep, /working-directory: examples\/flutter-riverpod/);
+  assert.match(iosStep, /flutter test\s+integration_test\/mobile_smoke_test\.dart/);
+  assert.doesNotMatch(
+    iosStep,
+    /flutter test\s+examples\/flutter-riverpod\/integration_test\/mobile_smoke_test\.dart/,
   );
 });
 

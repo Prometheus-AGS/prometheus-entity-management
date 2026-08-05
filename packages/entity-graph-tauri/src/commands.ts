@@ -84,11 +84,17 @@ export async function setList(
   invoke: TauriInvokeFn,
   payload: SetListPayload,
 ): Promise<void> {
-  await invoke(CMD_SET_LIST, { payload });
-  useGraphStore.getState().setListResult(payload.queryKey, payload.ids, {
+  const commandPayload = {
+    ...payload,
     total: payload.total ?? null,
     nextCursor: payload.nextCursor ?? null,
     hasNextPage: payload.hasNextPage ?? false,
+  };
+  await invoke(CMD_SET_LIST, { payload: commandPayload });
+  useGraphStore.getState().setListResult(commandPayload.queryKey, commandPayload.ids, {
+    total: commandPayload.total,
+    nextCursor: commandPayload.nextCursor,
+    hasNextPage: commandPayload.hasNextPage,
   });
 }
 

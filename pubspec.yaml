@@ -6,6 +6,7 @@ environment:
 
 workspace:
   - packages/entity_graph_flutter
+  - examples/flutter-riverpod
 
 dev_dependencies:
   melos: ^8.2.2
@@ -29,10 +30,10 @@ melos:
       run: melos exec --flutter --fail-fast -- "dart analyze --fatal-infos --fatal-warnings"
     test:
       description: Run all Flutter package tests.
-      run: melos exec --flutter --fail-fast -- "flutter test"
+      run: melos exec --flutter --concurrency=1 --fail-fast -- "flutter test"
     package:check:
       description: Validate pub.dev payloads without publishing.
-      run: melos exec --flutter --fail-fast -- "flutter pub publish --dry-run"
+      run: melos exec --flutter --no-private --concurrency=1 --fail-fast -- "flutter pub publish --dry-run"
     examples:
       description: Run package-local Flutter examples when present.
       run: melos exec --flutter --dir-exists=example --fail-fast -- "flutter test example"

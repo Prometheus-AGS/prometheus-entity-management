@@ -6,7 +6,7 @@ Update a post in one screen and every list row, detail panel, and badge that rea
 
 ### 3.0 release program status
 
-The full 3.0 release is **in progress**, not yet certified or promoted to npm's `latest` tag. The authoritative [3.0 release contract](release/v3-release-contract.json) defines the complete artifact inventory, compatibility matrix, stability labels, required evidence, promotion approvals, and recovery policy. The [example coverage ledger](examples/coverage.json) records the React 19/Vite 8 showcase as implemented while Next.js, agentic A2UI, Flutter/Riverpod, and universal Tauri remain planned. A planned entry is not release evidence, and one implemented showcase is not full-release certification.
+The full 3.0 release is **in progress**, not yet certified or promoted to npm's `latest` tag. The authoritative [3.0 release contract](release/v3-release-contract.json) defines the complete artifact inventory, compatibility matrix, stability labels, required evidence, promotion approvals, and recovery policy. The [example coverage ledger](examples/coverage.json) records all five requested showcases—React 19/Vite 8, Next.js App Router, agentic A2UI, Flutter/Riverpod, and universal Tauri—as implemented at their explicitly bounded runtime and visual evidence levels. Completed showcase work is not full-release certification.
 
 Native Dart and Rust sources are included in the 3.0 inventory, while first publication to pub.dev and crates.io remains deferred until registry ownership and native release workflows are established. npm publication and the branded GitHub Pages documentation site are required release outcomes.
 
@@ -22,11 +22,19 @@ The [shared example contract](examples/shared/README.md) is implemented as a pre
 
 The [official A2UI bridge](release/a2ui-protocol-bridge.md) is now implemented and independently certified. The `@prometheus-ags/a2ui-react` root renders official v0.9.1 surfaces through the maintained engine, graph actions cross a default-deny application policy, and alpha AG-UI chat/state APIs move to the explicit `./ag-ui` subpath. Packed consumers and real-browser accessibility/keyboard evidence prove this bridge.
 
-The [A2A conformance agent](release/a2a-conformance-agent.md) separately implements the official A2A v1 JSON-RPC binding with authenticated, caller-scoped task access, a default-deny graph policy, deterministic A2UI artifacts, packed-consumer verification, and a pinned upstream TCK receipt. Protocol validity never grants application authority. This headless gate does not certify the complete agentic showcase, unsupported REST/gRPC or push-notification bindings, Flutter rendering, documentation deployment, registry authority, or stable promotion.
+The [A2A conformance agent](release/a2a-conformance-agent.md) separately implements the official A2A v1 JSON-RPC binding with authenticated, caller-scoped task access, a default-deny graph policy, deterministic A2UI artifacts, packed-consumer verification, and a pinned upstream TCK receipt. Protocol validity never grants application authority. The dedicated [agentic A2UI example](release/agentic-a2ui-example.md) composes that transport with the official renderer, exact application actions, human approval, and normalized graph projections. Its deletion-aware clean gate passes eleven units, four package builds, both protocol export ledgers, a Vite production build, three Chromium flows, accessibility, screenshots, traces, coverage, security, and strict OpenSpec. Unsupported external-agent hosting, REST/gRPC or push-notification bindings, Flutter rendering, documentation deployment, registry authority, and stable promotion remain outside these gates.
 
 The [Flutter source provenance gate](release/flutter-source-provenance.md) preserves the allowlisted KnowMe history, authorship, MIT attribution, path dispositions, and deterministic lineage evidence. `packages/entity_graph_flutter` remains the sole canonical Dart package; the filtered import is non-buildable and non-public. This is chain-of-custody evidence only—not Riverpod/runtime certification, Flutter rendering, pub.dev authority, or stable 3.0 readiness.
 
 The [Dart graph and Riverpod 3 gate](release/dart-graph-riverpod.md) now certifies that canonical package's generated Riverpod families, normalized list/detail behavior, local/remote/hybrid views, optimistic CRUD rollback, bounded retry, realtime invalidation, pluggable transports, optional FFI seam, public declaration ledger, scoped cross-view widget goldens, and a clean Flutter 3.44.8 stable package candidate. It does not certify the complete Flutter/A2UI showcase, Android/iOS devices, pub.dev authority, the immutable full-release SHA, or stable promotion.
+
+The [Flutter, Riverpod, and A2UI showcase](release/flutter-riverpod-a2ui-example.md)
+now implements the complete application composition: one graph, generated
+providers/controllers, optimistic and offline-aware CRUD, relationships,
+realtime changes, policy-gated official GenUI surfaces, responsive UI, and an
+optional FFI transport. Analyzer, 25 host tests, and three deterministic
+goldens pass. Its ledger status remains `partial` until Flutter 3.44.8 stable
+and the Android/iOS integration lanes execute successfully.
 
 The [recoverable release-candidate pipeline](release/release-candidate-pipeline.md)
 is implemented as a separate non-mutating gate. It derives the sixteen-artifact
@@ -45,6 +53,32 @@ source-workspace evidence, not packed-package or npm staging evidence; it is
 the application proof used to prioritize a core + React preview RC while the
 remaining portfolio is completed.
 
+The [Next.js App Router showcase](release/nextjs-app-router-example.md)
+adds per-request vanilla graphs, serializable RSC hydration, a scoped React
+provider, route persistence, validated Server Action mutation, and client-only
+realtime takeover. Its clean tarball-only production verifier installs packed
+core and React `3.0.0-rc.1` candidates into an external app and proves the
+concurrent-request, browser, accessibility, screenshot, and trace contract. The
+coverage ledger records it as implemented without claiming npm publication or
+completion of the remaining showcase portfolio.
+
+The [universal Tauri application](release/tauri-universal-example.md) uses one
+shared React/Vite frontend, normalized graph, SQLite/localStorage adapter
+boundary, durable offline queue, deep-link/lifecycle handling, least-privilege
+capability, and generated Android/iOS shells. Five Chromium flows, packaged
+macOS native IPC/offline restart, Android API 36 emulator runtime/denial, and
+iOS 26.5 simulator runtime receipts pass and are hash-bound. Windows/Linux,
+physical-device, signing, app-store, registry, and stable-release evidence
+remain separate.
+
+The [portable Flint contract](release/flint-portable-contracts.md) now binds
+the graph adapter to immutable Realtime Fabric, Gate, and Forge sources. It
+proves the `watchEntities`/`mutateEntity` seam, tenant/issuer/key boundaries,
+strict RSA and qualified EC JWKS behavior, client secret separation, and the
+external Forge plan/apply/RLS/audit contract. The live lane is opt-in and
+fail-closed; no Forge adapter, hosted deployment, or registry publication is
+claimed.
+
 ### Documentation map
 
 | Doc | Purpose |
@@ -61,10 +95,16 @@ remaining portfolio is completed.
 | [release/binding-singleton-contract.md](release/binding-singleton-contract.md) | Required core peers, fixed release policy, and six-binding singleton certification |
 | [release/a2ui-protocol-bridge.md](release/a2ui-protocol-bridge.md) | Official A2UI v0.9.1 rendering, graph action policy, and AG-UI migration boundary |
 | [release/a2a-conformance-agent.md](release/a2a-conformance-agent.md) | Official A2A v1 JSON-RPC lifecycle, authority boundary, TCK scope, and alpha migration |
+| [release/agentic-a2ui-example.md](release/agentic-a2ui-example.md) | Keyless end-to-end A2A/A2UI application architecture, policy matrix, verification state, and limits |
 | [release/flutter-source-provenance.md](release/flutter-source-provenance.md) | Licensed Flutter source lineage, canonical ownership, and publication limits |
 | [release/dart-graph-riverpod.md](release/dart-graph-riverpod.md) | Canonical Dart graph, Riverpod 3, public API ledger, behavioral evidence, and exclusions |
+| [release/flutter-riverpod-a2ui-example.md](release/flutter-riverpod-a2ui-example.md) | Flutter application architecture, safe GenUI policy, host evidence, and pending platform gates |
 | [release/release-candidate-pipeline.md](release/release-candidate-pipeline.md) | Contract-derived RC manifest, rehearsal, OIDC staging boundary, and recovery |
 | [release/vite-react19-example.md](release/vite-react19-example.md) | Implemented React 19/Vite 8 scenarios, architecture, verification, and evidence limits |
+| [release/nextjs-app-router-example.md](release/nextjs-app-router-example.md) | Implemented Next.js request isolation, RSC hydration, packed production verification, and browser evidence |
+| [release/tauri-universal-example.md](release/tauri-universal-example.md) | Implemented universal React/Tauri architecture, browser/native evidence, platform limits, and release boundaries |
+| [release/flint-portable-contracts.md](release/flint-portable-contracts.md) | Portable Flint realtime, JWT/JWKS, key-separation, and Forge provisioning boundaries |
+| [examples/tauri-universal/README.md](examples/tauri-universal/README.md) | Run and verify the shared desktop/Android/iOS example without overclaiming platform evidence |
 | [examples/shared/README.md](examples/shared/README.md) | Deterministic shared showcase domain, semantic scenarios, and evidence boundary |
 | [release/dependency-policy.json](release/dependency-policy.json) | Machine-readable compatible-current dependency holds |
 | [security/advisory-policy.json](security/advisory-policy.json) | Critical/high production advisory dispositions |
@@ -340,6 +380,8 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | `createSupabaseRealtimeAdapter` | Supabase Realtime payloads → graph. |
 | `createConvexAdapter` | Convex-shaped streams → graph. |
 | `createGraphQLSubscriptionAdapter` | GraphQL over WebSocket subscriptions → graph. |
+| `createFlintAdapter` | Flint `watchEntities` stream → graph through the structural client contract. |
+| `publishFlintMutation` | Publish one entity record through the caller-owned Flint client. |
 
 ### GraphQL
 
@@ -392,7 +434,7 @@ recovery are separate proof obligations. The mandatory 3.0 commands are
 `pnpm run test:sync-persistence`, `pnpm run verify:sync-persistence`, and
 `pnpm run bdd:sync-persistence`. They do not certify any rendered showcase;
 browser, mobile, accessibility, screenshot, trace, and device evidence remains
-owned by the planned example changes.
+owned by each example's declared gate.
 
 ### DevTools
 
@@ -663,7 +705,7 @@ Use `Posts.crud()` with `useEntityCRUD` when you want the full list + detail + f
 | Example | Path | What it demonstrates |
 |--------|------|---------------------|
 | **Vite app** | [`examples/vite-app/`](examples/vite-app/) | Full CRUD, realtime adapters, **TanStack Query → graph bridge** (`/tanstack-bridge`), `EntityTable` / sheets, mock API with latency |
-| **Next.js app** | [`examples/nextjs-app/`](examples/nextjs-app/) | Same feature set as the Vite example (Project/Task/User CRUD, realtime, engine settings, pure list view, TanStack Query → graph bridge). **SSR:** `GraphHydrationProvider` seeds the client graph from the shared demo data on first load |
+| **Next.js app** | [`examples/nextjs-app/`](examples/nextjs-app/) | Project/Task/User flows plus a Next.js 16 runtime route. Each document request creates an isolated graph, serializes it through RSC, hydrates one `GraphStoreProvider`, preserves it across client routes, confirms a Server Action mutation, and hands ownership to client realtime after mount. |
 
 From the repo root (this monorepo uses **pnpm**):
 

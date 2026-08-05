@@ -1,0 +1,26 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "examples/agentic-a2ui-app/src/features/agentic/agent-session-store.ts",
+      "line": 36,
+      "claim": "Starting a new scenario or resetting does not clear or deny an already pending destructive approval, allowing a stale human decision from a prior surface/scenario to mutate the graph later.",
+      "evidence": "The acceptance evidence requires human approval boundaries and states that scenario start/reset clear prior agent state; however `run()` only calls `clearAgentSurfaces()` and resets session fields, and `reset()` clears surfaces/graph/audit but never imports or resolves `approvalStore`, while `approval-store.ts` keeps `pending` until `resolve()` is called.",
+      "suggested_fix": "On `run()` and `reset()`, fail closed any pending approval before clearing state, e.g. call `approvalStore.getState().resolve(false)` or add an explicit `clearPending()` that denies and resolves the active promise."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "examples/agentic-a2ui-app/src/features/agentic/agent-server.ts",
+      "line": 11,
+      "claim": "The external A2A URL path can embed and expose credentials despite the documented no-token browser boundary.",
+      "evidence": "`configuredExternalEndpoint` directly accepts `import.meta.env.VITE_EXTERNAL_A2A_URL` and passes it to `createExternalA2AExecutor`, while `AgentControls` renders `session.configuration.endpoint` in both text and `title`; the acceptance text says the browser example does not accept or embed an agent token and authenticated production routing belongs in a server-side gateway.",
+      "suggested_fix": "Parse `VITE_EXTERNAL_A2A_URL` and reject any URL with `username` or `password` before storing/rendering it; also add a regression test for `https://token@example.com/a2a`."
+    }
+  ]
+}

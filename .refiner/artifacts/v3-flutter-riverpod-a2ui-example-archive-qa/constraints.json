@@ -1,0 +1,25 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    {"id": "acceptance-direct-evidence", "description": "Every bounded Flutter plan and OpenSpec criterion must map to reproducible current evidence.", "severity": "blocking", "type": "structural", "validation": {"requires_code_execution": true, "validation_method": "acceptance matrix, task receipts, current verifier output, and evidence path checks"}},
+    {"id": "stable-host-and-platform-evidence", "description": "Flutter 3.44.8 host gates, 70 package tests, 25 showcase tests, and one iOS plus one Android smoke lane must remain directly evidenced.", "severity": "blocking", "type": "technical", "validation": {"requires_code_execution": true, "validation_method": "task-5 receipt hash and platform disposition checks"}},
+    {"id": "visual-and-accessibility-integrity", "description": "All three stable goldens must retain their certified hashes, while simulator semantics and goldens must not be inflated into native assistive-technology certification.", "severity": "blocking", "type": "accessibility", "validation": {"requires_code_execution": true, "validation_method": "SHA-256 recomputation and explicit evidence-boundary review"}},
+    {"id": "normalized-graph-and-policy-boundary", "description": "The example must retain one application-owned normalized graph, generated controller ownership, atomic untrusted JSONL preflight, catalog/action allowlists, tenant/task policy, and approval gates.", "severity": "blocking", "type": "technical", "validation": {"requires_code_execution": true, "validation_method": "stable test receipt and trust-boundary evidence review"}},
+    {"id": "ledgers-synchronized", "description": "Coverage, Flutter provenance, Dart public declarations, release guidance, skills, OpenSpec, and the A2UI patch Changeset must agree with the implemented showcase boundary.", "severity": "blocking", "type": "structural", "validation": {"requires_code_execution": true, "validation_method": "coverage/provenance verifiers, 44 focused tests, file checks, and strict OpenSpec"}},
+    {"id": "durability-and-device-limits-explicit", "description": "In-memory offline behavior, simulator/emulator evidence, non-native accessibility evidence, experimental GenUI, and hosted-service exclusions must remain explicit.", "severity": "blocking", "type": "semantic", "validation": {"requires_code_execution": false, "validation_method": "verification, release-impact, coverage, README, and skill cross-review"}},
+    {"id": "react-rc-lane-preserved", "description": "The frozen React 3.0.0-rc.1 source on remote main must remain unchanged; Flutter continuation work may only feed a later coordinated prerelease.", "severity": "blocking", "type": "technical", "validation": {"requires_code_execution": true, "validation_method": "git remote main reference and Changesets/release-impact checks"}},
+    {"id": "no-publication-overclaim", "description": "QA may certify the bounded Flutter showcase but must not claim npm, pub.dev, app-store, stable 3.0, physical-device, or durable-persistence completion.", "severity": "blocking", "type": "semantic", "validation": {"requires_code_execution": true, "validation_method": "coverage status, release-impact, evidence language, and registry-boundary assertions"}}
+  ],
+  "global_rules": [
+    "Use current repository, retained device receipts, and signed KBD evidence as authoritative.",
+    "Do not convert an external, manual, experimental, or not-applicable gate into a passing repository claim.",
+    "Do not mutate npm, pub.dev, an app store, or any public release state during QA.",
+    "Lead reflection with gaps and deltas rather than success claims."
+  ],
+  "termination_conditions": [
+    "All eight blocking constraints pass.",
+    "Both manifest variants exist and are non-empty.",
+    "Manifest, constraints, and refinement state validate.",
+    "No material correction remains before fresh adversarial review."
+  ]
+}

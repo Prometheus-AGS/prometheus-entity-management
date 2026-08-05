@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "examples/agentic-a2ui-app/src/features/agentic/agent-session-store.ts",
+      "line": 38,
+      "claim": "Starting a new malformed or cancelled scenario does not clear the already-rendered A2UI runtime surface, so validation-failed flows can leave stale agent UI visible despite claiming no surface rendered.",
+      "evidence": "In `run()`, the store resets only `lifecycle`, `scenario`, `taskId`, `artifacts`, and `error` before calling `a2aClientService.run`; it never clears or recreates `agentA2uiRuntime` from `runtime.ts`, while `processAgentSurface(messages)` only appends/processes new messages. The acceptance evidence claims malformed artifacts are rejected with `surfaceRendered: false` and no render, but the browser test starts from a fresh page and does not cover running malformed after a prior successful stream.",
+      "suggested_fix": "Clear/dispose/recreate the A2UI runtime or remove existing agent surfaces at the start of each scenario, and add a regression that streams the happy surface first, then runs the malformed scenario and asserts no stale A2UI surface remains."
+    },
+    {
+      "severity": "WARNING",
+      "file": "examples/agentic-a2ui-app/src/features/agentic/approval-store.ts",
+      "line": 26,
+      "claim": "Concurrent approval requests overwrite the pending approval and can leave the first destructive action promise unresolved indefinitely.",
+      "evidence": "`request()` always sets a new `pending` approval and returns a Promise that resolves only when `lastResolution.id === id`; there is no guard or rejection when `get().pending` is already non-null. The rendered archive action button remains available while the approval dialog is pending, so repeated clicks can create multiple requests and orphan earlier subscribers.",
+      "suggested_fix": "Reject or resolve any existing pending approval before accepting a new one, or disable the source action while approval is pending."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

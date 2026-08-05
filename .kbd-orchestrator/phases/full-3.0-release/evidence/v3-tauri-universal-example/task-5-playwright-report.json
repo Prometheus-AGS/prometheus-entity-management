@@ -1,0 +1,292 @@
+{
+  "config": {
+    "argv": [
+      "/Users/gqadonis/.local/share/fnm/node-versions/v26.5.0/installation/bin/node",
+      "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "tests/browser/v3-tauri-universal-example.playwright.config.ts"
+    ],
+    "configFile": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/tests/browser/v3-tauri-universal-example.playwright.config.ts",
+    "rootDir": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-playwright-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-desktop-responsive",
+        "name": "chromium-desktop-responsive",
+        "testDir": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "v3-tauri-universal-example.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-playwright-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm --filter prometheus-tauri-universal-example dev --host 127.0.0.1 --port 4181 --strictPort",
+      "url": "http://127.0.0.1:4181",
+      "reuseExistingServer": false,
+      "timeout": 60000
+    }
+  },
+  "suites": [
+    {
+      "title": "v3-tauri-universal-example.spec.ts",
+      "file": "v3-tauri-universal-example.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "projects one normalized task graph through list and detail views",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop-responsive",
+              "projectName": "chromium-desktop-responsive",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2712,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-08-04T04:53:42.462Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-playwright-artifacts/v3-tauri-universal-example-98353-rough-list-and-detail-views-chromium-desktop-responsive/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "66ee3d6f6124bfaff956-4c98b7b2596fb82a12ad",
+          "file": "v3-tauri-universal-example.spec.ts",
+          "line": 45,
+          "column": 5
+        },
+        {
+          "title": "invalidates both project relationships when a task is reassigned",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop-responsive",
+              "projectName": "chromium-desktop-responsive",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1249,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-08-04T04:53:45.526Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-playwright-artifacts/v3-tauri-universal-example-020f7-s-when-a-task-is-reassigned-chromium-desktop-responsive/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "66ee3d6f6124bfaff956-ec249a024e7217adc131",
+          "file": "v3-tauri-universal-example.spec.ts",
+          "line": 65,
+          "column": 5
+        },
+        {
+          "title": "coalesces a realtime burst into one cross-view graph write",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop-responsive",
+              "projectName": "chromium-desktop-responsive",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1261,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-08-04T04:53:46.835Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-playwright-artifacts/v3-tauri-universal-example-add28--one-cross-view-graph-write-chromium-desktop-responsive/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "66ee3d6f6124bfaff956-7df80eaa40ea732be958",
+          "file": "v3-tauri-universal-example.spec.ts",
+          "line": 87,
+          "column": 5
+        },
+        {
+          "title": "restores an offline mutation after reload and converges after reconnect",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop-responsive",
+              "projectName": "chromium-desktop-responsive",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1797,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-08-04T04:53:48.155Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-playwright-artifacts/v3-tauri-universal-example-9ff67-d-converges-after-reconnect-chromium-desktop-responsive/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "66ee3d6f6124bfaff956-cb9384f514b417cb9779",
+          "file": "v3-tauri-universal-example.spec.ts",
+          "line": 107,
+          "column": 5
+        },
+        {
+          "title": "keeps the mobile projection operable and free of serious accessibility findings",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop-responsive",
+              "projectName": "chromium-desktop-responsive",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 839,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-08-04T04:53:50.026Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-playwright-artifacts/v3-tauri-universal-example-8ff59-ious-accessibility-findings-chromium-desktop-responsive/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "66ee3d6f6124bfaff956-8a12eaecf73c4ae8a543",
+          "file": "v3-tauri-universal-example.spec.ts",
+          "line": 137,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-08-04T04:53:41.198Z",
+    "duration": 9821.115,
+    "expected": 5,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

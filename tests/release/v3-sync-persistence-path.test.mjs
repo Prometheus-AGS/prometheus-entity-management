@@ -97,8 +97,12 @@ test("coverage promotes only certified npm sync receipts", async () => {
       { kind: "integration", status: "implemented", command: "pnpm run test:sync-persistence" },
       { kind: "packed-consumer", status: "implemented", command: "pnpm run verify:sync-persistence" },
       { kind: "browser", status: "implemented", command: "pnpm run verify:vite-react19" },
-      { kind: "mobile", status: "planned", command: undefined },
-      { kind: "platform", status: "planned", command: undefined },
+      { kind: "integration", status: "partial", command: "pnpm run dart:ci" },
+      {
+        kind: "platform",
+        status: "implemented",
+        command: "pnpm run verify:tauri-universal",
+      },
     ],
   );
   assert.equal(coverage.status, "in-progress");
@@ -106,7 +110,7 @@ test("coverage promotes only certified npm sync receipts", async () => {
   assert.ok(
     coverage.showcases.every(
       ({ status, runtimeEvidence, visualEvidence }) =>
-        ["planned", "implemented"].includes(status) &&
+        ["planned", "partial", "implemented"].includes(status) &&
         runtimeEvidence.status === status &&
         visualEvidence.status === status,
     ),

@@ -50,6 +50,7 @@ When this skill runs inside **@prometheus-ags/prometheus-entity-management**, pr
 
 - `prometheus-entity-skills/_shared/references/library-api.md`
 - `prometheus-entity-skills/_shared/references/architecture-rules.md`
+- `prometheus-entity-skills/_shared/references/nextjs-app-router.md` for request-owned SSR/RSC hydration
 - `prometheus-entity-skills/_shared/references/branding.md` (travisjames.ai tokens for examples)
 - `prometheus-entity-skills/_shared/references/schemas/*.schema.json`
 

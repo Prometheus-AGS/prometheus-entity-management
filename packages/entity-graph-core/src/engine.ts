@@ -1,5 +1,5 @@
-import { useGraphStore } from "./graph";
-import type { EntityType, EntityId } from "./graph";
+import { graphStore } from "./graph";
+import type { EntityType, EntityId, GraphStore } from "./graph";
 
 /**
  * Process-wide defaults for stale times, retries, and background revalidation.
@@ -27,7 +27,7 @@ export interface EntityQueryOptions<TRaw, TEntity extends object> {
   fetch: (id: EntityId) => Promise<TRaw>;
   normalize: (raw: TRaw) => TEntity;
   idField?: string;
-  sideEffects?: (raw: TRaw, store: typeof useGraphStore) => void;
+  sideEffects?: (raw: TRaw, store: GraphStore) => void;
   staleTime?: number;
   enabled?: boolean;
   onSuccess?: (entity: TEntity) => void;
@@ -72,7 +72,7 @@ export interface ListQueryOptions<TRaw, TEntity extends object> {
   fetch?: (params: ListFetchParams) => Promise<ListResponse<TRaw>>;
   /** Row normalizer. Optional alongside `fetch` (graph-only callers omit both). */
   normalize?: (raw: TRaw) => { id: EntityId; data: TEntity };
-  sideEffects?: (items: TRaw[], store: typeof useGraphStore) => void;
+  sideEffects?: (items: TRaw[], store: GraphStore) => void;
   mode?: "replace" | "append";
   staleTime?: number;
   enabled?: boolean;
@@ -92,13 +92,23 @@ export function serializeKey(key: unknown[]): string {
 
 function sleep(ms: number) { return new Promise((r) => setTimeout(r, ms)); }
 
-const inflight = new Map<string, Promise<unknown>>();
+const inflightByStore = new WeakMap<GraphStore, Map<string, Promise<unknown>>>();
+
+function inflightFor(store: GraphStore) {
+  let inflight = inflightByStore.get(store);
+  if (!inflight) {
+    inflight = new Map();
+    inflightByStore.set(store, inflight);
+  }
+  return inflight;
+}
 /**
  * Collapse concurrent identical requests into one Promise (prevents stampedes when many components mount the same entity/list).
  * @param key - Logical dedupe key (e.g. `type:id` or serialized list key)
  * @param fn - Async work that performs the fetch + graph writes
  */
-export function dedupe<T>(key: string, fn: () => Promise<T>): Promise<T> {
+export function dedupe<T>(key: string, fn: () => Promise<T>, store: GraphStore = graphStore): Promise<T> {
+  const inflight = inflightFor(store);
   if (inflight.has(key)) return inflight.get(key) as Promise<T>;
   const p = fn().finally(() => inflight.delete(key));
   inflight.set(key, p); return p;
@@ -109,12 +119,22 @@ function emitSubscriberStatsChange() {
   for (const cb of subscriberStatsListeners) cb();
 }
 
-const subscribers = new Map<string, Set<symbol>>();
+const subscribersByStore = new WeakMap<GraphStore, Map<string, Set<symbol>>>();
+
+function subscribersFor(store: GraphStore) {
+  let subscribers = subscribersByStore.get(store);
+  if (!subscribers) {
+    subscribers = new Map();
+    subscribersByStore.set(store, subscribers);
+  }
+  return subscribers;
+}
 /**
  * Ref-count graph interest for a subscriber key (`${type}:${id}`). Background revalidation skips keys with zero subscribers.
  * @returns Opaque token required for `unregisterSubscriber`
  */
-export function registerSubscriber(key: string): symbol {
+export function registerSubscriber(key: string, store: GraphStore = graphStore): symbol {
+  const subscribers = subscribersFor(store);
   const token = Symbol(key);
   if (!subscribers.has(key)) subscribers.set(key, new Set());
   subscribers.get(key)!.add(token);
@@ -122,7 +142,8 @@ export function registerSubscriber(key: string): symbol {
   return token;
 }
 /** Pair with `registerSubscriber` on unmount so idle entities stop refetching. */
-export function unregisterSubscriber(key: string, token: symbol) {
+export function unregisterSubscriber(key: string, token: symbol, store: GraphStore = graphStore) {
+  const subscribers = subscribersFor(store);
   const set = subscribers.get(key);
   if (!set) return;
   set.delete(token);
@@ -130,7 +151,9 @@ export function unregisterSubscriber(key: string, token: symbol) {
   emitSubscriberStatsChange();
 }
 /** Used by the engine to avoid background work for keys nothing in the tree is observing. */
-export function hasSubscribers(key: string) { return (subscribers.get(key)?.size ?? 0) > 0; }
+export function hasSubscribers(key: string, store: GraphStore = graphStore) {
+  return (subscribersFor(store).get(key)?.size ?? 0) > 0;
+}
 
 const DEFAULT_OPTIONS: Required<EngineOptions> = {
   defaultStaleTime: 30_000,
@@ -153,9 +176,9 @@ export function subscribeSubscriberStats(onChange: () => void) {
 }
 
 /** Total active entity subscriber tokens across all keys (sum of ref-counts). */
-export function getActiveSubscriberCount(): number {
+export function getActiveSubscriberCount(store: GraphStore = graphStore): number {
   let n = 0;
-  for (const set of subscribers.values()) n += set.size;
+  for (const set of subscribersFor(store).values()) n += set.size;
   return n;
 }
 
@@ -230,14 +253,14 @@ export function notifyDevtools(event: DevtoolsEvent): void {
   }
 }
 
-let gcIntervalId: ReturnType<typeof setInterval> | null = null;
+const gcIntervalsByStore = new Map<GraphStore, ReturnType<typeof setInterval>>();
 
 /**
  * One GC pass: removes entities that are unobserved, older than `defaultGcTime`, not fetching,
  * and have no non-empty local patches; then strips their ids from all lists.
  */
-function runGarbageCollection(): void {
-  const store = useGraphStore.getState();
+function runGarbageCollection(storeApi: GraphStore = graphStore): void {
+  const store = storeApi.getState();
   const { defaultGcTime: gcTime } = getEngineOptions();
   const now = Date.now();
   const toRemove: Array<{ type: EntityType; id: EntityId }> = [];
@@ -247,7 +270,7 @@ function runGarbageCollection(): void {
     if (!bucket) continue;
     for (const id of Object.keys(bucket)) {
       const key = `${type}:${id}`;
-      if (hasSubscribers(key)) continue;
+      if (hasSubscribers(key, storeApi)) continue;
       const patch = store.patches[type]?.[id];
       if (patch !== undefined && Object.keys(patch).length > 0) continue;
       const entityState = store.entityStates[key];
@@ -266,35 +289,42 @@ function runGarbageCollection(): void {
 }
 
 /**
- * Stops the periodic garbage-collection timer started by `startGarbageCollector` / `configureEngine`.
+ * Stops the periodic garbage-collection timer for the selected graph.
  */
-export function stopGarbageCollector(): void {
-  if (gcIntervalId != null && typeof clearInterval !== "undefined") {
-    clearInterval(gcIntervalId);
-    gcIntervalId = null;
+export function stopGarbageCollector(storeApi: GraphStore = graphStore): void {
+  const intervalId = gcIntervalsByStore.get(storeApi);
+  if (intervalId != null && typeof clearInterval !== "undefined") {
+    clearInterval(intervalId);
+    gcIntervalsByStore.delete(storeApi);
   }
 }
 
 /**
  * Starts periodic garbage collection using current `getEngineOptions().gcInterval`.
  * Stops any previous interval first. No-ops during SSR (`window` is undefined) or without `setInterval`.
- * @returns Disposer that stops this collector (equivalent to `stopGarbageCollector`).
+ * @returns Disposer that stops this graph's collector.
  */
-export function startGarbageCollector(): () => void {
-  stopGarbageCollector();
+export function startGarbageCollector(storeApi: GraphStore = graphStore): () => void {
+  stopGarbageCollector(storeApi);
   if (typeof window === "undefined" || typeof setInterval === "undefined") return () => {};
-  gcIntervalId = setInterval(() => runGarbageCollection(), getEngineOptions().gcInterval);
-  return () => stopGarbageCollector();
+  const intervalId = setInterval(
+    () => runGarbageCollection(storeApi),
+    getEngineOptions().gcInterval,
+  );
+  gcIntervalsByStore.set(storeApi, intervalId);
+  return () => stopGarbageCollector(storeApi);
 }
 
-function restartGarbageCollector() {
-  startGarbageCollector();
+function restartGarbageCollector(storeApi: GraphStore = graphStore) {
+  startGarbageCollector(storeApi);
 }
 
 /** Override global engine behavior (typically once at app bootstrap). Restarts GC with merged options. */
 export function configureEngine(opts: EngineOptions) {
   engineOptions = { ...DEFAULT_OPTIONS, ...opts };
-  restartGarbageCollector();
+  const activeStores = [...gcIntervalsByStore.keys()];
+  if (activeStores.length === 0) restartGarbageCollector();
+  else for (const storeApi of activeStores) restartGarbageCollector(storeApi);
 }
 /** Read merged engine options; hooks use this for default `staleTime` and retry behavior. */
 export function getEngineOptions() { return engineOptions; }
@@ -304,28 +334,28 @@ export function getEngineOptions() { return engineOptions; }
  * Call from hooks/adapters — not from presentational components.
  */
 export async function fetchEntity<TRaw, TEntity extends object>(
-  opts: EntityQueryOptions<TRaw, TEntity>, engineOpts: Required<EngineOptions>
+  opts: EntityQueryOptions<TRaw, TEntity>, engineOpts: Required<EngineOptions>, storeApi: GraphStore = graphStore
 ) {
   const { type, id, fetch, normalize, sideEffects, idField = "id" } = opts;
   if (!id) return;
-  useGraphStore.getState().setEntityFetching(type, id, true);
+  storeApi.getState().setEntityFetching(type, id, true);
   const attempt = async (retries: number): Promise<void> => {
     try {
       const raw = await fetch(id);
       const normalized = normalize(raw);
       const resolvedId = (normalized as Record<string, unknown>)[idField] as EntityId ?? id;
-      useGraphStore.getState().upsertEntity(type, resolvedId, normalized as Record<string, unknown>);
-      useGraphStore.getState().setEntityFetched(type, resolvedId);
-      if (sideEffects) sideEffects(raw, useGraphStore);
+      storeApi.getState().upsertEntity(type, resolvedId, normalized as Record<string, unknown>);
+      storeApi.getState().setEntityFetched(type, resolvedId);
+      if (sideEffects) sideEffects(raw, storeApi);
       opts.onSuccess?.(normalized);
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
       if (retries < engineOpts.maxRetries) { await sleep(engineOpts.retryBaseDelay * Math.pow(2, retries)); return attempt(retries + 1); }
-      useGraphStore.getState().setEntityError(type, id, error.message);
+      storeApi.getState().setEntityError(type, id, error.message);
       opts.onError?.(error);
     }
   };
-  await dedupe(`${type}:${id}`, () => attempt(0));
+  await dedupe(`${type}:${id}`, () => attempt(0), storeApi);
 }
 
 /**
@@ -333,11 +363,11 @@ export async function fetchEntity<TRaw, TEntity extends object>(
  * @param isLoadMore - When true, uses a separate dedupe key and `appendListResult` / `setListFetchingMore`.
  */
 export async function fetchList<TRaw, TEntity extends object>(
-  opts: ListQueryOptions<TRaw, TEntity>, params: ListFetchParams, engineOpts: Required<EngineOptions>, isLoadMore = false
+  opts: ListQueryOptions<TRaw, TEntity>, params: ListFetchParams, engineOpts: Required<EngineOptions>, isLoadMore = false, storeApi: GraphStore = graphStore
 ) {
   const { type, queryKey, fetch, normalize, sideEffects, mode = "replace" } = opts;
   const key = serializeKey(queryKey);
-  const store = useGraphStore.getState();
+  const store = storeApi.getState();
   // Graph-only subscription (Tier-A PGlite/Electric): no inline fetcher. The
   // graph is hydrated out-of-band, so there is nothing to fetch here.
   if (!fetch || !normalize) return;
@@ -347,38 +377,66 @@ export async function fetchList<TRaw, TEntity extends object>(
     try {
       const response = await fetch(params);
       const normalized = response.items.map(normalize);
-      useGraphStore.getState().upsertEntities(type, normalized.map(({ id, data }) => ({ id, data: data as Record<string, unknown> })));
-      for (const { id } of normalized) useGraphStore.getState().setEntityFetched(type, id);
+      storeApi.getState().upsertEntities(type, normalized.map(({ id, data }) => ({ id, data: data as Record<string, unknown> })));
+      for (const { id } of normalized) storeApi.getState().setEntityFetched(type, id);
       const ids = normalized.map(({ id }) => id);
       const meta = { total: response.total ?? null, nextCursor: response.nextCursor ?? null, prevCursor: response.prevCursor ?? null, hasNextPage: response.hasNextPage ?? !!response.nextCursor, hasPrevPage: response.hasPrevPage ?? !!response.prevCursor, currentPage: response.page ?? null, pageSize: response.pageSize ?? null };
-      if (mode === "append" && isLoadMore) useGraphStore.getState().appendListResult(key, ids, meta);
-      else useGraphStore.getState().setListResult(key, ids, meta);
-      if (sideEffects) sideEffects(response.items, useGraphStore);
+      if (mode === "append" && isLoadMore) storeApi.getState().appendListResult(key, ids, meta);
+      else storeApi.getState().setListResult(key, ids, meta);
+      if (sideEffects) sideEffects(response.items, storeApi);
       opts.onSuccess?.(response);
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
       if (retries < engineOpts.maxRetries) { await sleep(engineOpts.retryBaseDelay * Math.pow(2, retries)); return attempt(retries + 1); }
-      useGraphStore.getState().setListError(key, error.message);
+      storeApi.getState().setListError(key, error.message);
       opts.onError?.(error);
     }
   };
-  await dedupe(isLoadMore ? `${key}:more` : key, () => attempt(0));
+  await dedupe(isLoadMore ? `${key}:more` : key, () => attempt(0), storeApi);
 }
 
-let focusListenerAttached = false;
+interface GlobalListenerAttachment {
+  references: number;
+  dispose: () => void;
+}
+
+const globalListenerAttachments = new WeakMap<GraphStore, GlobalListenerAttachment>();
+
+function releaseGlobalListenerAttachment(
+  storeApi: GraphStore,
+  attachment: GlobalListenerAttachment,
+): () => void {
+  let released = false;
+  return () => {
+    if (released) return;
+    released = true;
+    const current = globalListenerAttachments.get(storeApi);
+    if (current !== attachment) return;
+    current.references -= 1;
+    if (current.references > 0) return;
+    current.dispose();
+    globalListenerAttachments.delete(storeApi);
+  };
+}
+
 /**
  * Opt-in window listeners that mark **subscribed** entities stale on focus/reconnect so hooks can SWR-refetch.
- * Idempotent; safe for SSR (no-ops without `window`). Pair with `configureEngine` flags.
+ * Reference-counted per graph and safe for SSR (no-ops without `window`).
+ * @returns Disposer that releases this attachment and removes listeners plus GC when the last owner releases it.
  */
-export function attachGlobalListeners() {
-  if (typeof window === "undefined" || focusListenerAttached) return;
-  focusListenerAttached = true;
-  // Start GC on first client attach so defaultGcTime applies even without configureEngine().
-  restartGarbageCollector();
+export function attachGlobalListeners(storeApi: GraphStore = graphStore): () => void {
+  if (typeof window === "undefined") return () => {};
+  const existing = globalListenerAttachments.get(storeApi);
+  if (existing) {
+    existing.references += 1;
+    return releaseGlobalListenerAttachment(storeApi, existing);
+  }
+
+  const stopGc = startGarbageCollector(storeApi);
   const revalidateAll = () => {
-    const state = useGraphStore.getState();
-    for (const key of subscribers.keys()) {
-      if (!hasSubscribers(key)) continue;
+    const state = storeApi.getState();
+    for (const key of subscribersFor(storeApi).keys()) {
+      if (!hasSubscribers(key, storeApi)) continue;
       const colonIdx = key.indexOf(":");
       if (colonIdx === -1) continue;
       const type = key.slice(0, colonIdx);
@@ -386,9 +444,30 @@ export function attachGlobalListeners() {
       state.setEntityStale(type, id, true);
     }
   };
-  if (engineOptions.revalidateOnFocus) {
-    window.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") revalidateAll(); });
+  const revalidateWhenVisible = () => {
+    if (document.visibilityState === "visible") revalidateAll();
+  };
+  const revalidateOnFocus = engineOptions.revalidateOnFocus;
+  const revalidateOnReconnect = engineOptions.revalidateOnReconnect;
+  if (revalidateOnFocus) {
+    window.addEventListener("visibilitychange", revalidateWhenVisible);
     window.addEventListener("focus", revalidateAll);
   }
-  if (engineOptions.revalidateOnReconnect) window.addEventListener("online", revalidateAll);
+  if (revalidateOnReconnect) window.addEventListener("online", revalidateAll);
+
+  const attachment: GlobalListenerAttachment = {
+    references: 1,
+    dispose: () => {
+      if (revalidateOnFocus) {
+        window.removeEventListener("visibilitychange", revalidateWhenVisible);
+        window.removeEventListener("focus", revalidateAll);
+      }
+      if (revalidateOnReconnect) {
+        window.removeEventListener("online", revalidateAll);
+      }
+      stopGc();
+    },
+  };
+  globalListenerAttachments.set(storeApi, attachment);
+  return releaseGlobalListenerAttachment(storeApi, attachment);
 }

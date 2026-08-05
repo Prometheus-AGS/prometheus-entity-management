@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "examples/tauri-universal/src-tauri/gen/android/gradlew",
+      "line": 104,
+      "claim": "The checked-in Android Gradle wrapper is unusable because it references a wrapper JAR that is not included in the reviewed tree.",
+      "evidence": "The new `gradlew` sets `CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar`, and `gradle/wrapper/gradle-wrapper.properties` is added, but the file_tree contains no `examples/tauri-universal/src-tauri/gen/android/gradle/wrapper/gradle-wrapper.jar` entry.",
+      "suggested_fix": "Commit the matching `gradle-wrapper.jar` or remove the wrapper scripts and document/use a repository-provided Gradle invocation that does not require the missing JAR."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "examples/tauri-universal/src-tauri/gen/apple/prometheus-tauri-universal-example.xcodeproj/project.pbxproj",
+      "line": 26,
+      "claim": "The checked-in iOS Xcode project references required resource files that are not present in the reviewed tree.",
+      "evidence": "`project.pbxproj` adds `LaunchScreen.storyboard in Resources`, `Assets.xcassets in Resources`, and `assets in Resources`; `project.yml` also lists `Assets.xcassets`, `assets`, and `LaunchScreen.storyboard`, but the file_tree contains no `examples/tauri-universal/src-tauri/gen/apple/LaunchScreen.storyboard`, `Assets.xcassets`, or `assets` entries.",
+      "suggested_fix": "Commit the generated storyboard, asset catalog, and assets directory, or regenerate the Xcode project so it does not reference absent resources."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

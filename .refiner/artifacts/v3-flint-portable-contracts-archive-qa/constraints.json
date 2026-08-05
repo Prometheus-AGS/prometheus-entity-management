@@ -1,0 +1,98 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    {
+      "id": "acceptance-direct-evidence",
+      "description": "Every Flint plan and OpenSpec acceptance criterion maps to direct, reproducible evidence without a silent mandatory skip.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "acceptance matrix, task receipts, focused current checks, clean full CI, strict OpenSpec, and signed KBD state"
+      }
+    },
+    {
+      "id": "portable-default-live-fail-closed",
+      "description": "Default CI is machine-portable, while the explicitly enabled real Flint SDK lane fails when immutable source or compatible build artifacts are unavailable.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "portable tests, negative missing-root receipt, live 1/1 receipt, workflow ref/hash checks, and source scan"
+      }
+    },
+    {
+      "id": "realtime-contract-source-integrity",
+      "description": "The consumed watchEntities/mutateEntity and ENTITY_CHANGE contract is verified against the checked fixture and fourteen external source files whose Git HEAD, pinned commit blobs, and working-tree SHA-256 digests match the contract.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "portable verifier, exact Git HEAD equality, pinned commit blob hashes, independent working-tree hashes, real-SDK normalized-graph round trip, and pinned revisions"
+      }
+    },
+    {
+      "id": "security-and-secret-boundaries",
+      "description": "Issuer, tenant equality, kid, RSA/EC JWKS truth, role/key separation, and client service-role credential boundaries fail closed across repository-owned text-like example files and generated outputs, including dot-env and config files; dependency and cache exclusions are explicit in the receipt.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "security drift regressions, BDD, 481-file repository-owned text-like client scan with 250 binaries classified separately, generated-output traversal, explicit dependency/cache exclusions, dot-env/name/value-level service-role regressions, and current Gate source hashes"
+      }
+    },
+    {
+      "id": "forge-provisioning-truthful",
+      "description": "Forge plan/apply/status/DDL, service-role-only provisioning, RLS, audit, and restart semantics are documented from pinned source without claiming an unbuilt adapter.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Forge hash receipt, verifier rejection tests, release documentation, and adapter-claim scan"
+      }
+    },
+    {
+      "id": "ledgers-docs-skills-synchronized",
+      "description": "Coverage, human API documentation, public export ledgers, and agent skills agree with the unchanged public Flint package surface.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "coverage verifier, 203 React exports plus companion ledgers, documentation verifier, and task-4 receipt"
+      }
+    },
+    {
+      "id": "clean-and-remote-gates-current",
+      "description": "The cumulative change has a serialized clean repository pass, current focused checks, and green Node 22/24/26 plus Tauri evidence at its declared candidate SHA.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "task-5 clean receipt, current task-6 focused checks, PR run URLs, and evidence hashes"
+      }
+    },
+    {
+      "id": "react-rc-and-release-limits-preserved",
+      "description": "Remote main remains the frozen React RC source, npm next remains absent, fixed-group/publication authority is unchanged, and this Flint archive is not described as full 3.0 certification.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "remote main SHA, npm dist-tags, fixed Changesets policy, coverage releaseCertified=false, and release-impact wording"
+      }
+    }
+  ],
+  "global_rules": [
+    "pnpm is the only JavaScript package manager.",
+    "A portable fixture cannot be relabeled as real external SDK execution.",
+    "A pinned external-source contract cannot be relabeled as a locally implemented Forge adapter.",
+    "Client/browser surfaces never receive service-role material.",
+    "The frozen React rc.1 source on remote main and npm registry state must not move in this change."
+  ],
+  "termination_conditions": [
+    "All eight blocking constraints have direct current evidence.",
+    "Both manifest variants exist and are non-empty, and manifest/constraints/state are schema-valid.",
+    "No observed implementation correction remains before isolated review.",
+    "Archive proceeds only after a fresh isolated adversarial review has no critical finding."
+  ]
+}

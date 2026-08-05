@@ -68,9 +68,11 @@ export {
   createGraphStore,
   graphStore,
   graphSyncStatusStore,
+  GraphStoreProvider,
+  useGraphStoreApi,
   useGraphStore,
 } from "./graph-store";
-export type { GraphStore } from "./graph-store";
+export type { GraphStore, GraphStoreProviderProps } from "./graph-store";
 export type {
   GraphState,
   EntityState,

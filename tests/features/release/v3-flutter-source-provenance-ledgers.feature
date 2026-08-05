@@ -7,7 +7,7 @@ Feature: Flutter provenance is taught without overstating release readiness
   Scenario: Coverage records the implemented provenance gate and downstream work
     Given the Flutter source provenance verifier executes for release ledgers
     Then coverage records the Flutter source provenance gate as implemented
-    And Dart library evidence is implemented while full Flutter app evidence remains planned
+    And Dart library and Flutter app evidence are implemented independently
 
   Scenario: Public API ledgers remain unchanged for a non-runtime import
     Given the Flutter source provenance verifier executes for release ledgers

@@ -24,7 +24,10 @@ Generated from `src/index.ts`. Use this when scaffolding imports or explaining c
 |--------|------|-------------|
 | `createGraphStore` | function | Create an isolated vanilla graph StoreApi for an SSR request, test, worker, or other non-shared host. |
 | `graphStore` | store | Default process-wide vanilla graph singleton used by bindings and imperative consumers. |
-| `useGraphStore` | React hook/store | React-package hook over `graphStore`, with StoreApi methods attached. Core's same-named export is only a deprecated StoreApi alias; never call it as a hook. |
+| `GraphStoreProvider` | React provider | Scope all descendant React hooks to an application-owned `GraphStore`; required for per-request SSR hydration instead of process-global request state. |
+| `useGraphStoreApi` | React hook | Resolve the nearest provider-owned `GraphStore`, falling back to `graphStore`; hook ownership releases scoped listeners and GC after the final unmount. |
+| `useGraphStore` | React hook/store | React-package hook over the nearest scoped graph, with the default singleton's StoreApi methods attached for compatibility. Core's same-named export is only a deprecated StoreApi alias; never call it as a hook. |
+| `GraphStoreProviderProps` | type | Provider input containing the application-owned `store` and React `children`. |
 | `GraphStore` | type | Vanilla StoreApi returned by `createGraphStore()`. |
 | `GraphState` | type | Full store shape: canonical entities, UI patches, per-entity fetch state, list slots keyed by query key. |
 | `EntityState` | type | Per-entity cache metadata: `isFetching`, `lastFetched`, `error`, `stale`. |
@@ -136,11 +139,12 @@ Use [`release/binding-singleton-contract.md`](../../../release/binding-singleton
 |--------|------|-------------|
 | `configureEngine` | function | App-wide engine options: base fetch, default `staleTime`, retry behavior, etc. |
 | `serializeKey` | function | Stable string key from a query key array (for `lists` map and dedupe). |
-| `fetchEntity` | function | Loads/refreshes a single entity through dedupe + graph writes (used by hooks internally). |
-| `fetchList` | function | Loads/refreshes a list query: normalizes rows into entities and stores **IDs** under the list key. |
-| `dedupe` | function | Process-global promise deduplication for in-flight identical requests. |
-| `startGarbageCollector` | function | Starts optional TTL-based cleanup of unused graph data (when configured). |
-| `stopGarbageCollector` | function | Stops the garbage collection loop. |
+| `fetchEntity` | function | Loads/refreshes one entity through store-scoped dedupe and graph writes; accepts an optional application-owned graph. |
+| `fetchList` | function | Loads/refreshes a list into one selected graph, normalizes rows, and stores **IDs** under the list key. |
+| `dedupe` | function | Collapse an in-flight key within one graph; same keys in different request stores remain independent. |
+| `startGarbageCollector` | function | Starts optional TTL-based cleanup for a selected application-owned graph; defaults to the compatibility singleton. |
+| `stopGarbageCollector` | function | Stops the selected graph's garbage-collection loop; defaults to the compatibility singleton. |
+| `attachGlobalListeners` | function | Reference-count focus/reconnect listeners and GC for one graph; returns the matching disposer. React hooks own this lifecycle automatically. |
 | `EngineOptions` | type | Configuration object for `configureEngine`. |
 | `EntityQueryOptions` | type | Options for single-entity fetch pipeline (normalizer, subscriber behavior, etc.). |
 | `ListQueryOptions` | type | Options for list fetch (pagination mode, normalizer, merge strategy). |
@@ -235,6 +239,8 @@ Use [`release/binding-singleton-contract.md`](../../../release/binding-singleton
 | `createSupabaseRealtimeAdapter` | function | Adapter for Supabase Realtime channels. |
 | `createConvexAdapter` | function | Adapter for Convex subscription-style feeds. |
 | `createGraphQLSubscriptionAdapter` | function | Adapter bridging GraphQL subscriptions to `ChangeSet`s. |
+| `createFlintAdapter` | function | Bridge a caller-owned Flint client's `watchEntities` stream into `RealtimeManager`. |
+| `publishFlintMutation` | function | Delegate one `FlintEntityRecord` to the caller-owned client's `mutateEntity` method. |
 | `ManagerOptions` | type | Options for realtime manager construction. |
 | `WebSocketAdapterOptions` | type | WebSocket adapter configuration. |
 | `SupabaseAdapterOptions` | type | Supabase-specific adapter options. |
@@ -247,6 +253,10 @@ Use [`release/binding-singleton-contract.md`](../../../release/binding-singleton
 | `AdapterStatus` | type | Connection health enum / union. |
 | `UnsubscribeFn` | type | Teardown function returned from subscriptions. |
 | `SubscriptionConfig` | type | Subscription parameters. |
+| `FlintClientLike` | type | Structural `watchEntities` / `mutateEntity` client boundary; no Flint SDK is bundled. |
+| `CreateFlintAdapterOptions` | type | Channel, consumer, entity filter, checkpoint store, and operation resolver. |
+| `FlintEntityEvent`, `FlintEntityQuery`, `FlintEntityRecord` | types | Decoded event, subscription query, and mutation record contracts. |
+| `FlintCheckpointStore` | type | Optional per-channel/consumer bigint resume-offset persistence. |
 
 ---
 

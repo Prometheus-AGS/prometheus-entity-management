@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * Pure Entity List View demo — showcases the TanStack-free multi-view
  * entity list system with all three view modes, presets, actions,

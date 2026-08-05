@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-flint-portable-contracts.mjs",
+      "line": 183,
+      "claim": "The JWT service-role detector only rejects exact `role`/`roles` string values, so a roles claim that contains `service_role` in a delimited string can still pass the client credential boundary.",
+      "evidence": "The `security-and-secret-boundaries` constraint in `.refiner/artifacts/v3-flint-portable-contracts-archive-qa/constraints.json` requires decoded JWT value-level service-role rejection, and `artifact-refiner-qa.md` says nested `role`/`roles` claims containing `service_role` are rejected; however `containsServiceRoleClaim` only checks `[\"service_role\", \"service-role\"].includes(role.toLowerCase())`, so a JWT payload like `{ \"roles\": \"authenticated service_role\" }` is not rejected.",
+      "suggested_fix": "Normalize role claim strings by splitting on common delimiters or checking for `service_role`/`service-role` as a token within the string, and add a regression with `roles: \"authenticated service_role\"` or an equivalent delimited roles claim."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

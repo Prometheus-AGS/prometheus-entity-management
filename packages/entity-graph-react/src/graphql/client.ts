@@ -6,9 +6,8 @@
  * After normalization, entities live in the same graph as REST data —
  * a GQL mutation to Post:123 updates REST-subscribed components instantly.
  */
-import { useGraphStore } from "@prometheus-ags/entity-graph-core";
-import { dedupe } from "@prometheus-ags/entity-graph-core";
-import type { EntityType, EntityId } from "@prometheus-ags/entity-graph-core";
+import { dedupe, graphStore } from "@prometheus-ags/entity-graph-core";
+import type { EntityType, EntityId, GraphStore } from "@prometheus-ags/entity-graph-core";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -51,8 +50,12 @@ export async function executeGQL<T>(cfg: GQLClientConfig, document: string, vari
 // ---------------------------------------------------------------------------
 // Normalisation
 // ---------------------------------------------------------------------------
-export function normalizeGQLResponse<T>(data: T, descriptors: EntityDescriptor<unknown, Record<string, unknown>>[]): Array<{ type: EntityType; id: EntityId }> {
-  const store = useGraphStore.getState();
+export function normalizeGQLResponse<T>(
+  data: T,
+  descriptors: EntityDescriptor<unknown, Record<string, unknown>>[],
+  storeApi: GraphStore = graphStore,
+): Array<{ type: EntityType; id: EntityId }> {
+  const store = storeApi.getState();
   const written: Array<{ type: EntityType; id: EntityId }> = [];
 
   function resolvePath(obj: Record<string, unknown>, path: string): unknown {
@@ -90,28 +93,31 @@ export class GQLClient {
     document: string; variables?: Record<string, unknown>;
     descriptors: EntityDescriptor<unknown, TEntity>[];
     cacheKey?: string;
+    store?: GraphStore;
   }): Promise<GQLResponse<TData>> {
     const key = opts.cacheKey ?? `gql:${opts.document.slice(0, 60)}:${JSON.stringify(opts.variables ?? {})}`;
     return dedupe(key, async () => {
       const r = await executeGQL<TData>(this.cfg, opts.document, opts.variables);
-      if (r.data) normalizeGQLResponse(r.data, opts.descriptors as EntityDescriptor<unknown, Record<string, unknown>>[]);
+      if (r.data) normalizeGQLResponse(r.data, opts.descriptors as EntityDescriptor<unknown, Record<string, unknown>>[], opts.store);
       return r;
-    });
+    }, opts.store);
   }
 
   async mutate<TData, TEntity extends object>(opts: {
     document: string; variables?: Record<string, unknown>;
     descriptors?: EntityDescriptor<unknown, TEntity>[];
     optimistic?: () => void;
+    store?: GraphStore;
   }): Promise<GQLResponse<TData>> {
-    const snapshot = opts.optimistic ? takeSnapshot() : null;
+    const store = opts.store ?? graphStore;
+    const snapshot = opts.optimistic ? takeSnapshot(store) : null;
     if (opts.optimistic) opts.optimistic();
     try {
       const r = await executeGQL<TData>(this.cfg, opts.document, opts.variables);
-      if (r.data && opts.descriptors) normalizeGQLResponse(r.data, opts.descriptors as EntityDescriptor<unknown, Record<string, unknown>>[]);
+      if (r.data && opts.descriptors) normalizeGQLResponse(r.data, opts.descriptors as EntityDescriptor<unknown, Record<string, unknown>>[], store);
       return r;
     } catch (err) {
-      if (snapshot) restoreSnapshot(snapshot);
+      if (snapshot) restoreSnapshot(snapshot, store);
       throw err;
     }
   }
@@ -121,18 +127,19 @@ export class GQLClient {
     descriptors: EntityDescriptor<unknown, Record<string, unknown>>[];
     wsClient: { subscribe: (p: unknown, s: unknown) => () => void };
     onData?: (data: TData) => void; onError?: (e: unknown) => void;
+    store?: GraphStore;
   }): () => void {
     return opts.wsClient.subscribe(
       { query: opts.document, variables: opts.variables },
-      { next: ({ data }: { data: TData }) => { if (data) { normalizeGQLResponse(data, opts.descriptors); opts.onData?.(data); } }, error: opts.onError ?? console.error, complete: () => {} },
+      { next: ({ data }: { data: TData }) => { if (data) { normalizeGQLResponse(data, opts.descriptors, opts.store); opts.onData?.(data); } }, error: opts.onError ?? console.error, complete: () => {} },
     );
   }
 }
 
 interface Snapshot { entities: Record<string, Record<string, Record<string, unknown>>>; patches: Record<string, Record<string, Record<string, unknown>>>; }
-function takeSnapshot(): Snapshot { const s = useGraphStore.getState(); return { entities: JSON.parse(JSON.stringify(s.entities)), patches: JSON.parse(JSON.stringify(s.patches)) }; }
-function restoreSnapshot(snap: Snapshot) {
-  useGraphStore.setState((s) => {
+function takeSnapshot(store: GraphStore): Snapshot { const s = store.getState(); return { entities: JSON.parse(JSON.stringify(s.entities)), patches: JSON.parse(JSON.stringify(s.patches)) }; }
+function restoreSnapshot(snap: Snapshot, store: GraphStore) {
+  store.setState((s) => {
     for (const key of Object.keys(s.entities)) delete s.entities[key];
     for (const [key, val] of Object.entries(snap.entities)) s.entities[key] = val;
     for (const key of Object.keys(s.patches)) delete s.patches[key];

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-04T11:33:25.337Z",
+  "verdict": "pass",
+  "contract": "tests/fixtures/flint/portable-contract.json",
+  "sourceRevisions": {
+    "realtime": "cfc1bb2bfc5db3b152967e0383aeaaf5207a4b89",
+    "gate": "2438892dfc7177c568bf57f3339a206d728f4ff2",
+    "forge": "2289d1527f13f7b72c317ec374f4dc0ff366a136"
+  },
+  "checks": {
+    "portableRepository": {
+      "status": "pass",
+      "inspectedFiles": 24,
+      "machineSpecificPaths": 0,
+      "silentLiveSkips": 0
+    },
+    "realtime": {
+      "status": "pass",
+      "methods": [
+        "watchEntities",
+        "mutateEntity"
+      ],
+      "entityChangeKind": 1
+    },
+    "security": {
+      "status": "pass",
+      "issuer": "production-required",
+      "tenant": "required-and-equality-enforced",
+      "kid": "required-for-asymmetric-tokens",
+      "jwks": "rsa-rfc7517-with-ec-strict-consumer-caveat",
+      "roleAndKeySeparation": "service-role-server-only"
+    },
+    "provisioning": {
+      "status": "pass",
+      "modes": [
+        "plan",
+        "apply",
+        "status",
+        "ddl"
+      ],
+      "adapterClaimed": false
+    },
+    "clientSecrets": {
+      "status": "pass",
+      "inspectedFiles": 297,
+      "exposedCredentials": 0
+    },
+    "externalSources": {
+      "status": "not-requested",
+      "disposition": "explicit-opt-in",
+      "files": 0
+    }
+  }
+}

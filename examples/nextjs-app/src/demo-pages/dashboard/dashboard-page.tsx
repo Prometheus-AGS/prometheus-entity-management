@@ -1,3 +1,5 @@
+"use client";
+
 import { PageHeader, StatCard } from "@/components/shared/ui";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {

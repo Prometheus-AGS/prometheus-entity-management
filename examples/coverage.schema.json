@@ -172,7 +172,7 @@
         "id": {
           "enum": ["react-19-vite-8", "nextjs", "agentic-a2ui", "flutter-riverpod", "tauri-desktop-mobile"]
         },
-        "status": { "enum": ["planned", "implemented"] },
+        "status": { "enum": ["planned", "partial", "implemented"] },
         "change": { "type": "string", "pattern": "^v3-" },
         "path": { "type": "string", "pattern": "^examples/" },
         "scenarioIds": {

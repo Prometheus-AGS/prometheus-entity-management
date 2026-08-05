@@ -1,5 +1,5 @@
-import { useGraphStore } from "./graph";
-import type { EntityId, EntitySyncMetadata, EntityType, QueryKey, SyncOrigin } from "./graph";
+import { graphStore } from "./graph";
+import type { EntityId, EntitySyncMetadata, EntityType, GraphStore, QueryKey, SyncOrigin } from "./graph";
 import { notifyDevtools } from "./engine";
 
 // Local type declaration so we can reference `process.env.NODE_ENV` without
@@ -9,11 +9,11 @@ import { notifyDevtools } from "./engine";
 declare const process: { env: { NODE_ENV?: string } } | undefined;
 
 interface GraphDataSnapshot {
-  entities: ReturnType<typeof useGraphStore.getState>["entities"];
-  patches: ReturnType<typeof useGraphStore.getState>["patches"];
-  entityStates: ReturnType<typeof useGraphStore.getState>["entityStates"];
-  syncMetadata: ReturnType<typeof useGraphStore.getState>["syncMetadata"];
-  lists: ReturnType<typeof useGraphStore.getState>["lists"];
+  entities: ReturnType<typeof graphStore.getState>["entities"];
+  patches: ReturnType<typeof graphStore.getState>["patches"];
+  entityStates: ReturnType<typeof graphStore.getState>["entityStates"];
+  syncMetadata: ReturnType<typeof graphStore.getState>["syncMetadata"];
+  lists: ReturnType<typeof graphStore.getState>["lists"];
 }
 
 export interface GraphTransaction {
@@ -52,56 +52,56 @@ export type GraphActionEvent =
   | { type: "settled"; record: GraphActionRecord };
 
 const graphActionListeners = new Set<(event: GraphActionEvent) => void>();
-const graphActionReplayers = new Map<string, (record: GraphActionRecord) => Promise<unknown>>();
+const graphActionReplayers = new Map<string, (record: GraphActionRecord, store: GraphStore) => Promise<unknown>>();
 
-export function createGraphTransaction(): GraphTransaction {
-  const baseline = cloneGraphData();
+export function createGraphTransaction(storeApi: GraphStore = graphStore): GraphTransaction {
+  const baseline = cloneGraphData(storeApi.getState());
   let closed = false;
 
   const tx: GraphTransaction = {
     upsertEntity(type, id, data) {
-      useGraphStore.getState().upsertEntity(type, id, data);
+      storeApi.getState().upsertEntity(type, id, data);
       if (typeof process === "undefined" || process.env.NODE_ENV !== "production") {
         notifyDevtools({ kind: "upsert", type, id, data, at: new Date().toISOString() });
       }
       return tx;
     },
     replaceEntity(type, id, data) {
-      useGraphStore.getState().replaceEntity(type, id, data);
+      storeApi.getState().replaceEntity(type, id, data);
       return tx;
     },
     removeEntity(type, id) {
-      useGraphStore.getState().removeEntity(type, id);
+      storeApi.getState().removeEntity(type, id);
       return tx;
     },
     patchEntity(type, id, patch) {
-      useGraphStore.getState().patchEntity(type, id, patch);
+      storeApi.getState().patchEntity(type, id, patch);
       if (typeof process === "undefined" || process.env.NODE_ENV !== "production") {
         notifyDevtools({ kind: "patch", type, id, patch, at: new Date().toISOString() });
       }
       return tx;
     },
     clearPatch(type, id) {
-      useGraphStore.getState().clearPatch(type, id);
+      storeApi.getState().clearPatch(type, id);
       if (typeof process === "undefined" || process.env.NODE_ENV !== "production") {
         notifyDevtools({ kind: "clearPatch", type, id, at: new Date().toISOString() });
       }
       return tx;
     },
     insertIdInList(key, id, position) {
-      useGraphStore.getState().insertIdInList(key, id, position);
+      storeApi.getState().insertIdInList(key, id, position);
       return tx;
     },
     removeIdFromAllLists(type, id) {
-      useGraphStore.getState().removeIdFromAllLists(type, id);
+      storeApi.getState().removeIdFromAllLists(type, id);
       return tx;
     },
     setEntitySyncMetadata(type, id, metadata) {
-      useGraphStore.getState().setEntitySyncMetadata(type, id, metadata);
+      storeApi.getState().setEntitySyncMetadata(type, id, metadata);
       return tx;
     },
     markEntityPending(type, id, origin = "optimistic") {
-      useGraphStore.getState().setEntitySyncMetadata(type, id, {
+      storeApi.getState().setEntitySyncMetadata(type, id, {
         synced: false,
         origin,
         updatedAt: Date.now(),
@@ -109,7 +109,7 @@ export function createGraphTransaction(): GraphTransaction {
       return tx;
     },
     markEntitySynced(type, id, origin = "server") {
-      useGraphStore.getState().setEntitySyncMetadata(type, id, {
+      storeApi.getState().setEntitySyncMetadata(type, id, {
         synced: true,
         origin,
         updatedAt: Date.now(),
@@ -121,11 +121,11 @@ export function createGraphTransaction(): GraphTransaction {
     },
     rollback() {
       if (closed) return;
-      useGraphStore.setState(cloneGraphData(baseline) as Partial<ReturnType<typeof useGraphStore.getState>>);
+      storeApi.setState(cloneGraphData(baseline) as Partial<ReturnType<typeof graphStore.getState>>);
       closed = true;
     },
     snapshot() {
-      return cloneGraphData();
+      return cloneGraphData(storeApi.getState());
     },
   };
 
@@ -134,8 +134,8 @@ export function createGraphTransaction(): GraphTransaction {
 
 export function createGraphAction<TInput, TResult>(opts: GraphActionOptions<TInput, TResult>) {
   if (opts.key) {
-    graphActionReplayers.set(opts.key, async (record) => {
-      const tx = createGraphTransaction();
+    graphActionReplayers.set(opts.key, async (record, storeApi) => {
+      const tx = createGraphTransaction(storeApi);
       try {
         const result = await opts.run(tx, record.input as TInput);
         tx.commit();
@@ -181,14 +181,14 @@ export function subscribeGraphActionEvents(listener: (event: GraphActionEvent) =
   return () => graphActionListeners.delete(listener);
 }
 
-export async function replayRegisteredGraphAction(record: GraphActionRecord) {
+export async function replayRegisteredGraphAction(record: GraphActionRecord, storeApi: GraphStore = graphStore) {
   const replayer = graphActionReplayers.get(record.key);
   if (!replayer) throw new Error(`No graph action registered for key "${record.key}"`);
-  return replayer(record);
+  return replayer(record, storeApi);
 }
 
 function cloneGraphData(
-  source: Pick<ReturnType<typeof useGraphStore.getState>, "entities" | "patches" | "entityStates" | "syncMetadata" | "lists"> = useGraphStore.getState(),
+  source: Pick<ReturnType<typeof graphStore.getState>, "entities" | "patches" | "entityStates" | "syncMetadata" | "lists"> = graphStore.getState(),
 ): GraphDataSnapshot {
   return {
     entities: structuredClone(source.entities),

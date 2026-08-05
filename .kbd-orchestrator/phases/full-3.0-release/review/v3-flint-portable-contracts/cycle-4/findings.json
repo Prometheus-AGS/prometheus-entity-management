@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-flint-portable-contracts.mjs",
+      "line": 381,
+      "claim": "The external-source verifier still hashes the mutable working tree rather than the pinned Git commit, so a dirty worktree can satisfy HEAD equality without proving the files came from that immutable revision.",
+      "evidence": "The blocking `realtime-contract-source-integrity` constraint requires external source files whose Git HEAD and SHA-256 digests match the pinned contract, but `verifyExternalSources` only checks `git rev-parse --verify HEAD^{commit}` and then computes hashes from `readFile(join(root, path))`; it never hashes `HEAD:<path>` or requires `git status`/the pinned files to be clean.",
+      "suggested_fix": "Hash each file from the pinned commit with `git -C <root> show HEAD:<path>` or require the worktree/index to be clean for every pinned file before hashing filesystem contents."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

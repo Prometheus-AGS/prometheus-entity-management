@@ -1,9 +1,9 @@
 # Tasks: v3-flint-portable-contracts
 
-- [ ] Confirm dependencies are complete: v3-framework-neutral-core; v3-example-coverage-contract.
-- [ ] Implement the full scope in the `v3-flint-portable-contracts` plan section without weakening its explicit exclusions.
-- [ ] Add or update unit, integration, consumer, platform, documentation, and/or E2E checks required by the plan acceptance criteria.
-- [ ] Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface.
-- [ ] Run the relevant pnpm, Dart/Melos, Cargo, OpenSpec, package, docs, security, and platform gates from a clean state.
-- [ ] Record verification evidence, unresolved platform/manual limits, and release impact before archive.
+- [x] Confirm dependencies are complete: v3-framework-neutral-core; v3-example-coverage-contract.
+- [x] Implement the full scope in the `v3-flint-portable-contracts` plan section without weakening its explicit exclusions.
+- [x] Add or update unit, integration, consumer, platform, documentation, and/or E2E checks required by the plan acceptance criteria.
+- [x] Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface.
+- [x] Run the relevant pnpm, Dart/Melos, Cargo, OpenSpec, package, docs, security, and platform gates from a clean state.
+- [x] Record verification evidence, unresolved platform/manual limits, and release impact before archive.
 

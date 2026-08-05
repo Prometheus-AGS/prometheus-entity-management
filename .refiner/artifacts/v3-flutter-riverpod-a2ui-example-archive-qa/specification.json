@@ -1,0 +1,56 @@
+{
+  "specification": {
+    "artifact_name": "v3-flutter-riverpod-a2ui-example-archive-qa",
+    "artifact_type": "content",
+    "clarified_intent": {
+      "description": "Validate the Flutter/Riverpod/A2UI showcase closure after stable Flutter host gates and iOS/Android smoke evidence promoted its bounded coverage from partial to implemented.",
+      "domain": "Flutter release-example certification evidence"
+    },
+    "constraint_source": "KBD plan and change-specific evidence because .kbd-orchestrator/constraints.md is absent",
+    "constraints": [
+      "acceptance-direct-evidence",
+      "stable-host-and-platform-evidence",
+      "visual-and-accessibility-integrity",
+      "normalized-graph-and-policy-boundary",
+      "ledgers-synchronized",
+      "durability-and-device-limits-explicit",
+      "react-rc-lane-preserved",
+      "no-publication-overclaim"
+    ],
+    "target_state": {
+      "description": "A reproducible QA bundle with all bounded Flutter criteria supported, explicit exclusions retained, the frozen React rc.1 lane unchanged, and no registry mutation claim.",
+      "success_criteria": [
+        "Stable Flutter 3.44.8 host gates and the retained 70-package/25-showcase test receipt remain hash-consistent.",
+        "The shared smoke flow passed on an iOS simulator and Android API 35 emulator without being described as physical-device certification.",
+        "All three stable golden hashes match and serious native accessibility certification is not claimed.",
+        "Coverage marks the Flutter showcase, platform evidence, and CRUD evidence implemented while durable persistence remains partial and universal Tauri remains planned.",
+        "The Dart public declaration ledger remains 81/81 and the private example does not create a public Flutter package surface.",
+        "Remote main remains the rehearsed React rc.1 source and this continuation records only a later patch Changeset."
+      ],
+      "measurable_outcomes": [
+        {"metric": "blocking constraints", "threshold": "0 violations"},
+        {"metric": "focused release tests", "threshold": "44/44"},
+        {"metric": "semantic coverage scenarios", "threshold": "13/13"},
+        {"metric": "stable Flutter package tests", "threshold": "70/70"},
+        {"metric": "stable showcase tests", "threshold": "25/25"},
+        {"metric": "mobile smoke lanes", "threshold": "2/2"},
+        {"metric": "golden hashes", "threshold": "3/3"}
+      ]
+    },
+    "content_type": "direct:content",
+    "unknowns": [
+      "Physical-device and native assistive-technology behavior are not certified by this change.",
+      "The example's offline queue is in memory and does not prove durable persistence.",
+      "Registry, app-store, and external hosted-service authority remain outside this change."
+    ],
+    "requires_code_execution": true,
+    "likely_tools": [
+      "example coverage verifier",
+      "Flutter provenance verifier",
+      "focused Node release tests",
+      "OpenSpec strict validator",
+      "SHA-256 calculator",
+      "git remote reference check"
+    ]
+  }
+}

@@ -228,14 +228,17 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | Export | Description |
 |--------|-------------|
 | `createGraphStore` / `graphStore` | Create an isolated vanilla graph or access the default core singleton. |
-| `useGraphStore` | React hook subscribed to `graphStore`; compatibility `getState`, `setState`, and `subscribe` methods remain attached. Prefer domain hooks in components. |
+| `GraphStoreProvider` | Scope all descendant React hooks to an application-owned `GraphStore`; use one request graph per SSR render and one hydrated graph per mounted browser tree. |
+| `useGraphStoreApi` | Resolve the nearest provider-owned graph, falling back to the public singleton. React-hook ownership reference-counts focus/reconnect listeners and GC, releasing them after the final hook unmounts. |
+| `useGraphStore` | React hook subscribed to the nearest scoped graph; compatibility `getState`, `setState`, and `subscribe` methods remain attached to the default singleton. Prefer domain hooks in components. |
 | `configureEngine` | App-wide defaults: stale time, retries, GC interval, GC time, etc. |
 | `getEngineOptions` | Read merged engine options. |
 | `serializeKey` | Stable string key for list `queryKey` serialization. |
 | `fetchEntity` | Imperative single-entity fetch with dedupe and graph write (for custom hooks/adapters). |
 | `fetchList` | Imperative list fetch with dedupe and graph write. |
 | `dedupe` | Process-global in-flight promise deduplication helper. |
-| `startGarbageCollector` / `stopGarbageCollector` | Periodic eviction of unsubscribed, stale entities (also started via `configureEngine`). |
+| `startGarbageCollector(storeApi?)` / `stopGarbageCollector(storeApi?)` | Periodic eviction of unsubscribed, stale entities in the selected graph; omitting the store targets the compatibility singleton. |
+| `attachGlobalListeners(storeApi?)` | Reference-count focus/reconnect listeners and GC for one graph; call the returned disposer to release the attachment. React hooks manage this automatically. |
 
 ### Graph runtime
 
@@ -316,6 +319,8 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | `createSupabaseRealtimeAdapter` | Supabase Realtime payloads → graph. |
 | `createConvexAdapter` | Convex-shaped streams → graph. |
 | `createGraphQLSubscriptionAdapter` | GraphQL over WebSocket subscriptions → graph. |
+| `createFlintAdapter` | Flint `watchEntities` stream → graph through the structural client contract. |
+| `publishFlintMutation` | Publish one entity record through the caller-owned Flint client. |
 
 ### GraphQL
 
@@ -613,7 +618,7 @@ Use `Posts.crud()` with `useEntityCRUD` when you want the full list + detail + f
 | Example | Path | What it demonstrates |
 |--------|------|---------------------|
 | **Vite app** | [`examples/vite-app/`](../../examples/vite-app/) | Full CRUD, realtime adapters, **TanStack Query → graph bridge** (`/tanstack-bridge`), `EntityTable` / sheets, mock API with latency |
-| **Next.js app** | [`examples/nextjs-app/`](../../examples/nextjs-app/) | Same feature set as the Vite example (Project/Task/User CRUD, realtime, engine settings, pure list view, TanStack Query → graph bridge). **SSR:** `GraphHydrationProvider` seeds the client graph from the shared demo data on first load |
+| **Next.js app** | [`examples/nextjs-app/`](../../examples/nextjs-app/) | Next.js 16 App Router with a new `createGraphStore()` per document request, serializable RSC snapshot, one hydrated `GraphStoreProvider`, zero duplicate client fetches, route persistence, validated Server Action mutation, and client-only realtime takeover. |
 
 From the repo root (this monorepo uses **pnpm**):
 

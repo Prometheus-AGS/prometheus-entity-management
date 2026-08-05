@@ -52,9 +52,10 @@ Patterns for moving from TanStack Query, Apollo, Redux, or SWR to **@prometheus-
 ## 7. SSR hydration (Next.js)
 
 - Create one isolated `createGraphStore()` instance per server request; never reuse the process-wide `graphStore` across requests.
-- Server fetches **JSON**; client receives a serializable snapshot/props.
-- On client mount, call **`upsertEntities`** for the payload batch before or alongside first `useEntityList` fetch to avoid flash.
-- Prefer a small dedicated **`GraphHydrationProvider`** pattern (see library Next.js example).
+- Populate and dehydrate that request graph on the server; pass only a serializable snapshot across the RSC boundary.
+- In a client provider, create the hydrated graph exactly once and pass it to `GraphStoreProvider` before descendant hooks render.
+- Hooks and infrastructure use `useGraphStoreApi()` when they must pass the selected graph to fetch, mutation, or realtime machinery.
+- Follow `_shared/references/nextjs-app-router.md` and the library Next.js example; a one-time batch upsert into the global singleton is not request-isolation evidence.
 
 ## 8. Core/React store imports for 3.0
 

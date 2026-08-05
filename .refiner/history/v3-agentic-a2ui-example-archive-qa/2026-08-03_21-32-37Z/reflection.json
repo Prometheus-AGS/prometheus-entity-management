@@ -1,0 +1,21 @@
+{
+  "reflection": {
+    "iteration": 1,
+    "max_iterations": 5,
+    "delta": "Cycle 1 review exposed incomplete endpoint-scheme enforcement, omitted visual binaries in the review packet, and accessibility evidence limited to the happy state. The canonical endpoint policy, packet scope, per-flow axe gate, verifier ordering, and all affected evidence are now corrected.",
+    "constraint_evaluation": [
+      {"constraint_id": "acceptance-direct-evidence", "status": "satisfied", "notes": "Every bounded detail and acceptance criterion maps to current source, test, or browser evidence."},
+      {"constraint_id": "official-protocol-runtime", "status": "satisfied", "notes": "The example composes canonical A2A and official A2UI package APIs; both export ledgers pass."},
+      {"constraint_id": "action-boundary-fails-closed", "status": "satisfied", "notes": "Unknown components/actions, invalid context, unauthorized deletion, denied approval, plaintext remote hosts, and non-HTTP loopback schemes fail closed."},
+      {"constraint_id": "normalized-layering-preserved", "status": "satisfied", "notes": "Architecture tests and the browser receipt prove component-to-hook ownership, ID-only lists, and reactive list/detail updates."},
+      {"constraint_id": "lifecycle-and-golden-coverage", "status": "satisfied", "notes": "Ten example units, three endpoint-policy tests, and three browser flows cover keyless lifecycle, fixtures, render, policy, approval, malformed rejection, cancellation, and remote-endpoint scheme policy."},
+      {"constraint_id": "evidence-integrity", "status": "satisfied", "notes": "All relevant JSON parses, ten hashes match, all six visual binaries are in the review scope, and every browser flow records zero serious or critical findings."},
+      {"constraint_id": "ledgers-synchronized", "status": "satisfied", "notes": "Coverage is implemented, 13/13 semantic scenarios and 14/14 regressions pass, both export ledgers pass, and strict OpenSpec is valid."},
+      {"constraint_id": "limits-and-release-impact-explicit", "status": "satisfied", "notes": "Source-workspace, external-agent, platform, publication, and frozen-RC boundaries remain explicit and unwaived."}
+    ],
+    "deterministic_validation": "The regenerated 18-command clean receipt passes 10 example units, 3 endpoint-policy tests, four package builds, three Chromium flows with per-flow axe checks, 13/13 coverage, 14/14 regressions, both ledgers, security, strict OpenSpec, JSON parsing, 10/10 hashes, and diff hygiene.",
+    "target_alignment": "The bounded example is ready for isolated adversarial review without implying packed-package, external-agent, native-platform, or registry certification.",
+    "regression_check": "The endpoint test was observed RED for ftp://localhost before the canonical fix and now passes with HTTP loopback/HTTPS policy. The clean verifier was observed failing for ordering and self-reference before both defects were corrected. No exclusion became a passing claim.",
+    "convergence": {"decision": "terminate", "reason": "All cycle-1 findings are corrected or resolved with direct canonical-source evidence, and all eight blocking constraints pass again.", "next_focus": "Build a complete packet containing the visual binaries and canonical endpoint diff, then obtain a new isolated verdict."}
+  }
+}

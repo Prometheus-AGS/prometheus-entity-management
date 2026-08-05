@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-flutter-riverpod-a2ui-example",
+  "recordedAt": "2026-08-04T01:38:00Z",
+  "status": "pass",
+  "implementationSource": "99d97c27feeef12b6839ed1b302e33eb41bd1af6",
+  "artifactRefiner": {
+    "status": "pass",
+    "refinementId": "bb5be8db-9709-4fcf-86c9-3f7c59a9ad79",
+    "checkpoint": "1e52c7ac",
+    "blockingConstraints": { "passed": 8, "total": 8 }
+  },
+  "adversarialReview": {
+    "status": "pass",
+    "cycles": 3,
+    "critical": 0,
+    "warnings": 0,
+    "suggestions": 0,
+    "crossModelCheck": "verified-distinct",
+    "sycophancyScore": 0.0
+  },
+  "verification": {
+    "focusedReleaseTests": { "passed": 45, "total": 45 },
+    "freshClosureRegressionTests": { "passed": 58, "total": 58 },
+    "a2uiPackageTests": { "passed": 26, "total": 26 },
+    "flutterPackageTests": { "passed": 70, "total": 70 },
+    "flutterShowcaseTests": { "passed": 25, "total": 25 },
+    "mobileSmoke": { "passed": 2, "total": 2 },
+    "bddScenarios": { "passed": 90, "total": 90 },
+    "bddSteps": { "passed": 428, "total": 428 },
+    "productionDependencies": 332,
+    "blockingAdvisories": 0,
+    "lowAdvisories": 2,
+    "openSpecStrict": { "passed": 17, "total": 17 },
+    "diffHygiene": "pass"
+  },
+  "coverage": {
+    "status": "in-progress",
+    "releaseCertified": false,
+    "showcasesImplemented": 4,
+    "showcasesPlanned": 1,
+    "flutterDurablePersistence": "partial"
+  },
+  "archive": "openspec/changes/archive/2026-08-04-v3-flutter-riverpod-a2ui-example",
+  "reactRc1": {
+    "source": "1c40eaa08da210cbe3e20a77c5db211712b5c3a1",
+    "sourceMoved": false,
+    "registryMutated": false
+  }
+}

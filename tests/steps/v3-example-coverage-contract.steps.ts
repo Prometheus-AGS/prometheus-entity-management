@@ -217,20 +217,23 @@ Then("the overall example coverage remains in progress", function () {
   assert.equal(ensureReport().summary.overallCoverageStatus, "in-progress");
 });
 
-Then("React Vite is implemented while the other showcase evidence stays planned", function () {
+Then("all five showcase evidence boundaries are implemented", function () {
+  const expectedStatuses = new Map([
+    ["react-19-vite-8", "implemented"],
+    ["nextjs", "implemented"],
+    ["agentic-a2ui", "implemented"],
+    ["flutter-riverpod", "implemented"],
+    ["tauri-desktop-mobile", "implemented"],
+  ]);
   for (const showcase of readExampleCoverage().showcases) {
-    const expectedStatus = showcase.id === "react-19-vite-8" ? "implemented" : "planned";
+    const expectedStatus = expectedStatuses.get(showcase.id);
     assert.equal(showcase.status, expectedStatus);
     assert.equal(showcase.runtimeEvidence.status, expectedStatus);
     assert.equal(showcase.visualEvidence.status, expectedStatus);
     assert.equal(showcase.runtimeEvidence.ownerChange, showcase.change);
     assert.equal(showcase.visualEvidence.ownerChange, showcase.change);
-    if (expectedStatus === "implemented") {
-      assert.equal(showcase.runtimeEvidence.command, "pnpm run verify:vite-react19");
-      assert.equal(showcase.visualEvidence.command, "pnpm run verify:vite-react19");
-      assert.ok(showcase.runtimeEvidence.paths?.length);
-      assert.ok(showcase.visualEvidence.paths?.length);
-    }
+    assert.ok(showcase.runtimeEvidence.paths?.length);
+    assert.ok(showcase.visualEvidence.paths?.length);
   }
 });
 

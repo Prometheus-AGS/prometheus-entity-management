@@ -114,6 +114,7 @@ describe("official A2UI v0.9.1 runtime", () => {
     });
 
     await waitFor(() => expect(screen.getByText("Reactive official update")).toBeTruthy());
+    expect(messages[2].updateDataModel.value.body).toBe("Versioned data model");
     runtime.dispose();
   });
 
@@ -164,6 +165,37 @@ describe("official A2UI v0.9.1 runtime", () => {
         },
       },
     ])).toThrowError(expect.objectContaining({ code: "component-not-allowed" }));
+    runtime.dispose();
+  });
+
+  it("rejects an invalid batch without partially updating an existing surface", () => {
+    const runtime = createPrometheusA2uiRuntime();
+    runtime.processMessages(messages);
+
+    expect(() =>
+      runtime.processMessages([
+        {
+          version: "v0.9.1",
+          updateDataModel: {
+            surfaceId: "main",
+            path: "/body",
+            value: "Must not commit",
+          },
+        },
+        {
+          version: "v0.9.1",
+          updateComponents: {
+            surfaceId: "main",
+            components: [{ id: "unsafe", component: "UnsafeWidget" }],
+          },
+        },
+      ]),
+    ).toThrowError(expect.objectContaining({ code: "component-not-allowed" }));
+
+    expect(runtime.getSurface("main")?.dataModel.get("/body")).toBe(
+      "Versioned data model",
+    );
+    expect(runtime.getSurface("main")?.componentsModel.get("unsafe")).toBeUndefined();
     runtime.dispose();
   });
 

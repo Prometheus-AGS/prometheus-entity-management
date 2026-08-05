@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-nextjs-app-router-example",
+  "recordedAt": "2026-08-03T16:30:33.958Z",
+  "status": "pass",
+  "evidenceKind": "packed-package-nextjs-production-browser",
+  "countsAsPackedPackageEvidence": true,
+  "scenarios": {
+    "example.runtime.ssr-isolation-hydration": {
+      "status": "pass",
+      "proof": {
+        "concurrentRequests": 12,
+        "uniqueRequestGraphs": 12,
+        "routeTransitionPreservedGraph": true,
+        "reloadCreatedNewGraph": true,
+        "clientFetches": 0,
+        "hydrationErrors": 0
+      }
+    },
+    "example.crud.optimistic-confirm": {
+      "status": "pass",
+      "proof": {
+        "serverActionConfirmed": true,
+        "finalStatus": "review"
+      }
+    },
+    "example.realtime.coalesced-cross-view": {
+      "status": "pass",
+      "proof": {
+        "clientTakeoverAfterHydration": true,
+        "finalPriority": "high"
+      }
+    },
+    "example.runtime.lifecycle-security": {
+      "status": "pass",
+      "proof": {
+        "loadingBoundaryPresent": true,
+        "routeErrorBoundaryPresent": true,
+        "serverActionInputValidationUnitCovered": true,
+        "seriousAccessibilityViolations": 0,
+        "criticalAccessibilityViolations": 0
+      }
+    }
+  },
+  "accessibility": {
+    "status": "pass",
+    "serious": 0,
+    "critical": 0
+  },
+  "artifacts": {
+    "screenshots": [
+      "task-3-nextjs-ssr-hydration.png"
+    ],
+    "tracePolicy": "on",
+    "playwrightReport": "playwright-report.json",
+    "playwrightOutput": "playwright-artifacts"
+  }
+}

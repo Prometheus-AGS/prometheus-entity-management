@@ -1,6 +1,6 @@
-import { useGraphStore } from "../graph";
+import { graphStore } from "../graph";
 import { serializeKey } from "../engine";
-import type { EntityType, EntityId } from "../graph";
+import type { EntityType, EntityId, GraphStore } from "../graph";
 
 export type RelationCardinality = "belongsTo" | "hasMany" | "manyToMany";
 /**
@@ -35,9 +35,9 @@ export function getSchema(type: EntityType) { return schemaRegistry.get(type) ??
  * After a successful mutation, mark related entities/lists stale so hooks refetch without manually hunting query keys.
  * Traverses registered schemas (including reverse `hasMany`) so denormalized UIs stay eventually consistent with the graph.
  */
-export function cascadeInvalidation(ctx: CascadeContext) {
+export function cascadeInvalidation(ctx: CascadeContext, storeApi: GraphStore = graphStore) {
   const schema = schemaRegistry.get(ctx.type); if (!schema) return;
-  const store = useGraphStore.getState();
+  const store = storeApi.getState();
   if (schema.globalListKeys) for (const key of schema.globalListKeys) store.invalidateLists(key);
   if (!schema.relations) return;
   for (const [, relation] of Object.entries(schema.relations)) {
@@ -73,9 +73,9 @@ export function cascadeInvalidation(ctx: CascadeContext) {
  * Resolve relation **placeholders** for detail panels: joins graph reads for belongs-to targets, has-many id lists, or many-to-many id arrays.
  * Returns plain objects suitable for rendering; does not mutate the graph.
  */
-export function readRelations(type: EntityType, entity: Record<string, unknown>): Record<string, unknown> {
+export function readRelations(type: EntityType, entity: Record<string, unknown>, storeApi: GraphStore = graphStore): Record<string, unknown> {
   const schema = schemaRegistry.get(type); if (!schema?.relations) return {};
-  const store = useGraphStore.getState(); const result: Record<string, unknown> = {};
+  const store = storeApi.getState(); const result: Record<string, unknown> = {};
   for (const [name, relation] of Object.entries(schema.relations)) {
     switch (relation.cardinality) {
       case "belongsTo": { const fkValue = entity[relation.foreignKey] as EntityId | null; result[name] = fkValue ? store.readEntity(relation.targetType, fkValue) : null; break; }

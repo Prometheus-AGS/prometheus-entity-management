@@ -1,3 +1,5 @@
+"use client";
+
 import { type ReactNode, useState, useCallback, useEffect, useRef } from "react";
 import {
   configureEngine,

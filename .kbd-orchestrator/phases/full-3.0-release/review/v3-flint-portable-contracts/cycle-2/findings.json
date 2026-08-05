@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-flint-portable-contracts.mjs",
+      "line": 383,
+      "claim": "The external-source verifier never checks that supplied Flint roots are actually at the pinned revisions declared in the contract.",
+      "evidence": "The blocking `realtime-contract-source-integrity` constraint requires pinned revisions, and `tests/fixtures/flint/portable-contract.json` declares `revision` for realtime/gate/forge, but `verifyExternalSources` only hashes `source.files` under each root and returns pass without running `git rev-parse HEAD` or comparing it to `source.revision`.",
+      "suggested_fix": "For each external root, run `git -C <root> rev-parse HEAD` and require it to equal `source.revision` before hashing files; fail if the root is not a git worktree or the revision differs."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

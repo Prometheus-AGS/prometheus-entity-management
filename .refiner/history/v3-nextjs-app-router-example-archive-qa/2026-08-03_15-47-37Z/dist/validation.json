@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "artifact": "v3-nextjs-app-router-example-archive-qa",
+  "refinementId": "46725a52-9c0b-409b-bf20-26eb6447cb8e",
+  "priorCycleId": "5bcff6b5-4856-4420-92e1-fabd0eb62f42",
+  "implementationSource": "9051b10f",
+  "recordedAt": "2026-08-03T15:44:00Z",
+  "status": "pass",
+  "blockingConstraints": {"passed": 8, "total": 8},
+  "reviewCorrections": {
+    "passed": 2,
+    "total": 2,
+    "reportTask": 5,
+    "selectedGraphGarbageCollection": "pass",
+    "siblingGraphUnchanged": "pass"
+  },
+  "checks": {
+    "packedVerifierCommands": {"passed": 10, "total": 10},
+    "focusedTests": {"passed": 13, "total": 13},
+    "structuralTests": {"passed": 5, "total": 5},
+    "browserTests": {"passed": 2, "total": 2},
+    "concurrentRequests": {"uniqueGraphs": 12, "requests": 12},
+    "hydration": {"clientFetches": 0, "errors": 0},
+    "accessibility": {"serious": 0, "critical": 0},
+    "visualArtifacts": {"matchedHashes": 3, "total": 3},
+    "reactExports": {"matched": 203, "total": 203},
+    "semanticScenarios": {"passed": 13, "total": 13},
+    "coverageContractTests": {"passed": 14, "total": 14},
+    "security": {"critical": 0, "high": 0, "blocking": 0, "low": 2},
+    "openSpecStrict": "pass",
+    "changesets": "pass",
+    "releaseContract": "pass",
+    "frozenInstall": "pass",
+    "diffHygiene": "pass"
+  },
+  "evidenceHashes": {
+    "task5Report": "0f4f3d523402aaad25a506ebba51b4a7822fb1bc396005474fc2d441acf0ceda",
+    "browserReceipt": "5d4097e8963e9b9b28668c08190448e2cd11b66ab145b1a275893af06ad06824",
+    "playwrightReport": "304f48170d922b6e1719bea261163f160382df77b9f0315f6f09995b734286c5",
+    "screenshot": "accb37f32e88e1f4cbdf49c88fb53deea7ffb75dedd5a66a4edce832549c98c7",
+    "requestTrace": "23a07124d9c52100a4b731cea64b4711e4ee5f2eef2db15af166aa54e5c372c1",
+    "runtimeTrace": "0d4b75cbe8faa0c4e50bd10f660039be6cb0d1e20fd178753f7b6cb96287bf93"
+  },
+  "publication": {
+    "reactRc1SourceMoved": false,
+    "npmMutated": false,
+    "stableReleaseComplete": false,
+    "nextContinuationRequiresLaterPrerelease": true
+  },
+  "notApplicable": ["Dart/Melos", "Cargo", "Flutter devices", "Tauri platforms"]
+}

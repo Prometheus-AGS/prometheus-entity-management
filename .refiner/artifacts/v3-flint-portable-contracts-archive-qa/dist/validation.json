@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "artifact": "v3-flint-portable-contracts-archive-qa",
+  "generatedAt": "2026-08-04T13:56:01Z",
+  "overall": "pass",
+  "constraints": {"satisfied": 8, "total": 8, "blockingRemaining": 0},
+  "checks": {
+    "flintNode": {"status": "pass", "tests": 13},
+    "flintBdd": {"status": "pass", "scenarios": 6, "steps": 20, "hooks": 6},
+    "portableVerifier": {"status": "pass", "repositoryOwnedTextFiles": 481, "binaryFiles": 250, "generatedDirectoriesTraversed": [".next", "build", "dist", "target"], "dependencyOrCacheExclusionsEnumerated": true, "clientSecrets": 0, "commonServiceRoleAssignmentsRejected": true, "serviceRoleJwtValuesRejected": true, "delimitedRoleClaimsRejected": true, "jwtGenericHeaderParsing": true, "jwtBase64UrlDelimiterHandling": true, "unsignedServiceRoleJwtRejected": true, "crossPlatformAbsolutePathsRejected": true, "windowsDriveFlintRootsRejected": true, "windowsMixedSeparatorFlintRootsRejected": true, "windowsForwardSlashProfilesRejected": true, "windowsUncFlintRootsRejected": true},
+    "externalSources": {"status": "pass-exact-head-5ef6ea3", "files": 14, "gitHeadEquality": true, "pinnedCommitBlobs": true, "workingTreeBytes": true, "revisions": {"realtime": "cfc1bb2bfc5db3b152967e0383aeaaf5207a4b89", "gate": "2438892dfc7177c568bf57f3339a206d728f4ff2", "forge": "0135946cec589c1059a9f82ac373c7cb6c12e387"}, "forgeLatestMainContractFilesChanged": false},
+    "realSdk": {"status": "pass-exact-head-5ef6ea3", "tests": 1},
+    "coverage": {"status": "pass", "scenarios": 13, "capabilities": 16, "stableArtifacts": 16, "overallCoverageStatus": "in-progress", "releaseCertified": false},
+    "skills": {"status": "pass", "react": 203, "sync": 16, "a2uiRoot": 18, "a2uiAgui": 9, "a2aRoot": 30, "a2aLegacy": 2, "tauriRuntime": 26, "tauriDeclarations": 57, "dart": 81},
+    "openSpecStrict": "pass",
+    "actionlint": "pass",
+    "fullCi": {"status": "pass-exact-head-5ef6ea3", "exitCode": 0},
+    "postReviewCorrectionGates": {"status": "pass", "rootValidateLintTypecheckBuild": true, "aggregateScenarios": 96, "aggregateSteps": 448, "skills": true, "productionDependencies": 334, "blockingAdvisories": 0},
+    "remoteCandidateMatrix": "pass-exact-head-5ef6ea3-node-22-24-26-tauri",
+    "remoteMain": "1c40eaa08da210cbe3e20a77c5db211712b5c3a1",
+    "npmTags": {"latest": "2.2.0", "alpha": "3.0.0-alpha.0", "next": null}
+  },
+  "limits": [
+    "No Forge runtime adapter is claimed.",
+    "Default fixture evidence is distinct from real SDK execution.",
+    "Dart, Cargo, and native platform builds are unchanged and not rerun for this Flint-only delta.",
+    "Registry publication and full 3.0 certification remain unauthorized."
+  ]
+}
