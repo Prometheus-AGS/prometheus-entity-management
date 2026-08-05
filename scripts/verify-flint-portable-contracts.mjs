@@ -437,6 +437,8 @@ async function assertLiveLaneIsExplicit(contract, requirePinnedDefaults) {
 }
 
 async function assertDocumentationContracts() {
+  const currentExternalReceipt =
+    ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flint-portable-contracts/task-6-external-source-verification.json";
   const coverage = JSON.parse(
     await readFile(join(workspaceRoot, "examples/coverage.json"), "utf8"),
   );
@@ -465,6 +467,10 @@ async function assertDocumentationContracts() {
     requireCondition(
       Array.isArray(evidence?.paths) && evidence.paths.length > 0,
       `${label} paths are missing`,
+    );
+    requireCondition(
+      evidence.paths.includes(currentExternalReceipt),
+      `${label} omits the current exact-source receipt`,
     );
   }
 
