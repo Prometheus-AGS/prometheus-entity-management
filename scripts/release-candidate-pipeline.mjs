@@ -782,15 +782,21 @@ export function assertRcStageAuthority(manifest, env) {
       manifest.release.distTag !== "latest",
     "RC staging cannot target npm latest",
   );
+  const candidateSha = env.PROMETHEUS_RELEASE_CANDIDATE_SHA || env.GITHUB_SHA;
   assert(
-    env.GITHUB_SHA === manifest.source.sha,
-    "workflow SHA does not match the candidate manifest",
+    /^[0-9a-f]{40}$/i.test(candidateSha ?? ""),
+    "authorized candidate SHA must be a full Git commit",
+  );
+  assert(
+    candidateSha === manifest.source.sha,
+    "authorized candidate SHA does not match the candidate manifest",
   );
   assert(manifest.publication.latestMutationAllowed === false, "candidate manifest must protect npm latest");
   return {
     authorizedAction: "npm stage publish",
     environment: "npm-rc",
     distTag: manifest.release.distTag,
+    sourceSha: candidateSha,
   };
 }
 

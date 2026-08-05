@@ -49,6 +49,22 @@
   unauthorized; immutable source, aggregate CI, protected staging, and registry
   verification remain downstream.
 
+## 2026-08-05 — RC staging trusted-publishing hotfix
+
+- Protected npm staging run `30976967778` failed before registry mutation because
+  `actions/setup-node@v6` injected its dummy `NODE_AUTH_TOKEN` and the OIDC-only
+  release guard correctly rejected any long-lived write-token-shaped authority.
+- Updated only the stage job to `actions/setup-node@v7`, retained the token guard,
+  and added an explicit cross-run candidate reuse path so the already-certified
+  rehearsal artifact can be staged without repeating the full CI rehearsal.
+- The reuse path binds run ID and source SHA atomically and proves the current-repo
+  workflow path, completed source run, successful `rehearse` job, and unexpired
+  SHA-named artifact before download. An isolated first review found two defects
+  in the initial reuse design; both were corrected and the second review passed.
+- Local release verification passed for 12 tarballs and 16 artifacts with no
+  registry mutation. npm publication remains pending protected-environment
+  approval and post-stage registry verification.
+
 ## 2026-08-03 — Agentic A2UI archive boundary
 
 - Delta: isolated review cycles 6 and 7 exposed two real trust-boundary defects

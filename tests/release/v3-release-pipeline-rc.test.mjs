@@ -116,6 +116,23 @@ test("the pnpm RC workflow forwards named CLI flags without a literal separator"
   }
 });
 
+test("the protected stage reuses a certified run without setup-node v6 token fallback", async () => {
+  const workflow = await readFile(new URL("../../.github/workflows/publish.yml", import.meta.url), "utf8");
+  const stage = workflow.slice(workflow.indexOf("  stage:"));
+  assert.match(stage, /actions\/setup-node@v7/);
+  assert.doesNotMatch(stage, /actions\/setup-node@v6/);
+  assert.match(stage, /candidate_run_id/);
+  assert.match(stage, /candidate_sha/);
+  assert.match(stage, /Verify reused rehearsal authority/);
+  assert.match(stage, /\.path == "\.github\/workflows\/publish\.yml"/);
+  assert.match(stage, /\.name == "rehearse"/);
+  assert.match(stage, /\.conclusion == "success"/);
+  assert.match(stage, /\.expired == false/);
+  assert.match(stage, /run-id: \$\{\{ \(inputs\.candidate_run_id != '' && inputs\.candidate_sha != ''\) && inputs\.candidate_run_id \|\| github\.run_id \}\}/);
+  assert.match(stage, /github-token: \$\{\{ github\.token \}\}/);
+  assert.match(stage, /needs\.rehearse\.result == 'skipped'/);
+});
+
 test("the candidate manifest is contract-derived, non-mutating, and covers every ecosystem", async () => {
   const pipeline = await import("../../scripts/release-candidate-pipeline.mjs");
   assert.equal(
@@ -492,6 +509,7 @@ test("RC staging authority requires GitHub OIDC and can never target latest", as
     authorizedAction: "npm stage publish",
     environment: "npm-rc",
     distTag: "next",
+    sourceSha: manifest.source.sha,
   });
   assert.throws(() => assertRcStageAuthority(manifest, {}), /GitHub Actions is required/);
   assert.throws(
@@ -508,7 +526,28 @@ test("RC staging authority requires GitHub OIDC and can never target latest", as
   );
   assert.throws(
     () => assertRcStageAuthority(manifest, { ...env, GITHUB_SHA: "f".repeat(40) }),
-    /workflow SHA does not match the candidate manifest/,
+    /authorized candidate SHA does not match the candidate manifest/,
+  );
+  assert.deepEqual(
+    assertRcStageAuthority(manifest, {
+      ...env,
+      GITHUB_SHA: "f".repeat(40),
+      PROMETHEUS_RELEASE_CANDIDATE_SHA: manifest.source.sha,
+    }),
+    {
+      authorizedAction: "npm stage publish",
+      environment: "npm-rc",
+      distTag: "next",
+      sourceSha: manifest.source.sha,
+    },
+  );
+  assert.throws(
+    () =>
+      assertRcStageAuthority(manifest, {
+        ...env,
+        PROMETHEUS_RELEASE_CANDIDATE_SHA: "not-a-commit",
+      }),
+    /authorized candidate SHA must be a full Git commit/,
   );
 });
 
@@ -1275,6 +1314,8 @@ test("the release verifier certifies workflow, packed consumers, recovery, and v
   assert.equal(report.workflow.uvRuntime, "0.12.1");
   assert.equal(report.workflow.provenance, "actions-attest-v4");
   assert.equal(report.workflow.stageEnvironment, "npm-rc");
+  assert.equal(report.workflow.reusableCandidateBundle, true);
+  assert.equal(report.workflow.setupNodeDummyToken, false);
   assert.equal(report.workflow.hiddenReleaseArtifacts, true);
   assert.equal(report.workflow.longLivedNpmToken, false);
   assert.equal(report.recovery.partialRetry, "matching-skip-absent-stage-conflict-block");

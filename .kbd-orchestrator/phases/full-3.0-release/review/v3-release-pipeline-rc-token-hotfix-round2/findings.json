@@ -1,0 +1,22 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "kbd-judge",
+  "producer_model": "codex-gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [],
+  "checked_classes": [
+    "Spec violations \u2014 no acceptance_criteria were provided, and the documented reuse/stage behavior in the diff is internally reflected by the workflow, verifier, tests, and release documentation.",
+    "Correctness \u2014 checked the new workflow conditions, candidate SHA selection, artifact run/name selection, and stage authority assertion; no concrete logic error is provable from the packet.",
+    "Regressions \u2014 checked changed setup-node version usage, stage permissions, and prior current-run staging path; no dependency in the provided packet demonstrates a broken caller or removed required behavior.",
+    "Security \u2014 checked shell interpolation, candidate_run_id/candidate_sha validation, artifact lookup constraints, and npm authority checks; inputs are validated before use on the reuse path and no injection/path issue is evident.",
+    "Constraint breaches \u2014 constraints is null, so there are no project-level blocking rules to apply.",
+    "Silent failure \u2014 checked added verification commands and jq/grep assertions; failures propagate through shell command exit status and are not swallowed."
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}
