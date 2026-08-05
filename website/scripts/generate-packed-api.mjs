@@ -1,6 +1,6 @@
 import {execFileSync} from 'node:child_process';
-import {createHash} from 'node:crypto';
-import {mkdtemp, mkdir, readdir, readFile, rm, symlink, writeFile} from 'node:fs/promises';
+import {createHash, randomBytes} from 'node:crypto';
+import {mkdtemp, mkdir, readdir, readFile, symlink, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import {fileURLToPath} from 'node:url';
@@ -8,11 +8,15 @@ import {fileURLToPath} from 'node:url';
 import {Application} from 'typedoc';
 
 import {PUBLIC_PACKAGES} from '../../scripts/public-packages.mjs';
+import {removeContainedDirectory, removeOwnedDirectory} from './contained-directory.mjs';
 
 const websiteRoot = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const repositoryRoot = path.resolve(websiteRoot, '..');
 const output = path.join(websiteRoot, 'static/api');
 const tempRoot = await mkdtemp(path.join(repositoryRoot, '.typedoc-packed-'));
+const temporaryOwnerFile = '.prometheus-packed-api-owner';
+const temporaryOwnerToken = randomBytes(32).toString('hex');
+await writeFile(path.join(tempRoot, temporaryOwnerFile), temporaryOwnerToken, {flag: 'wx'});
 const packRoot = path.join(tempRoot, 'tarballs');
 const extractRoot = path.join(tempRoot, 'packages');
 const dependencyRoot = path.join(tempRoot, 'node_modules');
@@ -110,7 +114,7 @@ try {
     });
   }
 
-  await rm(output, {recursive: true, force: true});
+  await removeContainedDirectory(websiteRoot, output);
   const revision = 'main';
   const app = await Application.bootstrap({
     entryPoints,
@@ -138,5 +142,10 @@ try {
   );
   console.log(`Generated packed TypeDoc reference for ${inventory.length} packages (${fingerprint}).`);
 } finally {
-  await rm(tempRoot, {recursive: true, force: true});
+  await removeOwnedDirectory({
+    anchor: repositoryRoot,
+    target: tempRoot,
+    markerName: temporaryOwnerFile,
+    ownerToken: temporaryOwnerToken,
+  });
 }

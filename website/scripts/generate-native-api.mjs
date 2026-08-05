@@ -6,6 +6,7 @@ import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {writeNativeApiManifest} from './native-api-manifest.mjs';
+import {assertContainedDirectory, removeContainedDirectory} from './contained-directory.mjs';
 
 const websiteRoot = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const repositoryRoot = path.resolve(websiteRoot, '..');
@@ -24,6 +25,9 @@ const output = outputArgument === -1
   ? canonicalOutput
   : path.resolve(process.argv[outputArgument + 1]);
 const dartOnly = process.argv.includes('--dart-only');
+if (dartOnly && output === canonicalOutput) {
+  throw new Error('canonical native API generation must regenerate Dart and Rust together');
+}
 const refreshLock = process.argv.includes('--refresh-lock');
 if (refreshLock && output !== canonicalOutput) {
   throw new Error('--refresh-lock may only be used with the canonical native API output');
@@ -34,7 +38,10 @@ function isWithin(parent, target) {
 }
 
 async function assertSafeOutput() {
-  if (output === canonicalOutput) return;
+  if (output === canonicalOutput) {
+    await assertContainedDirectory(repositoryRoot, canonicalOutput);
+    return;
+  }
   const approvedValue = process.env.NATIVE_API_TEMP_ROOT;
   const ownerToken = process.env.NATIVE_API_TEMP_TOKEN;
   if (!approvedValue || !ownerToken) {
@@ -61,16 +68,6 @@ async function assertSafeOutput() {
     || (await readFile(ownerPath, 'utf8')) !== ownerToken
   ) {
     throw new Error(`refusing unsafe native API output: ${output}`);
-  }
-}
-
-async function removeGeneratedDirectory(target) {
-  try {
-    const stats = await lstat(target);
-    if (stats.isSymbolicLink()) throw new Error(`refusing symbolic native API output: ${target}`);
-    await rm(target, {recursive: true, force: true});
-  } catch (error) {
-    if (error?.code !== 'ENOENT') throw error;
   }
 }
 
@@ -119,10 +116,10 @@ try {
   assertPinnedFlutter();
   await assertSafeOutput();
   if (output === canonicalOutput) {
-    await removeGeneratedDirectory(dartOnly ? path.join(output, 'dart') : output);
+    await removeContainedDirectory(websiteRoot, output);
   } else {
-    await removeGeneratedDirectory(path.join(output, 'dart'));
-    if (!dartOnly) await removeGeneratedDirectory(path.join(output, 'rust'));
+    await removeContainedDirectory(output, path.join(output, 'dart'));
+    if (!dartOnly) await removeContainedDirectory(output, path.join(output, 'rust'));
   }
   await mkdir(output, {recursive: true});
 
@@ -158,7 +155,8 @@ try {
   );
 
   if (!dartOnly) {
-    await rm(path.join(cargoTarget, 'doc'), {recursive: true, force: true});
+    await mkdir(cargoTarget, {recursive: true});
+    await removeContainedDirectory(repositoryRoot, path.join(cargoTarget, 'doc'));
     for (const manifest of [
       'packages/entity-graph-cli/Cargo.toml',
       'packages/entity-graph-mcp/Cargo.toml',

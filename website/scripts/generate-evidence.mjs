@@ -1,10 +1,11 @@
 import {createHash} from 'node:crypto';
-import {mkdir, readFile, rm, writeFile} from 'node:fs/promises';
+import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {execFileSync} from 'node:child_process';
 import sharp from 'sharp';
 import {assertEvidenceBinding, assertEvidenceImage, assertReceiptCertification} from './evidence-receipt.mjs';
+import {removeContainedDirectory} from './contained-directory.mjs';
 
 const websiteRoot = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const repositoryRoot = path.resolve(websiteRoot, '..');
@@ -46,7 +47,7 @@ function resolveVerifiedSourceBlob(asset) {
 }
 
 if (allowlist.schemaVersion !== '1.0.0') throw new Error('unsupported evidence allowlist schema');
-await rm(outputRoot, {recursive: true, force: true});
+await removeContainedDirectory(websiteRoot, outputRoot);
 await mkdir(originalRoot, {recursive: true});
 
 const records = [];

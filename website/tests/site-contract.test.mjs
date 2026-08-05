@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
-import {mkdtemp, readFile, rm, symlink} from 'node:fs/promises';
+import {mkdir, mkdtemp, readFile, rm, symlink, writeFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -11,6 +11,7 @@ import {
   assertEvidenceImage,
   assertReceiptCertification,
 } from '../scripts/evidence-receipt.mjs';
+import {removeContainedDirectory} from '../scripts/contained-directory.mjs';
 
 const config = await readFile(new URL('../docusaurus.config.ts', import.meta.url), 'utf8');
 const css = await readFile(new URL('../src/css/custom.css', import.meta.url), 'utf8');
@@ -205,6 +206,37 @@ test('native API generation rejects destructive output targets before tool execu
   });
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /refusing unsafe native API output/);
+});
+
+test('native API generation rejects partial canonical re-signing before tool execution', () => {
+  const generator = fileURLToPath(new URL('../scripts/generate-native-api.mjs', import.meta.url));
+  const repository = fileURLToPath(new URL('../../', import.meta.url));
+  const result = spawnSync(process.execPath, [generator, '--dart-only'], {
+    cwd: repository,
+    encoding: 'utf8',
+  });
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /must regenerate Dart and Rust together/);
+});
+
+test('contained directory removal rejects a symlinked ancestor without touching its target', async () => {
+  const parent = await mkdtemp(path.join(tmpdir(), 'contained-directory-test-'));
+  const anchor = path.join(parent, 'anchor');
+  const outside = path.join(parent, 'outside');
+  const proof = path.join(outside, 'proof.txt');
+  try {
+    await mkdir(anchor);
+    await mkdir(path.join(outside, 'child'), {recursive: true});
+    await writeFile(proof, 'retained');
+    await symlink(outside, path.join(anchor, 'linked'), 'dir');
+    await assert.rejects(
+      removeContainedDirectory(anchor, path.join(anchor, 'linked', 'child')),
+      /symbolic or non-directory path component/,
+    );
+    assert.equal(await readFile(proof, 'utf8'), 'retained');
+  } finally {
+    await rm(parent, {recursive: true, force: true});
+  }
 });
 
 test('native API generation rejects a symlinked temporary ownership root', async () => {
