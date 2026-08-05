@@ -11,9 +11,10 @@ record implemented evidence:
 
 - `graph.realtime-batching` points to the portable adapter test, explicit live
   integration, immutable workflow, checked contract, and external-source
-  receipt.
+  receipt. The current pointer is the task-6 exact-source receipt rather than
+  the superseded task-3 Forge revision.
 - `security.tenant-actions-secrets` points to the contract fixture, verifier,
-  regression tests, and security receipt.
+  regression tests, and the same current exact-source security receipt.
 
 Both entries use `pnpm run verify:flint-contracts` and retain the distinction
 between portable default CI and the opt-in real-SDK workflow.
