@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="entity_graph_flutter library API docs, for the Dart programming language.">
+  <title>entity_graph_flutter library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">entity_graph_flutter</a></li>
+    <li class="self-crumb">entity_graph_flutter.dart</li>
+  </ol>
+  <div class="self-name">entity_graph_flutter</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar=""
+    data-below-sidebar="entity_graph_flutter&#47;entity_graph_flutter-library-sidebar.html">
+  
+    <div>
+      
+
+      <h1>
+        <span class="kind-library">entity_graph_flutter</span>
+        library 
+ 
+
+      </h1>
+    </div>
+
+    
+<section class="desc markdown">
+  <p>entity_graph_flutter</p>
+<p>Flutter/Dart mirror of the Prometheus entity-graph ecosystem.</p>
+<p>Mirrors the three-layer model of entity-graph-core:
+Layer 1  →  <a href="../entity_graph_flutter/EntityGraph-class.html">EntityGraph</a>          (the normalized in-memory store)
+  Layer 2  →  Riverpod providers      (entityProvider, entityListProvider)
+  Transport →  <a href="../entity_graph_flutter/EntityTransport-class.html">EntityTransport</a> + <a href="../entity_graph_flutter/EntityTransportRegistry-class.html">EntityTransportRegistry</a></p>
+<p>The SDL shared contract is modelled by <a href="../entity_graph_flutter/EntityGraphIR-class.html">EntityGraphIR</a>.
+Use <a href="../entity_graph_flutter/parseSdl.html">parseSdl</a> to parse a JSON/Map SDL document into the validated IR.</p>
+</section>
+
+
+    <section class="summary offset-anchor" id="classes">
+      <h2>Classes</h2>
+      <dl>
+          <dt id="ChangeEvent">
+  <span class="name "><a href="../entity_graph_flutter/ChangeEvent-class.html">ChangeEvent</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Realtime change event — mirrors ChangeEvent in transport/types.ts.
+</dd>
+
+          <dt id="EditBuffer">
+  <span class="name "><a href="../entity_graph_flutter/EditBuffer-class.html">EditBuffer</a></span> 
+
+</dt>
+<dd>
+  Local dirty-path edit state. It is UI orchestration state, not graph data.
+</dd>
+
+          <dt id="Entity">
+  <span class="name "><a href="../entity_graph_flutter/Entity-class.html">Entity</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Generated Riverpod family for a single normalized entity.
+</dd>
+
+          <dt id="EntityChangeBinding">
+  <span class="name "><a href="../entity_graph_flutter/EntityChangeBinding-class.html">EntityChangeBinding</a></span> 
+
+</dt>
+<dd>
+  Result of mounting an entity type's optional realtime feed.
+</dd>
+
+          <dt id="EntityChangeBridge">
+  <span class="name "><a href="../entity_graph_flutter/EntityChangeBridge-class.html">EntityChangeBridge</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Mounts at most one generated-provider instance per entity type and
+translates transport changes into canonical graph writes/invalidation.
+</dd>
+
+          <dt id="EntityChangeBridgeFamily">
+  <span class="name "><a href="../entity_graph_flutter/EntityChangeBridgeFamily-class.html">EntityChangeBridgeFamily</a></span> 
+
+</dt>
+<dd>
+  Mounts at most one generated-provider instance per entity type and
+translates transport changes into canonical graph writes/invalidation.
+</dd>
+
+          <dt id="EntityChangeBridgeProvider">
+  <span class="name "><a href="../entity_graph_flutter/EntityChangeBridgeProvider-class.html">EntityChangeBridgeProvider</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Mounts at most one generated-provider instance per entity type and
+translates transport changes into canonical graph writes/invalidation.
+</dd>
+
+          <dt id="EntityChanged">
+  <span class="name "><a href="../entity_graph_flutter/EntityChanged-class.html">EntityChanged</a></span> 
+
+</dt>
+<dd>
+  An entity was upserted, replaced, or patched.
+</dd>
+
+          <dt id="EntityConfig">
+  <span class="name "><a href="../entity_graph_flutter/EntityConfig-class.html">EntityConfig</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Compatibility configuration for provider factories.
+</dd>
+
+          <dt id="EntityCrud">
+  <span class="name "><a href="../entity_graph_flutter/EntityCrud-class.html">EntityCrud</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Generated per-entity CRUD controller with isolated edits and optimistic
+graph feedback.
+</dd>
+
+          <dt id="EntityCrudFamily">
+  <span class="name "><a href="../entity_graph_flutter/EntityCrudFamily-class.html">EntityCrudFamily</a></span> 
+
+</dt>
+<dd>
+  Generated per-entity CRUD controller with isolated edits and optimistic
+graph feedback.
+</dd>
+
+          <dt id="EntityCrudProvider">
+  <span class="name "><a href="../entity_graph_flutter/EntityCrudProvider-class.html">EntityCrudProvider</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Generated per-entity CRUD controller with isolated edits and optimistic
+graph feedback.
+</dd>
+
+          <dt id="EntityFamily">
+  <span class="name "><a href="../entity_graph_flutter/EntityFamily-class.html">EntityFamily</a></span> 
+
+</dt>
+<dd>
+  Generated Riverpod family for a single normalized entity.
+</dd>
+
+          <dt id="EntityGraph">
+  <span class="name "><a href="../entity_graph_flutter/EntityGraph-class.html">EntityGraph</a></span> 
+
+</dt>
+<dd>
+  Normalized entity graph — the single source of truth.
+</dd>
+
+          <dt id="EntityGraphIR">
+  <span class="name "><a href="../entity_graph_flutter/EntityGraphIR-class.html">EntityGraphIR</a></span> 
+
+</dt>
+<dd>
+  Fully validated IR — consumed by code generators and transport builders.
+</dd>
+
+          <dt id="EntityGraphProvider">
+  <span class="name "><a href="../entity_graph_flutter/EntityGraphProvider-class.html">EntityGraphProvider</a></span> 
+
+</dt>
+<dd>
+  Process-wide graph owner. Override with an isolated <a href="../entity_graph_flutter/EntityGraph-class.html">EntityGraph</a> in tests
+or a deliberately scoped application graph.
+</dd>
+
+          <dt id="EntityList">
+  <span class="name "><a href="../entity_graph_flutter/EntityList-class.html">EntityList</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Generated Riverpod family for normalized local, remote, and hybrid lists.
+</dd>
+
+          <dt id="EntityListConfig">
+  <span class="name "><a href="../entity_graph_flutter/EntityListConfig-class.html">EntityListConfig</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Compatibility configuration for applications that construct providers in
+factories. New code normally passes these fields directly to
+<a href="../entity_graph_flutter/entityListProvider.html">entityListProvider</a>.
+</dd>
+
+          <dt id="EntityListFamily">
+  <span class="name "><a href="../entity_graph_flutter/EntityListFamily-class.html">EntityListFamily</a></span> 
+
+</dt>
+<dd>
+  Generated Riverpod family for normalized local, remote, and hybrid lists.
+</dd>
+
+          <dt id="EntityListProvider">
+  <span class="name "><a href="../entity_graph_flutter/EntityListProvider-class.html">EntityListProvider</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Generated Riverpod family for normalized local, remote, and hybrid lists.
+</dd>
+
+          <dt id="EntityListSnapshot">
+  <span class="name "><a href="../entity_graph_flutter/EntityListSnapshot-class.html">EntityListSnapshot</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Stable list data derived from ID-only graph membership.
+</dd>
+
+          <dt id="EntityMutations">
+  <span class="name "><a href="../entity_graph_flutter/EntityMutations-class.html">EntityMutations</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Collection-level controller for optimistic creates.
+</dd>
+
+          <dt id="EntityMutationsFamily">
+  <span class="name "><a href="../entity_graph_flutter/EntityMutationsFamily-class.html">EntityMutationsFamily</a></span> 
+
+</dt>
+<dd>
+  Collection-level controller for optimistic creates.
+</dd>
+
+          <dt id="EntityMutationsProvider">
+  <span class="name "><a href="../entity_graph_flutter/EntityMutationsProvider-class.html">EntityMutationsProvider</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Collection-level controller for optimistic creates.
+</dd>
+
+          <dt id="EntityMutationState">
+  <span class="name "><a href="../entity_graph_flutter/EntityMutationState-class.html">EntityMutationState</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  State for collection-level create operations.
+</dd>
+
+          <dt id="EntityProvider">
+  <span class="name "><a href="../entity_graph_flutter/EntityProvider-class.html">EntityProvider</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Generated Riverpod family for a single normalized entity.
+</dd>
+
+          <dt id="EntityRemovalSnapshot">
+  <span class="name "><a href="../entity_graph_flutter/EntityRemovalSnapshot-class.html">EntityRemovalSnapshot</a></span> 
+
+</dt>
+<dd>
+  Complete rollback receipt for an optimistic entity removal.
+</dd>
+
+          <dt id="EntityRemoved">
+  <span class="name "><a href="../entity_graph_flutter/EntityRemoved-class.html">EntityRemoved</a></span> 
+
+</dt>
+<dd>
+  An entity was removed.
+</dd>
+
+          <dt id="EntitySnapshot">
+  <span class="name "><a href="../entity_graph_flutter/EntitySnapshot-class.html">EntitySnapshot</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Stable single-entity data derived from the graph.
+</dd>
+
+          <dt id="EntityState">
+  <span class="name "><a href="../entity_graph_flutter/EntityState-class.html">EntityState</a></span> 
+
+</dt>
+<dd>
+  Fetch / cache metadata for a single entity instance.
+</dd>
+
+          <dt id="EntitySyncMetadata">
+  <span class="name "><a href="../entity_graph_flutter/EntitySyncMetadata-class.html">EntitySyncMetadata</a></span> 
+
+</dt>
+<dd>
+  Optional sync metadata kept beside the canonical entity payload.
+</dd>
+
+          <dt id="EntityTransport">
+  <span class="name "><a href="../entity_graph_flutter/EntityTransport-class.html">EntityTransport</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Per-entity transport contract — mirrors <code>EntityTransport&lt;T&gt;</code> in
+transport/types.ts.
+</dd>
+
+          <dt id="EntityTransportRegistry">
+  <span class="name "><a href="../entity_graph_flutter/EntityTransportRegistry-class.html">EntityTransportRegistry</a></span> 
+
+</dt>
+<dd>
+  Process-global registry of <a href="../entity_graph_flutter/EntityTransport-class.html">EntityTransport</a> instances keyed by entity type.
+</dd>
+
+          <dt id="EntityTransportRegistryProvider">
+  <span class="name "><a href="../entity_graph_flutter/EntityTransportRegistryProvider-class.html">EntityTransportRegistryProvider</a></span> 
+
+</dt>
+<dd>
+  Process-wide transport registry. It is injectable without changing the
+graph's state ownership.
+</dd>
+
+          <dt id="FfiEntityBridge">
+  <span class="name "><a href="../entity_graph_flutter/FfiEntityBridge-class.html">FfiEntityBridge</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Host-owned bridge implemented by optional native integration packages.
+</dd>
+
+          <dt id="FfiEntityTransportAdapter">
+  <span class="name "><a href="../entity_graph_flutter/FfiEntityTransportAdapter-class.html">FfiEntityTransportAdapter</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Adapts an optional native bridge to the transport-neutral package contract.
+</dd>
+
+          <dt id="FilterClause">
+  <span class="name "><a href="../entity_graph_flutter/FilterClause-class.html">FilterClause</a></span> 
+
+</dt>
+<dd>
+  Atomic filter clause.
+</dd>
+
+          <dt id="GraphChange">
+  <span class="name "><a href="../entity_graph_flutter/GraphChange-class.html">GraphChange</a></span> 
+
+</dt>
+<dd>
+  Coarse-grained graph change event.
+</dd>
+
+          <dt id="IrEntity">
+  <span class="name "><a href="../entity_graph_flutter/IrEntity-class.html">IrEntity</a></span> 
+
+</dt>
+<dd>
+  Validated IR entity.
+</dd>
+
+          <dt id="IrField">
+  <span class="name "><a href="../entity_graph_flutter/IrField-class.html">IrField</a></span> 
+
+</dt>
+<dd>
+  Validated IR field — what generators consume.
+</dd>
+
+          <dt id="IrRelation">
+  <span class="name "><a href="../entity_graph_flutter/IrRelation-class.html">IrRelation</a></span> 
+
+</dt>
+<dd>
+  Validated IR relation.
+</dd>
+
+          <dt id="ListChanged">
+  <span class="name "><a href="../entity_graph_flutter/ListChanged-class.html">ListChanged</a></span> 
+
+</dt>
+<dd>
+  A list slot was updated.
+</dd>
+
+          <dt id="ListQuery">
+  <span class="name "><a href="../entity_graph_flutter/ListQuery-class.html">ListQuery</a></span> 
+
+</dt>
+<dd>
+  Transport-agnostic list query — mirrors ListQuery in transport/types.ts.
+</dd>
+
+          <dt id="ListResult">
+  <span class="name "><a href="../entity_graph_flutter/ListResult-class.html">ListResult</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Page of results returned by <a href="../entity_graph_flutter/EntityTransport/list.html">EntityTransport.list</a>.
+</dd>
+
+          <dt id="ListState">
+  <span class="name "><a href="../entity_graph_flutter/ListState-class.html">ListState</a></span> 
+
+</dt>
+<dd>
+  Ordered entity-id array + pagination metadata.
+Lists store ids, never embedded entity payloads — cross-view reactivity
+depends on this invariant.
+</dd>
+
+          <dt id="SdlAiConfig">
+  <span class="name "><a href="../entity_graph_flutter/SdlAiConfig-class.html">SdlAiConfig</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="SdlConfig">
+  <span class="name "><a href="../entity_graph_flutter/SdlConfig-class.html">SdlConfig</a></span> 
+
+</dt>
+<dd>
+  SDL config block.
+</dd>
+
+          <dt id="SdlFieldDef">
+  <span class="name "><a href="../entity_graph_flutter/SdlFieldDef-class.html">SdlFieldDef</a></span> 
+
+</dt>
+<dd>
+  Raw SDL field definition.
+</dd>
+
+          <dt id="SdlLocalFirstConfig">
+  <span class="name "><a href="../entity_graph_flutter/SdlLocalFirstConfig-class.html">SdlLocalFirstConfig</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="SdlRelationDef">
+  <span class="name "><a href="../entity_graph_flutter/SdlRelationDef-class.html">SdlRelationDef</a></span> 
+
+</dt>
+<dd>
+  Raw SDL relation definition.
+</dd>
+
+          <dt id="SortClause">
+  <span class="name "><a href="../entity_graph_flutter/SortClause-class.html">SortClause</a></span> 
+
+</dt>
+<dd>
+  Single sort key.
+</dd>
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="enums">
+      <h2>Enums</h2>
+      <dl>
+          <dt id="ChangeOp">
+  <span class="name "><a href="../entity_graph_flutter/ChangeOp.html">ChangeOp</a></span> 
+
+</dt>
+<dd>
+  Change operation for realtime events.
+</dd>
+
+          <dt id="FilterOperator">
+  <span class="name "><a href="../entity_graph_flutter/FilterOperator.html">FilterOperator</a></span> 
+
+</dt>
+<dd>
+  Filter operator — mirrors FilterOperator in view/types.ts.
+</dd>
+
+          <dt id="SdlRelationKind">
+  <span class="name "><a href="../entity_graph_flutter/SdlRelationKind.html">SdlRelationKind</a></span> 
+
+</dt>
+<dd>
+  Relation kind.
+</dd>
+
+          <dt id="SdlScalarType">
+  <span class="name "><a href="../entity_graph_flutter/SdlScalarType.html">SdlScalarType</a></span> 
+
+</dt>
+<dd>
+  Supported SDL scalar types.
+</dd>
+
+          <dt id="SortDirection">
+  <span class="name "><a href="../entity_graph_flutter/SortDirection.html">SortDirection</a></span> 
+
+</dt>
+<dd>
+  Sort direction.
+</dd>
+
+          <dt id="SyncOrigin">
+  <span class="name "><a href="../entity_graph_flutter/SyncOrigin.html">SyncOrigin</a></span> 
+
+</dt>
+<dd>
+  Provenance of the latest known entity state.
+</dd>
+
+          <dt id="ViewCompleteness">
+  <span class="name "><a href="../entity_graph_flutter/ViewCompleteness.html">ViewCompleteness</a></span> 
+
+</dt>
+<dd>
+  Declares whether a view is complete locally, remotely, or through both.
+</dd>
+
+      </dl>
+    </section>
+
+
+
+
+
+    <section class="summary offset-anchor" id="properties">
+      <h2>Properties</h2>
+      <dl class="properties">
+          <dt id="entityChangeBridgeProvider" class="property">
+  <span class="name"><a href="../entity_graph_flutter/entityChangeBridgeProvider.html">entityChangeBridgeProvider</a></span>
+  <span class="signature">&#8594; <a href="../entity_graph_flutter/EntityChangeBridgeFamily-class.html">EntityChangeBridgeFamily</a></span>
+  
+
+</dt>
+<dd>
+  Mounts at most one generated-provider instance per entity type and
+translates transport changes into canonical graph writes/invalidation.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+          <dt id="entityCrudProvider" class="property">
+  <span class="name"><a href="../entity_graph_flutter/entityCrudProvider.html">entityCrudProvider</a></span>
+  <span class="signature">&#8594; <a href="../entity_graph_flutter/EntityCrudFamily-class.html">EntityCrudFamily</a></span>
+  
+
+</dt>
+<dd>
+  Generated per-entity CRUD controller with isolated edits and optimistic
+graph feedback.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+          <dt id="entityGraphProvider" class="property">
+  <span class="name"><a href="../entity_graph_flutter/entityGraphProvider.html">entityGraphProvider</a></span>
+  <span class="signature">&#8594; <a href="../entity_graph_flutter/EntityGraphProvider-class.html">EntityGraphProvider</a></span>
+  
+
+</dt>
+<dd>
+  Process-wide graph owner. Override with an isolated <a href="../entity_graph_flutter/EntityGraph-class.html">EntityGraph</a> in tests
+or a deliberately scoped application graph.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+          <dt id="entityListProvider" class="property">
+  <span class="name"><a href="../entity_graph_flutter/entityListProvider.html">entityListProvider</a></span>
+  <span class="signature">&#8594; <a href="../entity_graph_flutter/EntityListFamily-class.html">EntityListFamily</a></span>
+  
+
+</dt>
+<dd>
+  Generated Riverpod family for normalized local, remote, and hybrid lists.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+          <dt id="entityMutationsProvider" class="property">
+  <span class="name"><a href="../entity_graph_flutter/entityMutationsProvider.html">entityMutationsProvider</a></span>
+  <span class="signature">&#8594; <a href="../entity_graph_flutter/EntityMutationsFamily-class.html">EntityMutationsFamily</a></span>
+  
+
+</dt>
+<dd>
+  Collection-level controller for optimistic creates.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+          <dt id="entityProvider" class="property">
+  <span class="name"><a href="../entity_graph_flutter/entityProvider.html">entityProvider</a></span>
+  <span class="signature">&#8594; <a href="../entity_graph_flutter/EntityFamily-class.html">EntityFamily</a></span>
+  
+
+</dt>
+<dd>
+  Generated Riverpod family for a single normalized entity.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+          <dt id="entityTransportRegistryProvider" class="property">
+  <span class="name"><a href="../entity_graph_flutter/entityTransportRegistryProvider.html">entityTransportRegistryProvider</a></span>
+  <span class="signature">&#8594; <a href="../entity_graph_flutter/EntityTransportRegistryProvider-class.html">EntityTransportRegistryProvider</a></span>
+  
+
+</dt>
+<dd>
+  Process-wide transport registry. It is injectable without changing the
+graph's state ownership.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="functions">
+      <h2>Functions</h2>
+      <dl class="callables">
+          <dt id="entityGraph" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/entityGraph.html">entityGraph</a></span><span class="signature">(<wbr><span class="parameter" id="entityGraph-param-ref"><span class="type-annotation"><a href="https://pub.dev/documentation/riverpod/3.3.2/riverpod/Ref-class.html">Ref</a></span> <span class="parameter-name">ref</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../entity_graph_flutter/EntityGraph-class.html">EntityGraph</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Process-wide graph owner. Override with an isolated <a href="../entity_graph_flutter/EntityGraph-class.html">EntityGraph</a> in tests
+or a deliberately scoped application graph.
+  
+
+</dd>
+
+          <dt id="entityProviderRetry" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/entityProviderRetry.html">entityProviderRetry</a></span><span class="signature">(<wbr><span class="parameter" id="entityProviderRetry-param-retryCount"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">retryCount</span>, </span><span class="parameter" id="entityProviderRetry-param-error"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">error</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Duration-class.html">Duration</a>?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Bounded Riverpod 3 retry policy shared by fetch providers.
+  
+
+</dd>
+
+          <dt id="entityToGraphRow" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/entityToGraphRow.html">entityToGraphRow</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="entityToGraphRow-param-row"><span class="type-annotation">T</span> <span class="parameter-name">row</span>, </span><span class="parameter" id="entityToGraphRow-param-encoder"><span class="type-annotation"><a href="../entity_graph_flutter/EntityEncoder.html">EntityEncoder</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span>?</span> <span class="parameter-name">encoder</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a>?</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Encode a transport row without requiring Freezed or JSON code generation.
+  
+
+</dd>
+
+          <dt id="entityTransportRegistry" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/entityTransportRegistry.html">entityTransportRegistry</a></span><span class="signature">(<wbr><span class="parameter" id="entityTransportRegistry-param-ref"><span class="type-annotation"><a href="https://pub.dev/documentation/riverpod/3.3.2/riverpod/Ref-class.html">Ref</a></span> <span class="parameter-name">ref</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../entity_graph_flutter/EntityTransportRegistry-class.html">EntityTransportRegistry</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Process-wide transport registry. It is injectable without changing the
+graph's state ownership.
+  
+
+</dd>
+
+          <dt id="evaluateLocalEntityIds" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/evaluateLocalEntityIds.html">evaluateLocalEntityIds</a></span><span class="signature">(<wbr><span class="parameter" id="evaluateLocalEntityIds-param-graph"><span class="type-annotation"><a href="../entity_graph_flutter/EntityGraph-class.html">EntityGraph</a></span> <span class="parameter-name">graph</span>, </span><span class="parameter" id="evaluateLocalEntityIds-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="evaluateLocalEntityIds-param-query"><span class="type-annotation"><a href="../entity_graph_flutter/ListQuery-class.html">ListQuery</a></span> <span class="parameter-name">query</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Evaluate <code>query</code> against canonical entities and return ordered IDs only.
+  
+
+</dd>
+
+          <dt id="parseSdl" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/parseSdl.html">parseSdl</a></span><span class="signature">(<wbr><span class="parameter" id="parseSdl-param-doc"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a>?</span> <span class="parameter-name">doc</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../entity_graph_flutter/EntityGraphIR-class.html">EntityGraphIR</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Parse + validate a Map SDL document (already decoded from JSON/TOML) into
+a validated <a href="../entity_graph_flutter/EntityGraphIR-class.html">EntityGraphIR</a>.
+  
+
+</dd>
+
+          <dt id="parseSdlJson" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/parseSdlJson.html">parseSdlJson</a></span><span class="signature">(<wbr><span class="parameter" id="parseSdlJson-param-json"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">json</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../entity_graph_flutter/EntityGraphIR-class.html">EntityGraphIR</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Parse an SDL document from a JSON string.
+  
+
+</dd>
+
+          <dt id="toEntityGraphError" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/toEntityGraphError.html">toEntityGraphError</a></span><span class="signature">(<wbr><span class="parameter" id="toEntityGraphError-param-error"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">error</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../entity_graph_flutter/EntityGraphError-class.html">EntityGraphError</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Convert an arbitrary exception to a typed <a href="../entity_graph_flutter/EntityGraphError-class.html">EntityGraphError</a>.
+  
+
+</dd>
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="typedefs">
+      <h2>Typedefs</h2>
+      <dl>
+          
+  <dt id="EntityDecoder" class="callable">
+    <span class="name"><a href="../entity_graph_flutter/EntityDecoder.html">EntityDecoder</a></span>&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;<span class="signature">
+      <span class="returntype parameter">= T Function<span class="signature">(<span class="parameter" id="param-row"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a>?</span>&gt;</span></span> <span class="parameter-name">row</span></span>)</span></span>
+    </span>
+    
+
+  </dt>
+  <dd>
+    Converts a canonical graph row into a feature model.
+    
+
+  </dd>
+
+          
+  <dt id="EntityEncoder" class="callable">
+    <span class="name"><a href="../entity_graph_flutter/EntityEncoder.html">EntityEncoder</a></span>&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;<span class="signature">
+      <span class="returntype parameter">= <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a>?</span>&gt;</span> Function<span class="signature">(<span class="parameter" id="param-row"><span class="type-annotation">T</span> <span class="parameter-name">row</span></span>)</span></span>
+    </span>
+    
+
+  </dt>
+  <dd>
+    Converts a transport model into canonical graph fields.
+    
+
+  </dd>
+
+          
+  <dt id="EntityListNotifier" class="">
+  <span class="name"><a href="../entity_graph_flutter/EntityListNotifier.html">EntityListNotifier</a></span>&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;
+    = <a href="../entity_graph_flutter/EntityList-class.html">EntityList</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Backwards-compatible notifier type name; the generated family is
+<a href="../entity_graph_flutter/entityListProvider.html">entityListProvider</a>.
+  
+
+</dd>
+
+
+          
+  <dt id="EntityNotifier" class="">
+  <span class="name"><a href="../entity_graph_flutter/EntityNotifier.html">EntityNotifier</a></span>&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;
+    = <a href="../entity_graph_flutter/Entity-class.html">Entity</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Backwards-compatible notifier type name; the generated family is
+<a href="../entity_graph_flutter/entityProvider.html">entityProvider</a>.
+  
+
+</dd>
+
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="exceptions">
+      <h2>Exceptions / Errors</h2>
+      <dl>
+          <dt id="EntityGraphError">
+  <span class="name "><a href="../entity_graph_flutter/EntityGraphError-class.html">EntityGraphError</a></span> 
+
+</dt>
+<dd>
+  Base class for all entity-graph errors.
+</dd>
+
+          <dt id="SdlValidationError">
+  <span class="name "><a href="../entity_graph_flutter/SdlValidationError-class.html">SdlValidationError</a></span> 
+
+</dt>
+<dd>
+  Thrown when an SDL document fails validation.
+</dd>
+
+          <dt id="TerminalError">
+  <span class="name "><a href="../entity_graph_flutter/TerminalError-class.html">TerminalError</a></span> 
+
+</dt>
+<dd>
+  Permanent failure — do not retry.
+</dd>
+
+          <dt id="TransientError">
+  <span class="name "><a href="../entity_graph_flutter/TransientError-class.html">TransientError</a></span> 
+
+</dt>
+<dd>
+  Temporary failure — safe to retry with back-off.
+</dd>
+
+      </dl>
+    </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">entity_graph_flutter</a></li>
+    <li class="self-crumb">entity_graph_flutter.dart</li>
+</ol>
+
+    <h5><span class="package-name">entity_graph_flutter</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="../entity_graph_flutter/">entity_graph_flutter</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+    <h5>entity_graph_flutter library</h5>
+  </div><!--/sidebar-offcanvas-right-->
+</main>
+<footer>
+  <span class="no-break">
+    entity_graph_flutter
+      3.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

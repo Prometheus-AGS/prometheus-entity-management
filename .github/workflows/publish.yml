@@ -181,6 +181,7 @@ jobs:
       contents: read
       id-token: write
     env:
+      NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
       PROMETHEUS_RELEASE_AUTHORITY: stage-rc
       PROMETHEUS_RELEASE_ENVIRONMENT: npm-rc
       PROMETHEUS_RELEASE_CANDIDATE_SHA: ${{ (inputs.candidate_run_id != '' && inputs.candidate_sha != '') && inputs.candidate_sha || github.sha }}
@@ -193,7 +194,6 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: "24"
-          registry-url: "https://registry.npmjs.org"
           package-manager-cache: false
 
       - name: Install

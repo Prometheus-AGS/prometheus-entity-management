@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["RelationKind","ScalarType"],"struct":["AiConfig","EntityGraphIR","IrEntity","IrField","IrRelation","LocalFirstConfig","SdlConfig"]};

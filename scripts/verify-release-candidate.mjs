@@ -251,8 +251,12 @@ function verifyWorkflow({ workflow, workflowSource, rootManifest }) {
     "stage must use setup-node v7 without the v6 dummy NODE_AUTH_TOKEN fallback",
   );
   assert(
-    stageNodeAction.with?.["registry-url"] === "https://registry.npmjs.org",
-    "stage must target the public npm registry",
+    stageNodeAction.with?.["registry-url"] === undefined,
+    "stage must not generate a token-shaped npmrc through setup-node",
+  );
+  assert(
+    stageJob.env?.NPM_CONFIG_REGISTRY === "https://registry.npmjs.org/",
+    "stage must target the public npm registry through NPM_CONFIG_REGISTRY",
   );
   const candidateDownload = findStep(
     stageJob,
@@ -324,6 +328,8 @@ function verifyWorkflow({ workflow, workflowSource, rootManifest }) {
     stageAction: "npm-stage-publish",
     reusableCandidateBundle: true,
     setupNodeDummyToken: false,
+    setupNodeTokenNpmrc: false,
+    registryConfiguration: "NPM_CONFIG_REGISTRY",
     hiddenReleaseArtifacts: true,
     longLivedNpmToken: false,
     humanApprovalInCi: false,

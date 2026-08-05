@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Error"],"fn":["init"],"mod":["commands","state","types"],"struct":["EntityGraph","EntityGraphPlugin"],"trait":["EntityGraphExt"],"type":["Result"]};

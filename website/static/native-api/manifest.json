@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceFiles": [
+    {
+      "path": "packages/entity-graph-cli/Cargo.lock",
+      "sha256": "e072ae2a79d393956ef8f645fa1bfa9d92c343ae5b08e15fd39cdbf40e181da4",
+      "bytes": 30691
+    },
+    {
+      "path": "packages/entity-graph-cli/Cargo.toml",
+      "sha256": "287c6c5b61f8bb151d75f85f7196871cf577d06c1e99ae0de253f7dfac19f58f",
+      "bytes": 922
+    },
+    {
+      "path": "packages/entity-graph-cli/src/commands/generate.rs",
+      "sha256": "0ac200472f24687fcc73f2a4b4ed4ee7e9c64d9470e5bb06b925419f2d6d8689",
+      "bytes": 13272
+    },
+    {
+      "path": "packages/entity-graph-cli/src/commands/init.rs",
+      "sha256": "257b357fcd0ea717497dd36bde0842779903f6f1cd53756fb899f91a2f28073d",
+      "bytes": 5725
+    },
+    {
+      "path": "packages/entity-graph-cli/src/commands/mod.rs",
+      "sha256": "f31dace9e6239968bfe0de57c9412dee783c336dbd0d46a0f3830305db601b13",
+      "bytes": 76
+    },
+    {
+      "path": "packages/entity-graph-cli/src/ir.rs",
+      "sha256": "31b8188c3885a645cc4a5a2a4148d6578c71a0e90f7d127ea2a536d081e9764a",
+      "bytes": 8917
+    },
+    {
+      "path": "packages/entity-graph-cli/src/main.rs",
+      "sha256": "4c40e150010656352b6f038d816ba36e4b8c9cbb49e6a2dc9f4d296245149170",
+      "bytes": 1275
+    },
+    {
+      "path": "packages/entity-graph-cli/src/sdl_parser.rs",
+      "sha256": "b8a90704fd390413c4d369ae4759535c6fe4c359d29b3725d7ad4fa7a63f5ea5",
+      "bytes": 12157
+    },
+    {
+      "path": "packages/entity-graph-cli/src/templates.rs",
+      "sha256": "56fe65da83b75276b6272ec27a178760903e42bc6adb6c205b7338efba373dc7",
+      "bytes": 3654
+    },
+    {
+      "path": "packages/entity-graph-mcp/Cargo.lock",
+      "sha256": "b9d43f9120e5c7793156daeea611e6dad69a05e3c57a64a5fca2359eb8b3ee3b",
+      "bytes": 35953
+    },
+    {
+      "path": "packages/entity-graph-mcp/Cargo.toml",
+      "sha256": "f026fef46f491327c875d23bdab2d8b823a691e2615088eab9ebe30bfd9d791e",
+      "bytes": 1775
+    },
+    {
+      "path": "packages/entity-graph-mcp/src/cli.rs",
+      "sha256": "c95d8086d273f36f330d9aa87c4abed70dd782ebeb8c197b4faef70f9ffcc8a2",
+      "bytes": 1454
+    },
+    {
+      "path": "packages/entity-graph-mcp/src/lib.rs",
+      "sha256": "e8600bd259879a33d9a21424a975f126d6c2c5489cfb7f1270764667035f8008",
+      "bytes": 877
+    },
+    {
+      "path": "packages/entity-graph-mcp/src/main.rs",
+      "sha256": "2b43ed720d0e813321c483a5c86abe33c245553e4fa441d96efde196f376eb49",
+      "bytes": 3109
+    },
+    {
+      "path": "packages/entity-graph-mcp/src/server.rs",
+      "sha256": "5c3958f2ca7204ae0ec73af35781dd55ef1c20e9212cd34eb41737f61ea05662",
+      "bytes": 17480
+    },
+    {
+      "path": "packages/entity-graph-mcp/src/store.rs",
+      "sha256": "3eddd64362582b1c0a8ece324c50ee85b932094d18f7d41f58d3a092198a5642",
+      "bytes": 5856
+    },
+    {
+      "path": "packages/entity-graph-mcp/src/transport.rs",
+      "sha256": "fd1781e3264439cc36607e0298da19c4d93bdf8ad822bb313238eef61396da34",
+      "bytes": 3946
+    },
+    {
+      "path": "packages/entity-graph-tauri/rust-plugin/Cargo.lock",
+      "sha256": "668d5d6fa8b0d2a9f51c6fb46bc1ed408518561e1f8596bea45ed374d2ea9864",
+      "bytes": 96323
+    },
+    {
+      "path": "packages/entity-graph-tauri/rust-plugin/Cargo.toml",
+      "sha256": "fb261377dd01c3dab047c013ccb3f51ee6ab9405a547f34d0399f322bb114f73",
+      "bytes": 1362
+    },
+    {
+      "path": "packages/entity-graph-tauri/rust-plugin/src/bin/generate-bindings.rs",
+      "sha256": "2807a8d72d62b13c0d7af679de15fb5edccdb03cc76a476452838cf947ee752a",
+      "bytes": 982
+    },
+    {
+      "path": "packages/entity-graph-tauri/rust-plugin/src/commands.rs",
+      "sha256": "36a8d1ccd34fdd40f0aa0bfc868d483349469a0c62309ece088c94696c1cae2c",
+      "bytes": 6093
+    },
+    {
+      "path": "packages/entity-graph-tauri/rust-plugin/src/desktop.rs",
+      "sha256": "355ca9ac50b0ceccc5f59f0ccd39536c2e3ecf38b12852b7a4bf7e0602abc852",
+      "bytes": 713
+    },
+    {
+      "path": "packages/entity-graph-tauri/rust-plugin/src/error.rs",
+      "sha256": "2baa0b2242eaa5bb9ca4611e52fc43221eccd3e0d871dc884044e8a2be6bb690",
+      "bytes": 539
+    },
+    {
+      "path": "packages/entity-graph-tauri/rust-plugin/src/lib.rs",
+      "sha256": "1a5cba175c507f8f7e826ac7dbad827e13619cb76d8826fd046564e6b575c323",
+      "bytes": 6713
+    },
+    {
+      "path": "packages/entity-graph-tauri/rust-plugin/src/mobile.rs",
+      "sha256": "e4df149f5d1104b077d50abe692c6ad51d218cc494707fc825aea6c999cd84ef",
+      "bytes": 1058
+    },
+    {
+      "path": "packages/entity-graph-tauri/rust-plugin/src/state.rs",
+      "sha256": "b57ee02b0eb5b7fa70137735219c37ee60ea0e56dc935a9c8fe1f047dfa32279",
+      "bytes": 3476
+    },
+    {
+      "path": "packages/entity-graph-tauri/rust-plugin/src/types.rs",
+      "sha256": "bd4e2d0e030af94b7271a263a07749703bbec12fc0ccf3da05f187b7a4b635f5",
+      "bytes": 6740
+    },
+    {
+      "path": "packages/entity_graph_flutter/lib/entity_graph_flutter.dart",
+      "sha256": "dceb92ecc2ee580c7dd72175b7b40ae1c66bc8e7c52e06e8031989daecbfa384",
+      "bytes": 940
+    },
+    {
+      "path": "packages/entity_graph_flutter/lib/src/errors.dart",
+      "sha256": "0363bffa76dff5ea16b5df3541c9ddf5bfae7cdb138b2ba09cd138b07713073f",
+      "bytes": 2239
+    },
+    {
+      "path": "packages/entity_graph_flutter/lib/src/ffi-transport.dart",
+      "sha256": "5806acc98044c8e3b99df603c5d28395e8c2f6200d2a7cb8395af859c4813588",
+      "bytes": 2063
+    },
+    {
+      "path": "packages/entity_graph_flutter/lib/src/graph.dart",
+      "sha256": "514571ed3ae67781c9f6dee407d0967a77c625a70c3ba91293798ee55a8be3ba",
+      "bytes": 22023
+    },
+    {
+      "path": "packages/entity_graph_flutter/lib/src/providers.dart",
+      "sha256": "97598795e1f47f6a44877a8d94688f73dea3cfa6c9c7f94bad819c16b7f7a87a",
+      "bytes": 23961
+    },
+    {
+      "path": "packages/entity_graph_flutter/lib/src/providers.g.dart",
+      "sha256": "7a1c417c318d59c6180c415c0f50c6948120f53806c969190c421f593ea717a4",
+      "bytes": 27610
+    },
+    {
+      "path": "packages/entity_graph_flutter/lib/src/sdl.dart",
+      "sha256": "fce166462d32032e763e047c57310517a45b6d6d95258df334872c381da29fe6",
+      "bytes": 10808
+    },
+    {
+      "path": "packages/entity_graph_flutter/lib/src/transport.dart",
+      "sha256": "30941d025d7cf203b0cc86a82bd76d2c746b74b8e41a8e03bbe31769994588a5",
+      "bytes": 8598
+    },
+    {
+      "path": "packages/entity_graph_flutter/lib/src/view.dart",
+      "sha256": "b07d517a5c2b0b93490e8a0ef9efaec71e187d65678a1fab47634a8610f599cc",
+      "bytes": 3883
+    },
+    {
+      "path": "packages/entity_graph_flutter/pubspec.yaml",
+      "sha256": "38d55c6e38fbc623b3290cdd24a781799993f468da3c5362382f3017d52cb5b9",
+      "bytes": 1095
+    },
+    {
+      "path": "website/native-api-pubspec.lock",
+      "sha256": "f6581ae2fe023d3a423ee9b401432fe3c9d9fdbc627ee1769fd5983b038358d0",
+      "bytes": 15514
+    }
+  ],
+  "sourceAggregateSha256": "dfd52e64c5e849705e8b352f34f24a5dd3e5a2623588e985049038ffa13830b3",
+  "artifactFileCount": 729,
+  "artifactAggregateSha256": "33c14ab6cf50e7b37b26b7ccefcd3e50a9123c618853bf1d285fa3c33e81748c"
+}

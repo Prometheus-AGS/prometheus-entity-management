@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" role="img" aria-labelledby="title desc">
+  <title id="title">Flint realtime entity graph contract</title>
+  <desc id="desc">Flint events cross tenant and key boundaries, become ChangeSets, coalesce, and update normalized list and detail views.</desc>
+  <rect width="1400" height="800" rx="28" fill="#0B0F14"/>
+  <text x="80" y="100" fill="#FF6A3D" font-family="system-ui" font-size="32" font-weight="700">FLINT REALTIME → ONE ENTITY GRAPH</text>
+  <g font-family="system-ui" text-anchor="middle">
+    <g transform="translate(80 210)"><rect width="250" height="180" rx="20" fill="#18212B" stroke="#FF6A3D" stroke-width="3"/><text x="125" y="72" fill="#fff" font-size="28" font-weight="700">Realtime Fabric</text><text x="125" y="115" fill="#B9C0CB" font-size="21">watchEntities</text><text x="125" y="148" fill="#B9C0CB" font-size="21">offset + checkpoint</text></g>
+    <g transform="translate(420 210)"><rect width="250" height="180" rx="20" fill="#18212B" stroke="#E04E28" stroke-width="3"/><text x="125" y="72" fill="#fff" font-size="28" font-weight="700">Flint adapter</text><text x="125" y="115" fill="#B9C0CB" font-size="21">tenant · channel</text><text x="125" y="148" fill="#B9C0CB" font-size="21">consumer · JWKS</text></g>
+    <g transform="translate(760 210)"><rect width="250" height="180" rx="20" fill="#18212B" stroke="#E04E28" stroke-width="3"/><text x="125" y="72" fill="#fff" font-size="28" font-weight="700">ChangeSet</text><text x="125" y="115" fill="#B9C0CB" font-size="21">RealtimeManager</text><text x="125" y="148" fill="#B9C0CB" font-size="21">16 ms coalescing</text></g>
+    <g transform="translate(1100 210)"><rect width="220" height="180" rx="20" fill="#18212B" stroke="#FF6A3D" stroke-width="3"/><text x="110" y="72" fill="#fff" font-size="28" font-weight="700">Graph</text><text x="110" y="115" fill="#B9C0CB" font-size="21">type + id</text><text x="110" y="148" fill="#B9C0CB" font-size="21">one write</text></g>
+    <path d="M330 300h90m250 0h90m250 0h90" stroke="#FF6A3D" stroke-width="8" stroke-linecap="round"/>
+    <path d="m405 282 24 18-24 18m340-36 24 18-24 18m340-36 24 18-24 18" fill="none" stroke="#FF6A3D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <g transform="translate(435 520)"><circle cx="100" cy="90" r="82" fill="#18212B" stroke="#FF6A3D" stroke-width="4"/><text x="100" y="82" fill="#fff" font-size="27" font-weight="700">Task list</text><text x="100" y="118" fill="#B9C0CB" font-size="20">IDs only</text></g>
+    <g transform="translate(765 520)"><circle cx="100" cy="90" r="82" fill="#18212B" stroke="#FF6A3D" stroke-width="4"/><text x="100" y="82" fill="#fff" font-size="27" font-weight="700">Task detail</text><text x="100" y="118" fill="#B9C0CB" font-size="20">same identity</text></g>
+    <path d="M1210 390v110H535v28m675-28H865v28" fill="none" stroke="#FF6A3D" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <text x="80" y="742" fill="#B9C0CB" font-family="system-ui" font-size="22">Deterministic portable contract. Live sibling-repository evidence remains separate and fail-closed.</text>
+</svg>

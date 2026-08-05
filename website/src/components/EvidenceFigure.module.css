@@ -1,0 +1,27 @@
+.figure {
+  margin: 2rem 0 3rem;
+}
+
+.figure a {
+  display: block;
+}
+
+.figure img {
+  width: 100%;
+  background: var(--prometheus-panel-muted);
+  box-shadow: var(--prometheus-shadow);
+}
+
+.figure figcaption {
+  margin-top: 0.75rem;
+  color: var(--prometheus-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.figure figcaption span {
+  display: block;
+  margin-top: 0.25rem;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.75rem;
+}

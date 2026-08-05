@@ -18,12 +18,12 @@ Provides a **normalized, reactive entity graph store** for Flutter with:
 
 This directory is the sole canonical Dart graph package in the 3.0 release inventory. Reusable KnowMe source history is retained separately under `provenance/imports/knowme-flutter` as a non-buildable, non-workspace, non-public review boundary; it is not another package and must never be compiled or published.
 
-See [`release/flutter-source-provenance.md`](../../release/flutter-source-provenance.md) for source revisions, license and attribution, commit mappings, and path dispositions. Runtime and Riverpod evidence is documented separately in [`release/dart-graph-riverpod.md`](../../release/dart-graph-riverpod.md). Neither gate authorizes pub.dev publication or certifies the complete Flutter/A2UI application on Android or iOS.
+See [`release/flutter-source-provenance.md`](https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/flutter-source-provenance.md) for source revisions, license and attribution, commit mappings, and path dispositions. Runtime and Riverpod evidence is documented separately in [`release/dart-graph-riverpod.md`](https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/dart-graph-riverpod.md). Neither gate authorizes pub.dev publication or certifies the complete Flutter/A2UI application on Android or iOS.
 
 The complete application composition is demonstrated in
-[`examples/flutter-riverpod`](../../examples/flutter-riverpod/README.md) and
+[`examples/flutter-riverpod`](https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/examples/flutter-riverpod) and
 documented in the
-[`Flutter/Riverpod/A2UI release guide`](../../release/flutter-riverpod-a2ui-example.md).
+[`Flutter/Riverpod/A2UI release guide`](https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/flutter-riverpod-a2ui-example.md).
 Its host tests and goldens are partial evidence until the stable-SDK and
 Android/iOS lanes pass.
 

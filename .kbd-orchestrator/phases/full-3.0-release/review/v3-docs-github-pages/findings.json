@@ -1,0 +1,36 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "codex-gpt-5",
+  "producer_model": "codex-gpt-5",
+  "isolation_mode": "harness-native:fresh-context",
+  "cross_model_check": "unverified-same-harness-family",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".github/workflows/docs-pages.yml",
+      "claim": "The Pages workflow does not execute the final browser certification promised by the plan.",
+      "evidence": "The workflow builds and inspects static output, but does not invoke the Playwright suite or verify search, accessibility, keyboard behavior, visual output, Lighthouse budgets, or deployed routes.",
+      "suggested_fix": "Run the targeted browser contract before upload, then probe the deployed URL with accessibility, search, route, visual, and Lighthouse gates."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": ".github/workflows/docs-pages.yml",
+      "claim": "Committed Dart and Rust API output can drift from native sources without the Pages workflow detecting it.",
+      "evidence": "The workflow neither regenerates nor verifies source-bound native API artifacts, and its path filters omit Flutter library sources and nested Tauri Rust sources.",
+      "suggested_fix": "Add a cheap source-and-output manifest verification step and include every native API source path in workflow triggers without adding expensive native builds to the docs workflow."
+    },
+    {
+      "severity": "WARNING",
+      "file": "website/scripts/generate-evidence.mjs",
+      "claim": "For converted SVG evidence, the published manifest hash authenticates the source bytes rather than the downloadable PNG bytes.",
+      "evidence": "The generator computes sha256 before converting the Flint SVG to its published original PNG.",
+      "suggested_fix": "Store separate sourceSha256 and published sha256 fields, with sha256 computed from the downloadable original PNG."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

@@ -261,7 +261,7 @@ abstract class EntityTransport<T extends Object> {
 /// Mirrors transport/registry.ts from entity-graph-core.
 /// Register at app boot, once per entity type.
 class EntityTransportRegistry {
-  /// Creates an isolated registry for tests or a scoped [ProviderScope].
+  /// Creates an isolated registry for tests or a scoped `ProviderScope`.
   EntityTransportRegistry();
 
   static final EntityTransportRegistry instance = EntityTransportRegistry();

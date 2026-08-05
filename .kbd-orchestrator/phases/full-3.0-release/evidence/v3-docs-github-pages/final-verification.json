@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-docs-github-pages",
+  "recordedAt": "2026-08-05T11:39:06Z",
+  "source": {
+    "repository": "Prometheus-AGS/prometheus-entity-management",
+    "baseRef": "origin/main",
+    "baseSha": "0a4851cef20841c19f3776edc0f472eb1859620d",
+    "branch": "codex/docs-rc-recovery",
+    "worktreeIsolation": "clean-worktree-from-remote-main",
+    "primaryCheckoutModified": false
+  },
+  "verdict": "local-gates-pass-public-deployment-pending",
+  "prerequisites": {
+    "v3-docs-api-reference": {
+      "status": "completed-local",
+      "tasks": "6/6",
+      "strictValidation": "pass",
+      "evidence": "openspec/changes/v3-docs-api-reference/tasks.md"
+    },
+    "v3-docs-concepts-packages": {
+      "status": "completed-local",
+      "tasks": "6/6",
+      "strictValidation": "pass",
+      "evidence": "openspec/changes/v3-docs-concepts-packages/tasks.md"
+    },
+    "v3-docs-examples-integrations": {
+      "status": "completed-local",
+      "tasks": "6/6",
+      "strictValidation": "pass",
+      "evidence": "openspec/changes/v3-docs-examples-integrations/tasks.md"
+    },
+    "v3-docs-operations-migration": {
+      "status": "completed-local",
+      "tasks": "6/6",
+      "strictValidation": "pass",
+      "evidence": "openspec/changes/v3-docs-operations-migration/tasks.md"
+    }
+  },
+  "verification": {
+    "frozenOfflineInstall": {
+      "command": "pnpm install --frozen-lockfile --offline",
+      "status": "pass"
+    },
+    "documentationContracts": {
+      "command": "pnpm run docs:check",
+      "status": "pass"
+    },
+    "documentationUnits": {
+      "command": "pnpm run docs:test",
+      "status": "pass",
+      "tests": 14
+    },
+    "compiledSnippets": {
+      "command": "pnpm run docs:snippets",
+      "status": "pass"
+    },
+    "packedApi": {
+      "command": "pnpm run docs:api",
+      "status": "pass",
+      "packages": 12,
+      "fingerprint": "a9a5e3df29443d23c672743e47a70c667eb2eccdfa944e618538a0882a7ef840",
+      "tarballSha256AndSri": "pass"
+    },
+    "nativeApiParity": {
+      "command": "pnpm run docs:native-api:verify",
+      "status": "pass",
+      "sourceFiles": 38,
+      "generatedFiles": 729,
+      "isolatedRegenerationByteParity": "pass",
+      "toolchains": {
+        "flutter": "3.44.8",
+        "dartdoc": "9.0.5",
+        "rust": "1.88.0"
+      }
+    },
+    "readmeParity": {
+      "command": "pnpm run verify:readme-parity",
+      "status": "pass",
+      "packages": 12,
+      "examples": 5,
+      "capabilities": 16,
+      "commands": 17
+    },
+    "npmTrustContract": {
+      "command": "pnpm run test:npm-trust",
+      "status": "pass",
+      "tests": 5
+    },
+    "releasePipelineContract": {
+      "command": "pnpm run test:release-pipeline",
+      "status": "pass",
+      "tests": 27
+    },
+    "productionBuild": {
+      "command": "pnpm run docs:build && pnpm --filter @prometheus-ags/entity-management-docs check:build",
+      "status": "pass",
+      "routes": 17,
+      "generatedFiles": 2021
+    },
+    "browser": {
+      "command": "pnpm run docs:test:browser",
+      "status": "pass",
+      "tests": 4,
+      "viewports": [
+        "desktop",
+        "mobile"
+      ]
+    },
+    "lighthouse": {
+      "command": "pnpm --filter @prometheus-ags/entity-management-docs audit:deployed",
+      "status": "pass",
+      "runsPerRoute": 3,
+      "aggregation": "explicit-median",
+      "routes": {
+        "homepage": {
+          "performance": 0.98,
+          "accessibility": 1,
+          "bestPractices": 1,
+          "seo": 1,
+          "lcpMs": 2298,
+          "cls": 0
+        },
+        "reactVite": {
+          "performance": 0.97,
+          "accessibility": 0.96,
+          "bestPractices": 1,
+          "seo": 1,
+          "lcpMs": 2452,
+          "cls": 0
+        },
+        "flintRealtimeFabric": {
+          "performance": 0.97,
+          "accessibility": 0.96,
+          "bestPractices": 1,
+          "seo": 1,
+          "lcpMs": 2450,
+          "cls": 0
+        }
+      },
+      "budgets": {
+        "accessibilityMin": 0.95,
+        "bestPracticesMin": 0.95,
+        "seoMin": 0.95,
+        "mobilePerformanceMin": 0.9,
+        "lcpMaxMs": 2500,
+        "clsMax": 0.1
+      }
+    },
+    "workflowSyntax": {
+      "command": "actionlint .github/workflows/docs-pages.yml .github/workflows/publish.yml",
+      "status": "pass"
+    },
+    "productionDependencyAudit": {
+      "command": "pnpm run security:audit",
+      "status": "pass-policy",
+      "critical": 0,
+      "high": 0,
+      "moderate": 2,
+      "low": 2
+    },
+    "strictOpenSpec": {
+      "status": "pass",
+      "changes": 6
+    }
+  },
+  "review": {
+    "isolatedAdversarialReview": "pending-final-rerun-after-round-6-remediation",
+    "sycophancyScreen": "pending-final-rerun"
+  },
+  "releaseImpact": {
+    "runtimePublicApiChanges": false,
+    "surfaces": [
+      "private documentation workspace and generated references",
+      "documentation and npm trust operator commands",
+      "GitHub Pages workflow",
+      "root README and release operations documentation",
+      "Flutter documentation export parity"
+    ],
+    "npmRegistryMutated": false,
+    "protectedLatestTagsMutated": false
+  },
+  "securityBoundaries": [
+    "Native API recursive cleanup accepts only the canonical output or a realpath-validated, non-symlinked, randomly owned generator directory beneath the system temporary root.",
+    "The local certification server treats request URLs as untrusted input and returns 400 for malformed encoding without terminating."
+  ],
+  "unresolvedLimits": [
+    "The public GitHub Pages URL is not deployed until this branch is reviewed, merged to protected main, and the Pages workflow succeeds.",
+    "Public-origin route probes, accessibility checks, visual checks, and Lighthouse results remain pending until that deployment exists.",
+    "GitHub Pages has no repository-local pre-production promotion or automatic rollback lane. Local built-artifact gates prevent known code defects before upload; post-deploy probes detect hosting-specific failures after publication.",
+    "The repository homepage cannot be updated truthfully until the Pages URL responds successfully.",
+    "npm trusted-publisher registration requires a human browser login, 2FA, and stage approval. No npm credential was supplied to automation and no registry state was changed.",
+    "The certified candidate remains run 30976967778 at source SHA afbb8de0e861739fa6facb461b69573b2a627bdb; artifact expiry must be checked before reuse."
+  ],
+  "publicationAuthorized": false,
+  "archiveReady": false
+}

@@ -187,7 +187,7 @@ final class ListChanged extends GraphChange {
 
 /// Normalized entity graph — the single source of truth.
 ///
-/// Mirrors the Zustand [GraphState] from entity-graph-core's graph.ts.
+/// Mirrors the Zustand `GraphState` from entity-graph-core's graph.ts.
 /// All writes are synchronous and notify [changes].
 class EntityGraph {
   /// Creates an isolated graph, primarily for provider overrides and tests.

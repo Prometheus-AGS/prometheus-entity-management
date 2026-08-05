@@ -1,0 +1,40 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "codex-gpt-5",
+  "isolation_mode": "harness-native:fresh-context",
+  "producer_model": "codex-gpt-5",
+  "cross_model_check": "unverified-same-harness-family",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "pnpm-workspace.yaml",
+      "line": 7,
+      "claim": "The frozen install gate cannot consume the new documentation workspace because the diff adds a workspace importer and dependency specifications without updating pnpm-lock.yaml.",
+      "evidence": "The review packet omitted pnpm-lock.yaml even though it is modified and staged, so the reviewer could not observe its website importer and dependency changes.",
+      "suggested_fix": "Add pnpm-lock.yaml to the review file manifest and rerun the isolated review."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": ".github/workflows/docs-pages.yml",
+      "line": 123,
+      "claim": "The push build invokes actions/configure-pages without granting that job Pages API permission, so the deployment path can fail before the artifact is uploaded.",
+      "evidence": "Workflow-level permissions grant only contents: read; the build job has no override, yet it runs actions/configure-pages. Pages permissions belong only to deploy.",
+      "suggested_fix": "Move configure-pages into the narrowly privileged deploy job."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/generate-evidence.mjs",
+      "line": 39,
+      "claim": "The evidence gate treats any status-like value containing the substring pass as successful, allowing bypassed or explicitly unsuccessful receipts into the public gallery.",
+      "evidence": "The generator accepts a receipt when receiptStates.some((value) => /pass/i.test(value)); values such as bypass, bypassed, or not passed satisfy the expression.",
+      "suggested_fix": "Validate exact documented success enums and add negative tests."
+    }
+  ],
+  "checked_classes": [],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

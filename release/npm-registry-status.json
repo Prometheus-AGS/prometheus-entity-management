@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "verifiedAt": "2026-08-05T09:09:26Z",
+  "registry": "https://registry.npmjs.org/",
+  "expectedCandidate": "3.0.0-rc.1",
+  "releaseStatus": "rc-registration-blocked",
+  "packages": {
+    "@prometheus-ags/a2ui-react": {"alpha": "3.0.0-alpha.0", "latest": "3.0.0-alpha.0"},
+    "@prometheus-ags/entity-graph-a2a": {"alpha": "3.0.0-alpha.0", "latest": "3.0.0-alpha.0"},
+    "@prometheus-ags/entity-graph-alpine": {"alpha": "3.0.0-alpha.0", "latest": "3.0.0-alpha.0"},
+    "@prometheus-ags/entity-graph-core": {"alpha": "3.0.0-alpha.0", "latest": "3.0.0-alpha.0"},
+    "@prometheus-ags/entity-graph-htmx": {"alpha": "3.0.0-alpha.0", "latest": "3.0.0-alpha.0"},
+    "@prometheus-ags/prometheus-entity-management": {"alpha": "3.0.0-alpha.0", "latest": "2.2.0"},
+    "@prometheus-ags/entity-graph-sdl": {"alpha": "3.0.0-alpha.0", "latest": "3.0.0-alpha.0"},
+    "@prometheus-ags/entity-graph-solid": {"alpha": "3.0.0-alpha.0", "latest": "3.0.0-alpha.0"},
+    "@prometheus-ags/entity-graph-svelte": {"alpha": "3.0.0-alpha.0", "latest": "3.0.0-alpha.0"},
+    "@prometheus-ags/entity-graph-sync": {"alpha": "3.0.0-alpha.0", "latest": "3.0.0-alpha.0"},
+    "@prometheus-ags/entity-graph-tauri": {"alpha": "3.0.0-alpha.0", "latest": "3.0.0-alpha.0"},
+    "@prometheus-ags/entity-graph-web-components": {"alpha": "3.0.0-alpha.0", "latest": "3.0.0-alpha.0"}
+  }
+}

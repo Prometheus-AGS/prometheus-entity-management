@@ -65,6 +65,33 @@ stage job uses `actions/setup-node@v7`, whose removal of the v6 dummy
 `NODE_AUTH_TOKEN` fallback keeps the OIDC-only boundary observable. It can
 target only the `next` channel through npm's staging operation.
 
+### Register the exact npm authority
+
+The checked-in [`npm-trusted-publishing.json`](npm-trusted-publishing.json)
+manifest is the secret-free authority contract for all twelve packages. It
+allows only `npm stage publish` from repository
+`Prometheus-AGS/prometheus-entity-management`, workflow filename `publish.yml`,
+and GitHub environment `npm-rc`. Direct `npm publish` authority is forbidden.
+
+An npm maintainer must establish this relationship from an interactive terminal:
+
+```bash
+npm login --auth-type=web
+pnpm run release:npm-trust:register
+pnpm run release:npm-trust:verify
+```
+
+The account must have package write access and 2FA enabled. Registration pauses
+two seconds between packages as recommended by npm and then reads every
+relationship back with `npm trust list`. The verifier rejects inventory drift,
+an incorrect repository/workflow/environment, missing stage authority, direct
+publish authority, or extra permissions. It also rejects `NPM_TOKEN` and
+`NODE_AUTH_TOKEN`; neither command accepts or prints registry credentials.
+
+The stage workflow configures the public registry through
+`NPM_CONFIG_REGISTRY`, not setup-node's token-shaped npmrc helper. The workflow
+therefore presents only its GitHub OIDC identity to npm.
+
 For a candidate already certified by a successful rehearsal job, dispatch
 `publish.yml` in `stage` mode with both `candidate_run_id` and `candidate_sha`.
 The rehearsal job is skipped, and the protected stage downloads the immutable

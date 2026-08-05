@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Target"],"fn":["build_entity_ctx","build_tera_ctx","generate_react","render","run"],"struct":["EntityCtx","FieldCtx","GenerateArgs","RelationCtx"]};
