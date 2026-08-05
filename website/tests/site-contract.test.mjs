@@ -19,6 +19,10 @@ const css = await readFile(new URL('../src/css/custom.css', import.meta.url), 'u
 const brand = await readFile(new URL('../BRAND.md', import.meta.url), 'utf8');
 const evidenceFigure = await readFile(new URL('../src/components/EvidenceFigure.tsx', import.meta.url), 'utf8');
 const evidenceGenerator = await readFile(new URL('../scripts/generate-evidence.mjs', import.meta.url), 'utf8');
+const flintEvidenceSource = await readFile(
+  new URL('../evidence-source/flint-realtime-contract.svg', import.meta.url),
+  'utf8',
+);
 
 test('uses the repository Pages origin, base path, and explicit trailing slash', () => {
   assert.match(config, /url: 'https:\/\/prometheus-ags\.github\.io'/);
@@ -106,6 +110,14 @@ test('evidence hashes authenticate each downloadable published original', async 
       assert.equal(variant.path, `${asset.assetId}-${variant.width}.webp`);
     }
   }
+});
+
+test('Flint evidence typography is host-independent and remains accessible', () => {
+  assert.match(flintEvidenceSource, /<title id="title">Flint realtime entity graph contract<\/title>/);
+  assert.match(flintEvidenceSource, /<desc id="desc">/);
+  assert.doesNotMatch(flintEvidenceSource, /<text\b/);
+  assert.doesNotMatch(flintEvidenceSource, /font-family=/);
+  assert.match(flintEvidenceSource, /aria-hidden="true"/);
 });
 
 test('evidence receipt assertions bind the successful receipt to the exact asset and scenarios', () => {

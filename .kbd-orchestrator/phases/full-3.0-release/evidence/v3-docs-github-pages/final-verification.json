@@ -1,12 +1,14 @@
 {
   "schemaVersion": 1,
   "change": "v3-docs-github-pages",
-  "recordedAt": "2026-08-05T11:39:06Z",
+  "recordedAt": "2026-08-05T14:59:12Z",
   "source": {
     "repository": "Prometheus-AGS/prometheus-entity-management",
     "baseRef": "origin/main",
     "baseSha": "0a4851cef20841c19f3776edc0f472eb1859620d",
     "branch": "codex/docs-rc-recovery",
+    "testedImplementationHeadSha": "9a8916f19fb03c06825ec15819ab15bcd4c4a29b",
+    "testedState": "exact-local-implementation-commit",
     "worktreeIsolation": "clean-worktree-from-remote-main",
     "primaryCheckoutModified": false
   },
@@ -49,7 +51,13 @@
     "documentationUnits": {
       "command": "pnpm run docs:test",
       "status": "pass",
-      "tests": 14
+      "tests": 17
+    },
+    "shallowCloneEvidenceParity": {
+      "command": "git clone --depth 1 --branch codex/docs-rc-recovery file://<local-repository> <temporary-clone> && pnpm install --frozen-lockfile --offline && pnpm run build:packages && pnpm run docs:evidence && pnpm run docs:api && pnpm run docs:search && git diff --exit-code -- website/static/evidence website/docs/evidence/gallery.mdx website/static/api website/static/search-index.json",
+      "status": "pass",
+      "commitCount": 1,
+      "testedHeadSha": "9a8916f19fb03c06825ec15819ab15bcd4c4a29b"
     },
     "compiledSnippets": {
       "command": "pnpm run docs:snippets",
@@ -61,6 +69,10 @@
       "packages": 12,
       "fingerprint": "a9a5e3df29443d23c672743e47a70c667eb2eccdfa944e618538a0882a7ef840",
       "tarballSha256AndSri": "pass"
+    },
+    "generatedArtifactRepeatability": {
+      "command": "run docs:evidence and docs:api twice and compare SHA-256 inventories for generated evidence, TypeDoc, and gallery output",
+      "status": "pass"
     },
     "nativeApiParity": {
       "command": "pnpm run docs:native-api:verify",
@@ -108,8 +120,8 @@
       ]
     },
     "lighthouse": {
-      "command": "pnpm --filter @prometheus-ags/entity-management-docs audit:deployed",
-      "status": "pass",
+      "command": "DOCS_BASE_URL=http://127.0.0.1:4177/prometheus-entity-management/ pnpm --filter @prometheus-ags/entity-management-docs audit:deployed",
+      "status": "local-built-artifact-pass",
       "runsPerRoute": 3,
       "aggregation": "explicit-median",
       "routes": {
@@ -118,7 +130,7 @@
           "accessibility": 1,
           "bestPractices": 1,
           "seo": 1,
-          "lcpMs": 2298,
+          "lcpMs": 2299,
           "cls": 0
         },
         "reactVite": {
@@ -165,7 +177,7 @@
     }
   },
   "review": {
-    "isolatedAdversarialReview": "pending-final-rerun-after-round-6-remediation",
+    "isolatedAdversarialReview": "pending-round-17-remediation-review",
     "sycophancyScreen": "pending-final-rerun"
   },
   "releaseImpact": {
@@ -181,8 +193,13 @@
     "protectedLatestTagsMutated": false
   },
   "securityBoundaries": [
-    "Native API recursive cleanup accepts only the canonical output or a realpath-validated, non-symlinked, randomly owned generator directory beneath the system temporary root.",
-    "The local certification server treats request URLs as untrusted input and returns 400 for malformed encoding without terminating."
+    "Native API recursive cleanup accepts only the canonical output or a realpath-validated, non-symlinked, randomly owned generator directory beneath the system temporary root; every path component is checked with lstat before removal.",
+    "Native API verifier and generator working-directory cleanup revalidate random ownership markers and unlink swapped symlinks without recursively following them.",
+    "The npm staging lane requires GitHub OIDC, rejects NODE_AUTH_TOKEN and NPM_TOKEN, and grants stage publication without direct publication authority.",
+    "Published evidence is allowlisted, hash-bound to source and receipt bytes, verified against a content-addressed Git blob available in depth-one and squash-merge checkouts, stripped of metadata, and excludes internal paths, secrets, blank captures, and icon-sized images.",
+    "A standardized documentation evidence certification receipt binds each asset ID to its exact source path and SHA-256, scenario set, execution-receipt path and SHA-256, and certification label; missing, duplicate, extra, or mismatched bindings fail generation.",
+    "Native, evidence, and packed-TypeDoc output replacement uses shared ancestor-aware containment checks; canonical partial native generation is prohibited so a combined manifest cannot re-sign stale output from the omitted toolchain.",
+    "The local certification server treats request URLs as untrusted input, returns 400 for malformed encoding without terminating, and realpath-validates selected files beneath the build root before opening them."
   ],
   "unresolvedLimits": [
     "The public GitHub Pages URL is not deployed until this branch is reviewed, merged to protected main, and the Pages workflow succeeds.",
