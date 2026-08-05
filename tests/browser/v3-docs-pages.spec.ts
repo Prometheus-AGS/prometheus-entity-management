@@ -44,7 +44,8 @@ test('mobile navigation is operable and content does not overflow', async ({page
   await expect(page.getByRole('link', {name: 'Frameworks', exact: true}).first()).toBeVisible();
   const dimensions = await page.evaluate(() => ({width: document.documentElement.scrollWidth, viewport: innerWidth}));
   expect(dimensions.width).toBeLessThanOrEqual(dimensions.viewport);
-  await expect(page).toHaveScreenshot('homepage-mobile.png', {
+  const mobileSnapshot = process.platform === 'linux' ? 'homepage-mobile-linux.png' : 'homepage-mobile.png';
+  await expect(page).toHaveScreenshot(mobileSnapshot, {
     animations: 'disabled',
     fullPage: true,
     maxDiffPixelRatio: 0.08,

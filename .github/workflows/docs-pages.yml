@@ -85,6 +85,17 @@ jobs:
           pnpm exec playwright install --with-deps chromium
           pnpm run docs:test:browser
 
+      - name: Upload browser failure evidence
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: docs-browser-failure-${{ github.run_id }}
+          path: |
+            test-results
+            tests/browser/v3-docs-pages.spec.ts-snapshots/homepage-mobile-linux.png
+          if-no-files-found: warn
+          retention-days: 3
+
       - name: Enforce built-artifact mobile Lighthouse budgets
         run: |
           node website/scripts/serve-built-site.mjs &

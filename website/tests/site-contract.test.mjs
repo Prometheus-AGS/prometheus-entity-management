@@ -235,7 +235,7 @@ test('Pages workflow builds pull requests but deploys only protected main', asyn
   ]) assert.match(workflow, new RegExp(watchedPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   const pushTrigger = workflow.match(/  push:\n([\s\S]*?)  workflow_dispatch:/)?.[1] ?? '';
   assert.doesNotMatch(pushTrigger, /paths:/);
-  for (const action of ['actions/checkout', 'pnpm/action-setup', 'actions/setup-node', 'actions/configure-pages', 'actions/upload-pages-artifact', 'actions/deploy-pages']) {
+  for (const action of ['actions/checkout', 'pnpm/action-setup', 'actions/setup-node', 'actions/upload-artifact', 'actions/configure-pages', 'actions/upload-pages-artifact', 'actions/deploy-pages']) {
     assert.match(workflow, new RegExp(`${action.replace('/', '\\/')}@[0-9a-f]{40}`));
   }
   const browserConfig = await readFile(new URL('../../tests/browser/v3-docs-pages.playwright.config.ts', import.meta.url), 'utf8');

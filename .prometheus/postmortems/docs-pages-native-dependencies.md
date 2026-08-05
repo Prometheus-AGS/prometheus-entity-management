@@ -41,3 +41,13 @@ The documentation content and evidence bindings were unchanged. Pages now
 regenerates only the deterministic search index; packed API and evidence
 generation are explicit release-environment gates, while Pages validates the
 committed inventories, hashes, receipts, routes, and rendered site.
+
+The next focused run passed content, artifact, snippet, and production-build
+gates, then exposed a platform-specific mobile visual baseline: the same
+390-pixel-wide page was 203 pixels taller under Linux Chromium than under macOS
+Chromium because narrow text wrapping differs. The mobile gate retains its
+full-page screenshot and original 8% pixel budget, with an OS-specific Linux
+baseline; overflow, navigation, and accessibility remain exact assertions. The
+workflow uploads short-lived Playwright failure evidence so the canonical Linux
+baseline can be captured without relaxing the comparison. The desktop
+full-page visual gate remains intact.
