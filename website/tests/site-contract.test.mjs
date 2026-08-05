@@ -16,6 +16,7 @@ const config = await readFile(new URL('../docusaurus.config.ts', import.meta.url
 const css = await readFile(new URL('../src/css/custom.css', import.meta.url), 'utf8');
 const brand = await readFile(new URL('../BRAND.md', import.meta.url), 'utf8');
 const evidenceFigure = await readFile(new URL('../src/components/EvidenceFigure.tsx', import.meta.url), 'utf8');
+const evidenceGenerator = await readFile(new URL('../scripts/generate-evidence.mjs', import.meta.url), 'utf8');
 
 test('uses the repository Pages origin, base path, and explicit trailing slash', () => {
   assert.match(config, /url: 'https:\/\/prometheus-ags\.github\.io'/);
@@ -74,6 +75,8 @@ test('keeps the package chooser and packed reference in release-contract parity'
 
 test('evidence hashes authenticate each downloadable published original', async () => {
   assert.match(evidenceFigure, /download=\{`\$\{assetId\}\.png`\}/);
+  assert.match(evidenceGenerator, /git', \['show', `\$\{sourceSha\}:\$\{asset\.sourcePath\}`\]/);
+  assert.match(evidenceGenerator, /source bytes at \$\{sourceSha\} do not match the allowlisted SHA-256/);
   const manifest = JSON.parse(await readFile(new URL('../static/evidence/manifest.json', import.meta.url), 'utf8'));
   for (const asset of manifest.assets) {
     assert.match(asset.sourceSha256, /^[0-9a-f]{64}$/, `${asset.assetId} source hash`);
@@ -156,6 +159,8 @@ test('Pages workflow builds pull requests but deploys only protected main', asyn
   for (const action of ['actions/checkout', 'pnpm/action-setup', 'actions/setup-node', 'actions/configure-pages', 'actions/upload-pages-artifact', 'actions/deploy-pages']) {
     assert.match(workflow, new RegExp(`${action.replace('/', '\\/')}@[0-9a-f]{40}`));
   }
+  const browserConfig = await readFile(new URL('../../tests/browser/v3-docs-pages.playwright.config.ts', import.meta.url), 'utf8');
+  assert.match(browserConfig, /reuseExistingServer: false/);
 });
 
 test('keeps documentation search I/O behind hook, store, and service boundaries', async () => {

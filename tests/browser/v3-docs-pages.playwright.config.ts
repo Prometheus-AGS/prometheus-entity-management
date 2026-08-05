@@ -18,7 +18,7 @@ export default defineConfig({
   webServer: deployedBaseUrl ? undefined : {
     command: 'node ../../website/scripts/serve-built-site.mjs',
     url: localBaseUrl,
-    reuseExistingServer: true,
+    reuseExistingServer: false,
     timeout: 120_000,
   },
 });

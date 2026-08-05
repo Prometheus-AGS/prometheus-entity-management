@@ -400,7 +400,7 @@
       "caption": "Flint watch events become coalesced ChangeSets under explicit tenant, channel, consumer, checkpoint, and key boundaries.",
       "alt": "Diagram of Flint Realtime Fabric flowing through the portable adapter and realtime manager into list and detail graph views",
       "sourcePath": "website/evidence-source/flint-realtime-contract.svg",
-      "sourceSha": "afbb8de0e861739fa6facb461b69573b2a627bdb",
+      "sourceSha": "250653923bf2b89188700ae5aa967e9a36f80634",
       "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flint-portable-contracts/task-6-external-source-verification.json",
       "receiptAssertion": {
         "field": "verdict",

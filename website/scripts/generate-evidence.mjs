@@ -14,6 +14,37 @@ const validScenarios = new Set(coverage.showcases.flatMap(({scenarioIds}) => sce
 const outputRoot = path.join(websiteRoot, 'static/evidence');
 const originalRoot = path.join(outputRoot, 'original');
 
+function resolveVerifiedSourceSha(asset) {
+  const sourceSha = asset.sourceSha ?? execFileSync(
+    'git',
+    ['log', '-1', '--format=%H', '--', asset.sourcePath],
+    {cwd: repositoryRoot, encoding: 'utf8'},
+  ).trim();
+  if (!/^[0-9a-f]{40}$/.test(sourceSha)) {
+    throw new Error(`${asset.assetId}: evidence source must resolve to an exact Git commit SHA`);
+  }
+  let committedSourceBytes;
+  try {
+    committedSourceBytes = execFileSync('git', ['show', `${sourceSha}:${asset.sourcePath}`], {
+      cwd: repositoryRoot,
+      encoding: null,
+      maxBuffer: 64 * 1024 * 1024,
+    });
+  } catch (error) {
+    throw new Error(
+      `${asset.assetId}: source ${asset.sourcePath} does not exist at ${sourceSha}`,
+      {cause: error},
+    );
+  }
+  const committedSourceSha256 = createHash('sha256').update(committedSourceBytes).digest('hex');
+  if (committedSourceSha256 !== asset.sourceSha256) {
+    throw new Error(
+      `${asset.assetId}: source bytes at ${sourceSha} do not match the allowlisted SHA-256`,
+    );
+  }
+  return sourceSha;
+}
+
 if (allowlist.schemaVersion !== '1.0.0') throw new Error('unsupported evidence allowlist schema');
 await rm(outputRoot, {recursive: true, force: true});
 await mkdir(originalRoot, {recursive: true});
@@ -36,6 +67,7 @@ for (const asset of allowlist.assets) {
   const sourceBytes = await readFile(source);
   const sourceSha256 = createHash('sha256').update(sourceBytes).digest('hex');
   assertEvidenceBinding(asset, sourceSha256, receiptSha256);
+  const sourceSha = resolveVerifiedSourceSha(asset);
   const image = sharp(sourceBytes, {density: 144});
   const [metadata, statistics] = await Promise.all([image.metadata(), image.clone().stats()]);
   assertEvidenceImage(asset.assetId, metadata, statistics);
@@ -49,11 +81,6 @@ for (const asset of allowlist.assets) {
       .webp({quality: 82})
       .toFile(path.join(outputRoot, `${asset.assetId}-${width}.webp`));
   }
-  let sourceSha = asset.sourceSha ?? execFileSync('git', ['log', '-1', '--format=%H', '--', asset.sourcePath], {
-    cwd: repositoryRoot,
-    encoding: 'utf8',
-  }).trim();
-  if (!sourceSha) sourceSha = execFileSync('git', ['rev-parse', 'HEAD'], {cwd: repositoryRoot, encoding: 'utf8'}).trim();
   records.push({
     ...asset,
     sourceSha,
