@@ -1,0 +1,55 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "gpt-5.6-sol",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/check-native-api.mjs",
+      "line": 1,
+      "claim": "The new checker imports './native-api-manifest.mjs', but no hunk in this diff creates that module, so docs:native-api:check and the site-contract test (which reads the same file) will fail if it is not already committed.",
+      "evidence": "check-native-api.mjs: `import {verifyNativeApiManifest} from './native-api-manifest.mjs';`; website/tests/site-contract.test.mjs adds `readFile(new URL('../scripts/native-api-manifest.mjs', ...))` and asserts it contains the NEW concept `artifactAggregateSha256` \u2014 aggregate-hash manifests are introduced by this change, so the module cannot be pre-existing; yet the diff contains no `website/scripts/native-api-manifest.mjs` hunk and the file tree does not enumerate website/scripts children.",
+      "suggested_fix": "Include website/scripts/native-api-manifest.mjs in the change (with verifyNativeApiManifest exporting sourceFiles/artifactFileCount and sha256 aggregation), or cite the prior commit that introduced it."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/check-generated-artifacts.mjs",
+      "line": 55,
+      "claim": "The packed-API source gate hashes every tracked file under every public package directory and compares it to a manifest that can only be regenerated in the release environment, so any routine PR touching a package source, test, or README will fail the Pages workflow with no in-PR remediation path.",
+      "evidence": "check-generated-artifacts.mjs: `hashTrackedInputs(repositoryRoot, PUBLIC_PACKAGES.map(({directory}) => directory))` uses `git ls-files` over entire package directories (all tracked files, not just API-affecting sources), then `assertEqual(apiSources.sourceAggregateSha256, apiInventory.sourceAggregateSha256, 'packed API source hash drift')`. The workflow runs `pnpm run docs:artifacts:check` on every Pages build, while RELEASING.md states regeneration must happen in 'the release environment that owns the committed artifacts' and the workflow hunk explicitly removes `pnpm run docs:api` regeneration and its git-diff self-heal.",
+      "suggested_fix": "Restrict hashTrackedInputs to files that actually feed TypeDoc (e.g., entry-point type surfaces via the existing exports ledger), or demote source-hash drift to a warning and gate on artifact hash only; otherwise provide an in-workflow regeneration path."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".github/workflows/docs-pages.yml",
+      "line": 57,
+      "claim": "The workflow removes the Flutter and Rust toolchain installs but still runs `pnpm run build:packages`, which previously executed after those toolchains were present; if any workspace package build (e.g., the Flutter package or the Tauri Rust plugin) invokes dart/cargo, the build now breaks.",
+      "evidence": "Workflow hunk deletes the subosito/flutter-action step and `rustup toolchain install 1.88.0 --profile minimal` yet retains `- name: Build only the npm artifacts needed by snippets / run: pnpm run build:packages`; the file tree shows packages/entity-graph-tauri (whose npm artifact 'bundles the Rust plugin' per native-api.md) and packages/entity_graph_flutter. The postmortem only justifies removing the toolchain for rustdoc, not for package builds.",
+      "suggested_fix": "Confirm and document that build:packages never invokes Flutter/cargo (e.g., via a site-contract assertion on the build script chain), or scope the build to npm-only packages with `pnpm --filter` exclusions."
+    },
+    {
+      "severity": "WARNING",
+      "file": "tests/browser/v3-docs-pages.spec.ts",
+      "line": 47,
+      "claim": "The committed homepage-mobile-linux.png baseline cannot be validated against the CI rendering environment from this packet, and the postmortem states the canonical Linux baseline still needs to be captured from CI failure evidence \u2014 meaning the baseline in this commit may be provisional and the 8% full-page gate can still fail on this PR.",
+      "evidence": "Postmortem: 'The workflow uploads short-lived Playwright failure evidence so the canonical Linux baseline can be captured without relaxing the comparison' \u2014 describing future capture \u2014 while the same diff already commits tests/browser/v3-docs-pages.spec.ts-snapshots/homepage-mobile-linux.png (binary, provenance unverifiable). The original failure was a 203px height difference from Linux text wrapping, which is environment-specific.",
+      "suggested_fix": "Generate the Linux baseline from a CI run of this exact workflow (e.g., via the new artifact upload) before merging, and record that provenance in the postmortem."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "tests/browser/v3-docs-pages.spec.ts",
+      "line": 47,
+      "claim": "The platform branch only special-cases Linux, so developers on Windows fall back to the macOS-tuned homepage-mobile.png baseline and will hit spurious visual failures from platform text wrapping.",
+      "evidence": "`const mobileSnapshot = process.platform === 'linux' ? 'homepage-mobile-linux.png' : 'homepage-mobile.png';` \u2014 any non-Linux, non-macOS platform uses the macOS baseline, the same cross-platform mismatch this change was created to fix.",
+      "suggested_fix": "Either skip the full-page screenshot assertion off darwin/linux with a logged reason, or key the snapshot name by `${process.platform}` and provide baselines per supported dev platform."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

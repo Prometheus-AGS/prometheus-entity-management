@@ -127,6 +127,7 @@ references, run the full pinned-toolchain reproducibility gate:
 ```bash
 pnpm run docs:native-api:verify
 git diff --exit-code -- website/static/native-api
+test -z "$(git status --porcelain --untracked-files=all -- website/static/native-api)"
 ```
 
 This gate requires Flutter `3.44.8`, dartdoc `9.0.5`, and Rust `1.88.0`. It
@@ -152,9 +153,9 @@ test -z "$(git status --porcelain --untracked-files=all -- website/static/api we
 Run this gate in the release environment that owns the committed artifacts.
 Packed tarball compression and Sharp image encoding are platform-dependent, so
 the Pages workflow does not rewrite those bytes on Ubuntu. It validates their
-inventories, tracked public-package inputs, aggregate artifact hashes, evidence
-source blobs, receipts, generated gallery, routes, and rendered output through
-`docs:artifacts:check` plus the focused documentation
+inventories, built declaration/manifests/README inputs, aggregate artifact
+hashes, evidence source blobs, receipts, generated gallery, routes, and rendered
+output through `docs:artifacts:check` plus the focused documentation
 contract and browser gates. The deterministic search index is
 still regenerated and diffed on every Pages build.
 

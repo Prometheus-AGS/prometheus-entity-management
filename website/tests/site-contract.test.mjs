@@ -221,6 +221,8 @@ test('Pages workflow builds pull requests but deploys only protected main', asyn
   assert.doesNotMatch(workflow, /pnpm run docs:evidence\b/);
   assert.match(workflow, /git diff --exit-code -- website\/static\/search-index\.json/);
   assert.match(workflow, /pnpm run docs:test:browser/);
+  assert.match(workflow, /id: browser-certification/);
+  assert.match(workflow, /steps\.browser-certification\.outcome == 'failure'/);
   assert.match(workflow, /audit:deployed/);
   assert.match(workflow, /DOCS_BASE_URL/);
   assert.match(workflow, /git status --porcelain --untracked-files=all/);
@@ -279,11 +281,11 @@ test('release native API verification regenerates while Pages validates content-
   assert.match(generatedArtifactChecker, /hashArtifactTree/);
   assert.match(generatedArtifactChecker, /assertEvidenceBinding/);
   assert.match(generatedArtifactChecker, /source Git blob drift/);
-  assert.match(generatedArtifactChecker, /packed API source hash drift/);
+  assert.match(generatedArtifactChecker, /packed API input hash drift/);
   assert.match(generatedArtifactChecker, /packed API package inventory length drift/);
   assert.match(generatedArtifactChecker, /evidence gallery drift/);
   assert.match(staticArtifactManifest, /artifactAggregateSha256/);
-  assert.match(staticArtifactManifest, /sourceAggregateSha256/);
+  assert.match(staticArtifactManifest, /apiInputAggregateSha256/);
   assert.doesNotMatch(staticArtifactManifest, /localeCompare/);
 });
 

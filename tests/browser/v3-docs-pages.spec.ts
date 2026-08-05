@@ -44,7 +44,12 @@ test('mobile navigation is operable and content does not overflow', async ({page
   await expect(page.getByRole('link', {name: 'Frameworks', exact: true}).first()).toBeVisible();
   const dimensions = await page.evaluate(() => ({width: document.documentElement.scrollWidth, viewport: innerWidth}));
   expect(dimensions.width).toBeLessThanOrEqual(dimensions.viewport);
-  const mobileSnapshot = process.platform === 'linux' ? 'homepage-mobile-linux.png' : 'homepage-mobile.png';
+  const mobileSnapshots: Partial<Record<NodeJS.Platform, string>> = {
+    darwin: 'homepage-mobile.png',
+    linux: 'homepage-mobile-linux.png',
+  };
+  const mobileSnapshot = mobileSnapshots[process.platform];
+  if (!mobileSnapshot) throw new Error(`mobile visual baseline is unsupported on ${process.platform}`);
   await expect(page).toHaveScreenshot(mobileSnapshot, {
     animations: 'disabled',
     fullPage: true,

@@ -9,7 +9,7 @@ import {
   assertEvidenceBinding,
   assertReceiptCertification,
 } from './evidence-receipt.mjs';
-import {hashArtifactTree, hashTrackedInputs} from './static-artifact-manifest.mjs';
+import {hashArtifactTree, hashPackedApiInputs} from './static-artifact-manifest.mjs';
 
 const websiteRoot = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const repositoryRoot = path.resolve(websiteRoot, '..');
@@ -57,15 +57,12 @@ for (const [index, expected] of expectedPackages.entries()) {
     assertEqual(actual?.[field], expected[field], `${expected.name} packed API ${field} drift`);
   }
 }
-const apiSources = await hashTrackedInputs(
-  repositoryRoot,
-  PUBLIC_PACKAGES.map(({directory}) => directory),
-);
-assertEqual(apiSources.sourceFileCount, apiInventory.sourceFileCount, 'packed API source file count drift');
+const apiSources = await hashPackedApiInputs(repositoryRoot, PUBLIC_PACKAGES);
+assertEqual(apiSources.apiInputFileCount, apiInventory.apiInputFileCount, 'packed API input file count drift');
 assertEqual(
-  apiSources.sourceAggregateSha256,
-  apiInventory.sourceAggregateSha256,
-  'packed API source hash drift',
+  apiSources.apiInputAggregateSha256,
+  apiInventory.apiInputAggregateSha256,
+  'packed API input hash drift',
 );
 const apiArtifacts = await hashArtifactTree(apiRoot, {exclude: ['packed-inventory.json']});
 assertEqual(apiArtifacts.artifactFileCount, apiInventory.artifactFileCount, 'packed API file count drift');

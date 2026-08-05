@@ -49,5 +49,15 @@ Chromium because narrow text wrapping differs. The mobile gate retains its
 full-page screenshot and original 8% pixel budget, with an OS-specific Linux
 baseline; overflow, navigation, and accessibility remain exact assertions. The
 workflow uploads short-lived Playwright failure evidence so the canonical Linux
-baseline can be captured without relaxing the comparison. The desktop
-full-page visual gate remains intact.
+baseline can be captured without relaxing the comparison. Run `31040195164`
+produced the committed 390×3911 Linux baseline with SHA-256
+`70ae6136d8f81439c3a08df259cef2d9de5a643918574c3c22d008d15c335c5d`.
+The existing macOS baseline remains unchanged, unsupported platforms fail with
+an explicit baseline error, and the desktop full-page visual gate remains intact.
+
+The Pages package build remains npm-only: Turbo selects the twelve public npm
+workspaces with JavaScript build scripts. The Flutter package has no npm
+manifest, and the Tauri npm package build runs `tsup`; neither dartdoc nor
+rustdoc is invoked. Packed API freshness now hashes the exact built TypeDoc
+inputs (package manifests, READMEs, and declarations) after that build instead
+of every tracked file under the package directories.
