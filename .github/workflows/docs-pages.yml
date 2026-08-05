@@ -50,16 +50,6 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
           package-manager-cache: false
 
-      - name: Install the release Flutter toolchain for reproducible dartdoc
-        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
-        with:
-          flutter-version: "3.44.8"
-          channel: stable
-          cache: true
-
-      - name: Install the exact release Rust documentation toolchain
-        run: rustup toolchain install 1.88.0 --profile minimal
-
       - name: Install the frozen workspace
         run: pnpm install --frozen-lockfile
 
@@ -67,7 +57,7 @@ jobs:
         run: |
           pnpm run docs:check
           pnpm run docs:test
-          pnpm run docs:native-api:verify
+          pnpm run docs:native-api:check
           pnpm run verify:readme-parity
           pnpm run test:npm-trust
 
