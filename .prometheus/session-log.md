@@ -699,3 +699,42 @@
 - Signed task 5 completed at revision 143 with both after-hooks green; the
   known parent reset was restored through typed revision 144. Task 6 remains
   pending and the Flint change remains in progress.
+
+## 2026-08-05 — Documentation and npm RC recovery local certification
+
+- Delta first: adversarial rounds 12–17 found unsafe recursive cleanup targets,
+  stale native re-signing, evidence/receipt identity gaps, mutable API source
+  links, incorrect responsive widths, a symlink escape in the local server, and
+  host-dependent Flint SVG typography. Each critical or warning was corrected;
+  round 18 returned PASS with no findings and the strict sycophancy screen
+  scored 0.0.
+- Certified product commit
+  `acae0cd29374e6f4bb76dd4a527f1e809a3707f6` from the isolated
+  `codex/docs-rc-recovery` worktree. The primary checkout was not modified.
+- Passed local documentation contracts for 51 content files, 18/18 focused
+  units, compiled snippets, README parity for 12 packages / 5 examples / 16
+  capabilities / 17 commands, the full Docusaurus build, 17 deep-route and
+  2020-file build checks, and 4/4 desktop/mobile/search/API/404 browser flows.
+- Passed npm trust tests 5/5, release pipeline tests 27/27, actionlint, and the
+  production dependency audit with zero blocking, high, or critical advisories.
+- Reproduced the Pages generation order in a depth-one clone at the exact
+  product commit: offline frozen install, all 12 package builds, evidence,
+  packed TypeDoc, and search generation left a completely clean worktree.
+  Evidence generation was independently repeated with an identical SHA-256
+  inventory.
+- Local Lighthouse medians passed all budgets across three runs per route:
+  homepage 0.98 performance / 1.00 accessibility / 2298 ms LCP; React 0.97 /
+  0.96 / 2452 ms; Flint 0.97 / 0.96 / 2451 ms; best practices and SEO were
+  1.00 and CLS was 0 for all routes.
+- The REST critic could not build its 2.28 MB request because the host argument
+  limit was exceeded. The documented fresh-context fallback reviewed only the
+  mandate and packet; cross-model identity remains explicitly unverified within
+  the same harness family rather than being reported as distinct.
+- Security boundaries added by this change include stage-only OIDC with token
+  prohibition, content-addressed and receipt-bound evidence, ancestor-aware
+  cleanup containment, realpath-contained local HTTP reads, and repository-font
+  SVG outlines that avoid platform font substitution.
+- Public completion remains human/external: npm browser login, 2FA trust
+  registration, staged approval, and registry verification; plus branch merge,
+  Pages deployment, public-origin probes, and repository-homepage update. No npm
+  package, dist-tag, Pages setting, or repository homepage was mutated here.

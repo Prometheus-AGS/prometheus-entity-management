@@ -1,0 +1,48 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "codex-gpt-5",
+  "isolation_mode": "harness-native:fresh-context",
+  "producer_model": "gpt-5",
+  "cross_model_check": "unverified-same-harness-family",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/evidence-receipt.mjs",
+      "line": 24,
+      "claim": "An unrelated successful receipt can certify any evidence asset because validation never proves that the receipt covers the asset, its source hash, or its declared scenarios.",
+      "evidence": "assertReceiptCertification only compares one top-level field with a whitelisted success literal; generate-evidence.mjs separately checks that scenario IDs merely exist globally and that receipt bytes match the allowlist. No check links receipt content to assetId, sourceSha256, or scenarioIds, despite the acceptance requirement for deterministic verification and the gallery's certification claims.",
+      "suggested_fix": "Require each supported receipt schema to expose an artifact/source identity and certified scenario set, then fail unless the source hash and every declared scenario exactly match the evidence record."
+    },
+    {
+      "severity": "WARNING",
+      "file": "website/scripts/generate-packed-api.mjs",
+      "line": 118,
+      "claim": "Packed API source links are mutable and can point at code different from the deployed documentation artifact because every build hard-codes the revision to main.",
+      "evidence": "The generator sets const revision = 'main' and uses it in TypeDoc's GitHub sourceLinkTemplate, while the verification evidence identifies an exact tested implementation SHA and the workflow can leave an older deployment live when a later main build fails.",
+      "suggested_fix": "Generate links with the immutable checked-out commit SHA, passing github.sha in CI and using git rev-parse HEAD locally."
+    },
+    {
+      "severity": "WARNING",
+      "file": "website/src/components/EvidenceFigure.tsx",
+      "line": 22,
+      "claim": "The responsive image width descriptors are false for evidence sources narrower than 640 or 1280 pixels.",
+      "evidence": "generate-evidence.mjs uses withoutEnlargement: true, but EvidenceFigure always declares the resulting files as 640w and 1280w; the checked-in manifest records flutter-a2ui-phone as only 430 pixels wide, so both derivatives remain 430 pixels while being advertised as larger resources.",
+      "suggested_fix": "Record each derivative's actual width and render matching descriptors, or omit derivative candidates wider than the source."
+    },
+    {
+      "severity": "WARNING",
+      "file": "website/scripts/serve-built-site.mjs",
+      "line": 37,
+      "claim": "The request-path containment check can be bypassed through a symlink inside the build tree because file lookup follows symlinks without validating the resolved target.",
+      "evidence": "resolveRequest checks only the lexical path, while findFile uses stat and createReadStream on that candidate; unlike the contained-directory helper, it performs no lstat or realpath containment check at this HTTP request boundary.",
+      "suggested_fix": "Resolve the selected file with realpath, verify it remains beneath realpath(buildRoot), and reject symbolic path components before opening it."
+    }
+  ],
+  "checked_classes": [],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}
