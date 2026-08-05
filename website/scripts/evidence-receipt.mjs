@@ -10,7 +10,8 @@ const requiredVisualReviews = new Set([
   'not-icon',
 ]);
 
-export function assertReceiptCertification(assetId, receiptData, assertion) {
+export function assertReceiptCertification(asset, receiptData, assertion, certification) {
+  const assetId = asset.assetId;
   if (!assertion || typeof assertion !== 'object') {
     throw new Error(`${assetId}: receiptAssertion is required`);
   }
@@ -24,6 +25,25 @@ export function assertReceiptCertification(assetId, receiptData, assertion) {
   const actual = receiptData?.[field];
   if (actual !== equals) {
     throw new Error(`${assetId}: receipt ${field} must equal ${equals}; received ${String(actual)}`);
+  }
+  if (!certification || typeof certification !== 'object') {
+    throw new Error(`${assetId}: documentation evidence certification is required`);
+  }
+  const exactFields = [
+    ['assetId', asset.assetId],
+    ['sourcePath', asset.sourcePath],
+    ['sourceSha256', asset.sourceSha256],
+    ['executionReceipt', asset.receipt],
+    ['executionReceiptSha256', asset.receiptSha256],
+    ['certificationStatus', asset.certificationStatus],
+  ];
+  for (const [fieldName, expected] of exactFields) {
+    if (certification[fieldName] !== expected) {
+      throw new Error(`${assetId}: certification ${fieldName} does not match the evidence record`);
+    }
+  }
+  if (JSON.stringify(certification.scenarioIds) !== JSON.stringify(asset.scenarioIds)) {
+    throw new Error(`${assetId}: certification scenarioIds do not match the evidence record`);
   }
 }
 

@@ -25,6 +25,7 @@ tests/release/npm-trusted-publishing.test.mjs
 website/BRAND.md
 website/docs
 website/docusaurus.config.ts
+website/evidence-certifications.json
 website/evidence.allowlist.json
 website/evidence-source
 website/lighthouserc.cjs

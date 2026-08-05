@@ -1,9 +1,9 @@
 import {createReadStream} from 'node:fs';
-import {stat} from 'node:fs/promises';
 import {createServer} from 'node:http';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createGzip} from 'node:zlib';
+import {resolveContainedFile} from './contained-file.mjs';
 
 const websiteRoot = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const buildRoot = path.join(websiteRoot, 'build');
@@ -33,18 +33,7 @@ function resolveRequest(requestUrl) {
 }
 
 async function findFile(candidate) {
-  try {
-    const metadata = await stat(candidate);
-    if (metadata.isFile()) return candidate;
-    if (metadata.isDirectory()) {
-      const index = path.join(candidate, 'index.html');
-      const indexMetadata = await stat(index);
-      if (indexMetadata.isFile()) return index;
-    }
-  } catch {
-    // The caller serves the generated 404 page for absent build artifacts.
-  }
-  return null;
+  return resolveContainedFile(buildRoot, candidate);
 }
 
 function pipeFile(target, response, gzip) {
@@ -72,7 +61,12 @@ const server = createServer(async (request, response) => {
     return;
   }
   const file = candidate ? await findFile(candidate) : null;
-  const target = file ?? path.join(buildRoot, '404.html');
+  const notFound = await findFile(path.join(buildRoot, '404.html'));
+  if (!notFound) {
+    response.writeHead(500, {'content-type': 'text/plain; charset=utf-8'}).end('Missing 404 artifact');
+    return;
+  }
+  const target = file ?? notFound;
   const extension = path.extname(target);
   const gzip = compressible.has(extension) && request.headers['accept-encoding']?.includes('gzip');
   response.writeHead(file ? 200 : 404, {

@@ -8,18 +8,25 @@ type Props = {
   caption: string;
   width: number;
   height: number;
+  smallWidth: number;
+  largeWidth: number;
 };
 
-export default function EvidenceFigure({assetId, alt, caption, width, height}: Props): ReactNode {
-  const small = useBaseUrl(`/evidence/${assetId}-640.webp`);
-  const large = useBaseUrl(`/evidence/${assetId}-1280.webp`);
+export default function EvidenceFigure({
+  assetId, alt, caption, width, height, smallWidth, largeWidth,
+}: Props): ReactNode {
+  const small = useBaseUrl(`/evidence/${assetId}-${smallWidth}.webp`);
+  const large = useBaseUrl(`/evidence/${assetId}-${largeWidth}.webp`);
   const original = useBaseUrl(`/evidence/original/${assetId}.png`);
+  const srcSet = smallWidth === largeWidth
+    ? `${large} ${largeWidth}w`
+    : `${small} ${smallWidth}w, ${large} ${largeWidth}w`;
   return (
     <figure className={styles.figure} data-evidence-id={assetId}>
       <a href={original} download={`${assetId}.png`} aria-label={`Download original evidence image: ${alt}`}>
         <img
           src={large}
-          srcSet={`${small} 640w, ${large} 1280w`}
+          srcSet={srcSet}
           sizes="(max-width: 700px) 100vw, 760px"
           loading="lazy"
           decoding="async"

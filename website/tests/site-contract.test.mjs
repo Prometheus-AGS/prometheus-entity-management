@@ -12,6 +12,7 @@ import {
   assertReceiptCertification,
 } from '../scripts/evidence-receipt.mjs';
 import {removeContainedDirectory} from '../scripts/contained-directory.mjs';
+import {resolveContainedFile} from '../scripts/contained-file.mjs';
 
 const config = await readFile(new URL('../docusaurus.config.ts', import.meta.url), 'utf8');
 const css = await readFile(new URL('../src/css/custom.css', import.meta.url), 'utf8');
@@ -71,6 +72,11 @@ test('keeps the package chooser and packed reference in release-contract parity'
     inventory.fingerprint,
     createHash('sha256').update(JSON.stringify(inventory.packages)).digest('hex'),
   );
+  const registryStatus = JSON.parse(
+    await readFile(new URL('../../release/npm-registry-status.json', import.meta.url), 'utf8'),
+  );
+  assert.equal(inventory.revision, registryStatus.candidateSourceSha);
+  assert.match(inventory.revision, /^[0-9a-f]{40}$/);
   for (const packageName of expected) assert.match(chooser, new RegExp(packageName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 });
 
@@ -80,6 +86,11 @@ test('evidence hashes authenticate each downloadable published original', async 
   assert.match(evidenceGenerator, /git', \['cat-file', 'blob', sourceGitBlobSha\]/);
   assert.match(evidenceGenerator, /source Git blob \$\{sourceGitBlobSha\} does not match the allowlisted SHA-256/);
   const manifest = JSON.parse(await readFile(new URL('../static/evidence/manifest.json', import.meta.url), 'utf8'));
+  const certificationReceipt = await readFile(new URL('../evidence-certifications.json', import.meta.url));
+  assert.equal(
+    createHash('sha256').update(certificationReceipt).digest('hex'),
+    manifest.certificationReceiptSha256,
+  );
   for (const asset of manifest.assets) {
     assert.match(asset.sourceGitBlobSha, /^[0-9a-f]{40}$/, `${asset.assetId} source Git blob`);
     assert.match(asset.sourceSha256, /^[0-9a-f]{64}$/, `${asset.assetId} source hash`);
@@ -90,21 +101,61 @@ test('evidence hashes authenticate each downloadable published original', async 
       asset.sha256,
       `${asset.assetId} published hash`,
     );
+    for (const variant of asset.variants) {
+      assert.ok(variant.width <= asset.width, `${asset.assetId} variant is not enlarged`);
+      assert.equal(variant.path, `${asset.assetId}-${variant.width}.webp`);
+    }
   }
 });
 
-test('evidence receipt assertions require exact allowlisted success outcomes', () => {
+test('evidence receipt assertions bind the successful receipt to the exact asset and scenarios', () => {
   const assertion = {field: 'status', equals: 'pass'};
-  assert.doesNotThrow(() => assertReceiptCertification('valid', {status: 'pass'}, assertion));
+  const asset = {
+    assetId: 'valid',
+    sourcePath: 'evidence/valid.png',
+    sourceSha256: 'a'.repeat(64),
+    receipt: 'evidence/valid.json',
+    receiptSha256: 'b'.repeat(64),
+    scenarioIds: ['example.valid'],
+    certificationStatus: 'verified-browser',
+  };
+  const certification = {
+    assetId: asset.assetId,
+    sourcePath: asset.sourcePath,
+    sourceSha256: asset.sourceSha256,
+    executionReceipt: asset.receipt,
+    executionReceiptSha256: asset.receiptSha256,
+    scenarioIds: asset.scenarioIds,
+    certificationStatus: asset.certificationStatus,
+  };
+  assert.doesNotThrow(() => assertReceiptCertification(asset, {status: 'pass'}, assertion, certification));
   for (const status of ['bypass', 'bypassed', 'not passed', 'failed', 'in-progress']) {
     assert.throws(
-      () => assertReceiptCertification('invalid', {status}, assertion),
+      () => assertReceiptCertification(asset, {status}, assertion, certification),
       /receipt status must equal pass/,
     );
   }
   assert.throws(
-    () => assertReceiptCertification('invalid-assertion', {status: 'bypassed'}, {field: 'status', equals: 'bypassed'}),
+    () => assertReceiptCertification(asset, {status: 'bypassed'}, {field: 'status', equals: 'bypassed'}, certification),
     /unsupported certified receipt outcome/,
+  );
+  assert.throws(
+    () => assertReceiptCertification(
+      asset,
+      {status: 'pass'},
+      assertion,
+      {...certification, executionReceipt: 'evidence/unrelated-success.json'},
+    ),
+    /certification executionReceipt does not match/,
+  );
+  assert.throws(
+    () => assertReceiptCertification(
+      asset,
+      {status: 'pass'},
+      assertion,
+      {...certification, scenarioIds: ['example.unrelated']},
+    ),
+    /certification scenarioIds do not match/,
   );
 });
 
@@ -234,6 +285,29 @@ test('contained directory removal rejects a symlinked ancestor without touching 
       /symbolic or non-directory path component/,
     );
     assert.equal(await readFile(proof, 'utf8'), 'retained');
+  } finally {
+    await rm(parent, {recursive: true, force: true});
+  }
+});
+
+test('built-site file resolution rejects symlinks that escape the build root', async () => {
+  const parent = await mkdtemp(path.join(tmpdir(), 'contained-file-test-'));
+  const root = path.join(parent, 'build');
+  const outside = path.join(parent, 'outside');
+  try {
+    await mkdir(root);
+    await mkdir(outside);
+    await writeFile(path.join(root, 'inside.html'), 'inside');
+    await writeFile(path.join(outside, 'secret.html'), 'outside');
+    await symlink(outside, path.join(root, 'linked'), 'dir');
+    assert.equal(
+      await resolveContainedFile(root, path.join(root, 'linked', 'secret.html')),
+      null,
+    );
+    assert.equal(
+      await readFile(await resolveContainedFile(root, path.join(root, 'inside.html')), 'utf8'),
+      'inside',
+    );
   } finally {
     await rm(parent, {recursive: true, force: true});
   }

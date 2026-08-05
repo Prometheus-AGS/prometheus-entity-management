@@ -3,6 +3,8 @@
   "verifiedAt": "2026-08-05T09:09:26Z",
   "registry": "https://registry.npmjs.org/",
   "expectedCandidate": "3.0.0-rc.1",
+  "candidateRunId": 30976967778,
+  "candidateSourceSha": "afbb8de0e861739fa6facb461b69573b2a627bdb",
   "releaseStatus": "rc-registration-blocked",
   "packages": {
     "@prometheus-ags/a2ui-react": {"alpha": "3.0.0-alpha.0", "latest": "3.0.0-alpha.0"},

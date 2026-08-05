@@ -10,6 +10,9 @@ import {removeContainedDirectory} from './contained-directory.mjs';
 const websiteRoot = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const repositoryRoot = path.resolve(websiteRoot, '..');
 const allowlist = JSON.parse(await readFile(path.join(websiteRoot, 'evidence.allowlist.json'), 'utf8'));
+const certificationPath = path.join(websiteRoot, 'evidence-certifications.json');
+const certificationBytes = await readFile(certificationPath);
+const certificationReceipt = JSON.parse(certificationBytes.toString('utf8'));
 const coverage = JSON.parse(await readFile(path.join(repositoryRoot, 'examples/coverage.json'), 'utf8'));
 const validScenarios = new Set(coverage.showcases.flatMap(({scenarioIds}) => scenarioIds));
 const outputRoot = path.join(websiteRoot, 'static/evidence');
@@ -47,6 +50,20 @@ function resolveVerifiedSourceBlob(asset) {
 }
 
 if (allowlist.schemaVersion !== '1.0.0') throw new Error('unsupported evidence allowlist schema');
+if (certificationReceipt.schemaVersion !== '1.0.0') {
+  throw new Error('unsupported evidence certification schema');
+}
+const certifications = new Map();
+for (const record of certificationReceipt.records ?? []) {
+  if (certifications.has(record.assetId)) {
+    throw new Error(`duplicate evidence certification ${String(record.assetId)}`);
+  }
+  certifications.set(record.assetId, record);
+}
+if (certifications.size !== allowlist.assets.length) {
+  throw new Error('evidence certification inventory does not match the allowlist');
+}
+const certificationReceiptSha256 = createHash('sha256').update(certificationBytes).digest('hex');
 await removeContainedDirectory(websiteRoot, outputRoot);
 await mkdir(originalRoot, {recursive: true});
 
@@ -63,7 +80,9 @@ for (const asset of allowlist.assets) {
   const receipt = path.join(repositoryRoot, asset.receipt);
   const receiptBytes = await readFile(receipt);
   const receiptData = JSON.parse(receiptBytes.toString('utf8'));
-  assertReceiptCertification(asset.assetId, receiptData, asset.receiptAssertion);
+  const certification = certifications.get(asset.assetId);
+  assertReceiptCertification(asset, receiptData, asset.receiptAssertion, certification);
+  certifications.delete(asset.assetId);
   const receiptSha256 = createHash('sha256').update(receiptBytes).digest('hex');
   const sourceBytes = await readFile(source);
   const sourceSha256 = createHash('sha256').update(sourceBytes).digest('hex');
@@ -76,7 +95,8 @@ for (const asset of allowlist.assets) {
   await sharp(sourceBytes, {density: 144}).png().toFile(original);
   const publishedBytes = await readFile(original);
   const publishedSha256 = createHash('sha256').update(publishedBytes).digest('hex');
-  for (const width of [640, 1280]) {
+  const variantWidths = [...new Set([640, 1280].map((width) => Math.min(width, metadata.width)))];
+  for (const width of variantWidths) {
     await sharp(sourceBytes, {density: 144})
       .resize({width, withoutEnlargement: true})
       .webp({quality: 82})
@@ -89,13 +109,20 @@ for (const asset of allowlist.assets) {
     receiptSha256,
     width: metadata.width,
     height: metadata.height,
+    variants: variantWidths.map((width) => ({width, path: `${asset.assetId}-${width}.webp`})),
     sha256: publishedSha256,
   });
 }
+if (certifications.size !== 0) throw new Error('unused evidence certification records remain');
 
 await writeFile(
   path.join(outputRoot, 'manifest.json'),
-  `${JSON.stringify({schemaVersion: '1.0.0', assets: records}, null, 2)}\n`,
+  `${JSON.stringify({
+    schemaVersion: '1.0.0',
+    certificationReceipt: 'website/evidence-certifications.json',
+    certificationReceiptSha256,
+    assets: records,
+  }, null, 2)}\n`,
 );
 
 const sections = new Map([
@@ -114,8 +141,9 @@ const lines = [
 for (const [title, assets] of sections) {
   lines.push(`## ${title}`, '');
   for (const asset of assets) {
+    const [small, large = small] = asset.variants;
     lines.push(
-      `<EvidenceFigure assetId="${asset.assetId}" alt="${asset.alt.replaceAll('"', '&quot;')}" caption="${asset.caption.replaceAll('"', '&quot;')}" width={${asset.width}} height={${asset.height}} />`,
+      `<EvidenceFigure assetId="${asset.assetId}" alt="${asset.alt.replaceAll('"', '&quot;')}" caption="${asset.caption.replaceAll('"', '&quot;')}" width={${asset.width}} height={${asset.height}} smallWidth={${small.width}} largeWidth={${large.width}} />`,
       '',
     );
   }

@@ -115,7 +115,13 @@ try {
   }
 
   await removeContainedDirectory(websiteRoot, output);
-  const revision = 'main';
+  const registryStatus = JSON.parse(
+    await readFile(path.join(repositoryRoot, 'release/npm-registry-status.json'), 'utf8'),
+  );
+  const revision = registryStatus.candidateSourceSha;
+  if (!/^[0-9a-f]{40}$/.test(revision ?? '')) {
+    throw new Error('npm registry status must identify the immutable candidate source SHA');
+  }
   const app = await Application.bootstrap({
     entryPoints,
     entryPointStrategy: 'packages',
