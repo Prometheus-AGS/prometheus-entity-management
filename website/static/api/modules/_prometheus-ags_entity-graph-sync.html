@@ -1,0 +1,385 @@
+<!DOCTYPE html><html class="default" lang="en" data-base="../"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@prometheus-ags/entity-graph-sync | Prometheus Entity Management API</title><meta name="description" content="Documentation for Prometheus Entity Management API"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><link rel="stylesheet" href="../assets/custom.css"/><script defer src="../assets/main.js"></script><script async src="../assets/icons.js" id="tsd-icons-script"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script><script async src="../assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container"><a href="../index.html" class="title">Prometheus Entity Management API</a>
+<div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/>
+<ul role="listbox" id="tsd-search-results"></ul>
+<div id="tsd-search-status" aria-live="polite" aria-atomic="true">
+<div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-menu"></use></svg></a></div></header>
+<div class="container container-main">
+<div class="col-content">
+<div class="tsd-page-title">
+<ul class="tsd-breadcrumb" aria-label="Breadcrumb">
+<li><a href="" aria-current="page">@prometheus-ags/entity-graph-sync</a></li></ul>
+<h1>Module @prometheus-ags/entity-graph-sync</h1></div>
+<section class="tsd-panel tsd-typography"><h1 id="_" class="tsd-anchor-link"><code>@prometheus-ags/entity-graph-sync</code><a href="#_" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h1>
+<p>Pluggable peer-sync providers for the entity graph. It ships Yjs and Loro
+providers, deterministic loopback and reconnecting WebSocket Loro channels,
+and client-owned registries for isolated stores, workers, SSR requests, and
+multi-client tests.</p>
+<h2 id="overview" class="tsd-anchor-link">Overview<a href="#overview" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<pre><code><span class="hl-1">┌─────────────────────────────────────────────────────────┐</span><br/><span class="hl-1">│  </span><span class="hl-4">Entity</span><span class="hl-1"> </span><span class="hl-0">Graph</span><span class="hl-1"> (</span><span class="hl-4">Zustand</span><span class="hl-1"> </span><span class="hl-4">store</span><span class="hl-1"> — </span><span class="hl-4">canonical</span><span class="hl-1"> </span><span class="hl-4">source</span><span class="hl-1"> </span><span class="hl-5">of</span><span class="hl-1"> </span><span class="hl-4">truth</span><span class="hl-1">)│</span><br/><span class="hl-1">│  @</span><span class="hl-4">prometheus</span><span class="hl-1">-</span><span class="hl-4">ags</span><span class="hl-1">/</span><span class="hl-4">entity</span><span class="hl-1">-</span><span class="hl-4">graph</span><span class="hl-1">-</span><span class="hl-4">core</span><span class="hl-1">                       │</span><br/><span class="hl-1">└─────────────────────────┬───────────────────────────────┘</span><br/><span class="hl-1">                           │ </span><span class="hl-4">subscribe</span><span class="hl-1"> / </span><span class="hl-4">upsertEntity</span><br/><span class="hl-1">            ┌──────────────▼──────────────┐</span><br/><span class="hl-1">            │   </span><span class="hl-4">Sync</span><span class="hl-1"> </span><span class="hl-0">Bridge</span><span class="hl-1"> (</span><span class="hl-4">bridge</span><span class="hl-1">.</span><span class="hl-4">ts</span><span class="hl-1">)    │</span><br/><span class="hl-1">            │   - </span><span class="hl-4">graph</span><span class="hl-1"> → </span><span class="hl-4">pushLocalChange</span><span class="hl-1">  │</span><br/><span class="hl-1">            │   - </span><span class="hl-4">applyPeerChanges</span><span class="hl-1"> → </span><span class="hl-4">graph</span><span class="hl-1"> │</span><br/><span class="hl-1">            └──────┬───────────────┬───────┘</span><br/><span class="hl-1">                   │               │</span><br/><span class="hl-1">       ┌───────────▼───┐   ┌───────▼──────────┐</span><br/><span class="hl-1">       │  </span><span class="hl-4">YjsProvider</span><span class="hl-1">  │   │  </span><span class="hl-4">LoroProvider</span><span class="hl-1">     │</span><br/><span class="hl-1">       │  (</span><span class="hl-4">WebSocket</span><span class="hl-1"> / │   │  (</span><span class="hl-4">binary</span><span class="hl-1"> </span><span class="hl-4">snapshot</span><span class="hl-1"> │</span><br/><span class="hl-1">       │   </span><span class="hl-4">WebRTC</span><span class="hl-1">)     │   │   </span><span class="hl-4">over</span><span class="hl-1"> </span><span class="hl-4">LoroChannel</span><span class="hl-1">│</span><br/><span class="hl-1">       └───────────────┘   └──────────────────┘</span>
+</code><button>Copy</button></pre>
+
+<p>The bridge listens to the entity graph. When an entity type has a registered
+provider, every local <code>upsertEntity</code> call is forwarded to <code>provider.pushLocalChange</code>.
+Incoming peer changes are applied via <code>applyPeerChanges</code> which calls <code>upsertEntity</code>
+and tags the entity with <code>$origin: &quot;server&quot;</code> sync metadata.</p>
+<hr>
+<h2 id="installation" class="tsd-anchor-link">Installation<a href="#installation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<pre><code class="bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">@prometheus-ags/entity-graph-sync</span>
+</code><button type="button">Copy</button></pre>
+
+<h3 id="optional-peer-dependencies" class="tsd-anchor-link">Optional peer dependencies<a href="#optional-peer-dependencies" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Peer</th>
+<th>Required for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>yjs</code></td>
+<td>Yjs provider</td>
+</tr>
+<tr>
+<td><code>y-websocket</code></td>
+<td>Yjs WebSocket transport</td>
+</tr>
+<tr>
+<td><code>y-webrtc</code></td>
+<td>Yjs WebRTC transport</td>
+</tr>
+<tr>
+<td><code>loro-crdt</code> <code>&gt;=1.13.9 &lt;2</code></td>
+<td>Loro provider</td>
+</tr>
+</tbody>
+</table>
+<p>Install only what you need:</p>
+<pre><code class="bash"><span class="hl-7"># Yjs (WebSocket)</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">yjs</span><span class="hl-1"> </span><span class="hl-2">y-websocket</span><br/><br/><span class="hl-7"># Yjs (WebRTC)</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">yjs</span><span class="hl-1"> </span><span class="hl-2">y-webrtc</span><br/><br/><span class="hl-7"># Loro CRDT</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">@prometheus-ags/entity-graph-sync</span><span class="hl-1"> </span><span class="hl-2">loro-crdt@^1.13.9</span>
+</code><button type="button">Copy</button></pre>
+
+<hr>
+<h2 id="quick-start" class="tsd-anchor-link">Quick start<a href="#quick-start" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="yjs-websocket" class="tsd-anchor-link">Yjs + WebSocket<a href="#yjs-websocket" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<pre><code class="ts"><span class="hl-3">import</span><span class="hl-1"> { </span><span class="hl-4">createYjsProvider</span><span class="hl-1">, </span><span class="hl-4">registerSyncProvider</span><span class="hl-1">, </span><span class="hl-4">startSyncBridge</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/entity-graph-sync&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">provider</span><span class="hl-1"> = </span><span class="hl-0">createYjsProvider</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">transport:</span><span class="hl-1"> </span><span class="hl-2">&quot;websocket&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">wsServerUrl:</span><span class="hl-1"> </span><span class="hl-2">&quot;ws://localhost:1234&quot;</span><span class="hl-1">,  </span><span class="hl-7">// run: npx y-websocket</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-0">registerSyncProvider</span><span class="hl-1">({ </span><span class="hl-4">entityTypes:</span><span class="hl-1"> [</span><span class="hl-2">&quot;Document&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;Comment&quot;</span><span class="hl-1">], </span><span class="hl-4">provider</span><span class="hl-1"> });</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">bridge</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-0">startSyncBridge</span><span class="hl-1">();</span><br/><br/><span class="hl-7">// Cleanup</span><br/><span class="hl-4">bridge</span><span class="hl-1">.</span><span class="hl-0">stop</span><span class="hl-1">();</span>
+</code><button type="button">Copy</button></pre>
+
+<h3 id="yjs-webrtc-peer-to-peer" class="tsd-anchor-link">Yjs + WebRTC (peer-to-peer)<a href="#yjs-webrtc-peer-to-peer" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<pre><code class="ts"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">provider</span><span class="hl-1"> = </span><span class="hl-0">createYjsProvider</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">transport:</span><span class="hl-1"> </span><span class="hl-2">&quot;webrtc&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">webrtcOpts:</span><span class="hl-1"> { </span><span class="hl-4">signaling:</span><span class="hl-1"> [</span><span class="hl-2">&quot;wss://signaling.yjs.dev&quot;</span><span class="hl-1">] },</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-0">registerSyncProvider</span><span class="hl-1">({ </span><span class="hl-4">entityTypes:</span><span class="hl-1"> [</span><span class="hl-2">&quot;Whiteboard&quot;</span><span class="hl-1">], </span><span class="hl-4">provider</span><span class="hl-1"> });</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">bridge</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-0">startSyncBridge</span><span class="hl-1">();</span>
+</code><button type="button">Copy</button></pre>
+
+<h3 id="yjs-both-transports-resilient" class="tsd-anchor-link">Yjs + both transports (resilient)<a href="#yjs-both-transports-resilient" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<pre><code class="ts"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">provider</span><span class="hl-1"> = </span><span class="hl-0">createYjsProvider</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">transport:</span><span class="hl-1"> </span><span class="hl-2">&quot;both&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">wsServerUrl:</span><span class="hl-1"> </span><span class="hl-2">&quot;ws://localhost:1234&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<h3 id="loro-crdt-websocket-channel" class="tsd-anchor-link">Loro CRDT + WebSocket channel<a href="#loro-crdt-websocket-channel" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<pre><code class="ts"><span class="hl-3">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">createLoroProvider</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">createWebSocketLoroChannel</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">registerSyncProvider</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">startSyncBridge</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/entity-graph-sync&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">channel</span><span class="hl-1"> = </span><span class="hl-0">createWebSocketLoroChannel</span><span class="hl-1">(</span><span class="hl-2">&quot;ws://localhost:8080&quot;</span><span class="hl-1">);</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">provider</span><span class="hl-1"> = </span><span class="hl-0">createLoroProvider</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">channel</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">peerId:</span><span class="hl-1"> </span><span class="hl-13">101</span><span class="hl-1">, </span><span class="hl-7">// stable and unique for this replica</span><br/><span class="hl-1">  </span><span class="hl-0">loadLoro</span><span class="hl-4">:</span><span class="hl-1"> () </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-5">import</span><span class="hl-1">(</span><span class="hl-2">&quot;loro-crdt&quot;</span><span class="hl-1">), </span><span class="hl-7">// make the optional peer visible to browser bundlers</span><br/><span class="hl-1">  </span><span class="hl-0">onError</span><span class="hl-4">:</span><span class="hl-1"> (</span><span class="hl-4">error</span><span class="hl-1">, </span><span class="hl-4">operation</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-0">reportSyncFailure</span><span class="hl-1">(</span><span class="hl-4">operation</span><span class="hl-1">, </span><span class="hl-4">error</span><span class="hl-1">),</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-0">registerSyncProvider</span><span class="hl-1">({ </span><span class="hl-4">entityTypes:</span><span class="hl-1"> [</span><span class="hl-2">&quot;Task&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;Note&quot;</span><span class="hl-1">], </span><span class="hl-4">provider</span><span class="hl-1"> });</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">bridge</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-0">startSyncBridge</span><span class="hl-1">();</span>
+</code><button type="button">Copy</button></pre>
+
+<p>The Loro provider automatically calls
+<code>createLoroMergeStrategy()</code> from <code>@prometheus-ags/entity-graph-core</code> and
+registers it for the managed entity types — field-level concurrent writes
+resolve via Loro CRDT semantics instead of LWW.</p>
+<p>Opt out by passing <code>registerMergeStrategies: false</code>.</p>
+<p>Vite and other browser bundlers should supply <code>loadLoro</code> as above. Node
+consumers may omit it and use the provider's runtime optional-peer import.</p>
+<h3 id="two-isolated-clients" class="tsd-anchor-link">Two isolated clients<a href="#two-isolated-clients" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>The default package registry and core graph remain convenient process-wide
+singletons. Inject client-owned instances whenever two graphs live in one
+process:</p>
+<pre><code class="ts"><span class="hl-3">import</span><span class="hl-1"> { </span><span class="hl-4">createGraphStore</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/entity-graph-core&quot;</span><span class="hl-1">;</span><br/><span class="hl-3">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">createLoroLoopbackNetwork</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">createLoroProvider</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">createSyncProviderRegistry</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">startSyncBridge</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/entity-graph-sync&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">network</span><span class="hl-1"> = </span><span class="hl-0">createLoroLoopbackNetwork</span><span class="hl-1">({ </span><span class="hl-4">autoFlush:</span><span class="hl-1"> </span><span class="hl-5">false</span><span class="hl-1"> });</span><br/><br/><span class="hl-5">async</span><span class="hl-1"> </span><span class="hl-5">function</span><span class="hl-1"> </span><span class="hl-0">createClient</span><span class="hl-1">(</span><span class="hl-4">name</span><span class="hl-1">: </span><span class="hl-10">string</span><span class="hl-1">, </span><span class="hl-4">peerId</span><span class="hl-1">: </span><span class="hl-10">number</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">store</span><span class="hl-1"> = </span><span class="hl-0">createGraphStore</span><span class="hl-1">();</span><br/><span class="hl-1">  </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">registry</span><span class="hl-1"> = </span><span class="hl-0">createSyncProviderRegistry</span><span class="hl-1">();</span><br/><span class="hl-1">  </span><span class="hl-4">registry</span><span class="hl-1">.</span><span class="hl-0">register</span><span class="hl-1">({</span><br/><span class="hl-1">    </span><span class="hl-4">entityTypes:</span><span class="hl-1"> [</span><span class="hl-2">&quot;Task&quot;</span><span class="hl-1">],</span><br/><span class="hl-1">    </span><span class="hl-4">provider:</span><span class="hl-1"> </span><span class="hl-0">createLoroProvider</span><span class="hl-1">({</span><br/><span class="hl-1">      </span><span class="hl-4">channel:</span><span class="hl-1"> </span><span class="hl-4">network</span><span class="hl-1">.</span><span class="hl-0">createChannel</span><span class="hl-1">(</span><span class="hl-4">name</span><span class="hl-1">),</span><br/><span class="hl-1">      </span><span class="hl-4">peerId</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-4">registerMergeStrategies:</span><span class="hl-1"> </span><span class="hl-5">false</span><span class="hl-1">,</span><br/><span class="hl-1">    }),</span><br/><span class="hl-1">  });</span><br/><span class="hl-1">  </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">bridge</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-0">startSyncBridge</span><span class="hl-1">({ </span><span class="hl-4">store</span><span class="hl-1">, </span><span class="hl-4">registry</span><span class="hl-1">, </span><span class="hl-4">pushDebounceMs:</span><span class="hl-1"> </span><span class="hl-13">0</span><span class="hl-1"> });</span><br/><span class="hl-1">  </span><span class="hl-3">return</span><span class="hl-1"> { </span><span class="hl-4">store</span><span class="hl-1">, </span><span class="hl-4">bridge</span><span class="hl-1"> };</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<p><code>createLoroLoopbackNetwork()</code> retains each peer's latest snapshot while it is
+offline and exchanges current snapshots in both directions on reconnect. With
+<code>autoFlush: false</code>, <code>flush(&quot;fifo&quot;)</code> and <code>flush(&quot;reverse&quot;)</code> provide a controlled
+convergence oracle; they are not substitutes for the real WebSocket lane.</p>
+<hr>
+<h2 id="custom-providers" class="tsd-anchor-link">Custom providers<a href="#custom-providers" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>Implement <code>SyncProvider</code> to wire any transport:</p>
+<pre><code class="ts"><span class="hl-3">import</span><span class="hl-1"> </span><span class="hl-3">type</span><span class="hl-1"> { </span><span class="hl-4">SyncProvider</span><span class="hl-1">, </span><span class="hl-4">PeerChangeHandler</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/entity-graph-sync&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">myProvider</span><span class="hl-1">: </span><span class="hl-10">SyncProvider</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-4">name:</span><span class="hl-1"> </span><span class="hl-2">&quot;my-custom-sync&quot;</span><span class="hl-1">,</span><br/><br/><span class="hl-1">  </span><span class="hl-5">async</span><span class="hl-1"> </span><span class="hl-0">start</span><span class="hl-1">(</span><span class="hl-4">entityTypes</span><span class="hl-1">, </span><span class="hl-4">onPeerChange</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-7">// Connect to your sync fabric.</span><br/><span class="hl-1">    </span><span class="hl-7">// Call onPeerChange([{ type, id, fields }]) when peers send updates.</span><br/><span class="hl-1">  },</span><br/><br/><span class="hl-1">  </span><span class="hl-0">pushLocalChange</span><span class="hl-1">(</span><span class="hl-4">type</span><span class="hl-1">, </span><span class="hl-4">id</span><span class="hl-1">, </span><span class="hl-4">fields</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-7">// Forward the entity snapshot to peers.</span><br/><span class="hl-1">  },</span><br/><br/><span class="hl-1">  </span><span class="hl-0">stop</span><span class="hl-1">() {</span><br/><span class="hl-1">    </span><span class="hl-7">// Disconnect and clean up.</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">};</span>
+</code><button type="button">Copy</button></pre>
+
+<hr>
+<h2 id="api" class="tsd-anchor-link">API<a href="#api" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="_-1" class="tsd-anchor-link"><code>registerSyncProvider(opts)</code><a href="#_-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Register a provider for one or more entity types. Replaces any prior
+registration for those types.</p>
+<pre><code class="ts"><span class="hl-0">registerSyncProvider</span><span class="hl-1">({ </span><span class="hl-4">entityTypes:</span><span class="hl-1"> [</span><span class="hl-2">&quot;Document&quot;</span><span class="hl-1">], </span><span class="hl-4">provider</span><span class="hl-1"> });</span>
+</code><button type="button">Copy</button></pre>
+
+<h3 id="_-2" class="tsd-anchor-link"><code>startSyncBridge(opts?)</code><a href="#_-2" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Start all registered providers and subscribe to the graph.
+Returns a <code>SyncBridgeHandle</code> with a <code>stop()</code> method.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pushDebounceMs</code></td>
+<td><code>16</code></td>
+<td>Debounce window (ms) for coalescing rapid writes before pushing to providers. <code>0</code> = synchronous.</td>
+</tr>
+<tr>
+<td><code>store</code></td>
+<td>core <code>graphStore</code></td>
+<td>Graph store owned by this client. Inject <code>createGraphStore()</code> for isolation.</td>
+</tr>
+<tr>
+<td><code>registry</code></td>
+<td>default sync registry</td>
+<td>Provider registry owned by this client. Inject <code>createSyncProviderRegistry()</code> for isolation.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_-3" class="tsd-anchor-link"><code>applyPeerChanges(changes, store?)</code><a href="#_-3" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Inbound path: apply peer changes directly into the selected entity graph.
+Called automatically by the bridge; exposed for advanced use cases.</p>
+<h3 id="_-4" class="tsd-anchor-link"><code>createSyncProviderRegistry()</code><a href="#_-4" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Create provider registration state owned by one client. Its <code>register</code>,
+<code>getProvider</code>, <code>getAllProviders</code>, <code>getRegisteredTypes</code>, <code>getTypesForProvider</code>,
+and <code>clear</code> methods mirror the package-level default-registry functions.
+<code>getDefaultSyncProviderRegistry()</code> exposes the backwards-compatible default.</p>
+<h3 id="_-5" class="tsd-anchor-link"><code>createYjsProvider(opts)</code><a href="#_-5" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>transport</code></td>
+<td><code>&quot;websocket&quot;</code></td>
+<td><code>&quot;websocket&quot;</code>, <code>&quot;webrtc&quot;</code>, or <code>&quot;both&quot;</code></td>
+</tr>
+<tr>
+<td><code>wsServerUrl</code></td>
+<td>—</td>
+<td>WebSocket server URL (required for <code>websocket</code>/<code>both</code>)</td>
+</tr>
+<tr>
+<td><code>roomPrefix</code></td>
+<td><code>&quot;entity-graph&quot;</code></td>
+<td>Room name prefix; each type appends <code>/{type}</code></td>
+</tr>
+<tr>
+<td><code>webrtcOpts</code></td>
+<td><code>{}</code></td>
+<td>Extra options for <code>WebrtcProvider</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="_-6" class="tsd-anchor-link"><code>createLoroProvider(opts)</code><a href="#_-6" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>channel</code></td>
+<td>—</td>
+<td><code>LoroChannel</code> implementation (required)</td>
+</tr>
+<tr>
+<td><code>loadLoro</code></td>
+<td>runtime optional-peer import</td>
+<td>Bundler-visible <code>() =&gt; import(&quot;loro-crdt&quot;)</code>; recommended for browser builds.</td>
+</tr>
+<tr>
+<td><code>registerMergeStrategies</code></td>
+<td><code>true</code></td>
+<td>Register Loro CRDT merge strategy for managed types</td>
+</tr>
+<tr>
+<td><code>peerId</code></td>
+<td>Loro-generated</td>
+<td>Stable numeric replica identity. Use distinct IDs for deterministic conflict tests.</td>
+</tr>
+<tr>
+<td><code>onError</code></td>
+<td><code>console.error</code></td>
+<td>Receives <code>start</code>, <code>import</code>, and <code>export</code> failures; failures are never silently discarded.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_-7" class="tsd-anchor-link"><code>createWebSocketLoroChannel(url, options?)</code><a href="#_-7" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Built-in <code>LoroChannel</code> that retains the latest local snapshot per type, queues
+offline writes, reconnects with bounded exponential delay, and requests peer
+snapshots after every connection. Entity framing is
+<code>[1 byte: type length][N bytes: type string][M bytes: Loro snapshot]</code>; the
+otherwise-invalid one-byte zero frame is a collision-free sync request.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reconnect.enabled</code></td>
+<td><code>true</code></td>
+<td>Reconnect after unexpected close.</td>
+</tr>
+<tr>
+<td><code>reconnect.initialDelayMs</code></td>
+<td><code>100</code></td>
+<td>First reconnect delay.</td>
+</tr>
+<tr>
+<td><code>reconnect.maxDelayMs</code></td>
+<td><code>5000</code></td>
+<td>Backoff ceiling.</td>
+</tr>
+<tr>
+<td><code>reconnect.maxAttempts</code></td>
+<td><code>Infinity</code></td>
+<td>Attempt ceiling; exhaustion reports an error.</td>
+</tr>
+<tr>
+<td><code>webSocketConstructor</code></td>
+<td><code>globalThis.WebSocket</code></td>
+<td>Constructor injection for non-browser hosts and tests.</td>
+</tr>
+<tr>
+<td><code>onError</code></td>
+<td>—</td>
+<td>Transport diagnostic callback.</td>
+</tr>
+</tbody>
+</table>
+<p>The relay server broadcasts opaque binary frames to other clients. It must not
+rewrite payloads or consume the sync-request control frame.</p>
+<h3 id="_-8" class="tsd-anchor-link"><code>createLoroLoopbackNetwork(options?)</code><a href="#_-8" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Create the deterministic reference fabric. Each named channel retains its
+latest full snapshot while disconnected. Reconnecting queues a bidirectional
+exchange with all connected peers. <code>autoFlush</code> defaults to <code>true</code>; disable it
+to inspect <code>getPendingCount()</code> and call <code>flush(&quot;fifo&quot; | &quot;reverse&quot;)</code> explicitly.</p>
+<p>This is a merge/reconnect oracle, not browser or real-socket evidence. The
+mandatory release gate separately executes <code>loro-websocket.integration.test.ts</code>
+against an actual ephemeral relay.</p>
+<hr>
+<h2 id="syncprovider-interface" class="tsd-anchor-link">SyncProvider interface<a href="#syncprovider-interface" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<pre><code class="ts"><span class="hl-5">interface</span><span class="hl-1"> </span><span class="hl-10">SyncProvider</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-5">readonly</span><span class="hl-1"> </span><span class="hl-4">name</span><span class="hl-1">: </span><span class="hl-10">string</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-0">start</span><span class="hl-1">(</span><span class="hl-4">entityTypes</span><span class="hl-1">: </span><span class="hl-10">ReadonlyArray</span><span class="hl-1">&lt;</span><span class="hl-10">string</span><span class="hl-1">&gt;, </span><span class="hl-4">onPeerChange</span><span class="hl-1">: </span><span class="hl-10">PeerChangeHandler</span><span class="hl-1">): </span><span class="hl-10">Promise</span><span class="hl-1">&lt;</span><span class="hl-10">void</span><span class="hl-1">&gt;;</span><br/><span class="hl-1">  </span><span class="hl-0">pushLocalChange</span><span class="hl-1">(</span><span class="hl-4">type</span><span class="hl-1">: </span><span class="hl-10">string</span><span class="hl-1">, </span><span class="hl-4">id</span><span class="hl-1">: </span><span class="hl-10">string</span><span class="hl-1">, </span><span class="hl-4">fields</span><span class="hl-1">: </span><span class="hl-10">Record</span><span class="hl-1">&lt;</span><span class="hl-10">string</span><span class="hl-1">, </span><span class="hl-10">unknown</span><span class="hl-1">&gt;): </span><span class="hl-10">void</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-0">stop</span><span class="hl-1">(): </span><span class="hl-10">void</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-0">getDoc</span><span class="hl-1">?(</span><span class="hl-4">type</span><span class="hl-1">: </span><span class="hl-10">string</span><span class="hl-1">, </span><span class="hl-4">id</span><span class="hl-1">: </span><span class="hl-10">string</span><span class="hl-1">): </span><span class="hl-10">unknown</span><span class="hl-1"> | </span><span class="hl-10">undefined</span><span class="hl-1">;</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<hr>
+<h2 id="architecture-notes" class="tsd-anchor-link">Architecture notes<a href="#architecture-notes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<ul>
+<li><strong>No CRDT in the bridge</strong>: the bridge is transport-agnostic; all CRDT logic
+lives inside providers. Yjs uses its own CRDT under the hood; Loro delegates
+to <code>createLoroMergeStrategy</code> from core.</li>
+<li><strong>One doc per entity type</strong>: partitioning by type keeps document sizes
+manageable and scopes Y.js / Loro room subscriptions.</li>
+<li><strong>Deterministic child identity</strong>: Loro entities use <code>ensureMergeableMap</code>, so
+two offline peers that first create the same ID merge one child container.</li>
+<li><strong>No inbound echo</strong>: the bridge marks peer-originated entity transitions
+synchronously and does not publish them as new local writes.</li>
+<li><strong>Conflict policy</strong>: different-field edits survive. For same-field edits at
+equal logical counters, Loro's LWW map selects the higher peer ID; all delivery
+orders must still converge.</li>
+<li><strong>Idempotent pushes</strong>: <code>pushLocalChange</code> receives the same data the graph
+just wrote, so calling it more than once for the same state is safe.</li>
+<li><strong>Debounce window</strong>: the default 16ms debounce coalesces rapid graph writes
+(e.g. bulk imports) into a single push per entity, reducing peer traffic.</li>
+</ul>
+<hr>
+<h2 id="release-verification" class="tsd-anchor-link">Release verification<a href="#release-verification" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<pre><code class="bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">test:sync-persistence</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">verify:sync-persistence</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">bdd:sync-persistence</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-5">--filter</span><span class="hl-1"> </span><span class="hl-2">@prometheus-ags/entity-graph-sync</span><span class="hl-1"> </span><span class="hl-2">test:websocket-integration</span>
+</code><button type="button">Copy</button></pre>
+
+<p>The mandatory path proves real PGlite filesystem close/reopen, two isolated
+Loro stores, FIFO and reverse delivery, different-field preservation,
+same-field deterministic resolution, inbound echo suppression, real socket
+termination/reconnect, packed ESM/CommonJS runtime, and NodeNext declarations.
+It contains no conditional dependency skip.</p>
+<p>This headless package evidence does not certify a browser or mobile UI. The
+Vite, Next.js, Flutter, Tauri, A2UI, Docusaurus, accessibility, screenshot,
+trace, and device receipts remain separately owned work. The sibling
+<code>prometheus-entity-sync</code> repository is explicit opt-in integration evidence.
+Maintainers can manually dispatch <code>.github/workflows/entity-sync-contract.yml</code>;
+it packs the current core candidate, installs that tarball into a fresh sibling
+checkout, and runs the sibling TypeScript contracts. It has no push or pull
+request trigger, is not part of the mandatory local gate, and never uses a
+developer-local <code>link:</code> path.</p>
+<hr>
+<h2 id="license" class="tsd-anchor-link">License<a href="#license" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>MIT</p>
+</section>
+<details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Interfaces"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h2 class="tsd-anchor-link" id="interfaces">Interfaces<a href="#interfaces" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary><dl class="tsd-member-summaries"><dt class="tsd-member-summary" id="lorochannel"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-sync.LoroChannel.html">LoroChannel</a><a href="#lorochannel" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="loroloopbacknetwork"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-sync.LoroLoopbackNetwork.html">LoroLoopbackNetwork</a><a href="#loroloopbacknetwork" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="loroloopbacknetworkoptions"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-sync.LoroLoopbackNetworkOptions.html">LoroLoopbackNetworkOptions</a><a href="#loroloopbacknetworkoptions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="loroprovideroptions"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-sync.LoroProviderOptions.html">LoroProviderOptions</a><a href="#loroprovideroptions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="lorowebsocketchanneloptions"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-sync.LoroWebSocketChannelOptions.html">LoroWebSocketChannelOptions</a><a href="#lorowebsocketchanneloptions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="lorowebsocketreconnectoptions"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-sync.LoroWebSocketReconnectOptions.html">LoroWebSocketReconnectOptions</a><a href="#lorowebsocketreconnectoptions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="peerentitychange"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-sync.PeerEntityChange.html">PeerEntityChange</a><a href="#peerentitychange" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="registersyncprovideroptions"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-sync.RegisterSyncProviderOptions.html">RegisterSyncProviderOptions</a><a href="#registersyncprovideroptions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="syncbridgehandle"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-sync.SyncBridgeHandle.html">SyncBridgeHandle</a><a href="#syncbridgehandle" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="syncbridgeoptions"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-sync.SyncBridgeOptions.html">SyncBridgeOptions</a><a href="#syncbridgeoptions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="syncprovider"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-sync.SyncProvider.html">SyncProvider</a><a href="#syncprovider" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="syncproviderregistry"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-sync.SyncProviderRegistry.html">SyncProviderRegistry</a><a href="#syncproviderregistry" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="yjsprovideroptions"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-sync.YjsProviderOptions.html">YjsProviderOptions</a><a href="#yjsprovideroptions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd></dl></details>
+<details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Type Aliases"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h2 class="tsd-anchor-link" id="type-aliases">Type Aliases<a href="#type-aliases" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary><dl class="tsd-member-summaries"><dt class="tsd-member-summary" id="lorochannelstatus"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Type Alias"><use href="../assets/icons.svg#icon-2097152"></use></svg><a href="../types/_prometheus-ags_entity-graph-sync.LoroChannelStatus.html">LoroChannelStatus</a><a href="#lorochannelstatus" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="loroloopbackdeliveryorder"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Type Alias"><use href="../assets/icons.svg#icon-2097152"></use></svg><a href="../types/_prometheus-ags_entity-graph-sync.LoroLoopbackDeliveryOrder.html">LoroLoopbackDeliveryOrder</a><a href="#loroloopbackdeliveryorder" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="peerchangehandler"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Type Alias"><use href="../assets/icons.svg#icon-2097152"></use></svg><a href="../types/_prometheus-ags_entity-graph-sync.PeerChangeHandler.html">PeerChangeHandler</a><a href="#peerchangehandler" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="yjstransport"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Type Alias"><use href="../assets/icons.svg#icon-2097152"></use></svg><a href="../types/_prometheus-ags_entity-graph-sync.YjsTransport.html">YjsTransport</a><a href="#yjstransport" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd></dl></details>
+<details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Functions"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h2 class="tsd-anchor-link" id="functions">Functions<a href="#functions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary><dl class="tsd-member-summaries"><dt class="tsd-member-summary" id="__resetsyncregistry"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-sync.__resetSyncRegistry.html">__resetSyncRegistry</a><a href="#__resetsyncregistry" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="applypeerchanges"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-sync.applyPeerChanges.html">applyPeerChanges</a><a href="#applypeerchanges" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="createloroloopbacknetwork"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-sync.createLoroLoopbackNetwork.html">createLoroLoopbackNetwork</a><a href="#createloroloopbacknetwork" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="createloroprovider"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-sync.createLoroProvider.html">createLoroProvider</a><a href="#createloroprovider" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="createsyncproviderregistry"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-sync.createSyncProviderRegistry.html">createSyncProviderRegistry</a><a href="#createsyncproviderregistry" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="createwebsocketlorochannel"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-sync.createWebSocketLoroChannel.html">createWebSocketLoroChannel</a><a href="#createwebsocketlorochannel" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="createyjsprovider"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-sync.createYjsProvider.html">createYjsProvider</a><a href="#createyjsprovider" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="decodelorowebsocketmessage"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-sync.decodeLoroWebSocketMessage.html">decodeLoroWebSocketMessage</a><a href="#decodelorowebsocketmessage" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="encodelorowebsocketmessage"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-sync.encodeLoroWebSocketMessage.html">encodeLoroWebSocketMessage</a><a href="#encodelorowebsocketmessage" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="getallsyncproviders"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-sync.getAllSyncProviders.html">getAllSyncProviders</a><a href="#getallsyncproviders" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="getdefaultsyncproviderregistry"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-sync.getDefaultSyncProviderRegistry.html">getDefaultSyncProviderRegistry</a><a href="#getdefaultsyncproviderregistry" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="getregisteredsynctypes"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-sync.getRegisteredSyncTypes.html">getRegisteredSyncTypes</a><a href="#getregisteredsynctypes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="getsyncprovider"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-sync.getSyncProvider.html">getSyncProvider</a><a href="#getsyncprovider" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="gettypesforprovider"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-sync.getTypesForProvider.html">getTypesForProvider</a><a href="#gettypesforprovider" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="registersyncprovider"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-sync.registerSyncProvider.html">registerSyncProvider</a><a href="#registersyncprovider" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="startsyncbridge"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-sync.startSyncBridge.html">startSyncBridge</a><a href="#startsyncbridge" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd></dl></details></div>
+<div class="col-sidebar">
+<div class="page-menu">
+<div class="tsd-navigation settings">
+<details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div>
+<div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>On This Page</h3></summary>
+<div class="tsd-accordion-details"><a href="#_"><span></span></a>
+<ul>
+<li><a href="#overview"><span>Overview</span></a></li>
+<li><a href="#installation"><span>Installation</span></a></li>
+<li>
+<ul>
+<li><a href="#optional-peer-dependencies"><span>Optional peer dependencies</span></a></li></ul></li>
+<li><a href="#quick-start"><span>Quick start</span></a></li>
+<li>
+<ul>
+<li><a href="#yjs-websocket"><span>Yjs + <wbr/>Web<wbr/>Socket</span></a></li>
+<li><a href="#yjs-webrtc-peer-to-peer"><span>Yjs + <wbr/>Web<wbr/>RTC (peer-<wbr/>to-<wbr/>peer)</span></a></li>
+<li><a href="#yjs-both-transports-resilient"><span>Yjs + both transports (resilient)</span></a></li>
+<li><a href="#loro-crdt-websocket-channel"><span>Loro <wbr/>CRDT + <wbr/>Web<wbr/>Socket channel</span></a></li>
+<li><a href="#two-isolated-clients"><span>Two isolated clients</span></a></li></ul></li>
+<li><a href="#custom-providers"><span>Custom providers</span></a></li>
+<li><a href="#api"><span>API</span></a></li>
+<li>
+<ul>
+<li><a href="#_-1"><span></span></a></li>
+<li><a href="#_-2"><span></span></a></li>
+<li><a href="#_-3"><span></span></a></li>
+<li><a href="#_-4"><span></span></a></li>
+<li><a href="#_-5"><span></span></a></li>
+<li><a href="#_-6"><span></span></a></li>
+<li><a href="#_-7"><span></span></a></li>
+<li><a href="#_-8"><span></span></a></li></ul></li>
+<li><a href="#syncprovider-interface"><span>Sync<wbr/>Provider interface</span></a></li>
+<li><a href="#architecture-notes"><span>Architecture notes</span></a></li>
+<li><a href="#release-verification"><span>Release verification</span></a></li>
+<li><a href="#license"><span>License</span></a></li></ul>
+<details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Interfaces"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Interfaces</summary>
+<div><a href="#lorochannel"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Loro<wbr/>Channel</span></a><a href="#loroloopbacknetwork"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Loro<wbr/>Loopback<wbr/>Network</span></a><a href="#loroloopbacknetworkoptions"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Loro<wbr/>Loopback<wbr/>Network<wbr/>Options</span></a><a href="#loroprovideroptions"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Loro<wbr/>Provider<wbr/>Options</span></a><a href="#lorowebsocketchanneloptions"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Loro<wbr/>Web<wbr/>Socket<wbr/>Channel<wbr/>Options</span></a><a href="#lorowebsocketreconnectoptions"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Loro<wbr/>Web<wbr/>Socket<wbr/>Reconnect<wbr/>Options</span></a><a href="#peerentitychange"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Peer<wbr/>Entity<wbr/>Change</span></a><a href="#registersyncprovideroptions"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Register<wbr/>Sync<wbr/>Provider<wbr/>Options</span></a><a href="#syncbridgehandle"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Sync<wbr/>Bridge<wbr/>Handle</span></a><a href="#syncbridgeoptions"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Sync<wbr/>Bridge<wbr/>Options</span></a><a href="#syncprovider"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Sync<wbr/>Provider</span></a><a href="#syncproviderregistry"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Sync<wbr/>Provider<wbr/>Registry</span></a><a href="#yjsprovideroptions"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Yjs<wbr/>Provider<wbr/>Options</span></a></div></details>
+<details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Type Aliases"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Type Aliases</summary>
+<div><a href="#lorochannelstatus"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Type Alias"><use href="../assets/icons.svg#icon-2097152"></use></svg><span>Loro<wbr/>Channel<wbr/>Status</span></a><a href="#loroloopbackdeliveryorder"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Type Alias"><use href="../assets/icons.svg#icon-2097152"></use></svg><span>Loro<wbr/>Loopback<wbr/>Delivery<wbr/>Order</span></a><a href="#peerchangehandler"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Type Alias"><use href="../assets/icons.svg#icon-2097152"></use></svg><span>Peer<wbr/>Change<wbr/>Handler</span></a><a href="#yjstransport"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Type Alias"><use href="../assets/icons.svg#icon-2097152"></use></svg><span>Yjs<wbr/>Transport</span></a></div></details>
+<details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Functions"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Functions</summary>
+<div><a href="#__resetsyncregistry"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>__<wbr/>reset<wbr/>Sync<wbr/>Registry</span></a><a href="#applypeerchanges"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>apply<wbr/>Peer<wbr/>Changes</span></a><a href="#createloroloopbacknetwork"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>create<wbr/>Loro<wbr/>Loopback<wbr/>Network</span></a><a href="#createloroprovider"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>create<wbr/>Loro<wbr/>Provider</span></a><a href="#createsyncproviderregistry"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>create<wbr/>Sync<wbr/>Provider<wbr/>Registry</span></a><a href="#createwebsocketlorochannel"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>create<wbr/>Web<wbr/>Socket<wbr/>Loro<wbr/>Channel</span></a><a href="#createyjsprovider"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>create<wbr/>Yjs<wbr/>Provider</span></a><a href="#decodelorowebsocketmessage"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>decode<wbr/>Loro<wbr/>Web<wbr/>Socket<wbr/>Message</span></a><a href="#encodelorowebsocketmessage"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>encode<wbr/>Loro<wbr/>Web<wbr/>Socket<wbr/>Message</span></a><a href="#getallsyncproviders"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>get<wbr/>All<wbr/>Sync<wbr/>Providers</span></a><a href="#getdefaultsyncproviderregistry"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>get<wbr/>Default<wbr/>Sync<wbr/>Provider<wbr/>Registry</span></a><a href="#getregisteredsynctypes"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>get<wbr/>Registered<wbr/>Sync<wbr/>Types</span></a><a href="#getsyncprovider"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>get<wbr/>Sync<wbr/>Provider</span></a><a href="#gettypesforprovider"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>get<wbr/>Types<wbr/>For<wbr/>Provider</span></a><a href="#registersyncprovider"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>register<wbr/>Sync<wbr/>Provider</span></a><a href="#startsyncbridge"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>start<wbr/>Sync<wbr/>Bridge</span></a></div></details></div></details></div>
+<div class="site-menu">
+<nav class="tsd-navigation"><a href="../index.html">Prometheus Entity Management API</a>
+<ul class="tsd-small-nested-navigation" id="tsd-nav-container">
+<li>Loading...</li></ul></nav></div></div></div><footer>
+<p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer>
+<div class="overlay"></div></body></html>

@@ -69,6 +69,15 @@ supabase/.temp/
 # ── Misc ───────────────────────────────────────────────────────────────────────
 .turbo/
 *.local
+website/.docusaurus/
+website/build/
+.typedoc-packed-*/
+.native-docs-*/
+test-results/
+playwright-report/
+website/lighthouse-results/
+website/.lighthouseci/
+.native-docs-cache/
 
 # Rust build artifacts (never commit)
 target/

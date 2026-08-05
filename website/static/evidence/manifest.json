@@ -1,0 +1,571 @@
+{
+  "schemaVersion": "1.0.0",
+  "certificationReceipt": "website/evidence-certifications.json",
+  "certificationReceiptSha256": "7adc50b0fd7c934b9412c855266b22879ed9751a99c9b098904df3732ef7a22b",
+  "assets": [
+    {
+      "assetId": "react-graph-transports",
+      "scenarioIds": [
+        "example.graph.normalized-cross-view",
+        "example.transport.rest-graphql-equivalence"
+      ],
+      "caption": "React/Vite joins normalized Task identities across graph views and deterministic REST/GraphQL transport modes.",
+      "alt": "Prometheus React showcase with normalized graph list and detail panels beside REST and GraphQL transport controls",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-browser-graph-and-transports.png",
+      "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-vite-verification.json",
+      "receiptAssertion": {
+        "field": "status",
+        "equals": "pass"
+      },
+      "sourceSha256": "909cb813e879b7cb9c15289d8051e1fc98f6a2f8e4df45bcc516c35fa602d621",
+      "receiptSha256": "0b9214624b0db2fdd57388231186f9671e61463d23f59a15dfcb7848560251c1",
+      "visualReview": [
+        "no-visible-secrets",
+        "no-internal-paths",
+        "not-blank",
+        "not-icon"
+      ],
+      "certificationStatus": "verified-browser",
+      "sourceGitBlobSha": "80bb18408ed106a91cd57d4f8a126a371e73eb27",
+      "width": 1280,
+      "height": 720,
+      "variants": [
+        {
+          "width": 640,
+          "path": "react-graph-transports-640.webp"
+        },
+        {
+          "width": 1280,
+          "path": "react-graph-transports-1280.webp"
+        }
+      ],
+      "sha256": "d0ddc0130df4fccf46b1838d8ade7521056e85ea455f49dc236a27b3d933fe1e"
+    },
+    {
+      "assetId": "react-mutations-realtime",
+      "scenarioIds": [
+        "example.crud.optimistic-confirm",
+        "example.crud.optimistic-rollback",
+        "example.realtime.coalesced-cross-view"
+      ],
+      "caption": "Optimistic confirmation, exact rollback, and coalesced realtime changes update one React graph.",
+      "alt": "React showcase mutation and realtime panels displaying optimistic and coalesced cross-view state",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-browser-mutations-and-realtime.png",
+      "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-vite-verification.json",
+      "receiptAssertion": {
+        "field": "status",
+        "equals": "pass"
+      },
+      "sourceSha256": "91ac9bc0f62b32869f300c2b40a5c210248e2c5b1947b5d68b6f2a98df0d0fc1",
+      "receiptSha256": "0b9214624b0db2fdd57388231186f9671e61463d23f59a15dfcb7848560251c1",
+      "visualReview": [
+        "no-visible-secrets",
+        "no-internal-paths",
+        "not-blank",
+        "not-icon"
+      ],
+      "certificationStatus": "verified-browser",
+      "sourceGitBlobSha": "2552ff06f39482cfd5863bb453af5c05a9a6d346",
+      "width": 1280,
+      "height": 720,
+      "variants": [
+        {
+          "width": 640,
+          "path": "react-mutations-realtime-640.webp"
+        },
+        {
+          "width": 1280,
+          "path": "react-mutations-realtime-1280.webp"
+        }
+      ],
+      "sha256": "45f1fc23027dfc257c005928ea645160023bc2f9e466e766a57264b4f79d361d"
+    },
+    {
+      "assetId": "react-offline-lifecycle",
+      "scenarioIds": [
+        "example.offline.persistence-convergence",
+        "example.runtime.lifecycle-security"
+      ],
+      "caption": "Browser PGlite persistence, Loro convergence, lifecycle state, and accessibility share one React release surface.",
+      "alt": "React showcase offline lifecycle and accessibility evidence panels",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-browser-offline-lifecycle-a11y.png",
+      "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-vite-verification.json",
+      "receiptAssertion": {
+        "field": "status",
+        "equals": "pass"
+      },
+      "sourceSha256": "20564fc70bd351fe63cf14b01f17dd0a87ec3cecb52da1c242e1fd18a9c3da6d",
+      "receiptSha256": "0b9214624b0db2fdd57388231186f9671e61463d23f59a15dfcb7848560251c1",
+      "visualReview": [
+        "no-visible-secrets",
+        "no-internal-paths",
+        "not-blank",
+        "not-icon"
+      ],
+      "certificationStatus": "verified-browser",
+      "sourceGitBlobSha": "ff8d273cfc0632013d7b8217484d64173f2d0552",
+      "width": 1280,
+      "height": 720,
+      "variants": [
+        {
+          "width": 640,
+          "path": "react-offline-lifecycle-640.webp"
+        },
+        {
+          "width": 1280,
+          "path": "react-offline-lifecycle-1280.webp"
+        }
+      ],
+      "sha256": "c8c778954979abaa24ca07a250d122b45faf3b44f8b29435215ba948a1a8f7e5"
+    },
+    {
+      "assetId": "next-ssr-hydration",
+      "scenarioIds": [
+        "example.runtime.ssr-isolation-hydration",
+        "example.graph.normalized-cross-view"
+      ],
+      "caption": "Next.js request-isolated server graphs hydrate one scoped client graph before realtime takeover.",
+      "alt": "Next.js App Router showcase displaying server-rendered entity state after scoped client hydration",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/task-3-nextjs-ssr-hydration.png",
+      "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/browser-evidence.json",
+      "receiptAssertion": {
+        "field": "status",
+        "equals": "pass"
+      },
+      "sourceSha256": "de0e5002ed0fceacb9e6c6253aec92e2b9f8de5260274fe3604214534535d38b",
+      "receiptSha256": "61e6850611de77cffa75fe9ee97630ae1be9a784db68005fb5263bb74a601978",
+      "visualReview": [
+        "no-visible-secrets",
+        "no-internal-paths",
+        "not-blank",
+        "not-icon"
+      ],
+      "certificationStatus": "verified-browser",
+      "sourceGitBlobSha": "da603607b80512ab346e4f5ddf8c223b5ed6a33d",
+      "width": 1280,
+      "height": 720,
+      "variants": [
+        {
+          "width": 640,
+          "path": "next-ssr-hydration-640.webp"
+        },
+        {
+          "width": 1280,
+          "path": "next-ssr-hydration-1280.webp"
+        }
+      ],
+      "sha256": "8add483b09ff1d77ccf65deda934e516825c17ff2a064512337e61025d0d1e4f"
+    },
+    {
+      "assetId": "a2ui-policy-approval",
+      "scenarioIds": [
+        "example.protocol.a2a-a2ui-policy",
+        "example.crud.optimistic-confirm"
+      ],
+      "caption": "A catalogued A2UI action crosses application policy and human approval before graph mutation.",
+      "alt": "Agentic A2UI showcase displaying a policy-controlled action and human approval state",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-happy-policy-approval.png",
+      "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-evidence.json",
+      "receiptAssertion": {
+        "field": "status",
+        "equals": "pass"
+      },
+      "sourceSha256": "0ab64925a1f97a93459cf210eb73036bc83a9254bb50a558bdf8e3aa58f09ba2",
+      "receiptSha256": "745980c30ae9f53cfb9dacc5396c758baaa35e054f2d92a98f31afbe13f58495",
+      "visualReview": [
+        "no-visible-secrets",
+        "no-internal-paths",
+        "not-blank",
+        "not-icon"
+      ],
+      "certificationStatus": "verified-browser",
+      "sourceGitBlobSha": "e4c085acae87fd4abc279e84354359639b8efce6",
+      "width": 1280,
+      "height": 2193,
+      "variants": [
+        {
+          "width": 640,
+          "path": "a2ui-policy-approval-640.webp"
+        },
+        {
+          "width": 1280,
+          "path": "a2ui-policy-approval-1280.webp"
+        }
+      ],
+      "sha256": "e65d43777b637c28ffd2166ba3b1d807b34a337b6fccfb93f5bae80598ef684f"
+    },
+    {
+      "assetId": "a2ui-malformed-denial",
+      "scenarioIds": [
+        "example.protocol.a2a-a2ui-policy",
+        "example.runtime.lifecycle-security"
+      ],
+      "caption": "Malformed A2UI content fails closed before an unknown component or action reaches the graph.",
+      "alt": "Agentic A2UI showcase displaying a rejected malformed artifact",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-malformed-artifact.png",
+      "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-evidence.json",
+      "receiptAssertion": {
+        "field": "status",
+        "equals": "pass"
+      },
+      "sourceSha256": "a81aedab564384d2a22e0ac28f96d3c358dc6463b4f789f2bfd63e4a8e6ef537",
+      "receiptSha256": "745980c30ae9f53cfb9dacc5396c758baaa35e054f2d92a98f31afbe13f58495",
+      "visualReview": [
+        "no-visible-secrets",
+        "no-internal-paths",
+        "not-blank",
+        "not-icon"
+      ],
+      "certificationStatus": "verified-browser",
+      "sourceGitBlobSha": "87cedfb5bbec0bb43b11382002252229b40d39a9",
+      "width": 1280,
+      "height": 1535,
+      "variants": [
+        {
+          "width": 640,
+          "path": "a2ui-malformed-denial-640.webp"
+        },
+        {
+          "width": 1280,
+          "path": "a2ui-malformed-denial-1280.webp"
+        }
+      ],
+      "sha256": "56eeab31e4c1452e949e4430559b6434fada9e0c974cbcb8487ec9a29ff09b93"
+    },
+    {
+      "assetId": "flutter-cross-view-initial",
+      "scenarioIds": [
+        "example.graph.normalized-cross-view"
+      ],
+      "caption": "Flutter list and detail providers resolve the same canonical Task before a local patch.",
+      "alt": "Flutter golden showing list and detail projections of one normalized task",
+      "sourcePath": "packages/entity_graph_flutter/test/goldens/cross-view-initial.png",
+      "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-dart-report.json",
+      "receiptAssertion": {
+        "field": "result",
+        "equals": "pass"
+      },
+      "sourceSha256": "cf8cafe9e6ef51f7138f74f73ae732d7286d695b9c3bad1afb46a8730f648e3a",
+      "receiptSha256": "173831fb410a51e5dea751e914074d764c9786e71205422a318bfa6d37e700a9",
+      "visualReview": [
+        "no-visible-secrets",
+        "no-internal-paths",
+        "not-blank",
+        "not-icon"
+      ],
+      "certificationStatus": "verified-golden",
+      "sourceGitBlobSha": "ed6d4d483be6f906ae11f18e11bad39d516ddca0",
+      "width": 2880,
+      "height": 1800,
+      "variants": [
+        {
+          "width": 640,
+          "path": "flutter-cross-view-initial-640.webp"
+        },
+        {
+          "width": 1280,
+          "path": "flutter-cross-view-initial-1280.webp"
+        }
+      ],
+      "sha256": "91d9f89fb38c33c812dd1203ed71ff3f180f18927de2cf187e6ea6ee6f24579d"
+    },
+    {
+      "assetId": "flutter-cross-view-optimistic",
+      "scenarioIds": [
+        "example.crud.optimistic-confirm",
+        "example.crud.optimistic-rollback"
+      ],
+      "caption": "A Flutter optimistic overlay is visible through list and detail Riverpod joins while canonical data remains separate.",
+      "alt": "Flutter golden showing an optimistic task update in list and detail views",
+      "sourcePath": "packages/entity_graph_flutter/test/goldens/cross-view-optimistic.png",
+      "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-dart-report.json",
+      "receiptAssertion": {
+        "field": "result",
+        "equals": "pass"
+      },
+      "sourceSha256": "e1e6ea7a4e4f4fe9339111f2a4ec1a1bbe9d81ca3c3a993b60bf58cb8ca8aac3",
+      "receiptSha256": "173831fb410a51e5dea751e914074d764c9786e71205422a318bfa6d37e700a9",
+      "visualReview": [
+        "no-visible-secrets",
+        "no-internal-paths",
+        "not-blank",
+        "not-icon"
+      ],
+      "certificationStatus": "verified-golden",
+      "sourceGitBlobSha": "fb4e6b06a7378b4a0cd5b6310a69e53a5e71761d",
+      "width": 2880,
+      "height": 1800,
+      "variants": [
+        {
+          "width": 640,
+          "path": "flutter-cross-view-optimistic-640.webp"
+        },
+        {
+          "width": 1280,
+          "path": "flutter-cross-view-optimistic-1280.webp"
+        }
+      ],
+      "sha256": "a4d8b4123320d545bc82dd95ad7e481c10f95ec79ac9552fa5842a47bd0c3ede"
+    },
+    {
+      "assetId": "flutter-a2ui-phone",
+      "scenarioIds": [
+        "example.protocol.a2a-a2ui-policy",
+        "example.platform.adapter-boundary"
+      ],
+      "caption": "The Flutter phone surface renders the allowlisted GenUI catalog inside the same entity application.",
+      "alt": "Flutter phone golden displaying a policy-controlled A2UI surface",
+      "sourcePath": "examples/flutter-riverpod/test/goldens/showcase-phone-a2ui.png",
+      "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-riverpod-a2ui-example/final-verification.json",
+      "receiptAssertion": {
+        "field": "status",
+        "equals": "pass"
+      },
+      "sourceSha256": "7206f21d6672836ae6b2483aa81e508160939d7485e68221c62fc5227c11eac5",
+      "receiptSha256": "a04a293a6373b8d45564f904f5d716bc906e75af8438870a115cb094daec5810",
+      "visualReview": [
+        "no-visible-secrets",
+        "no-internal-paths",
+        "not-blank",
+        "not-icon"
+      ],
+      "certificationStatus": "verified-golden",
+      "sourceGitBlobSha": "a9c1c42de86247afd4a25d4da75db5e43bf89861",
+      "width": 430,
+      "height": 932,
+      "variants": [
+        {
+          "width": 430,
+          "path": "flutter-a2ui-phone-430.webp"
+        }
+      ],
+      "sha256": "170c741170809ab32a838aeb8c71c29dc67bb27e4b65149f4ca89ea25403befa"
+    },
+    {
+      "assetId": "tauri-desktop-graph",
+      "scenarioIds": [
+        "example.graph.normalized-cross-view",
+        "example.platform.adapter-boundary"
+      ],
+      "caption": "The Tauri desktop projection keeps native adapter status beside the shared normalized graph.",
+      "alt": "Tauri desktop showcase displaying entity graph views and native platform adapter status",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-browser-desktop-graph.png",
+      "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-browser-evidence.json",
+      "receiptAssertion": {
+        "field": "status",
+        "equals": "pass"
+      },
+      "sourceSha256": "621f9bef17c74cd62ff8d816274ada7adca2f87227fe251c76ec8aab2f89c7ee",
+      "receiptSha256": "032ada9cfaff174bca4d87451fb44f66412193ced5b3d58cb1c60bcb444e2322",
+      "visualReview": [
+        "no-visible-secrets",
+        "no-internal-paths",
+        "not-blank",
+        "not-icon"
+      ],
+      "certificationStatus": "verified-browser",
+      "sourceGitBlobSha": "4b16c31314f004ca745fd029b61bd40ab2fef792",
+      "width": 1280,
+      "height": 1029,
+      "variants": [
+        {
+          "width": 640,
+          "path": "tauri-desktop-graph-640.webp"
+        },
+        {
+          "width": 1280,
+          "path": "tauri-desktop-graph-1280.webp"
+        }
+      ],
+      "sha256": "4ecc72809fde1eabfd4da6f8e75cc9cfdab347e06429d118074f7f2c9e4e7293"
+    },
+    {
+      "assetId": "tauri-android-runtime",
+      "scenarioIds": [
+        "example.platform.adapter-boundary",
+        "example.runtime.lifecycle-security"
+      ],
+      "caption": "Android API 36 emulator runtime evidence for the shared Tauri application and allowed capability path.",
+      "alt": "Android emulator showing the Prometheus Tauri entity application runtime result",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-6-current-android-runtime.png",
+      "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-6-current-mobile-evidence.json",
+      "receiptAssertion": {
+        "field": "status",
+        "equals": "pass"
+      },
+      "sourceSha256": "be5d10cdca947d8375cb66979951abd5768a312ab87d2728ae68ac4238eb434f",
+      "receiptSha256": "1a5db67ea396b3dd9d8598d6378daa5eee86cb4675a445f9fe7bf058ea929f4f",
+      "visualReview": [
+        "no-visible-secrets",
+        "no-internal-paths",
+        "not-blank",
+        "not-icon"
+      ],
+      "certificationStatus": "verified-emulator",
+      "sourceGitBlobSha": "d1881340b635da42832d4f361f283fac197970eb",
+      "width": 1344,
+      "height": 2992,
+      "variants": [
+        {
+          "width": 640,
+          "path": "tauri-android-runtime-640.webp"
+        },
+        {
+          "width": 1280,
+          "path": "tauri-android-runtime-1280.webp"
+        }
+      ],
+      "sha256": "4b50ae9c2984b328e038483f81a1400843cccacfd57557c586fb00cdc7916ba6"
+    },
+    {
+      "assetId": "tauri-ios-runtime",
+      "scenarioIds": [
+        "example.platform.adapter-boundary",
+        "example.runtime.lifecycle-security"
+      ],
+      "caption": "iOS 26.5 simulator runtime evidence for the same Tauri domain and capability contract.",
+      "alt": "iOS simulator showing the Prometheus Tauri entity application runtime result",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-6-current-ios-runtime.png",
+      "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-6-current-mobile-evidence.json",
+      "receiptAssertion": {
+        "field": "status",
+        "equals": "pass"
+      },
+      "sourceSha256": "34bedde2b64acb29cbf35bfdc5c0f2b841c78fc557eed29562f0bddba4e87c47",
+      "receiptSha256": "1a5db67ea396b3dd9d8598d6378daa5eee86cb4675a445f9fe7bf058ea929f4f",
+      "visualReview": [
+        "no-visible-secrets",
+        "no-internal-paths",
+        "not-blank",
+        "not-icon"
+      ],
+      "certificationStatus": "verified-simulator",
+      "sourceGitBlobSha": "7f6d7bbcf5f0115821100cea6eeee866e06530ae",
+      "width": 1206,
+      "height": 2622,
+      "variants": [
+        {
+          "width": 640,
+          "path": "tauri-ios-runtime-640.webp"
+        },
+        {
+          "width": 1206,
+          "path": "tauri-ios-runtime-1206.webp"
+        }
+      ],
+      "sha256": "c9658c9873cea99774aafa282ac3f30e333694224d7d9332a7120f4ea0de7494"
+    },
+    {
+      "assetId": "flutter-source-lineage",
+      "scenarioIds": [
+        "example.platform.adapter-boundary"
+      ],
+      "caption": "Allowlisted KnowMe Flutter lineage is retained as provenance while this repository owns the canonical Dart package.",
+      "alt": "Flutter source provenance diagram showing retained history and canonical package ownership",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/task-2-lineage-review.png",
+      "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/provenance-verification.json",
+      "receiptAssertion": {
+        "field": "verdict",
+        "equals": "pass"
+      },
+      "sourceSha256": "d70e598046617f70aa3556b37bf83f916c40cc33804e3c53cb64aa7f9d031e06",
+      "receiptSha256": "abdbd8c296bd78d4b25e96fab3366d4b99f1e45ca04608c81916f78898240581",
+      "visualReview": [
+        "no-visible-secrets",
+        "no-internal-paths",
+        "not-blank",
+        "not-icon"
+      ],
+      "certificationStatus": "verified-provenance",
+      "sourceGitBlobSha": "093fb5809dcbae53c7d614e3a8a3c18da9e925fa",
+      "width": 1200,
+      "height": 680,
+      "variants": [
+        {
+          "width": 640,
+          "path": "flutter-source-lineage-640.webp"
+        },
+        {
+          "width": 1200,
+          "path": "flutter-source-lineage-1200.webp"
+        }
+      ],
+      "sha256": "7b84360b718e70d66e91f1ba3c4ba48d05f4b0db626a1e5f6e81768d6a00c0b7"
+    },
+    {
+      "assetId": "release-disposition",
+      "scenarioIds": [
+        "example.runtime.lifecycle-security"
+      ],
+      "caption": "The RC release disposition separates change certification from npm publication authority.",
+      "alt": "Release diagram showing certified code and evidence with npm publication still blocked",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-release-disposition.png",
+      "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/final-verification.json",
+      "receiptAssertion": {
+        "field": "verdict",
+        "equals": "pass-change-certified-archive-ready-publication-blocked"
+      },
+      "sourceSha256": "9eba2b3c98da09bb0000c3f5d32d25db682a618142f8665422d57fea787f49fa",
+      "receiptSha256": "133b96da669bd9ab8f821f214922805f4eb915af37dd9db386801e26d4216ed5",
+      "visualReview": [
+        "no-visible-secrets",
+        "no-internal-paths",
+        "not-blank",
+        "not-icon"
+      ],
+      "certificationStatus": "verified-release-diagram",
+      "sourceGitBlobSha": "12ec8f770a2e8b5eb3e04378fcf24c25895cef1c",
+      "width": 1400,
+      "height": 960,
+      "variants": [
+        {
+          "width": 640,
+          "path": "release-disposition-640.webp"
+        },
+        {
+          "width": 1280,
+          "path": "release-disposition-1280.webp"
+        }
+      ],
+      "sha256": "d611c38bd8a133d5279a782ed7576766e43a8ae161db8b1efb13dd8c52b65cdc"
+    },
+    {
+      "assetId": "flint-realtime-contract",
+      "scenarioIds": [
+        "example.realtime.coalesced-cross-view",
+        "example.runtime.lifecycle-security"
+      ],
+      "caption": "Flint watch events become coalesced ChangeSets under explicit tenant, channel, consumer, checkpoint, and key boundaries.",
+      "alt": "Diagram of Flint Realtime Fabric flowing through the portable adapter and realtime manager into list and detail graph views",
+      "sourcePath": "website/evidence-source/flint-realtime-contract.svg",
+      "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flint-portable-contracts/task-6-external-source-verification.json",
+      "receiptAssertion": {
+        "field": "verdict",
+        "equals": "pass"
+      },
+      "sourceSha256": "2ab7aebfb5b05f48e04bd39a49ec9b952a2b5e69bf2aae7883a8b17be09f5a0f",
+      "receiptSha256": "3b359bd664063886ddf26511866239d621b91f2b65babb26c7fde68c732e8972",
+      "visualReview": [
+        "no-visible-secrets",
+        "no-internal-paths",
+        "not-blank",
+        "not-icon"
+      ],
+      "certificationStatus": "verified-contract-diagram",
+      "sourceGitBlobSha": "61046873f02f5eb3d746ab7680c6d8978931e63b",
+      "width": 2800,
+      "height": 1600,
+      "variants": [
+        {
+          "width": 640,
+          "path": "flint-realtime-contract-640.webp"
+        },
+        {
+          "width": 1280,
+          "path": "flint-realtime-contract-1280.webp"
+        }
+      ],
+      "sha256": "e404e74d3e9668245a0869d6015f59653009bee2750ae914762c3da1c3cb2799"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "codex-gpt-5",
+  "isolation_mode": "harness-native:fresh-context",
+  "producer_model": "gpt-5",
+  "cross_model_check": "unverified-same-harness-family",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/generate-native-api.mjs",
+      "line": 46,
+      "claim": "The --output option can recursively delete any absolute directory supplied by the caller, including the repository root or filesystem root.",
+      "evidence": "The unchecked CLI argument is resolved with path.resolve and passed directly to recursive rm without constraining it to canonical output or a safe temporary root.",
+      "suggested_fix": "Before deletion, require output to equal canonicalOutput or be contained by an explicitly approved temporary root, and reject filesystem roots, repositoryRoot, websiteRoot, and ancestor paths."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "README.md",
+      "line": 18,
+      "claim": "The release-status prose falsely describes the package family's latest tags as stable.",
+      "evidence": "The README says Stable latest tags remain protected, while the generated registry table shows eleven of twelve latest tags at 3.0.0-alpha.0; package and start pages repeat the characterization.",
+      "suggested_fix": "State that latest tags remain unchanged, and distinguish the sole stable 2.2.0 tag from the eleven packages whose current latest is 3.0.0-alpha.0."
+    },
+    {
+      "severity": "WARNING",
+      "file": "website/scripts/serve-built-site.mjs",
+      "line": 27,
+      "claim": "A malformed percent-encoded request path can throw URIError from the asynchronous HTTP handler and terminate the certification server.",
+      "evidence": "resolveRequest calls decodeURIComponent directly on the request pathname with no catch, and the asynchronous request callback has no error boundary.",
+      "suggested_fix": "Catch URL/decode errors at the request boundary and return a deterministic 400 response without rejecting the server callback."
+    }
+  ],
+  "checked_classes": [],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

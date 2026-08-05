@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Prometheus Entity Management</title>
+  <desc id="desc">One entity graph. Every framework. Realtime everywhere.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0B0F14"/><stop offset="1" stop-color="#32150D"/></linearGradient></defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <g transform="translate(86 85)">
+    <path d="M58 70 190 54M58 70l50 134m82-150-82 150" fill="none" stroke="#FF6A3D" stroke-width="16" stroke-linecap="round"/>
+    <circle cx="58" cy="70" r="32" fill="#E04E28" stroke="#fff" stroke-width="8"/>
+    <circle cx="190" cy="54" r="32" fill="#FF6A3D" stroke="#fff" stroke-width="8"/>
+    <circle cx="108" cy="204" r="32" fill="#E04E28" stroke="#fff" stroke-width="8"/>
+  </g>
+  <text x="380" y="170" fill="#FF6A3D" font-family="system-ui,sans-serif" font-size="30" font-weight="700" letter-spacing="4">PROMETHEUS AGS</text>
+  <text x="380" y="248" fill="#fff" font-family="system-ui,sans-serif" font-size="62" font-weight="750">Entity Management</text>
+  <text x="86" y="420" fill="#fff" font-family="system-ui,sans-serif" font-size="52" font-weight="650">One entity graph. Every framework.</text>
+  <text x="86" y="486" fill="#D9DEE5" font-family="system-ui,sans-serif" font-size="42">Realtime everywhere.</text>
+  <rect x="86" y="540" width="170" height="44" rx="22" fill="#E04E28"/><text x="119" y="570" fill="#fff" font-family="monospace" font-size="22" font-weight="700">3.0 RC</text>
+</svg>

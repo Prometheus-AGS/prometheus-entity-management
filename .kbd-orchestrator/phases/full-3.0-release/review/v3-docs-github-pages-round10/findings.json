@@ -1,0 +1,32 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "codex-gpt-5",
+  "isolation_mode": "harness-native:fresh-context",
+  "producer_model": "gpt-5",
+  "cross_model_check": "unverified-same-harness-family",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": ".github/workflows/docs-pages.yml",
+      "line": 82,
+      "claim": "The generated-artifact parity gate ignores newly generated untracked files, allowing incomplete committed API or evidence output to pass.",
+      "evidence": "git diff reports tracked-file changes but does not report untracked files created by docs:api or docs:evidence.",
+      "suggested_fix": "After regeneration, also fail on scoped untracked files using git status --porcelain --untracked-files=all."
+    },
+    {
+      "severity": "WARNING",
+      "file": "website/scripts/generate-packed-api.mjs",
+      "line": 127,
+      "claim": "The packed API fingerprint does not identify the tarballs that produced the documentation.",
+      "evidence": "The fingerprint hashes only inventory entries whose tarballIntegrity values are null for all twelve packages, so different tarball contents with unchanged metadata produce the same fingerprint.",
+      "suggested_fix": "Hash each packed tarball's bytes, record its SHA-256 or SRI in the inventory, and include those content hashes in the fingerprint."
+    }
+  ],
+  "checked_classes": [],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

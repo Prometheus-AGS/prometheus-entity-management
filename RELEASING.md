@@ -178,6 +178,29 @@ reviewer configuration and does not authorize stable publication. Recovery
 skips matching immutable versions, stages absent versions in dependency order,
 and blocks conflicts. Never overwrite a published version.
 
+Before retrying RC staging, authenticate with a fresh browser-backed npm
+maintainer session and register or verify all twelve stage-only relationships:
+
+```bash
+npm login --auth-type=web
+pnpm run release:npm-trust:register
+pnpm run release:npm-trust:verify
+```
+
+The exact repository, workflow, environment, permissions, and package inventory
+are declared in [`release/npm-trusted-publishing.json`](release/npm-trusted-publishing.json).
+The operator commands intentionally fail when `NPM_TOKEN` or `NODE_AUTH_TOKEN`
+is present. They require interactive 2FA and never receive credentials through
+the agent or GitHub Actions.
+
+After the verifier passes, dispatch `publish.yml` in `stage` mode with rehearsal
+run `30976967778` and candidate SHA
+`afbb8de0e861739fa6facb461b69573b2a627bdb` while its artifact remains valid.
+If that artifact has expired, produce a new rehearsal instead. Approve all
+twelve staged packages in npm with 2FA, then verify `3.0.0-rc.1` on `next`,
+protected `latest` tags, provenance, integrity, and clean pnpm consumers. Never
+replace `rc.1`; a proven immutable conflict requires a new `rc.2` candidate.
+
 `pnpm run ci` and a green RC rehearsal mean their named checked-in boundaries
 passed; neither means “3.0 may be published.” Stable certification, the GitHub
 Release, production documentation deployment, post-publication checks, and npm

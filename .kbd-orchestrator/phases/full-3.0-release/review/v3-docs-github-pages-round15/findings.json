@@ -1,0 +1,32 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "codex-gpt-5",
+  "isolation_mode": "harness-native:fresh-context",
+  "producer_model": "gpt-5",
+  "cross_model_check": "unverified-same-harness-family",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/generate-native-api.mjs",
+      "line": 37,
+      "claim": "Canonical --dart-only generation can recursively delete a directory outside the repository through a symlinked canonical output root.",
+      "evidence": "assertSafeOutput trusts output === canonicalOutput, while removeGeneratedDirectory validates only the final target and can miss a symlinked canonical ancestor.",
+      "suggested_fix": "Validate the canonical output and every existing ancestor with lstat/realpath immediately before deletion and require the resolved target to remain inside the resolved repository directory."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/generate-native-api.mjs",
+      "line": 216,
+      "claim": "The canonical --dart-only path re-signs potentially stale Rust documentation into a fresh combined native API manifest.",
+      "evidence": "Dart-only deletes and regenerates only Dart, skips Rust, then unconditionally calls writeNativeApiManifest for canonical output.",
+      "suggested_fix": "Reject partial canonical generation or prevent it from writing the combined manifest."
+    }
+  ],
+  "checked_classes": [],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

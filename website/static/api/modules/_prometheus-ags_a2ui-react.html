@@ -1,0 +1,214 @@
+<!DOCTYPE html><html class="default" lang="en" data-base="../"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@prometheus-ags/a2ui-react | Prometheus Entity Management API</title><meta name="description" content="Documentation for Prometheus Entity Management API"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><link rel="stylesheet" href="../assets/custom.css"/><script defer src="../assets/main.js"></script><script async src="../assets/icons.js" id="tsd-icons-script"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script><script async src="../assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container"><a href="../index.html" class="title">Prometheus Entity Management API</a>
+<div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/>
+<ul role="listbox" id="tsd-search-results"></ul>
+<div id="tsd-search-status" aria-live="polite" aria-atomic="true">
+<div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-menu"></use></svg></a></div></header>
+<div class="container container-main">
+<div class="col-content">
+<div class="tsd-page-title">
+<ul class="tsd-breadcrumb" aria-label="Breadcrumb">
+<li><a href="" aria-current="page">@prometheus-ags/a2ui-react</a></li></ul>
+<h1>Module @prometheus-ags/a2ui-react</h1></div>
+<section class="tsd-panel tsd-typography"><h1 id="prometheus-agsa2ui-react" class="tsd-anchor-link">@prometheus-ags/a2ui-react<a href="#prometheus-agsa2ui-react" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h1>
+<p>Official A2UI v0.9.1 React rendering with a default-deny Prometheus entity-graph
+action bridge.</p>
+<blockquote>
+<p>Release status: the workspace package is <code>3.0.0-rc.1</code>. The bridge is
+implemented and verified, but the full repository-wide 3.0 certification and
+npm publication or <code>latest</code> promotion have not happened.</p>
+</blockquote>
+<h2 id="two-protocol-surfaces" class="tsd-anchor-link">Two protocol surfaces<a href="#two-protocol-surfaces" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<table>
+<thead>
+<tr>
+<th>Import</th>
+<th>Contract</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@prometheus-ags/a2ui-react</code></td>
+<td>Official A2UI v0.9.1 messages, catalogs, surfaces, React rendering, and action policy</td>
+</tr>
+<tr>
+<td><code>@prometheus-ags/a2ui-react/ag-ui</code></td>
+<td>Compatibility APIs for the pre-3.0 AG-UI chat/state-event surface</td>
+</tr>
+</tbody>
+</table>
+<p>A2UI and AG-UI solve different problems. A2UI describes and renders a
+catalog-constrained interface. AG-UI transports run, message, tool, and state
+events. The package root no longer labels the legacy AG-UI chat components as
+official A2UI.</p>
+<h2 id="pinned-version-axes" class="tsd-anchor-link">Pinned version axes<a href="#pinned-version-axes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>These numbers are related but are not interchangeable:</p>
+<table>
+<thead>
+<tr>
+<th>Axis</th>
+<th>Stable target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A2UI wire protocol</td>
+<td><code>v0.9.1</code></td>
+</tr>
+<tr>
+<td><code>@a2ui/react</code> distribution</td>
+<td><code>0.10.2</code></td>
+</tr>
+<tr>
+<td><code>@a2ui/web_core</code> distribution</td>
+<td><code>0.10.5</code></td>
+</tr>
+<tr>
+<td><code>@a2ui/markdown-it</code> distribution</td>
+<td><code>0.1.0</code></td>
+</tr>
+</tbody>
+</table>
+<p>The bridge imports the official <code>/v0_9</code> entry points. It does not implement a
+second JSONL parser, schema validator, data model, or surface store.</p>
+<h2 id="install" class="tsd-anchor-link">Install<a href="#install" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>This monorepo is pnpm-only:</p>
+<pre><code class="bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">@prometheus-ags/a2ui-react</span><span class="hl-1"> </span><span class="hl-2">@prometheus-ags/entity-graph-core</span><span class="hl-1"> </span><span class="hl-2">react</span><span class="hl-1"> </span><span class="hl-2">react-dom</span>
+</code><button type="button">Copy</button></pre>
+
+<p>React 19 is the supported 3.0 line. The package provides ESM and CommonJS
+runtimes plus declarations verified in strict NodeNext and Node16 consumers.</p>
+<h2 id="quick-start" class="tsd-anchor-link">Quick start<a href="#quick-start" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>Create application authority explicitly, then pass official messages to the
+runtime and render the resulting surface:</p>
+<pre><code class="tsx"><span class="hl-3">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">ENTITY_GRAPH_A2UI_ACTIONS</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">PrometheusA2uiProvider</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">PrometheusA2uiSurface</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">createEntityGraphA2uiActionPolicy</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">createPrometheusA2uiRuntime</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/a2ui-react&quot;</span><span class="hl-1">;</span><br/><span class="hl-3">import</span><span class="hl-1"> { </span><span class="hl-4">graphStore</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/entity-graph-core&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">policy</span><span class="hl-1"> = </span><span class="hl-0">createEntityGraphA2uiActionPolicy</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">graphStore</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">entities:</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-4">Order:</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-4">actions:</span><span class="hl-1"> [</span><span class="hl-6">ENTITY_GRAPH_A2UI_ACTIONS</span><span class="hl-1">.</span><span class="hl-4">upsert</span><span class="hl-1">],</span><br/><span class="hl-1">      </span><span class="hl-4">fields:</span><span class="hl-1"> [</span><span class="hl-2">&quot;status&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;total&quot;</span><span class="hl-1">],</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">  </span><span class="hl-0">authorize</span><span class="hl-4">:</span><span class="hl-1"> ({ </span><span class="hl-4">tenantId</span><span class="hl-1">, </span><span class="hl-4">entityType</span><span class="hl-1"> }) </span><span class="hl-5">=&gt;</span><br/><span class="hl-1">    </span><span class="hl-4">tenantId</span><span class="hl-1"> === </span><span class="hl-2">&quot;tenant-acme&quot;</span><span class="hl-1"> &amp;&amp; </span><span class="hl-4">entityType</span><span class="hl-1"> === </span><span class="hl-2">&quot;Order&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">requestApproval</span><span class="hl-4">:</span><span class="hl-1"> </span><span class="hl-5">async</span><span class="hl-1"> ({ </span><span class="hl-4">action</span><span class="hl-1"> }) </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-7">// Replace/remove rules reach this callback after authorization.</span><br/><span class="hl-1">    </span><span class="hl-3">return</span><span class="hl-1"> </span><span class="hl-4">window</span><span class="hl-1">.</span><span class="hl-0">confirm</span><span class="hl-1">(</span><span class="hl-2">`Approve </span><span class="hl-5">${</span><span class="hl-4">action</span><span class="hl-8">.</span><span class="hl-4">name</span><span class="hl-5">}</span><span class="hl-2">?`</span><span class="hl-1">);</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-3">export</span><span class="hl-1"> </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">a2uiRuntime</span><span class="hl-1"> = </span><span class="hl-0">createPrometheusA2uiRuntime</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">actionPolicy:</span><span class="hl-1"> </span><span class="hl-4">policy</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">onActionDecision</span><span class="hl-4">:</span><span class="hl-1"> (</span><span class="hl-4">decision</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-7">// Persist this receipt in your application audit trail.</span><br/><span class="hl-1">    </span><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-0">info</span><span class="hl-1">(</span><span class="hl-2">&quot;A2UI decision&quot;</span><span class="hl-1">, </span><span class="hl-4">decision</span><span class="hl-1">);</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-4">a2uiRuntime</span><span class="hl-1">.</span><span class="hl-0">processMessages</span><span class="hl-1">([</span><br/><span class="hl-1">  {</span><br/><span class="hl-1">    </span><span class="hl-4">version:</span><span class="hl-1"> </span><span class="hl-2">&quot;v0.9.1&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-4">createSurface:</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-4">surfaceId:</span><span class="hl-1"> </span><span class="hl-2">&quot;order-review&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-4">catalogId:</span><span class="hl-1"> </span><span class="hl-2">&quot;urn:prometheus-ags:a2ui:catalog:v3&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">  {</span><br/><span class="hl-1">    </span><span class="hl-4">version:</span><span class="hl-1"> </span><span class="hl-2">&quot;v0.9.1&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-4">updateComponents:</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-4">surfaceId:</span><span class="hl-1"> </span><span class="hl-2">&quot;order-review&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-4">components:</span><span class="hl-1"> [</span><br/><span class="hl-1">        { </span><span class="hl-4">id:</span><span class="hl-1"> </span><span class="hl-2">&quot;root&quot;</span><span class="hl-1">, </span><span class="hl-4">component:</span><span class="hl-1"> </span><span class="hl-2">&quot;Column&quot;</span><span class="hl-1">, </span><span class="hl-4">children:</span><span class="hl-1"> [</span><span class="hl-2">&quot;title&quot;</span><span class="hl-1">] },</span><br/><span class="hl-1">        { </span><span class="hl-4">id:</span><span class="hl-1"> </span><span class="hl-2">&quot;title&quot;</span><span class="hl-1">, </span><span class="hl-4">component:</span><span class="hl-1"> </span><span class="hl-2">&quot;Text&quot;</span><span class="hl-1">, </span><span class="hl-4">text:</span><span class="hl-1"> </span><span class="hl-2">&quot;Review order&quot;</span><span class="hl-1"> },</span><br/><span class="hl-1">      ],</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">]);</span><br/><br/><span class="hl-3">export</span><span class="hl-1"> </span><span class="hl-5">function</span><span class="hl-1"> </span><span class="hl-0">OrderAgentSurface</span><span class="hl-1">() {</span><br/><span class="hl-1">  </span><span class="hl-3">return</span><span class="hl-1"> (</span><br/><span class="hl-1">    </span><span class="hl-9">&lt;</span><span class="hl-10">PrometheusA2uiProvider</span><span class="hl-1"> </span><span class="hl-11">runtime</span><span class="hl-1">=</span><span class="hl-5">{</span><span class="hl-4">a2uiRuntime</span><span class="hl-5">}</span><span class="hl-9">&gt;</span><br/><span class="hl-1">      </span><span class="hl-9">&lt;</span><span class="hl-10">PrometheusA2uiSurface</span><br/><span class="hl-1">        </span><span class="hl-11">surfaceId</span><span class="hl-1">=</span><span class="hl-2">&quot;order-review&quot;</span><br/><span class="hl-1">        </span><span class="hl-11">fallback</span><span class="hl-1">=</span><span class="hl-5">{</span><span class="hl-9">&lt;</span><span class="hl-12">p</span><span class="hl-8"> </span><span class="hl-11">role</span><span class="hl-1">=</span><span class="hl-2">&quot;status&quot;</span><span class="hl-9">&gt;</span><span class="hl-8">Preparing agent surface…</span><span class="hl-9">&lt;/</span><span class="hl-12">p</span><span class="hl-9">&gt;</span><span class="hl-5">}</span><br/><span class="hl-1">      </span><span class="hl-9">/&gt;</span><br/><span class="hl-1">    </span><span class="hl-9">&lt;/</span><span class="hl-10">PrometheusA2uiProvider</span><span class="hl-9">&gt;</span><br/><span class="hl-1">  );</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Call <code>a2uiRuntime.dispose()</code> when the application-owned runtime is no longer
+needed.</p>
+<p><code>processMessages()</code> treats each supplied message list as one transaction. It
+preflights the complete batch against a shadow official processor seeded from
+the current surfaces; a later schema, catalog, component, or official state
+error therefore cannot partially commit an earlier message to the live runtime.</p>
+<h2 id="the-security-boundary" class="tsd-anchor-link">The security boundary<a href="#the-security-boundary" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p><strong>Protocol validity never grants application authority.</strong></p>
+<p>Think of the catalog as an approved vocabulary, not a database credential. The
+official processor can prove that a surface and action are valid A2UI. Only the
+application can decide whether that action may affect a tenant, entity, or
+field.</p>
+<p>The entity-graph policy therefore fails closed:</p>
+<ol>
+<li>The action must match the official v0.9.1 schema.</li>
+<li>The exact action name must be registered.</li>
+<li>Its context must match the application schema.</li>
+<li>The entity type, action, and every written field must be allowlisted.</li>
+<li>The application <code>authorize</code> callback must approve scope and tenant access.</li>
+<li><code>replace</code> and <code>remove</code> additionally require out-of-band approval.</li>
+<li>Only then may the policy call the graph store.</li>
+</ol>
+<p>Agent-supplied context cannot self-assert approval. Unknown actions, tenants,
+entity types, and fields are denied.</p>
+<h2 id="catalog-policy" class="tsd-anchor-link">Catalog policy<a href="#catalog-policy" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p><code>createPrometheusA2uiCatalog()</code> derives implementations from the official
+React basic catalog and exposes only explicit component and function
+allowlists. The default catalog includes the standard presentation and input
+components but deliberately excludes <code>openUrl</code>. Applications may opt into
+that function explicitly; navigation is never silently granted.</p>
+<pre><code class="ts"><span class="hl-3">import</span><span class="hl-1"> { </span><span class="hl-4">createPrometheusA2uiCatalog</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/a2ui-react&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">catalog</span><span class="hl-1"> = </span><span class="hl-0">createPrometheusA2uiCatalog</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">id:</span><span class="hl-1"> </span><span class="hl-2">&quot;urn:acme:a2ui:catalog:v1&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">components:</span><span class="hl-1"> [</span><span class="hl-2">&quot;Text&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;Column&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;Button&quot;</span><span class="hl-1">],</span><br/><span class="hl-1">  </span><span class="hl-4">functions:</span><span class="hl-1"> [</span><span class="hl-2">&quot;formatString&quot;</span><span class="hl-1">],</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<h2 id="react-and-ssr" class="tsd-anchor-link">React and SSR<a href="#react-and-ssr" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<ul>
+<li><code>PrometheusA2uiProvider</code> supplies the application-owned runtime and official
+Markdown renderer.</li>
+<li><code>PrometheusA2uiSurface</code> renders one official surface.</li>
+<li><code>PrometheusA2uiSurfaces</code> renders the current surface collection.</li>
+<li><code>usePrometheusA2ui</code> processes messages and reads client capabilities/data.</li>
+<li><code>usePrometheusA2uiRuntime</code> and <code>usePrometheusA2uiSurfaces</code> expose focused
+orchestration reads.</li>
+</ul>
+<p>The surface wrapper emits deterministic fallback markup during server
+rendering and lets the official renderer take over after hydration. This avoids
+claiming that the current official renderer itself is server-renderable.</p>
+<p>The architectural boundary remains:</p>
+<pre><code class="text">Components → Prometheus A2UI hooks/provider → runtime policy → graph store
+</code><button type="button">Copy</button></pre>
+
+<p>Renderer components do not read or write the graph store directly.</p>
+<h2 id="migrating-alpha-chat-consumers" class="tsd-anchor-link">Migrating alpha chat consumers<a href="#migrating-alpha-chat-consumers" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>3.0 intentionally changes the package root. This is a deliberate breaking
+change that corrects the alpha naming mismatch. Move the pre-3.0 AG-UI APIs to
+the compatibility subpath:</p>
+<pre><code class="tsx"><span class="hl-7">// Before: 3.0 alpha package root</span><br/><span class="hl-3">import</span><span class="hl-1"> { </span><span class="hl-4">EntityChat</span><span class="hl-1">, </span><span class="hl-4">EntityApproval</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/a2ui-react&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-7">// After: explicit AG-UI compatibility boundary</span><br/><span class="hl-3">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">EntityChat</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">EntityApproval</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/a2ui-react/ag-ui&quot;</span><span class="hl-1">;</span>
+</code><button type="button">Copy</button></pre>
+
+<p>The compatibility subpath retains <code>EntityChat</code>, <code>EntityCopilot</code>,
+<code>EntityStream</code>, <code>EntityDiff</code>, <code>EntityApproval</code>,
+<code>EntityToolProviderContext</code>, <code>useChatSession</code>, <code>useEntityDiff</code>, and
+<code>useEntityToolProvider</code>. It does not become an official A2UI renderer merely
+because it ships in the same package.</p>
+<h2 id="public-runtime-exports" class="tsd-anchor-link">Public runtime exports<a href="#public-runtime-exports" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>The machine-readable root and <code>./ag-ui</code> runtime export sets live in
+<a href="../../prometheus-entity-skills/_shared/references/a2ui-library-exports.json"><code>a2ui-library-exports.json</code></a>.
+Build and verify them with:</p>
+<pre><code class="bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-5">--filter</span><span class="hl-1"> </span><span class="hl-2">@prometheus-ags/a2ui-react</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">refresh:exports</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-5">--filter</span><span class="hl-1"> </span><span class="hl-2">@prometheus-ags/a2ui-react</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">verify:skills</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Type-only exports include the official message, catalog, surface, capability,
+and data-model contracts plus Prometheus runtime, policy, graph authorization,
+provider, and hook option/result types.</p>
+<h2 id="verification" class="tsd-anchor-link">Verification<a href="#verification" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<pre><code class="bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">test:a2ui-bridge</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">verify:a2ui-bridge</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">bdd:a2ui-bridge</span>
+</code><button type="button">Copy</button></pre>
+
+<p>The current package evidence covers official atomic message processing/rendering,
+default-deny graph actions, packed ESM/CommonJS/NodeNext/Node16/SSR consumers,
+keyboard-only browser behavior, desktop/mobile screenshots, and accessibility.
+The repository's dedicated
+<a href="../../examples/agentic-a2ui-app/README.md"><code>agentic-a2ui-app</code></a> demonstrates how
+to compose this renderer with the official A2A package and an application-owned
+action boundary. Its focused tests are implemented, but its clean production
+browser gate now passes all three flows with zero serious or critical axe
+findings and hash-bound screenshots and traces. That implements the showcase
+without broadening this package's separate packed evidence boundary. The
+Docusaurus deployment, registry authority, and stable publication also remain
+separate.</p>
+<p>See <a href="../../release/a2ui-protocol-bridge.md">the release bridge contract</a> for the
+complete evidence boundary and upstream references.</p>
+</section>
+<details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Modules"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h2 class="tsd-anchor-link" id="modules">Modules<a href="#modules" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary><dl class="tsd-member-summaries"><dt class="tsd-member-summary" id="_"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><a href="_prometheus-ags_a2ui-react..html"></a><a href="#_" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="ag-ui"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><a href="_prometheus-ags_a2ui-react.ag-ui.html">ag-ui</a><a href="#ag-ui" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd></dl></details></div>
+<div class="col-sidebar">
+<div class="page-menu">
+<div class="tsd-navigation settings">
+<details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div>
+<div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>On This Page</h3></summary>
+<div class="tsd-accordion-details"><a href="#prometheus-agsa2ui-react"><span>@prometheus-<wbr/>ags/a2ui-<wbr/>react</span></a>
+<ul>
+<li><a href="#two-protocol-surfaces"><span>Two protocol surfaces</span></a></li>
+<li><a href="#pinned-version-axes"><span>Pinned version axes</span></a></li>
+<li><a href="#install"><span>Install</span></a></li>
+<li><a href="#quick-start"><span>Quick start</span></a></li>
+<li><a href="#the-security-boundary"><span>The security boundary</span></a></li>
+<li><a href="#catalog-policy"><span>Catalog policy</span></a></li>
+<li><a href="#react-and-ssr"><span>React and <wbr/>SSR</span></a></li>
+<li><a href="#migrating-alpha-chat-consumers"><span>Migrating alpha chat consumers</span></a></li>
+<li><a href="#public-runtime-exports"><span>Public runtime exports</span></a></li>
+<li><a href="#verification"><span>Verification</span></a></li></ul>
+<details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Modules"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Modules</summary>
+<div><a href="#_"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><span></span></a><a href="#ag-ui"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><span>ag-<wbr/>ui</span></a></div></details></div></details></div>
+<div class="site-menu">
+<nav class="tsd-navigation"><a href="../index.html">Prometheus Entity Management API</a>
+<ul class="tsd-small-nested-navigation" id="tsd-nav-container">
+<li>Loading...</li></ul></nav></div></div></div><footer>
+<p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer>
+<div class="overlay"></div></body></html>

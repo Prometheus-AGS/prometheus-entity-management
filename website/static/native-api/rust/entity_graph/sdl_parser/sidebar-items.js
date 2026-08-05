@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["parse_relation_kind","parse_scalar","parse_sdl_source"],"struct":["AiRaw","LocalFirstRaw","SdlConfigRaw","SdlDocument","SdlEntityDef","SdlFieldDef","SdlRelationDef"]};

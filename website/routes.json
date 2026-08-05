@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0.0",
+  "version": "3.x",
+  "routes": [
+    {"path": "/docs/3.x/start-here/", "source": "docs/start-here/index.md"},
+    {"path": "/docs/3.x/concepts/", "source": "docs/concepts/index.md"},
+    {"path": "/docs/3.x/frameworks/", "source": "docs/frameworks/index.md"},
+    {"path": "/docs/3.x/frameworks/react-vite/", "source": "docs/frameworks/react-vite.md"},
+    {"path": "/docs/3.x/frameworks/flutter-riverpod/", "source": "docs/frameworks/flutter-riverpod.md"},
+    {"path": "/docs/3.x/integrations/", "source": "docs/integrations/index.md"},
+    {"path": "/docs/3.x/integrations/flint-realtime-fabric/", "source": "docs/integrations/flint-realtime-fabric.md"},
+    {"path": "/docs/3.x/examples/", "source": "docs/examples/index.md"},
+    {"path": "/docs/3.x/packages/", "source": "docs/packages/index.md"},
+    {"path": "/docs/3.x/evidence/", "source": "docs/evidence/index.md"},
+    {"path": "/docs/3.x/evidence/gallery/", "source": "docs/evidence/gallery.mdx"},
+    {"path": "/docs/3.x/operations/", "source": "docs/operations/index.md"},
+    {"path": "/docs/3.x/operations/migration-3/", "source": "docs/operations/migration-3.md"},
+    {"path": "/docs/3.x/operations/security/", "source": "docs/operations/security.md"},
+    {"path": "/docs/3.x/operations/testing-troubleshooting/", "source": "docs/operations/testing-troubleshooting.md"},
+    {"path": "/docs/3.x/operations/release/", "source": "docs/operations/release.md"},
+    {"path": "/search/", "source": "src/pages/search.tsx"}
+  ]
+}

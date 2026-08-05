@@ -1,0 +1,3 @@
+var srcIndex = new Map(JSON.parse('[["entity_graph",["",[["commands",[],["generate.rs","init.rs","mod.rs"]]],["ir.rs","main.rs","sdl_parser.rs","templates.rs"]]],["entity_graph_mcp",["",[],["cli.rs","lib.rs","server.rs","store.rs","transport.rs"]]],["entity_graph_tauri",["",[],["commands.rs","desktop.rs","error.rs","lib.rs","state.rs","types.rs"]]]]'));
+createSrcSidebar();
+//{"start":36,"fragment_lengths":[125,87,102]}
