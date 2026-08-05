@@ -14,35 +14,35 @@ const validScenarios = new Set(coverage.showcases.flatMap(({scenarioIds}) => sce
 const outputRoot = path.join(websiteRoot, 'static/evidence');
 const originalRoot = path.join(outputRoot, 'original');
 
-function resolveVerifiedSourceSha(asset) {
-  const sourceSha = asset.sourceSha ?? execFileSync(
+function resolveVerifiedSourceBlob(asset) {
+  const sourceGitBlobSha = execFileSync(
     'git',
-    ['log', '-1', '--format=%H', '--', asset.sourcePath],
+    ['rev-parse', `HEAD:${asset.sourcePath}`],
     {cwd: repositoryRoot, encoding: 'utf8'},
   ).trim();
-  if (!/^[0-9a-f]{40}$/.test(sourceSha)) {
-    throw new Error(`${asset.assetId}: evidence source must resolve to an exact Git commit SHA`);
+  if (!/^[0-9a-f]{40}$/.test(sourceGitBlobSha)) {
+    throw new Error(`${asset.assetId}: evidence source must resolve to an exact Git blob SHA`);
   }
   let committedSourceBytes;
   try {
-    committedSourceBytes = execFileSync('git', ['show', `${sourceSha}:${asset.sourcePath}`], {
+    committedSourceBytes = execFileSync('git', ['cat-file', 'blob', sourceGitBlobSha], {
       cwd: repositoryRoot,
       encoding: null,
       maxBuffer: 64 * 1024 * 1024,
     });
   } catch (error) {
     throw new Error(
-      `${asset.assetId}: source ${asset.sourcePath} does not exist at ${sourceSha}`,
+      `${asset.assetId}: source Git blob ${sourceGitBlobSha} is unavailable`,
       {cause: error},
     );
   }
   const committedSourceSha256 = createHash('sha256').update(committedSourceBytes).digest('hex');
   if (committedSourceSha256 !== asset.sourceSha256) {
     throw new Error(
-      `${asset.assetId}: source bytes at ${sourceSha} do not match the allowlisted SHA-256`,
+      `${asset.assetId}: source Git blob ${sourceGitBlobSha} does not match the allowlisted SHA-256`,
     );
   }
-  return sourceSha;
+  return sourceGitBlobSha;
 }
 
 if (allowlist.schemaVersion !== '1.0.0') throw new Error('unsupported evidence allowlist schema');
@@ -67,7 +67,7 @@ for (const asset of allowlist.assets) {
   const sourceBytes = await readFile(source);
   const sourceSha256 = createHash('sha256').update(sourceBytes).digest('hex');
   assertEvidenceBinding(asset, sourceSha256, receiptSha256);
-  const sourceSha = resolveVerifiedSourceSha(asset);
+  const sourceGitBlobSha = resolveVerifiedSourceBlob(asset);
   const image = sharp(sourceBytes, {density: 144});
   const [metadata, statistics] = await Promise.all([image.metadata(), image.clone().stats()]);
   assertEvidenceImage(asset.assetId, metadata, statistics);
@@ -83,7 +83,7 @@ for (const asset of allowlist.assets) {
   }
   records.push({
     ...asset,
-    sourceSha,
+    sourceGitBlobSha,
     sourceSha256,
     receiptSha256,
     width: metadata.width,
@@ -108,7 +108,7 @@ const lines = [
   '---', 'title: Evidence gallery', 'sidebar_position: 1', '---', '',
   "import EvidenceFigure from '@site/src/components/EvidenceFigure';", '',
   '# Evidence gallery', '',
-  'Every figure below resolves to an allowlisted source, scenario IDs, verification receipt, source SHA, dimensions, certification status, and SHA-256 in [`manifest.json`](pathname:///evidence/manifest.json). Select an image to download its original PNG.', '',
+  'Every figure below resolves to an allowlisted source, scenario IDs, verification receipt, content-addressed Git blob SHA, dimensions, certification status, and SHA-256 in [`manifest.json`](pathname:///evidence/manifest.json). Select an image to download its original PNG.', '',
 ];
 for (const [title, assets] of sections) {
   lines.push(`## ${title}`, '');

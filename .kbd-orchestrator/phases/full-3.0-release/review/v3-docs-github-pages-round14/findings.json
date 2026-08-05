@@ -1,0 +1,32 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "codex-gpt-5",
+  "isolation_mode": "harness-native:fresh-context",
+  "producer_model": "gpt-5",
+  "cross_model_check": "unverified-same-harness-family",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".github/workflows/docs-pages.yml",
+      "line": 40,
+      "claim": "The Pages build uses a shallow checkout even though evidence generation requires historical Git objects.",
+      "evidence": "generate-evidence.mjs uses git log and git show, while the workflow checkout does not set fetch-depth and the Flint asset names a different commit from the tested head.",
+      "suggested_fix": "Make evidence source identity independent of shallow history or fetch the required immutable objects, and keep regeneration invariant across merge strategies."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/verify-native-api.mjs",
+      "line": 52,
+      "claim": "A clean checkout cannot pass native API verification because the diff adds only the native manifest, not the Dart/Rust artifacts the verifier assumes already exist.",
+      "evidence": "The packet diff includes website/static/native-api/manifest.json but omits the committed Dart and Rust artifact paths, so the reviewer inferred that the artifacts are absent.",
+      "suggested_fix": "Include a complete immutable inventory of the committed Dart/Rust outputs in the next review packet, or include the generated paths themselves."
+    }
+  ],
+  "checked_classes": [],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

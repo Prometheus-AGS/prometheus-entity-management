@@ -75,10 +75,12 @@ test('keeps the package chooser and packed reference in release-contract parity'
 
 test('evidence hashes authenticate each downloadable published original', async () => {
   assert.match(evidenceFigure, /download=\{`\$\{assetId\}\.png`\}/);
-  assert.match(evidenceGenerator, /git', \['show', `\$\{sourceSha\}:\$\{asset\.sourcePath\}`\]/);
-  assert.match(evidenceGenerator, /source bytes at \$\{sourceSha\} do not match the allowlisted SHA-256/);
+  assert.match(evidenceGenerator, /\['rev-parse', `HEAD:\$\{asset\.sourcePath\}`\]/);
+  assert.match(evidenceGenerator, /git', \['cat-file', 'blob', sourceGitBlobSha\]/);
+  assert.match(evidenceGenerator, /source Git blob \$\{sourceGitBlobSha\} does not match the allowlisted SHA-256/);
   const manifest = JSON.parse(await readFile(new URL('../static/evidence/manifest.json', import.meta.url), 'utf8'));
   for (const asset of manifest.assets) {
+    assert.match(asset.sourceGitBlobSha, /^[0-9a-f]{40}$/, `${asset.assetId} source Git blob`);
     assert.match(asset.sourceSha256, /^[0-9a-f]{64}$/, `${asset.assetId} source hash`);
     assert.match(asset.receiptSha256, /^[0-9a-f]{64}$/, `${asset.assetId} receipt hash`);
     const published = await readFile(new URL(`../static/evidence/original/${asset.assetId}.png`, import.meta.url));

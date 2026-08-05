@@ -24,7 +24,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-browser",
-      "sourceSha": "30fc348ca529214db5d9b9ab8f0702b41c61ebf1",
+      "sourceGitBlobSha": "80bb18408ed106a91cd57d4f8a126a371e73eb27",
       "width": 1280,
       "height": 720,
       "sha256": "d0ddc0130df4fccf46b1838d8ade7521056e85ea455f49dc236a27b3d933fe1e"
@@ -53,7 +53,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-browser",
-      "sourceSha": "30fc348ca529214db5d9b9ab8f0702b41c61ebf1",
+      "sourceGitBlobSha": "2552ff06f39482cfd5863bb453af5c05a9a6d346",
       "width": 1280,
       "height": 720,
       "sha256": "45f1fc23027dfc257c005928ea645160023bc2f9e466e766a57264b4f79d361d"
@@ -81,7 +81,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-browser",
-      "sourceSha": "30fc348ca529214db5d9b9ab8f0702b41c61ebf1",
+      "sourceGitBlobSha": "ff8d273cfc0632013d7b8217484d64173f2d0552",
       "width": 1280,
       "height": 720,
       "sha256": "c8c778954979abaa24ca07a250d122b45faf3b44f8b29435215ba948a1a8f7e5"
@@ -109,7 +109,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-browser",
-      "sourceSha": "7b64d76b1c2dc7b39f0ef46f72c1e1f9e474bc2f",
+      "sourceGitBlobSha": "da603607b80512ab346e4f5ddf8c223b5ed6a33d",
       "width": 1280,
       "height": 720,
       "sha256": "8add483b09ff1d77ccf65deda934e516825c17ff2a064512337e61025d0d1e4f"
@@ -137,7 +137,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-browser",
-      "sourceSha": "7b64d76b1c2dc7b39f0ef46f72c1e1f9e474bc2f",
+      "sourceGitBlobSha": "e4c085acae87fd4abc279e84354359639b8efce6",
       "width": 1280,
       "height": 2193,
       "sha256": "e65d43777b637c28ffd2166ba3b1d807b34a337b6fccfb93f5bae80598ef684f"
@@ -165,7 +165,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-browser",
-      "sourceSha": "7b64d76b1c2dc7b39f0ef46f72c1e1f9e474bc2f",
+      "sourceGitBlobSha": "87cedfb5bbec0bb43b11382002252229b40d39a9",
       "width": 1280,
       "height": 1535,
       "sha256": "56eeab31e4c1452e949e4430559b6434fada9e0c974cbcb8487ec9a29ff09b93"
@@ -192,7 +192,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-golden",
-      "sourceSha": "30fc348ca529214db5d9b9ab8f0702b41c61ebf1",
+      "sourceGitBlobSha": "ed6d4d483be6f906ae11f18e11bad39d516ddca0",
       "width": 2880,
       "height": 1800,
       "sha256": "91d9f89fb38c33c812dd1203ed71ff3f180f18927de2cf187e6ea6ee6f24579d"
@@ -220,7 +220,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-golden",
-      "sourceSha": "30fc348ca529214db5d9b9ab8f0702b41c61ebf1",
+      "sourceGitBlobSha": "fb4e6b06a7378b4a0cd5b6310a69e53a5e71761d",
       "width": 2880,
       "height": 1800,
       "sha256": "a4d8b4123320d545bc82dd95ad7e481c10f95ec79ac9552fa5842a47bd0c3ede"
@@ -248,7 +248,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-golden",
-      "sourceSha": "7b64d76b1c2dc7b39f0ef46f72c1e1f9e474bc2f",
+      "sourceGitBlobSha": "a9c1c42de86247afd4a25d4da75db5e43bf89861",
       "width": 430,
       "height": 932,
       "sha256": "170c741170809ab32a838aeb8c71c29dc67bb27e4b65149f4ca89ea25403befa"
@@ -276,7 +276,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-browser",
-      "sourceSha": "7b64d76b1c2dc7b39f0ef46f72c1e1f9e474bc2f",
+      "sourceGitBlobSha": "4b16c31314f004ca745fd029b61bd40ab2fef792",
       "width": 1280,
       "height": 1029,
       "sha256": "4ecc72809fde1eabfd4da6f8e75cc9cfdab347e06429d118074f7f2c9e4e7293"
@@ -304,7 +304,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-emulator",
-      "sourceSha": "7b64d76b1c2dc7b39f0ef46f72c1e1f9e474bc2f",
+      "sourceGitBlobSha": "d1881340b635da42832d4f361f283fac197970eb",
       "width": 1344,
       "height": 2992,
       "sha256": "4b50ae9c2984b328e038483f81a1400843cccacfd57557c586fb00cdc7916ba6"
@@ -332,7 +332,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-simulator",
-      "sourceSha": "7b64d76b1c2dc7b39f0ef46f72c1e1f9e474bc2f",
+      "sourceGitBlobSha": "7f6d7bbcf5f0115821100cea6eeee866e06530ae",
       "width": 1206,
       "height": 2622,
       "sha256": "c9658c9873cea99774aafa282ac3f30e333694224d7d9332a7120f4ea0de7494"
@@ -359,7 +359,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-provenance",
-      "sourceSha": "30fc348ca529214db5d9b9ab8f0702b41c61ebf1",
+      "sourceGitBlobSha": "093fb5809dcbae53c7d614e3a8a3c18da9e925fa",
       "width": 1200,
       "height": 680,
       "sha256": "7b84360b718e70d66e91f1ba3c4ba48d05f4b0db626a1e5f6e81768d6a00c0b7"
@@ -386,7 +386,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-release-diagram",
-      "sourceSha": "30fc348ca529214db5d9b9ab8f0702b41c61ebf1",
+      "sourceGitBlobSha": "12ec8f770a2e8b5eb3e04378fcf24c25895cef1c",
       "width": 1400,
       "height": 960,
       "sha256": "d611c38bd8a133d5279a782ed7576766e43a8ae161db8b1efb13dd8c52b65cdc"
@@ -400,7 +400,6 @@
       "caption": "Flint watch events become coalesced ChangeSets under explicit tenant, channel, consumer, checkpoint, and key boundaries.",
       "alt": "Diagram of Flint Realtime Fabric flowing through the portable adapter and realtime manager into list and detail graph views",
       "sourcePath": "website/evidence-source/flint-realtime-contract.svg",
-      "sourceSha": "250653923bf2b89188700ae5aa967e9a36f80634",
       "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flint-portable-contracts/task-6-external-source-verification.json",
       "receiptAssertion": {
         "field": "verdict",
@@ -415,6 +414,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-contract-diagram",
+      "sourceGitBlobSha": "fa223d00852f6e3495392a4b55e9745b01186f04",
       "width": 2800,
       "height": 1600,
       "sha256": "132b96030bfe9ae0d84b057c0bea5b6c5bb9c119d3d883a1f1fda259f2f7d000"

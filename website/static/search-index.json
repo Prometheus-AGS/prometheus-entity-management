@@ -40,8 +40,8 @@
     {
       "title": "Evidence gallery",
       "route": "/docs/3.x/evidence/gallery/",
-      "summary": "Evidence gallery Every figure below resolves to an allowlisted source, scenario IDs, verification receipt, source SHA, dimensions, certification status, and SHA-256 in manifest.json . Select an image to download its original PNG. React and ",
-      "text": "Evidence gallery Every figure below resolves to an allowlisted source, scenario IDs, verification receipt, source SHA, dimensions, certification status, and SHA-256 in manifest.json . Select an image to download its original PNG. React and Next.js Agentic A2UI Flutter and provenance Tauri desktop and mobile Flint and release operations"
+      "summary": "Evidence gallery Every figure below resolves to an allowlisted source, scenario IDs, verification receipt, content-addressed Git blob SHA, dimensions, certification status, and SHA-256 in manifest.json . Select an image to download its orig",
+      "text": "Evidence gallery Every figure below resolves to an allowlisted source, scenario IDs, verification receipt, content-addressed Git blob SHA, dimensions, certification status, and SHA-256 in manifest.json . Select an image to download its original PNG. React and Next.js Agentic A2UI Flutter and provenance Tauri desktop and mobile Flint and release operations"
     },
     {
       "title": "Evidence",
