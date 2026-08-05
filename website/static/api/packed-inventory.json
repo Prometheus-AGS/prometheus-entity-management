@@ -2,6 +2,10 @@
   "schemaVersion": "1.0.0",
   "revision": "afbb8de0e861739fa6facb461b69573b2a627bdb",
   "fingerprint": "a9a5e3df29443d23c672743e47a70c667eb2eccdfa944e618538a0882a7ef840",
+  "apiInputFileCount": 58,
+  "apiInputAggregateSha256": "8442f1d1c0552f81f619a73f1d3137f2c043dc1b7584afdc32c8111163fd59a4",
+  "artifactFileCount": 1068,
+  "artifactAggregateSha256": "e397046387956d724134bc929f8b962c14a56c3eb75f428959859e8975693b19",
   "packages": [
     {
       "name": "@prometheus-ags/a2ui-react",

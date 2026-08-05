@@ -19,6 +19,11 @@ const css = await readFile(new URL('../src/css/custom.css', import.meta.url), 'u
 const brand = await readFile(new URL('../BRAND.md', import.meta.url), 'utf8');
 const evidenceFigure = await readFile(new URL('../src/components/EvidenceFigure.tsx', import.meta.url), 'utf8');
 const evidenceGenerator = await readFile(new URL('../scripts/generate-evidence.mjs', import.meta.url), 'utf8');
+const generatedArtifactChecker = await readFile(new URL('../scripts/check-generated-artifacts.mjs', import.meta.url), 'utf8');
+const staticArtifactManifest = await readFile(new URL('../scripts/static-artifact-manifest.mjs', import.meta.url), 'utf8');
+const nativeApiChecker = await readFile(new URL('../scripts/check-native-api.mjs', import.meta.url), 'utf8');
+const nativeApiManifest = await readFile(new URL('../scripts/native-api-manifest.mjs', import.meta.url), 'utf8');
+const releasing = await readFile(new URL('../../RELEASING.md', import.meta.url), 'utf8');
 const flintEvidenceSource = await readFile(
   new URL('../evidence-source/flint-realtime-contract.svg', import.meta.url),
   'utf8',
@@ -206,8 +211,18 @@ test('Pages workflow builds pull requests but deploys only protected main', asyn
   assert.match(workflow, /environment:\n      name: github-pages/);
   assert.match(workflow, /pages: write/);
   assert.match(workflow, /id-token: write/);
-  assert.match(workflow, /pnpm run docs:native-api:verify/);
+  assert.match(workflow, /pnpm run docs:native-api:check/);
+  assert.match(workflow, /pnpm run docs:artifacts:check/);
+  assert.doesNotMatch(workflow, /pnpm run docs:native-api:verify/);
+  assert.doesNotMatch(workflow, /subosito\/flutter-action/);
+  assert.doesNotMatch(workflow, /rustup toolchain install/);
+  assert.match(workflow, /pnpm run docs:search/);
+  assert.doesNotMatch(workflow, /pnpm run docs:api\b/);
+  assert.doesNotMatch(workflow, /pnpm run docs:evidence\b/);
+  assert.match(workflow, /git diff --exit-code -- website\/static\/search-index\.json/);
   assert.match(workflow, /pnpm run docs:test:browser/);
+  assert.match(workflow, /id: browser-certification/);
+  assert.match(workflow, /steps\.browser-certification\.outcome == 'failure'/);
   assert.match(workflow, /audit:deployed/);
   assert.match(workflow, /DOCS_BASE_URL/);
   assert.match(workflow, /git status --porcelain --untracked-files=all/);
@@ -222,7 +237,7 @@ test('Pages workflow builds pull requests but deploys only protected main', asyn
   ]) assert.match(workflow, new RegExp(watchedPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   const pushTrigger = workflow.match(/  push:\n([\s\S]*?)  workflow_dispatch:/)?.[1] ?? '';
   assert.doesNotMatch(pushTrigger, /paths:/);
-  for (const action of ['actions/checkout', 'pnpm/action-setup', 'actions/setup-node', 'actions/configure-pages', 'actions/upload-pages-artifact', 'actions/deploy-pages']) {
+  for (const action of ['actions/checkout', 'pnpm/action-setup', 'actions/setup-node', 'actions/upload-artifact', 'actions/configure-pages', 'actions/upload-pages-artifact', 'actions/deploy-pages']) {
     assert.match(workflow, new RegExp(`${action.replace('/', '\\/')}@[0-9a-f]{40}`));
   }
   const browserConfig = await readFile(new URL('../../tests/browser/v3-docs-pages.playwright.config.ts', import.meta.url), 'utf8');
@@ -241,7 +256,7 @@ test('keeps documentation search I/O behind hook, store, and service boundaries'
   assert.match(service, /\bfetch\s*\(/);
 });
 
-test('native API verification regenerates artifacts and cannot re-sign stale output', async () => {
+test('release native API verification regenerates while Pages validates content-addressed artifacts', async () => {
   const verifier = await readFile(new URL('../scripts/verify-native-api.mjs', import.meta.url), 'utf8');
   const generator = await readFile(new URL('../scripts/generate-native-api.mjs', import.meta.url), 'utf8');
   assert.match(verifier, /--output/);
@@ -255,9 +270,23 @@ test('native API verification regenerates artifacts and cannot re-sign stale out
   assert.match(generator, /const flutterVersion = '3\.44\.8'/);
   assert.match(generator, /const rustToolchain = '1\.88\.0'/);
   assert.match(generator, /const dartdocVersion = '9\.0\.5'/);
-  const workflow = await readFile(new URL('../../.github/workflows/docs-pages.yml', import.meta.url), 'utf8');
-  assert.match(workflow, /flutter-version: "3\.44\.8"/);
-  assert.match(workflow, /rustup toolchain install 1\.88\.0 --profile minimal/);
+  assert.match(nativeApiChecker, /verifyNativeApiManifest/);
+  assert.doesNotMatch(nativeApiChecker, /generate-native-api|execFile/);
+  assert.match(nativeApiManifest, /createHash\('sha256'\)/);
+  assert.match(nativeApiManifest, /artifactAggregateSha256/);
+  assert.match(releasing, /pnpm run docs:native-api:verify/);
+  assert.match(releasing, /git diff --exit-code -- website\/static\/native-api/);
+  assert.match(releasing, /pnpm run docs:api/);
+  assert.match(releasing, /pnpm run docs:evidence/);
+  assert.match(generatedArtifactChecker, /hashArtifactTree/);
+  assert.match(generatedArtifactChecker, /assertEvidenceBinding/);
+  assert.match(generatedArtifactChecker, /source Git blob drift/);
+  assert.match(generatedArtifactChecker, /packed API input hash drift/);
+  assert.match(generatedArtifactChecker, /packed API package inventory length drift/);
+  assert.match(generatedArtifactChecker, /evidence gallery drift/);
+  assert.match(staticArtifactManifest, /artifactAggregateSha256/);
+  assert.match(staticArtifactManifest, /apiInputAggregateSha256/);
+  assert.doesNotMatch(staticArtifactManifest, /localeCompare/);
 });
 
 test('native API generation rejects destructive output targets before tool execution', () => {

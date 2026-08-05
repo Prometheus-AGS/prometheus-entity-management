@@ -95,6 +95,8 @@
     "docs:search": "pnpm --filter @prometheus-ags/entity-management-docs generate:search",
     "docs:api": "pnpm --filter @prometheus-ags/entity-management-docs generate:api",
     "docs:native-api": "pnpm --filter @prometheus-ags/entity-management-docs generate:native-api",
+    "docs:artifacts:check": "pnpm --filter @prometheus-ags/entity-management-docs check:artifacts",
+    "docs:native-api:check": "pnpm --filter @prometheus-ags/entity-management-docs check:native-api",
     "docs:native-api:verify": "pnpm --filter @prometheus-ags/entity-management-docs verify:native-api",
     "docs:evidence": "pnpm --filter @prometheus-ags/entity-management-docs generate:evidence",
     "release:rc:plan": "node scripts/release-candidate.mjs plan",

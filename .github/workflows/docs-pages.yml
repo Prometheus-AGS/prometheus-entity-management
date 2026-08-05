@@ -50,16 +50,6 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
           package-manager-cache: false
 
-      - name: Install the release Flutter toolchain for reproducible dartdoc
-        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
-        with:
-          flutter-version: "3.44.8"
-          channel: stable
-          cache: true
-
-      - name: Install the exact release Rust documentation toolchain
-        run: rustup toolchain install 1.88.0 --profile minimal
-
       - name: Install the frozen workspace
         run: pnpm install --frozen-lockfile
 
@@ -67,22 +57,21 @@ jobs:
         run: |
           pnpm run docs:check
           pnpm run docs:test
-          pnpm run docs:native-api:verify
+          pnpm run docs:native-api:check
           pnpm run verify:readme-parity
           pnpm run test:npm-trust
 
-      - name: Build only the npm artifacts needed by snippets and API docs
+      - name: Build npm artifacts needed by snippets and artifact checks
         run: pnpm run build:packages
 
-      - name: Verify snippets and regenerate packed API/evidence artifacts
+      - name: Verify snippets and the deterministic search artifact
         run: |
+          pnpm run docs:artifacts:check
           pnpm run docs:snippets
           pnpm run docs:search
-          pnpm run docs:api
-          pnpm run docs:evidence
-          git diff --exit-code -- website/static/api website/static/search-index.json website/docs/evidence/gallery.mdx website/static/evidence
-          if [ -n "$(git status --porcelain --untracked-files=all -- website/static/api website/static/search-index.json website/docs/evidence/gallery.mdx website/static/evidence)" ]; then
-            git status --short --untracked-files=all -- website/static/api website/static/search-index.json website/docs/evidence/gallery.mdx website/static/evidence
+          git diff --exit-code -- website/static/search-index.json
+          if [ -n "$(git status --porcelain --untracked-files=all -- website/static/search-index.json)" ]; then
+            git status --short --untracked-files=all -- website/static/search-index.json
             exit 1
           fi
 
@@ -92,9 +81,19 @@ jobs:
           pnpm --filter @prometheus-ags/entity-management-docs check:build
 
       - name: Certify browser navigation, search, accessibility, and visual baselines
+        id: browser-certification
         run: |
           pnpm exec playwright install --with-deps chromium
           pnpm run docs:test:browser
+
+      - name: Upload browser failure evidence
+        if: failure() && steps.browser-certification.outcome == 'failure'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: docs-browser-failure-${{ github.run_id }}
+          path: test-results
+          if-no-files-found: error
+          retention-days: 3
 
       - name: Enforce built-artifact mobile Lighthouse budgets
         run: |

@@ -1,0 +1,38 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/check-native-api.mjs",
+      "claim": "The diff wires a new `check:native-api` script and makes the test suite `readFile` the checker at module load, but the diff never adds `website/scripts/check-native-api.mjs`, so `pnpm run docs:test` and the new `docs:native-api:check` step in the workflow will fail with ENOENT unless the file already exists untracked.",
+      "evidence": "package.json hunk adds `\"check:native-api\": \"node scripts/check-native-api.mjs\"`; site-contract.test.mjs hunk adds `const nativeApiChecker = await readFile(new URL('../scripts/check-native-api.mjs', import.meta.url), 'utf8');` at top-level module scope; the workflow hunk runs `pnpm run docs:native-api:check` \u2014 yet no `diff --git a/website/scripts/check-native-api.mjs` hunk exists anywhere in the diff, and the acceptance criterion requires the added checks to actually pass from a clean state.",
+      "suggested_fix": "Add `website/scripts/check-native-api.mjs` to the change, implementing a manifest-only verification (calling `verifyNativeApiManifest`, with no regeneration/execFile, per the updated test assertions)."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".github/workflows/docs-pages.yml",
+      "line": 60,
+      "claim": "Removing the pinned Flutter 3.44.8 / Rust 1.88.0 toolchain installation from CI means `generate:native-api` (dartdoc/rustdoc output) can no longer be regenerated reproducibly in CI, while the generator still hard-pins those versions \u2014 artifacts must now be produced on whatever local toolchain a developer happens to have, breaking the reproducibility guarantee the pinned versions were encoding.",
+      "evidence": "Workflow hunk deletes `flutter-version: \"3.44.8\"` and `rustup toolchain install 1.88.0 --profile minimal` steps; the retained test still asserts `assert.match(generator, /const flutterVersion = '3\\.44\\.8'/)` and `const rustToolchain = '1.88.0'`, i.e. the version pinning contract survives but the only environment that enforced it is removed.",
+      "suggested_fix": "Either keep a separate (non-Pages) CI job that regenerates native API docs with the pinned toolchains and diffs against committed artifacts, or document/enforce the pinned toolchain requirement in the check script or contributor docs."
+    },
+    {
+      "severity": "WARNING",
+      "file": "website/tests/site-contract.test.mjs",
+      "line": 258,
+      "claim": "The test is still named 'native API verification regenerates artifacts and cannot re-sign stale output' but the new assertions verify the opposite: the checker must NOT regenerate (no `generate-native-api`/`execFile`), so committed stale artifacts that still match their checked-in manifest would now pass CI \u2014 the stale-output protection the test name claims is silently dropped.",
+      "evidence": "Hunk replaces workflow toolchain assertions with `assert.match(nativeApiChecker, /verifyNativeApiManifest/)` and `assert.doesNotMatch(nativeApiChecker, /generate-native-api|execFile/)` while leaving the `test('native API verification regenerates artifacts and cannot re-sign stale output', ...)` name unchanged.",
+      "suggested_fix": "Rename the test to reflect manifest-only validation, and ensure `verifyNativeApiManifest` hashes artifact contents (not just presence) so stale regenerated output cannot be re-signed without detection."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/check-native-api.mjs",
+      "line": 1,
+      "claim": "The new CI gate imports `./native-api-manifest.mjs`, a module that is not added anywhere in this diff and is not confirmable in the file tree (`website/scripts` contents are not listed), so the Pages workflow's `docs:native-api:check` step will crash with ERR_MODULE_NOT_FOUND if the file does not already exist.",
+      "evidence": "Diff adds `check-native-api.mjs` containing only `import {verifyNativeApiManifest} from './native-api-manifest.mjs';` but no hunk creates `native-api-manifest.mjs`; the file tree shows `./website/scripts` as an unexpanded directory. The site-contract test also does `readFile(new URL('../scripts/native-api-manifest.mjs', import.meta.url))` and asserts on `createHash('sha256')` / `artifactAggregateSha256`, which would throw at module load and fail the entire test file if the module is absent.",
+      "suggested_fix": "Include `website/scripts/native-api-manifest.mjs` (with `verifyNativeApiManifest` exporting `{sourceFiles, artifactFileCount}` and sha256 logic) in this change, or cite the prior change that landed it."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "website/docs/packages/native-api.md",
+      "line": 24,
+      "claim": "The check is documented as hashing 'every committed dartdoc/rustdoc artifact' and comparing against a 'checked-in manifest', but this diff neither commits any dartdoc/rustdoc artifacts nor adds a manifest file, so the new gate has no verified inputs and will fail (or trivially pass against nothing) on a clean checkout.",
+      "evidence": "The diff touches only the workflow, two package.json files, the docs page, the new 7-line checker, and the test \u2014 no binary/generated artifacts and no manifest data file are added. The doc text added in this same diff states the artifacts and manifest are 'committed'/'checked-in', a repository-state precondition the diff does not establish.",
+      "suggested_fix": "Commit the generated dartdoc/rustdoc artifacts and the manifest (or show they are already committed and byte-identical to what the generator produces), and make `verifyNativeApiManifest` fail explicitly when the manifest or artifact set is empty."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".github/workflows/docs-pages.yml",
+      "line": 60,
+      "claim": "`docs:native-api:verify` (full regeneration with pinned Flutter 3.44.8 / dartdoc 9.0.5 / Rust 1.88.0) is removed from the only workflow shown in the diff, while the docs claim it 'remains the stronger release gate' \u2014 no evidence in the packet shows any remaining workflow, gate script, or CI job that still runs it.",
+      "evidence": "Workflow hunk replaces `pnpm run docs:native-api:verify` with `pnpm run docs:native-api:check` and deletes the flutter-action and rustup steps; the site-contract test now asserts `doesNotMatch(workflow, /pnpm run docs:native-api:verify/)`. The new docs text asserts 'Generation and full reproducibility verification are release gates' but the diff provides no enforcement point for that claim.",
+      "suggested_fix": "Wire `docs:native-api:verify` into the release-candidate pipeline (e.g., `scripts/release-candidate-pipeline.mjs` / `run-ci-gate.mjs`) or another workflow and add a contract assertion proving it runs before a release tag."
+    },
+    {
+      "severity": "WARNING",
+      "file": "website/tests/site-contract.test.mjs",
+      "line": 249,
+      "claim": "The hash-and-manifest design drops the 'cannot re-sign stale output' property the replaced test name celebrated: nothing in the visible diff prevents regenerating the checked-in manifest from stale or hand-edited artifacts, so the Pages gate detects only manifest/file drift, not artifact correctness.",
+      "evidence": "Old test was named 'native API verification regenerates artifacts and cannot re-sign stale output' and asserted the workflow installed pinned toolchains and ran the regenerating verifier; the renamed test asserts only that the checker calls `verifyNativeApiManifest`, does not exec anything, and that the (absent) manifest module hashes with sha256. With regeneration removed from CI, a developer can change sources, skip regeneration, and re-emit a self-consistent manifest \u2014 the check passes on stale docs.",
+      "suggested_fix": "Have the manifest be produced exclusively inside `generate-native-api.mjs` immediately after a successful pinned-toolchain run, and assert in the contract test that no other script writes the manifest file."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "website/tests/site-contract.test.mjs",
+      "line": 22,
+      "claim": "The top-level `readFile` of `../scripts/native-api-manifest.mjs` executes before any test runs, so a missing or renamed manifest module fails the entire site-contract suite with an opaque ENOENT rather than a targeted assertion.",
+      "evidence": "Module-scope additions: `const nativeApiManifest = await readFile(new URL('../scripts/native-api-manifest.mjs', import.meta.url), 'utf8');` \u2014 any failure aborts loading of the whole test file, masking all other contract results.",
+      "suggested_fix": "Move the read into the specific test body or wrap it with an existence assertion that names the missing dependency."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

@@ -11,7 +11,18 @@ is generated from that package, never from the provenance import:
 
 ```bash
 pnpm run docs:native-api
+pnpm run docs:native-api:verify
 ```
+
+Generation and full reproducibility verification are release gates. They
+require Flutter `3.44.8`, dartdoc `9.0.5`, and Rust `1.88.0`; the generator
+rejects a different Flutter version and invokes the exact Rust toolchain.
+
+The Pages deployment does not rebuild native documentation or install native
+toolchains. It runs `pnpm run docs:native-api:check`, which hashes every
+declared native source and every committed dartdoc/rustdoc artifact and compares
+them with the checked-in manifest. Any source, file, byte, or inventory drift
+fails before deployment; full regeneration remains the stronger release gate.
 
 The curated Flutter guides link provider families, graph operations, views,
 transports, and the optional FFI seam to this dartdoc surface.

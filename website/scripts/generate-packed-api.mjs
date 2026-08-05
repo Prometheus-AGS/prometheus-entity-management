@@ -9,6 +9,7 @@ import {Application} from 'typedoc';
 
 import {PUBLIC_PACKAGES} from '../../scripts/public-packages.mjs';
 import {removeContainedDirectory, removeOwnedDirectory} from './contained-directory.mjs';
+import {hashArtifactTree, hashPackedApiInputs} from './static-artifact-manifest.mjs';
 
 const websiteRoot = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const repositoryRoot = path.resolve(websiteRoot, '..');
@@ -141,10 +142,19 @@ try {
   await app.generateDocs(project, output);
   await sanitizeGeneratedSources(output);
 
+  const artifactManifest = await hashArtifactTree(output, {exclude: ['packed-inventory.json']});
+  const sourceManifest = await hashPackedApiInputs(repositoryRoot, PUBLIC_PACKAGES);
   const fingerprint = createHash('sha256').update(JSON.stringify(inventory)).digest('hex');
   await writeFile(
     path.join(output, 'packed-inventory.json'),
-    `${JSON.stringify({schemaVersion: '1.0.0', revision, fingerprint, packages: inventory}, null, 2)}\n`,
+    `${JSON.stringify({
+      schemaVersion: '1.0.0',
+      revision,
+      fingerprint,
+      ...sourceManifest,
+      ...artifactManifest,
+      packages: inventory,
+    }, null, 2)}\n`,
   );
   console.log(`Generated packed TypeDoc reference for ${inventory.length} packages (${fingerprint}).`);
 } finally {

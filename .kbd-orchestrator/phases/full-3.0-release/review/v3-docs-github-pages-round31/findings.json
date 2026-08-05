@@ -1,0 +1,39 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "k3",
+  "producer_model": "gpt-5.6-sol",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": ".github/workflows/docs-pages.yml",
+      "line": 89,
+      "claim": "The browser-failure upload guard is dead: `hashFiles('test-results/**') != ''` is always true and `if-no-files-found: error` can never trigger, because `test-results/.last-run.json` is a committed, checked-out file, so the step uploads stale committed content as 'browser failure evidence' on any earlier-step failure (validation, build, snippets) even when browser tests never ran.",
+      "evidence": "The file tree lists `./test-results/.last-run.json` as tracked in the repo; the final workflow hunk sets `if: failure() && hashFiles('test-results/**') != ''` with `path: test-results` and `if-no-files-found: error`. hashFiles evaluates against the checked-out workspace, which always contains the committed test-results directory.",
+      "suggested_fix": "Either remove `test-results/.last-run.json` from version control (gitignore it), or point the guard/path at a subdirectory only Playwright writes (e.g. `test-results/docs-browser/**`), or gate on the browser-test step outcome (`steps.<browser-step-id>.outcome == 'failure'`) instead of hashFiles."
+    },
+    {
+      "severity": "WARNING",
+      "file": "website/tests/site-contract.test.mjs",
+      "line": 277,
+      "claim": "The full pinned-toolchain native reproducibility gate (`docs:native-api:verify`) is no longer executed by any automated gate in this change; its only remaining 'enforcement' is a regex assertion that the string appears in RELEASING.md, so a contributor can regenerate native artifacts/manifest with a wrong toolchain and the Pages manifest check will still pass without the full verifier ever running.",
+      "evidence": "The workflow hunk deletes the Flutter/Rust toolchain steps and `pnpm run docs:native-api:verify`, replacing it with `docs:native-api:check`; the contract test only asserts `assert.match(releasing, /pnpm run docs:native-api:verify/)` and `assert.doesNotMatch(workflow, /pnpm run docs:native-api:verify/)`. Nothing in the packet wires `docs:native-api:verify` into release-candidate-pipeline.mjs, verify-release-candidate.mjs, or any CI gate.",
+      "suggested_fix": "Add `docs:native-api:verify` (plus the `git diff --exit-code -- website/static/native-api` check) to an automated release/RC gate such as scripts/release-candidate-pipeline.mjs or verify-release-candidate.mjs, and assert that wiring in a contract test rather than asserting documentation text."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": ".github/workflows/docs-pages.yml",
+      "line": 64,
+      "claim": "The step renamed to 'Build only the npm artifacts needed by snippets' is now inaccurate, because the following step's `docs:artifacts:check` (`hashPackedApiInputs`) also requires the freshly built `dist/*.d.ts` declarations from that build.",
+      "evidence": "Final workflow hunk places `pnpm run docs:artifacts:check` in the step immediately after `pnpm run build:packages`, and static-artifact-manifest.mjs's `hashPackedApiInputs` reads `path.join(packageRoot, 'dist')` declaration files, which exist only after the package build; the postmortem itself states packed API freshness hashes 'the exact built TypeDoc inputs ... after that build'.",
+      "suggested_fix": "Rename the step to reflect both consumers, e.g. 'Build npm artifacts needed by snippets and artifact checks'."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

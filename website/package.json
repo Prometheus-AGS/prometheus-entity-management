@@ -16,6 +16,8 @@
     "generate:search": "node scripts/generate-local-search.mjs",
     "generate:api": "node scripts/generate-packed-api.mjs",
     "generate:native-api": "node scripts/generate-native-api.mjs",
+    "check:artifacts": "node scripts/check-generated-artifacts.mjs",
+    "check:native-api": "node scripts/check-native-api.mjs",
     "verify:native-api": "node scripts/verify-native-api.mjs",
     "audit:deployed": "lhci autorun --config=lighthouserc.cjs",
     "check": "pnpm run typecheck && pnpm run check:content",
