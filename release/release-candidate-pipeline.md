@@ -59,9 +59,21 @@ or crates.io ownership.
 
 The mutating `pnpm run release:rc:stage` command is intentionally unusable as a
 normal local command. It requires GitHub Actions OIDC, the protected `npm-rc`
-environment, a workflow SHA equal to the manifest SHA, explicit
-`stage-rc` authority, and the absence of a long-lived npm write token. It can
+environment, an authorized candidate SHA equal to the manifest SHA, explicit
+`stage-rc` authority, and the absence of a long-lived npm write token. The
+stage job uses `actions/setup-node@v7`, whose removal of the v6 dummy
+`NODE_AUTH_TOKEN` fallback keeps the OIDC-only boundary observable. It can
 target only the `next` channel through npm's staging operation.
+
+For a candidate already certified by a successful rehearsal job, dispatch
+`publish.yml` in `stage` mode with both `candidate_run_id` and `candidate_sha`.
+The rehearsal job is skipped, and the protected stage downloads the immutable
+artifact from that exact run with read-only Actions permission. Its artifact
+name and manifest must both match `candidate_sha`. Before download, the stage
+also verifies that the run belongs to this workflow, completed at the selected
+SHA, contains a successful `rehearse` job, and still owns the named unexpired
+artifact. Omitting either input falls back to a fresh rehearsal in the current
+run; candidate inputs are never mixed with current-run values.
 
 Before any registry read, the stage state machine validates protected
 GitHub/OIDC authority and the CLI validates the rehearsal as one closed
@@ -84,6 +96,9 @@ The journal moves each npm artifact through `declared`, `packed`, `verified`,
 - rehearsal records tarballs as bundle-relative `packages/*.tgz` paths, and the
   stage job resolves them inside the downloaded candidate artifact rather than
   reusing runner-absolute paths from the rehearsal workspace;
+- a retry may reuse an existing successful rehearsal run by explicit run ID and
+  source SHA, avoiding duplicate full CI while retaining the same manifest,
+  integrity, protected-tag, and OIDC checks;
 - absolute paths and traversal outside the downloaded bundle fail closed;
 - matching immutable version and integrity: skip and record;
 - absent version: stage in dependency order;

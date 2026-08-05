@@ -13,6 +13,14 @@ on:
         options:
           - rehearse
           - stage
+      candidate_run_id:
+        description: Existing successful rehearsal run ID to reuse in stage mode
+        required: false
+        type: string
+      candidate_sha:
+        description: Exact source SHA of the existing rehearsed candidate
+        required: false
+        type: string
 
 concurrency:
   group: release-candidate-${{ github.ref }}-${{ inputs.mode || 'version-pr' }}
@@ -57,7 +65,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   rehearse:
-    if: github.event_name == 'workflow_dispatch'
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      (inputs.mode == 'rehearse' ||
+       inputs.candidate_run_id == '' ||
+       inputs.candidate_sha == '')
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -153,23 +165,32 @@ jobs:
           retention-days: 30
 
   stage:
-    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'stage'
+    if: >-
+      always() &&
+      github.event_name == 'workflow_dispatch' &&
+      inputs.mode == 'stage' &&
+      (needs.rehearse.result == 'success' ||
+       (needs.rehearse.result == 'skipped' &&
+        inputs.candidate_run_id != '' &&
+        inputs.candidate_sha != ''))
     needs: rehearse
     runs-on: ubuntu-latest
     environment: npm-rc
     permissions:
+      actions: read
       contents: read
       id-token: write
     env:
       PROMETHEUS_RELEASE_AUTHORITY: stage-rc
       PROMETHEUS_RELEASE_ENVIRONMENT: npm-rc
+      PROMETHEUS_RELEASE_CANDIDATE_SHA: ${{ (inputs.candidate_run_id != '' && inputs.candidate_sha != '') && inputs.candidate_sha || github.sha }}
 
     steps:
       - uses: actions/checkout@v6
 
       - uses: pnpm/action-setup@v6
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: "24"
           registry-url: "https://registry.npmjs.org"
@@ -181,11 +202,37 @@ jobs:
       - name: Install the current npm CLI through pnpm
         run: pnpm add --global npm@12.0.2
 
+      - name: Verify reused rehearsal authority
+        if: needs.rehearse.result == 'skipped'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CANDIDATE_RUN_ID: ${{ inputs.candidate_run_id }}
+          CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+        run: |
+          [[ "$CANDIDATE_RUN_ID" =~ ^[0-9]+$ ]]
+          [[ "$CANDIDATE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          run_json="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${CANDIDATE_RUN_ID}")"
+          jq -e --arg sha "$CANDIDATE_SHA" '
+            .event == "workflow_dispatch" and
+            .status == "completed" and
+            .head_sha == $sha and
+            .path == ".github/workflows/publish.yml"
+          ' <<<"$run_json" >/dev/null
+          gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${CANDIDATE_RUN_ID}/jobs?per_page=100" \
+            --jq 'any(.jobs[]; .name == "rehearse" and .status == "completed" and .conclusion == "success")' \
+            | grep -qx true
+          artifact_name="prometheus-entity-management-rc-${CANDIDATE_SHA}"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${CANDIDATE_RUN_ID}/artifacts?per_page=100" \
+            --jq "any(.artifacts[]; .name == \"${artifact_name}\" and .expired == false)" \
+            | grep -qx true
+
       - name: Download the attested candidate bundle
         uses: actions/download-artifact@v8
         with:
-          name: prometheus-entity-management-rc-${{ github.sha }}
+          name: prometheus-entity-management-rc-${{ (inputs.candidate_run_id != '' && inputs.candidate_sha != '') && inputs.candidate_sha || github.sha }}
           path: .release-candidate
+          github-token: ${{ github.token }}
+          run-id: ${{ (inputs.candidate_run_id != '' && inputs.candidate_sha != '') && inputs.candidate_run_id || github.run_id }}
 
       - name: Stage RC packages in dependency order
         run: |
