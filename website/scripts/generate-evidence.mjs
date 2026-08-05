@@ -6,6 +6,7 @@ import {execFileSync} from 'node:child_process';
 import sharp from 'sharp';
 import {assertEvidenceBinding, assertEvidenceImage, assertReceiptCertification} from './evidence-receipt.mjs';
 import {removeContainedDirectory} from './contained-directory.mjs';
+import {hashArtifactTree} from './static-artifact-manifest.mjs';
 
 const websiteRoot = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const repositoryRoot = path.resolve(websiteRoot, '..');
@@ -115,16 +116,6 @@ for (const asset of allowlist.assets) {
 }
 if (certifications.size !== 0) throw new Error('unused evidence certification records remain');
 
-await writeFile(
-  path.join(outputRoot, 'manifest.json'),
-  `${JSON.stringify({
-    schemaVersion: '1.0.0',
-    certificationReceipt: 'website/evidence-certifications.json',
-    certificationReceiptSha256,
-    assets: records,
-  }, null, 2)}\n`,
-);
-
 const sections = new Map([
   ['React and Next.js', records.filter(({assetId}) => assetId.startsWith('react-') || assetId.startsWith('next-'))],
   ['Agentic A2UI', records.filter(({assetId}) => assetId.startsWith('a2ui-'))],
@@ -148,5 +139,18 @@ for (const [title, assets] of sections) {
     );
   }
 }
-await writeFile(path.join(websiteRoot, 'docs/evidence/gallery.mdx'), `${lines.join('\n').trimEnd()}\n`);
+const galleryContent = `${lines.join('\n').trimEnd()}\n`;
+const artifactManifest = await hashArtifactTree(outputRoot, {exclude: ['manifest.json']});
+await writeFile(
+  path.join(outputRoot, 'manifest.json'),
+  `${JSON.stringify({
+    schemaVersion: '1.0.0',
+    certificationReceipt: 'website/evidence-certifications.json',
+    certificationReceiptSha256,
+    gallerySha256: createHash('sha256').update(galleryContent).digest('hex'),
+    ...artifactManifest,
+    assets: records,
+  }, null, 2)}\n`,
+);
+await writeFile(path.join(websiteRoot, 'docs/evidence/gallery.mdx'), galleryContent);
 console.log(`Generated ${records.length} allowlisted evidence assets.`);

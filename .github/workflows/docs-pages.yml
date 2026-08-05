@@ -57,22 +57,21 @@ jobs:
         run: |
           pnpm run docs:check
           pnpm run docs:test
+          pnpm run docs:artifacts:check
           pnpm run docs:native-api:check
           pnpm run verify:readme-parity
           pnpm run test:npm-trust
 
-      - name: Build only the npm artifacts needed by snippets and API docs
+      - name: Build only the npm artifacts needed by snippets
         run: pnpm run build:packages
 
-      - name: Verify snippets and regenerate packed API/evidence artifacts
+      - name: Verify snippets and the deterministic search artifact
         run: |
           pnpm run docs:snippets
           pnpm run docs:search
-          pnpm run docs:api
-          pnpm run docs:evidence
-          git diff --exit-code -- website/static/api website/static/search-index.json website/docs/evidence/gallery.mdx website/static/evidence
-          if [ -n "$(git status --porcelain --untracked-files=all -- website/static/api website/static/search-index.json website/docs/evidence/gallery.mdx website/static/evidence)" ]; then
-            git status --short --untracked-files=all -- website/static/api website/static/search-index.json website/docs/evidence/gallery.mdx website/static/evidence
+          git diff --exit-code -- website/static/search-index.json
+          if [ -n "$(git status --porcelain --untracked-files=all -- website/static/search-index.json)" ]; then
+            git status --short --untracked-files=all -- website/static/search-index.json
             exit 1
           fi
 

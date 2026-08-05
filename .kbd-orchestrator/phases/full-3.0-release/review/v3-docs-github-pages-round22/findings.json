@@ -1,0 +1,39 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "gpt-5.6-sol",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "RELEASING.md",
+      "line": 146,
+      "claim": "The new release gate for packed API/evidence artifacts drops the untracked-files check that the removed CI step enforced, so newly generated but uncommitted artifacts (e.g., a new API page or evidence file) silently pass the gate.",
+      "evidence": "The deleted workflow hunk paired `git diff --exit-code` with `git status --porcelain --untracked-files=all -- website/static/api ... website/static/evidence` and failed on any untracked output; the replacement RELEASING.md block contains only `git diff --exit-code -- website/static/api website/docs/evidence/gallery.mdx website/static/evidence`, which ignores untracked files entirely.",
+      "suggested_fix": "Append the untracked-file guard to the documented gate, e.g. `test -z \"$(git status --porcelain --untracked-files=all -- website/static/api website/docs/evidence/gallery.mdx website/static/evidence)\"`, so newly generated artifacts are caught at release time just as they were in CI."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".github/workflows/docs-pages.yml",
+      "line": 67,
+      "claim": "Drift between sources and the committed packed API/evidence artifacts is now undetected on every PR and only surfaces via a manual, documentation-only step in RELEASING.md, while the diff provides no evidence for the claimed replacement validation of these artifacts.",
+      "evidence": "The workflow hunk removes `pnpm run docs:api`, `pnpm run docs:evidence`, and the diff guards over `website/static/api`, `website/docs/evidence/gallery.mdx`, and `website/static/evidence`. RELEASING.md asserts Pages \"validates their inventories, hashes, receipts, routes, and rendered output,\" but the only content-addressed hash verification evidenced anywhere in the packet is `docs:native-api:check` for `website/static/native-api/` \u2014 nothing in the diff or the updated site-contract test demonstrates an equivalent inventory/hash check for static/api or static/evidence. If that validation does not exist, the acceptance criterion 'Add deterministic verification for every acceptance criterion in that section' is weakened to a manual checklist.",
+      "suggested_fix": "Either add a content-addressed check (manifest/hash of the committed artifacts versus declared sources, analogous to docs:native-api:check) to the Pages workflow, or add a cheap CI job on the artifact-owning platform that regenerates and diffs docs:api/docs:evidence on PRs touching their inputs."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "website/tests/site-contract.test.mjs",
+      "line": 217,
+      "claim": "The test now hard-codes `assert.doesNotMatch(workflow, /pnpm run docs:api/)` and `docs:evidence`, permanently forbidding re-introducing those steps in the Pages workflow even in a platform-corrected form (e.g., hash-only verification), with no corresponding positive assertion that some replacement validation of these artifacts exists.",
+      "evidence": "Hunk adds negative assertions for docs:api/docs:evidence and positive assertions only for docs:search and the search-index diff; no assertion covers any static/api or static/evidence validation anywhere.",
+      "suggested_fix": "If a replacement inventory/hash check is added (per the other finding), assert it here; otherwise scope the negative assertions to the regeneration+diff pattern rather than the bare command names."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

@@ -19,6 +19,8 @@ const css = await readFile(new URL('../src/css/custom.css', import.meta.url), 'u
 const brand = await readFile(new URL('../BRAND.md', import.meta.url), 'utf8');
 const evidenceFigure = await readFile(new URL('../src/components/EvidenceFigure.tsx', import.meta.url), 'utf8');
 const evidenceGenerator = await readFile(new URL('../scripts/generate-evidence.mjs', import.meta.url), 'utf8');
+const generatedArtifactChecker = await readFile(new URL('../scripts/check-generated-artifacts.mjs', import.meta.url), 'utf8');
+const staticArtifactManifest = await readFile(new URL('../scripts/static-artifact-manifest.mjs', import.meta.url), 'utf8');
 const nativeApiChecker = await readFile(new URL('../scripts/check-native-api.mjs', import.meta.url), 'utf8');
 const nativeApiManifest = await readFile(new URL('../scripts/native-api-manifest.mjs', import.meta.url), 'utf8');
 const releasing = await readFile(new URL('../../RELEASING.md', import.meta.url), 'utf8');
@@ -210,9 +212,14 @@ test('Pages workflow builds pull requests but deploys only protected main', asyn
   assert.match(workflow, /pages: write/);
   assert.match(workflow, /id-token: write/);
   assert.match(workflow, /pnpm run docs:native-api:check/);
+  assert.match(workflow, /pnpm run docs:artifacts:check/);
   assert.doesNotMatch(workflow, /pnpm run docs:native-api:verify/);
   assert.doesNotMatch(workflow, /subosito\/flutter-action/);
   assert.doesNotMatch(workflow, /rustup toolchain install/);
+  assert.match(workflow, /pnpm run docs:search/);
+  assert.doesNotMatch(workflow, /pnpm run docs:api\b/);
+  assert.doesNotMatch(workflow, /pnpm run docs:evidence\b/);
+  assert.match(workflow, /git diff --exit-code -- website\/static\/search-index\.json/);
   assert.match(workflow, /pnpm run docs:test:browser/);
   assert.match(workflow, /audit:deployed/);
   assert.match(workflow, /DOCS_BASE_URL/);
@@ -267,6 +274,17 @@ test('release native API verification regenerates while Pages validates content-
   assert.match(nativeApiManifest, /artifactAggregateSha256/);
   assert.match(releasing, /pnpm run docs:native-api:verify/);
   assert.match(releasing, /git diff --exit-code -- website\/static\/native-api/);
+  assert.match(releasing, /pnpm run docs:api/);
+  assert.match(releasing, /pnpm run docs:evidence/);
+  assert.match(generatedArtifactChecker, /hashArtifactTree/);
+  assert.match(generatedArtifactChecker, /assertEvidenceBinding/);
+  assert.match(generatedArtifactChecker, /source Git blob drift/);
+  assert.match(generatedArtifactChecker, /packed API source hash drift/);
+  assert.match(generatedArtifactChecker, /packed API package inventory length drift/);
+  assert.match(generatedArtifactChecker, /evidence gallery drift/);
+  assert.match(staticArtifactManifest, /artifactAggregateSha256/);
+  assert.match(staticArtifactManifest, /sourceAggregateSha256/);
+  assert.doesNotMatch(staticArtifactManifest, /localeCompare/);
 });
 
 test('native API generation rejects destructive output targets before tool execution', () => {

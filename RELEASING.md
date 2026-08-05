@@ -136,6 +136,28 @@ It is intentionally excluded from the Pages workflow: Pages performs the cheap
 content-addressed `docs:native-api:check`, while release certification owns the
 expensive native regeneration.
 
+## Packed API and evidence artifact certification
+
+Before an RC or stable release can claim updated packed TypeScript references or
+gallery evidence, regenerate and review those canonical artifacts:
+
+```bash
+pnpm run build:packages
+pnpm run docs:api
+pnpm run docs:evidence
+git diff --exit-code -- website/static/api website/docs/evidence/gallery.mdx website/static/evidence
+test -z "$(git status --porcelain --untracked-files=all -- website/static/api website/docs/evidence/gallery.mdx website/static/evidence)"
+```
+
+Run this gate in the release environment that owns the committed artifacts.
+Packed tarball compression and Sharp image encoding are platform-dependent, so
+the Pages workflow does not rewrite those bytes on Ubuntu. It validates their
+inventories, tracked public-package inputs, aggregate artifact hashes, evidence
+source blobs, receipts, generated gallery, routes, and rendered output through
+`docs:artifacts:check` plus the focused documentation
+contract and browser gates. The deterministic search index is
+still regenerated and diffed on every Pages build.
+
 ## Flutter source provenance
 
 Before claiming that reusable KnowMe Flutter source has auditable lineage, run:

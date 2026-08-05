@@ -2,6 +2,9 @@
   "schemaVersion": "1.0.0",
   "certificationReceipt": "website/evidence-certifications.json",
   "certificationReceiptSha256": "7adc50b0fd7c934b9412c855266b22879ed9751a99c9b098904df3732ef7a22b",
+  "gallerySha256": "731f9fbda71657e7ac3fdb7c4ddc00b9ef308b2fe01e9095f4a9e6383220e154",
+  "artifactFileCount": 44,
+  "artifactAggregateSha256": "9cc0267f68c95e607387afd40cc0258135bc325d6df09a26f0f253090bd82e89",
   "assets": [
     {
       "assetId": "react-graph-transports",
