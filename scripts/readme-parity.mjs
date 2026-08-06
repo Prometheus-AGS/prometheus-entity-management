@@ -13,6 +13,7 @@ const readJson = async (name) => JSON.parse(await readFile(path.join(root, name)
 const contract = await readJson('release/v3-release-contract.json');
 const coverage = await readJson('examples/coverage.json');
 const registry = await readJson('release/npm-registry-status.json');
+const pubdev = await readJson('release/pubdev-registry-status.json');
 const rootManifest = await readJson('package.json');
 const routes = await readJson('website/routes.json');
 
@@ -37,11 +38,28 @@ const packageRows = [
 const releaseRows = [
   `Registry snapshot: ${registry.verifiedAt}. Expected candidate: \`${registry.expectedCandidate}\`.`,
   '',
-  '| Package | `latest` | `alpha` | `next` |',
-  '| --- | --- | --- | --- |',
+  '| Package | `latest` | `alpha` | `next` | RC state |',
+  '| --- | --- | --- | --- | --- |',
   ...Object.entries(registry.packages).map(([name, tags]) =>
-    `| \`${name}\` | \`${tags.latest ?? 'absent'}\` | \`${tags.alpha ?? 'absent'}\` | \`${tags.next ?? 'absent'}\` |`,
+    `| \`${name}\` | \`${tags.latest ?? 'absent'}\` | \`${tags.alpha ?? 'absent'}\` | \`${tags.next ?? 'absent'}\` | ${tags.candidateState} |`,
   ),
+];
+
+const pubdevConsumerSentence = pubdev.consumerVerification === 'passed'
+  ? 'The published archive passed a clean consumer resolution, import, and analyzer check.'
+  : 'Published consumer verification is not recorded as passed.';
+const pubdevPublisherSentence = pubdev.publisherId === null
+  ? 'pub.dev does not yet associate the package with a verified publisher.'
+  : `Verified publisher: \`${pubdev.publisherId}\`.`;
+const nativeReleaseRows = [
+  `pub.dev snapshot: ${pubdev.verifiedAt}.`,
+  '',
+  '| Package | Version | State | Published |',
+  '| --- | --- | --- | --- |',
+  `| [\`${pubdev.packageName}\`](${pubdev.packageUrl}) | \`${pubdev.version}\` | ${pubdev.releaseStatus} | ${pubdev.publishedAt} |`,
+  '',
+  pubdevConsumerSentence,
+  pubdevPublisherSentence,
 ];
 
 const exampleRows = [
@@ -87,19 +105,24 @@ const commandRows = [
 
 const generated = new Map([
   ['RELEASE_TAGS', releaseRows.join('\n')],
+  ['NATIVE_RELEASES', nativeReleaseRows.join('\n')],
   ['PACKAGES', packageRows.join('\n')],
   ['EXAMPLES', exampleRows.join('\n')],
   ['SCENARIOS', scenarioRows.join('\n')],
   ['COMMANDS', commandRows.join('\n')],
 ]);
+const siteGenerated = new Map([
+  ['NPM_REGISTRY_STATUS', releaseRows.join('\n')],
+  ['PUBDEV_REGISTRY_STATUS', nativeReleaseRows.join('\n')],
+]);
 
-function replaceGenerated(readme) {
-  for (const [name, content] of generated) {
+function replaceGenerated(source, blocks = generated, label = 'README') {
+  for (const [name, content] of blocks) {
     const pattern = new RegExp(`<!-- BEGIN GENERATED:${name} -->[\\s\\S]*?<!-- END GENERATED:${name} -->`);
-    if (!pattern.test(readme)) throw new Error(`README is missing generated block ${name}`);
-    readme = readme.replace(pattern, marker(name, content));
+    if (!pattern.test(source)) throw new Error(`${label} is missing generated block ${name}`);
+    source = source.replace(pattern, marker(name, content));
   }
-  return readme;
+  return source;
 }
 
 function verifyCommands() {
@@ -121,6 +144,22 @@ function verifyInventory() {
   if (registry.releaseStatus === 'rc-registration-blocked' &&
       Object.values(registry.packages).some((tags) => tags.next)) {
     throw new Error('registry status says registration blocked but next already exists');
+  }
+  for (const [name, tags] of Object.entries(registry.packages)) {
+    const published = tags.candidateState === 'published';
+    if (published !== (tags.next === registry.expectedCandidate)) {
+      throw new Error(`${name} candidate state conflicts with its next tag`);
+    }
+  }
+  const dartArtifact = contract.artifacts.find(({ecosystem}) => ecosystem === 'dart');
+  if (pubdev.packageName !== dartArtifact?.packageName || pubdev.version !== contract.versionPolicy.native.version) {
+    throw new Error('pub.dev status differs from the Dart release contract');
+  }
+  if (pubdev.releaseStatus !== 'published' || !/^[0-9a-f]{64}$/.test(pubdev.archiveSha256)) {
+    throw new Error('pub.dev status is not a verified publication');
+  }
+  if (pubdev.consumerVerification !== 'passed') {
+    throw new Error('pub.dev consumer verification has not passed');
   }
 }
 
@@ -146,13 +185,17 @@ function verifyArchitecture(readme) {
 
 let readme = await readFile(path.join(root, 'README.md'), 'utf8');
 const expected = replaceGenerated(readme);
+let releaseGuide = await readFile(path.join(root, 'website/docs/operations/release.md'), 'utf8');
+const expectedReleaseGuide = replaceGenerated(releaseGuide, siteGenerated, 'release guide');
+verifyCommands();
+verifyInventory();
 if (process.argv.includes('--write')) {
   await writeFile(path.join(root, 'README.md'), expected);
-  console.log('README generated blocks updated.');
+  await writeFile(path.join(root, 'website/docs/operations/release.md'), expectedReleaseGuide);
+  console.log('README and release-guide generated blocks updated.');
 } else {
   if (expected !== readme) throw new Error('README generated blocks are stale; run pnpm run readme:write');
-  verifyCommands();
-  verifyInventory();
+  if (expectedReleaseGuide !== releaseGuide) throw new Error('release-guide registry blocks are stale; run pnpm run readme:write');
   verifyRoutesAndLinks(readme);
   verifyArchitecture(readme);
   console.log(`README parity passed for ${artifacts.length} packages, ${coverage.showcases.length} examples, ${coverage.capabilities.length} capabilities, and ${commands.length} commands.`);

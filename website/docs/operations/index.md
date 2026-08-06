@@ -12,6 +12,7 @@ testing, deployment, troubleshooting, skills, release recovery, and partial
 publication. Stable promotion remains a human-reviewed operation over an
 immutable certification bundle.
 
-During the RC program, npm `latest` is never moved by documentation deployment
-or by a successful example test. Registry trust, staged approval, package
-integrity, and post-publish consumers are separate gates.
+React `latest` was intentionally moved to `3.0.0-rc.1`; documentation deployment
+and example tests cannot authorize or perform that mutation. Registry trust,
+staged approval, package integrity, and post-publish consumers remain separate
+gates for the other packages.

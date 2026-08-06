@@ -25,11 +25,12 @@ flowchart LR
 
 ## Current release boundary
 
-The active documentation line is **3.x** and the current release is an RC
-program. The code and evidence cover all five showcase families at explicitly
-recorded levels, but the npm `next` tag is not presented as installable until
-registry verification succeeds. The `latest` tags remain unchanged: React is
-stable at `2.2.0`, while the other eleven packages remain at `3.0.0-alpha.0`.
+The active documentation line is **3.x**. React, the framework-neutral core,
+and A2UI React are public as `3.0.0-rc.1`; nine integration packages remain
+staged pending npm approval. React's `latest` and `next` tags resolve to the RC.
+Core and A2UI publish the RC on `next` while retaining their alpha `latest`
+tags. Flutter is public as `entity_graph_flutter@3.0.0` on pub.dev. See the
+[verified registry snapshot](../packages/index.md) before choosing an install command.
 
 ## Choose your next step
 

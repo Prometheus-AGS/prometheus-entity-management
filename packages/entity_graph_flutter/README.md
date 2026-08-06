@@ -18,14 +18,14 @@ Provides a **normalized, reactive entity graph store** for Flutter with:
 
 This directory is the sole canonical Dart graph package in the 3.0 release inventory. Reusable KnowMe source history is retained separately under `provenance/imports/knowme-flutter` as a non-buildable, non-workspace, non-public review boundary; it is not another package and must never be compiled or published.
 
-See [`release/flutter-source-provenance.md`](https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/flutter-source-provenance.md) for source revisions, license and attribution, commit mappings, and path dispositions. Runtime and Riverpod evidence is documented separately in [`release/dart-graph-riverpod.md`](https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/dart-graph-riverpod.md). Neither gate authorizes pub.dev publication or certifies the complete Flutter/A2UI application on Android or iOS.
+See [`release/flutter-source-provenance.md`](https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/flutter-source-provenance.md) for source revisions, license and attribution, commit mappings, and path dispositions. Runtime and Riverpod evidence is documented separately in [`release/dart-graph-riverpod.md`](https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/dart-graph-riverpod.md). Those earlier gates did not authorize publication or certify the complete application; subsequent release work published `3.0.0` and added Android emulator and iOS simulator smoke evidence.
 
 The complete application composition is demonstrated in
 [`examples/flutter-riverpod`](https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/examples/flutter-riverpod) and
 documented in the
 [`Flutter/Riverpod/A2UI release guide`](https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/flutter-riverpod-a2ui-example.md).
-Its host tests and goldens are partial evidence until the stable-SDK and
-Android/iOS lanes pass.
+Its Flutter 3.44.8 host tests, three deterministic goldens, Android API 35
+emulator lane, and iOS 26.5 simulator lane now pass at their recorded boundary.
 
 ## Architecture
 
@@ -52,9 +52,14 @@ caches or call transport APIs directly.
 
 ```yaml
 dependencies:
-  entity_graph_flutter:
-    path: ../packages/entity_graph_flutter
+  entity_graph_flutter: ^3.0.0
   flutter_riverpod: ^3.3.2
+```
+
+Or add it from the command line:
+
+```bash
+flutter pub add entity_graph_flutter:^3.0.0
 ```
 
 ### 2. Wrap your app with `ProviderScope`
@@ -282,15 +287,17 @@ entity type or list query key is affected — **without any additional plumbing*
 When an `Invoice` is updated anywhere (realtime, mutation, optimistic patch),
 every widget watching `Invoice` entities rebuilds in the same frame.
 
-## What the current gate does not prove
+## Current publication and evidence boundary
 
-- pub.dev ownership or authorization to publish;
-- the immutable full-release SHA or cross-ecosystem certification bundle (the
-  clean Flutter 3.44.8 stable library candidate is certified separately);
-- Flutter/A2UI application navigation, Android/iOS device behavior, offline
-  persistence, accessibility, or complete phone/tablet visuals;
+- `entity_graph_flutter@3.0.0` is public on pub.dev, its archive hash is recorded
+  in `release/pubdev-registry-status.json`, and a clean consumer import/analyzer
+  check passed. pub.dev has not yet assigned the package to a verified publisher.
+- Flutter 3.44.8 generation, analysis, package/showcase tests, three goldens,
+  Android emulator, and iOS simulator smoke lanes are recorded in
+  `examples/coverage.json`.
+- Physical devices, store submission, signing, and a cross-ecosystem stable
+  release bundle are not claimed.
 - realtime coalescing or durable peer convergence.
 
-Those claims remain owned by the later Flutter showcase, registry,
-release-certification, and stable-publication changes. See the release contract
-instead of inferring full-release readiness from this package version.
+See the release contract and coverage ledger instead of inferring app-store or
+full npm 3.0 readiness from this Dart package version.

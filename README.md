@@ -12,38 +12,39 @@ parallel query caches.
 
 ## 3.0 release status
 
-The codebase is in the **3.0 RC program**. All twelve npm artifacts are prepared
-as `3.0.0-rc.1`, but npm trusted-publisher registration is not yet readable by
-the current maintainer credential and no package is available on `next` yet.
-The `latest` tags remain unchanged: React is stable at `2.2.0`; the other eleven
-packages remain on their existing `3.0.0-alpha.0` tags. The Docusaurus site is implemented in
-`website/`; its public link will be added here only after the GitHub Pages
-deployment and deep-route probes pass.
+The codebase is in the **3.0 RC program**. React, the framework-neutral core,
+and A2UI React are public as `3.0.0-rc.1`; the other nine npm packages are
+staged and await npm approval. React's `latest` and `next` tags now resolve to
+`3.0.0-rc.1`. Core and A2UI expose the RC on `next` while retaining their alpha
+`latest` tags. Flutter is public on pub.dev as `entity_graph_flutter@3.0.0`.
+The production documentation is available at
+[prometheus-ags.github.io/prometheus-entity-management](https://prometheus-ags.github.io/prometheus-entity-management/).
 
 <!-- BEGIN GENERATED:RELEASE_TAGS -->
-Registry snapshot: 2026-08-05T09:09:26Z. Expected candidate: `3.0.0-rc.1`.
+Registry snapshot: 2026-08-06T08:17:32Z. Expected candidate: `3.0.0-rc.1`.
 
-| Package | `latest` | `alpha` | `next` |
-| --- | --- | --- | --- |
-| `@prometheus-ags/a2ui-react` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` |
-| `@prometheus-ags/entity-graph-a2a` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` |
-| `@prometheus-ags/entity-graph-alpine` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` |
-| `@prometheus-ags/entity-graph-core` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` |
-| `@prometheus-ags/entity-graph-htmx` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` |
-| `@prometheus-ags/prometheus-entity-management` | `2.2.0` | `3.0.0-alpha.0` | `absent` |
-| `@prometheus-ags/entity-graph-sdl` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` |
-| `@prometheus-ags/entity-graph-solid` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` |
-| `@prometheus-ags/entity-graph-svelte` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` |
-| `@prometheus-ags/entity-graph-sync` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` |
-| `@prometheus-ags/entity-graph-tauri` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` |
-| `@prometheus-ags/entity-graph-web-components` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` |
+| Package | `latest` | `alpha` | `next` | RC state |
+| --- | --- | --- | --- | --- |
+| `@prometheus-ags/a2ui-react` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
+| `@prometheus-ags/entity-graph-a2a` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
+| `@prometheus-ags/entity-graph-alpine` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
+| `@prometheus-ags/entity-graph-core` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
+| `@prometheus-ags/entity-graph-htmx` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
+| `@prometheus-ags/prometheus-entity-management` | `3.0.0-rc.1` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
+| `@prometheus-ags/entity-graph-sdl` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
+| `@prometheus-ags/entity-graph-solid` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
+| `@prometheus-ags/entity-graph-svelte` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
+| `@prometheus-ags/entity-graph-sync` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
+| `@prometheus-ags/entity-graph-tauri` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
+| `@prometheus-ags/entity-graph-web-components` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
 <!-- END GENERATED:RELEASE_TAGS -->
 
-The immutable candidate is source SHA
+The immutable npm candidate is source SHA
 `afbb8de0e861739fa6facb461b69573b2a627bdb`, rehearsed in GitHub run
-`30976967778`. Publication remains a human gate: browser-backed npm login, 2FA
-trusted-publisher registration, GitHub `npm-rc` approval, and npm staged-package
-approval. See [RELEASING.md](RELEASING.md).
+`30976967778` and staged in run
+[`31082488746`](https://github.com/Prometheus-AGS/prometheus-entity-management/actions/runs/31082488746).
+The remaining npm publication gate is 2FA approval of the nine staged packages.
+See [RELEASING.md](RELEASING.md).
 
 ## Why an entity graph
 
@@ -117,13 +118,12 @@ mode under `website/static/api/`, published at `/api/` on the documentation site
 
 ### React 19 + Vite 8
 
-Until npm `next` is verified, use the exact source workspace rather than an
-unpublished install command:
+Install the public React RC together with the matching core RC:
 
 ```bash
-corepack prepare pnpm@10.33.0 --activate
-pnpm install --frozen-lockfile
-pnpm run dev:vite
+pnpm add @prometheus-ags/entity-graph-core@next \
+  @prometheus-ags/prometheus-entity-management@latest \
+  react@19 react-dom@19
 ```
 
 The example runs at `http://localhost:5173` and covers normalized list/detail
@@ -134,15 +134,22 @@ Loro, Suspense, DevTools, and accessibility. See
 
 ### Flutter + Riverpod 3
 
-The canonical Dart package and full example are in this monorepo while pub.dev
-authority remains deferred:
+Install the public Flutter package from pub.dev:
 
 ```bash
-flutter pub get --enforce-lockfile
-flutter pub run melos run generate
-flutter pub run melos run analyze
-flutter pub run melos run test
+flutter pub add entity_graph_flutter:^3.0.0
 ```
+
+<!-- BEGIN GENERATED:NATIVE_RELEASES -->
+pub.dev snapshot: 2026-08-06T08:17:32Z.
+
+| Package | Version | State | Published |
+| --- | --- | --- | --- |
+| [`entity_graph_flutter`](https://pub.dev/packages/entity_graph_flutter) | `3.0.0` | published | 2026-08-06T08:09:36.989835Z |
+
+The published archive passed a clean consumer resolution, import, and analyzer check.
+pub.dev does not yet associate the package with a verified publisher.
+<!-- END GENERATED:NATIVE_RELEASES -->
 
 Start with [the package README](packages/entity_graph_flutter/README.md) and
 [Flutter/Riverpod guide](website/docs/frameworks/flutter-riverpod.md). The
@@ -176,8 +183,8 @@ evidence are separate and fail closed. Read the
 ## Example applications
 
 All five applications use the shared Project/User/Task/Comment/Activity domain
-and scenario contract. “Implemented” is bounded evidence, not a claim that npm,
-pub.dev, app stores, signing, or stable promotion has occurred.
+and scenario contract. “Implemented” is bounded evidence, not a claim that all
+npm packages, app stores, native signing, or stable npm promotion have occurred.
 
 <!-- BEGIN GENERATED:EXAMPLES -->
 | Example | Status | Source | Verification |
@@ -230,7 +237,7 @@ paths, and token-shaped content.
 | pnpm | `>=10.33.0 <11` | only package manager for this repository |
 | React | 19.x | vanilla core remains React-free |
 | Next.js | App Router / 16.x example | one graph per server request |
-| Flutter | 3.44.8 stable candidate | Riverpod 3 generated providers |
+| Flutter | 3.44.8 | `entity_graph_flutter@3.0.0`; Riverpod 3 generated providers |
 | Tauri | 2.x | shared desktop/mobile application and native plugin |
 | npm module formats | ESM + CommonJS + loader-specific declarations | verified from packed tarballs |
 
@@ -279,13 +286,10 @@ authorization.
 
 ## Documentation, contribution, and license
 
+- Production documentation: [Prometheus Entity Management 3.x](https://prometheus-ags.github.io/prometheus-entity-management/)
 - Documentation source: [`website/docs/`](website/docs/start-here/index.md)
 - Examples and scenario contract: [`examples/`](examples/README.md)
 - Contributing: [CONTRIBUTING.md](CONTRIBUTING.md)
 - Changelog: [CHANGELOG.md](CHANGELOG.md)
 - Release operations: [RELEASING.md](RELEASING.md)
 - License: [MIT](LICENSE)
-
-The public Pages URL is intentionally not linked until the protected deployment
-returns successful homepage, deep-route, search, evidence, migration, and 404
-probes.

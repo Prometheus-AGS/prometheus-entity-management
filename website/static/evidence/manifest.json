@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "certificationReceipt": "website/evidence-certifications.json",
   "certificationReceiptSha256": "7adc50b0fd7c934b9412c855266b22879ed9751a99c9b098904df3732ef7a22b",
-  "gallerySha256": "731f9fbda71657e7ac3fdb7c4ddc00b9ef308b2fe01e9095f4a9e6383220e154",
+  "gallerySha256": "225cfdf1dbd6ef3a1077b288566e2117e8e5a7963c61e5b5ea7df89ce649d4ce",
   "artifactFileCount": 44,
   "artifactAggregateSha256": "9cc0267f68c95e607387afd40cc0258135bc325d6df09a26f0f253090bd82e89",
   "assets": [
@@ -500,8 +500,8 @@
       "scenarioIds": [
         "example.runtime.lifecycle-security"
       ],
-      "caption": "The RC release disposition separates change certification from npm publication authority.",
-      "alt": "Release diagram showing certified code and evidence with npm publication still blocked",
+      "caption": "This historical RC disposition captured the boundary before external npm approvals; the current registry state is tracked in Release Operations.",
+      "alt": "Release diagram showing the certification and npm authority boundary at candidate rehearsal time",
       "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-release-disposition.png",
       "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/final-verification.json",
       "receiptAssertion": {
