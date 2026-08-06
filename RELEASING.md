@@ -1,8 +1,17 @@
 # Releasing Prometheus Entity Management
 
-## 3.0 status: publication blocked
+## 3.0 status: partial RC publication
 
-The full 3.0.0 release is still in progress. Do not run `changeset publish`, publish an individual workspace package, or move npm's `latest` tag based only on local builds or the main CI baseline.
+The full npm 3.0.0 release is still in progress. React, core, and A2UI React are
+public as `3.0.0-rc.1`; nine npm packages remain staged. React `latest` has been
+intentionally moved to the RC. `entity_graph_flutter@3.0.0` is public on
+pub.dev. Do not run `changeset publish`, publish an individual workspace
+package, or move any other npm `latest` tag based only on local builds or the
+main CI baseline.
+
+The verified registry snapshots are
+[`release/npm-registry-status.json`](release/npm-registry-status.json) and
+[`release/pubdev-registry-status.json`](release/pubdev-registry-status.json).
 
 The authoritative release rules are:
 
@@ -200,9 +209,11 @@ pnpm run verify:skills
 
 The scoped list/detail widget goldens are library evidence, not complete app,
 accessibility, Android/iOS, or device certification. The Flutter 3.44.8 stable
-clean candidate now passes `flutter pub publish --dry-run` with zero warnings.
-That dry run still does not supply pub.dev ownership, immutable release-wide
-certification, or publication approval.
+clean candidate passed `flutter pub publish --dry-run` with zero warnings and
+`entity_graph_flutter@3.0.0` is now public on pub.dev. A clean downstream
+consumer resolved, imported, and analyzed the published archive. pub.dev
+verified-publisher assignment and immutable release-wide certification remain
+separate.
 
 ## Candidate and stable workflows
 
@@ -233,15 +244,16 @@ The operator commands intentionally fail when `NPM_TOKEN` or `NODE_AUTH_TOKEN`
 is present. They require interactive 2FA and never receive credentials through
 the agent or GitHub Actions.
 
-After the verifier passes, dispatch `publish.yml` in `stage` mode with rehearsal
-run `30976967778` and candidate SHA
-`afbb8de0e861739fa6facb461b69573b2a627bdb` while its artifact remains valid.
-If that artifact has expired, produce a new rehearsal instead. Approve all
-twelve staged packages in npm with 2FA, then verify `3.0.0-rc.1` on `next`,
-protected `latest` tags, provenance, integrity, and clean pnpm consumers. Never
-replace `rc.1`; a proven immutable conflict requires a new `rc.2` candidate.
+Candidate `3.0.0-rc.1` from rehearsal run `30976967778` and SHA
+`afbb8de0e861739fa6facb461b69573b2a627bdb` was staged in run
+`31082488746`. React, core, and A2UI React are public. Approve the remaining nine
+staged packages in npm with 2FA, then verify every `next` tag, the intentional
+React `latest` move, all other protected `latest` tags, provenance, integrity,
+and clean pnpm consumers. Never replace `rc.1`; a proven immutable conflict
+requires a new `rc.2` candidate.
 
 `pnpm run ci` and a green RC rehearsal mean their named checked-in boundaries
 passed; neither means “3.0 may be published.” Stable certification, the GitHub
-Release, production documentation deployment, post-publication checks, and npm
-`latest` remain downstream.
+Release, complete npm post-publication checks, and the remaining stable npm
+promotion gates remain downstream. The production documentation deployment and
+React `latest` move have already occurred.

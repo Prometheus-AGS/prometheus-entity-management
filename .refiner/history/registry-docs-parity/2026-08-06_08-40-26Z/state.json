@@ -1,0 +1,57 @@
+{
+  "refinement_id": "9906ea8b-e641-4c01-ab2f-5358e8bfa6d7",
+  "artifact_name": "registry-docs-parity",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-06T08:14:15Z",
+  "updated_at": "2026-08-06T08:40:26Z",
+  "current_iteration": 2,
+  "max_iterations": 5,
+  "goals": [
+    "Synchronize public README, release docs, Flutter package docs, and Docusaurus with verified npm, pub.dev, example, and Pages state.",
+    "Keep install commands truthful for published artifacts and clearly distinguish staged, published, and stable states.",
+    "Make future README and site drift fail targeted parity checks."
+  ],
+  "constraints": [
+    "Do not describe nine staged npm candidates as public or installable.",
+    "Do not rewrite historical gate artifacts as if they were current registry snapshots.",
+    "Do not imply pub.dev verified-publisher assignment, physical-device certification, app-store delivery, or full stable npm 3.0 completion.",
+    "Run targeted documentation checks only; do not dispatch general CI or expensive native/browser release matrices."
+  ],
+  "phases_completed": [
+    "specify",
+    "content-update",
+    "validate",
+    "adversarial-review"
+  ],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "result": "rejected",
+      "delta": "Consumer-verification prose was not gated by its receipt and site tests checked counts instead of exact snapshot parity."
+    },
+    {
+      "iteration": 2,
+      "result": "passed",
+      "delta": "Generated site registry blocks, consumer-verification validation, exact search rows, and staged-install prohibitions closed both findings."
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "527d47b0",
+      "phase": "content-update",
+      "iteration": 0,
+      "timestamp": "2026-08-06T08:24:00Z"
+    },
+    {
+      "checkpoint_id": "be49c5a4",
+      "phase": "adversarial-review",
+      "iteration": 2,
+      "timestamp": "2026-08-06T08:40:25Z"
+    }
+  ],
+  "prior_cycle_id": null,
+  "finalized_at": "2026-08-06T08:40:26Z"
+}

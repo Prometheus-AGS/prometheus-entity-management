@@ -24,6 +24,18 @@ const staticArtifactManifest = await readFile(new URL('../scripts/static-artifac
 const nativeApiChecker = await readFile(new URL('../scripts/check-native-api.mjs', import.meta.url), 'utf8');
 const nativeApiManifest = await readFile(new URL('../scripts/native-api-manifest.mjs', import.meta.url), 'utf8');
 const releasing = await readFile(new URL('../../RELEASING.md', import.meta.url), 'utf8');
+const npmRegistryStatus = JSON.parse(
+  await readFile(new URL('../../release/npm-registry-status.json', import.meta.url), 'utf8'),
+);
+const pubdevRegistryStatus = JSON.parse(
+  await readFile(new URL('../../release/pubdev-registry-status.json', import.meta.url), 'utf8'),
+);
+const packageIndex = await readFile(new URL('../docs/packages/index.md', import.meta.url), 'utf8');
+const releaseGuide = await readFile(new URL('../docs/operations/release.md', import.meta.url), 'utf8');
+const packageChooser = await readFile(new URL('../docs/packages/chooser.md', import.meta.url), 'utf8');
+const reactGuide = await readFile(new URL('../docs/frameworks/react-vite.md', import.meta.url), 'utf8');
+const flutterGuide = await readFile(new URL('../docs/frameworks/flutter-riverpod.md', import.meta.url), 'utf8');
+const searchIndex = JSON.parse(await readFile(new URL('../static/search-index.json', import.meta.url), 'utf8'));
 const flintEvidenceSource = await readFile(
   new URL('../evidence-source/flint-realtime-contract.svg', import.meta.url),
   'utf8',
@@ -52,6 +64,41 @@ test('publishes the complete primary navigation and RC boundary', () => {
   ]) assert.match(config, new RegExp(`label: '${label.replace('&', '\\&')}'`));
   assert.match(config, /3\.0 RC/);
   assert.match(config, /label: '3\.x'/);
+});
+
+test('keeps install guidance in registry-snapshot parity', () => {
+  const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const npmEntries = Object.entries(npmRegistryStatus.packages);
+  const published = npmEntries.filter(([, tags]) => tags.candidateState === 'published');
+  const staged = npmEntries.filter(([, tags]) => tags.candidateState === 'staged-awaiting-approval');
+  const releaseSearch = searchIndex.records.find(({route}) => route === '/docs/3.x/operations/release/');
+  assert.ok(releaseSearch, 'release guide is missing from the generated search index');
+  assert.equal(npmRegistryStatus.releaseStatus, 'partial-rc-published');
+  assert.equal(published.length, 3);
+  assert.equal(staged.length, 9);
+  for (const [name, tags] of npmEntries) {
+    const values = [tags.latest ?? 'absent', tags.alpha ?? 'absent', tags.next ?? 'absent', tags.candidateState];
+    const markdownRow = `| \`${name}\` | ${values.slice(0, 3).map((value) => `\`${value}\``).join(' | ')} | ${tags.candidateState} |`;
+    assert.ok(releaseGuide.includes(markdownRow), `${name} release-guide row drifted`);
+    assert.match(releaseSearch.text, new RegExp([name, ...values].map(escapeRegex).join('\\s+')), `${name} search row drifted`);
+  }
+  for (const [name, tags] of published) assert.equal(tags.next, npmRegistryStatus.expectedCandidate, name);
+  const installGuidance = [packageChooser, reactGuide, flutterGuide].join('\n');
+  for (const [name] of staged) {
+    assert.doesNotMatch(installGuidance, new RegExp(`${escapeRegex(name)}@(?:next|${escapeRegex(npmRegistryStatus.expectedCandidate)})`));
+  }
+  assert.match(config, /nine npm packages remain staged/);
+  assert.match(packageIndex, /Remaining nine npm packages/);
+  assert.match(reactGuide, /entity-graph-core@next/);
+  assert.match(reactGuide, /prometheus-entity-management@latest/);
+  assert.equal(pubdevRegistryStatus.releaseStatus, 'published');
+  assert.equal(pubdevRegistryStatus.consumerVerification, 'passed');
+  assert.equal(pubdevRegistryStatus.publisherId, null);
+  assert.match(flutterGuide, new RegExp(`${pubdevRegistryStatus.packageName}\\:\\^${pubdevRegistryStatus.version}`));
+  assert.match(releaseGuide, /passed a clean consumer resolution, import, and analyzer check/);
+  assert.match(releaseGuide, /does not yet associate the package with a verified publisher/);
+  const indexedPubdevName = pubdevRegistryStatus.packageName.replaceAll('_', ' ');
+  assert.match(releaseSearch.text, new RegExp(`${escapeRegex(indexedPubdevName)}\\s+${escapeRegex(pubdevRegistryStatus.version)}\\s+published`));
 });
 
 test('documents Ember tokens, self-hosted fonts, focus, and reduced motion', () => {

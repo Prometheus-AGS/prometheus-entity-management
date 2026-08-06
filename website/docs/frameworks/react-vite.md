@@ -15,7 +15,15 @@ inside stores or adapters. The verified showcase covers:
 - local, remote, and hybrid views with realtime coalescing;
 - PGlite, Loro, Suspense, DevTools, and accessibility.
 
-Until npm `next` verification completes, run the workspace example:
+Install the published matching RC pair:
+
+```bash
+pnpm add @prometheus-ags/entity-graph-core@next \
+  @prometheus-ags/prometheus-entity-management@latest \
+  react@19 react-dom@19
+```
+
+To run the complete source-workspace showcase:
 
 ```bash
 pnpm install --frozen-lockfile

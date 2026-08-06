@@ -173,8 +173,8 @@
     {
       "assetId": "release-disposition",
       "scenarioIds": ["example.runtime.lifecycle-security"],
-      "caption": "The RC release disposition separates change certification from npm publication authority.",
-      "alt": "Release diagram showing certified code and evidence with npm publication still blocked",
+      "caption": "This historical RC disposition captured the boundary before external npm approvals; the current registry state is tracked in Release Operations.",
+      "alt": "Release diagram showing the certification and npm authority boundary at candidate rehearsal time",
       "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-release-disposition.png",
       "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/final-verification.json",
       "receiptAssertion": {"field": "verdict", "equals": "pass-change-certified-archive-ready-publication-blocked"},

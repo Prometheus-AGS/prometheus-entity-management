@@ -97,6 +97,13 @@
       "content_type": "direct:code",
       "updated_at": "2026-08-04T10:26:01Z",
       "finalized_at": "2026-08-04T10:26:01Z"
+    },
+    "registry-docs-parity": {
+      "path": ".refiner/artifacts/registry-docs-parity",
+      "artifact_type": "content",
+      "content_type": "direct:content",
+      "updated_at": "2026-08-06T08:40:26Z",
+      "finalized_at": "2026-08-06T08:40:26Z"
     }
   }
 }

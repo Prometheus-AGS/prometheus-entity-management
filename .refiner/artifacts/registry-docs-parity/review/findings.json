@@ -1,0 +1,26 @@
+{
+  "verdict": "pass",
+  "judge_model": "gpt-5",
+  "producer_model": "gpt-5.6-sol",
+  "isolation_mode": "harness-native",
+  "cross_model_check": "same-family-unverified",
+  "severity_counts": {
+    "CRITICAL": 0,
+    "WARNING": 0,
+    "SUGGESTION": 0
+  },
+  "findings": [],
+  "checked_classes": [
+    "Spec violations \u2014 the updated diff derives README and release-guide registry blocks from the npm/pub.dev manifests, verifies the generated search registry record, rejects staged-package RC install commands, and preserves the stated partial-release boundaries.",
+    "Correctness \u2014 consumerVerification must equal 'passed' before parity succeeds, and publisher assignment is handled independently from the consumer-verification claim.",
+    "Regressions \u2014 the three published npm candidates retain their exact next/latest states while all nine staged candidates remain absent from public next and excluded from RC installation guidance.",
+    "Security \u2014 the documentation-only diff introduces no executable trust boundary, credential handling, or untrusted deserialization path beyond parsing checked-in JSON fixtures.",
+    "Constraint breaches \u2014 the packet does not describe staged candidates as installable, does not claim verified-publisher assignment or physical-device/app-store certification, and records only targeted documentation verification.",
+    "Silent failure \u2014 manifest/document drift now fails through exact generated-block comparison, exact npm row and search assertions, consumer-verification validation, publisher-state assertions, and staged-install rejection."
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

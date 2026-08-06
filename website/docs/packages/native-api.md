@@ -5,7 +5,8 @@ sidebar_position: 3
 
 # Native API references
 
-The Dart package is canonical under `packages/entity_graph_flutter`. The
+The Dart package is canonical under `packages/entity_graph_flutter` and public
+on [pub.dev as `entity_graph_flutter@3.0.0`](https://pub.dev/packages/entity_graph_flutter). The
 [published dartdoc reference](https://prometheus-ags.github.io/prometheus-entity-management/native-api/dart/)
 is generated from that package, never from the provenance import:
 
@@ -38,5 +39,6 @@ cargo doc --no-deps --manifest-path packages/entity-graph-mcp/Cargo.toml
 cargo doc --no-deps --manifest-path packages/entity-graph-tauri/rust-plugin/Cargo.toml
 ```
 
-These documentation commands do not publish to pub.dev or crates.io and do not
-claim signing, device, or app-store certification.
+These documentation commands do not perform registry publication. The Dart
+package is already public; the standalone Rust crates remain unpublished. The
+commands do not claim signing, device, or app-store certification.

@@ -78,7 +78,7 @@ const config: Config = {
     announcementBar: {
       id: 'v3_rc',
       content:
-        '<strong>3.0 RC</strong> — documentation tracks verified code and evidence; npm <code>next</code> installation activates after registry verification.',
+        '<strong>3.0 RC</strong> — React, core, and A2UI are public RCs; nine npm packages remain staged. Flutter 3.0.0 is public on pub.dev.',
       backgroundColor: '#0B0F14',
       textColor: '#FFFFFF',
       isCloseable: false,

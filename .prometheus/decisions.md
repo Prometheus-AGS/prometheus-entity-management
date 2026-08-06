@@ -58,3 +58,14 @@ marking it implemented would falsely certify Android/iOS and stable-SDK gates.
 A constrained intermediate state keeps evidence inspectable and prevents both
 forms of misreporting. The validator rejects partial entries that still have
 planned evidence and requires fully complete evidence to use implemented.
+
+## 2026-08-06 — Separate registry snapshots from release-scope decisions
+
+The immutable 3.0 release contract continues to describe which registries are
+required or deferred for coordinated stable release. Current external state is
+recorded separately in npm and pub.dev registry-status manifests consumed by
+README and documentation parity checks.
+
+Rationale: publishing Flutter after its original deferred gate does not rewrite
+what that gate authorized. Separate live snapshots preserve history while
+preventing source, staged, published, and stable states from being conflated.

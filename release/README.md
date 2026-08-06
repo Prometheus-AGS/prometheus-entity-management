@@ -188,9 +188,12 @@ full 3.0 release.
 
 ## Registry decision
 
-The stable 3.0.0 release requires all twelve npm packages, a GitHub Release, and the production GitHub Pages documentation site. Dart and standalone Rust artifacts remain versioned and certified in the monorepo, while first publication to pub.dev/crates.io is deferred until registry ownership is verified. The Tauri Rust crate is embedded in the npm plugin tarball.
+The stable npm 3.0.0 release requires all twelve npm packages, a GitHub Release, and the production GitHub Pages documentation site. `entity_graph_flutter@3.0.0` is now public and consumer-verified on pub.dev, although a verified publisher is not yet assigned. Standalone Rust publication to crates.io remains deferred. The Tauri Rust crate is embedded in the npm plugin tarball.
 
-This distinction prevents source availability from being misreported as registry availability. A deferred registry can be promoted in a later 3.x release without changing the normalized graph contract.
+The live npm and pub.dev snapshots are recorded in
+[`npm-registry-status.json`](npm-registry-status.json) and
+[`pubdev-registry-status.json`](pubdev-registry-status.json). This distinction
+prevents source, staged, and public registry availability from being conflated.
 
 ## Historical specifications
 

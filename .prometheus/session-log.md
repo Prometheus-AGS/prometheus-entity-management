@@ -738,3 +738,27 @@
   registration, staged approval, and registry verification; plus branch merge,
   Pages deployment, public-origin probes, and repository-homepage update. No npm
   package, dist-tag, Pages setting, or repository homepage was mutated here.
+
+## 2026-08-06 — Registry and documentation parity refresh
+
+- Verified npm registry state for all twelve packages: React, core, and A2UI
+  React expose `3.0.0-rc.1`; React `latest` is the RC; nine candidates remain
+  staged and absent from public `next`.
+- Verified `entity_graph_flutter@3.0.0` is public on pub.dev with archive
+  SHA-256 `3e8081a8a71a1ed6df8d59eea328405c3d8124287e3698686e1d32cc75b61479`;
+  pub.dev reports no verified publisher assignment.
+- Updated the root README, release guides, Flutter package README, Docusaurus
+  banner/guides/examples/evidence context, generated search index, and registry
+  status manifests. Added deterministic README and site registry-parity checks.
+- Targeted T0/T1/T2 documentation gates passed: README parity, type/content
+  checks, 19 site tests, packed API/evidence hashes, native API hashes, the
+  production Docusaurus build, and 17 deep-route/2020-file build checks.
+- No general CI, browser/device matrix, or GitHub workflow was dispatched.
+- The artifact-refiner workflow-dispatch helper failed after checkpointing with
+  a JSON decode error; the checkpoint remained valid and the defect did not
+  block documentation verification.
+- The first isolated adversarial review rejected two parity gaps: consumer
+  verification was not a generator gate, and site tests did not compare exact
+  registry/search values or forbid staged RC install commands. Both were fixed;
+  the second fresh-context review passed with 0 findings and the strict
+  sycophancy screen passed at 0.0.

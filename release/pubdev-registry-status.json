@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0.0",
+  "verifiedAt": "2026-08-06T08:17:32Z",
+  "registry": "https://pub.dev",
+  "packageName": "entity_graph_flutter",
+  "version": "3.0.0",
+  "releaseStatus": "published",
+  "publishedAt": "2026-08-06T08:09:36.989835Z",
+  "archiveSha256": "3e8081a8a71a1ed6df8d59eea328405c3d8124287e3698686e1d32cc75b61479",
+  "packageUrl": "https://pub.dev/packages/entity_graph_flutter",
+  "publisherId": null,
+  "consumerVerification": "passed"
+}

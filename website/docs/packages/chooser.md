@@ -40,10 +40,31 @@ against the release contract.
 | Local-first application | core + sync; add the UI binding separately |
 | Tauri desktop/mobile | core + chosen web binding + Tauri |
 
-During the RC registration block, build examples from this workspace. Do not
-copy an `@next` command from an issue or draft: this site exposes registry
-installation commands only after all twelve tags are verified. The current
-registry state and protected tags are recorded in the [release operations
+## Install public releases
+
+React 19 applications can install the public, matching RC pair now:
+
+```bash
+pnpm add @prometheus-ags/entity-graph-core@next \
+  @prometheus-ags/prometheus-entity-management@latest \
+  react@19 react-dom@19
+```
+
+Add the public A2UI renderer when the application accepts generated surfaces:
+
+```bash
+pnpm add @prometheus-ags/a2ui-react@next
+```
+
+Flutter applications install the public stable Dart package:
+
+```bash
+flutter pub add entity_graph_flutter:^3.0.0
+```
+
+The other nine npm RCs are staged but not public. Build their examples from
+this workspace until npm approval and registry verification finish. The exact
+state and protected tags are recorded in the [release operations
 guide](../operations/release.md).
 
 For exact symbols, open the [packed TypeScript API reference](https://prometheus-ags.github.io/prometheus-entity-management/api/).
