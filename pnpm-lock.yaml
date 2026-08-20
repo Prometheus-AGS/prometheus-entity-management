@@ -108,6 +108,9 @@ importers:
       '@base-ui/react':
         specifier: ^1.6.0
         version: 1.6.0(@date-fns/tz@1.4.1)(@types/react@19.2.18)(date-fns@4.4.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@prometheus-ags/entity-graph-core':
+        specifier: workspace:*
+        version: link:../../packages/entity-graph-core
       '@prometheus-ags/prometheus-entity-management':
         specifier: workspace:*
         version: link:../../packages/entity-graph-react

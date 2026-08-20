@@ -26,12 +26,9 @@ import { useRef } from "react";
  * violate the "Components never touch stores directly" rule from CLAUDE.md.
  */
 import { useGraphStore } from "@prometheus-ags/prometheus-entity-management";
+import type { InitialEntity } from "@/lib/hydration-payload";
 
-export interface InitialEntity {
-  type: string;
-  id: string;
-  data: Record<string, unknown>;
-}
+export type { InitialEntity } from "@/lib/hydration-payload";
 
 interface GraphHydrationProviderProps {
   initialEntities: InitialEntity[];

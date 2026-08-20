@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-nextjs-app-router-example",
+  "recordedAt": "2026-08-20T19:23:33.491Z",
+  "status": "pass",
+  "evidenceKind": "source-workspace-production-browser",
+  "countsAsPackedPackageEvidence": false,
+  "expectedScenarioIds": [
+    "example.graph.normalized-cross-view",
+    "example.crud.optimistic-confirm",
+    "example.relationship.cascade-invalidation",
+    "example.view.local-remote-hybrid",
+    "example.realtime.coalesced-cross-view",
+    "example.runtime.ssr-isolation-hydration",
+    "example.runtime.lifecycle-security"
+  ],
+  "scenarios": {
+    "example.runtime.ssr-isolation-hydration": {
+      "status": "pass",
+      "proof": {
+        "serverHtmlContainsPrefetchedTask": true,
+        "requestAtlasIds": [
+          "project-atlas"
+        ],
+        "requestHermesIds": [
+          "project-hermes"
+        ],
+        "crossRequestLeakage": false,
+        "duplicateListFetches": 0,
+        "requestIdVisible": true
+      }
+    },
+    "example.graph.normalized-cross-view": {
+      "status": "pass",
+      "proof": {
+        "firstTitle": "Implement Iroh QUIC transport layer",
+        "selectedTitle": "Tauri v2 shell integration",
+        "listAndDetailShareGraph": true
+      }
+    },
+    "example.crud.optimistic-confirm": {
+      "status": "pass",
+      "proof": {
+        "outcome": "confirmed",
+        "rollbackOutcome": "rolled-back",
+        "patchClearedAfterConfirmation": true
+      }
+    },
+    "example.relationship.cascade-invalidation": {
+      "status": "pass",
+      "proof": {
+        "priorProject": "p1",
+        "relationEdgesInvalidated": true
+      }
+    },
+    "example.view.local-remote-hybrid": {
+      "status": "pass",
+      "proof": {
+        "modes": [
+          "local",
+          "remote",
+          "hybrid"
+        ],
+        "oneTypedViewContract": true
+      }
+    },
+    "example.realtime.coalesced-cross-view": {
+      "status": "pass",
+      "proof": {
+        "receivedChanges": 3,
+        "graphWrites": 1,
+        "finalStatus": "review",
+        "takeoverTarget": "ssr-hydrated entity t1"
+      }
+    },
+    "example.runtime.lifecycle-security": {
+      "status": "pass",
+      "proof": {
+        "suspenseResolved": true,
+        "errorContainedByNearestBoundary": true
+      }
+    }
+  },
+  "accessibility": {
+    "status": "pass",
+    "serious": 0,
+    "critical": 0
+  },
+  "artifacts": {
+    "screenshots": [
+      "browser-ssr-hydration.png",
+      "browser-mutations-realtime.png",
+      "browser-route-transitions.png"
+    ],
+    "tracePolicy": "on",
+    "playwrightReport": "playwright-report.json",
+    "playwrightOutput": "playwright-artifacts"
+  }
+}

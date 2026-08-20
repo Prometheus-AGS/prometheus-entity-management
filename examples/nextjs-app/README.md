@@ -17,5 +17,32 @@ Open [http://localhost:3000](http://localhost:3000) (redirects to `/dashboard`).
 
 ## Stack notes
 
-- The library resolves from `../../src/index.ts` via `tsconfig` paths and `next.config` aliases (Webpack + Turbopack).
+- The library resolves through pnpm workspace `workspace:*` dependencies to the published package `exports` (built `dist`) of `@prometheus-ags/entity-graph-core` and `@prometheus-ags/prometheus-entity-management`. There are no source-path aliases.
 - Example code follows the repo layering rules: UI uses hooks; `GraphHydrationProvider` is infrastructure-only for bridging SSR data into the graph store.
+
+## Per-request SSR isolation (`/release-showcase`)
+
+The `/release-showcase` route (`force-dynamic`) demonstrates the certified SSR
+pattern for this binding:
+
+- **Per-request graphs on the server.** The React binding's hooks bind to a
+  process-global Zustand store, which would leak data between concurrent
+  requests if written during server rendering. Server code therefore never
+  touches it: `src/lib/server/request-graph.ts` mints a fresh graph per request
+  via the framework-neutral core's `createGraphStore()`, and
+  `src/lib/server/demo-data-source.ts` serves deep-cloned per-request data.
+- **Prefetch → dehydrate → hydrate.** The RSC page builds a serializable
+  payload (entities + list slots keyed by `serializeKey(queryKey)`), renders
+  data HTML directly from the request graph, and passes the payload to
+  `RequestHydrationBoundary`. The boundary renders an identical shell on the
+  server and first client pass (no hydration mismatch), writes the payload
+  post-mount with `setEntityFetched` / `setListResult` freshness stamps, and
+  only then mounts graph-reading children — so hooks see fresh data inside
+  `staleTime` and never refetch prefetched data.
+- **Client takeover.** Mutations and realtime streams (`RealtimeManager`) run
+  client-side after hydration; hydrated entities update in place across views.
+- **Proof.** `pnpm --filter prometheus-entity-management-nextjs run test:ssr-isolation`
+  runs concurrent-request isolation units; `pnpm run verify:nextjs-app-router`
+  (from the monorepo root) runs the full gate: typechecks, isolation units,
+  package builds, production build, and the Playwright browser suite with
+  fetch-instrumentation assertions (`window.__pemFetchMetrics`) and axe.

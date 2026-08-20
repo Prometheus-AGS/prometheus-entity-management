@@ -1,10 +1,10 @@
 POSITION REMINDER — read this as your FIRST tool call every turn
 Phase: full-3.0-release
-Step: 0 of 28
+Step: 15 of 28
 Stage: running
-Next command: /kbd-apply v3-vite-react19-example
+Next command: /kbd-apply v3-agentic-a2ui-example
 
 Required signal format (emit BEFORE any tool call):
-  Starting <kbd-skill> — full-3.0-release (step 0 of 28)
+  Starting <kbd-skill> — full-3.0-release (step 15 of 28)
   [do work]
-  Completed <kbd-skill> — full-3.0-release (step 0 of 28)
+  Completed <kbd-skill> — full-3.0-release (step 15 of 28)

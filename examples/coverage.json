@@ -644,7 +644,7 @@
         }
       ],
       "releaseEvidence": [
-        { "kind": "browser", "status": "planned", "ownerChange": "v3-nextjs-app-router-example", "applicability": "Concurrent Next.js request, RSC, hydration, and client takeover evidence remain downstream." }
+        { "kind": "browser", "status": "implemented", "ownerChange": "v3-nextjs-app-router-example", "command": "pnpm run verify:nextjs-app-router", "paths": ["scripts/verify-nextjs-app-router-example.mjs", "examples/nextjs-app/src/lib/server/request-isolation.test.ts", "tests/browser/v3-nextjs-app-router-example.spec.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/browser-evidence.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/task-3-verification.json"], "applicability": "Concurrent Next.js request graphs stay disjoint and serializable; SSR-prefetched entities and lists hydrate the client with no mismatch and no duplicate fetch; realtime takeover is client-owned." }
       ]
     },
     {
@@ -796,12 +796,12 @@
     },
     {
       "id": "nextjs",
-      "status": "planned",
+      "status": "implemented",
       "change": "v3-nextjs-app-router-example",
       "path": "examples/nextjs-app",
       "scenarioIds": ["example.graph.normalized-cross-view", "example.crud.optimistic-confirm", "example.relationship.cascade-invalidation", "example.view.local-remote-hybrid", "example.realtime.coalesced-cross-view", "example.runtime.ssr-isolation-hydration", "example.runtime.lifecycle-security"],
-      "runtimeEvidence": { "kind": "browser", "status": "planned", "ownerChange": "v3-nextjs-app-router-example", "applicability": "Concurrent SSR, hydration, route, mutation, and browser BDD evidence remain owned by the Next.js change." },
-      "visualEvidence": { "kind": "visual", "status": "planned", "ownerChange": "v3-nextjs-app-router-example", "applicability": "Pinned SSR/client screenshots, accessibility, trace, and video/hash receipt remain owned by the Next.js change." }
+      "runtimeEvidence": { "kind": "browser", "status": "implemented", "ownerChange": "v3-nextjs-app-router-example", "command": "pnpm run verify:nextjs-app-router", "paths": ["scripts/verify-nextjs-app-router-example.mjs", "examples/nextjs-app/src/lib/server/request-isolation.test.ts", "tests/browser/v3-nextjs-app-router-example.spec.ts", "tests/browser/v3-nextjs-app-router-example.playwright.config.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/browser-evidence.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/task-3-verification.json"], "applicability": "Concurrent SSR isolation units, production build, SSR-prefetch HTML, hydration without mismatch or duplicate fetch, route transitions, mutations, realtime client takeover, and browser BDD all pass from the source workspace; packed-package certification remains owned by v3-package-module-contracts." },
+      "visualEvidence": { "kind": "visual", "status": "implemented", "ownerChange": "v3-nextjs-app-router-example", "command": "pnpm run verify:nextjs-app-router", "paths": [".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/browser-ssr-hydration.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/browser-mutations-realtime.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/browser-route-transitions.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/browser-evidence.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/task-3-verification.json"], "applicability": "Three pinned Chromium screenshots, Playwright traces, and a hash-listed verification receipt; zero serious or critical axe violations." }
     },
     {
       "id": "agentic-a2ui",

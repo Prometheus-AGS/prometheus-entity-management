@@ -2,8 +2,8 @@
   "conflictCount": 0,
   "cursor": [
     "full-3.0-release",
-    "v3-release-contract",
-    "Confirm dependencies are complete: NONE."
+    "v3-agentic-a2ui-example",
+    "Confirm dependencies are complete: v3-example-coverage-contract; v3-a2ui-protocol-bridge; v3-a2a-conformance-agent."
   ],
   "derivedRevision": 28,
   "frontier": {
@@ -23,7 +23,7 @@
               "done": 0,
               "total": 0
             },
-            "status": "PENDING",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -32,7 +32,7 @@
               "done": 0,
               "total": 0
             },
-            "status": "PENDING",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -41,7 +41,7 @@
               "done": 0,
               "total": 0
             },
-            "status": "PENDING",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -50,7 +50,7 @@
               "done": 0,
               "total": 0
             },
-            "status": "PENDING",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -59,7 +59,7 @@
               "done": 0,
               "total": 0
             },
-            "status": "PENDING",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -77,7 +77,7 @@
               "done": 0,
               "total": 0
             },
-            "status": "PENDING",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -86,7 +86,7 @@
               "done": 0,
               "total": 0
             },
-            "status": "PENDING",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -95,7 +95,7 @@
               "done": 0,
               "total": 0
             },
-            "status": "PENDING",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -104,7 +104,7 @@
               "done": 0,
               "total": 0
             },
-            "status": "PENDING",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -113,7 +113,7 @@
               "done": 0,
               "total": 0
             },
-            "status": "PENDING",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -122,7 +122,7 @@
               "done": 0,
               "total": 0
             },
-            "status": "PENDING",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -131,7 +131,7 @@
               "done": 0,
               "total": 0
             },
-            "status": "PENDING",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -149,7 +149,7 @@
               "done": 0,
               "total": 0
             },
-            "status": "PENDING",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -272,7 +272,7 @@
         ],
         "id": "full-3.0-release",
         "progress": {
-          "done": 2,
+          "done": 15,
           "total": 28
         },
         "status": "PENDING",
@@ -576,5 +576,5 @@
   },
   "schemaVersion": "1",
   "sourceRevision": 28,
-  "updatedAt": "2026-08-03T08:14:05.069372Z"
+  "updatedAt": "2026-08-20T14:13:00Z"
 }
