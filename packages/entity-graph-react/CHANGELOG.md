@@ -1,5 +1,17 @@
 # @prometheus-ags/prometheus-entity-management
 
+## 3.0.0-rc.2
+
+### Patch Changes
+
+- df8f13d: Keep `useEntityView` and `useEntityQuery` item projections reactive when an
+  existing normalized entity changes without changing the view's ID list.
+- 7b64d76: Scope engine dedupe, subscribers, fetches, React hooks, mutations, and realtime
+  writes to an application-owned graph so concurrent Next.js requests can
+  dehydrate and hydrate without sharing process-global entity state.
+- Updated dependencies [7b64d76]
+  - @prometheus-ags/entity-graph-core@3.0.0-rc.2
+
 ## 3.0.0-rc.1
 
 ### Patch Changes
@@ -20,6 +32,7 @@
 
   Evolves the React-only entity graph into a cross-platform, multi-framework,
   AI-native, local-first ecosystem.
+
   - **Monorepo split (breaking, but consumer-safe):** the framework-agnostic core
     is extracted into `@prometheus-ags/entity-graph-core` (zero React). The
     published `@prometheus-ags/prometheus-entity-management` package is the React

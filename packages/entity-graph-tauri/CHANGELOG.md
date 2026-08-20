@@ -1,5 +1,13 @@
 # @prometheus-ags/entity-graph-tauri
 
+## 3.0.0-rc.2
+
+### Patch Changes
+
+- 7b64d76: Normalize optional list metadata before invoking the Rust Tauri command so native hosts receive the complete generated payload.
+- Updated dependencies [7b64d76]
+  - @prometheus-ags/entity-graph-core@3.0.0-rc.2
+
 ## 3.0.0-rc.1
 
 ### Patch Changes
@@ -14,6 +22,7 @@
 
   Evolves the React-only entity graph into a cross-platform, multi-framework,
   AI-native, local-first ecosystem.
+
   - **Monorepo split (breaking, but consumer-safe):** the framework-agnostic core
     is extracted into `@prometheus-ags/entity-graph-core` (zero React). The
     published `@prometheus-ags/prometheus-entity-management` package is the React

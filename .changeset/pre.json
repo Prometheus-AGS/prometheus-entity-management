@@ -15,11 +15,18 @@
     "@prometheus-ags/entity-graph-svelte": "3.0.0-alpha.0",
     "@prometheus-ags/entity-graph-sync": "3.0.0-alpha.0",
     "@prometheus-ags/entity-graph-tauri": "3.0.0-alpha.0",
-    "@prometheus-ags/entity-graph-web-components": "3.0.0-alpha.0"
+    "@prometheus-ags/entity-graph-web-components": "3.0.0-alpha.0",
+    "prometheus-agentic-a2ui-example": "0.1.0",
+    "prometheus-tauri-universal-example": "0.0.0",
+    "@prometheus-ags/entity-management-docs": "0.0.0"
   },
   "changesets": [
     "certify-sync-persistence",
     "certify-vite-react19",
-    "enforce-binding-singleton"
+    "enforce-binding-singleton",
+    "fix-react-view-reactivity",
+    "fix-tauri-list-ipc",
+    "preserve-a2ui-message-ownership",
+    "scope-next-request-graphs"
   ]
 }
