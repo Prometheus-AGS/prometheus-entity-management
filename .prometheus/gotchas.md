@@ -81,3 +81,11 @@
   active change with `--skip-specs`; otherwise archive attempts to add the same
   requirement twice. Retain proof of both the explicit change validation and
   the full strict specification pass.
+
+## React view projections must subscribe to entity snapshots
+
+- An ID-only view selector plus `useMemo` over the ID array does not re-render
+  when realtime updates replace an existing normalized entity without changing
+  list membership. Project rendered items through `useStore` and the cached
+  `readEntitySnapshot` identities so both membership and row-content changes
+  remain reactive.

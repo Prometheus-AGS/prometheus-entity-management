@@ -762,3 +762,15 @@
   registry/search values or forbid staged RC install commands. Both were fixed;
   the second fresh-context review passed with 0 findings and the strict
   sycophancy screen passed at 0.0.
+
+## 2026-08-20 — Existing-entity React projection repair
+
+- UAR's live embedded-SSE acceptance path observed a normalized KnowledgeBase
+  update while the rendered card retained its prior name. Focused negative
+  controls reproduced the defect in both `useEntityView` and `useEntityQuery`.
+- Replaced ID-only item memoization with snapshot subscriptions. The focused
+  controls changed from 2 failed to 2 passed; the full React package passed
+  58 tests, typecheck, build, and the 203-export publish check.
+- Added a patch Changeset for the React package. Because npm packages are a
+  fixed version group and `3.0.0-rc.1` is immutable, the release process must
+  materialize the next coordinated candidate rather than rewriting rc.1.

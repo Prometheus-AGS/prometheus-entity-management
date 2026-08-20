@@ -206,12 +206,13 @@ export function useEntityQuery<T extends object>(
     }),
   );
 
-  const items = useMemo(
-    () =>
+  const items = useStore(
+    storeApi,
+    useShallow((state) =>
       localViewIds
-        .map((id) => storeApi.getState().readEntitySnapshot<T>(type, id))
+        .map((id) => state.readEntitySnapshot<T>(type, id))
         .filter((item) => item !== null) as T[],
-    [localViewIds, storeApi, type],
+    ),
   );
 
   // --- remote fetch implementation ----------------------------------------
