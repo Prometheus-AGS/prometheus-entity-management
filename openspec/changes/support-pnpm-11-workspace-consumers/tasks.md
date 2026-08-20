@@ -11,4 +11,4 @@
 
 ## 3. Delivery
 
-- [ ] 3.1 Obtain independent review, commit, push, and update the upstream pull request
+- [x] 3.1 Obtain independent review, commit, push, and open the compatibility and canonical rc.2 release pull requests
