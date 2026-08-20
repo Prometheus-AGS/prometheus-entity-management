@@ -234,7 +234,7 @@ paths, and token-shaped content.
 | Runtime | Supported line | Notes |
 | --- | --- | --- |
 | Node.js | `^22.14.0`, `^24.0.0`, or `>=26.0.0` | npm libraries and documentation tooling |
-| pnpm | `>=10.33.0 <11` | only package manager for this repository |
+| pnpm | `>=10.33.0 <12` | pnpm 10.33.0 is pinned; pnpm 11 consumer workspaces are supported |
 | React | 19.x | vanilla core remains React-free |
 | Next.js | App Router / 16.x example | one graph per server request |
 | Flutter | 3.44.8 | `entity_graph_flutter@3.0.0`; Riverpod 3 generated providers |

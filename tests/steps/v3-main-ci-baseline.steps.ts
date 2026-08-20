@@ -127,6 +127,16 @@ Then(
   },
 );
 
+Then("pnpm 11.15.0 satisfies the package-manager compatibility contract", function () {
+  const contract = readJson<{ compatibility: Record<string, string> }>("release/v3-release-contract.json");
+  const rootManifest = readJson<Manifest>("package.json");
+  const websiteManifest = readJson<Manifest>("website/package.json");
+  assert.equal(semver.satisfies("11.15.0", contract.compatibility.pnpm), true, "pnpm@11.15.0");
+  assert.equal(rootManifest.engines?.pnpm, contract.compatibility.pnpm);
+  assert.equal(websiteManifest.engines?.pnpm, contract.compatibility.pnpm);
+  assert.match(rootManifest.packageManager ?? "", /^pnpm@10\.33\.0(?:\+|$)/);
+});
+
 Then("every direct dependency reported behind registry latest has an explicit compatibility rationale", function () {
   const policy = readJson<{ intentionalHolds: DependencyHold[] }>("release/dependency-policy.json");
   assert.deepEqual(policy.intentionalHolds.map(({ package: name }) => name).sort(), [
