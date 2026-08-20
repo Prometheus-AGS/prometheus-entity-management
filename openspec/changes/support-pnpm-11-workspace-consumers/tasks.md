@@ -7,7 +7,7 @@
 
 - [x] 2.1 Widen the root and v3 release compatibility ranges without changing the pinned default
 - [x] 2.2 Pass the focused v3 contract scenario, workspace typecheck, and scoped lint; record the unrelated root-lint baseline
-- [ ] 2.3 Pass UAR's pnpm 11 TypeScript and focused SSE checks against the corrected commit
+- [x] 2.3 Pass UAR's pnpm 11 TypeScript and focused SSE checks against the corrected commit
 
 ## 3. Delivery
 

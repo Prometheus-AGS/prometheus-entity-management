@@ -8,6 +8,10 @@
 | TypeScript | `pnpm exec turbo run typecheck --output-logs=errors-only` | 24 tasks passed, 0 failed | Upstream workspace |
 | Scoped lint | `pnpm exec eslint tests/steps/v3-main-ci-baseline.steps.ts --max-warnings 0` | Command exited 0 with no output | Touched TypeScript file |
 | Root lint baseline | `pnpm lint` | Exited 1 on two `preserve-caught-error` findings in untouched `scripts/npm-trust.mjs` | Not represented as passing; outside this change |
+| UAR pnpm 11 typecheck | `pnpm typecheck` in UAR with the corrected submodule commit | TypeScript build exited 0 using pnpm 11.15.0 | UAR frontend workspace |
+| UAR pnpm 11 lint | `pnpm lint` in UAR with the corrected submodule commit | ESLint exited 0 using pnpm 11.15.0 | UAR frontend workspace |
+| UAR SSE unit | `pnpm -C frontend test src/entities/sync.test.ts` | 1 file passed, 3 tests passed, 0 failed | Embedded adapter unit only |
+| UAR SSE browser | `CI=1 pnpm exec playwright test -c tests/bdd/playwright.config.ts tests/bdd/.features-gen/features/local-first-resilience.feature.spec.js --grep 'embedded SSE connection'` | 1 test passed in 24.2 seconds | Fresh-process embedded scenario only |
 
 The existing broad CI-baseline scenario currently reaches unrelated advisory and
 lockfile-layout failures. Root lint also fails on two untouched
