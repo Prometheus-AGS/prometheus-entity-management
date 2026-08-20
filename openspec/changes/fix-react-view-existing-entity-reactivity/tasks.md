@@ -11,4 +11,4 @@
 
 ## 3. Review and Delivery
 
-- [ ] 3.1 Obtain independent critic and judge approval, then commit, push, and open the upstream pull request
+- [x] 3.1 Obtain independent critic and judge approval, then commit, push, and open the upstream pull request
