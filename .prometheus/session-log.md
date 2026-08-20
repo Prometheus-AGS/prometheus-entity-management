@@ -86,3 +86,28 @@
   flagged for operator decision in release-impact.md.
 - Hand-off boundary respected: `v3-release-certification` and
   `v3-stable-publication` untouched. Next pending: `v3-agentic-a2ui-example`.
+
+### v3-agentic-a2ui-example certified (same session, second change)
+
+- Built the dedicated `examples/agentic-a2ui` Vite 8 + React 19 app: in-page
+  deterministic A2A v1 agent (keyless, fixed-clock golden replays), official
+  A2UI v0.9.1 rendering, and the policy-gated action catalog with a human
+  approval dialog. Console demonstrates streaming states, artifact rendering,
+  validation failure, authorization denial (allowlist + tenant), cancellation,
+  optimistic confirm, realtime coalescing, lifecycle events, and an
+  HTTPS/loopback-only external-agent panel.
+- Golden fixtures (`tests/golden/*.json`) pin happy/denied/malformed/cancelled
+  plus the contract surface and the 403 tenant guard; byte-for-byte replay via
+  `pnpm run test:agentic-a2ui:golden`.
+- Defects found by the evidence loop (both example-local, no library fixes):
+  unstable Zustand selector snapshots (React #185) → stable slice selection +
+  memoized joins; double realtime event counting → single adapter channel
+  registration. Also learned: A2A `patch` targets the local patch layer, so
+  canonical agent mutations use `upsert`; stream events arrive wrapped in
+  `{task|statusUpdate|artifactUpdate}` envelopes.
+- Gates: typecheck, golden 6/6, production build, Playwright 4/4 (zero
+  serious/critical axe, zero console errors), verifier with sha256 artifact
+  pins, coverage verifier, release tests 7/7, BDD 3/15, lint, validate,
+  strict OpenSpec, changeset status. Archived as
+  `2026-08-20-v3-agentic-a2ui-example`; cursor advanced to
+  `v3-flutter-riverpod-a2ui-example` (16/28).

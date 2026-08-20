@@ -1,0 +1,252 @@
+{
+  "config": {
+    "argv": [
+      "/Applications/Kimi.app/Contents/Resources/resources/runtime/node",
+      "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "tests/browser/v3-agentic-a2ui-example.playwright.config.ts"
+    ],
+    "configFile": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/tests/browser/v3-agentic-a2ui-example.playwright.config.ts",
+    "rootDir": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/playwright-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-desktop",
+        "name": "chromium-desktop",
+        "testDir": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "v3-agentic-a2ui-example.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/playwright-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm --filter prometheus-entity-management-agentic-a2ui exec vite preview --port 4181 --host 127.0.0.1 --strictPort",
+      "url": "http://127.0.0.1:4181/",
+      "reuseExistingServer": false,
+      "timeout": 60000
+    }
+  },
+  "suites": [
+    {
+      "title": "v3-agentic-a2ui-example.spec.ts",
+      "file": "v3-agentic-a2ui-example.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "happy A2A stream completes and mutates every normalized view",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1362,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-08-20T21:06:47.676Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/playwright-artifacts/v3-agentic-a2ui-example-ha-8531a-tates-every-normalized-view-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "529f45fc5c6f77f701e1-408acd44692a3bd8dfad",
+          "file": "v3-agentic-a2ui-example.spec.ts",
+          "line": 102,
+          "column": 5
+        },
+        {
+          "title": "A2UI surface renders and actions cross the policy boundary",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1464,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-08-20T21:06:49.302Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/playwright-artifacts/v3-agentic-a2ui-example-A2-cd1cf-s-cross-the-policy-boundary-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "529f45fc5c6f77f701e1-0fd7307b94d0b3565220",
+          "file": "v3-agentic-a2ui-example.spec.ts",
+          "line": 128,
+          "column": 5
+        },
+        {
+          "title": "denied, malformed, and cancelled protocol flows are visible",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1684,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-08-20T21:06:50.863Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/playwright-artifacts/v3-agentic-a2ui-example-de-219ba--protocol-flows-are-visible-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "529f45fc5c6f77f701e1-5a45280de26b6203bf24",
+          "file": "v3-agentic-a2ui-example.spec.ts",
+          "line": 178,
+          "column": 5
+        },
+        {
+          "title": "tenant boundary, optimistic confirm, realtime coalescing, and lifecycle",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1623,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-08-20T21:06:52.564Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/playwright-artifacts/v3-agentic-a2ui-example-te-fe858-me-coalescing-and-lifecycle-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "529f45fc5c6f77f701e1-9ee05f9da24890bf9857",
+          "file": "v3-agentic-a2ui-example.spec.ts",
+          "line": 210,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-08-20T21:06:46.466Z",
+    "duration": 7822.322999999999,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

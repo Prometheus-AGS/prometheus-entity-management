@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-agentic-a2ui-example",
+  "recordedAt": "2026-08-20T21:06:54.196Z",
+  "status": "pass",
+  "evidenceKind": "source-workspace-production-browser",
+  "countsAsPackedPackageEvidence": false,
+  "expectedScenarioIds": [
+    "example.protocol.a2a-a2ui-policy",
+    "example.graph.normalized-cross-view",
+    "example.crud.optimistic-confirm",
+    "example.realtime.coalesced-cross-view",
+    "example.runtime.lifecycle-security"
+  ],
+  "scenarios": {
+    "example.graph.normalized-cross-view": {
+      "status": "pass",
+      "proof": {
+        "canonicalCopies": 1,
+        "listEntriesAreIds": true,
+        "taskSchemaStatus": "done",
+        "a2aStates": [
+          "TASK_STATE_SUBMITTED",
+          "TASK_STATE_WORKING",
+          "artifact",
+          "TASK_STATE_COMPLETED"
+        ]
+      }
+    },
+    "example.protocol.a2a-a2ui-policy": {
+      "status": "pass",
+      "proof": {
+        "a2aFinalState": "completed",
+        "surfaceId": "surface-task-sync",
+        "approvedMutation": "task.update",
+        "deniedMutation": "task.delete",
+        "malformedRejected": true,
+        "modelKeyRequired": false,
+        "approvalRequiredForDestructive": true
+      }
+    },
+    "example.runtime.lifecycle-security": {
+      "status": "pass",
+      "proof": {
+        "tenantMismatchRejected": true,
+        "destructiveRequiresApproval": true,
+        "secretFindings": 0,
+        "cancelledState": "TASK_STATE_CANCELED",
+        "malformedRejected": true
+      }
+    },
+    "example.crud.optimistic-confirm": {
+      "status": "pass",
+      "proof": {
+        "duringPatch": "done",
+        "afterConfirm": "done",
+        "patchCleared": true
+      }
+    },
+    "example.realtime.coalesced-cross-view": {
+      "status": "pass",
+      "proof": {
+        "queuedEvents": 3,
+        "coalescedEntities": 2,
+        "flushWindows": 1,
+        "listStatus": "in-progress"
+      }
+    }
+  },
+  "accessibility": {
+    "status": "pass",
+    "serious": 0,
+    "critical": 0
+  },
+  "consoleErrors": [],
+  "artifacts": {
+    "screenshots": [
+      "browser-happy-cross-view.png",
+      "browser-a2ui-policy.png",
+      "browser-denied-malformed-cancel.png",
+      "browser-tenant-realtime-lifecycle.png"
+    ],
+    "tracePolicy": "on",
+    "playwrightReport": "playwright-report.json",
+    "playwrightOutput": "playwright-artifacts"
+  }
+}

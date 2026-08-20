@@ -168,10 +168,10 @@
     {
       "blockers": [],
       "id": "v3-agentic-a2ui-example",
-      "implementation_status": "PENDING",
+      "implementation_status": "COMPLETE",
       "last_task_completed": null,
       "next_task_pending": null,
-      "status": "PENDING",
+      "status": "COMPLETE",
       "tasks_done": 0,
       "tasks_total": 0,
       "title": "v3-agentic-a2ui-example"
@@ -309,7 +309,7 @@
       "title": "v3-stable-publication"
     }
   ],
-  "changes_completed": 15,
+  "changes_completed": 16,
   "changes_total": 28,
   "children": {},
   "completion": {
@@ -343,7 +343,7 @@
   "generatedBy": "kbd-runtime",
   "implementation_completed": 2,
   "implementation_total": 28,
-  "last_updated": "2026-08-20T14:13:00Z",
+  "last_updated": "2026-08-20T15:53:00Z",
   "last_updated_by": "kimi-takeover",
   "migrationStatus": null,
   "parentPhase": null,
