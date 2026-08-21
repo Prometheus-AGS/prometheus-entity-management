@@ -19,6 +19,7 @@
 | Missing dev-engine negative control | UAR workflow run `32456545461`, build step on submodule commit `55cd5a8` | Exited 1 before core compilation: `This project is configured to use 10.33.0 of pnpm. Your current pnpm is v11.15.0` | Clean GitHub runner; nested core task only |
 | Portable pnpm consumer verifier | `scripts/verify-pnpm-consumer-compatibility.sh` from detached commit `023bfa0` in a new worktree with no `node_modules` | Exited 0: pnpm 10.33.0 frozen-installed 2,084 packages; pnpm 11.15.0 rebuilt core then React (`2 successful, 2 total`, `0 cached`); the generated `<11` fixture rejected 11.15.0 | Clean-checkout dependency closure, fail-closed range, and pinned-default compatibility only |
 | Lock receipt causality | `scripts/verify-pnpm-consumer-compatibility.sh` | Printed `PACKAGE_MANAGER_RECEIPT_PASS documents=2 pnpm=11.15.0` and `APPLICATION_LOCK_UNCHANGED_PASS sha256=fb95bea155cca9a4d7e92f5dd31d0ca75e9c0f53cfeb731976542f8b0c3d267b` | First document is package-manager receipt; second is the unchanged prior application lock |
+| Nested pnpm 11 task delivery | independent artifact-only critic; `git push origin codex/support-pnpm-11-consumers` | Critic returned PASS at `ee22caf`; implementation commit `023bfa0` and clean-replay receipt `ee22caf` pushed to existing PR #20 | Private workspace tooling only; no npm package, version, or dist-tag changed |
 
 The existing broad CI-baseline scenario currently reaches unrelated advisory and
 lockfile-layout failures. Root lint also fails on two untouched

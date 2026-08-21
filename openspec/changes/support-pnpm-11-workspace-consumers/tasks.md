@@ -15,4 +15,4 @@
 
 - [x] 3.1 Obtain independent review, commit, push, and open the compatibility and canonical rc.2 release pull requests
 - [x] 3.2 Correct the clean-cache integrity defect, obtain independent re-review, commit, and push the correction
-- [ ] 3.3 Obtain independent re-review, commit, and push the nested pnpm 11 task correction
+- [x] 3.3 Obtain independent re-review, commit, and push the nested pnpm 11 task correction
