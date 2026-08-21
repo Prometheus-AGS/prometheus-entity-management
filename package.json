@@ -162,6 +162,13 @@
     "vitest": "4.1.10",
     "yaml": "2.9.0"
   },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": ">=10.33.0 <12",
+      "onFail": "error"
+    }
+  },
   "engines": {
     "node": "^22.14.0 || ^24.0.0 || >=26.0.0",
     "pnpm": ">=10.33.0 <12"

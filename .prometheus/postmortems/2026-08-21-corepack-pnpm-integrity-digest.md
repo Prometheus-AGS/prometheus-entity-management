@@ -24,3 +24,12 @@ and declarations with tsup 8.5.1.
 
 No published package file changed, so this tooling-receipt correction does not
 create a new npm package version.
+
+## Follow-up: nested pnpm 11 tasks
+
+After the digest correction, UAR's clean runner installed the nested workspace
+with pnpm 10.33.0, then Turbo invoked dependency tasks with the consumer's pnpm
+11.15.0. The root `engines.pnpm` range admitted pnpm 11, but the missing pnpm 11
+`devEngines.packageManager` range caused the child command to exit before the
+core build. The correction declares `>=10.33.0 <12` with `onFail: error`, so a
+supported consumer version runs while an unsupported version still fails.

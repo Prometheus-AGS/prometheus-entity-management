@@ -13,6 +13,9 @@ run because its `engines.pnpm` range excludes pnpm 11.
   compatibility contract to accept pnpm 10.33 through pnpm 11.
 - Keep pnpm 10.33.0 as this repository's reproducible default toolchain and
   correct its Corepack integrity digest.
+- Declare the same supported range through pnpm 11's
+  `devEngines.packageManager` contract so nested consumer tasks can run with
+  the consumer's admitted pnpm version.
 - Add a contract check proving the UAR-selected pnpm 11.15.0 satisfies the
   declared range.
 
@@ -20,4 +23,7 @@ run because its `engines.pnpm` range excludes pnpm 11.
 
 This changes package-manager admission and the private workspace toolchain
 receipt only. It does not change package APIs, published package contents,
-runtime dependencies, the lockfile format, or the repository's pinned default.
+runtime dependencies, the lockfile version, the application dependency graph,
+or the repository's pinned default.
+The lockfile gains only pnpm's package-manager resolution receipt; its
+application dependency graph is unchanged.
