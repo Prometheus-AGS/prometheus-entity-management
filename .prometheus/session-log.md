@@ -150,3 +150,40 @@
   `v3-tauri-universal-example` (17/28).
 - Hand-off boundary respected: `v3-release-certification` and
   `v3-stable-publication` untouched.
+
+## 2026-08-21 — v3-tauri-universal-example certified (18/28)
+
+- Built `examples/tauri-app`: one React 19/Vite 8 frontend driving Tauri 2
+  desktop + mobile shells on the certified `@prometheus-ags/entity-graph-tauri`
+  plugin (workspace path dep), official SQL + deep-link plugins, shared
+  task-sync/project-atlas/tenant-a domain, least-privilege capabilities
+  (read-only default + explicit mutation grants; denied fixtures grant
+  nothing), deep links (`prometheus-tasks://task/<id>`, fail-closed parse),
+  lifecycle revalidation, responsive 720px-breakpoint layout.
+- Platform conditionals only in `src/platform/` (tauri-bridge/web-bridge);
+  structural pins in verifier + release test enforce it.
+- Tests: Rust MockRuntime E2E 3/3 (command round-trip, fail-closed denied
+  webview, offline persist/clear/restore restart); bridge contract 5/5;
+  Playwright Chromium desktop (1280x800) + mobile (390x844) lanes, 7/7
+  scenarios each, zero serious/critical axe, zero console errors, per-project
+  receipts (learned: afterAll clobbers shared evidence across workers).
+- Platform builds: desktop debug binary (`tauri build --debug --no-bundle`),
+  Android `app-universal-debug.apk`, iOS unsigned simulator `Prometheus Tasks.app`
+  (`-t aarch64-sim`); booted-device runs recorded as retained limits.
+- Defects found/fixed (9, all example-local, no library changes): SetListPayload
+  hasNextPage drift; generated mobile scaffolding's `node tauri` resolution
+  broken under pnpm workspace (project.yml + BuildTask.kt now point at the
+  workspace CLI); `tauri ios init` needs $USER set; Gradle 8.14.3 vs Java 25
+  (pinned JAVA_HOME=Temurin 21); stale edit-buffer closure on one-tap advance;
+  useEntityView list doesn't live-join (board switched to useEntityList pure
+  subscription); frozen-seed listFetch reverted optimistic writes (in-memory
+  backend now authoritative); storage-key collision crashed reload hydration;
+  Playwright evidence receipt clobbering.
+- Gates: typecheck 23/23, verifier PASS (verification.json with sha256
+  artifact pins), release test 8/8, BDD 3 scenarios/14 steps, validate,
+  eslint clean, openspec strict valid.
+- Archived as `2026-08-21-v3-tauri-universal-example`; evidence in
+  `.kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/`.
+  Cursor advanced to `v3-flint-portable-contracts` (18/28).
+- Hand-off boundary respected: `v3-release-certification` and
+  `v3-stable-publication` untouched.

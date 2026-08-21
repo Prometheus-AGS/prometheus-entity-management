@@ -561,8 +561,9 @@
           "applicability": "Proves two-client offline convergence with zero conflicts and saveGraph/loadGraph round-trips at the adapter boundary; on-device restart evidence remains a recorded platform limit."
         },
         {
-          "kind": "platform", "status": "planned", "ownerChange": "v3-tauri-universal-example",
-          "applicability": "Tauri desktop/mobile restart and reconnect evidence remains owned by the universal Tauri showcase."
+          "kind": "platform", "status": "implemented", "ownerChange": "v3-tauri-universal-example", "command": "pnpm run verify:tauri-universal",
+          "paths": ["examples/tauri-app/src/graph/runtime.ts", "examples/tauri-app/src-tauri/src/lib.rs", "examples/tauri-app/tests/bridge-contract.test.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/verification.json"],
+          "applicability": "Proves Tauri desktop/mobile restart and reconnect: Rust persist/clear/restore round-trip through real plugin commands, SQL-backed durable storage at the adapter boundary, and a browser-lane persist/reload/restore receipt."
         }
       ]
     },
@@ -691,7 +692,7 @@
           "paths": ["tests/fixtures/tauri-plugin-host/frontend/main.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/device-evidence.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/android/platform-ping.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/android/capability-denial.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/ios/platform-ping.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/device/ios/capability-denial.png"],
           "applicability": "Executes the Rust-generated binding through packaged Kotlin on a physical Android device and packaged Swift on an iOS simulator, with exact success, fail-closed permission-denial, visual, environment, executable, and hash receipts."
         },
-        { "kind": "visual", "status": "planned", "ownerChange": "v3-tauri-universal-example", "applicability": "Desktop/mobile rendered application and device receipts remain downstream." }
+        { "kind": "visual", "status": "implemented", "ownerChange": "v3-tauri-universal-example", "command": "pnpm run verify:tauri-universal", "paths": [".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/browser-board-chromium-desktop.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/browser-board-chromium-mobile.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/browser-evidence-chromium-desktop.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/browser-evidence-chromium-mobile.json", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/verification.json"], "applicability": "Pinned desktop (1280x800) and mobile (390x844) Chromium renders of the shared frontend with zero serious/critical axe violations, plus desktop binary, Android APK, and iOS simulator app receipts with sha256 pins; native runtime sessions remain recorded platform limits." }
       ]
     },
     {
@@ -837,12 +838,12 @@
     },
     {
       "id": "tauri-desktop-mobile",
-      "status": "planned",
+      "status": "implemented",
       "change": "v3-tauri-universal-example",
       "path": "examples/tauri-app",
       "scenarioIds": ["example.graph.normalized-cross-view", "example.crud.optimistic-confirm", "example.relationship.cascade-invalidation", "example.realtime.coalesced-cross-view", "example.offline.persistence-convergence", "example.platform.adapter-boundary", "example.runtime.lifecycle-security"],
-      "runtimeEvidence": { "kind": "platform", "status": "planned", "ownerChange": "v3-tauri-universal-example", "applicability": "Desktop command E2E, permission denial, offline restart, and Android/iOS build/smoke evidence remain owned by the Tauri example." },
-      "visualEvidence": { "kind": "visual", "status": "planned", "ownerChange": "v3-tauri-universal-example", "applicability": "Pinned desktop/mobile screenshots, accessibility, trace, and device receipt remain owned by the Tauri example." }
+      "runtimeEvidence": { "kind": "platform", "status": "implemented", "ownerChange": "v3-tauri-universal-example", "command": "pnpm run verify:tauri-universal", "paths": ["examples/tauri-app/package.json", "examples/tauri-app/src-tauri/src/lib.rs", "examples/tauri-app/src/platform/bridge.ts", "examples/tauri-app/tests/bridge-contract.test.ts", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/verification.json"], "applicability": "Desktop debug build plus MockRuntime command E2E (allowed round-trip, fail-closed denied webview, offline persist/clear/restore restart), bridge contract tests, production Vite build, and Chromium desktop/mobile scenario lanes; native runtime sessions remain recorded platform limits." },
+      "visualEvidence": { "kind": "visual", "status": "implemented", "ownerChange": "v3-tauri-universal-example", "command": "pnpm run verify:tauri-universal", "paths": [".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/browser-board-chromium-desktop.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/browser-board-chromium-mobile.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/browser-platform-chromium-desktop.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/browser-platform-chromium-mobile.png"], "applicability": "Pinned Chromium screenshots at desktop and mobile viewports with traces and zero serious/critical axe violations; native shell captures remain recorded platform limits." }
     }
   ],
   "documentationSite": {

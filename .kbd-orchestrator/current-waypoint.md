@@ -3,9 +3,9 @@
 **Active phase:** `full-3.0-release`
 **Status:** `executing`
 **Backend:** OpenSpec
-**Implementation progress:** 17 of 28 changes
+**Implementation progress:** 18 of 28 changes
 **Current round:** Round 5 (next dependency-ready change)
-**Updated:** 2026-08-21T02:25:00Z
+**Updated:** 2026-08-21T09:05:00Z
 
 ## Execution
 
@@ -13,15 +13,15 @@ The reviewed 28-change plan is dispatched through OpenSpec and the KBD-aware `/k
 
 ## Next pending change
 
-`v3-tauri-universal-example`
+`v3-flint-portable-contracts`
 
 ## Exact next command
 
 ```text
-/kbd-apply v3-tauri-universal-example
+/kbd-apply v3-flint-portable-contracts
 ```
 
-The Flutter/Riverpod A2UI example is certified and archived (2026-08-21): the `examples/flutter-riverpod` app composes `entity_graph_flutter@3.0.0` with genui `SurfaceController` A2UI surfaces under an app-owned fail-closed action policy (allowlist `task.update`, approval-gated `task.replace`, denied `task.delete`, tenant guard); 29/29 tests pass with message-stream and phone/tablet goldens, and debug APK plus simulator iOS builds succeed (compile-level platform smoke; no booted-device run — retained limit). Build the universal Tauri example next: desktop build + command E2E, Android/iOS build/smoke recorded, denied permissions and offline restart tested. `v3-release-certification` and `v3-stable-publication` remain human-gated and are the hand-off boundary.
+The universal Tauri example is certified and archived (2026-08-21): one React 19/Vite 8 frontend drives desktop and mobile Tauri shells through the certified entity-graph plugin — Rust MockRuntime command E2E 3/3 (round-trip, fail-closed denied webview, offline persist/clear/restore restart), bridge contract tests 5/5, Chromium desktop+mobile viewport lanes 7 scenarios each with clean axe, and compile-level desktop binary, Android APK, and unsigned iOS simulator app receipts (booted-device runs remain retained limits). Nine example-local defects were found and fixed; no library changes. Next: replace local-path skips with portable Flint security and data contracts (issuer/tenant/kid/JWKS/role tests, Forge provisioning docs, no machine-specific paths in default CI). `v3-release-certification` and `v3-stable-publication` remain human-gated and are the hand-off boundary.
 
 ## Operator follow-up
 

@@ -2,8 +2,8 @@
   "conflictCount": 0,
   "cursor": [
     "full-3.0-release",
-    "v3-tauri-universal-example",
-    "Confirm dependencies are complete: v3-tauri-mobile-plugin; v3-example-coverage-contract; v3-sync-persistence-path."
+    "v3-flint-portable-contracts",
+    "Confirm dependencies are complete: v3-framework-neutral-core; v3-example-coverage-contract."
   ],
   "derivedRevision": 28,
   "frontier": {
@@ -173,10 +173,10 @@
           {
             "id": "v3-tauri-universal-example",
             "progress": {
-              "done": 0,
-              "total": 0
+              "done": 6,
+              "total": 6
             },
-            "status": "PENDING",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -272,7 +272,7 @@
         ],
         "id": "full-3.0-release",
         "progress": {
-          "done": 17,
+          "done": 18,
           "total": 28
         },
         "status": "PENDING",
@@ -568,7 +568,7 @@
     ],
     "id": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
     "progress": {
-      "done": 28,
+      "done": 29,
       "total": 53
     },
     "status": "running",
@@ -576,5 +576,5 @@
   },
   "schemaVersion": "1",
   "sourceRevision": 28,
-  "updatedAt": "2026-08-21T02:25:00Z"
+  "updatedAt": "2026-08-21T09:05:00Z"
 }
