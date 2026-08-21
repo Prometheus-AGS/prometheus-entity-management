@@ -1,0 +1,28 @@
+name: prometheus_flutter_showcase
+description: >-
+  Prometheus entity-management 3.0 release example: normalized Dart graph,
+  generated Riverpod providers, and a policy-gated A2UI surface via genui.
+publish_to: none
+version: 3.0.0
+
+environment:
+  sdk: ">=3.12.0 <4.0.0"
+  flutter: ">=3.44.0"
+
+resolution: workspace
+
+dependencies:
+  a2ui_core: 0.1.0
+  entity_graph_flutter: 3.0.0
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ">=3.3.2 <3.4.0"
+  genui: 0.10.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

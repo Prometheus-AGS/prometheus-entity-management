@@ -1,10 +1,10 @@
 POSITION REMINDER — read this as your FIRST tool call every turn
 Phase: full-3.0-release
-Step: 16 of 28
+Step: 17 of 28
 Stage: running
-Next command: /kbd-apply v3-flutter-riverpod-a2ui-example
+Next command: /kbd-apply v3-tauri-universal-example
 
 Required signal format (emit BEFORE any tool call):
-  Starting <kbd-skill> — full-3.0-release (step 16 of 28)
+  Starting <kbd-skill> — full-3.0-release (step 17 of 28)
   [do work]
-  Completed <kbd-skill> — full-3.0-release (step 16 of 28)
+  Completed <kbd-skill> — full-3.0-release (step 17 of 28)

@@ -461,7 +461,11 @@
           "paths": ["packages/entity_graph_flutter/test/provider-contract_test.dart", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-dart-report.json"],
           "applicability": "Proves Dart optimistic create/update/delete confirmation plus exact failed update patch, sync metadata, entity, placeholder, and list-index rollback."
         },
-        { "kind": "mobile", "status": "planned", "ownerChange": "v3-flutter-riverpod-a2ui-example", "applicability": "Complete Flutter application and Android/iOS optimistic mutation receipts remain downstream." }
+        {
+          "kind": "mobile", "status": "implemented", "ownerChange": "v3-flutter-riverpod-a2ui-example", "command": "pnpm run verify:flutter-riverpod-a2ui",
+          "paths": ["examples/flutter-riverpod/test/app_widget_test.dart", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-riverpod-a2ui-example/verification.json"],
+          "applicability": "Proves Flutter optimistic confirm and exact injected-failure rollback in widget tests plus Android/iOS compile smoke; device-runtime receipts remain a recorded platform limit."
+        }
       ]
     },
     {
@@ -552,8 +556,9 @@
           "applicability": "Proves browser PGlite persist/hydrate and two-peer Loro convergence in the production React showcase; it does not replace the packed sync receipt."
         },
         {
-          "kind": "mobile", "status": "planned", "ownerChange": "v3-flutter-riverpod-a2ui-example",
-          "applicability": "Flutter persistence, reconnect, and device evidence remains owned by the Flutter showcase."
+          "kind": "mobile", "status": "implemented", "ownerChange": "v3-flutter-riverpod-a2ui-example", "command": "pnpm run verify:flutter-riverpod-a2ui",
+          "paths": ["examples/flutter-riverpod/lib/transport/offline_convergence.dart", "examples/flutter-riverpod/lib/transport/persistence_adapter.dart", "examples/flutter-riverpod/test/adapter_boundary_test.dart", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-riverpod-a2ui-example/verification.json"],
+          "applicability": "Proves two-client offline convergence with zero conflicts and saveGraph/loadGraph round-trips at the adapter boundary; on-device restart evidence remains a recorded platform limit."
         },
         {
           "kind": "platform", "status": "planned", "ownerChange": "v3-tauri-universal-example",
@@ -718,7 +723,11 @@
           "paths": ["packages/entity_graph_flutter/test/cross-view-widget_test.dart", "packages/entity_graph_flutter/test/goldens/cross-view-initial.png", "packages/entity_graph_flutter/test/goldens/cross-view-optimistic.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-dart-report.json"],
           "applicability": "Proves a scoped list/detail widget harness renders the same optimistic graph patch without layout collapse; it is not complete app, device, or accessibility evidence."
         },
-        { "kind": "visual", "status": "planned", "ownerChange": "v3-flutter-riverpod-a2ui-example", "applicability": "Complete Flutter/A2UI phone/tablet, accessibility, Android/iOS, and device visual receipts remain downstream." }
+        {
+          "kind": "visual", "status": "implemented", "ownerChange": "v3-flutter-riverpod-a2ui-example", "command": "pnpm run verify:flutter-riverpod-a2ui",
+          "paths": ["examples/flutter-riverpod/test/golden_test.dart", "examples/flutter-riverpod/test/goldens/task-board-phone.png", "examples/flutter-riverpod/test/goldens/task-board-tablet.png", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-riverpod-a2ui-example/verification.json"],
+          "applicability": "Pinned phone/tablet golden images of the branded task board with semantics labels; device-captured visual receipts remain a recorded platform limit."
+        }
       ]
     },
     {
@@ -819,12 +828,12 @@
     },
     {
       "id": "flutter-riverpod",
-      "status": "planned",
+      "status": "implemented",
       "change": "v3-flutter-riverpod-a2ui-example",
       "path": "examples/flutter-riverpod",
       "scenarioIds": ["example.graph.normalized-cross-view", "example.crud.optimistic-confirm", "example.crud.optimistic-rollback", "example.relationship.cascade-invalidation", "example.view.local-remote-hybrid", "example.realtime.coalesced-cross-view", "example.offline.persistence-convergence", "example.protocol.a2a-a2ui-policy", "example.platform.adapter-boundary", "example.runtime.lifecycle-security"],
-      "runtimeEvidence": { "kind": "mobile", "status": "planned", "ownerChange": "v3-flutter-riverpod-a2ui-example", "applicability": "Analyze, widget/golden, protocol denial, and Android/iOS smoke evidence remain owned by the Flutter example." },
-      "visualEvidence": { "kind": "visual", "status": "planned", "ownerChange": "v3-flutter-riverpod-a2ui-example", "applicability": "Pinned phone/tablet golden images, accessibility, and device receipt remain owned by the Flutter example." }
+      "runtimeEvidence": { "kind": "mobile", "status": "implemented", "ownerChange": "v3-flutter-riverpod-a2ui-example", "command": "pnpm run verify:flutter-riverpod-a2ui", "paths": ["examples/flutter-riverpod/pubspec.yaml", "examples/flutter-riverpod/lib/main.dart", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-riverpod-a2ui-example/verification.json"], "applicability": "Fatal-infos analysis, widget/golden/protocol tests, fail-closed A2UI policy, and Android/iOS compile smoke pass; device-runtime smoke remains a recorded platform limit." },
+      "visualEvidence": { "kind": "visual", "status": "implemented", "ownerChange": "v3-flutter-riverpod-a2ui-example", "command": "pnpm run verify:flutter-riverpod-a2ui", "paths": ["examples/flutter-riverpod/test/goldens/task-board-phone.png", "examples/flutter-riverpod/test/goldens/task-board-tablet.png"], "applicability": "Pinned phone/tablet golden images with accessibility semantics labels; on-device captures remain a recorded platform limit." }
     },
     {
       "id": "tauri-desktop-mobile",

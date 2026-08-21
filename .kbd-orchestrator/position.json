@@ -2,8 +2,8 @@
   "conflictCount": 0,
   "cursor": [
     "full-3.0-release",
-    "v3-flutter-riverpod-a2ui-example",
-    "Confirm dependencies are complete: v3-dart-graph-riverpod; v3-a2ui-protocol-bridge; v3-example-coverage-contract."
+    "v3-tauri-universal-example",
+    "Confirm dependencies are complete: v3-tauri-mobile-plugin; v3-example-coverage-contract; v3-sync-persistence-path."
   ],
   "derivedRevision": 28,
   "frontier": {
@@ -164,10 +164,10 @@
           {
             "id": "v3-flutter-riverpod-a2ui-example",
             "progress": {
-              "done": 0,
-              "total": 0
+              "done": 6,
+              "total": 6
             },
-            "status": "PENDING",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -272,7 +272,7 @@
         ],
         "id": "full-3.0-release",
         "progress": {
-          "done": 16,
+          "done": 17,
           "total": 28
         },
         "status": "PENDING",
@@ -568,7 +568,7 @@
     ],
     "id": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
     "progress": {
-      "done": 27,
+      "done": 28,
       "total": 53
     },
     "status": "running",
@@ -576,5 +576,5 @@
   },
   "schemaVersion": "1",
   "sourceRevision": 28,
-  "updatedAt": "2026-08-20T15:53:00Z"
+  "updatedAt": "2026-08-21T02:25:00Z"
 }

@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "1",
+  "change": "v3-flutter-riverpod-a2ui-example",
+  "recordedAt": "2026-08-21T08:34:49.174Z",
+  "result": "pass",
+  "evidenceBoundary": {
+    "kind": "source-workspace",
+    "countsAsPackedPackageEvidence": false,
+    "note": "Dart packages are not packed for pub.dev in this phase; evidence certifies the workspace source example."
+  },
+  "versions": {
+    "flutter": "3.48.0-0.1.pre",
+    "genui": "0.10.1",
+    "a2uiCore": "0.1.0",
+    "entityGraphFlutter": "3.0.0"
+  },
+  "commands": [
+    {
+      "label": "dart-analyze",
+      "command": "dart analyze --fatal-infos --fatal-warnings",
+      "startedAt": "2026-08-21T08:34:03.552Z",
+      "completedAt": "2026-08-21T08:34:12.311Z",
+      "exitCode": 0
+    },
+    {
+      "label": "dart-format-check",
+      "command": "dart format --output=none --set-exit-if-changed .",
+      "startedAt": "2026-08-21T08:34:12.311Z",
+      "completedAt": "2026-08-21T08:34:12.594Z",
+      "exitCode": 0
+    },
+    {
+      "label": "flutter-test",
+      "command": "flutter test --reporter compact",
+      "startedAt": "2026-08-21T08:34:12.594Z",
+      "completedAt": "2026-08-21T08:34:19.979Z",
+      "exitCode": 0
+    },
+    {
+      "label": "android-apk-smoke",
+      "command": "flutter build apk --debug",
+      "startedAt": "2026-08-21T08:34:19.979Z",
+      "completedAt": "2026-08-21T08:34:26.457Z",
+      "exitCode": 0
+    },
+    {
+      "label": "ios-simulator-smoke",
+      "command": "flutter build ios --simulator --no-codesign",
+      "startedAt": "2026-08-21T08:34:26.457Z",
+      "completedAt": "2026-08-21T08:34:48.909Z",
+      "exitCode": 0
+    }
+  ],
+  "lanes": {
+    "analyze": "pass",
+    "format": "pass",
+    "flutterTests": "pass",
+    "androidSmoke": "pass",
+    "iosSmoke": "pass"
+  },
+  "platformLimits": {
+    "compileSmokeOnly": true,
+    "deviceRuntime": "No booted Android emulator or iOS simulator/device was driven; runtime device receipts remain a retained manual limit, not waived acceptance.",
+    "linuxGoldens": "Golden baselines were recorded on macOS; the golden test selects linux- variants automatically when run on Linux."
+  },
+  "protocol": {
+    "status": "pass",
+    "keyless": true,
+    "modelCredentialRequired": false,
+    "surfaceId": "surface-task-sync",
+    "catalog": "genui BasicCatalogItems.asNoAssetCatalog (official A2UI v0.9 basic catalog)",
+    "approvedMutation": "task.update",
+    "deniedMutation": "task.delete",
+    "approvalGatedMutation": "task.replace",
+    "malformedRejected": true,
+    "tenantGuard": true
+  },
+  "scenarios": [
+    "example.graph.normalized-cross-view",
+    "example.crud.optimistic-confirm",
+    "example.crud.optimistic-rollback",
+    "example.relationship.cascade-invalidation",
+    "example.view.local-remote-hybrid",
+    "example.realtime.coalesced-cross-view",
+    "example.offline.persistence-convergence",
+    "example.protocol.a2a-a2ui-policy",
+    "example.platform.adapter-boundary",
+    "example.runtime.lifecycle-security"
+  ],
+  "visualEvidence": {
+    "scope": "Pinned phone/tablet golden images of the branded task board; not device or full-app certification",
+    "inspected": true,
+    "goldens": [
+      {
+        "path": "examples/flutter-riverpod/test/goldens/task-board-phone.png",
+        "sha256": "5db6faaa2742a87ec962d33e8361bf7809915d8cf2a1d4d2e4e6345569286ead"
+      },
+      {
+        "path": "examples/flutter-riverpod/test/goldens/task-board-tablet.png",
+        "sha256": "46811a8d274e689f417fc3c55c4b8e9924d38c5112b5608bb5804905282fcfa9"
+      }
+    ],
+    "surfaceFixture": {
+      "path": "examples/flutter-riverpod/test/goldens/a2ui-surface-messages.json",
+      "sha256": "ff4aa31e52af7f0840cc019e7bcf47f082ce55318815011b46ccd225a7828530"
+    }
+  },
+  "requiredFiles": [
+    "examples/flutter-riverpod/pubspec.yaml",
+    "examples/flutter-riverpod/lib/main.dart",
+    "examples/flutter-riverpod/lib/app.dart",
+    "examples/flutter-riverpod/lib/domain/models.dart",
+    "examples/flutter-riverpod/lib/domain/demo_data.dart",
+    "examples/flutter-riverpod/lib/transport/demo_transport.dart",
+    "examples/flutter-riverpod/lib/transport/persistence_adapter.dart",
+    "examples/flutter-riverpod/lib/transport/offline_convergence.dart",
+    "examples/flutter-riverpod/lib/a2ui/surface_messages.dart",
+    "examples/flutter-riverpod/lib/a2ui/action_policy.dart",
+    "examples/flutter-riverpod/lib/a2ui/showcase_runtime.dart",
+    "examples/flutter-riverpod/lib/features/task_board_page.dart",
+    "examples/flutter-riverpod/lib/features/task_detail_sheet.dart",
+    "examples/flutter-riverpod/lib/features/a2ui_panel.dart",
+    "examples/flutter-riverpod/lib/features/platform_page.dart",
+    "examples/flutter-riverpod/test/test_harness.dart",
+    "examples/flutter-riverpod/test/a2ui_policy_test.dart",
+    "examples/flutter-riverpod/test/a2ui_protocol_test.dart",
+    "examples/flutter-riverpod/test/adapter_boundary_test.dart",
+    "examples/flutter-riverpod/test/app_widget_test.dart",
+    "examples/flutter-riverpod/test/golden_test.dart",
+    "examples/flutter-riverpod/test/goldens/a2ui-surface-messages.json",
+    "examples/flutter-riverpod/test/goldens/task-board-phone.png",
+    "examples/flutter-riverpod/test/goldens/task-board-tablet.png",
+    "examples/flutter-riverpod/android/app/build.gradle.kts",
+    "examples/flutter-riverpod/ios/Runner.xcodeproj/project.pbxproj"
+  ]
+}

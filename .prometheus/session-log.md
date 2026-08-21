@@ -111,3 +111,42 @@
   strict OpenSpec, changeset status. Archived as
   `2026-08-20-v3-agentic-a2ui-example`; cursor advanced to
   `v3-flutter-riverpod-a2ui-example` (16/28).
+
+## 2026-08-21 — v3-flutter-riverpod-a2ui-example certified (17/28)
+
+- Built the dedicated `examples/flutter-riverpod` app on the certified
+  `entity_graph_flutter@3.0.0` package: Riverpod 3 (`>=3.3.2 <3.4.0`) in the
+  pub workspace, genui 0.10.1 `SurfaceController` + a2ui_core 0.1.0 A2UI
+  surfaces, and an app-owned fail-closed action policy (allowlist
+  `task.update`, approval-gated `task.replace`, denied `task.delete`, tenant
+  guard, malformed rejection). Task/Project/Comment domain mirrors the
+  agentic demo seed (task-sync, project-atlas, tenant-a); offline persistence
+  + convergence adapter included.
+- Tests: 29/29 `flutter test` across policy, protocol, adapter-boundary,
+  widget, and golden suites; goldens pin the A2UI surface message stream and
+  phone/tablet task-board layouts (macOS baselines; `linux-` prefix
+  auto-selected on Linux CI).
+- Defects found by the evidence loop (all example-local, no library fixes):
+  lambda `toGraph` closures forking Riverpod families per rebuild → static
+  `encode` tear-offs; auto-dispose CRUD provider dying between `ref.read` and
+  `save()` → tile watches `.notifier`; fake-clock zone trap → runtime
+  constructed inside `testWidgets` body + `pumpUntilReceipts` polling;
+  conflict merge now restores base value.
+- Platform smoke compile-level only: `flutter build apk --debug` and
+  `flutter build ios --simulator --no-codesign` succeed (Flutter
+  3.48.0-0.1.pre beta, Xcode 26.6); no booted-device run — retained limit,
+  not waived.
+- Workspace gates: `pnpm run dart:format`, `dart:analyze` (--fatal-infos),
+  `dart:test` (package 70 + example 29) all SUCCESS. Verifier
+  `scripts/verify-flutter-riverpod-a2ui-example.mjs` + root scripts
+  (`verify:flutter-riverpod-a2ui`, `test:v3-flutter-riverpod-a2ui-example`,
+  `bdd:flutter-riverpod-a2ui`); release test 8/8, BDD 3 scenarios/17 steps,
+  coverage verifier errors: [] (4 surgical coverage.json updates).
+- Melos minimal fixes: `generate` gained `--depends-on=build_runner`,
+  `package:check` gained `--no-private` (verified working).
+- Change archived as `openspec/changes/archive/2026-08-21-v3-flutter-riverpod-a2ui-example`;
+  evidence in `.kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-riverpod-a2ui-example/`
+  (verification.json/.md + release-impact.md). Cursor advanced to
+  `v3-tauri-universal-example` (17/28).
+- Hand-off boundary respected: `v3-release-certification` and
+  `v3-stable-publication` untouched.
