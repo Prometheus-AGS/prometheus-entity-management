@@ -13,4 +13,4 @@
 ## 3. Delivery
 
 - [x] 3.1 Obtain independent review, commit, push, and open the compatibility and canonical rc.2 release pull requests
-- [ ] 3.2 Correct the clean-cache integrity defect, obtain independent re-review, commit, and push the correction
+- [x] 3.2 Correct the clean-cache integrity defect, obtain independent re-review, commit, and push the correction

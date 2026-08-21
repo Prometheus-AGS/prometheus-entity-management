@@ -15,6 +15,7 @@
 | pnpm integrity negative control | `scratch_corepack=$(mktemp -d); COREPACK_HOME="$scratch_corepack" nvm exec 22 corepack pnpm --version` before correcting `packageManager` | Exited 1: `Mismatch hashes. Expected ...b5a304..., got ...b5a544...` | Fresh Corepack cache under Node 22; no cached package-manager binary |
 | pnpm integrity and install | `scratch_corepack=$(mktemp -d); COREPACK_HOME="$scratch_corepack" nvm exec 22 corepack pnpm --version; CI=true COREPACK_HOME="$scratch_corepack" nvm exec 22 corepack pnpm install --frozen-lockfile` | Exited 0; printed `10.33.0`, `Lockfile is up to date`, `Already up to date`, and `Done ... using pnpm v10.33.0` | Entity-management workspace only; 18 projects |
 | pnpm 10 package build | `scratch_corepack=$(mktemp -d); COREPACK_HOME="$scratch_corepack" nvm exec 22 corepack pnpm --filter @prometheus-ags/prometheus-entity-management build` | Exited 0; tsup 8.5.1 built ESM, CJS, and DTS outputs | React package only; no package publication |
+| Integrity correction delivery | independent artifact-only critic; `git commit -m 'fix(tooling): correct pnpm Corepack integrity'`; `git push origin codex/support-pnpm-11-consumers` | Critic returned PASS; commit `d6a0b0e` pushed to the existing PR #20 branch | Tooling receipt only; no npm package or dist-tag changed |
 
 The existing broad CI-baseline scenario currently reaches unrelated advisory and
 lockfile-layout failures. Root lint also fails on two untouched
