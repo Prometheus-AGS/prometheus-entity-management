@@ -12,6 +12,9 @@
 | UAR pnpm 11 lint | `pnpm lint` in UAR with the corrected submodule commit | ESLint exited 0 using pnpm 11.15.0 | UAR frontend workspace |
 | UAR SSE unit | `pnpm -C frontend test src/entities/sync.test.ts` | 1 file passed, 3 tests passed, 0 failed | Embedded adapter unit only |
 | UAR SSE browser | `CI=1 pnpm exec playwright test -c tests/bdd/playwright.config.ts tests/bdd/.features-gen/features/local-first-resilience.feature.spec.js --grep 'embedded SSE connection'` | 1 test passed in 24.2 seconds | Fresh-process embedded scenario only |
+| pnpm integrity negative control | `scratch_corepack=$(mktemp -d); COREPACK_HOME="$scratch_corepack" nvm exec 22 corepack pnpm --version` before correcting `packageManager` | Exited 1: `Mismatch hashes. Expected ...b5a304..., got ...b5a544...` | Fresh Corepack cache under Node 22; no cached package-manager binary |
+| pnpm integrity and install | `scratch_corepack=$(mktemp -d); COREPACK_HOME="$scratch_corepack" nvm exec 22 corepack pnpm --version; CI=true COREPACK_HOME="$scratch_corepack" nvm exec 22 corepack pnpm install --frozen-lockfile` | Exited 0; printed `10.33.0`, `Lockfile is up to date`, `Already up to date`, and `Done ... using pnpm v10.33.0` | Entity-management workspace only; 18 projects |
+| pnpm 10 package build | `scratch_corepack=$(mktemp -d); COREPACK_HOME="$scratch_corepack" nvm exec 22 corepack pnpm --filter @prometheus-ags/prometheus-entity-management build` | Exited 0; tsup 8.5.1 built ESM, CJS, and DTS outputs | React package only; no package publication |
 
 The existing broad CI-baseline scenario currently reaches unrelated advisory and
 lockfile-layout failures. Root lint also fails on two untouched

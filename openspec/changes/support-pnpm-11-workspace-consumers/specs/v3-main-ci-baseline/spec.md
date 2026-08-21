@@ -8,3 +8,4 @@ workspace using pnpm 11 while retaining pnpm 10.33.0 as its pinned default.
 - **WHEN** Universal Agent Runtime invokes the entity-management packages with pnpm 11.15.0
 - **THEN** the package-manager engine contract accepts the command
 - **AND** the entity-management repository continues to pin pnpm 10.33.0 as its own default
+- **AND** a clean Corepack cache accepts the pinned pnpm 10.33.0 integrity digest
