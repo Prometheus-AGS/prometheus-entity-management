@@ -2,12 +2,12 @@
   "conflictCount": 0,
   "cursor": [
     "full-3.0-release",
-    "v3-flint-portable-contracts",
-    "Confirm dependencies are complete: v3-framework-neutral-core; v3-example-coverage-contract."
+    "v3-skills-ecosystem",
+    "Confirm dependencies are complete: v3-sync-persistence-path; v3-a2ui-protocol-bridge; v3-a2a-conformance-agent; v3-dart-graph-riverpod; v3-tauri-mobile-plugin; v3-flint-portable-contracts; v3-vite-react19-example; v3-nextjs-app-router-example."
   ],
-  "derivedRevision": 28,
+  "derivedRevision": 29,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 28
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 29
   },
   "generatedBy": "kbd-runtime",
   "root": {
@@ -182,10 +182,10 @@
           {
             "id": "v3-flint-portable-contracts",
             "progress": {
-              "done": 0,
-              "total": 0
+              "done": 6,
+              "total": 6
             },
-            "status": "PENDING",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -272,7 +272,7 @@
         ],
         "id": "full-3.0-release",
         "progress": {
-          "done": 18,
+          "done": 19,
           "total": 28
         },
         "status": "PENDING",
@@ -568,13 +568,13 @@
     ],
     "id": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
     "progress": {
-      "done": 29,
+      "done": 30,
       "total": 53
     },
     "status": "running",
     "type": "phase"
   },
   "schemaVersion": "1",
-  "sourceRevision": 28,
-  "updatedAt": "2026-08-21T09:05:00Z"
+  "sourceRevision": 29,
+  "updatedAt": "2026-08-21T10:45:00Z"
 }

@@ -1,10 +1,10 @@
 POSITION REMINDER — read this as your FIRST tool call every turn
 Phase: full-3.0-release
-Step: 18 of 28
+Step: 19 of 28
 Stage: running
-Next command: /kbd-apply v3-flint-portable-contracts
+Next command: /kbd-apply v3-skills-ecosystem
 
 Required signal format (emit BEFORE any tool call):
-  Starting <kbd-skill> — full-3.0-release (step 18 of 28)
+  Starting <kbd-skill> — full-3.0-release (step 19 of 28)
   [do work]
-  Completed <kbd-skill> — full-3.0-release (step 18 of 28)
+  Completed <kbd-skill> — full-3.0-release (step 19 of 28)

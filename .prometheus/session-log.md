@@ -187,3 +187,50 @@
   Cursor advanced to `v3-flint-portable-contracts` (18/28).
 - Hand-off boundary respected: `v3-release-certification` and
   `v3-stable-publication` untouched.
+
+
+## 2026-08-21 — v3-flint-portable-contracts certified (19/28)
+
+- Replaced the machine-specific Flint live test with a portable two-lane
+  design: default CI runs the watch/mutate round-trip against a checked
+  fixture (`flint-live.fixture.ts`, mirrors frf-entity-management adapter
+  semantics line-for-line); the live SDK lane is env-gated
+  (`FLINT_EM_MODULE`/`FLINT_SDK_MODULE`) and fails closed — verifier probe
+  opts in with bogus paths and requires a non-zero exit.
+- New `flint-security.test.ts` pins seam security: tenant/channel propagation,
+  checkpoint key separation per channel+consumer (no cross-tenant resume),
+  entityType scoping, fail-closed malformed/wrong-kind envelopes.
+- Auth contract pinned as data, not code: `tests/fixtures/flint-auth/claims-contract.json`
+  encodes facts verified against flint-gate `jwt_verify.rs`/`jwks.rs`
+  (iss/aud when configured; no-kid multi-key JWKS rejected; unknown kid → one
+  rate-limited refresh; asymmetric-only key selection = the strict-JWK
+  caveat), flint-forge ext-flint-auth + migrations 0013/0014 (roles NOLOGIN,
+  service_role BYPASSRLS, FORCE RLS), and the key spec (`flint_pk_`/`flint_sk_`).
+  Token verification deliberately NOT reimplemented here (identity plane is
+  flint-gate; observed-problems-only).
+- `docs/flint-integration.md` documents the seam, live-lane opt-in, claims
+  contract, Forge provisioning (`forge migrate` = apply; no `plan` subcommand
+  exists — documented honestly), service-role-only provisioning, RLS, audit
+  (AuthzAuditRecord, shadow mode caveat), restart semantics, and an explicit
+  "not provided by this repository" boundary.
+- Release test (6/6): file surface, machine-path scan of CI lane (allowlists
+  only the package-module-contracts negative fixtures), env-gated fail-closed
+  wiring, claims fixture contents, docs↔fixture consistency, examples
+  secret scan (flint_sk_/JWT literal/SERVICE_ROLE_KEY — zero findings).
+- coverage.json: both entries owned by this change (realtime integration +
+  security) flipped planned → implemented with verifier command + paths.
+- Gates: verifier 4/4 lanes PASS, core suite 182 passed/1 todo, BDD 3
+  scenarios/15 steps, typecheck 23/23, validate errors [], example-coverage
+  errors [], eslint clean, openspec strict valid.
+- Defects found/fixed (4): hard-coded `/Users/...` sibling paths; silent-skip
+  green lane; scanner self-match via its own allowlist comment; dot-directory
+  build caches (`.next`) embedding build-machine paths (walk now skips
+  dot-dirs).
+- Retained limits: live Flint interop requires sibling workspace with
+  installed deps (fail-closed verified instead on this machine); token
+  verification stays in flint-gate.
+- Archived as `2026-08-21-v3-flint-portable-contracts`; evidence in
+  `.kbd-orchestrator/phases/full-3.0-release/evidence/v3-flint-portable-contracts/`.
+  Cursor advanced to `v3-skills-ecosystem` (19/28).
+- Hand-off boundary respected: `v3-release-certification` and
+  `v3-stable-publication` untouched.
