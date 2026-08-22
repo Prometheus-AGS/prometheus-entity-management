@@ -1,0 +1,74 @@
+---
+title: Security
+description: Trust boundaries in the entity-graph stack — secrets handling, transport credentials, tenant isolation, and what the architecture does and does not protect.
+---
+
+# Security
+
+The entity graph is client-side state, not a security boundary. This page
+maps where the real boundaries are and what the architecture guarantees at
+each one.
+
+## Secrets
+
+- **Never store secrets in the graph.** Entities are inspectable (DevTools
+  event bus, time-travel snapshots, persistence snapshots). API tokens,
+  session secrets, and credentials do not belong in entity data, patches, or
+  list state.
+- **Patches are not a hiding place.** `_`-prefixed fields are UI-only, but
+  they are still readable by every subscriber and by DevTools.
+- **Snapshot persistence is plaintext.** PGlite and Tauri SQL snapshots write
+  entity data to local storage. Do not persist graphs containing data the
+  device's owner should not be able to read.
+
+## Transport credentials
+
+Fetchers are your code — attach credentials at the services layer where they
+belong:
+
+```ts
+import { createGQLClient } from "@prometheus-ags/prometheus-entity-management";
+
+const client = createGQLClient({
+  url: "https://api.example.com/graphql",
+  // Headers are computed per request — read the token from your auth
+  // provider at call time, never from module scope captured at bootstrap.
+  headers: () => ({ authorization: `Bearer ${getCurrentToken()}` }),
+});
+
+declare function getCurrentToken(): string;
+```
+
+## Tenant isolation
+
+The graph is keyed by `type:id` with **no tenant dimension**. In a
+multi-tenant app where one client session can switch tenants:
+
+- Include the tenant in every `queryKey` (e.g. `["invoices", tenantId]`) so
+  lists from different tenants never share a key.
+- On tenant switch, treat it like a user switch: clear or re-scrape the
+  graph rather than letting tenant A's entities linger for tenant B's views.
+  `useGraphStore.getState()` exposes the reset primitives for the services
+  layer.
+- Authorization is always server-side. The graph caches what the server
+  returned; it cannot enforce what the server should have filtered.
+
+## Realtime and sync channels
+
+- **WebSocket / SSE channels** carry entity data — terminate them at your own
+  infrastructure with authentication on the connect request, not per message.
+- **CRDT sync** merges whatever peers send. Run sync providers only over
+  authenticated channels; merge strategies resolve conflicts, they do not
+  validate permissions.
+- **A2A / MCP surfaces** expose the graph to agents. Policy authority lives
+  in the server packages (`entity-graph-a2a`, `entity-graph-mcp`) — configure
+  allowed operations there, never in the client.
+
+## What the architecture does protect
+
+- **Single writer paths.** Mutations flow through stores/adapters; UI code
+  cannot write the graph directly. Audit the service layer and you have
+  audited every write.
+- **No hidden state.** Because business state lives in one inspectable store,
+  security review covers one data layer instead of scattered component
+  caches.

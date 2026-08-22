@@ -1,0 +1,85 @@
+---
+title: React binding
+description: The full hook catalog of @prometheus-ags/prometheus-entity-management — queries, views, CRUD, mutations, GraphQL, Suspense, and table primitives.
+---
+
+# React binding
+
+`@prometheus-ags/prometheus-entity-management` is the reference binding —
+the thickest layer over the core graph and the home of the CRUD state
+machine, view layer, GraphQL hooks, and headless table primitives.
+
+```bash
+pnpm add @prometheus-ags/prometheus-entity-management
+```
+
+## Hook catalog by job
+
+| Job | Hook |
+| --- | ---- |
+| Read one entity | `useEntity` / `useSuspenseEntity` |
+| Read a list | `useEntityList` / `useSuspenseEntityList` / `useEntities` |
+| Filter + sort a list | `useEntityView` |
+| Full list + detail + forms | `useEntityCRUD` |
+| Server mutation without CRUD | `useEntityMutation` |
+| Local UI-only augmentation | `useEntityAugment` |
+| GraphQL transport | `useGQLEntity` / `useGQLList` / `useGQLMutation` / `useGQLSubscription` |
+| Sync + connection status | `useGraphSyncStatus` / `useLocalFirst` |
+| Headless tables | `useTable*` family |
+
+## A minimal screen
+
+```tsx
+import { useEntityList } from "@prometheus-ags/prometheus-entity-management";
+import type {
+  ListFetchParams,
+  ListResponse,
+} from "@prometheus-ags/prometheus-entity-management";
+
+interface Customer {
+  id: string;
+  name: string;
+}
+
+declare function listCustomers(params: ListFetchParams): Promise<ListResponse<Customer>>;
+
+export function CustomerList() {
+  const { items, isLoading, fetchNextPage, hasNextPage } = useEntityList<Customer, Customer>({
+    type: "customer",
+    queryKey: ["customers"],
+    fetch: listCustomers,
+    normalize: (raw) => ({ id: raw.id, data: raw }),
+  });
+
+  if (isLoading) return <p>Loading…</p>;
+  return (
+    <ul>
+      {items.map((c) => (
+        <li key={c.id}>{c.name}</li>
+      ))}
+      {hasNextPage ? <button onClick={fetchNextPage}>Load more</button> : null}
+    </ul>
+  );
+}
+```
+
+## The layering rule
+
+Components touch hooks only. Hooks call store methods. Stores and adapters
+own all I/O — REST, GraphQL, realtime subscriptions. Never import
+`useGraphStore` in a component file; when hooks do not cover a case,
+`useGraphStore.getState()` is the escape hatch for services and debugging,
+not for render code.
+
+## Headless UI components
+
+`src/ui` ships `EntityTable`, `EntityDetailSheet`, and `EntityFormSheet` —
+wired against the hooks above. Pass `viewResult={crud.list}` to
+`EntityTable`; do not hand it a `useState` copy of rows.
+
+## Next steps
+
+- [Quickstart: React 19 + Vite](/docs/guides/quickstart-react) — a working
+  app in ten minutes.
+- [CRUD and relations](/docs/guides/concepts/crud-and-relations) — the
+  `useEntityCRUD` state machine in depth.

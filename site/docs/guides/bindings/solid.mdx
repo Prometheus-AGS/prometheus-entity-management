@@ -1,0 +1,100 @@
+---
+title: Solid binding
+description: SolidJS fine-grained bindings — setupGraphProvider, createEntity, and createEntityList with Suspense-friendly resources.
+---
+
+# Solid binding
+
+`@prometheus-ags/entity-graph-solid` mirrors graph state into fine-grained
+Solid stores — only the changed field triggers an update, and `createResource`
+drives Suspense and ErrorBoundary integration.
+
+```bash
+pnpm add @prometheus-ags/entity-graph-solid solid-js
+```
+
+## Bootstrap
+
+Call `setupGraphProvider` once before mounting the root component. It
+configures the engine, attaches focus/reconnect listeners, starts the garbage
+collector, and returns a cleanup function:
+
+```ts
+import { setupGraphProvider } from "@prometheus-ags/entity-graph-solid";
+
+const dispose = setupGraphProvider({ defaultStaleTime: 30_000 });
+```
+
+## One entity
+
+IDs are **accessors**, so the resource re-fires when the ID signal changes:
+
+```tsx
+/** @jsxImportSource solid-js */
+import { createEntity } from "@prometheus-ags/entity-graph-solid";
+import { Show } from "solid-js";
+
+interface Invoice {
+  id: string;
+  total: number;
+}
+
+declare function getInvoice(id: string): Promise<Invoice>;
+
+function InvoiceTotal(props: { invoiceId: string }) {
+  const invoice = createEntity<Invoice, Invoice>({
+    type: "invoice",
+    id: () => props.invoiceId,
+    fetch: (id) => getInvoice(id),
+    normalize: (raw) => raw,
+  });
+
+  return (
+    <Show when={!invoice.isLoading()} fallback={<p>Loading…</p>}>
+      <span>{invoice.data()?.total}</span>
+    </Show>
+  );
+}
+```
+
+## Lists
+
+```tsx
+/** @jsxImportSource solid-js */
+import { createEntityList } from "@prometheus-ags/entity-graph-solid";
+import { For } from "solid-js";
+import type {
+  ListFetchParams,
+  ListResponse,
+} from "@prometheus-ags/entity-graph-core";
+
+interface Invoice {
+  id: string;
+  total: number;
+}
+
+declare function listInvoices(params: ListFetchParams): Promise<ListResponse<Invoice>>;
+
+function InvoiceList() {
+  const invoices = createEntityList<Invoice, Invoice>({
+    type: "invoice",
+    queryKey: () => ["invoices"],
+    fetch: (params) => listInvoices(params),
+    normalize: (raw) => ({ id: raw.id, data: raw }),
+  });
+
+  return (
+    <ul>
+      <For each={invoices.items()}>
+        {(invoice) => <li>{invoice.total}</li>}
+      </For>
+    </ul>
+  );
+}
+```
+
+## Errors
+
+`TerminalError` vs. `TransientError` from the core package decide retry
+behavior — transient errors retry with backoff; terminal errors (404, 422)
+surface to the nearest ErrorBoundary without retry storms.

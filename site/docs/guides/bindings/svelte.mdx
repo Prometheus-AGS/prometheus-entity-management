@@ -1,0 +1,83 @@
+---
+title: Svelte binding
+description: Svelte 5 runes bindings — initEntityGraph bootstrap, createEntityStore, and createEntityList over the shared core graph.
+---
+
+# Svelte binding
+
+`@prometheus-ags/entity-graph-svelte` wires Svelte 5 reactivity on top of the
+core graph. All entity data lives in `@prometheus-ags/entity-graph-core` —
+the binding only re-renders when the graph writes.
+
+```bash
+pnpm add @prometheus-ags/entity-graph-svelte
+```
+
+## Bootstrap
+
+Call `initEntityGraph` once at app startup (e.g. the root `+layout.svelte`):
+
+```ts
+import { initEntityGraph } from "@prometheus-ags/entity-graph-svelte";
+
+initEntityGraph({ defaultStaleTime: 60_000, globalListeners: true });
+```
+
+## One entity
+
+`createEntityStore(type, opts)` returns a reactive store object. Wrap it in
+`$state(...)` inside a `.svelte` file so property assignments stay reactive:
+
+```svelte
+<script lang="ts">
+  import { createEntityStore } from "@prometheus-ags/entity-graph-svelte";
+  import { api } from "$lib/api";
+
+  let { invoiceId }: { invoiceId: string } = $props();
+
+  const store = $state(
+    createEntityStore<Invoice, Invoice>("invoice", {
+      id: invoiceId,
+      fetch: (id) => api.getInvoice(id),
+      normalize: (raw) => raw,
+    }),
+  );
+</script>
+
+{#if store.isLoading}
+  <p>Loading…</p>
+{:else if store.entity}
+  <p>{store.entity.total}</p>
+{/if}
+```
+
+## Lists with load-more
+
+```svelte
+<script lang="ts">
+  import { createEntityList } from "@prometheus-ags/entity-graph-svelte";
+  import { api } from "$lib/api";
+
+  const list = $state(
+    createEntityList<Invoice, Invoice>("invoice", {
+      queryKey: ["invoices", { companyId: "c1" }],
+      fetch: (params) => api.listInvoices(params),
+      normalize: (raw) => ({ id: raw.id, data: raw }),
+    }),
+  );
+</script>
+
+{#each list.items as invoice (invoice.id)}
+  <li>{invoice.total}</li>
+{/each}
+
+{#if list.hasNextPage}
+  <button onclick={() => list.loadMore()}>Load more</button>
+{/if}
+```
+
+## Cross-framework consistency
+
+The Svelte binding shares the graph with every other binding. An entity
+fetched by a Svelte route and patched by a React island on the same page read
+from the same store — no bridges, no copies.

@@ -1,0 +1,67 @@
+---
+title: HTMX binding
+description: Server-owned graph with SSE fragment push — createHtmxSseServer renders fragments and out-of-band swaps so one entity change updates every occurrence.
+---
+
+# HTMX binding
+
+`@prometheus-ags/entity-graph-htmx` inverts the usual topology: the **server
+owns the graph**, and browsers receive rendered HTML fragments over SSE. One
+entity change fans out to every rendered occurrence via out-of-band swaps.
+
+```bash
+pnpm add @prometheus-ags/entity-graph-htmx
+```
+
+## The server
+
+```ts
+import { createHtmxSseServer } from "@prometheus-ags/entity-graph-htmx";
+import { parseSdlJson } from "@prometheus-ags/entity-graph-sdl";
+
+declare const schemaJson: string;
+declare function listen(handler: (req: unknown, res: unknown) => void, port: number): void;
+
+const ir = parseSdlJson(schemaJson);
+const sseServer = createHtmxSseServer({ ir });
+
+// Any Node HTTP stack works — the server exposes handleRequest(req, res).
+listen((req, res) => sseServer.handleRequest(req, res), 3000);
+```
+
+## Rendering fragments
+
+The server renders entity fragments from templates you register per type (or
+`autoRender` for a default table-row rendering). `wrapOobFragment` marks a
+fragment as an out-of-band swap so HTMX replaces every matching element on
+the page:
+
+```ts
+import { renderFragment, wrapOobFragment } from "@prometheus-ags/entity-graph-htmx";
+
+declare const opts: Parameters<typeof renderFragment>[0];
+
+const row = await renderFragment(opts);
+if (row) {
+  // OOB swap: every element matching the selector morphs to the new row.
+  const oob = wrapOobFragment(row, "#invoice-row-42", "morph");
+  void oob;
+}
+```
+
+## Why server-owned
+
+- **One graph, many thin clients.** Browser tabs hold no entity state; the
+  server graph is the single source of truth, and SSE is a pure projection.
+- **No client data layer to drift.** Realtime consistency is a server-side
+  property — the batching and sorted-insertion rules apply once, centrally.
+- **Mutations round-trip through the graph.** A form POST mutates the server
+  graph, which notifies the SSE layer, which pushes fresh fragments — the
+  same write path as any other change.
+
+## When to choose it
+
+Content-heavy apps, dashboards, and internal tools where SEO/first-paint
+matter and client-side interactivity is modest. Reach for React or Svelte
+when the client needs rich local interaction; reach for HTMX when the server
+already knows the answer.

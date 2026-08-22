@@ -1,0 +1,84 @@
+---
+title: Views and filtering
+description: One FilterSpec compiles to REST params, GraphQL variables, SQL clauses, or a local predicate — with local, remote, and hybrid completeness modes.
+---
+
+# Views and filtering
+
+A **view** is a `ViewDescriptor` — filter, sort, and optional search — applied
+to a list of entity IDs. The same descriptor compiles to whatever your
+backend speaks, so client and server agree on semantics.
+
+```ts
+import type { ViewDescriptor } from "@prometheus-ags/entity-graph-core";
+
+const openTasksByDueDate: ViewDescriptor = {
+  filter: [{ field: "status", op: "eq", value: "open" }],
+  sort: [{ field: "dueAt", direction: "asc" }],
+  search: { query: "invoice", fields: ["title", "notes"], minChars: 2 },
+};
+```
+
+## Completeness modes
+
+`useEntityView` picks a strategy per mode:
+
+- **`local`** — everything needed is already in the graph. Filtering and
+  sorting run in JavaScript via `applyView`; zero network.
+- **`remote`** — local data is incomplete (e.g. a filtered server-side
+  relation). The descriptor compiles to query params and the server answers.
+- **`hybrid`** — local results render immediately while a remote fetch runs
+  in parallel; `isShowingLocalPending` tells you the local rows are a preview.
+
+```tsx
+import { useEntityView } from "@prometheus-ags/prometheus-entity-management";
+import type { ListResponse } from "@prometheus-ags/prometheus-entity-management";
+
+interface Task {
+  id: string;
+  status: string;
+  dueAt: string;
+  title: string;
+}
+
+declare function tasksQuery(params: Record<string, string>): Promise<ListResponse<Task>>;
+
+function useOpenTasks(projectId: string) {
+  return useEntityView<Task>({
+    type: "task",
+    baseQueryKey: ["tasks", projectId],
+    view: {
+      filter: [{ field: "status", op: "eq", value: "open" }],
+      sort: [{ field: "dueAt", direction: "asc" }],
+    },
+    mode: "hybrid",
+    remoteFetch: (p) => tasksQuery(p.rest),
+    normalize: (raw) => ({ id: raw.id, data: raw }),
+  });
+}
+```
+
+## Local evaluation without a hook
+
+`applyView` is the pure evaluator the hook uses — handy in tests, workers, or
+non-React bindings:
+
+```ts
+import { applyView } from "@prometheus-ags/entity-graph-core";
+
+const ids = ["a", "b", "c"];
+const getEntity = (id: string): Record<string, unknown> | null =>
+  ({ id, status: id === "b" ? "done" : "open" });
+
+const openIds = applyView(ids, getEntity, [
+  { field: "status", op: "eq", value: "open" },
+]);
+// openIds === ["a", "c"]
+```
+
+## Realtime sorted insertion
+
+When a realtime event delivers an entity that matches the active view, the
+view layer binary-searches it into the correct sorted position instead of
+re-sorting the whole list. Lists stay ordered under high-frequency updates
+with O(log n) placement.

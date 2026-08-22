@@ -1,0 +1,68 @@
+---
+title: Flutter binding
+description: The Dart entity graph with Riverpod — the same normalized architecture for Flutter apps, driven from the same SDL schema.
+---
+
+# Flutter binding
+
+`entity_graph_flutter` brings the normalized entity graph to Flutter with
+Riverpod. The architecture is identical to the TypeScript bindings: a
+canonical graph owns entity data, lists carry IDs, and widgets are pure
+projections of provider state.
+
+Add the package to your Flutter app's `pubspec.yaml` (see the
+[package overview](/docs/packages/overview) for distribution channels), then
+wire providers.
+
+## Provider surface
+
+| Provider | Purpose |
+| --- | --- |
+| `entityGraphProvider` | Injectable canonical graph owner |
+| `entityTransportRegistryProvider` | Per-type transport registry |
+| `entityListProvider<T>` | Local / remote / hybrid ID-list selection and pagination |
+| `entityProvider<T>` | One graph-backed entity with optional transport fetch |
+| `entityCrudProvider<T>` | Isolated edit buffer, optimistic update, save, delete, rollback |
+| `entityMutationsProvider<T>` | Collection create with optimistic placeholder |
+
+## A screen
+
+```dart
+class InvoiceListView extends ConsumerWidget {
+  const InvoiceListView({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final list = ref.watch(entityListProvider<Invoice>(
+      queryKey: const ['invoices'],
+    ));
+
+    if (list.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    return ListView.builder(
+      itemCount: list.items.length,
+      itemBuilder: (context, i) => ListTile(
+        title: Text(list.items[i].title),
+      ),
+    );
+  }
+}
+```
+
+## Same rules, same schema
+
+- Widgets watch providers and invoke controller methods — they never mutate
+  the graph directly.
+- The edit buffer in `entityCrudProvider` is isolated until save, exactly
+  like `useEntityCRUD`.
+- Models generate from the same [SDL schema](/docs/guides/concepts/sdl-and-codegen)
+  as the TypeScript types and Rust structs, so field names and relations
+  match across platforms.
+
+## When to choose it
+
+Flutter mobile and desktop apps that share a backend (and a schema) with a
+TypeScript web app. Sync providers from `entity-graph-sync` work over the
+same CRDT documents, so a Flutter app and a React app can edit the same
+entities peer-to-peer.

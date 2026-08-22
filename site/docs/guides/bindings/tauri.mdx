@@ -1,0 +1,76 @@
+---
+title: Tauri binding
+description: The Tauri plugin — a Rust-side graph with snapshot persistence, driven from the frontend through typed commands and events.
+---
+
+# Tauri binding
+
+`@prometheus-ags/entity-graph-tauri` moves the graph into the Tauri backend:
+the Rust side owns entity state and persists snapshots to disk, while the
+frontend drives it through typed commands and listens to change events.
+
+```bash
+pnpm add @prometheus-ags/entity-graph-tauri @tauri-apps/api
+```
+
+## Lifecycle
+
+```ts
+import { invoke } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
+import { TauriGraphPlugin } from "@prometheus-ags/entity-graph-tauri";
+
+const plugin = new TauriGraphPlugin({
+  invoke,
+  listen,
+  options: {
+    storageKey: "my-app-graph",
+    autoRestore: true, // restore the persisted snapshot at init
+  },
+});
+
+// Subscribes to graph events and restores the snapshot. Must be awaited
+// before issuing commands.
+await plugin.init();
+```
+
+## Commands
+
+All commands flow through `plugin.commands` — a typed facade over Tauri's
+`invoke`:
+
+```ts
+declare const plugin: import("@prometheus-ags/entity-graph-tauri").TauriGraphPlugin;
+
+await plugin.commands.upsertEntity({
+  entityType: "invoice",
+  entityId: "inv-1",
+  data: { total: 1200, status: "open" },
+});
+
+await plugin.commands.patchEntity({
+  entityType: "invoice",
+  entityId: "inv-1",
+  patch: { _selected: true }, // UI-only overlay, never persisted as data
+});
+
+const invoice = await plugin.commands.getEntity("invoice", "inv-1");
+
+export { invoice };
+```
+
+## Why Rust-side
+
+- **Persistence is native.** Snapshots write through the Rust plugin to app
+  storage — no IndexedDB quirks, no browser eviction.
+- **Events flow one way.** Rust emits change events; the frontend applies
+  them to its view of the graph. The write path always goes through commands,
+  keeping one writer.
+- **Pairs with the web bindings.** The frontend can still use React hooks
+  against a graph hydrated from Tauri events — the contracts are the same.
+
+## When to choose it
+
+Desktop apps that need offline-first behavior with durable local storage, or
+apps where the entity graph should outlive (and be shared across) webview
+reloads.

@@ -102,6 +102,12 @@ const config = {
         items: [
           {
             type: 'docSidebar',
+            sidebarId: 'guidesSidebar',
+            position: 'left',
+            label: 'Guides',
+          },
+          {
+            type: 'docSidebar',
             sidebarId: 'productSidebar',
             position: 'left',
             label: 'Product',

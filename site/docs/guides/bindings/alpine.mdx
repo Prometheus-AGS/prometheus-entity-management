@@ -1,0 +1,65 @@
+---
+title: Alpine binding
+description: The Alpine.js plugin — $entity and $entityList magics that expose graph state to x-data scopes with automatic cleanup.
+---
+
+# Alpine binding
+
+`@prometheus-ags/entity-graph-alpine` registers two magics — `$entity` and
+`$entityList` — that bind graph state into Alpine's reactive `x-data` scopes.
+Subscriptions tear down automatically when the owning component is destroyed.
+
+```bash
+pnpm add @prometheus-ags/entity-graph-alpine alpinejs
+```
+
+## Register the plugin
+
+```ts
+import Alpine from "alpinejs";
+import { createEntityGraphPlugin } from "@prometheus-ags/entity-graph-alpine";
+
+// The plugin defines its own structural AlpineInstance type; @types/alpinejs
+// types magic callbacks slightly differently, so adapt once at registration.
+Alpine.plugin(
+  createEntityGraphPlugin() as unknown as Parameters<typeof Alpine.plugin>[0],
+);
+// Optional: rename the magics.
+// Alpine.plugin(createEntityGraphPlugin({ entityMagicName: "$ent" }));
+
+Alpine.start();
+```
+
+## One entity in a template
+
+```html
+<div x-data="{ inv: $entity('invoice', 'inv-1') }">
+  <template x-if="inv.isLoading"><p>Loading…</p></template>
+  <template x-if="inv.entity"><p x-text="inv.entity.total"></p></template>
+</div>
+```
+
+## Lists with load-more
+
+```html
+<div x-data="{ list: $entityList('invoice', { queryKey: ['invoices'] }) }">
+  <template x-for="item in list.items" :key="item.id">
+    <li x-text="item.total"></li>
+  </template>
+  <button @click="list.loadMore()" x-show="list.hasNextPage">Load more</button>
+</div>
+```
+
+## How data gets in
+
+The magics read from the graph and subscribe for updates — they do not fetch
+on their own beyond the standard engine flow. Configure fetchers through the
+core engine options or trigger fetches from your own bootstrap code; anything
+written into the graph (REST fetch, realtime event, sync provider) appears in
+every `$entity` / `$entityList` binding automatically.
+
+## Server-rendered pages
+
+Because Alpine binds after HTML is delivered, this binding pairs naturally
+with server rendering: ship static HTML, hydrate the magics, and let the
+graph fill in live data without a client framework.

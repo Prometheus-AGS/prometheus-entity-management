@@ -1,354 +1,354 @@
 {
-  "changes": [
-    {
-      "blockers": [],
-      "id": "v3-release-contract",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-release-contract"
-    },
-    {
-      "blockers": [],
-      "id": "v3-main-ci-baseline",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-main-ci-baseline"
-    },
-    {
-      "blockers": [],
-      "id": "v3-package-module-contracts",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-package-module-contracts"
-    },
-    {
-      "blockers": [],
-      "id": "v3-framework-neutral-core",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-framework-neutral-core"
-    },
-    {
-      "blockers": [],
-      "id": "v3-binding-singleton-contract",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-binding-singleton-contract"
-    },
-    {
-      "blockers": [],
-      "id": "v3-release-pipeline-rc",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": "Record verification evidence, unresolved platform/manual limits, and release impact before archive.",
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 2,
-      "tasks_total": 2,
-      "title": "v3-release-pipeline-rc"
-    },
-    {
-      "blockers": [],
-      "id": "v3-example-coverage-contract",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-example-coverage-contract"
-    },
-    {
-      "blockers": [],
-      "id": "v3-sync-persistence-path",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-sync-persistence-path"
-    },
-    {
-      "blockers": [],
-      "id": "v3-a2ui-protocol-bridge",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-a2ui-protocol-bridge"
-    },
-    {
-      "blockers": [],
-      "id": "v3-a2a-conformance-agent",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-a2a-conformance-agent"
-    },
-    {
-      "blockers": [],
-      "id": "v3-flutter-source-provenance",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-flutter-source-provenance"
-    },
-    {
-      "blockers": [],
-      "id": "v3-dart-graph-riverpod",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-dart-graph-riverpod"
-    },
-    {
-      "blockers": [],
-      "id": "v3-tauri-mobile-plugin",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-tauri-mobile-plugin"
-    },
-    {
-      "blockers": [],
-      "id": "v3-vite-react19-example",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": "Record verification evidence, unresolved platform/manual limits, and release impact before archive.",
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 6,
-      "tasks_total": 6,
-      "title": "v3-vite-react19-example"
-    },
-    {
-      "blockers": [],
-      "id": "v3-nextjs-app-router-example",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-nextjs-app-router-example"
-    },
-    {
-      "blockers": [],
-      "id": "v3-agentic-a2ui-example",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-agentic-a2ui-example"
-    },
-    {
-      "blockers": [],
-      "id": "v3-flutter-riverpod-a2ui-example",
-      "implementation_status": "PENDING",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "PENDING",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-flutter-riverpod-a2ui-example"
-    },
-    {
-      "blockers": [],
-      "id": "v3-tauri-universal-example",
-      "implementation_status": "PENDING",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "PENDING",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-tauri-universal-example"
-    },
-    {
-      "blockers": [],
-      "id": "v3-flint-portable-contracts",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 6,
-      "tasks_total": 6,
-      "title": "v3-flint-portable-contracts"
-    },
-    {
-      "blockers": [],
-      "id": "v3-skills-ecosystem",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 6,
-      "tasks_total": 6,
-      "title": "v3-skills-ecosystem"
-    },
-    {
-      "blockers": [],
-      "id": "v3-docs-foundation-brand",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 6,
-      "tasks_total": 6,
-      "title": "v3-docs-foundation-brand"
-    },
-    {
-      "blockers": [],
-      "id": "v3-docs-api-reference",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "COMPLETE",
-      "tasks_done": 6,
-      "tasks_total": 6,
-      "title": "v3-docs-api-reference"
-    },
-    {
-      "blockers": [],
-      "id": "v3-docs-concepts-packages",
-      "implementation_status": "PENDING",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "PENDING",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-docs-concepts-packages"
-    },
-    {
-      "blockers": [],
-      "id": "v3-docs-examples-integrations",
-      "implementation_status": "PENDING",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "PENDING",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-docs-examples-integrations"
-    },
-    {
-      "blockers": [],
-      "id": "v3-docs-operations-migration",
-      "implementation_status": "PENDING",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "PENDING",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-docs-operations-migration"
-    },
-    {
-      "blockers": [],
-      "id": "v3-docs-github-pages",
-      "implementation_status": "PENDING",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "PENDING",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-docs-github-pages"
-    },
-    {
-      "blockers": [],
-      "id": "v3-release-certification",
-      "implementation_status": "PENDING",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "PENDING",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-release-certification"
-    },
-    {
-      "blockers": [],
-      "id": "v3-stable-publication",
-      "implementation_status": "PENDING",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "PENDING",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-stable-publication"
-    }
-  ],
-  "changes_completed": 16,
-  "changes_total": 28,
-  "children": {},
-  "completion": {
-    "certification": {
-      "blockers": [],
-      "status": "PENDING",
-      "summary": null
-    },
-    "evidence": {
-      "blockers": [],
-      "status": "PENDING",
-      "summary": null
-    },
-    "implementation": {
-      "completed": 2,
-      "status": "IN_PROGRESS",
-      "total": 28
-    },
-    "primaryCounter": "implementation",
-    "publication": {
-      "blockers": [],
-      "status": "PENDING",
-      "summary": null
-    }
+ "changes": [
+  {
+   "blockers": [],
+   "id": "v3-release-contract",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-release-contract"
   },
-  "conflictCount": 0,
-  "derivedRevision": 28,
-  "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 28
+  {
+   "blockers": [],
+   "id": "v3-main-ci-baseline",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-main-ci-baseline"
   },
-  "generatedBy": "kbd-runtime",
-  "implementation_completed": 2,
-  "implementation_total": 28,
-  "last_updated": "2026-08-20T15:53:00Z",
-  "last_updated_by": "kimi-takeover",
-  "migrationStatus": null,
-  "parentPhase": null,
-  "phase": "full-3.0-release",
-  "phaseId": "full-3.0-release",
-  "schemaVersion": "2",
-  "sourceRevision": 28
+  {
+   "blockers": [],
+   "id": "v3-package-module-contracts",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-package-module-contracts"
+  },
+  {
+   "blockers": [],
+   "id": "v3-framework-neutral-core",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-framework-neutral-core"
+  },
+  {
+   "blockers": [],
+   "id": "v3-binding-singleton-contract",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-binding-singleton-contract"
+  },
+  {
+   "blockers": [],
+   "id": "v3-release-pipeline-rc",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": "Record verification evidence, unresolved platform/manual limits, and release impact before archive.",
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 2,
+   "tasks_total": 2,
+   "title": "v3-release-pipeline-rc"
+  },
+  {
+   "blockers": [],
+   "id": "v3-example-coverage-contract",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-example-coverage-contract"
+  },
+  {
+   "blockers": [],
+   "id": "v3-sync-persistence-path",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-sync-persistence-path"
+  },
+  {
+   "blockers": [],
+   "id": "v3-a2ui-protocol-bridge",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-a2ui-protocol-bridge"
+  },
+  {
+   "blockers": [],
+   "id": "v3-a2a-conformance-agent",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-a2a-conformance-agent"
+  },
+  {
+   "blockers": [],
+   "id": "v3-flutter-source-provenance",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-flutter-source-provenance"
+  },
+  {
+   "blockers": [],
+   "id": "v3-dart-graph-riverpod",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-dart-graph-riverpod"
+  },
+  {
+   "blockers": [],
+   "id": "v3-tauri-mobile-plugin",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-tauri-mobile-plugin"
+  },
+  {
+   "blockers": [],
+   "id": "v3-vite-react19-example",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": "Record verification evidence, unresolved platform/manual limits, and release impact before archive.",
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 6,
+   "tasks_total": 6,
+   "title": "v3-vite-react19-example"
+  },
+  {
+   "blockers": [],
+   "id": "v3-nextjs-app-router-example",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-nextjs-app-router-example"
+  },
+  {
+   "blockers": [],
+   "id": "v3-agentic-a2ui-example",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-agentic-a2ui-example"
+  },
+  {
+   "blockers": [],
+   "id": "v3-flutter-riverpod-a2ui-example",
+   "implementation_status": "PENDING",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "PENDING",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-flutter-riverpod-a2ui-example"
+  },
+  {
+   "blockers": [],
+   "id": "v3-tauri-universal-example",
+   "implementation_status": "PENDING",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "PENDING",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-tauri-universal-example"
+  },
+  {
+   "blockers": [],
+   "id": "v3-flint-portable-contracts",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 6,
+   "tasks_total": 6,
+   "title": "v3-flint-portable-contracts"
+  },
+  {
+   "blockers": [],
+   "id": "v3-skills-ecosystem",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 6,
+   "tasks_total": 6,
+   "title": "v3-skills-ecosystem"
+  },
+  {
+   "blockers": [],
+   "id": "v3-docs-foundation-brand",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 6,
+   "tasks_total": 6,
+   "title": "v3-docs-foundation-brand"
+  },
+  {
+   "blockers": [],
+   "id": "v3-docs-api-reference",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 6,
+   "tasks_total": 6,
+   "title": "v3-docs-api-reference"
+  },
+  {
+   "blockers": [],
+   "id": "v3-docs-concepts-packages",
+   "implementation_status": "COMPLETE",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "COMPLETE",
+   "tasks_done": 6,
+   "tasks_total": 6,
+   "title": "v3-docs-concepts-packages"
+  },
+  {
+   "blockers": [],
+   "id": "v3-docs-examples-integrations",
+   "implementation_status": "PENDING",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "PENDING",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-docs-examples-integrations"
+  },
+  {
+   "blockers": [],
+   "id": "v3-docs-operations-migration",
+   "implementation_status": "PENDING",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "PENDING",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-docs-operations-migration"
+  },
+  {
+   "blockers": [],
+   "id": "v3-docs-github-pages",
+   "implementation_status": "PENDING",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "PENDING",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-docs-github-pages"
+  },
+  {
+   "blockers": [],
+   "id": "v3-release-certification",
+   "implementation_status": "PENDING",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "PENDING",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-release-certification"
+  },
+  {
+   "blockers": [],
+   "id": "v3-stable-publication",
+   "implementation_status": "PENDING",
+   "last_task_completed": null,
+   "next_task_pending": null,
+   "status": "PENDING",
+   "tasks_done": 0,
+   "tasks_total": 0,
+   "title": "v3-stable-publication"
+  }
+ ],
+ "changes_completed": 16,
+ "changes_total": 28,
+ "children": {},
+ "completion": {
+  "certification": {
+   "blockers": [],
+   "status": "PENDING",
+   "summary": null
+  },
+  "evidence": {
+   "blockers": [],
+   "status": "PENDING",
+   "summary": null
+  },
+  "implementation": {
+   "completed": 2,
+   "status": "IN_PROGRESS",
+   "total": 28
+  },
+  "primaryCounter": "implementation",
+  "publication": {
+   "blockers": [],
+   "status": "PENDING",
+   "summary": null
+  }
+ },
+ "conflictCount": 0,
+ "derivedRevision": 28,
+ "frontier": {
+  "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 28
+ },
+ "generatedBy": "kbd-runtime",
+ "implementation_completed": 2,
+ "implementation_total": 28,
+ "last_updated": "2026-08-20T15:53:00Z",
+ "last_updated_by": "kimi-takeover",
+ "migrationStatus": null,
+ "parentPhase": null,
+ "phase": "full-3.0-release",
+ "phaseId": "full-3.0-release",
+ "schemaVersion": "2",
+ "sourceRevision": 28
 }

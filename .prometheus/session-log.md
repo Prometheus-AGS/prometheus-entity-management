@@ -340,3 +340,37 @@
   Cursor advanced to `v3-docs-concepts-packages` (22/28).
 - Hand-off boundary respected: `v3-release-certification` and
   `v3-stable-publication` untouched.
+
+## 2026-08-22 — v3-docs-concepts-packages certified (23/28)
+
+- Complete learning path delivered: 27 hand-authored pages under
+  `site/docs/guides/` (quickstart-react; 13 concepts from normalized-entities
+  to devtools; 8 binding guides; 5 practices), wired into a new static
+  `guidesSidebar` + "Guides" navbar item. `site/capability-map.json` maps 26
+  stable capabilities to concept/API/example routes; the release test fails on
+  orphan pages and dead routes.
+- Snippet truth gate: `scripts/verify-skills-snippets.mjs` parameterized
+  (`--root/--ext/--skip/--all-packages`); docs lane packs all 12 npm packages
+  and compiles 40 ts/tsx fences from 22 docs in a temp consumer. Fixed the
+  packed-consumer install failure with `pnpm.overrides` pinning internal deps
+  to tarballs (workspace:* ranges resolve to unpublished registry versions
+  otherwise). Default skills lane regression-verified unchanged (19/15).
+- The compile gate caught ten authoring defects before readers could hit them:
+  quickstart's `entity`/`entities` (real: `data`/`items`), React `loadMore`
+  (real: `fetchNextPage`), async `renderFragment`, `readRelations` arity,
+  Solid JSX needing a per-file `@jsxImportSource` pragma, Alpine plugin vs
+  @types/alpinejs magic-callback mismatch (adapt-at-registration cast),
+  web-components `configure(opts)` vs attributes, Tauri top-level-await module
+  marker, and a broken `/docs/guides/recipes` link (static-build lane).
+- Language + install gates in the release test: no guide prescribes
+  component/hook-level fetching (prohibition-aware scan); bash install blocks
+  are registry `pnpm add` only — no `file:`/`link:`/`workspace:`.
+- Gates: verify:docs-concepts 4/4 lanes (snippet-compile, release-gate,
+  static-build, guide-routes), release test 8/8, BDD 3/13, typecheck 23/23,
+  validate errors [], foundation + api-reference regressions green, eslint
+  clean, openspec strict valid.
+- Archived as `2026-08-22-v3-docs-concepts-packages`; evidence in
+  `.kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-concepts-packages/`.
+  Cursor advanced to `v3-docs-examples-integrations` (23/28).
+- Hand-off boundary respected: `v3-release-certification` and
+  `v3-stable-publication` untouched.

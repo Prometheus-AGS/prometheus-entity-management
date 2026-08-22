@@ -3,9 +3,9 @@
 **Active phase:** `full-3.0-release`
 **Status:** `executing`
 **Backend:** OpenSpec
-**Implementation progress:** 22 of 28 changes
+**Implementation progress:** 23 of 28 changes
 **Current round:** Round 6 (next dependency-ready change)
-**Updated:** 2026-08-22T09:55:00Z
+**Updated:** 2026-08-22T13:40:00Z
 
 ## Execution
 
@@ -13,15 +13,15 @@ The reviewed 28-change plan is dispatched through OpenSpec and the KBD-aware `/k
 
 ## Next pending change
 
-`v3-docs-concepts-packages`
+`v3-docs-examples-integrations`
 
 ## Exact next command
 
 ```text
-/kbd-apply v3-docs-concepts-packages
+/kbd-apply v3-docs-examples-integrations
 ```
 
-The API reference change is certified and archived (2026-08-22): `scripts/generate-api-reference.mjs` drives TypeDoc 0.28.20 over the 12 publishable npm packages (566 stable exports with signatures + canonical source links), renders deterministic MDX under `site/docs/api/npm/`, generates 12 package chooser pages (install, peer/runtime matrix, stability badge, bundle metadata), and produces dartdoc + rustdoc artifacts under `site/static/api/` linked from curated entry pages. The doc-coverage policy fails on vanished exports, newly undocumented exports, and baseline shrinkage (`site/api-docs-baseline.json`, 209 baseline entries); it caught three stale `@internal` tags on public exports on first runs. Gates: verifier 4/4 lanes, release test 10/10, BDD 3/14, typecheck 23/23, validate errors [], foundation regression 10/10. Retained limits: Dart undocumented coverage (dartdoc index has no comment signal) and Rust symbol-level ratcheting. Next: write the complete conceptual and framework guide set (`v3-docs-concepts-packages`). `v3-release-certification` and `v3-stable-publication` remain human-gated and are the hand-off boundary.
+The concepts/packages docs change is certified and archived (2026-08-22): 27 hand-authored guide pages (quickstart, 13 concepts, 8 bindings, 5 practices) under `site/docs/guides/`, wired into a new `guidesSidebar` + "Guides" navbar section, with `site/capability-map.json` mapping 26 stable capabilities to concept/API/example routes. The snippet harness (`scripts/verify-skills-snippets.mjs`) is parameterized (`--root/--ext/--skip/--all-packages`) and now packs all 12 npm packages with `pnpm.overrides` pinning internal deps to tarballs — 40 guide snippets compile in the packed consumer. The release test (8/8) enforces the content contract (title/description, sidebar reachability, capability-map routes, data-flow language gate, registry-only installs). Gates: verifier 4/4 lanes (snippet-compile, release-gate, static-build, guide-routes), BDD 3/13, typecheck 23/23, validate errors [], foundation + api-reference regressions green, skills default lane unchanged (19/15). The evidence loop fixed ten authoring defects (wrong hook fields, async renderFragment, readRelations arity, Solid JSX pragma, Alpine typing, packed-consumer overrides). Next: example and integration docs (`v3-docs-examples-integrations`). `v3-release-certification` and `v3-stable-publication` remain human-gated and are the hand-off boundary.
 
 ## Operator follow-up
 

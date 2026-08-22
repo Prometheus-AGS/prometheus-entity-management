@@ -1,0 +1,100 @@
+---
+title: CRUD and relations
+description: useEntityCRUD's edit-buffer isolation, optimistic updates, schema-driven cascade invalidation, and relation traversal across the graph.
+---
+
+# CRUD and relations
+
+`useEntityCRUD` coordinates list, detail, and form state for one entity type.
+Two design decisions make it safe to use everywhere: **edit-buffer
+isolation** and **cascade invalidation**.
+
+## Edit-buffer isolation
+
+While a form is open, the working copy lives in the hook's `editBuffer`
+(React component state) — **not** in the graph. Other views keep showing the
+server-confirmed entity until `save()` succeeds. The one exception is
+`applyOptimistic()`, which mirrors selected buffer fields into graph patches
+for instant feedback on toggles and sliders; a successful save then replaces
+the canonical entity and clears the patch.
+
+## One hook owns the surface
+
+```ts
+import { useEntityCRUD } from "@prometheus-ags/prometheus-entity-management";
+import type {
+  EntityId,
+  FilterSpec,
+  ListResponse,
+  SortSpec,
+  ViewFetchParams,
+} from "@prometheus-ags/prometheus-entity-management";
+
+interface Task extends Record<string, unknown> {
+  id: string;
+  title: string;
+  status: string;
+  projectId: string;
+}
+
+// The services layer owns this I/O — hooks never call fetch() directly.
+declare function listFetch(params: ViewFetchParams): Promise<ListResponse<Task>>;
+declare function fetchTaskById(id: EntityId): Promise<Task>;
+declare function createTaskApi(data: Partial<Task>): Promise<Task>;
+declare function updateTaskApi(id: EntityId, patch: Partial<Task>): Promise<Task>;
+declare function deleteTaskApi(id: EntityId): Promise<void>;
+declare const initialFilter: FilterSpec;
+declare const initialSort: SortSpec;
+
+const crud = useEntityCRUD<Task>({
+  type: "Task",
+  listQueryKey: ["tasks", "list"],
+  listFetch,
+  normalize: (raw) => ({ id: String(raw.id), data: raw }),
+  detailFetch: fetchTaskById,
+  onCreate: createTaskApi,
+  onUpdate: updateTaskApi,
+  onDelete: deleteTaskApi,
+  initialView: { filter: initialFilter, sort: initialSort },
+});
+```
+
+UI code reads `crud.list`, `crud.detail`, and `crud.mode` only — never the
+store directly.
+
+## Cascade invalidation
+
+After every successful mutation the engine runs `cascadeInvalidation()`:
+
+1. Reads the relation schemas registered for the mutated type.
+2. Diffs previous vs. next values to find changed foreign keys.
+3. Marks affected list queries stale for background revalidation.
+4. Marks related entities stale, traversing reverse relations.
+
+You do not sprinkle manual `invalidateLists` calls through the codebase —
+the schema drives the cascade.
+
+## Relations
+
+Register a schema per entity type, then read resolved relations off the CRUD
+surface:
+
+```ts
+import { readRelations } from "@prometheus-ags/prometheus-entity-management";
+
+declare const detail: Record<string, unknown>;
+
+const related = readRelations("Task", detail);
+// related.<relationName> resolves foreign keys against entities already in
+// the graph, using the schemas registered for "Task".
+```
+
+Child lists must be populated by their own hooks elsewhere on the page —
+`readRelations` joins against the graph; it never fetches.
+
+## Anti-patterns to avoid
+
+- `useGraphStore` inside a page component — breaks layering, duplicates
+  subscription logic.
+- A parallel `useState` copy of table rows — breaks global reactivity.
+- A different `normalize` in list vs. detail hooks — split-brain IDs.
