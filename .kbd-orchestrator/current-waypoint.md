@@ -3,9 +3,9 @@
 **Active phase:** `full-3.0-release`
 **Status:** `executing`
 **Backend:** OpenSpec
-**Implementation progress:** 21 of 28 changes
+**Implementation progress:** 22 of 28 changes
 **Current round:** Round 6 (next dependency-ready change)
-**Updated:** 2026-08-22T06:55:00Z
+**Updated:** 2026-08-22T09:55:00Z
 
 ## Execution
 
@@ -13,15 +13,15 @@ The reviewed 28-change plan is dispatched through OpenSpec and the KBD-aware `/k
 
 ## Next pending change
 
-`v3-docs-api-reference`
+`v3-docs-concepts-packages`
 
 ## Exact next command
 
 ```text
-/kbd-apply v3-docs-api-reference
+/kbd-apply v3-docs-concepts-packages
 ```
 
-The docs foundation change is certified and archived (2026-08-22): a private pnpm workspace site (`site/`) now runs Docusaurus 3.10.2 with all @docusaurus/* packages pinned to one version, Prometheus ember brand tokens (`--prometheus-*`, provenance in `docs/branding/ASSETS.md`), accessible light/dark themes, a responsive landing page, product/packages/examples navigation, local search, Mermaid, SEO/social metadata, and canonical edit links into this repo. Broken links/anchors throw; the verifier's isolation lane proves no Docusaurus dependency can leak into publishable packages. Gates: verifier 4/4 lanes (incl. clean static build asserting 404/sitemap/search-index/social-card routes), release test 10/10, BDD 3/13, typecheck 23/23, validate errors []. The evidence loop fixed a prism-svelte grammar crash, a clsx false positive in the isolation scan, and a node_modules walker leak. Next: generate the complete multi-language API and package reference (`v3-docs-api-reference`). `v3-release-certification` and `v3-stable-publication` remain human-gated and are the hand-off boundary.
+The API reference change is certified and archived (2026-08-22): `scripts/generate-api-reference.mjs` drives TypeDoc 0.28.20 over the 12 publishable npm packages (566 stable exports with signatures + canonical source links), renders deterministic MDX under `site/docs/api/npm/`, generates 12 package chooser pages (install, peer/runtime matrix, stability badge, bundle metadata), and produces dartdoc + rustdoc artifacts under `site/static/api/` linked from curated entry pages. The doc-coverage policy fails on vanished exports, newly undocumented exports, and baseline shrinkage (`site/api-docs-baseline.json`, 209 baseline entries); it caught three stale `@internal` tags on public exports on first runs. Gates: verifier 4/4 lanes, release test 10/10, BDD 3/14, typecheck 23/23, validate errors [], foundation regression 10/10. Retained limits: Dart undocumented coverage (dartdoc index has no comment signal) and Rust symbol-level ratcheting. Next: write the complete conceptual and framework guide set (`v3-docs-concepts-packages`). `v3-release-certification` and `v3-stable-publication` remain human-gated and are the hand-off boundary.
 
 ## Operator follow-up
 

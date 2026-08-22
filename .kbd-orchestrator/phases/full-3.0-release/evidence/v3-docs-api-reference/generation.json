@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-docs-api-reference",
+  "generatedAt": "2026-08-22T14:44:19.367Z",
+  "packages": {
+    "entity-graph-core": {
+      "exports": 123,
+      "documented": 76,
+      "undocumented": 47
+    },
+    "prometheus-entity-management": {
+      "exports": 201,
+      "documented": 82,
+      "undocumented": 119
+    },
+    "entity-graph-sync": {
+      "exports": 16,
+      "documented": 16,
+      "undocumented": 0
+    },
+    "entity-graph-svelte": {
+      "exports": 3,
+      "documented": 3,
+      "undocumented": 0
+    },
+    "entity-graph-solid": {
+      "exports": 8,
+      "documented": 7,
+      "undocumented": 1
+    },
+    "entity-graph-alpine": {
+      "exports": 4,
+      "documented": 4,
+      "undocumented": 0
+    },
+    "entity-graph-htmx": {
+      "exports": 8,
+      "documented": 8,
+      "undocumented": 0
+    },
+    "entity-graph-web-components": {
+      "exports": 6,
+      "documented": 3,
+      "undocumented": 3
+    },
+    "a2ui-react": {
+      "exports": 27,
+      "documented": 11,
+      "undocumented": 16
+    },
+    "entity-graph-a2a": {
+      "exports": 32,
+      "documented": 20,
+      "undocumented": 12
+    },
+    "entity-graph-tauri": {
+      "exports": 57,
+      "documented": 47,
+      "undocumented": 10
+    },
+    "entity-graph-sdl": {
+      "exports": 3,
+      "documented": 2,
+      "undocumented": 1
+    },
+    "entity_graph_flutter": {
+      "exports": 81,
+      "documented": null,
+      "undocumented": null
+    }
+  },
+  "policy": {
+    "vanished": [],
+    "newUndocumented": [],
+    "tightenRequired": []
+  },
+  "artifacts": {
+    "dart": "generated",
+    "rust": "generated",
+    "entity-graph-cli": "generated",
+    "entity-graph-mcp": "generated"
+  },
+  "result": "pass"
+}

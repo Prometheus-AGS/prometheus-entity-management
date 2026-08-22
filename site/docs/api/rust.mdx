@@ -1,0 +1,32 @@
+---
+title: Rust tooling API
+description: Entry points for the entity-graph-cli and entity-graph-mcp Rust crates with generated rustdoc artifacts.
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Rust tooling API
+
+Two Rust crates ship the schema tooling and MCP surface for the entity graph.
+The generated rustdoc artifacts are served as static files — canonical source
+docs are never duplicated into these pages:
+
+- <a href={useBaseUrl('api/rust/entity-graph-cli/entity_graph/index.html')} target="_blank" rel="noreferrer"><strong>rustdoc: entity-graph-cli</strong></a> —
+  scaffold `schema.json` (`init`), generate TypeScript types + transport stubs
+  (`generate`)
+- <a href={useBaseUrl('api/rust/entity-graph-mcp/entity_graph_mcp/index.html')} target="_blank" rel="noreferrer"><strong>rustdoc: entity-graph-mcp</strong></a> —
+  expose the graph as MCP resources/tools over stdio or Streamable HTTP
+
+## Entry points
+
+| Crate | Binary | Use it for |
+| ----- | ------ | ---------- |
+| `entity-graph-cli` | `entity-graph` | `entity-graph init` / `entity-graph generate` from an SDL schema |
+| `entity-graph-mcp` | `entity-graph-mcp` | MCP server over stdio or Streamable HTTP |
+
+## Gates
+
+```bash
+cargo test --manifest-path packages/entity-graph-cli/Cargo.toml
+cargo test --manifest-path packages/entity-graph-mcp/Cargo.toml
+```

@@ -119,6 +119,12 @@ const config = {
             label: 'Examples',
           },
           {
+            type: 'docSidebar',
+            sidebarId: 'apiSidebar',
+            position: 'left',
+            label: 'API',
+          },
+          {
             href: 'https://github.com/Prometheus-AGS/prometheus-entity-management',
             label: 'GitHub',
             position: 'right',

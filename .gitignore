@@ -89,3 +89,11 @@ build/
 
 # ── Docusaurus ─────────────────────────────────────────────────────────────
 .docusaurus/
+
+# ── Generated API reference (v3-docs-api-reference) ─────────────────────────
+site/docs/api/npm/
+site/docs/api/index.mdx
+site/docs/packages/*.mdx
+!site/docs/packages/overview.md
+site/api-sidebar.generated.json
+site/static/api/

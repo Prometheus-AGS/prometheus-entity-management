@@ -1,0 +1,40 @@
+---
+title: Dart / Flutter API
+description: Entry points for the canonical Dart entity graph (entity_graph_flutter) with the generated dartdoc artifact.
+---
+
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Dart / Flutter API
+
+`entity_graph_flutter` is the canonical Dart graph with Riverpod providers,
+source-derived from the TypeScript core (provenance ledger:
+`v3-flutter-source-provenance`).
+
+## Generated reference
+
+The full dartdoc artifact is generated at build time and served as a static
+artifact — canonical source docs are never duplicated into these pages:
+
+- <a href={useBaseUrl('api/dart/index.html')} target="_blank" rel="noreferrer"><strong>dartdoc: entity_graph_flutter</strong></a> — complete
+  generated API for `package:entity_graph_flutter/entity_graph_flutter.dart`
+
+## Entry points
+
+| Symbol | Kind | Use it for |
+| ------ | ---- | ---------- |
+| `EntityGraph` | class | The normalized graph: entities, patches, ID-only lists |
+| `EntityGraphRiverpod` | providers | Riverpod wiring over the Dart graph |
+| `ChangeEvent` / `ChangeOp` | class / enum | Transport-level change vocabulary |
+| `EntityTransportRegistry` | class | Pluggable fetch/sync transports |
+
+The authoritative 81-declaration export surface lives in the Dart ledger
+(`dart-library-exports.json`); the API generator fails if any declaration
+vanishes from the dartdoc index.
+
+## Gates
+
+```bash
+pnpm run verify:dart-graph-riverpod   # Dart graph contract
+pnpm run verify:flutter-riverpod-a2ui # mobile/A2UI showcase
+```

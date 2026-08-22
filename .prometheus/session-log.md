@@ -303,3 +303,40 @@
 - Hand-off boundary respected: `v3-release-certification` and
   `v3-stable-publication` untouched; coverage.json documentationSite row
   remains owned by v3-docs-github-pages.
+
+## 2026-08-22 — v3-docs-api-reference certified (22/28)
+
+- Multi-language API reference generated from the export ledgers:
+  `scripts/generate-api-reference.mjs` runs TypeDoc 0.28.20 (TS 6.0.x
+  compatible) once per publishable npm package (12 runs, explicit entries incl.
+  a2ui `./ag-ui` and a2a `./legacy`), renders deterministic MDX pages under
+  `site/docs/api/npm/` (566 stable exports: signature, doc comment, canonical
+  blob source link, per-symbol anchor) plus 12 package chooser pages
+  (`site/docs/packages/<slug>.mdx`: install, peer/runtime matrix, stability
+  badge, published-file metadata). API index asserts all 15 artifacts (12 npm +
+  Dart + 2 Rust) exactly once.
+- Doc-coverage policy (ratchet): stable exports = the 13 ledgers from
+  v3-skills-ecosystem. Generator fails on vanished exports, newly undocumented
+  exports, and baseline shrinkage. Baseline committed at
+  `site/api-docs-baseline.json` (209 undocumented of 566; sync/svelte/alpine/
+  htmx fully documented). Measured coverage reality before promising gates
+  (M1-first) — full doc-comment coverage is follow-up content work.
+- Dart/Rust without duplication: `dart doc` (81 declarations, presence-checked
+  against dartdoc index.json) and `cargo doc --no-deps` (cli + mcp) generate
+  into git-ignored `site/static/api/`; curated entry pages link via
+  `useBaseUrl()` (broken-link checker false-positives on static artifacts).
+- Drift caught by the policy on first runs: stale `@internal` tags on three
+  publicly re-exported symbols (`__resetStoreRegistry` core;
+  `createEntityBinding`/`createListBinding` alpine) — doc-comment-only fixes,
+  targeted tests green (core 24/24, alpine 16/16).
+- Also fixed in-loop: YAML front-matter quoting for generated pages,
+  cucumber `/` alternation escaping in BDD step text, ledger shape variance
+  (list / entry-point-keyed / runtime+declaration / object-with-exports).
+- Gates: verify:docs-api-reference 4/4 lanes, release test 10/10, BDD 3/14,
+  typecheck 23/23, validate errors [], foundation regression 10/10, eslint
+  clean, openspec strict valid.
+- Archived as `2026-08-22-v3-docs-api-reference`; evidence in
+  `.kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-api-reference/`.
+  Cursor advanced to `v3-docs-concepts-packages` (22/28).
+- Hand-off boundary respected: `v3-release-certification` and
+  `v3-stable-publication` untouched.

@@ -1,0 +1,26 @@
+{
+  "createEntityGraph": {
+    "to": "/docs/product/architecture",
+    "label": "Architecture — the entity graph"
+  },
+  "useEntity": {
+    "to": "/docs/product/architecture",
+    "label": "Architecture — access patterns"
+  },
+  "useEntityList": {
+    "to": "/docs/product/architecture",
+    "label": "Architecture — lists store IDs"
+  },
+  "useEntityCRUD": {
+    "to": "/docs/examples/overview",
+    "label": "Examples — CRUD in the certified consumers"
+  },
+  "createHtmxSseServer": {
+    "to": "/docs/packages/overview",
+    "label": "Package selection — HTMX + SSE"
+  },
+  "EntityGraph": {
+    "to": "/docs/api/dart",
+    "label": "Dart / Flutter API"
+  }
+}
