@@ -1,0 +1,71 @@
+---
+title: "Tutorial: React 19 + Vite 8"
+description: Start-to-finish path through the certified Vite showcase — graph lifecycle, optimistic CRUD, views, realtime coalescing, persistence, and accessibility.
+---
+
+# Tutorial: React 19 + Vite 8
+
+`examples/vite-app` is the reference consumer of the React binding. Its
+`/release-showcase` route exercises the full browser-facing graph surface in a
+Vite production build.
+
+## Architecture
+
+One React 19 frontend over `@prometheus-ags/prometheus-entity-management`;
+all data flows Components → Hooks → Stores → mock API. The showcase proves the
+cross-view reactivity claim directly: every scenario mutates one canonical
+entity while multiple joined views observe it.
+
+## Setup
+
+```bash
+pnpm install
+pnpm run dev:vite
+```
+
+Open `http://localhost:5173` and navigate to `/release-showcase`.
+
+## Feature scenarios
+
+Each scenario card on the showcase route maps to a shared coverage scenario
+from `examples/shared/scenario-contract.json`:
+
+| Scenario | Coverage ID | What to watch |
+| -------- | ----------- | ------------- |
+| Normalized cross-view update | `example.graph.normalized-cross-view` | One edit updates list + detail simultaneously |
+| Optimistic confirm | `example.crud.optimistic-confirm` | Patch visible instantly, confirm clears it |
+| Optimistic rollback | `example.crud.optimistic-rollback` | Rejected save restores the canonical entity |
+| Relationship cascade | `example.relationship.cascade-invalidation` | Foreign-key change revalidates both relation views |
+| Local / remote / hybrid views | `example.view.local-remote-hybrid` | One FilterSpec, three completeness modes |
+| REST/GraphQL equivalence | `example.transport.rest-graphql-equivalence` | Both transports normalize to the same entity |
+| Realtime coalescing | `example.realtime.coalesced-cross-view` | A burst collapses into one 16 ms flush |
+| Offline persistence + convergence | `example.offline.persistence-convergence` | PGlite reload + two Loro clients converge |
+| Lifecycle security | `example.runtime.lifecycle-security` | Terminal errors fail closed, no retry storms |
+
+## Test commands
+
+```bash
+pnpm run verify:vite-react19   # full showcase gate
+pnpm run bdd:vite-react19      # scenario-level BDD evidence
+```
+
+CI exercises the example through the full build and test gates
+(`ci:build`, `ci:test`), which include the release test suite.
+
+## Deployment and platform notes
+
+The example is a static Vite build (`pnpm run build:vite`); its certification
+boundary is the source-workspace browser evidence, not a packed-tarball
+consumer — that boundary belongs to the RC pipeline. The mock API is
+deterministic and keyless; no external service is required.
+
+## Troubleshooting
+
+- **Stale showcase data between runs:** the PGlite demo database persists in
+  IndexedDB; clear site data to reset the seed.
+- **Realtime demo looks idle:** the burst scenario fires on demand from its
+  scenario card; watch the DevTools event log, not the network tab.
+- **Port already in use:** `pnpm run dev:vite` binds 5173; stop the stale
+  dev server rather than running two instances against one graph demo.
+
+Runnable source: [`examples/vite-app`](https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/examples/vite-app).

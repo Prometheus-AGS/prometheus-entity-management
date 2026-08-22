@@ -1,0 +1,66 @@
+---
+title: "Integration: Supabase"
+description: Bridge Supabase Realtime postgres_changes into the graph with the core adapter — table-to-type mapping, deletes, and channel filters.
+---
+
+# Integration: Supabase
+
+The core Supabase adapter bridges `postgres_changes` events into entity
+changes. It depends only on a minimal structural client type — no hard
+`@supabase/supabase-js` dependency in the library.
+
+## Setup
+
+```bash
+pnpm add @prometheus-ags/entity-graph-core @supabase/supabase-js
+```
+
+```ts
+import { createClient } from "@supabase/supabase-js";
+import { createSupabaseRealtimeAdapter } from "@prometheus-ags/entity-graph-core";
+
+declare const supabaseUrl: string;
+declare const supabaseAnonKey: string;
+
+const client = createClient(supabaseUrl, supabaseAnonKey);
+
+// The adapter types a minimal structural client; the real SupabaseClient's
+// channel API is broader, so adapt once at the boundary.
+const adapter = createSupabaseRealtimeAdapter(
+  client as unknown as Parameters<typeof createSupabaseRealtimeAdapter>[0],
+  {
+    tableTypeMap: { tasks: "task", projects: "project" },
+    extractId: (record) => String(record.id),
+    schema: "public",
+  },
+);
+
+// Per-table channels with optional row filters:
+const unsubscribe = adapter.subscribeChannel({
+  type: "task",
+  filter: { schema: "public", table: "tasks" },
+});
+```
+
+Inserts and updates arrive as `insert`/`upsert` changes carrying the full
+row; deletes arrive as `delete` changes keyed by `extractId(old)`. Everything
+flows through the RealtimeManager's coalescing window like any other source.
+
+## Deterministic demo mode vs. live credentials
+
+- **Demo:** `examples/supabase` holds a shared demo project **configuration**
+  (keyless fixture shape) used by the example apps; the vite showcase
+  simulates the event flow without a live project.
+- **Live:** use the **anon key** client-side — never a service-role key. Row
+  Level Security is the actual authorization boundary; the graph caches what
+  RLS allowed through and cannot enforce it. Treat a tenant switch like a
+  user switch: re-scope query keys and clear tenant-scoped graph state.
+
+## Troubleshooting
+
+- **No events:** the table must be added to the `supabase_realtime`
+  publication; check the channel subscription status callback.
+- **Deletes missing IDs:** Postgres replica identity must include the primary
+  key for `old` records.
+- **Type mismatches:** keep `tableTypeMap` aligned with your SDL entity names
+  so cascade invalidation finds the relations.

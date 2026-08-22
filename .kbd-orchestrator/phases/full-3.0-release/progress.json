@@ -256,12 +256,12 @@
   {
    "blockers": [],
    "id": "v3-docs-examples-integrations",
-   "implementation_status": "PENDING",
+   "implementation_status": "COMPLETE",
    "last_task_completed": null,
    "next_task_pending": null,
-   "status": "PENDING",
-   "tasks_done": 0,
-   "tasks_total": 0,
+   "status": "COMPLETE",
+   "tasks_done": 6,
+   "tasks_total": 6,
    "title": "v3-docs-examples-integrations"
   },
   {

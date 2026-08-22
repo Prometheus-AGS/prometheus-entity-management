@@ -74,11 +74,31 @@ const sidebars = {
     },
   ],
   examplesSidebar: [
+    'examples/overview',
     {
       type: 'category',
-      label: 'Examples',
+      label: 'Tutorials',
       collapsible: false,
-      items: ['examples/overview'],
+      items: [
+        'examples/vite-react19',
+        'examples/nextjs-app-router',
+        'examples/agentic-a2ui',
+        'examples/flutter-riverpod',
+        'examples/tauri-universal',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Integrations',
+      collapsible: false,
+      items: [
+        'integrations/websocket',
+        'integrations/supabase',
+        'integrations/graphql',
+        'integrations/pglite-loro',
+        'integrations/a2a-a2ui',
+        'integrations/flint',
+      ],
     },
   ],
   apiSidebar: generated.apiSidebar,

@@ -2,12 +2,12 @@
  "conflictCount": 0,
  "cursor": [
   "full-3.0-release",
-  "v3-docs-examples-integrations",
-  "Confirm dependencies are complete: v3-vite-react19-example; v3-nextjs-app-router-example; v3-agentic-a2ui-example; v3-flutter-riverpod-a2ui-example; v3-tauri-universal-example; v3-flint-portable-contracts; v3-docs-foundation-brand."
+  "v3-docs-operations-migration",
+  "onfirm dependencies are complete: v3-release-pipeline-rc; v3-skills-ecosystem; v3-docs-foundation-brand."
  ],
- "derivedRevision": 33,
+ "derivedRevision": 34,
  "frontier": {
-  "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 33
+  "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 34
  },
  "generatedBy": "kbd-runtime",
  "root": {
@@ -227,10 +227,10 @@
      {
       "id": "v3-docs-examples-integrations",
       "progress": {
-       "done": 0,
-       "total": 0
+       "done": 6,
+       "total": 6
       },
-      "status": "PENDING",
+      "status": "COMPLETE",
       "type": "change"
      },
      {
@@ -272,7 +272,7 @@
     ],
     "id": "full-3.0-release",
     "progress": {
-     "done": 23,
+     "done": 24,
      "total": 28
     },
     "status": "PENDING",
@@ -568,13 +568,13 @@
   ],
   "id": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
   "progress": {
-   "done": 34,
+   "done": 35,
    "total": 53
   },
   "status": "running",
   "type": "phase"
  },
  "schemaVersion": "1",
- "sourceRevision": 33,
- "updatedAt": "2026-08-22T13:40:00Z"
+ "sourceRevision": 34,
+ "updatedAt": "2026-08-22T15:20:00Z"
 }

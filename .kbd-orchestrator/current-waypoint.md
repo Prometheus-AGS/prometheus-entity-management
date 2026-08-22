@@ -3,9 +3,9 @@
 **Active phase:** `full-3.0-release`
 **Status:** `executing`
 **Backend:** OpenSpec
-**Implementation progress:** 23 of 28 changes
+**Implementation progress:** 24 of 28 changes
 **Current round:** Round 6 (next dependency-ready change)
-**Updated:** 2026-08-22T13:40:00Z
+**Updated:** 2026-08-22T15:20:00Z
 
 ## Execution
 
@@ -13,15 +13,15 @@ The reviewed 28-change plan is dispatched through OpenSpec and the KBD-aware `/k
 
 ## Next pending change
 
-`v3-docs-examples-integrations`
+`v3-docs-operations-migration`
 
 ## Exact next command
 
 ```text
-/kbd-apply v3-docs-examples-integrations
+/kbd-apply v3-docs-operations-migration
 ```
 
-The concepts/packages docs change is certified and archived (2026-08-22): 27 hand-authored guide pages (quickstart, 13 concepts, 8 bindings, 5 practices) under `site/docs/guides/`, wired into a new `guidesSidebar` + "Guides" navbar section, with `site/capability-map.json` mapping 26 stable capabilities to concept/API/example routes. The snippet harness (`scripts/verify-skills-snippets.mjs`) is parameterized (`--root/--ext/--skip/--all-packages`) and now packs all 12 npm packages with `pnpm.overrides` pinning internal deps to tarballs — 40 guide snippets compile in the packed consumer. The release test (8/8) enforces the content contract (title/description, sidebar reachability, capability-map routes, data-flow language gate, registry-only installs). Gates: verifier 4/4 lanes (snippet-compile, release-gate, static-build, guide-routes), BDD 3/13, typecheck 23/23, validate errors [], foundation + api-reference regressions green, skills default lane unchanged (19/15). The evidence loop fixed ten authoring defects (wrong hook fields, async renderFragment, readRelations arity, Solid JSX pragma, Alpine typing, packed-consumer overrides). Next: example and integration docs (`v3-docs-examples-integrations`). `v3-release-certification` and `v3-stable-publication` remain human-gated and are the hand-off boundary.
+The examples/integrations docs change is certified and archived (2026-08-22): 5 tutorials (`site/docs/examples/`: vite-react19, nextjs-app-router, agentic-a2ui, flutter-riverpod, tauri-universal) with an enforced section contract and feature matrices validated against `examples/shared/scenario-contract.json`, plus 6 integration guides (`site/docs/integrations/`: websocket, supabase, graphql, pglite-loro, a2a-a2ui, flint) each carrying the demo-mode/live-credentials split. `examplesSidebar` gains Tutorials + Integrations categories; the release test (10/10) enforces the content contract (tutorial sections, scenario IDs, example dir reachability, demo/live markers, alt text, CI gate references). The snippet lane compiles 45 fences from 27 docs; `@supabase/supabase-js` joined the consumer deps and two harness-caught defects were fixed (Supabase client boundary cast, GQLSubscriptionConfig shape drift). Gates: verifier 4/4 lanes, BDD 3/13, typecheck 23/23, validate errors [], concepts + foundation + api-reference regressions green. Next: operations and migration docs (`v3-docs-operations-migration`). `v3-release-certification` and `v3-stable-publication` remain human-gated and are the hand-off boundary.
 
 ## Operator follow-up
 

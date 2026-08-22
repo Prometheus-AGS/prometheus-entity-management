@@ -374,3 +374,34 @@
   Cursor advanced to `v3-docs-examples-integrations` (23/28).
 - Hand-off boundary respected: `v3-release-certification` and
   `v3-stable-publication` untouched.
+
+## 2026-08-22 — v3-docs-examples-integrations certified (24/28)
+
+- 5 tutorials (`site/docs/examples/`: vite-react19, nextjs-app-router,
+  agentic-a2ui, flutter-riverpod, tauri-universal) with an enforced section
+  contract (Architecture / Setup / Feature scenarios / Test commands /
+  Deployment / Troubleshooting) and feature matrices validated against
+  `examples/shared/scenario-contract.json`; 6 integration guides
+  (`site/docs/integrations/`: websocket, supabase, graphql, pglite-loro,
+  a2a-a2ui, flint) each with the demo-mode/live-credentials split. Supabase
+  guide: anon-key-only + RLS as the boundary. Flint: fixture-backed default
+  CI, env-gated live lane.
+- `examplesSidebar` gains Tutorials + Integrations categories; the release
+  test (10/10) enforces the content contract — tutorial sections, scenario
+  IDs, example-dir reachability/runnability, demo/live markers, alt-text
+  scan, CI gate references.
+- Snippet lane: 45 ts/tsx fences across 27 docs compile in the packed
+  12-package consumer; added `@supabase/supabase-js` to consumer deps. Two
+  harness-caught defects fixed: Supabase client boundary cast (real client
+  API broader than the adapter's minimal structural type) and
+  `GQLSubscriptionConfig` shape drift (`{ type, document, getPayload }`, not
+  `{ query }`).
+- Gates: verify:docs-examples 4/4 lanes (snippet-compile, release-gate,
+  static-build, example-routes), release test 10/10, BDD 3/13, regressions
+  docs-concepts 8/8 + foundation 10/10 + api-reference 10/10, typecheck
+  23/23, validate errors [], eslint clean, openspec strict valid.
+- Archived as `2026-08-22-v3-docs-examples-integrations`; evidence in
+  `.kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-examples-integrations/`.
+  Cursor advanced to `v3-docs-operations-migration` (25/28).
+- Hand-off boundary respected: `v3-release-certification` and
+  `v3-stable-publication` untouched.

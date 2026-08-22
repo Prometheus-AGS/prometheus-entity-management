@@ -72,6 +72,7 @@ const CONSUMER_DEPS = {
         alpinejs: "^3.13.0",
         "@types/alpinejs": "^3.13.0",
         lit: "^3.0.0",
+        "@supabase/supabase-js": "^2.0.0",
         "@tauri-apps/api": "^2.0.0",
         "@tauri-apps/plugin-sql": "^2.0.0",
       }

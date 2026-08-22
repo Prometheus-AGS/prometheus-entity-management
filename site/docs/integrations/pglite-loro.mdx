@@ -1,0 +1,70 @@
+---
+title: "Integration: PGlite + Loro"
+description: Local-first persistence and CRDT convergence — PGlite snapshots for reload, Loro documents for multi-client offline merge.
+---
+
+# Integration: PGlite + Loro
+
+The local-first stack has two composable halves: **PGlite persistence**
+(in-browser Postgres snapshots of the graph) and **Loro CRDT sync**
+(multi-client convergence). The vite example's offline scenario
+(`example.offline.persistence-convergence`) exercises both.
+
+## Setup
+
+```bash
+pnpm add @prometheus-ags/entity-graph-core @prometheus-ags/entity-graph-sync
+```
+
+## Persistence
+
+The PGlite adapter persists graph snapshots and restores them at bootstrap;
+restored entities are immediately stale-checked like any other cached data —
+the normal SWR flow revalidates over them. See
+[Sync and persistence](/docs/guides/concepts/sync-and-persistence) for the
+restore/persist/revalidate pattern.
+
+## Convergence
+
+Each entity type maps to one Loro document; the WebSocket channel reconnects
+losslessly (offline writes flush on reconnect, peers answer sync requests):
+
+```ts
+import {
+  createLoroProvider,
+  createWebSocketLoroChannel,
+  registerSyncProvider,
+} from "@prometheus-ags/entity-graph-sync";
+
+const channel = createWebSocketLoroChannel("ws://localhost:8080");
+const provider = createLoroProvider({
+  channel,
+  peerId: 1,
+  loadLoro: () => import("loro-crdt"), // lazy: keeps the base bundle lean
+});
+
+registerSyncProvider({ entityTypes: ["task", "project"], provider });
+```
+
+The certified convergence evidence is real: two isolated Loro clients,
+deterministic conflict behavior, actual WebSocket termination/reconnect, and
+a PGlite close/reopen cycle (`release.sync.persistence-convergence`).
+
+## Deterministic demo mode vs. live credentials
+
+- **Demo:** the Loro loopback network and an in-process PGlite instance are
+  keyless and CI-safe; the showcase drives both without any service.
+- **Live:** the WebSocket relay is transport-only by design — terminate it at
+  your own infrastructure with connect-time authentication. CRDT merges are
+  not authorization: run sync only over authenticated channels, and treat
+  PGlite snapshots as plaintext at rest on the device.
+
+## Troubleshooting
+
+- **Convergence stalls after reconnect:** the channel flushes its cached
+  snapshot on open; if you replace the channel, re-register the provider.
+- **Bundle bloat:** keep the `loadLoro` lazy import — a static `loro-crdt`
+  import defeats code-splitting.
+- **Restored rows never refresh:** restored entities carry their persisted
+  `lastFetched`; if you hand-write snapshots, stamp realistic timestamps or
+  mark the type stale.
