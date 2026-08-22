@@ -89,3 +89,10 @@
   list membership. Project rendered items through `useStore` and the cached
   `readEntitySnapshot` identities so both membership and row-content changes
   remain reactive.
+
+## Corepack package-manager integrity needs a fresh-cache control
+
+- A cached pnpm binary can make `corepack pnpm` appear healthy even when the
+  `packageManager` SHA-512 suffix is wrong. Certification must resolve the pin
+  with a fresh `COREPACK_HOME`; GitHub's clean runner rejected the stale digest
+  before any package build could start.

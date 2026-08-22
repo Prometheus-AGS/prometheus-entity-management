@@ -7,7 +7,7 @@
 
 - [x] 2.1 Subscribe both item projections to cached entity snapshots and verify package typecheck, scoped ESLint, and the focused 2-test suite pass
 - [x] 2.2 Run the full React package test, build, and `prepublishOnly` gates; verify 58 tests and the 203-export ledger pass
-- [x] 2.3 Add a patch Changeset and verify `pnpm changeset status` retains the coordinated fixed npm version group
+- [x] 2.3 Add a patch Changeset, consume it through prerelease versioning after downstream verification, and verify the coordinated fixed npm group is `3.0.0-rc.2`
 
 ## 3. Review and Delivery
 
