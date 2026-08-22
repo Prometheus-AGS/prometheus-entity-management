@@ -745,7 +745,7 @@
         }
       ],
       "releaseEvidence": [
-        { "kind": "integration", "status": "partial", "ownerChange": "v3-skills-ecosystem", "applicability": "Existing SDL and CLI tests are present; complete packed snippet/codegen ledgers remain downstream." }
+        { "kind": "integration", "status": "implemented", "ownerChange": "v3-skills-ecosystem", "command": "pnpm run verify:skills-ecosystem", "paths": ["prometheus-entity-skills/_shared/references/sdl-library-exports.json", "prometheus-entity-skills/_shared/references/sdl-and-rust-tooling.md", "prometheus-entity-skills/_shared/references/ecosystem-claims.json", "scripts/verify-skills-snippets.mjs", ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-skills-ecosystem/verification.json"], "applicability": "SDL export ledger validates against the built package; Rust CLI/MCP cargo test lanes pass; every public skill snippet compiles against packed tarballs; all binding/integration claims map to existing evidence. Generated-artifact codegen round-trips beyond the SDL structural contract remain within the existing CLI test scope." }
       ]
     },
     {

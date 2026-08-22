@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-skills-ecosystem",
+  "generatedAt": "2026-08-22T09:04:29.081Z",
+  "evidenceBoundary": {
+    "kind": "packed-consumer",
+    "countsAsPackedPackageEvidence": true,
+    "note": "Snippet lane compiles against packed tarballs in a temp consumer; ledger lane verifies built dists."
+  },
+  "commands": [
+    {
+      "label": "export-ledgers",
+      "command": "pnpm run verify:skills",
+      "exitCode": 0
+    },
+    {
+      "label": "snippet-compile",
+      "command": "node scripts/verify-skills-snippets.mjs",
+      "exitCode": 0
+    },
+    {
+      "label": "release-gate",
+      "command": "node --test tests/release/v3-skills-ecosystem.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "label": "rust-cli-tests",
+      "command": "cargo test --manifest-path packages/entity-graph-cli/Cargo.toml",
+      "exitCode": 0
+    },
+    {
+      "label": "rust-mcp-tests",
+      "command": "cargo test --manifest-path packages/entity-graph-mcp/Cargo.toml",
+      "exitCode": 0
+    }
+  ],
+  "lanes": {
+    "exportLedgers": "pass",
+    "snippetCompile": "pass",
+    "releaseGate": "pass",
+    "rustTooling": "pass"
+  },
+  "limits": {
+    "rustTooling": "cargo test lanes prove the CLI/MCP crates build and pass unit tests; they are not published-crate evidence.",
+    "externalMarketplace": "The official agentskills.io validator (skills-ref) is not vendored; leaf-skill packaging validation remains a manual step before external marketplace submission."
+  },
+  "result": "pass"
+}

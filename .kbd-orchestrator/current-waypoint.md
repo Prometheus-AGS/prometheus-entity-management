@@ -3,9 +3,9 @@
 **Active phase:** `full-3.0-release`
 **Status:** `executing`
 **Backend:** OpenSpec
-**Implementation progress:** 19 of 28 changes
-**Current round:** Round 5 (next dependency-ready change)
-**Updated:** 2026-08-21T10:45:00Z
+**Implementation progress:** 20 of 28 changes
+**Current round:** Round 6 (next dependency-ready change)
+**Updated:** 2026-08-22T03:55:00Z
 
 ## Execution
 
@@ -13,15 +13,15 @@ The reviewed 28-change plan is dispatched through OpenSpec and the KBD-aware `/k
 
 ## Next pending change
 
-`v3-skills-ecosystem`
+`v3-docs-foundation-brand`
 
 ## Exact next command
 
 ```text
-/kbd-apply v3-skills-ecosystem
+/kbd-apply v3-docs-foundation-brand
 ```
 
-The Flint portable contracts change is certified and archived (2026-08-21): default CI now runs the watch/mutate wire contract against a checked fixture with zero machine-specific paths and no silent skips; the live SDK lane is env-gated (`FLINT_EM_MODULE`/`FLINT_SDK_MODULE`) and verified fail-closed when unavailable; seam security (tenant/channel propagation, per-channel+consumer checkpoint key separation, fail-closed decode) is pinned by tests; and the flint-gate/flint-forge issuer/tenant/kid/JWKS/role/key-separation contract plus Forge provisioning, RLS, audit, restart, and strict-JWK caveat are pinned as a checked claims fixture + `docs/flint-integration.md` with release-gate consistency and examples secret scans. Gates: verifier 4/4 lanes, core suite 182+1 todo, release test 6/6, BDD 3/15, typecheck 23/23, validate + coverage errors []. Next: update skills to the complete 3.0 package and framework surface (`v3-skills-ecosystem`). `v3-release-certification` and `v3-stable-publication` remain human-gated and are the hand-off boundary.
+The skills ecosystem change is certified and archived (2026-08-22): the bundle index now maps all twelve public npm packages plus Dart and the Rust CLI/MCP crates with a package-selection table; new registry-driven export ledgers validate every npm package (`verify:skills` = 12 npm + Dart); all 19 public snippets compile against packed tarballs in a temp consumer (`verify:skills-snippets`); every referenced path exists; and all 18 binding/integration claims are backed by consumer fixtures or examples via `ecosystem-claims.json`. The evidence loop fixed a wholesale stale v2 API in the Surreal live-query skill and a data-flow language violation in the Prisma plugin. Gates: verifier 4/4 lanes (incl. Rust cargo tests), release test 7/7, BDD 3/12, typecheck 23/23, validate + coverage errors []. Next: establish the Prometheus-branded Docusaurus information architecture (`v3-docs-foundation-brand`). `v3-release-certification` and `v3-stable-publication` remain human-gated and are the hand-off boundary.
 
 ## Operator follow-up
 

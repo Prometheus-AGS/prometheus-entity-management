@@ -234,3 +234,35 @@
   Cursor advanced to `v3-skills-ecosystem` (19/28).
 - Hand-off boundary respected: `v3-release-certification` and
   `v3-stable-publication` untouched.
+
+
+## 2026-08-22 — v3-skills-ecosystem certified (20/28)
+
+- SKILLS.md rewritten as the 3.0 ecosystem map: package-selection table for
+  all 12 public npm packages + Dart + Rust CLI/MCP crates; React v2→v3
+  migration pointed at release/framework-neutral-core.md + entity-graph-migrate.
+- New registry-driven export ledgers for core/svelte/solid/alpine/htmx/
+  web-components/sdl (`scripts/skills-package-registry.mjs`; `--pkg <id>` with
+  legacy flags kept); per-package refresh:exports/verify:skills; root chains
+  extended — `verify:skills` now validates 12 npm + Dart ledgers.
+- New references: package-selection.md, framework-bindings.md,
+  sdl-and-rust-tooling.md, examples-gallery.md, ecosystem-claims.json (18
+  claims → evidence paths + gates, enforced by release test).
+- New snippet harness `scripts/verify-skills-snippets.mjs`: extracts all 19
+  public ts/tsx fences from the pack, compiles them in a temp consumer against
+  PACKED tarballs (packed-consumer evidence) — green.
+- Major doc/API drift fixed: entity-realtime-surreal-live taught a stale v2
+  API (registerAdapter gone, db→surreal, checkpointResume→checkpointStore+
+  checkpointField, where/normalize dropped from SurrealTableConfig); snippets
+  + prose rewritten to the real contract. 14 non-compiling snippet fragments
+  made self-contained. Prisma CLAUDE.md data-flow arrow fixed (fetch lives in
+  stores/engine fetchers, not hooks).
+- Gates: verify:skills-ecosystem 4/4 lanes (ledgers, snippets, release gate,
+  cargo tests for CLI+MCP), release test 7/7, BDD 3/12, typecheck 23/23,
+  validate + example-coverage errors [], eslint clean, openspec strict valid,
+  flint release-gate regression 6/6.
+- Archived as `2026-08-22-v3-skills-ecosystem`; evidence in
+  `.kbd-orchestrator/phases/full-3.0-release/evidence/v3-skills-ecosystem/`.
+  Cursor advanced to `v3-docs-foundation-brand` (20/28).
+- Hand-off boundary respected: `v3-release-certification` and
+  `v3-stable-publication` untouched.
