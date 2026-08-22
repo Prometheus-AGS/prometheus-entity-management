@@ -266,3 +266,40 @@
   Cursor advanced to `v3-docs-foundation-brand` (20/28).
 - Hand-off boundary respected: `v3-release-certification` and
   `v3-stable-publication` untouched.
+
+## 2026-08-22 — v3-docs-foundation-brand certified (21/28)
+
+- Private Docusaurus 3.10.2 docs workspace established at `site/`
+  (`@prometheus-ags/entity-graph-docs-site`, private, added to
+  pnpm-workspace.yaml). All @docusaurus/* packages pinned to exactly 3.10.2
+  (donor: sibling skill-pack site pattern, registry-verified).
+- Prometheus brand: new in-repo ember mark (light/dark SVG), favicon, and
+  1200×630 social card generated with Pillow; provenance + accessible
+  alternatives documented in docs/branding/ASSETS.md. KnowMe donor mark NOT
+  reused (product-specific). Token set renamed to --prometheus-* namespace.
+- IA: product/packages/examples sidebars, responsive landing page, local
+  search (@easyops-cn/docusaurus-search-local 0.55.2), Mermaid, SEO/social
+  metadata, canonical editUrl into this repo. Content contract (title +
+  description front matter, no orphans, evidence-gate citations) in
+  site/README.md, enforced by release test.
+- Isolation gate: verifier + release test scan all publishable manifests for
+  10 site-only deps; zero leaks. React 18.0.0 confined to site; publishable
+  React 19 peer ranges untouched. Root pnpm.overrides gained
+  serialize-javascript 7.0.7 / uuid 11.1.1 (donor advisory pins for the new
+  Docusaurus dep tree; no direct workspace consumers).
+- Defects fixed in-loop: prism-svelte grammar missing from
+  prism-react-renderer 2.3.0 (dropped from additionalLanguages); clsx false
+  positive in isolation scan (legit pre-existing dep of entity-graph-react —
+  excluded from site-only set); isolation walker descending into
+  node_modules; social card text overflow (type scale reduced).
+- Gates: verify:docs-foundation 4/4 lanes (config-integrity,
+  dependency-isolation, brand-assets, static-build asserting 404/sitemap/
+  search-index/social-card/all section routes), release test 10/10, BDD
+  3 scenarios/13 steps, typecheck 23/23, validate errors [], eslint clean,
+  openspec strict valid.
+- Archived as `2026-08-22-v3-docs-foundation-brand`; evidence in
+  `.kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-foundation-brand/`.
+  Cursor advanced to `v3-docs-api-reference` (21/28).
+- Hand-off boundary respected: `v3-release-certification` and
+  `v3-stable-publication` untouched; coverage.json documentationSite row
+  remains owned by v3-docs-github-pages.

@@ -85,6 +85,11 @@
     "verify:flint-contracts": "node scripts/verify-flint-portable-contracts.mjs --report .kbd-orchestrator/phases/full-3.0-release/evidence/v3-flint-portable-contracts/verification.json",
     "verify:skills-snippets": "node scripts/verify-skills-snippets.mjs --report .kbd-orchestrator/phases/full-3.0-release/evidence/v3-skills-ecosystem/snippets.json",
     "verify:skills-ecosystem": "node scripts/verify-skills-ecosystem.mjs --report .kbd-orchestrator/phases/full-3.0-release/evidence/v3-skills-ecosystem/verification.json",
+    "docs:start": "pnpm --filter @prometheus-ags/entity-graph-docs-site start",
+    "docs:build": "pnpm --filter @prometheus-ags/entity-graph-docs-site build",
+    "verify:docs-foundation": "node scripts/verify-docs-foundation.mjs --report .kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-foundation-brand/verification.json",
+    "test:v3-docs-foundation-brand": "node --test tests/release/v3-docs-foundation-brand.test.mjs",
+    "bdd:docs-foundation": "node --import tsx ./node_modules/@cucumber/cucumber/bin/cucumber.js --config cucumber.mjs --tags '@v3-docs-foundation-brand'",
     "dev:tauri": "pnpm --filter prometheus-entity-management-tauri dev",
     "release:rc:plan": "node scripts/release-candidate.mjs plan",
     "release:rc:rehearse": "node scripts/release-candidate.mjs rehearse",
@@ -153,7 +158,9 @@
   "pnpm": {
     "overrides": {
       "postcss": "8.5.25",
-      "sharp": "0.35.0"
+      "sharp": "0.35.0",
+      "serialize-javascript": "7.0.7",
+      "uuid": "11.1.1"
     }
   },
   "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a304c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319"

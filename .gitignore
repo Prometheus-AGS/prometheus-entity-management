@@ -86,3 +86,6 @@ build/
 **/build/
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# ── Docusaurus ─────────────────────────────────────────────────────────────
+.docusaurus/
