@@ -1,5 +1,24 @@
 # @prometheus-ags/prometheus-entity-management
 
+## 3.0.0
+
+### Patch Changes
+
+- 30fc348: Certify the React 19 and Vite 8 release showcase with normalized cross-view
+  updates, local/remote/hybrid queries, optimistic confirmation and rollback,
+  relationship invalidation, realtime coalescing, PGlite persistence, Loro
+  convergence, Suspense and error-boundary lifecycle behavior, DevTools, and
+  browser accessibility evidence.
+- 30fc348: Require applications to supply one compatible entity-graph core instance across every stable framework binding, and verify the installed singleton through packed consumers.
+- df8f13d: Keep `useEntityView` and `useEntityQuery` item projections reactive when an
+  existing normalized entity changes without changing the view's ID list.
+- 7b64d76: Scope engine dedupe, subscribers, fetches, React hooks, mutations, and realtime
+  writes to an application-owned graph so concurrent Next.js requests can
+  dehydrate and hydrate without sharing process-global entity state.
+- Updated dependencies [30fc348]
+- Updated dependencies [7b64d76]
+  - @prometheus-ags/entity-graph-core@3.0.0
+
 ## 3.0.0-rc.1
 
 ### Patch Changes

@@ -4,8 +4,8 @@
   "fingerprint": "d81d33619e4fd2f3b44e8f70f25ba56cf1b2e9f2ac34a9e421550dad5cf1fd00",
   "apiInputFileCount": 58,
   "apiInputAggregateSha256": "456fcd5126f5f35f5d9852ef029c896de818fe86458de18182d69121d38799bd",
-  "artifactFileCount": 1067,
-  "artifactAggregateSha256": "f58367b69047765f153b35089c68939884aad1db05cc9d9db1d3bc8154a3063d",
+  "artifactFileCount": 1068,
+  "artifactAggregateSha256": "09861bf10368b0e574b9dbe5c854e8ebb0562377b181c7e1a1c8310fe6568947",
   "packages": [
     {
       "name": "@prometheus-ags/a2ui-react",
