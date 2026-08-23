@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "change": "v3-agentic-a2ui-example",
-  "recordedAt": "2026-08-23T10:00:55.073Z",
+  "recordedAt": "2026-08-23T12:00:28.679Z",
   "status": "pass",
   "evidenceBoundary": {
     "kind": "source-workspace-production-browser",
@@ -21,57 +21,57 @@
     {
       "label": "agentic-typecheck",
       "command": "pnpm --filter prometheus-entity-management-agentic-a2ui typecheck",
-      "startedAt": "2026-08-23T10:00:30.175Z",
-      "completedAt": "2026-08-23T10:00:31.381Z",
+      "startedAt": "2026-08-23T12:00:07.831Z",
+      "completedAt": "2026-08-23T12:00:08.855Z",
       "exitCode": 0
     },
     {
       "label": "golden-protocol-replay",
       "command": "pnpm --filter prometheus-entity-management-agentic-a2ui run test:golden",
-      "startedAt": "2026-08-23T10:00:31.381Z",
-      "completedAt": "2026-08-23T10:00:32.273Z",
+      "startedAt": "2026-08-23T12:00:08.855Z",
+      "completedAt": "2026-08-23T12:00:09.613Z",
       "exitCode": 0
     },
     {
       "label": "core-package-build",
       "command": "pnpm --filter @prometheus-ags/entity-graph-core build",
-      "startedAt": "2026-08-23T10:00:32.273Z",
-      "completedAt": "2026-08-23T10:00:35.146Z",
+      "startedAt": "2026-08-23T12:00:09.613Z",
+      "completedAt": "2026-08-23T12:00:11.400Z",
       "exitCode": 0
     },
     {
       "label": "react-package-build",
       "command": "pnpm --filter @prometheus-ags/prometheus-entity-management build",
-      "startedAt": "2026-08-23T10:00:35.146Z",
-      "completedAt": "2026-08-23T10:00:39.552Z",
+      "startedAt": "2026-08-23T12:00:11.400Z",
+      "completedAt": "2026-08-23T12:00:14.329Z",
       "exitCode": 0
     },
     {
       "label": "a2ui-package-build",
       "command": "pnpm --filter @prometheus-ags/a2ui-react build",
-      "startedAt": "2026-08-23T10:00:39.552Z",
-      "completedAt": "2026-08-23T10:00:42.587Z",
+      "startedAt": "2026-08-23T12:00:14.329Z",
+      "completedAt": "2026-08-23T12:00:16.749Z",
       "exitCode": 0
     },
     {
       "label": "a2a-package-build",
       "command": "pnpm --filter @prometheus-ags/entity-graph-a2a build",
-      "startedAt": "2026-08-23T10:00:42.587Z",
-      "completedAt": "2026-08-23T10:00:44.348Z",
+      "startedAt": "2026-08-23T12:00:16.749Z",
+      "completedAt": "2026-08-23T12:00:18.294Z",
       "exitCode": 0
     },
     {
       "label": "agentic-production-build",
       "command": "pnpm --filter prometheus-entity-management-agentic-a2ui build",
-      "startedAt": "2026-08-23T10:00:44.348Z",
-      "completedAt": "2026-08-23T10:00:45.954Z",
+      "startedAt": "2026-08-23T12:00:18.294Z",
+      "completedAt": "2026-08-23T12:00:19.801Z",
       "exitCode": 0
     },
     {
       "label": "agentic-production-browser",
       "command": "pnpm exec playwright test --config tests/browser/v3-agentic-a2ui-example.playwright.config.ts",
-      "startedAt": "2026-08-23T10:00:45.954Z",
-      "completedAt": "2026-08-23T10:00:55.071Z",
+      "startedAt": "2026-08-23T12:00:19.801Z",
+      "completedAt": "2026-08-23T12:00:28.676Z",
       "exitCode": 0
     }
   ],
@@ -191,19 +191,19 @@
     },
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/playwright-artifacts/v3-agentic-a2ui-example-A2-cd1cf-s-cross-the-policy-boundary-chromium-desktop/trace.zip",
-      "sha256": "6a0abb18423a3f847a359559bc546a7923c99935966da5f7356e68e45ffbbdf7"
+      "sha256": "a0730f190a113e91ee6d9f29381501fc3bc87b2c34d23e2552eb649fb22f7ad4"
     },
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/playwright-artifacts/v3-agentic-a2ui-example-de-219ba--protocol-flows-are-visible-chromium-desktop/trace.zip",
-      "sha256": "de45b45ecaca682f89632444bbaadcc64c9e63836ed7bc25439636dc65b357d0"
+      "sha256": "79b85bb55fb8c7364c1dc46fd231c04377fa1c80d5c71bb4f3f8f4f8b7f5ef5c"
     },
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/playwright-artifacts/v3-agentic-a2ui-example-ha-8531a-tates-every-normalized-view-chromium-desktop/trace.zip",
-      "sha256": "05b7ea5cddc90abaad3044ca3c877d1ad6c2550d1c8a870b468610c5cae9b8bc"
+      "sha256": "56a4be73ac0eee0bd98d3e814193eb2d2195f6967fcf69d1f9776da4d50a1af3"
     },
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/playwright-artifacts/v3-agentic-a2ui-example-te-fe858-me-coalescing-and-lifecycle-chromium-desktop/trace.zip",
-      "sha256": "44645c30c35672f113e29f06073d621763add52914563fcb61557891af55a5c5"
+      "sha256": "72cc8dfe70891ffda0624cb5af49335d1bddb02f2a3c76c20a26ed8250dbf899"
     },
     {
       "path": "examples/agentic-a2ui/tests/golden/cancelled.json",

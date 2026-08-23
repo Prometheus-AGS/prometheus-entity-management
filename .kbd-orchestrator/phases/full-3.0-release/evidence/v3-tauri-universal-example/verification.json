@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1",
   "change": "v3-tauri-universal-example",
-  "recordedAt": "2026-08-23T10:05:30.923Z",
+  "recordedAt": "2026-08-23T12:09:19.152Z",
   "result": "pass",
   "evidenceBoundary": {
     "kind": "source-workspace",
@@ -12,36 +12,36 @@
     {
       "label": "typecheck",
       "command": "pnpm --filter prometheus-entity-management-tauri run typecheck",
-      "startedAt": "2026-08-23T10:02:40.658Z",
-      "completedAt": "2026-08-23T10:02:41.816Z",
+      "startedAt": "2026-08-23T12:09:08.635Z",
+      "completedAt": "2026-08-23T12:09:09.484Z",
       "exitCode": 0
     },
     {
       "label": "bridge-contract-tests",
       "command": "pnpm --filter prometheus-entity-management-tauri run test",
-      "startedAt": "2026-08-23T10:02:41.816Z",
-      "completedAt": "2026-08-23T10:02:42.253Z",
+      "startedAt": "2026-08-23T12:09:09.484Z",
+      "completedAt": "2026-08-23T12:09:09.862Z",
       "exitCode": 0
     },
     {
       "label": "vite-production-build",
       "command": "pnpm --filter prometheus-entity-management-tauri run build",
-      "startedAt": "2026-08-23T10:02:42.253Z",
-      "completedAt": "2026-08-23T10:02:43.605Z",
+      "startedAt": "2026-08-23T12:09:09.862Z",
+      "completedAt": "2026-08-23T12:09:11.156Z",
       "exitCode": 0
     },
     {
       "label": "rust-command-e2e",
       "command": "cargo test --lib",
-      "startedAt": "2026-08-23T10:02:43.605Z",
-      "completedAt": "2026-08-23T10:05:25.886Z",
+      "startedAt": "2026-08-23T12:09:11.156Z",
+      "completedAt": "2026-08-23T12:09:14.160Z",
       "exitCode": 0
     },
     {
       "label": "browser-viewport-scenarios",
       "command": "npx playwright test --config tests/browser/v3-tauri-universal-example.playwright.config.ts",
-      "startedAt": "2026-08-23T10:05:25.887Z",
-      "completedAt": "2026-08-23T10:05:30.739Z",
+      "startedAt": "2026-08-23T12:09:14.160Z",
+      "completedAt": "2026-08-23T12:09:18.968Z",
       "exitCode": 0
     }
   ],

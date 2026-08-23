@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
-import { join, relative } from "node:path";
+import { join, relative, sep } from "node:path";
 import process from "node:process";
 
 import { Given, Then } from "@cucumber/cucumber";
@@ -92,7 +92,10 @@ Then("no workspace dependency resolves through an external sibling link", functi
 });
 
 Then("the Next.js and Vite examples resolve only repository-owned source and packages", function () {
-  const sourceFiles = collectFiles(join(root, "examples")).filter((path) => /\.(?:css|json|ts|tsx)$/.test(path));
+  const sourceFiles = collectFiles(join(root, "examples"))
+    .filter((path) => !path.includes(`${sep}.dart_tool${sep}`))
+    .filter((path) => !path.includes(`${sep}build${sep}`))
+    .filter((path) => /\.(?:css|json|ts|tsx)$/.test(path));
   for (const path of sourceFiles) {
     const source = readFileSync(path, "utf8");
     assert.doesNotMatch(source, /\/Users\/|@prometheus-ags\/entity-sync-|entity-sync-pglite/, relative(root, path));

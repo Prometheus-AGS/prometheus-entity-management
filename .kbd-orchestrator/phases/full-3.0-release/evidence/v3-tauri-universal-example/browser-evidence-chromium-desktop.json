@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "change": "v3-tauri-universal-example",
   "project": "chromium-desktop",
-  "recordedAt": "2026-08-23T10:05:29.168Z",
+  "recordedAt": "2026-08-23T12:09:17.332Z",
   "status": "pass",
   "evidenceKind": "source-workspace-production-browser",
   "countsAsPackedPackageEvidence": false,

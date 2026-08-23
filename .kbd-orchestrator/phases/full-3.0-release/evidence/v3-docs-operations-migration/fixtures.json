@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-23T09:42:03.381Z",
+  "generatedAt": "2026-08-23T12:04:55.534Z",
   "docsRoot": "tests/release/fixtures/upgrade",
   "evidenceBoundary": {
     "kind": "packed-consumer",

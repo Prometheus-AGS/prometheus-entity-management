@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "change": "v3-docs-github-pages",
-  "generatedAt": "2026-08-23T09:43:53.821Z",
+  "generatedAt": "2026-08-23T12:04:04.540Z",
   "basePath": "/prometheus-entity-management/",
   "probeRoutes": [
     "/prometheus-entity-management/",
@@ -109,7 +109,7 @@
     },
     "docs/migration/v2-to-v3/": {
       "scores": {
-        "performance": 0.8,
+        "performance": 0.81,
         "accessibility": 1,
         "best-practices": 1,
         "seo": 1,

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "change": "v3-nextjs-app-router-example",
-  "recordedAt": "2026-08-23T10:06:20.630Z",
+  "recordedAt": "2026-08-23T12:07:14.653Z",
   "status": "pass",
   "evidenceKind": "source-workspace-production-browser",
   "countsAsPackedPackageEvidence": false,
