@@ -651,7 +651,8 @@ export async function stageReleaseCandidate(manifest, candidates, adapters, { on
     registryMutation: attempts.length > 0 || staged.length > 0,
     staged: [...staged],
     attempts: attempts.map((attempt) => ({ ...attempt })),
-    latestUnchanged: status === "complete" ? true : null,
+    latestUnchanged:
+      status === "complete" ? manifest.release?.channel !== "stable" : null,
     protectedTags: { before: before ?? null, after: after ?? null },
     journal,
     ...(error ? { error: { name: error.name, message: error.message } } : {}),
@@ -750,7 +751,11 @@ export async function stageReleaseCandidate(manifest, candidates, adapters, { on
     }
 
     after = await adapters.snapshotTags(manifest);
-    assertProtectedTagsUnchanged(before, after);
+    if (manifest.release?.channel === "stable") {
+      assertStableTagsPromoted(before, after, manifest.release.candidateVersion);
+    } else {
+      assertProtectedTagsUnchanged(before, after);
+    }
     return await persist("complete");
   } catch (error) {
     const failure = error instanceof Error ? error : new Error(String(error));
@@ -904,7 +909,7 @@ export function createReleaseCommandAdapters({
 
   return {
     assertStageAuthority(manifest, authorityEnvironment = releaseEnvironment) {
-      return assertRcStageAuthority(manifest, authorityEnvironment);
+      return assertStageAuthorityForChannel(manifest, authorityEnvironment);
     },
 
     async snapshotTags(manifest) {
@@ -1007,7 +1012,7 @@ export function createReleaseCommandAdapters({
     },
 
     async stageNpm(artifact, candidate, manifest, authorityEnvironment = releaseEnvironment) {
-      assertRcStageAuthority(manifest, authorityEnvironment);
+      assertStageAuthorityForChannel(manifest, authorityEnvironment);
       const result = await runCommand(
         "npm",
         [
