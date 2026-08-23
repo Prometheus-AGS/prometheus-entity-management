@@ -205,7 +205,7 @@ function verifyWorkflow({ workflow, workflowSource, rootManifest }) {
   ]) {
     assert(job.environment === environment, `${environment} protected environment is required`);
     assert(job.permissions?.actions === "read", `${environment} needs read-only run access`);
-    assert(job.permissions?.contents === "read", `${environment} needs read-only release access`);
+    assert(job.permissions?.contents === "write", `${environment} needs draft-release asset access`);
     assert(job.permissions?.["id-token"] === "write", `${environment} OIDC permission is required`);
     assert(job.env?.PROMETHEUS_RELEASE_AUTHORITY === authority, `${authority} flag is required`);
     const nodeAction = findStep(job, ({ uses }) => /^actions\/setup-node@/.test(uses ?? ""));
