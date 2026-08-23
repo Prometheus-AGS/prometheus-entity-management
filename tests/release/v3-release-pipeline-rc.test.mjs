@@ -12,6 +12,9 @@ import { PUBLIC_PACKAGES } from "../../scripts/public-packages.mjs";
 
 const root = new URL("../..", import.meta.url);
 const execFileAsync = promisify(execFile);
+const RELEASE_VERSION = JSON.parse(
+  await readFile(new URL("../../release/v3-release-contract.json", import.meta.url), "utf8"),
+).release.version;
 
 test("dependency order is deterministic and publishes prerequisites first", async () => {
   const loaded = await import("../../scripts/release-candidate-pipeline.mjs").catch(
@@ -93,7 +96,7 @@ test("the checked-in stable state has exited Changesets prerelease mode", async 
   assert.equal(existsSync(new URL("../../.changeset/pre.json", import.meta.url)), false);
   for (const { directory } of PUBLIC_PACKAGES) {
     const manifest = JSON.parse(await readFile(new URL(`../../${directory}/package.json`, import.meta.url)));
-    assert.equal(manifest.version, "3.0.0");
+    assert.equal(manifest.version, RELEASE_VERSION);
   }
 });
 
@@ -161,7 +164,7 @@ test("the candidate manifest is contract-derived, non-mutating, and covers every
   assert.ok(
     npmArtifacts.every(
       ({ version, distTag, action }) =>
-        version === "3.0.0" && distTag === "latest" && action === "publish-stable",
+        version === RELEASE_VERSION && distTag === "latest" && action === "publish-stable",
     ),
   );
   assert.equal(
