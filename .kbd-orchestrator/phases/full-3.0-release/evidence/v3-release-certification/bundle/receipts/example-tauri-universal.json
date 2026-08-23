@@ -1,0 +1,13 @@
+{
+  "lane": "example-tauri-universal",
+  "category": "cargo-tauri",
+  "mandatory": true,
+  "command": "pnpm run verify:tauri-universal",
+  "sourceSha": "49b9d7030ba2b1f081aa100391d41114349fd186",
+  "startedAt": "2026-08-23T10:02:40.353Z",
+  "durationMs": 170594,
+  "exitCode": 0,
+  "logFile": "logs/example-tauri-universal.log",
+  "logSha256": "5b505fce2cd5337b06d70592916241d572c4234927131eb917b1532f3c7a193b",
+  "logBytes": 13622
+}

@@ -1,0 +1,13 @@
+{
+  "lane": "skills-ecosystem",
+  "category": "skills",
+  "mandatory": true,
+  "command": "pnpm run verify:skills-ecosystem",
+  "sourceSha": "49b9d7030ba2b1f081aa100391d41114349fd186",
+  "startedAt": "2026-08-23T09:58:17.566Z",
+  "durationMs": 75202,
+  "exitCode": 0,
+  "logFile": "logs/skills-ecosystem.log",
+  "logSha256": "3cc79952529b345e834cf980ace0293ead57d6b233cb0690c9cb18bc6f9cdd5b",
+  "logBytes": 15973
+}

@@ -1,0 +1,13 @@
+{
+  "lane": "example-coverage",
+  "category": "examples",
+  "mandatory": true,
+  "command": "pnpm run verify:example-coverage",
+  "sourceSha": "49b9d7030ba2b1f081aa100391d41114349fd186",
+  "startedAt": "2026-08-23T09:59:32.806Z",
+  "durationMs": 402,
+  "exitCode": 0,
+  "logFile": "logs/example-coverage.log",
+  "logSha256": "d8fe5ecb04b06a2f83203158dd902ebb429d0f12596e1cb811161edba4019d6f",
+  "logBytes": 5044
+}

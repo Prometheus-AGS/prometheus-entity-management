@@ -1,0 +1,13 @@
+{
+  "lane": "binding-singletons",
+  "category": "packed-consumers",
+  "mandatory": true,
+  "command": "pnpm run verify:binding-singletons",
+  "sourceSha": "60c6e21160f84ad3c2136ca3b26ccea5c6563b95",
+  "startedAt": "2026-08-23T09:45:42.042Z",
+  "durationMs": 7810,
+  "exitCode": 0,
+  "logFile": "logs/binding-singletons.log",
+  "logSha256": "e07cabf701471884e4d4516d70fbcc9e9c9955bef5a4cdb84f4bc48bf2bb9a6b",
+  "logBytes": 25316
+}

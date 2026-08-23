@@ -1,0 +1,13 @@
+{
+  "lane": "test",
+  "category": "tests",
+  "mandatory": true,
+  "command": "pnpm run ci:test",
+  "sourceSha": "f99492581b219a1f834d46bbfc408d86e632a2eb",
+  "startedAt": "2026-08-23T10:27:14.066Z",
+  "durationMs": 8049,
+  "exitCode": 1,
+  "logFile": "logs/test.log",
+  "logSha256": "44075c55a2fc29ae5ae52232ba2fc246f04fd1c8a0d27ce6141b25149da89976",
+  "logBytes": 58646
+}

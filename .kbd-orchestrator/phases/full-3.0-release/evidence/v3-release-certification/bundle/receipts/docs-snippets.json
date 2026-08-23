@@ -1,0 +1,13 @@
+{
+  "lane": "docs-snippets",
+  "category": "docs",
+  "mandatory": true,
+  "command": "pnpm run verify:docs-snippets",
+  "sourceSha": "60c6e21160f84ad3c2136ca3b26ccea5c6563b95",
+  "startedAt": "2026-08-23T09:39:26.476Z",
+  "durationMs": 18993,
+  "exitCode": 0,
+  "logFile": "logs/docs-snippets.log",
+  "logSha256": "e5f5cd6f1e9a4f2743e180a79c5b7f7a79094b413812783ee058e1434605ad7c",
+  "logBytes": 516
+}

@@ -1,0 +1,13 @@
+{
+  "lane": "package-contracts",
+  "category": "packed-consumers",
+  "mandatory": true,
+  "command": "pnpm run verify:package-contracts",
+  "sourceSha": "60c6e21160f84ad3c2136ca3b26ccea5c6563b95",
+  "startedAt": "2026-08-23T09:44:48.561Z",
+  "durationMs": 31068,
+  "exitCode": 0,
+  "logFile": "logs/package-contracts.log",
+  "logSha256": "3a6d40ff45ab540737333656d9bd5e0f36993ef7fb38d6b81096f922f8ba4fa1",
+  "logBytes": 49108
+}

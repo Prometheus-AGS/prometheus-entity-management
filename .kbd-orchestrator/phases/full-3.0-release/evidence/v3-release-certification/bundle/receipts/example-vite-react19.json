@@ -1,0 +1,13 @@
+{
+  "lane": "example-vite-react19",
+  "category": "examples",
+  "mandatory": true,
+  "command": "pnpm run verify:vite-react19",
+  "sourceSha": "49b9d7030ba2b1f081aa100391d41114349fd186",
+  "startedAt": "2026-08-23T09:59:43.535Z",
+  "durationMs": 46284,
+  "exitCode": 0,
+  "logFile": "logs/example-vite-react19.log",
+  "logSha256": "e17ad2632431de34051fea2f245dd62d36c1f35ad544e2b30e53775ee027ff0d",
+  "logBytes": 9863
+}

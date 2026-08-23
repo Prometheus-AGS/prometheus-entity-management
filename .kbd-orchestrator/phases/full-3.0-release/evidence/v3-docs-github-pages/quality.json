@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "change": "v3-docs-github-pages",
-  "generatedAt": "2026-08-23T08:49:20.206Z",
+  "generatedAt": "2026-08-23T09:43:53.821Z",
   "basePath": "/prometheus-entity-management/",
   "probeRoutes": [
     "/prometheus-entity-management/",
@@ -67,7 +67,7 @@
     },
     "docs/guides/quickstart-react/": {
       "scores": {
-        "performance": 0.81,
+        "performance": 0.86,
         "accessibility": 1,
         "best-practices": 1,
         "seo": 1,
@@ -109,7 +109,7 @@
     },
     "docs/migration/v2-to-v3/": {
       "scores": {
-        "performance": 0.81,
+        "performance": 0.8,
         "accessibility": 1,
         "best-practices": 1,
         "seo": 1,

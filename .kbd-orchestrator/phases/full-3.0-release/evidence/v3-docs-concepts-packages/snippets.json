@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-22T18:29:19.143Z",
+  "generatedAt": "2026-08-23T09:40:03.678Z",
   "docsRoot": "site/docs",
   "evidenceBoundary": {
     "kind": "packed-consumer",
     "countsAsPackedPackageEvidence": true
   },
   "snippets": {
-    "total": 40,
-    "sources": 22
+    "total": 53,
+    "sources": 30
   },
   "packages": [
     "@prometheus-ags/a2ui-react",

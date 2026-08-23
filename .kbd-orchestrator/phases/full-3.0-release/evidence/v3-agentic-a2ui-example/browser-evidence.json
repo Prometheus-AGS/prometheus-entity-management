@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "change": "v3-agentic-a2ui-example",
-  "recordedAt": "2026-08-20T21:06:54.196Z",
+  "recordedAt": "2026-08-23T10:00:54.975Z",
   "status": "pass",
   "evidenceKind": "source-workspace-production-browser",
   "countsAsPackedPackageEvidence": false,

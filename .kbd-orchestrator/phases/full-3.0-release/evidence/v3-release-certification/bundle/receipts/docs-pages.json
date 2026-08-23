@@ -1,0 +1,13 @@
+{
+  "lane": "docs-pages",
+  "category": "docs",
+  "mandatory": true,
+  "command": "pnpm run verify:docs-pages",
+  "sourceSha": "60c6e21160f84ad3c2136ca3b26ccea5c6563b95",
+  "startedAt": "2026-08-23T09:43:20.644Z",
+  "durationMs": 71005,
+  "exitCode": 0,
+  "logFile": "logs/docs-pages.log",
+  "logSha256": "3bc7ff90d95b0cd04eeb91bbe372470b78941b16f990687b36a845f5580e63e2",
+  "logBytes": 2418
+}

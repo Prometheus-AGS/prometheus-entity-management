@@ -1,0 +1,13 @@
+{
+  "lane": "flutter-source-provenance",
+  "category": "provenance",
+  "mandatory": true,
+  "command": "pnpm run verify:flutter-source-provenance",
+  "sourceSha": "920b75c1ecb98d996c1bba3144145dabf98bc4c3",
+  "startedAt": "2026-08-23T09:48:59.227Z",
+  "durationMs": 766,
+  "exitCode": 0,
+  "logFile": "logs/flutter-source-provenance.log",
+  "logSha256": "2556bf72f58e132bba159f00506f40f52a526bc9f9404e3c33adcfd115db0d4d",
+  "logBytes": 493
+}

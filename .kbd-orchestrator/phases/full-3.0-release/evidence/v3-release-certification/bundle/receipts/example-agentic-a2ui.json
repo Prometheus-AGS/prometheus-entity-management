@@ -1,0 +1,13 @@
+{
+  "lane": "example-agentic-a2ui",
+  "category": "examples",
+  "mandatory": true,
+  "command": "pnpm run verify:agentic-a2ui",
+  "sourceSha": "49b9d7030ba2b1f081aa100391d41114349fd186",
+  "startedAt": "2026-08-23T10:00:29.854Z",
+  "durationMs": 25237,
+  "exitCode": 0,
+  "logFile": "logs/example-agentic-a2ui.log",
+  "logSha256": "919e6ac90a91beba1a584412ed493305ff8053c19afd3d44c9303401e2272f3a",
+  "logBytes": 7510
+}

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "change": "v3-skills-ecosystem",
-  "generatedAt": "2026-08-22T09:04:29.081Z",
+  "generatedAt": "2026-08-23T09:58:17.821Z",
   "evidenceBoundary": {
     "kind": "packed-consumer",
     "countsAsPackedPackageEvidence": true,

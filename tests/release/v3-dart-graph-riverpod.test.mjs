@@ -74,8 +74,8 @@ test("coverage, package, release, and skill guidance match the certified Dart bo
   );
   assert.ok(
     capability.releaseEvidence.some(
-      ({ ownerChange, status }) =>
-        ownerChange === "v3-flutter-riverpod-a2ui-example" && status === "planned",
+      ({ ownerChange, status, kind }) =>
+        ownerChange === "v3-flutter-riverpod-a2ui-example" && status === "implemented" && kind === "visual",
     ),
   );
 });

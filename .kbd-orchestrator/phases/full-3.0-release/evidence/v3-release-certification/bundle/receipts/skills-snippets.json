@@ -1,0 +1,13 @@
+{
+  "lane": "skills-snippets",
+  "category": "skills",
+  "mandatory": true,
+  "command": "pnpm run verify:skills-snippets",
+  "sourceSha": "49b9d7030ba2b1f081aa100391d41114349fd186",
+  "startedAt": "2026-08-23T09:58:11.118Z",
+  "durationMs": 6415,
+  "exitCode": 0,
+  "logFile": "logs/skills-snippets.log",
+  "logSha256": "e5810c714a9faf36557fe174ca8431eead5a237f5390ca8e7c4cc70b44ad45eb",
+  "logBytes": 380
+}

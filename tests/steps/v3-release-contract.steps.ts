@@ -289,7 +289,7 @@ Then("the example coverage ledger references the {float} release contract", func
   }
 });
 
-Then("the coverage ledger marks React Vite implemented and unfinished showcases planned", function () {
+Then("the coverage ledger marks all five showcases implemented", function () {
   const coverage = readCoverage();
   assert.deepEqual(
     coverage.showcases.map(({ id }) => id),
@@ -299,10 +299,10 @@ Then("the coverage ledger marks React Vite implemented and unfinished showcases 
     coverage.showcases.map(({ id, status }) => ({ id, status })),
     [
       { id: "react-19-vite-8", status: "implemented" },
-      { id: "nextjs", status: "planned" },
-      { id: "agentic-a2ui", status: "planned" },
-      { id: "flutter-riverpod", status: "planned" },
-      { id: "tauri-desktop-mobile", status: "planned" },
+      { id: "nextjs", status: "implemented" },
+      { id: "agentic-a2ui", status: "implemented" },
+      { id: "flutter-riverpod", status: "implemented" },
+      { id: "tauri-desktop-mobile", status: "implemented" },
     ],
   );
   assert.equal(coverage.documentationSite.status, "planned");

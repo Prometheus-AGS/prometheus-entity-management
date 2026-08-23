@@ -4,8 +4,8 @@
   "source": {
     "contract": "release/v3-release-contract.json",
     "policy": "release/release-candidate-policy.json",
-    "sha": "eb3c9802da5ff10ad6db135fed761bd23ea80b3f",
-    "createdAt": "2026-08-03T08:15:52.301Z"
+    "sha": "49b9d7030ba2b1f081aa100391d41114349fd186",
+    "createdAt": "2026-08-23T10:07:03.830Z"
   },
   "registryMutation": false,
   "artifacts": {
@@ -30,16 +30,18 @@
   "workflow": {
     "privateRootDenied": true,
     "releaseNotes": "changesets-version-pr",
+    "uvRuntime": "0.12.1",
     "provenance": "actions-attest-v4",
     "oidc": true,
     "stageEnvironment": "npm-rc",
     "stageAction": "npm-stage-publish",
+    "hiddenReleaseArtifacts": true,
     "longLivedNpmToken": false,
     "humanApprovalInCi": false,
     "stablePromotionInScope": false,
     "actionlint": {
       "status": "pass",
-      "command": "actionlint /Users/gqadonis/Projects/prometheus/prometheus-entity-management/.github/workflows/publish.yml"
+      "command": "actionlint /Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.github/workflows/publish.yml"
     }
   },
   "recovery": {

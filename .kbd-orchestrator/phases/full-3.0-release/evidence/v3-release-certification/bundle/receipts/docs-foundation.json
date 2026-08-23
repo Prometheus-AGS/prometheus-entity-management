@@ -1,0 +1,13 @@
+{
+  "lane": "docs-foundation",
+  "category": "docs",
+  "mandatory": true,
+  "command": "pnpm run verify:docs-foundation",
+  "sourceSha": "60c6e21160f84ad3c2136ca3b26ccea5c6563b95",
+  "startedAt": "2026-08-23T09:37:39.499Z",
+  "durationMs": 34938,
+  "exitCode": 0,
+  "logFile": "logs/docs-foundation.log",
+  "logSha256": "bc5aafd873e74fef6e20c640ed21451d391322d524071802a872e7131d49d546",
+  "logBytes": 1335
+}

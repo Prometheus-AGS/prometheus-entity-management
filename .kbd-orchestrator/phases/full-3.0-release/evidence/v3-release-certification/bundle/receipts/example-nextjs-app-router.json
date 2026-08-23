@@ -1,0 +1,13 @@
+{
+  "lane": "example-nextjs-app-router",
+  "category": "examples",
+  "mandatory": true,
+  "command": "pnpm run verify:nextjs-app-router",
+  "sourceSha": "49b9d7030ba2b1f081aa100391d41114349fd186",
+  "startedAt": "2026-08-23T10:05:44.206Z",
+  "durationMs": 36679,
+  "exitCode": 0,
+  "logFile": "logs/example-nextjs-app-router.log",
+  "logSha256": "fb2d62920a92b9087480f52a7dcb66584b6d9eba230c0698b74b878344d52c4b",
+  "logBytes": 7594
+}

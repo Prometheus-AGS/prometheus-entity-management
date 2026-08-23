@@ -128,8 +128,8 @@ Then(
     );
     assert.ok(
       capability.releaseEvidence.some(
-        ({ ownerChange, status }: { ownerChange: string; status: string }) =>
-          ownerChange === "v3-flutter-riverpod-a2ui-example" && status === "planned",
+        ({ ownerChange, status, kind }: { ownerChange: string; status: string; kind: string }) =>
+          ownerChange === "v3-flutter-riverpod-a2ui-example" && status === "implemented" && kind === "visual",
       ),
     );
   },

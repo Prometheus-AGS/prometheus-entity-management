@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "change": "v3-nextjs-app-router-example",
   "task": 3,
-  "recordedAt": "2026-08-20T19:23:33.689Z",
+  "recordedAt": "2026-08-23T10:06:20.863Z",
   "status": "pass",
   "evidenceBoundary": {
     "kind": "source-workspace-production-browser",
@@ -22,50 +22,50 @@
     {
       "label": "react-typecheck",
       "command": "pnpm --filter @prometheus-ags/prometheus-entity-management typecheck",
-      "startedAt": "2026-08-20T19:23:00.282Z",
-      "completedAt": "2026-08-20T19:23:02.455Z",
+      "startedAt": "2026-08-23T10:05:44.450Z",
+      "completedAt": "2026-08-23T10:05:46.541Z",
       "exitCode": 0
     },
     {
       "label": "nextjs-typecheck",
       "command": "pnpm --filter prometheus-entity-management-nextjs typecheck",
-      "startedAt": "2026-08-20T19:23:02.455Z",
-      "completedAt": "2026-08-20T19:23:04.025Z",
+      "startedAt": "2026-08-23T10:05:46.541Z",
+      "completedAt": "2026-08-23T10:05:51.197Z",
       "exitCode": 0
     },
     {
       "label": "ssr-isolation-unit",
       "command": "pnpm --filter prometheus-entity-management-nextjs run test:ssr-isolation",
-      "startedAt": "2026-08-20T19:23:04.025Z",
-      "completedAt": "2026-08-20T19:23:04.756Z",
+      "startedAt": "2026-08-23T10:05:51.197Z",
+      "completedAt": "2026-08-23T10:05:51.921Z",
       "exitCode": 0
     },
     {
       "label": "core-package-build",
       "command": "pnpm --filter @prometheus-ags/entity-graph-core build",
-      "startedAt": "2026-08-20T19:23:04.756Z",
-      "completedAt": "2026-08-20T19:23:06.450Z",
+      "startedAt": "2026-08-23T10:05:51.921Z",
+      "completedAt": "2026-08-23T10:05:53.555Z",
       "exitCode": 0
     },
     {
       "label": "react-package-build",
       "command": "pnpm --filter @prometheus-ags/prometheus-entity-management build",
-      "startedAt": "2026-08-20T19:23:06.450Z",
-      "completedAt": "2026-08-20T19:23:09.062Z",
+      "startedAt": "2026-08-23T10:05:53.555Z",
+      "completedAt": "2026-08-23T10:05:56.027Z",
       "exitCode": 0
     },
     {
       "label": "nextjs-production-build",
       "command": "pnpm --filter prometheus-entity-management-nextjs build",
-      "startedAt": "2026-08-20T19:23:09.062Z",
-      "completedAt": "2026-08-20T19:23:16.709Z",
+      "startedAt": "2026-08-23T10:05:56.027Z",
+      "completedAt": "2026-08-23T10:06:04.099Z",
       "exitCode": 0
     },
     {
       "label": "nextjs-production-browser",
       "command": "pnpm exec playwright test --config tests/browser/v3-nextjs-app-router-example.playwright.config.ts",
-      "startedAt": "2026-08-20T19:23:16.710Z",
-      "completedAt": "2026-08-20T19:23:33.687Z",
+      "startedAt": "2026-08-23T10:06:04.099Z",
+      "completedAt": "2026-08-23T10:06:20.860Z",
       "exitCode": 0
     }
   ],
@@ -177,7 +177,7 @@
   "artifacts": [
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/browser-ssr-hydration.png",
-      "sha256": "1a87e2f1370c46ba59fba7017857982a24fd393ccd913e773cbe584ff7b9206a"
+      "sha256": "39add392b67ec29203032f5f963083965bb6bc2119cb44232a39cbfe4d5d503f"
     },
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/browser-mutations-realtime.png",
@@ -185,23 +185,23 @@
     },
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/browser-route-transitions.png",
-      "sha256": "0b6cadc266c64e1e57d75a7fe6a292242a4d569a5914da28b4ffa1a148938c76"
+      "sha256": "1fb8c6138fcc4f3ed1a8af7a4615a4eb9879bf31bd4cca1c59a88f2324116e91"
     },
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/playwright-artifacts/v3-nextjs-app-router-examp-154d2-ge-takes-over-on-the-client-chromium-desktop/trace.zip",
-      "sha256": "015a2f9bef330e4bba76f2969512c21d207497d8f28c153f13a6050b67530f5f"
+      "sha256": "0b71851ffcd060d39d58b08777ddcce9c287658e373ac4731a0435dda4d2f652"
     },
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/playwright-artifacts/v3-nextjs-app-router-examp-165aa-us-accessibility-violations-chromium-desktop/trace.zip",
-      "sha256": "3bd11abf9e303c28518bfde7c83509bd67f37e48318421d4d74e78861f219b83"
+      "sha256": "00c345a477bfd8cd2d27b01451cf74c73319f151881c4f92206e9d50fb7d9dfa"
     },
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/playwright-artifacts/v3-nextjs-app-router-examp-47429-s-without-duplicate-fetches-chromium-desktop/trace.zip",
-      "sha256": "44df1b462a57bfab74118ea627cfdb5f0de8b36b8aea08e1845824dd7532f141"
+      "sha256": "89cac55ac51c7b22b2ad8f9dbfbdd1026e136266a78c1170088c6b6d67c356da"
     },
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/playwright-artifacts/v3-nextjs-app-router-examp-a6838-modes-and-realtime-takeover-chromium-desktop/trace.zip",
-      "sha256": "e7303f1e29d48042a52cc8981133fb1b2c46ed9bcb23aee8f253c79d200a2b11"
+      "sha256": "4857402bdb9c0b971ab74b2f3f37b3eb688c5f8b08cba20ed7e72aca18fc0d1f"
     }
   ]
 }

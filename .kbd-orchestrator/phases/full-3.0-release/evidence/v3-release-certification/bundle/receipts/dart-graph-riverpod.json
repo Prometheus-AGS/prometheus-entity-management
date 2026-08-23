@@ -1,0 +1,13 @@
+{
+  "lane": "dart-graph-riverpod",
+  "category": "dart-flutter",
+  "mandatory": true,
+  "command": "pnpm run verify:dart-graph-riverpod",
+  "sourceSha": "49b9d7030ba2b1f081aa100391d41114349fd186",
+  "startedAt": "2026-08-23T09:51:55.416Z",
+  "durationMs": 9058,
+  "exitCode": 0,
+  "logFile": "logs/dart-graph-riverpod.log",
+  "logSha256": "64f0d30030ac0fae6cbb0fa14cb3404541e55e870a9315f16958334425cc2b0c",
+  "logBytes": 342
+}

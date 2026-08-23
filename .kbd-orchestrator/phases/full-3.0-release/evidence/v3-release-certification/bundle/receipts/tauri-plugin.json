@@ -1,0 +1,13 @@
+{
+  "lane": "tauri-plugin",
+  "category": "cargo-tauri",
+  "mandatory": true,
+  "command": "pnpm run verify:tauri-plugin",
+  "sourceSha": "49b9d7030ba2b1f081aa100391d41114349fd186",
+  "startedAt": "2026-08-23T09:57:56.463Z",
+  "durationMs": 17614,
+  "exitCode": 0,
+  "logFile": "logs/tauri-plugin.log",
+  "logSha256": "2b12e9c496cc9dab81955526d231e0a9c1edde065a85d286b2a2f71155606444",
+  "logBytes": 8584
+}

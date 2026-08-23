@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "change": "v3-docs-github-pages",
-  "generatedAt": "2026-08-23T08:48:09.562Z",
+  "generatedAt": "2026-08-23T09:43:20.901Z",
   "evidenceBoundary": {
     "kind": "local-build-and-workflow-contract",
     "countsAsPackedPackageEvidence": false,
