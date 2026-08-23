@@ -1,5 +1,19 @@
 # @prometheus-ags/entity-graph-sync
 
+## 3.0.0
+
+### Patch Changes
+
+- 30fc348: Certify the stable PGlite and Loro path with isolated provider registries, deterministic loopback convergence, inbound echo suppression, reconnecting WebSocket resynchronization, and packed ESM/CommonJS/NodeNext consumers.
+- 30fc348: Certify the React 19 and Vite 8 release showcase with normalized cross-view
+  updates, local/remote/hybrid queries, optimistic confirmation and rollback,
+  relationship invalidation, realtime coalescing, PGlite persistence, Loro
+  convergence, Suspense and error-boundary lifecycle behavior, DevTools, and
+  browser accessibility evidence.
+- Updated dependencies [30fc348]
+- Updated dependencies [7b64d76]
+  - @prometheus-ags/entity-graph-core@3.0.0
+
 ## 3.0.0-rc.1
 
 ### Patch Changes

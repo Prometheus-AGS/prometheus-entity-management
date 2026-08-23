@@ -1,5 +1,16 @@
 # @prometheus-ags/a2ui-react changelog
 
+## 3.0.0
+
+### Patch Changes
+
+- 7b64d76: Preserve caller ownership of official A2UI message inputs by cloning parsed
+  messages separately for validation and processor commit, preventing later data
+  model updates from mutating reusable fixtures or application-owned payloads.
+- Updated dependencies [30fc348]
+- Updated dependencies [7b64d76]
+  - @prometheus-ags/entity-graph-core@3.0.0
+
 ## 3.0.0-rc.1
 
 ### Patch Changes

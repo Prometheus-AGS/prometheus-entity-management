@@ -1,5 +1,14 @@
 # @prometheus-ags/entity-graph-alpine
 
+## 3.0.0
+
+### Patch Changes
+
+- 30fc348: Require applications to supply one compatible entity-graph core instance across every stable framework binding, and verify the installed singleton through packed consumers.
+- Updated dependencies [30fc348]
+- Updated dependencies [7b64d76]
+  - @prometheus-ags/entity-graph-core@3.0.0
+
 ## 3.0.0-rc.1
 
 ### Patch Changes

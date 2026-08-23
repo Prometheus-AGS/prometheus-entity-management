@@ -1,5 +1,18 @@
 # @prometheus-ags/entity-graph-core
 
+## 3.0.0
+
+### Patch Changes
+
+- 30fc348: Certify the React 19 and Vite 8 release showcase with normalized cross-view
+  updates, local/remote/hybrid queries, optimistic confirmation and rollback,
+  relationship invalidation, realtime coalescing, PGlite persistence, Loro
+  convergence, Suspense and error-boundary lifecycle behavior, DevTools, and
+  browser accessibility evidence.
+- 7b64d76: Scope engine dedupe, subscribers, fetches, React hooks, mutations, and realtime
+  writes to an application-owned graph so concurrent Next.js requests can
+  dehydrate and hydrate without sharing process-global entity state.
+
 ## 3.0.0-rc.1
 
 ### Patch Changes

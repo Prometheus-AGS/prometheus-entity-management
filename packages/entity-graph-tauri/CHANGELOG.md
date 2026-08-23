@@ -1,5 +1,14 @@
 # @prometheus-ags/entity-graph-tauri
 
+## 3.0.0
+
+### Patch Changes
+
+- 7b64d76: Normalize optional list metadata before invoking the Rust Tauri command so native hosts receive the complete generated payload.
+- Updated dependencies [30fc348]
+- Updated dependencies [7b64d76]
+  - @prometheus-ags/entity-graph-core@3.0.0
+
 ## 3.0.0-rc.1
 
 ### Patch Changes
