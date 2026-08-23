@@ -1,0 +1,126 @@
+---
+title: Release and operator runbook
+description: The recoverable 3.0 release-candidate pipeline — rehearsal, authorized staging, restart and partial-publication recovery, and the explicit publication boundary.
+---
+
+# Release and operator runbook
+
+This runbook describes the implemented, recoverable release-candidate (RC)
+pipeline. It mirrors the certified behavior in
+[`release/release-candidate-pipeline.md`](https://github.com/prometheus-ags/prometheus-entity-management/blob/main/release/release-candidate-pipeline.md)
+and the `publish.yml` workflow. It is an operating procedure for release
+candidates — it does **not** authorize npm `latest`, a GitHub Release, or
+stable 3.0.0 promotion, which remain human-gated certification steps.
+
+## Authority and prerequisites
+
+| Requirement | Detail |
+| --- | --- |
+| Artifact authority | `release/v3-release-contract.json` — artifacts, compatibility, stability, registry scope, approvals, recovery |
+| Version authority | Changesets prerelease mode; all twelve npm packages share one numbered `3.0.0-rc.N` |
+| Staging authority | GitHub Actions OIDC + the protected `npm-rc` environment + explicit `stage-rc` authority |
+| Token policy | No long-lived npm write token; publishing runs on OIDC trusted publishing |
+| Immutable inputs | A 40-character source SHA and an explicit UTC timestamp |
+
+Repository code cannot prove that npm trusted-publisher configuration or GitHub
+environment reviewers are configured. Those remain external operator checks
+before any staging run.
+
+## Non-mutating certification
+
+Run the certification boundary locally or in CI before planning a candidate:
+
+```bash
+pnpm run test:release-pipeline
+pnpm run bdd:release-pipeline
+pnpm run verify:release-pipeline
+```
+
+`verify:release-pipeline` rebuilds and packs all twelve npm candidates,
+installs only those tarballs into isolated ESM, CommonJS, TypeScript NodeNext,
+Node16, and Bundler consumers, validates the workflow, and writes JSON plus SVG
+evidence. It performs **no registry mutation**.
+
+## Rehearsal
+
+Plan and rehearse with the same immutable SHA and timestamp:
+
+```bash
+pnpm run release:rc:plan \
+  --source-sha <immutable-git-sha> \
+  --created-at <utc-timestamp> \
+  --output .release-candidate/manifest.json
+
+pnpm run release:rc:rehearse \
+  --source-sha <same-immutable-git-sha> \
+  --created-at <same-utc-timestamp> \
+  --output-dir .release-candidate
+```
+
+The rehearsal snapshots protected tags, packs npm candidates in dependency
+order, runs `npm publish --dry-run --tag next`, and records native dry runs.
+Native dispositions: Dart is `dry-run-only`; the standalone Rust CLI and MCP
+crates are `dry-run-only`; the Tauri Rust crate is `embedded-in-npm`. These
+dispositions do not imply pub.dev or crates.io ownership.
+
+In CI, the `publish.yml` workflow performs the same rehearsal on
+`workflow_dispatch` (default mode `rehearse`), attests the candidate packages
+and evidence, and uploads the immutable candidate bundle as a build artifact.
+
+## Authorized RC staging
+
+Staging is intentionally unusable as a normal local command. It runs only from
+the `publish.yml` `stage` mode, which requires the protected `npm-rc`
+environment and downloads the attested candidate bundle for the same SHA:
+
+```bash
+pnpm run release:rc:stage \
+  --manifest .release-candidate/manifest.json \
+  --rehearsal .release-candidate/rehearsal.json \
+  --output .release-candidate/stage-report.json
+```
+
+Before any registry read, the stage state machine validates the rehearsal as
+one closed proof: schema, source SHA, candidate version, dist-tag, dependency
+order, protected-tag snapshots, all seven journal states for every npm
+artifact, tarball paths and integrity, npm dry-run receipts, native dry-run
+receipts, and embedded-native dispositions must exactly match the manifest.
+Missing, extra, reordered, incomplete, or internally inconsistent evidence
+**fails closed**. Staging can target only the `next` channel.
+
+## Restart and partial-publication recovery
+
+The journal moves each npm artifact through `declared` → `packed` → `verified`
+→ `classified` → `submitted` → `registry-verified` → `complete`. On restart:
+
+- **Matching immutable version and integrity:** skip and record.
+- **Absent version:** stage in dependency order.
+- **Conflicting immutable version or integrity:** block.
+- **Already published but incorrect artifact:** publish a corrective version —
+  never overwrite an immutable registry version.
+
+The stage CLI rewrites its recovery report after every confirmed transition and
+before each mutating stage attempt. If a later package fails, the report exits
+with `status: failed`, preserves every completed package, and records the last
+attempt conservatively even when npm returned no usable response. The workflow
+uploads this report with `always()` so a nonzero stage exit cannot discard it.
+The pipeline also compares protected npm tags before and after every run; a
+changed or incomplete snapshot fails closed.
+
+## Rollback policy
+
+Registry versions are immutable, so "rollback" means **forward correction**:
+
+1. Identify the last known-good version from the journal and registry history.
+2. Publish a corrective patch candidate (`3.0.0-rc.(N+1)` or a stable patch)
+   that restores the good behavior.
+3. Never deprecate-and-republish the same version, and never unpublish a
+   version that downstream consumers may have resolved.
+
+## Explicit boundary
+
+This runbook does not authorize npm `latest`, a GitHub Release, production
+documentation deployment, pub.dev/crates.io publication, or stable 3.0.0.
+Those belong to the release certification and stable publication gates, which
+own the immutable release-wide evidence set, explicit human authority,
+post-publication verification, and stable promotion.

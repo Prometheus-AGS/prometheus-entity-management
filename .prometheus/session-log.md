@@ -405,3 +405,37 @@
   Cursor advanced to `v3-docs-operations-migration` (25/28).
 - Hand-off boundary respected: `v3-release-certification` and
   `v3-stable-publication` untouched.
+
+## 2026-08-23 — v3-docs-operations-migration certified (25/28)
+
+- 13 pages: 3 migration guides (`site/docs/migration/`: v2-to-v3 with the
+  canonical 5-row breaking-change table — graphStore singleton, React hook
+  import, per-request `createGraphStore()` SSR, sync-status readers, React
+  presentation types; alpha-to-stable with the 9-row map — A2UI `./ag-ui`
+  boundary, official A2A v1 lifecycle, binding peer policy, `3.0.0-rc.N`;
+  compatibility-policy with fixed-group semver and current-plus-next-major
+  deprecation) + 10 operations pages (`site/docs/operations/`). New
+  `operationsSidebar` + "Operations" navbar item.
+- Upgrade validation fixtures are real, not prose: 6 raw `.ts/.tsx` files in
+  `tests/release/fixtures/upgrade/` compile against the 12 packed packages via
+  the snippet harness's new whole-file mode (`--ext .ts,.tsx`); default fence
+  behavior unchanged (skills lane regression-verified inside its verifier).
+- Release test (12/12) enforces: breaking-change token pairs with
+  before/after markers, fixture existence + tokens + guide cross-references,
+  security tenant-boundary/secret-handling markers, runbook↔automation
+  consistency (publish.yml, `release:rc:*` scripts, 7 journal states,
+  never-overwrite/corrective recovery), sidebar reachability, alt text.
+- Harness-caught defects fixed this change: `.md` vs `.mdx` cross-link
+  targets (static-build lane), a wrap-split "Row Level Security" token, and
+  guessed table-UI fixture signatures corrected against real source
+  (`actionsColumn(ActionItem[])`, `EmptyStateConfig`) before gating.
+- Gates: verify:docs-operations 5/5 lanes (snippet-compile 53 fences/30 docs,
+  fixture-compile 6/6, release-gate, static-build, routes), release test
+  12/12, BDD 3/14, regressions foundation 10/10 + api-reference 10/10 +
+  concepts 8/8 + examples 10/10, typecheck 23/23, validate errors [], eslint
+  clean, openspec strict valid.
+- Archived as `2026-08-23-v3-docs-operations-migration`; evidence in
+  `.kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-operations-migration/`.
+  Cursor advanced to `v3-docs-github-pages` (26/28).
+- Hand-off boundary respected: `v3-release-certification` and
+  `v3-stable-publication` untouched.

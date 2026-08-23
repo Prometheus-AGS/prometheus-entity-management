@@ -1,0 +1,66 @@
+---
+title: FAQ
+description: Frequently asked questions about the normalized entity graph, its model, and the 3.0 ecosystem.
+---
+
+# Frequently asked questions
+
+## How is this different from TanStack Query?
+
+Query libraries own the data each query returns; overlapping queries duplicate
+entities and drift apart. Here, **queries are instructions to populate the
+graph**: the normalized entity graph is the single source of truth, lists store
+ordered IDs only, and updating one entity updates every view that reads it.
+The [comparison review](../product/overview.md) covers the trade-offs in
+detail.
+
+## Do I need GraphQL?
+
+No. The normalization model is backend-agnostic and works with REST, GraphQL,
+WebSocket, Supabase Realtime, Convex-style backends, and local-first sync —
+within one graph. GraphQL gets first-class descriptors and hooks, but it is an
+integration, not a requirement.
+
+## Which frameworks are supported in 3.0?
+
+React 19, Svelte, Solid, Alpine.js, HTMX + SSE, Web Components, Tauri 2
+(desktop/mobile), and Dart/Flutter via `entity_graph_flutter`. All framework
+bindings share the framework-neutral core and the singleton contract. The
+[package selection](../packages/overview.md) page maps stacks to packages.
+
+## When should I *not* use the entity graph?
+
+If your app has no shared entities across views, no realtime updates, and no
+cross-view consistency requirements, a plain query library is simpler. The
+graph earns its complexity when the same entities appear in many views and
+must stay consistent everywhere at once.
+
+## Is local state (selection, expansion, drafts) part of the graph?
+
+UI-only augmentations live in the **patches layer** and merge at read time —
+they are visible to every subscriber but never sent to the server. Form drafts
+stay in component-local edit buffers until `save()` succeeds, so half-typed
+values never propagate.
+
+## How do 3.0 release candidates relate to stable?
+
+Numbered `3.0.0-rc.N` candidates publish to the npm `next` tag through the
+fail-closed pipeline; `latest` promotes only after release certification and
+stable publication complete. See the
+[compatibility policy](../migration/compatibility-policy.mdx) and the
+[release runbook](release-runbook.mdx).
+
+## Where do agents fit in?
+
+Two optional surfaces: **A2A** (`entity-graph-a2a`) exposes the graph to
+external agents over the official v1 protocol with default-deny policies, and
+**A2UI** (`a2ui-react`) renders agent-produced surfaces through the official
+v0.9.1 engine. Both are covered in the
+[agentic A2UI tutorial](../examples/agentic-a2ui.mdx) and the
+[security model](security.mdx).
+
+## Is 3.0 published?
+
+The release program status is tracked in `CHANGELOG.md` and
+`RELEASING.md`. Until stable publication completes, treat `next`-tag RCs as
+candidates: certified against the pipeline, not yet the stable line.

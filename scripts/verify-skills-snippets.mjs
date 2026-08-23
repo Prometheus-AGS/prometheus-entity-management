@@ -106,12 +106,22 @@ async function* walkMarkdown(dir) {
 
 const FENCE_RE = /```(tsx?)\n(.*?)```/gs;
 
+// When the caller targets raw source files (`--ext .ts,.tsx`), each file is
+// one whole-file snippet. This powers upgrade-validation fixtures: real
+// modules that must compile against packed packages, not prose examples.
+const RAW_SOURCE_RE = /\.tsx?$/;
+
 async function extractSnippets() {
   const snippets = [];
   for await (const file of walkMarkdown(join(workspaceRoot, docsRoot))) {
     const relative = file.slice(workspaceRoot.length + 1);
     if (skipRe && skipRe.test(relative)) continue;
     const text = await readFile(file, "utf8");
+    if (RAW_SOURCE_RE.test(file)) {
+      const lang = file.endsWith(".tsx") ? "tsx" : "ts";
+      snippets.push({ source: relative, lang, code: text });
+      continue;
+    }
     for (const match of text.matchAll(FENCE_RE)) {
       snippets.push({
         source: relative,

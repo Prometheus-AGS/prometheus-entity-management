@@ -1,0 +1,68 @@
+---
+title: Troubleshooting
+description: Common failure modes when adopting or upgrading the entity graph, and how to diagnose each one.
+---
+
+# Troubleshooting
+
+## A view does not update when an entity changes
+
+- **Check the read path.** Views must read through hooks/selectors that
+  subscribe to the graph. Reading `getState()` once during render captures a
+  snapshot and never updates.
+- **Check the write path.** The entity must be `upsertEntity`d into the graph,
+  not stored in a component-local copy. Lists contain IDs; if you stored data
+  in the list, updates will not propagate.
+- **Check layering.** A component calling `fetch` and keeping the result in
+  local state bypasses the graph entirely — move the I/O into a store/adapter.
+
+## Duplicate graph instances (binding singleton)
+
+Symptoms: writes in one framework binding never appear in another; realtime
+seems "half connected". Cause: two copies of `@prometheus-ags/entity-graph-core`
+in the dependency tree. Fix: install core explicitly at the application root
+and let the package manager dedupe. The packed
+`singleton` gate certifies one-instance resolution for all six bindings.
+
+## SSR requests share state
+
+Symptoms: one user's entities render in another user's response. Cause: using
+the process-wide `graphStore` on the server. Fix: `createGraphStore()` per
+request — see [SSR isolation](../migration/v2-to-v3.mdx#ssr-isolation).
+
+## Realtime updates cause render storms
+
+Symptoms: CPU spikes when a high-frequency channel is active. Fix: ensure
+updates flow through the `RealtimeManager` (16 ms coalescing) rather than
+direct store writes per message; batch at the adapter boundary.
+
+## `workspace:*` resolves to a registry version in packed consumers
+
+When installing packed tarballs into a scratch consumer, internal dependencies
+declare registry ranges that may not exist on npm yet. The repository's own
+snippet/consumer harnesses solve this with `pnpm.overrides` pinning internal
+package names to the local tarballs. Mirror that pattern in any custom
+packed-consumer test.
+
+## Solid snippets or components fail type-checks
+
+Solid requires a per-file JSX pragma:
+
+```text
+/** @jsxImportSource solid-js */
+```
+
+It must be the first line of the file, above imports.
+
+## After upgrading, an import no longer resolves
+
+Consult the migration tables: [2.x → 3.0](../migration/v2-to-v3.mdx) for moved
+store/type homes, [alpha → stable](../migration/alpha-to-stable.mdx) for the
+A2UI `./ag-ui` and A2A v1 boundaries. Every renamed or moved API has a
+before/after entry there.
+
+## Still stuck
+
+Search the [FAQ](faq.mdx), then open an issue with the package version, the
+binding in use, a minimal reproduction, and — when relevant — the failing
+gate command.

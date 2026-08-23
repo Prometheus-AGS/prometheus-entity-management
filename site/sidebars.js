@@ -101,6 +101,35 @@ const sidebars = {
       ],
     },
   ],
+  operationsSidebar: [
+    {
+      type: 'category',
+      label: 'Migration',
+      collapsible: false,
+      items: [
+        'migration/v2-to-v3',
+        'migration/alpha-to-stable',
+        'migration/compatibility-policy',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Operations',
+      collapsible: false,
+      items: [
+        'operations/release-notes',
+        'operations/release-runbook',
+        'operations/security',
+        'operations/performance',
+        'operations/testing',
+        'operations/deployment',
+        'operations/troubleshooting',
+        'operations/faq',
+        'operations/contributing',
+        'operations/skills-usage',
+      ],
+    },
+  ],
   apiSidebar: generated.apiSidebar,
 };
 

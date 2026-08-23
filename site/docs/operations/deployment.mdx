@@ -1,0 +1,55 @@
+---
+title: Deployment
+description: Deployment notes per platform — web SSR, Next.js, Tauri desktop/mobile, and Flutter — plus environment variable and key handling.
+---
+
+# Deployment
+
+## Web (Vite / SPA)
+
+A single-page deployment needs nothing graph-specific: the browser bundle uses
+the process-wide `graphStore` singleton. Configure your API and realtime
+endpoints per environment, and prefer build-time env injection over runtime
+globals so bundles stay cacheable.
+
+## Server rendering (Next.js App Router)
+
+- Create **one graph per request** with `createGraphStore()`; never share the
+  singleton across requests (see
+  [SSR isolation](../migration/v2-to-v3.mdx#ssr-isolation)).
+- Keep data fetching in server-side stores/services; hydrate the client graph
+  from the normalized result, not from per-component fetches.
+- The full walkthrough, including hydration and client navigation, is the
+  [Next.js tutorial](../examples/nextjs-app-router.mdx).
+
+## Tauri (desktop and mobile)
+
+- The Tauri package embeds its Rust plugin (`embedded-in-npm` disposition);
+  consumers do not build Rust themselves.
+- SQLite persistence runs through the Tauri SQL plugin adapter for local-first
+  desktop; capabilities must be declared in the Tauri configuration.
+- Platform certification receipts (desktop packed proof, Android/iOS evidence
+  boundaries) are listed in the
+  [Tauri tutorial](../examples/tauri-universal.mdx).
+
+## Flutter
+
+`entity_graph_flutter` ships as a Dart package with generated Riverpod
+providers. Distribution follows normal Dart/Flutter packaging; the canonical
+architecture and evidence limits are in the
+[Flutter tutorial](../examples/flutter-riverpod.mdx).
+
+## Environment variables and keys
+
+- Client bundles may receive **publishable/anon keys only** (for example the
+  Supabase anon key). Service-role keys, tokens, and database credentials stay
+  on the server — see [Secret handling](security.mdx#secret-and-key-handling).
+- Live external services are always an explicit opt-in: every integration
+  guide separates deterministic demo mode from live credentials, and the same
+  discipline applies to deployed environments.
+
+## The documentation site
+
+This documentation deploys to GitHub Pages through a quality-gated workflow
+(build, links, snippets, accessibility) with production deployment restricted
+to the protected `main` branch. PRs build but cannot deploy.

@@ -126,6 +126,12 @@ const config = {
           },
           {
             type: 'docSidebar',
+            sidebarId: 'operationsSidebar',
+            position: 'left',
+            label: 'Operations',
+          },
+          {
+            type: 'docSidebar',
             sidebarId: 'apiSidebar',
             position: 'left',
             label: 'API',

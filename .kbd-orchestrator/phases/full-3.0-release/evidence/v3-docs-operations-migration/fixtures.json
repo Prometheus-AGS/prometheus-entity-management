@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-23T06:35:24.978Z",
+  "docsRoot": "tests/release/fixtures/upgrade",
+  "evidenceBoundary": {
+    "kind": "packed-consumer",
+    "countsAsPackedPackageEvidence": true
+  },
+  "snippets": {
+    "total": 6,
+    "sources": 6
+  },
+  "packages": [
+    "@prometheus-ags/a2ui-react",
+    "@prometheus-ags/entity-graph-a2a",
+    "@prometheus-ags/entity-graph-alpine",
+    "@prometheus-ags/entity-graph-core",
+    "@prometheus-ags/entity-graph-htmx",
+    "@prometheus-ags/entity-graph-sdl",
+    "@prometheus-ags/entity-graph-solid",
+    "@prometheus-ags/entity-graph-svelte",
+    "@prometheus-ags/entity-graph-sync",
+    "@prometheus-ags/entity-graph-tauri",
+    "@prometheus-ags/entity-graph-web-components",
+    "@prometheus-ags/prometheus-entity-management"
+  ],
+  "lanes": {
+    "pack": "pass",
+    "consumerInstall": "pass",
+    "snippetCompile": "pass"
+  }
+}
