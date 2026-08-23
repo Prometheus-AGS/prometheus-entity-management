@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-docs-github-pages",
+  "generatedAt": "2026-08-23T08:49:20.206Z",
+  "basePath": "/prometheus-entity-management/",
+  "probeRoutes": [
+    "/prometheus-entity-management/",
+    "/prometheus-entity-management/docs/product/overview/",
+    "/prometheus-entity-management/docs/guides/quickstart-react/",
+    "/prometheus-entity-management/docs/packages/overview/",
+    "/prometheus-entity-management/docs/examples/vite-react19/",
+    "/prometheus-entity-management/docs/integrations/supabase/",
+    "/prometheus-entity-management/docs/migration/v2-to-v3/",
+    "/prometheus-entity-management/docs/operations/release-runbook/",
+    "/prometheus-entity-management/docs/api/"
+  ],
+  "lanes": {
+    "searchIndex": "pass",
+    "routeProbes": "pass",
+    "secretsScan": "pass",
+    "absPathScan": "pass",
+    "a11y": "pass",
+    "lighthouse": "pass"
+  },
+  "lighthouse": {
+    "(home)": {
+      "scores": {
+        "performance": 0.86,
+        "accessibility": 1,
+        "best-practices": 1,
+        "seo": 1,
+        "agentic-browsing": 1
+      },
+      "budgetChecks": [
+        {
+          "resourceType": "total",
+          "actualKiB": 685,
+          "budgetKiB": 5120
+        },
+        {
+          "resourceType": "script",
+          "actualKiB": 474,
+          "budgetKiB": 3072
+        },
+        {
+          "resourceType": "stylesheet",
+          "actualKiB": 82,
+          "budgetKiB": 512
+        },
+        {
+          "resourceType": "image",
+          "actualKiB": 2,
+          "budgetKiB": 1024
+        },
+        {
+          "resourceType": "font",
+          "actualKiB": 0,
+          "budgetKiB": 512
+        },
+        {
+          "resourceType": "document",
+          "actualKiB": 17,
+          "budgetKiB": 256
+        }
+      ],
+      "thirdPartyCount": 0
+    },
+    "docs/guides/quickstart-react/": {
+      "scores": {
+        "performance": 0.81,
+        "accessibility": 1,
+        "best-practices": 1,
+        "seo": 1,
+        "agentic-browsing": 1
+      },
+      "budgetChecks": [
+        {
+          "resourceType": "total",
+          "actualKiB": 1021,
+          "budgetKiB": 5120
+        },
+        {
+          "resourceType": "script",
+          "actualKiB": 564,
+          "budgetKiB": 3072
+        },
+        {
+          "resourceType": "stylesheet",
+          "actualKiB": 82,
+          "budgetKiB": 512
+        },
+        {
+          "resourceType": "image",
+          "actualKiB": 2,
+          "budgetKiB": 1024
+        },
+        {
+          "resourceType": "font",
+          "actualKiB": 0,
+          "budgetKiB": 512
+        },
+        {
+          "resourceType": "document",
+          "actualKiB": 50,
+          "budgetKiB": 256
+        }
+      ],
+      "thirdPartyCount": 0
+    },
+    "docs/migration/v2-to-v3/": {
+      "scores": {
+        "performance": 0.81,
+        "accessibility": 1,
+        "best-practices": 1,
+        "seo": 1,
+        "agentic-browsing": 1
+      },
+      "budgetChecks": [
+        {
+          "resourceType": "total",
+          "actualKiB": 1253,
+          "budgetKiB": 5120
+        },
+        {
+          "resourceType": "script",
+          "actualKiB": 572,
+          "budgetKiB": 3072
+        },
+        {
+          "resourceType": "stylesheet",
+          "actualKiB": 82,
+          "budgetKiB": 512
+        },
+        {
+          "resourceType": "image",
+          "actualKiB": 2,
+          "budgetKiB": 1024
+        },
+        {
+          "resourceType": "font",
+          "actualKiB": 0,
+          "budgetKiB": 512
+        },
+        {
+          "resourceType": "document",
+          "actualKiB": 60,
+          "budgetKiB": 256
+        }
+      ],
+      "thirdPartyCount": 0
+    }
+  },
+  "failures": [],
+  "searchIndexEntries": 5,
+  "result": "pass"
+}

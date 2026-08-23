@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-docs-github-pages",
+  "generatedAt": "2026-08-23T08:48:09.562Z",
+  "evidenceBoundary": {
+    "kind": "local-build-and-workflow-contract",
+    "countsAsPackedPackageEvidence": false,
+    "note": "Certifies the workflow contract, deterministic static build, and production quality gates against the local build. The first live GitHub Pages deployment is an operator-confirmed action; this gate does not perform or authorize it."
+  },
+  "commands": [
+    {
+      "label": "workflow-contract",
+      "command": "node --test tests/release/v3-docs-github-pages.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "label": "static-build",
+      "command": "pnpm --filter @prometheus-ags/entity-graph-docs-site build",
+      "exitCode": 0
+    },
+    {
+      "label": "quality-gates",
+      "command": "node scripts/verify-docs-pages-quality.mjs --report .kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-github-pages/quality.json",
+      "exitCode": 0
+    }
+  ],
+  "lanes": {
+    "workflowContract": "pass",
+    "staticBuild": "pass",
+    "qualityGates": "pass"
+  },
+  "failures": [],
+  "result": "pass"
+}

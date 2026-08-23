@@ -12,6 +12,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Concepts',
+      link: { type: 'generated-index' },
       collapsible: false,
       items: [
         'guides/concepts/normalized-entities',
@@ -32,6 +33,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Bindings',
+      link: { type: 'generated-index' },
       collapsible: false,
       items: [
         'guides/bindings/react',
@@ -47,6 +49,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Practices',
+      link: { type: 'generated-index' },
       collapsible: false,
       items: [
         'guides/practices/recipes',
@@ -61,6 +64,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Product',
+      link: { type: 'generated-index' },
       collapsible: false,
       items: ['product/overview', 'product/architecture'],
     },
@@ -69,6 +73,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Packages',
+      link: { type: 'generated-index' },
       collapsible: false,
       items: ['packages/overview', generated.packageChooserCategory],
     },
@@ -78,6 +83,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Tutorials',
+      link: { type: 'generated-index' },
       collapsible: false,
       items: [
         'examples/vite-react19',
@@ -90,6 +96,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Integrations',
+      link: { type: 'generated-index' },
       collapsible: false,
       items: [
         'integrations/websocket',
@@ -105,6 +112,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Migration',
+      link: { type: 'generated-index' },
       collapsible: false,
       items: [
         'migration/v2-to-v3',
@@ -115,6 +123,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Operations',
+      link: { type: 'generated-index' },
       collapsible: false,
       items: [
         'operations/release-notes',

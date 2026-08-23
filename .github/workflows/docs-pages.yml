@@ -1,0 +1,100 @@
+name: Docs site (GitHub Pages)
+
+# Quality-gated, release-aware GitHub Pages deployment for the 3.0 docs site.
+# Adapted from the proven prometheus-skill-pack Pages workflow (SHA-pinned
+# checkout/configure/upload/deploy actions, serialized deployment, protected
+# environment), extended with the v3-docs-github-pages quality gates:
+# build, links (docusaurus throws), snippets, search index, route probes,
+# accessibility (axe), Lighthouse budgets, and a secrets/absolute-path scan.
+#
+# Pull requests run the full build and quality gates but can never deploy.
+# Only the protected main branch publishes to the github-pages environment.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'docs/**'
+      - 'prometheus-entity-skills/**'
+      - 'scripts/verify-docs-*.mjs'
+      - 'scripts/strip-build-paths.mjs'
+      - 'tests/release/v3-docs-*.mjs'
+      - '.github/workflows/docs-pages.yml'
+  pull_request:
+    paths:
+      - 'site/**'
+      - 'docs/**'
+      - 'prometheus-entity-skills/**'
+      - 'scripts/verify-docs-*.mjs'
+      - 'scripts/strip-build-paths.mjs'
+      - 'tests/release/v3-docs-*.mjs'
+      - '.github/workflows/docs-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: false
+
+env:
+  # Release-aware labeling: the 3.x docs line shown in the navbar.
+  DOCS_VERSION_LABEL: '3.0'
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: "pnpm"
+          package-manager-cache: false
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Install the certified Chromium runtime (axe + Lighthouse lanes)
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Build the docs site
+        run: pnpm --filter @prometheus-ags/entity-graph-docs-site build
+
+      - name: Verify documentation snippets against packed packages
+        run: pnpm run verify:docs-snippets
+
+      - name: Run the production quality gates
+        run: pnpm run verify:docs-pages-quality
+
+      - name: Upload the Pages artifact
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
+        with:
+          path: site/build
+
+  deploy:
+    # Deployment is impossible from a pull request: the job only exists for
+    # pushes to the protected main branch (or a manual dispatch from it).
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

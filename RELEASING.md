@@ -182,3 +182,15 @@ and blocks conflicts. Never overwrite a published version.
 passed; neither means “3.0 may be published.” Stable certification, the GitHub
 Release, production documentation deployment, post-publication checks, and npm
 `latest` remain downstream.
+
+## Documentation site deployment
+
+The 3.0 documentation site deploys to GitHub Pages through the quality-gated,
+release-aware workflow in `.github/workflows/docs-pages.yml`: pull requests
+build and gate but cannot deploy; only the protected `main` branch publishes
+to the `github-pages` environment after build, links, snippet, search-index,
+route-probe, accessibility, Lighthouse-budget, and secrets/absolute-path
+gates pass. The canonical deployment URL is recorded in
+[`release/docs-site.json`](release/docs-site.json) and the 3.0 release points
+there. First live deployment requires Pages to be enabled for the repository
+and remains an operator-confirmed action.

@@ -5,7 +5,7 @@
   "description": "Private Docusaurus documentation site for the Prometheus entity-management 3.0 release. Never published; dependencies must not leak into publishable packages.",
   "scripts": {
     "start": "docusaurus start",
-    "build": "docusaurus build",
+    "build": "docusaurus build && node ../scripts/strip-build-paths.mjs",
     "generate:api": "node ../scripts/generate-api-reference.mjs",
     "prebuild": "node ../scripts/generate-api-reference.mjs",
     "prestart": "node ../scripts/generate-api-reference.mjs --skip-artifacts",

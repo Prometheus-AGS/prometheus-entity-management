@@ -439,3 +439,37 @@
   Cursor advanced to `v3-docs-github-pages` (26/28).
 - Hand-off boundary respected: `v3-release-certification` and
   `v3-stable-publication` untouched.
+
+## 2026-08-23 — v3-docs-github-pages certified (26/28) — phase boundary reached
+
+- `.github/workflows/docs-pages.yml` adapts the proven sibling Pages workflow:
+  SHA-pinned checkout v4 / configure-pages v5 / upload-pages-artifact v3 /
+  deploy-pages v4; PRs run the full build + gates but can never deploy
+  (upload and deploy jobs are main-only); serialized `pages-deploy`
+  concurrency; protected `github-pages` environment; release-aware
+  `DOCS_VERSION_LABEL=3.0` navbar label.
+- New shared production quality gate `scripts/verify-docs-pages-quality.mjs`
+  (6 lanes): search index, 9 deep-route non-empty-200 probes under
+  `/prometheus-entity-management/`, secrets scan, absolute-path scan, axe in
+  light+dark themes, Lighthouse budgets (`site/lighthouse-budgets.json`)
+  enforced from resource-summary measurements (LH13 removed the native
+  budget audit) + category floors. Same code runs in CI and locally.
+- Gate-caught pre-deployment defects fixed: workspace absolute paths leaked
+  into the bundle via serialized docusaurus config (new
+  `scripts/strip-build-paths.mjs` postbuild); light link color 3.71:1 →
+  darker ember 5.17:1; prism token remaps in both themes (incl. dracula's
+  rgb()-notation comment color); content links underlined; sidebar
+  categories get crawlable generated-index links; dark inline code 4.49 →
+  ≈5.0:1.
+- Deployment URL recorded in `release/docs-site.json`; `RELEASING.md`
+  points the 3.0 release at it. New devDep `lighthouse@13.4.1` (dev-only).
+- Gates: verify:docs-pages 3/3 lanes (workflow-contract, static-build,
+  quality-gates), quality 6/6, release test 10/10, BDD 3/14, regressions
+  foundation 10/10 + api-reference 10/10 + concepts 8/8 + examples 10/10 +
+  operations 12/12, typecheck 23/23, validate errors [], eslint clean,
+  openspec strict valid.
+- Archived as `2026-08-23-v3-docs-github-pages`; evidence in
+  `.kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-github-pages/`.
+  First live deployment is operator-confirmed (Pages must be enabled).
+- PHASE BOUNDARY: `v3-release-certification` (27) and
+  `v3-stable-publication` (28) are the human-gated hand-off — not started.

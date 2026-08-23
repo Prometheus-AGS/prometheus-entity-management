@@ -1,6 +1,24 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
+/**
+ * Remap prism-react-renderer token colors for WCAG contrast.
+ * Prism themes apply colors as inline styles, so token overrides must happen
+ * on the theme object itself, not in CSS.
+ * @param {import('prism-react-renderer').PrismTheme} theme
+ * @param {Record<string, string>} colorMap lowercase-hex → replacement
+ */
+function accessiblePrismTheme(theme, colorMap) {
+  return {
+    ...theme,
+    styles: theme.styles.map((entry) => {
+      const color = entry.style?.color?.toLowerCase();
+      if (!color || !colorMap[color]) return entry;
+      return { ...entry, style: { ...entry.style, color: colorMap[color] } };
+    }),
+  };
+}
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Prometheus Entity Management',
@@ -137,6 +155,13 @@ const config = {
             label: 'API',
           },
           {
+            // Release-aware labeling: the deployed docs line (3.x) shown in
+            // the navbar; the Pages workflow sets DOCS_VERSION_LABEL.
+            to: '/docs/operations/release-notes',
+            label: `v${process.env.DOCS_VERSION_LABEL || '3.0'} docs`,
+            position: 'right',
+          },
+          {
             href: 'https://github.com/Prometheus-AGS/prometheus-entity-management',
             label: 'GitHub',
             position: 'right',
@@ -178,8 +203,22 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} Prometheus AGS. MIT License.`,
       },
       prism: {
-        theme: require('prism-react-renderer').themes.github,
-        darkTheme: require('prism-react-renderer').themes.dracula,
+        // Accessible token remaps: the axe color-contrast gate
+        // (scripts/verify-docs-pages-quality.mjs) measures every probe route
+        // in both themes. Stock github-theme #e3116c (≈4.3:1), #d73a49
+        // (≈4.3:1), and #36acaa (≈2.6:1), and dracula's #6272a4 comment
+        // (≈3.0:1), fail WCAG 4.5:1 on their code backgrounds.
+        theme: accessiblePrismTheme(require('prism-react-renderer').themes.github, {
+          '#e3116c': '#0a3069', // strings → GitHub accessible navy (12.0:1)
+          '#d73a49': '#cf222e', // functions → GitHub accessible red (5.0:1)
+          '#36acaa': '#0b7f7d', // booleans → accessible teal (4.5:1)
+          '#999988': '#57606a', // comments → GitHub fg-muted (6.0:1)
+          '#00a4db': '#0550ae', // attr-names/keywords → GitHub accent fg (7.1:1)
+        }),
+        darkTheme: accessiblePrismTheme(require('prism-react-renderer').themes.dracula, {
+          // Dracula declares comments in rgb() notation, not hex.
+          'rgb(98, 114, 164)': '#93a1c9', // comments → brighter blue-grey (5.6:1)
+        }),
         additionalLanguages: ['rust', 'toml', 'bash', 'dart', 'diff'],
       },
       mermaid: {

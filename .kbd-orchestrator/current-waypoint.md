@@ -3,9 +3,9 @@
 **Active phase:** `full-3.0-release`
 **Status:** `executing`
 **Backend:** OpenSpec
-**Implementation progress:** 25 of 28 changes
-**Current round:** Round 7 (next dependency-ready change)
-**Updated:** 2026-08-23T06:45:00Z
+**Implementation progress:** 26 of 28 changes
+**Current round:** Round 8 (release certification is the human gate)
+**Updated:** 2026-08-23T07:30:00Z
 
 ## Execution
 
@@ -13,15 +13,15 @@ The reviewed 28-change plan is dispatched through OpenSpec and the KBD-aware `/k
 
 ## Next pending change
 
-`v3-docs-github-pages`
+`v3-release-certification` — **human gate; do not start autonomously.**
 
 ## Exact next command
 
 ```text
-/kbd-apply v3-docs-github-pages
+/kbd-apply v3-release-certification   # requires explicit operator authorization
 ```
 
-The operations/migration docs change is certified and archived (2026-08-23): 13 pages — 3 migration guides (`site/docs/migration/`: v2-to-v3, alpha-to-stable, compatibility-policy) with canonical breaking-change tables and explicit before/after guidance, plus 10 operations pages (`site/docs/operations/`: release-notes, release-runbook, security, performance, testing, deployment, troubleshooting, faq, contributing, skills-usage) — wired into a new `operationsSidebar` + "Operations" navbar item. Six raw `.ts/.tsx` upgrade-validation fixtures under `tests/release/fixtures/upgrade/` compile against the 12 packed packages via the snippet harness's new whole-file mode (`--ext .ts,.tsx`), so migration recipes are not prose-only. The release test (12/12) enforces the content contract: breaking-change token pairs, fixture references, security tenant-boundary/secret-handling markers, runbook↔automation consistency (publish.yml + `release:rc:*` scripts + 7 journal states + immutability/corrective recovery), sidebar reachability, alt text. Gates: verifier 5/5 lanes (snippet-compile 53/30 docs, fixture-compile 6/6, release-gate, static-build, routes), BDD 3/14, typecheck 23/23, validate errors [], all four docs regressions green, eslint clean, openspec strict valid. Next: GitHub Pages deployment (`v3-docs-github-pages`). `v3-release-certification` and `v3-stable-publication` remain human-gated and are the hand-off boundary.
+The GitHub Pages docs change is certified and archived (2026-08-23): `.github/workflows/docs-pages.yml` adapts the proven sibling Pages workflow — SHA-pinned checkout/configure/upload/deploy actions, PR build-only validation (upload + deploy jobs are main-only, so PRs can never deploy), serialized main deployment into the protected `github-pages` environment, and release-aware `DOCS_VERSION_LABEL` 3.0 navbar labeling. Production is gated on build (links throw), `verify:docs-snippets`, and a new 6-lane quality gate `scripts/verify-docs-pages-quality.mjs`: search index, 9 deep-route probes returning non-empty 200 under `/prometheus-entity-management/`, secrets scan, absolute-path scan, axe a11y in both themes, and Lighthouse budgets (declared in `site/lighthouse-budgets.json`, enforced from resource measurements since LH13 removed the native budget audit). The gates caught and fixed real pre-deployment defects: internal absolute paths leaked into the bundle (new `strip-build-paths.mjs` postbuild), systemic light-theme link contrast (3.71:1 → 5.17:1), prism token contrast in both themes, color-only content links, uncrawlable sidebar categories, and dark inline-code contrast (4.49 → ≈5.0). The deployment URL is recorded in `release/docs-site.json` and `RELEASING.md` points the 3.0 release at it. Gates: verifier 3/3 lanes, quality 6/6, release test 10/10, BDD 3/14, all five docs regressions green, typecheck 23/23, validate errors [], eslint clean, openspec strict valid. First live deployment is operator-confirmed (Pages must be enabled for the repo). **Boundary reached: the remaining changes — `v3-release-certification` (27) and `v3-stable-publication` (28) — are the human-gated hand-off and are not started autonomously.**
 
 ## Operator follow-up
 
