@@ -38,7 +38,7 @@ const packageRows = [
 const releaseRows = [
   `Registry snapshot: ${registry.verifiedAt}. Expected candidate: \`${registry.expectedCandidate}\`.`,
   '',
-  '| Package | `latest` | `alpha` | `next` | RC state |',
+  '| Package | `latest` | `alpha` | `next` | Release state |',
   '| --- | --- | --- | --- | --- |',
   ...Object.entries(registry.packages).map(([name, tags]) =>
     `| \`${name}\` | \`${tags.latest ?? 'absent'}\` | \`${tags.alpha ?? 'absent'}\` | \`${tags.next ?? 'absent'}\` | ${tags.candidateState} |`,
@@ -147,8 +147,11 @@ function verifyInventory() {
   }
   for (const [name, tags] of Object.entries(registry.packages)) {
     const published = tags.candidateState === 'published';
-    if (published !== (tags.next === registry.expectedCandidate)) {
-      throw new Error(`${name} candidate state conflicts with its next tag`);
+    // RC lines bind publication to the next tag; stable lines bind it to latest.
+    const isStable = !registry.expectedCandidate.includes('-');
+    const tagHoldsCandidate = (isStable ? tags.latest : tags.next) === registry.expectedCandidate;
+    if (published !== tagHoldsCandidate) {
+      throw new Error(`${name} candidate state conflicts with its ${isStable ? 'latest' : 'next'} tag`);
     }
   }
   const dartArtifact = contract.artifacts.find(({ecosystem}) => ecosystem === 'dart');

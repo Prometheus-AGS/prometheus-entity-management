@@ -12,22 +12,22 @@ The immutable candidate was staged in GitHub Actions run
 [`31082488746`](https://github.com/Prometheus-AGS/prometheus-entity-management/actions/runs/31082488746).
 
 <!-- BEGIN GENERATED:NPM_REGISTRY_STATUS -->
-Registry snapshot: 2026-08-06T08:17:32Z. Expected candidate: `3.0.0-rc.1`.
+Registry snapshot: 2026-08-23T18:20:00Z. Expected candidate: `3.0.0`.
 
-| Package | `latest` | `alpha` | `next` | RC state |
+| Package | `latest` | `alpha` | `next` | Release state |
 | --- | --- | --- | --- | --- |
-| `@prometheus-ags/a2ui-react` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
-| `@prometheus-ags/entity-graph-a2a` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
-| `@prometheus-ags/entity-graph-alpine` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
-| `@prometheus-ags/entity-graph-core` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
-| `@prometheus-ags/entity-graph-htmx` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
-| `@prometheus-ags/prometheus-entity-management` | `3.0.0-rc.1` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
-| `@prometheus-ags/entity-graph-sdl` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
-| `@prometheus-ags/entity-graph-solid` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
-| `@prometheus-ags/entity-graph-svelte` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
-| `@prometheus-ags/entity-graph-sync` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
-| `@prometheus-ags/entity-graph-tauri` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
-| `@prometheus-ags/entity-graph-web-components` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
+| `@prometheus-ags/entity-graph-core` | `3.0.0` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
+| `@prometheus-ags/entity-graph-sdl` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-solid` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-svelte` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-sync` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-tauri` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-web-components` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/prometheus-entity-management` | `3.0.0` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
+| `@prometheus-ags/a2ui-react` | `3.0.0` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
+| `@prometheus-ags/entity-graph-a2a` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-alpine` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-htmx` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
 <!-- END GENERATED:NPM_REGISTRY_STATUS -->
 
 <!-- BEGIN GENERATED:PUBDEV_REGISTRY_STATUS -->

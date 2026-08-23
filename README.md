@@ -12,39 +12,34 @@ parallel query caches.
 
 ## 3.0 release status
 
-The codebase is in the **3.0 RC program**. React, the framework-neutral core,
-and A2UI React are public as `3.0.0-rc.1`; the other nine npm packages are
-staged and await npm approval. React's `latest` and `next` tags now resolve to
-`3.0.0-rc.1`. Core and A2UI expose the RC on `next` while retaining their alpha
-`latest` tags. Flutter is public on pub.dev as `entity_graph_flutter@3.0.0`.
+**3.0.0 stable is published.** All twelve npm packages are public at `3.0.0`
+with the `latest` tag promoted (tag `v3.0.0`, published 2026-08-23).
+Flutter is public on pub.dev as `entity_graph_flutter@3.0.0`.
 The production documentation is available at
 [prometheus-ags.github.io/prometheus-entity-management](https://prometheus-ags.github.io/prometheus-entity-management/).
 
 <!-- BEGIN GENERATED:RELEASE_TAGS -->
-Registry snapshot: 2026-08-06T08:17:32Z. Expected candidate: `3.0.0-rc.1`.
+Registry snapshot: 2026-08-23T18:20:00Z. Expected candidate: `3.0.0`.
 
-| Package | `latest` | `alpha` | `next` | RC state |
+| Package | `latest` | `alpha` | `next` | Release state |
 | --- | --- | --- | --- | --- |
-| `@prometheus-ags/a2ui-react` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
-| `@prometheus-ags/entity-graph-a2a` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
-| `@prometheus-ags/entity-graph-alpine` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
-| `@prometheus-ags/entity-graph-core` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
-| `@prometheus-ags/entity-graph-htmx` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
-| `@prometheus-ags/prometheus-entity-management` | `3.0.0-rc.1` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
-| `@prometheus-ags/entity-graph-sdl` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
-| `@prometheus-ags/entity-graph-solid` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
-| `@prometheus-ags/entity-graph-svelte` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
-| `@prometheus-ags/entity-graph-sync` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
-| `@prometheus-ags/entity-graph-tauri` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
-| `@prometheus-ags/entity-graph-web-components` | `3.0.0-alpha.0` | `3.0.0-alpha.0` | `absent` | staged-awaiting-approval |
+| `@prometheus-ags/entity-graph-core` | `3.0.0` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
+| `@prometheus-ags/entity-graph-sdl` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-solid` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-svelte` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-sync` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-tauri` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-web-components` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/prometheus-entity-management` | `3.0.0` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
+| `@prometheus-ags/a2ui-react` | `3.0.0` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
+| `@prometheus-ags/entity-graph-a2a` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-alpine` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-htmx` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
 <!-- END GENERATED:RELEASE_TAGS -->
 
-The immutable npm candidate is source SHA
-`afbb8de0e861739fa6facb461b69573b2a627bdb`, rehearsed in GitHub run
-`30976967778` and staged in run
-[`31082488746`](https://github.com/Prometheus-AGS/prometheus-entity-management/actions/runs/31082488746).
-The remaining npm publication gate is 2FA approval of the nine staged packages.
-See [RELEASING.md](RELEASING.md).
+The stable release is tagged `v3.0.0` and was verified live against the public
+registry after publication. See [RELEASING.md](RELEASING.md) for the release
+contract, the governed OIDC promotion path, and recovery rules.
 
 ## Why an entity graph
 
@@ -96,18 +91,18 @@ they cannot create hidden graph singletons.
 <!-- BEGIN GENERATED:PACKAGES -->
 | Package | Candidate | Stability | Role |
 | --- | --- | --- | --- |
-| `@prometheus-ags/entity-graph-core` | `3.0.0-rc.1` | stable | framework-neutral normalized graph |
-| `@prometheus-ags/prometheus-entity-management` | `3.0.0-rc.1` | stable | React 19 hooks and UI |
-| `@prometheus-ags/entity-graph-sdl` | `3.0.0-rc.1` | stable | schema definition language |
-| `@prometheus-ags/entity-graph-sync` | `3.0.0-rc.1` | stable | local-first and CRDT sync providers |
-| `@prometheus-ags/entity-graph-svelte` | `3.0.0-rc.1` | stable | Svelte 5 binding |
-| `@prometheus-ags/entity-graph-solid` | `3.0.0-rc.1` | stable | Solid binding |
-| `@prometheus-ags/entity-graph-web-components` | `3.0.0-rc.1` | stable | Lit web components |
-| `@prometheus-ags/entity-graph-alpine` | `3.0.0-rc.1` | stable | Alpine plugin |
-| `@prometheus-ags/entity-graph-htmx` | `3.0.0-rc.1` | stable | HTMX server adapter |
-| `@prometheus-ags/entity-graph-a2a` | `3.0.0-rc.1` | stable | A2A reference server |
-| `@prometheus-ags/a2ui-react` | `3.0.0-rc.1` | stable | A2UI React renderer and graph bridge after AG-UI migration |
-| `@prometheus-ags/entity-graph-tauri` | `3.0.0-rc.1` | stable | Tauri JavaScript binding and bundled Rust plugin |
+| `@prometheus-ags/entity-graph-core` | `3.0.0` | stable | framework-neutral normalized graph |
+| `@prometheus-ags/prometheus-entity-management` | `3.0.0` | stable | React 19 hooks and UI |
+| `@prometheus-ags/entity-graph-sdl` | `3.0.0` | stable | schema definition language |
+| `@prometheus-ags/entity-graph-sync` | `3.0.0` | stable | local-first and CRDT sync providers |
+| `@prometheus-ags/entity-graph-svelte` | `3.0.0` | stable | Svelte 5 binding |
+| `@prometheus-ags/entity-graph-solid` | `3.0.0` | stable | Solid binding |
+| `@prometheus-ags/entity-graph-web-components` | `3.0.0` | stable | Lit web components |
+| `@prometheus-ags/entity-graph-alpine` | `3.0.0` | stable | Alpine plugin |
+| `@prometheus-ags/entity-graph-htmx` | `3.0.0` | stable | HTMX server adapter |
+| `@prometheus-ags/entity-graph-a2a` | `3.0.0` | stable | A2A reference server |
+| `@prometheus-ags/a2ui-react` | `3.0.0` | stable | A2UI React renderer and graph bridge after AG-UI migration |
+| `@prometheus-ags/entity-graph-tauri` | `3.0.0` | stable | Tauri JavaScript binding and bundled Rust plugin |
 <!-- END GENERATED:PACKAGES -->
 
 Package-level READMEs remain the package-specific API sources. The generated
@@ -118,11 +113,11 @@ mode under `website/static/api/`, published at `/api/` on the documentation site
 
 ### React 19 + Vite 8
 
-Install the public React RC together with the matching core RC:
+Install the React package together with the matching core:
 
 ```bash
-pnpm add @prometheus-ags/entity-graph-core@next \
-  @prometheus-ags/prometheus-entity-management@latest \
+pnpm add @prometheus-ags/entity-graph-core \
+  @prometheus-ags/prometheus-entity-management \
   react@19 react-dom@19
 ```
 
@@ -211,7 +206,7 @@ executable examples, documentation, and evidence receipts in
 | Relationship traversal and cascade invalidation | stable | `example.relationship.cascade-invalidation` | implemented |
 | Local remote and hybrid view completeness | stable | `example.view.local-remote-hybrid` | implemented |
 | Realtime batching and cross-view updates | stable | `example.realtime.coalesced-cross-view` | implemented, partial |
-| Offline persistence reconnect and convergence | stable | `example.offline.persistence-convergence` | implemented, partial |
+| Offline persistence reconnect and convergence | stable | `example.offline.persistence-convergence` | implemented |
 | REST and GraphQL normalization equivalence | stable | `example.transport.rest-graphql-equivalence` | implemented |
 | One application-owned graph across JavaScript bindings | stable | `example.graph.normalized-cross-view` | implemented |
 | A2A task and A2UI policy-controlled surface flow | stable | `example.protocol.a2a-a2ui-policy` | implemented |
