@@ -4,6 +4,13 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# npm refuses to run anywhere inside this repo (root package.json devEngines
+# enforces pnpm; npm exits EBADDEVENGINES). Registry reads therefore run from a
+# scratch cwd — otherwise `npm view` fails and this script misfires.
+scratch=$(mktemp -d)
+trap 'rm -rf "$scratch"' EXIT
+npmview() { (cd "$scratch" && npm view "$@"); }
+
 order=(
   packages/entity-graph-core
   packages/entity-graph-sdl
@@ -22,7 +29,7 @@ order=(
 for dir in "${order[@]}"; do
   name=$(node -p "require('./$dir/package.json').name")
   version=$(node -p "require('./$dir/package.json').version")
-  existing=$(npm view "$name@$version" version 2>/dev/null || true)
+  existing=$(npmview "$name@$version" version 2>/dev/null || true)
   if [[ "$existing" == "$version" ]]; then
     echo "skip  $name@$version (already on registry)"
     continue
@@ -42,7 +49,21 @@ for dir in "${order[@]}"; do
   # Fail closed: re-read what the registry actually received. The pre-publish
   # tarball gate (scripts/package-contract-validation.mjs) was never wired into
   # this script, so nothing caught the leak in the 3.0.0 run.
-  if npm view "$name@$version" --json 2>/dev/null \
+  # Registry reads race the write: `npm view` can 404 for several seconds after
+  # a successful publish, so retry until the version is actually visible.
+  visible=""
+  for attempt in 1 2 3 4 5 6; do
+    if [[ "$(npmview "$name@$version" version 2>/dev/null || true)" == "$version" ]]; then
+      visible=1
+      break
+    fi
+    sleep 5
+  done
+  if [[ -z "$visible" ]]; then
+    echo "ERROR: $name@$version not visible on the registry 30s after publish" >&2
+    exit 1
+  fi
+  if npmview "$name@$version" --json 2>/dev/null \
      | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const m=JSON.parse(s||'{}');const bad=[];for(const k of ['dependencies','peerDependencies','devDependencies','optionalDependencies'])for(const [a,b] of Object.entries(m[k]||{}))if(String(b).includes('workspace:'))bad.push(k+'/'+a+'='+b);if(bad.length){console.error('  workspace protocol leaked: '+bad.join(', '));process.exit(1)}})"; then
     echo "  verified $name@$version — no workspace protocol on the registry"
   else
@@ -52,4 +73,4 @@ for dir in "${order[@]}"; do
 done
 
 echo "done; verifying dist-tags"
-npm view @prometheus-ags/prometheus-entity-management dist-tags --json
+npmview @prometheus-ags/prometheus-entity-management dist-tags --json

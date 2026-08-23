@@ -12,32 +12,35 @@ parallel query caches.
 
 ## 3.0 release status
 
-**3.0.0 stable is published.** All twelve npm packages are public at `3.0.0`
-with the `latest` tag promoted (tag `v3.0.0`, published 2026-08-23).
-Flutter is public on pub.dev as `entity_graph_flutter@3.0.0`.
+**3.0.1 stable is published.** All twelve npm packages are public at `3.0.1`
+with the `latest` tag promoted (published 2026-08-23). `3.0.0` was withdrawn
+the same day: its manifests shipped an unresolved pnpm `workspace:` protocol
+and could not be installed, so the broken `3.0.0` versions are deprecated and
+`3.0.1` is the stable line. Flutter is public on pub.dev as
+`entity_graph_flutter@3.0.0`.
 The production documentation is available at
 [prometheus-ags.github.io/prometheus-entity-management](https://prometheus-ags.github.io/prometheus-entity-management/).
 
 <!-- BEGIN GENERATED:RELEASE_TAGS -->
-Registry snapshot: 2026-08-23T18:20:00Z. Expected candidate: `3.0.0`.
+Registry snapshot: 2026-08-23T18:45:00Z. Expected candidate: `3.0.1`.
 
 | Package | `latest` | `alpha` | `next` | Release state |
 | --- | --- | --- | --- | --- |
-| `@prometheus-ags/entity-graph-core` | `3.0.0` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
-| `@prometheus-ags/entity-graph-sdl` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
-| `@prometheus-ags/entity-graph-solid` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
-| `@prometheus-ags/entity-graph-svelte` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
-| `@prometheus-ags/entity-graph-sync` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
-| `@prometheus-ags/entity-graph-tauri` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
-| `@prometheus-ags/entity-graph-web-components` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
-| `@prometheus-ags/prometheus-entity-management` | `3.0.0` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
-| `@prometheus-ags/a2ui-react` | `3.0.0` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
-| `@prometheus-ags/entity-graph-a2a` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
-| `@prometheus-ags/entity-graph-alpine` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
-| `@prometheus-ags/entity-graph-htmx` | `3.0.0` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-core` | `3.0.1` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
+| `@prometheus-ags/entity-graph-sdl` | `3.0.1` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-solid` | `3.0.1` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-svelte` | `3.0.1` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-sync` | `3.0.1` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-tauri` | `3.0.1` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-web-components` | `3.0.1` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/prometheus-entity-management` | `3.0.1` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
+| `@prometheus-ags/a2ui-react` | `3.0.1` | `3.0.0-alpha.0` | `3.0.0-rc.1` | published |
+| `@prometheus-ags/entity-graph-a2a` | `3.0.1` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-alpine` | `3.0.1` | `3.0.0-alpha.0` | `absent` | published |
+| `@prometheus-ags/entity-graph-htmx` | `3.0.1` | `3.0.0-alpha.0` | `absent` | published |
 <!-- END GENERATED:RELEASE_TAGS -->
 
-The stable release is tagged `v3.0.0` and was verified live against the public
+The stable release is tagged `v3.0.1` and was verified live against the public
 registry after publication. See [RELEASING.md](RELEASING.md) for the release
 contract, the governed OIDC promotion path, and recovery rules.
 
@@ -91,18 +94,18 @@ they cannot create hidden graph singletons.
 <!-- BEGIN GENERATED:PACKAGES -->
 | Package | Candidate | Stability | Role |
 | --- | --- | --- | --- |
-| `@prometheus-ags/entity-graph-core` | `3.0.0` | stable | framework-neutral normalized graph |
-| `@prometheus-ags/prometheus-entity-management` | `3.0.0` | stable | React 19 hooks and UI |
-| `@prometheus-ags/entity-graph-sdl` | `3.0.0` | stable | schema definition language |
-| `@prometheus-ags/entity-graph-sync` | `3.0.0` | stable | local-first and CRDT sync providers |
-| `@prometheus-ags/entity-graph-svelte` | `3.0.0` | stable | Svelte 5 binding |
-| `@prometheus-ags/entity-graph-solid` | `3.0.0` | stable | Solid binding |
-| `@prometheus-ags/entity-graph-web-components` | `3.0.0` | stable | Lit web components |
-| `@prometheus-ags/entity-graph-alpine` | `3.0.0` | stable | Alpine plugin |
-| `@prometheus-ags/entity-graph-htmx` | `3.0.0` | stable | HTMX server adapter |
-| `@prometheus-ags/entity-graph-a2a` | `3.0.0` | stable | A2A reference server |
-| `@prometheus-ags/a2ui-react` | `3.0.0` | stable | A2UI React renderer and graph bridge after AG-UI migration |
-| `@prometheus-ags/entity-graph-tauri` | `3.0.0` | stable | Tauri JavaScript binding and bundled Rust plugin |
+| `@prometheus-ags/entity-graph-core` | `3.0.1` | stable | framework-neutral normalized graph |
+| `@prometheus-ags/prometheus-entity-management` | `3.0.1` | stable | React 19 hooks and UI |
+| `@prometheus-ags/entity-graph-sdl` | `3.0.1` | stable | schema definition language |
+| `@prometheus-ags/entity-graph-sync` | `3.0.1` | stable | local-first and CRDT sync providers |
+| `@prometheus-ags/entity-graph-svelte` | `3.0.1` | stable | Svelte 5 binding |
+| `@prometheus-ags/entity-graph-solid` | `3.0.1` | stable | Solid binding |
+| `@prometheus-ags/entity-graph-web-components` | `3.0.1` | stable | Lit web components |
+| `@prometheus-ags/entity-graph-alpine` | `3.0.1` | stable | Alpine plugin |
+| `@prometheus-ags/entity-graph-htmx` | `3.0.1` | stable | HTMX server adapter |
+| `@prometheus-ags/entity-graph-a2a` | `3.0.1` | stable | A2A reference server |
+| `@prometheus-ags/a2ui-react` | `3.0.1` | stable | A2UI React renderer and graph bridge after AG-UI migration |
+| `@prometheus-ags/entity-graph-tauri` | `3.0.1` | stable | Tauri JavaScript binding and bundled Rust plugin |
 <!-- END GENERATED:PACKAGES -->
 
 Package-level READMEs remain the package-specific API sources. The generated
