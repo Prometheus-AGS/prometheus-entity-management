@@ -1,5 +1,7 @@
 import { readFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
+import { tmpdir } from "node:os";
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
@@ -955,6 +957,15 @@ export function createReleaseCommandAdapters({
 }) {
   const rootPath = normalizeRoot(root);
   const candidatePath = resolve(candidateDirectory);
+  let npmCwd = rootPath;
+  try {
+    const rootManifest = JSON.parse(readFileSync(join(rootPath, "package.json"), "utf8"));
+    if (rootManifest.devEngines?.packageManager?.name && rootManifest.devEngines.packageManager.name !== "npm") {
+      npmCwd = tmpdir();
+    }
+  } catch {
+    // A fixture without a root manifest keeps the supplied root as its cwd.
+  }
   assert(typeof runCommand === "function", "runCommand is required");
 
   return {
@@ -968,7 +979,7 @@ export function createReleaseCommandAdapters({
         const result = await runCommand(
           "npm",
           ["view", artifact.packageName, "dist-tags", "--json"],
-          { cwd: rootPath, mutation: false },
+          { cwd: npmCwd, mutation: false },
         );
         snapshot[artifact.packageName] = parseJsonOutput(result.stdout, artifact.packageName);
       }
@@ -1005,7 +1016,7 @@ export function createReleaseCommandAdapters({
           "dist.integrity",
           "--json",
         ],
-        { cwd: rootPath, mutation: false, acceptedExitCodes: [1] },
+        { cwd: npmCwd, mutation: false, acceptedExitCodes: [1] },
       );
       if (result.code === 1) {
         const code = parseNpmRegistryErrorCode(result);
@@ -1037,7 +1048,7 @@ export function createReleaseCommandAdapters({
           "public",
           "--json",
         ],
-        { cwd: rootPath, mutation: false },
+        { cwd: npmCwd, mutation: false },
       );
       return { receipt: compactReceipt(result.stdout) };
     },
@@ -1088,7 +1099,7 @@ export function createReleaseCommandAdapters({
               "--json",
             ],
         {
-          cwd: rootPath,
+          cwd: npmCwd,
           mutation: true,
           allowMutation,
           env: authorityEnvironment,
