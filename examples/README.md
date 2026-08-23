@@ -4,15 +4,15 @@ This workspace contains all runnable demo applications for `@prometheus-ags/prom
 
 ## 3.0 Showcase Status
 
-The [machine-readable coverage ledger](coverage.json) is the source of truth for example readiness and links back to the authoritative [3.0 release contract](../release/v3-release-contract.json). The release is still in progress; `implemented` identifies evidence-backed source or platform work, while `planned` remains required work.
+The [machine-readable coverage ledger](coverage.json) is the source of truth for example readiness and links back to the authoritative [3.0 release contract](../release/v3-release-contract.json). The release is still in progress: `implemented` identifies complete declared showcase evidence, `partial` records real evidence with named gates remaining, and `planned` is not runtime evidence.
 
 | Showcase | Planned path | Status |
 | --- | --- | --- |
 | React 19 + Vite 8 | `examples/vite-app` | Implemented (`v3-vite-react19-example`) |
-| Next.js App Router | `examples/nextjs-app` | Planned (`v3-nextjs-app-router-example`) |
-| Agentic A2UI | `examples/agentic-a2ui` | Planned (`v3-agentic-a2ui-example`) |
-| Flutter + Riverpod + A2UI | `examples/flutter-riverpod` | Planned (`v3-flutter-riverpod-a2ui-example`) |
-| Tauri desktop + mobile | `examples/tauri-app` | Planned (`v3-tauri-universal-example`) |
+| Next.js App Router | `examples/nextjs-app` | Implemented (`v3-nextjs-app-router-example`) |
+| Agentic A2UI | `examples/agentic-a2ui-app` | Implemented (`v3-agentic-a2ui-example`) |
+| Flutter + Riverpod + A2UI | `examples/flutter-riverpod` | Implemented: Flutter 3.44.8 host gates, 3 goldens, iOS simulator, and Android API 35 emulator (`v3-flutter-riverpod-a2ui-example`) |
+| Tauri desktop + mobile | `examples/tauri-universal` | Implemented browser, packaged macOS, Android emulator, and iOS simulator evidence (`v3-tauri-universal-example`) |
 
 The branded Docusaurus site and protected GitHub Pages deployment are separately tracked as planned work in `website/`, culminating in `v3-docs-github-pages`.
 
@@ -33,11 +33,76 @@ for the scenario matrix, architecture, commands, loader guidance, and explicit
 evidence limits. The receipt is source-workspace browser evidence and does not
 replace packed core + React candidate verification or npm RC staging.
 
+## Implemented Next.js App Router showcase
+
+The `/next-runtime` route proves one server graph per request, structured-clone
+safe RSC hydration into one browser-owned graph, persistence across client
+navigation, reload replacement, validated Server Action mutation, and scoped
+realtime takeover. Its clean verifier builds and packs core plus React, installs
+only those tarballs into an external Next.js 16 production app, and records
+concurrent-request, browser, accessibility, screenshot, and trace evidence:
+
+```bash
+pnpm run verify:nextjs-app-router
+```
+
+See [`../release/nextjs-app-router-example.md`](../release/nextjs-app-router-example.md)
+for the ownership boundary, verification contract, evidence disposition, and
+explicit release limits.
+
 The `release.ci.hermetic-main-baseline` quality gate in [`coverage.json`](coverage.json) is implemented and proves frozen installation, dependency/advisory policy, bounded CI gates, and upgraded example build configuration. It does not certify a showcase by itself; every showcase must satisfy its own BDD, platform, and visual-evidence contract.
 
 The `release.packages.packed-module-contracts` gate is also implemented. It proves that all twelve npm tarballs have valid ESM/CommonJS runtime and declaration routes, bounded payloads, strict package-lint results, and isolated Node/TypeScript consumers. It does not exercise or certify an example application; showcase status comes from each owning change.
 
-The `release.flutter.source-provenance` gate is implemented for licensed source lineage. It proves allowlisted KnowMe history, attribution, explicit path dispositions, and one canonical owner at `packages/entity_graph_flutter`. The import is not runnable and the Flutter showcase remains `planned`; Dart runtime/analyzer work and Flutter widget, golden, Android, iOS, accessibility, and visual receipts still belong to their downstream changes.
+The `release.flutter.source-provenance` gate is implemented for licensed source lineage. It proves allowlisted KnowMe history, attribution, explicit path dispositions, and one canonical owner at `packages/entity_graph_flutter`. The import is not runnable. The separate Dart library and Flutter showcase gates are implemented: Flutter 3.44.8 host runtime, policy, widget, accessibility-semantic, stable goldens, iOS simulator, and Android emulator receipts are retained independently of the provenance import.
+
+## Implemented Flutter, Riverpod, and A2UI showcase
+
+The [`flutter-riverpod`](flutter-riverpod/README.md) application now composes
+the canonical Dart graph, generated Riverpod 3 controllers, local/remote/hybrid
+views, optimistic/offline CRUD, relationship and realtime invalidation,
+policy-controlled official GenUI rendering, responsive phone/tablet UI, and an
+optional FFI transport seam.
+
+Run the stable host boundary from the repository root:
+
+```bash
+pnpm run dart:ci
+```
+
+The Flutter 3.44.8 gate passes generation, formatting, analysis, 70 package
+tests, 25 showcase tests, and three regenerated hash-recorded goldens. The
+shared smoke flow also passes on an iOS 26.5 simulator and clean Android API 35
+emulator. See
+[`../release/flutter-riverpod-a2ui-example.md`](../release/flutter-riverpod-a2ui-example.md)
+for the exact architecture, scenario matrix, and exclusions.
+
+## Implemented universal Tauri application boundary
+
+The [`tauri-universal`](tauri-universal/README.md) workspace now contains one
+React 19/Vite 8 frontend and Tauri configuration for desktop, Android, and iOS.
+It uses one normalized graph, ID-only task lists, joined relationships, native
+SQLite/browser localStorage persistence, a durable offline mutation queue,
+least-privilege capabilities, and platform-service-owned deep links/lifecycle.
+
+Run the focused boundary from the repository root:
+
+```bash
+pnpm run typecheck:tauri-universal
+pnpm run test:tauri-universal:unit
+pnpm run test:tauri-universal:rust
+pnpm run test:tauri-universal:contract
+pnpm run verify:tauri-universal
+```
+
+The verifier hash-checks the separate task-5 receipt: five Chromium flows,
+packaged macOS command/denial/offline restart, Android API 36 emulator
+build/runtime/denial, and iOS 26.5 simulator archive/runtime. The source check
+does not itself count as platform execution, and the receipt does not claim
+Windows/Linux, physical-device, signing, store, registry, or stable-release
+certification. See
+[`../release/tauri-universal-example.md`](../release/tauri-universal-example.md)
+for the exact disposition.
 
 ## Implemented Shared Semantic Contract
 
@@ -49,7 +114,7 @@ Run it from the repository root:
 pnpm run verify:example-coverage
 ```
 
-The `release.examples.shared-semantic-contract` quality gate proves that every stable capability and release artifact is mapped to runnable semantic evidence and that missing/stale mappings fail closed. It is a headless contract, not browser, device, accessibility, or visual evidence. A showcase remains `planned` until its owning change implements these scenarios and records real runtime and visual receipts; React 19/Vite 8 now has those separate receipts.
+The `release.examples.shared-semantic-contract` quality gate proves that every stable capability and release artifact is mapped to runnable semantic evidence and that missing/stale mappings fail closed. It is a headless contract, not browser, device, accessibility, or visual evidence. All five requested showcases now have implemented evidence entries; each remains limited to its separately declared commands, paths, platforms, and exclusions.
 
 ## Implemented headless sync evidence
 
@@ -66,9 +131,11 @@ pnpm run bdd:sync-persistence
 ```
 
 The headless sync promotion did not itself change a showcase status. The React
-showcase now has separate rendered PGlite/Loro evidence; Flutter and Tauri
-persistence/device evidence remains planned, and overall coverage remains
-`in-progress`.
+showcase has rendered PGlite/Loro evidence; Flutter has implemented in-memory
+queue/reconnect and Android/iOS smoke evidence but no durable-persistence claim.
+Tauri now has browser-runtime reload/reconnect evidence plus packaged macOS
+native SQLite restart/reconnect and Android/iOS application smoke receipts.
+Mobile durable restart is not claimed; overall coverage remains `in-progress`.
 
 ## Implemented official A2UI bridge evidence
 
@@ -85,9 +152,33 @@ pnpm run verify:a2ui-bridge
 pnpm run bdd:a2ui-bridge
 ```
 
-The `agentic-a2ui` showcase remains planned. The bridge fixture certifies the
-renderer package boundary, not the complete shared-domain showcase or its final
-visual receipts.
+The bridge fixture certifies the renderer package boundary, while the separate
+`agentic-a2ui` clean gate now certifies the complete shared-domain showcase and
+its declared visual receipts.
+
+## Implemented Agentic A2A and A2UI showcase
+
+The dedicated [`agentic-a2ui-app`](agentic-a2ui-app/README.md) now connects the
+official A2A v1 lifecycle to an official A2UI v0.9.1 surface and routes exact
+actions through application-owned authorization, approval, command-store, and
+normalized-graph boundaries. Its default reference agent is deterministic and
+keyless; an external A2A endpoint is an explicit opt-in.
+
+Run the complete deletion-aware gate:
+
+```bash
+pnpm run verify:agentic-a2ui
+```
+
+It performs a frozen install; typecheck and lint; eleven focused units; core,
+React, A2A, and A2UI builds; both protocol export-ledger checks; a Vite
+production build; three Chromium flows; coverage, security, strict OpenSpec,
+and diff hygiene. The retained receipt hash-binds three screenshots and three
+traces and records zero serious or critical axe findings. This remains
+source-workspace evidence, not packed-package or external-agent certification.
+
+See [`../release/agentic-a2ui-example.md`](../release/agentic-a2ui-example.md)
+for the architecture, action matrix, current evidence, and explicit limits.
 
 ## Implemented headless A2A evidence
 
@@ -108,7 +199,8 @@ pnpm run bdd:a2a-conformance
 Protocol validity never grants application authority. The headless gate does
 not certify a rendered showcase, REST or gRPC bindings, push notifications,
 extension signing, full shared-domain flows, accessibility, or visual evidence.
-Those receipts remain owned by `v3-agentic-a2ui-example`.
+Those rendered receipts are implemented by `v3-agentic-a2ui-example`; they do
+not broaden the headless protocol gate itself.
 
 ## Shared Demo Infrastructure
 

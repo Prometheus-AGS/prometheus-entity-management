@@ -1,0 +1,21 @@
+{
+  "plan": {
+    "stages": [
+      {"id": "s1", "description": "Reconcile review cycle 5 against session surface ownership, approval concurrency, RED receipts, and OpenSpec criteria.", "requires_execution": false},
+      {"id": "s2", "description": "Validate focused session/approval tests and the regenerated 19-command receipt, coverage, ledgers, hashes, strict OpenSpec, and diff hygiene.", "requires_execution": true, "tool": "focused repository commands"},
+      {"id": "s3", "description": "Evaluate trust boundaries, architecture, exclusions, and React-first release impact without widening claims.", "requires_execution": false},
+      {"id": "s4", "description": "Persist the QA report, structured results, constraints, reflection, and convergence decision.", "requires_execution": true, "tool": "filesystem"},
+      {"id": "s5", "description": "Validate and finalize the named artifact-refiner state before isolated adversarial review.", "requires_execution": true, "tool": "artifact-refiner scripts"}
+    ],
+    "validation_plan": [
+      {"constraint_id": "acceptance-direct-evidence", "validation_method": "acceptance matrix and current evidence-path inspection", "execution_required": true},
+      {"constraint_id": "official-protocol-runtime", "validation_method": "source ownership and package export-ledger checks", "execution_required": true},
+      {"constraint_id": "action-boundary-fails-closed", "validation_method": "atomic-batch, stale-surface, overlapping-approval, focused policy, and browser receipts", "execution_required": true},
+      {"constraint_id": "normalized-layering-preserved", "validation_method": "architecture regression and cross-view receipt", "execution_required": true},
+      {"constraint_id": "lifecycle-and-golden-coverage", "validation_method": "focused unit and browser flow evidence", "execution_required": true},
+      {"constraint_id": "evidence-integrity", "validation_method": "JSON parsing, file checks, and SHA-256 recomputation", "execution_required": true},
+      {"constraint_id": "ledgers-synchronized", "validation_method": "coverage, export-ledger, documentation, and strict OpenSpec checks", "execution_required": true},
+      {"constraint_id": "limits-and-release-impact-explicit", "validation_method": "cross-file evidence-boundary review", "execution_required": false}
+    ]
+  }
+}

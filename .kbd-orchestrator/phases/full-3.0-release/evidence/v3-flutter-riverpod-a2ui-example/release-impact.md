@@ -1,48 +1,77 @@
 # Release impact — `v3-flutter-riverpod-a2ui-example`
 
-Date: 2026-08-21
+Date: 2026-08-04
+Implementation source through stable platform gates: `99d97c2`
+Change status: verified and archived; aggregate 3.0 certification remains
+separate
 
-## Implementation-ready surface
+## Package impact
 
-The dedicated `examples/flutter-riverpod` showcase proves the mobile slice of
-the 3.0 contract end to end: a Flutter/Riverpod 3 app renders official A2UI
-surfaces through genui `SurfaceController`, applies an app-owned fail-closed
-action policy (allowlisted `task.update`, approval-gated `task.replace`,
-denied `task.delete`, tenant guard, malformed-message rejection), and drives
-optimistic CRUD plus offline persistence/convergence against the certified
-`entity_graph_flutter@3.0.0` package. Mutations land once in the normalized
-graph and propagate to every joined view.
+The Flutter showcase is private (`publish_to: none`) and adds no declaration to
+`packages/entity_graph_flutter/lib`; the Dart public ledger remains 81/81. It
+does not create a second graph package, bundle a Rust runtime, or authorize
+pub.dev or app-store publication.
 
-This makes Flutter/Riverpod + A2UI a viable early RC consumer surface
-alongside the certified Vite, Next.js, and agentic-A2UI examples. Platform
-verification is compile-level (`flutter build apk --debug`,
-`flutter build ios --simulator --no-codesign`); no booted-device run was
-performed and that limit is retained, not waived. This change does not make
-the complete 3.0 portfolio stable or authorize registry mutation.
+The task-5 aggregate gate corrected one observed defect in the publishable
+`@prometheus-ags/a2ui-react` runtime: the official processor could retain and
+later mutate caller-owned message objects. The runtime now clones parsed
+messages separately for validation and commit. The focused regression keeps
+the caller fixture unchanged, and
+`.changeset/preserve-a2ui-message-ownership.md` requests a patch prerelease for
+that package. The fixed Changesets group will coordinate the later candidate.
 
-## Design decisions that bound the blast radius
+## React-first release lane
 
-- No library API changed. The app composes the existing public surfaces of
-  `entity_graph_flutter@3.0.0` plus pinned `flutter_riverpod >=3.3.2 <3.4.0`,
-  `genui 0.10.1`, and `a2ui_core 0.1.0` under the pub workspace.
-- The A2UI action policy is application-owned and fail-closed by default; the
-  package's transport and provider families stay untouched.
-- Four defects were found and fixed by the evidence loop, all in the example:
-  lambda `toGraph` closures forking Riverpod families per rebuild (fixed with
-  static `encode` tear-offs), auto-dispose CRUD provider dying between
-  `ref.read` and `save()` (tile now watches `.notifier`), a fake-clock zone
-  trap in tests (runtime constructed inside `testWidgets` body plus receipt
-  polling), and conflict merge not restoring the base value. No library fixes
-  were needed.
-- Goldens pin the A2UI surface message stream and phone/tablet task-board
-  layouts; drift is a hard test failure with platform-specific baselines
-  (`linux-` prefix selected automatically on Linux CI).
+This continuation is not part of the frozen React `3.0.0-rc.1` candidate on
+remote `main` at `1c40eaa08da210cbe3e20a77c5db211712b5c3a1`. Therefore:
 
-## Full-release disposition
+- the rehearsed React `rc.1` artifacts can be staged to npm `next` after trusted
+  publisher authority and protected-environment approval are available;
+- merging this continuation later consumes its Changesets and produces a
+  subsequent coordinated prerelease rather than changing the frozen `rc.1`;
+- no npm tag, registry object, or candidate SHA is mutated by this change.
 
-The full 3.0 release remains in progress. Universal Tauri, Flint portable
-contracts, skills, docs, cross-ecosystem certification, and stable
-publication retain independent plan ownership. The human-gated changes
-`v3-release-certification` and `v3-stable-publication` are untouched and
-remain the hand-off boundary. This evidence grants no npm, GitHub Release,
-GitHub Pages, Pub, Cargo, or app-store publication authority.
+## Stable-release impact
+
+The Flutter/Riverpod/A2UI showcase now satisfies its bounded plan acceptance
+criteria and can be used as implemented evidence for the Flutter platform and
+showcase portfolio. It does not complete stable 3.0.0. Universal Tauri, the
+skills expansion, complete Prometheus Docusaurus site, protected GitHub Pages,
+aggregate release certification, registry authority, and stable promotion
+remain separate changes.
+
+## Quality corrections before archive
+
+Artifact-refiner passed 8/8 blocking constraints. The isolated adversarial
+review did not pass on its first attempt: it first exposed a stale KBD
+projection and incomplete review packet, then found that the tracked Android
+and iOS workflow invoked the integration test from the repository root instead
+of the Flutter package. The workflow and its focused regression now require
+`examples/flutter-riverpod` as the working directory. The third review passed
+with no findings, and the sycophancy screen passed at 0.0.
+
+Final root CI passed 90/90 BDD scenarios and 428/428 steps. Strict validation
+passes for all 17 promoted OpenSpec specifications, and the bounded change is
+archived at
+`openspec/changes/archive/2026-08-04-v3-flutter-riverpod-a2ui-example/`.
+
+## Security boundaries
+
+The application receives untrusted agent JSONL and optionally crosses a native
+transport interface. Atomic preflight validates the complete batch before
+GenUI mutation; the catalog and action names are allowlisted; tenant/task
+policy and trusted approval run after protocol validation; allowed actions
+flow through generated controllers into the one application-owned graph. The
+FFI adapter owns transport I/O only. No secrets or hosted credentials are
+required by deterministic CI or platform smoke.
+
+## Explicit limits
+
+- iOS and Android evidence is simulator/emulator smoke, not physical-device or
+  native assistive-technology certification.
+- Offline/reconnect behavior uses an in-memory queue and does not claim durable
+  persistence.
+- Hosted service integrations and external agents are not exercised.
+- GenUI remains exact-pinned and experimental.
+- The example owns no public Flutter API and no bundled Rust runtime.
+- Registry publication and movement of npm `latest` remain unauthorized.

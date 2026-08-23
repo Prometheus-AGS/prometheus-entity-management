@@ -7,7 +7,7 @@
 ///   Layer 2  →  Riverpod providers      (entityProvider, entityListProvider)
 ///   Transport →  [EntityTransport] + [EntityTransportRegistry]
 ///
-/// The SDL shared contract is modelled by [SdlDocument] / [EntityGraphIR].
+/// The SDL shared contract is modelled by [EntityGraphIR].
 /// Use [parseSdl] to parse a JSON/Map SDL document into the validated IR.
 library;
 

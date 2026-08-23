@@ -1,8 +1,8 @@
 import { useState, useCallback, useRef, useMemo, useEffect } from "react";
 import { useStore } from "zustand";
-import { useGraphStore } from "@prometheus-ags/entity-graph-core";
 import { useEntity } from "../hooks";
 import { useEntityView } from "../view/use-entity-view";
+import { useGraphStoreApi } from "../graph-store";
 import { cascadeInvalidation, readRelations } from "@prometheus-ags/entity-graph-core";
 import { serializeKey } from "@prometheus-ags/entity-graph-core";
 import type { EntityType, EntityId } from "@prometheus-ags/entity-graph-core";
@@ -69,6 +69,7 @@ export interface CRUDState<TEntity extends object> {
  */
 export function useEntityCRUD<TEntity extends object>(opts: CRUDOptions<TEntity>): CRUDState<TEntity> {
   const { type, listQueryKey, listFetch, normalize, detailFetch, onCreate, onUpdate, onDelete, createDefaults = {} as Partial<TEntity>, initialView = {}, selectAfterCreate = true, clearSelectionAfterDelete = true } = opts;
+  const storeApi = useGraphStoreApi();
   const optsRef = useRef(opts); optsRef.current = opts;
   const [mode, setMode] = useState<CRUDMode>("list");
   const [selectedId, setSelectedId] = useState<EntityId | null>(null);
@@ -77,34 +78,34 @@ export function useEntityCRUD<TEntity extends object>(opts: CRUDOptions<TEntity>
   const list = useEntityView<TEntity>({ type, baseQueryKey: listQueryKey, view: initialView, remoteFetch: listFetch, normalize: (raw: TEntity) => normalize(raw) });
   const { data: detail, isLoading: detailIsLoading, error: detailError } = useEntity<TEntity, TEntity>({
     type, id: selectedId,
-    fetch: detailFetch ?? ((id) => { const existing = useGraphStore.getState().readEntity<TEntity>(type, id); if (existing) return Promise.resolve(existing); return Promise.reject(new Error("No detailFetch")); }),
+    fetch: detailFetch ?? ((id) => { const existing = storeApi.getState().readEntity<TEntity>(type, id); if (existing) return Promise.resolve(existing); return Promise.reject(new Error("No detailFetch")); }),
     normalize: (raw) => raw, enabled: !!selectedId,
   });
-  const relations = useMemo(() => detail ? readRelations(type, detail as Record<string, unknown>) : {}, [type, detail]);
+  const relations = useMemo(() => detail ? readRelations(type, detail as Record<string, unknown>, storeApi) : {}, [type, detail, storeApi]);
   const [editBuffer, setEditBuffer] = useState<Partial<TEntity>>({});
   const [isSaving, setIsSaving] = useState(false); const [saveError, setSaveError] = useState<string | null>(null);
   useEffect(() => { if (detail) setEditBuffer({ ...detail }); }, [selectedId]); // eslint-disable-line
   const setField = useCallback((field: EntityFieldPath<TEntity>, value: unknown) => setEditBuffer((prev) => setValueAtPath(prev as Record<string, unknown>, String(field), value) as Partial<TEntity>), []);
   const setFields = useCallback((fields: Partial<TEntity>) => setEditBuffer((prev) => ({ ...prev, ...fields })), []);
-  const resetBuffer = useCallback(() => { const current = selectedId ? useGraphStore.getState().readEntity<TEntity>(type, selectedId) : null; setEditBuffer(current ? { ...current } : {}); }, [type, selectedId]);
+  const resetBuffer = useCallback(() => { const current = selectedId ? storeApi.getState().readEntity<TEntity>(type, selectedId) : null; setEditBuffer(current ? { ...current } : {}); }, [type, selectedId, storeApi]);
   const dirty = useMemo((): DirtyFields<TEntity> => {
     if (!detail) return { changed: new Set(), isDirty: false };
     const changed = collectDirtyPaths(editBuffer, detail);
     return { changed: changed as ReadonlySet<EntityFieldPath<TEntity>>, isDirty: changed.size > 0 };
   }, [editBuffer, detail]);
-  const startEdit = useCallback((id?: EntityId) => { const targetId = id ?? selectedId; if (targetId) { setSelectedId(targetId); const entity = useGraphStore.getState().readEntity<TEntity>(type, targetId); setEditBuffer(entity ? { ...entity } : {}); } setMode("edit"); }, [selectedId, type]);
+  const startEdit = useCallback((id?: EntityId) => { const targetId = id ?? selectedId; if (targetId) { setSelectedId(targetId); const entity = storeApi.getState().readEntity<TEntity>(type, targetId); setEditBuffer(entity ? { ...entity } : {}); } setMode("edit"); }, [selectedId, type, storeApi]);
   const cancelEdit = useCallback(() => { resetBuffer(); setMode(selectedId ? "detail" : "list"); setSaveError(null); }, [resetBuffer, selectedId]);
   const applyOptimistic = useCallback(() => {
     if (!selectedId) return;
-    const store = useGraphStore.getState();
+    const store = storeApi.getState();
     store.patchEntity(type, selectedId, editBuffer as Record<string, unknown>);
     store.setEntitySyncMetadata(type, selectedId, { synced: false, origin: "optimistic", updatedAt: Date.now() });
-  }, [type, selectedId, editBuffer]);
+  }, [type, selectedId, editBuffer, storeApi]);
   const save = useCallback(async (): Promise<TEntity | null> => {
     const updateEntity = optsRef.current.onUpdate;
     if (!selectedId || !updateEntity) return null;
     setIsSaving(true); setSaveError(null);
-    const store = useGraphStore.getState();
+    const store = storeApi.getState();
     const previous = store.readEntity<TEntity>(type, selectedId);
     const previousSync = store.syncMetadata[`${type}:${selectedId}`];
     store.upsertEntity(type, selectedId, editBuffer as Record<string, unknown>);
@@ -115,7 +116,7 @@ export function useEntityCRUD<TEntity extends object>(opts: CRUDOptions<TEntity>
       store.replaceEntity(type, id, data as Record<string, unknown>);
       store.clearPatch(type, id);
       store.setEntitySyncMetadata(type, id, { synced: true, origin: "server", updatedAt: Date.now() });
-      cascadeInvalidation({ type, id: selectedId, previous: previous as Record<string, unknown> | null, next: data as Record<string, unknown>, op: "update" });
+      cascadeInvalidation({ type, id: selectedId, previous: previous as Record<string, unknown> | null, next: data as Record<string, unknown>, op: "update" }, storeApi);
       setMode("detail"); optsRef.current.onUpdateSuccess?.(result); return result;
     } catch (err) {
       if (previous) store.replaceEntity(type, selectedId, previous as Record<string, unknown>);
@@ -123,7 +124,7 @@ export function useEntityCRUD<TEntity extends object>(opts: CRUDOptions<TEntity>
       else store.clearEntitySyncMetadata(type, selectedId);
       const error = err instanceof Error ? err : new Error(String(err)); setSaveError(error.message); optsRef.current.onError?.("update", error); return null;
     } finally { setIsSaving(false); }
-  }, [selectedId, type, editBuffer, normalize]);
+  }, [selectedId, type, editBuffer, normalize, storeApi]);
   const [createBuffer, setCreateBuffer] = useState<Partial<TEntity>>({ ...createDefaults });
   const [isCreating, setIsCreating] = useState(false); const [createError, setCreateError] = useState<string | null>(null);
   const setCreateField = useCallback((field: EntityFieldPath<TEntity>, value: unknown) => setCreateBuffer((prev) => setValueAtPath(prev as Record<string, unknown>, String(field), value) as Partial<TEntity>), []);
@@ -137,7 +138,7 @@ export function useEntityCRUD<TEntity extends object>(opts: CRUDOptions<TEntity>
     setIsCreating(true); setCreateError(null);
     const tempId = `__temp__${Date.now()}`;
     const optimisticData = { ...createBuffer, id: tempId, _optimistic: true };
-    const store = useGraphStore.getState();
+    const store = storeApi.getState();
     store.upsertEntity(type, tempId, optimisticData as Record<string, unknown>);
     store.setEntitySyncMetadata(type, tempId, { synced: false, origin: "optimistic", updatedAt: Date.now() });
     store.insertIdInList(serializeKey(listQueryKey), tempId, "start");
@@ -149,30 +150,30 @@ export function useEntityCRUD<TEntity extends object>(opts: CRUDOptions<TEntity>
       store.setEntityFetched(type, realId);
       store.setEntitySyncMetadata(type, realId, { synced: true, origin: "server", updatedAt: Date.now() });
       for (const key of Object.keys(store.lists)) { const list = store.lists[key]; const idx = list.ids.indexOf(tempId); if (idx !== -1) { store.removeIdFromAllLists(type, tempId); store.insertIdInList(key, realId, idx); } }
-      cascadeInvalidation({ type, id: realId, previous: null, next: data as Record<string, unknown>, op: "create" });
+      cascadeInvalidation({ type, id: realId, previous: null, next: data as Record<string, unknown>, op: "create" }, storeApi);
       if (selectAfterCreate) { setSelectedId(realId); setMode("detail"); } else setMode("list");
       resetCreateBuffer(); optsRef.current.onCreateSuccess?.(result); return result;
     } catch (err) {
       store.removeEntity(type, tempId); store.removeIdFromAllLists(type, tempId);
       const error = err instanceof Error ? err : new Error(String(err)); setCreateError(error.message); optsRef.current.onError?.("create", error); return null;
     } finally { setIsCreating(false); }
-  }, [type, createBuffer, normalize, listQueryKey, selectAfterCreate, resetCreateBuffer]);
+  }, [type, createBuffer, normalize, listQueryKey, selectAfterCreate, resetCreateBuffer, storeApi]);
   const [isDeleting, setIsDeleting] = useState(false); const [deleteError, setDeleteError] = useState<string | null>(null);
   const deleteEntity = useCallback(async (id?: EntityId) => {
     const deleteRemoteEntity = optsRef.current.onDelete;
     const targetId = id ?? selectedId; if (!targetId || !deleteRemoteEntity) return;
     setIsDeleting(true); setDeleteError(null);
-    const previous = useGraphStore.getState().readEntity<TEntity>(type, targetId);
-    useGraphStore.getState().removeIdFromAllLists(type, targetId);
+    const previous = storeApi.getState().readEntity<TEntity>(type, targetId);
+    storeApi.getState().removeIdFromAllLists(type, targetId);
     try {
-      await deleteRemoteEntity(targetId); useGraphStore.getState().removeEntity(type, targetId);
-      cascadeInvalidation({ type, id: targetId, previous: previous as Record<string, unknown> | null, next: null, op: "delete" });
+      await deleteRemoteEntity(targetId); storeApi.getState().removeEntity(type, targetId);
+      cascadeInvalidation({ type, id: targetId, previous: previous as Record<string, unknown> | null, next: null, op: "delete" }, storeApi);
       if (clearSelectionAfterDelete && targetId === selectedId) { setSelectedId(null); setMode("list"); }
       optsRef.current.onDeleteSuccess?.(targetId);
     } catch (err) {
-      if (previous) { useGraphStore.getState().upsertEntity(type, targetId, previous as Record<string, unknown>); useGraphStore.getState().insertIdInList(serializeKey(listQueryKey), targetId, "end"); }
+      if (previous) { storeApi.getState().upsertEntity(type, targetId, previous as Record<string, unknown>); storeApi.getState().insertIdInList(serializeKey(listQueryKey), targetId, "end"); }
       const error = err instanceof Error ? err : new Error(String(err)); setDeleteError(error.message); optsRef.current.onError?.("delete", error);
     } finally { setIsDeleting(false); }
-  }, [type, selectedId, listQueryKey, clearSelectionAfterDelete]);
+  }, [type, selectedId, listQueryKey, clearSelectionAfterDelete, storeApi]);
   return { mode, setMode, list, selectedId, select, openDetail, detail: detail ?? null, detailIsLoading, detailError: detailError ?? null, relations, editBuffer, setField, setFields, resetBuffer, dirty, startEdit, cancelEdit, save, isSaving, saveError, applyOptimistic, createBuffer, setCreateField, setCreateFields, resetCreateBuffer, startCreate, cancelCreate, create, isCreating, createError, deleteEntity, isDeleting, deleteError, isEditing: mode === "edit" || mode === "create" };
 }

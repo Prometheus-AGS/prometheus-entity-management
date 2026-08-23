@@ -1,0 +1,47 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "gpt-5.6-sol",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/check-generated-artifacts.mjs",
+      "line": 28,
+      "claim": "The new packed-API gate is purely self-referential: it compares committed static/api bytes against the committed packed-inventory.json's own aggregate hash, so stale or tampered API docs pass CI as long as the manifest was committed alongside them, and nothing binds the artifacts to package sources.",
+      "evidence": "The checker only runs `hashArtifactTree(apiRoot, {exclude: ['packed-inventory.json']})` and asserts `artifactFileCount`/`artifactAggregateSha256` against the inventory; it never reads `revision`, never recomputes `fingerprint`, and never touches package sources. The removed workflow hunk previously regenerated via `pnpm run docs:api` and ran `git diff --exit-code -- website/static/api`, which failed any PR that changed package sources without regenerating. RELEASING.md's new claim that Pages 'validates their inventories, aggregate artifact hashes, source blobs, receipts, routes, and rendered output' is false for the packed API: source-blob/receipt validation exists only in the evidence branch of the script. A PR modifying public package code will now deploy stale API references silently until someone runs the manual RELEASING.md gate.",
+      "suggested_fix": "Bind the inventory to sources in CI: either embed a hash of each public package's source/packed-tarball inputs in packed-inventory.json (as the evidence manifest does with sourceSha256/sourceGitBlobSha) and verify it in check-generated-artifacts.mjs against HEAD, or keep a lightweight source-fingerprint recompute step in the workflow that fails on drift without rewriting platform-dependent bytes."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".github/workflows/docs-pages.yml",
+      "line": 65,
+      "claim": "website/docs/evidence/gallery.mdx is no longer validated anywhere in the Pages pipeline: it was removed from the regeneration diff set, and check-generated-artifacts.mjs never references it.",
+      "evidence": "The old hunk diffed and untracked-checked `website/static/api website/static/search-index.json website/docs/evidence/gallery.mdx website/static/evidence`; the new workflow limits this to `website/static/search-index.json`, and the new checker script contains no occurrence of `gallery.mdx`. Only the manual RELEASING.md gate still diffs gallery.mdx, so a partially run evidence regeneration (manifest updated, gallery not) merges and deploys undetected between releases.",
+      "suggested_fix": "Have check-generated-artifacts.mjs assert gallery.mdx consistency (e.g., that every manifest assetId appears in it, or embed a gallery hash in the manifest), or restore a gallery.mdx diff check in the workflow."
+    },
+    {
+      "severity": "WARNING",
+      "file": "website/scripts/static-artifact-manifest.mjs",
+      "line": 25,
+      "claim": "Sorting with `localeCompare` makes the aggregate hash ordering dependent on the Node process's ICU default locale, so a manifest generated on a developer machine (e.g., en-US) can hash differently than the identical tree recomputed in CI (C/POSIX locale), producing false 'artifact hash drift' failures \u2014 the same cross-platform fragility this change was created to avoid.",
+      "evidence": "`files.sort((left, right) => left.relative.localeCompare(right.relative))` in the new hashArtifactTree; RELEASING.md explicitly cites platform-dependence ('Packed tarball compression and Sharp image encoding are platform-dependent') as the reason for hash-based verification, yet the hash itself is locale-sensitive for the 1068 mixed-case TypeDoc filenames (ICU primary collation is case-insensitive; POSIX sorts by code point).",
+      "suggested_fix": "Use a code-unit comparison: `files.sort((a, b) => (a.relative < b.relative ? -1 : a.relative > b.relative ? 1 : 0))`."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "website/scripts/check-generated-artifacts.mjs",
+      "line": 28,
+      "claim": "The checker never validates `schemaVersion`, `revision`, or `fingerprint` on either manifest, so a manifest with an unexpected schema or a stale revision field is accepted without any signal.",
+      "evidence": "readJson results for packed-inventory.json and manifest.json are consumed only for `artifactFileCount`, `artifactAggregateSha256`, `certificationReceiptSha256`, and `assets`; the `schemaVersion`/`revision`/`fingerprint` fields written by generate-packed-api.mjs and generate-evidence.mjs are never asserted anywhere in the new script.",
+      "suggested_fix": "Assert `schemaVersion === '1.0.0'` on both manifests and surface `revision` (at minimum warn when it predates the last commit touching packages/) so stale generations are visible in CI logs."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

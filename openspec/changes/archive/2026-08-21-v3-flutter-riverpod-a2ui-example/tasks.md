@@ -6,4 +6,7 @@
 - [x] Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface.
 - [x] Run the relevant pnpm, Dart/Melos, Cargo, OpenSpec, package, docs, security, and platform gates from a clean state.
 - [x] Record verification evidence, unresolved platform/manual limits, and release impact before archive.
+<<<<<<<< HEAD:openspec/changes/archive/2026-08-21-v3-flutter-riverpod-a2ui-example/tasks.md
 
+========
+>>>>>>>> origin/main:openspec/changes/archive/2026-08-04-v3-flutter-riverpod-a2ui-example/tasks.md

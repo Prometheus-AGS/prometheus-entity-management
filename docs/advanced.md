@@ -12,7 +12,12 @@ For positioning against TanStack products, see [Detailed comparison with TanStac
 
 ## Garbage collection
 
-`startGarbageCollector` / `stopGarbageCollector` (and intervals via `configureEngine`) evict **unsubscribed** entities that exceed retention rules. This is **not** reference-counting GC for JavaScript objects; it is **library-level eviction** of graph nodes to cap memory in long sessions.
+`startGarbageCollector(storeApi?)` / `stopGarbageCollector(storeApi?)` (and intervals via `configureEngine`) evict **unsubscribed** entities that exceed retention rules. Each application-owned graph has an independent collector; omitting `storeApi` targets the compatibility singleton. This is **not** reference-counting GC for JavaScript objects; it is **library-level eviction** of graph nodes to cap memory in long sessions.
+
+React hooks reference-count the selected graph's focus/reconnect listeners and
+collector. The last hook unmount removes those window listeners and stops that
+graph's interval, so a discarded `GraphStoreProvider` tree does not retain its
+request-owned graph.
 
 **Components** should not call these directly—prefer app bootstrap or a store module.
 
@@ -54,7 +59,7 @@ The package intentionally does **not** ship an AI runtime. Instead it provides l
 
 ## SSR
 
-See the Next.js example (`GraphHydrationProvider`) for seeding the graph from server-rendered data so the client hydrates without refetch gaps.
+See the Next.js example (`GraphStoreProvider`) for creating one graph per server request and hydrating one application-owned browser graph without refetch gaps.
 
 ## PWA and local-first runtime
 

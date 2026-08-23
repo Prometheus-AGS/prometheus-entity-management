@@ -18,6 +18,9 @@ Feature: Deterministic and hermetic main CI baseline
     And every direct dependency reported behind registry latest has an explicit compatibility rationale
     And vulnerable Next.js transitive pins resolve to the checked-in patched overrides
 
+  Scenario: pnpm 11 consumer workspaces are admitted
+    Then pnpm 11.15.0 satisfies the package-manager compatibility contract
+
   Scenario: CI exercises supported Node lines and identifies the responsible task
     Then CI runs validation, lint, typecheck, build, test, skills, and security gates
     And CI exercises Node 22, 24, and 26

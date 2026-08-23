@@ -1,0 +1,40 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "codex-gpt-5",
+  "isolation_mode": "harness-native:fresh-context",
+  "producer_model": "gpt-5",
+  "cross_model_check": "unverified-same-harness-family",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "website/src/pages/search.tsx",
+      "line": 15,
+      "claim": "SearchPage performs external I/O directly inside a UI component, violating the acceptance criterion to preserve layered I/O.",
+      "evidence": "The acceptance criteria require preserving layered I/O, but the component's useEffect calls fetch(indexUrl) and stores the response directly in component state.",
+      "suggested_fix": "Move search-index retrieval behind the repository's service/store/hook layers and let SearchPage consume only the component-facing hook."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/native-api-manifest.mjs",
+      "line": 76,
+      "claim": "The native API parity gate can certify stale generated documentation because it only hashes sources and existing artifacts independently.",
+      "evidence": "collectNativeApiManifest computes separate sourceFiles and artifactFiles aggregates, while verifyNativeApiManifest merely recomputes that same object; --write can therefore bless any stale artifact/source combination. The diff changes Dart documentation in entity_graph_flutter.dart, graph.dart, and transport.dart without any corresponding generated dartdoc changes under website/static/native-api/dart.",
+      "suggested_fix": "Regenerate native documentation in an isolated directory during verification and compare it byte-for-byte with committed artifacts before accepting the manifest."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".github/workflows/docs-pages.yml",
+      "line": 4,
+      "claim": "The pull-request path filter omits files that the documentation workflow directly executes or validates.",
+      "evidence": "The build runs docs:test:browser and test:npm-trust, but the pull_request paths omit tests/browser/v3-docs-pages*, tests/release/npm-trusted-publishing.test.mjs, and .github/workflows/publish.yml even though the npm-trust test reads publish.yml.",
+      "suggested_fix": "Add the documentation browser tests and snapshots, npm trusted-publishing test, and publish workflow to the pull_request path list."
+    }
+  ],
+  "checked_classes": [],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

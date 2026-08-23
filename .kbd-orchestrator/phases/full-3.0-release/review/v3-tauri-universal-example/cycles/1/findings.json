@@ -1,0 +1,47 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".kbd-orchestrator/phases/full-3.0-release/progress.json",
+      "line": 197,
+      "claim": "The checked-in KBD progress state contradicts the claimed completed 6/6 task state by recording `v3-tauri-universal-example` as only 5 of 6 tasks done and still `PENDING`.",
+      "evidence": "The diff changes `tasks_done` to 5 and `tasks_total` to 6 while leaving `status\": \"PENDING\"`; acceptance requires every task complete and constraint `acceptance-direct-evidence` requires \"signed 6/6 task state\".",
+      "suggested_fix": "Update the signed/progress state consistently to 6/6 complete, or do not mark the OpenSpec tasks and QA evidence as complete until the persisted progress state matches."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "examples/tauri-universal/src-tauri/gen/android/buildSrc/src/main/java/com/prometheusags/entitygraph/universal/kotlin/BuildTask.kt",
+      "line": 54,
+      "claim": "The generated Android build task still inherits registry credentials during platform builds despite the documented credential-exposure prevention requirement.",
+      "evidence": "The task only sets `environment(\"RUSTUP_TOOLCHAIN\", \"stable\")`; the diff-added `.prometheus/gotchas.md` says \"For this repository's mobile lanes, unset `CARGO_REGISTRY_TOKEN`, `NPM_TOKEN`, and `NODE_AUTH_TOKEN`; never record their values in receipts or postmortems.\"",
+      "suggested_fix": "Remove or blank `CARGO_REGISTRY_TOKEN`, `NPM_TOKEN`, and `NODE_AUTH_TOKEN` in the Gradle `project.exec` environment before invoking `pnpm tauri android android-studio-script`."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "examples/tauri-universal/src-tauri/gen/apple/project.yml",
+      "line": 80,
+      "claim": "The generated iOS build phase still inherits registry credentials during platform builds despite the documented credential-exposure prevention requirement.",
+      "evidence": "The preBuildScript is `RUSTUP_TOOLCHAIN=stable pnpm tauri ios xcode-script ...` with no credential unsets; the diff-added `.prometheus/gotchas.md` says mobile lanes must unset `CARGO_REGISTRY_TOKEN`, `NPM_TOKEN`, and `NODE_AUTH_TOKEN`.",
+      "suggested_fix": "Prefix the Xcode script with `unset CARGO_REGISTRY_TOKEN NPM_TOKEN NODE_AUTH_TOKEN` or invoke through a wrapper that removes those variables before running Tauri/Cargo."
+    },
+    {
+      "severity": "WARNING",
+      "file": "examples/tauri-universal/src-tauri/gen/apple/project.yml",
+      "line": 49,
+      "claim": "The generated iOS project metadata still contains version `0.0.0`, contradicting the claimed synchronized buildable mobile metadata version `0.0.1`.",
+      "evidence": "`project.yml` sets `CFBundleShortVersionString: 0.0.0` and `CFBundleVersion: \"0.0.0\"`, while task-5 clean-gates says \"The private example uses buildable application version `0.0.1`, and the generated mobile metadata is synchronized.\"",
+      "suggested_fix": "Change the generated Apple project metadata to `0.0.1` or remove the synchronization claim and add a verifier check for regenerated iOS metadata."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

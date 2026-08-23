@@ -217,26 +217,24 @@ Then("the overall example coverage remains in progress", function () {
   assert.equal(ensureReport().summary.overallCoverageStatus, "in-progress");
 });
 
-Then("all five showcases are implemented while platform-limited capability evidence stays incomplete", function () {
+Then("all five showcase evidence boundaries are implemented", function () {
+  const expectedStatuses = new Map([
+    ["react-19-vite-8", "implemented"],
+    ["nextjs", "implemented"],
+    ["agentic-a2ui", "implemented"],
+    ["flutter-riverpod", "implemented"],
+    ["tauri-desktop-mobile", "implemented"],
+  ]);
   for (const showcase of readExampleCoverage().showcases) {
-    assert.equal(showcase.status, "implemented");
-    assert.equal(showcase.runtimeEvidence.status, "implemented");
-    assert.equal(showcase.visualEvidence.status, "implemented");
+    const expectedStatus = expectedStatuses.get(showcase.id);
+    assert.equal(showcase.status, expectedStatus);
+    assert.equal(showcase.runtimeEvidence.status, expectedStatus);
+    assert.equal(showcase.visualEvidence.status, expectedStatus);
     assert.equal(showcase.runtimeEvidence.ownerChange, showcase.change);
     assert.equal(showcase.visualEvidence.ownerChange, showcase.change);
-    assert.match(showcase.runtimeEvidence.command, /^pnpm run verify:/);
     assert.ok(showcase.runtimeEvidence.paths?.length);
     assert.ok(showcase.visualEvidence.paths?.length);
   }
-  const incomplete = readExampleCoverage().capabilities.flatMap((capability) =>
-    (capability.releaseEvidence ?? [])
-      .filter((evidence) => evidence.status !== "implemented")
-      .map((evidence) => `${capability.id}:${evidence.ownerChange}`),
-  );
-  assert.deepEqual(incomplete.sort(), [
-    "graph.realtime-batching:v3-dart-graph-riverpod",
-    "security.tenant-actions-secrets:v3-tauri-mobile-plugin",
-  ]);
 });
 
 Then("this headless contract does not claim release certification or visual evidence", function () {

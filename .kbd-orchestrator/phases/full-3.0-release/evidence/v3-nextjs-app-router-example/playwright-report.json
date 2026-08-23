@@ -1,14 +1,14 @@
 {
   "config": {
     "argv": [
-      "/Applications/Kimi.app/Contents/Resources/resources/runtime/node",
-      "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/node_modules/@playwright/test/cli.js",
+      "/Users/gqadonis/.local/share/fnm/node-versions/v26.5.0/installation/bin/node",
+      "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/node_modules/@playwright/test/cli.js",
       "test",
       "--config",
       "tests/browser/v3-nextjs-app-router-example.playwright.config.ts"
     ],
-    "configFile": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/tests/browser/v3-nextjs-app-router-example.playwright.config.ts",
-    "rootDir": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/tests/browser",
+    "configFile": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/tests/browser/v3-nextjs-app-router-example.playwright.config.ts",
+    "rootDir": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/tests/browser",
     "failOnFlakyTests": false,
     "forbidOnly": false,
     "fullyParallel": false,
@@ -24,7 +24,7 @@
     "preserveOutput": "always",
     "projects": [
       {
-        "outputDir": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/playwright-artifacts",
+        "outputDir": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/playwright-artifacts",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
@@ -32,12 +32,12 @@
         },
         "id": "chromium-desktop",
         "name": "chromium-desktop",
-        "testDir": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/tests/browser",
+        "testDir": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/tests/browser",
         "testIgnore": [],
         "testMatch": [
           "v3-nextjs-app-router-example.spec.ts"
         ],
-        "timeout": 90000
+        "timeout": 120000
       }
     ],
     "quiet": false,
@@ -49,7 +49,7 @@
       [
         "json",
         {
-          "outputFile": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/playwright-report.json"
+          "outputFile": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/playwright-report.json"
         }
       ]
     ],
@@ -64,10 +64,10 @@
     "version": "1.62.1",
     "workers": 1,
     "webServer": {
-      "command": "pnpm --filter prometheus-entity-management-nextjs exec next start --port 4180 --hostname 127.0.0.1",
-      "url": "http://127.0.0.1:4180/release-showcase",
+      "command": "pnpm --dir \"/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-next-packed-mpheu1/nextjs-consumer\" start --hostname 127.0.0.1 --port 4182",
+      "url": "http://127.0.0.1:4182/next-runtime",
       "reuseExistingServer": false,
-      "timeout": 60000
+      "timeout": 120000
     }
   },
   "suites": [
@@ -78,12 +78,12 @@
       "line": 0,
       "specs": [
         {
-          "title": "SSR prefetch renders data HTML and hydrates without duplicate fetches",
+          "title": "concurrent production requests receive isolated server graphs",
           "ok": true,
           "tags": [],
           "tests": [
             {
-              "timeout": 90000,
+              "timeout": 120000,
               "annotations": [],
               "expectedStatus": "passed",
               "projectId": "chromium-desktop",
@@ -93,18 +93,18 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1323,
+                  "duration": 138,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-23T12:53:02.328Z",
+                  "startTime": "2026-08-03T16:30:32.417Z",
                   "annotations": [],
                   "attachments": [
                     {
                       "name": "trace",
                       "contentType": "application/zip",
-                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/playwright-artifacts/v3-nextjs-app-router-examp-47429-s-without-duplicate-fetches-chromium-desktop/trace.zip"
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/playwright-artifacts/v3-nextjs-app-router-examp-6c1f3-eive-isolated-server-graphs-chromium-desktop/trace.zip"
                     }
                   ]
                 }
@@ -112,18 +112,18 @@
               "status": "expected"
             }
           ],
-          "id": "63f1649178f8b36ed7f9-292530f6b240baf448f6",
+          "id": "63f1649178f8b36ed7f9-8348344c53684b6e62ed",
           "file": "v3-nextjs-app-router-example.spec.ts",
-          "line": 116,
+          "line": 63,
           "column": 5
         },
         {
-          "title": "mutations, cascade invalidation, view modes, and realtime takeover",
+          "title": "hydration, route persistence, Server Action mutation, and realtime takeover",
           "ok": true,
           "tags": [],
           "tests": [
             {
-              "timeout": 90000,
+              "timeout": 120000,
               "annotations": [],
               "expectedStatus": "passed",
               "projectId": "chromium-desktop",
@@ -133,18 +133,18 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 10797,
+                  "duration": 1106,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-23T12:53:03.944Z",
+                  "startTime": "2026-08-03T16:30:32.597Z",
                   "annotations": [],
                   "attachments": [
                     {
                       "name": "trace",
                       "contentType": "application/zip",
-                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/playwright-artifacts/v3-nextjs-app-router-examp-a6838-modes-and-realtime-takeover-chromium-desktop/trace.zip"
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management-full3-continue/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/playwright-artifacts/v3-nextjs-app-router-examp-b80d3-ation-and-realtime-takeover-chromium-desktop/trace.zip"
                     }
                   ]
                 }
@@ -152,89 +152,9 @@
               "status": "expected"
             }
           ],
-          "id": "63f1649178f8b36ed7f9-3ce58d1be053a9f8708d",
+          "id": "63f1649178f8b36ed7f9-b16b268d3f6ffe49ccde",
           "file": "v3-nextjs-app-router-example.spec.ts",
-          "line": 182,
-          "column": 5
-        },
-        {
-          "title": "route transitions reuse the hydrated graph; realtime page takes over on the client",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 90000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "chromium-desktop",
-              "projectName": "chromium-desktop",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 1067,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-08-23T12:53:14.906Z",
-                  "annotations": [],
-                  "attachments": [
-                    {
-                      "name": "trace",
-                      "contentType": "application/zip",
-                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/playwright-artifacts/v3-nextjs-app-router-examp-154d2-ge-takes-over-on-the-client-chromium-desktop/trace.zip"
-                    }
-                  ]
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "63f1649178f8b36ed7f9-5968be522e9437f9c594",
-          "file": "v3-nextjs-app-router-example.spec.ts",
-          "line": 247,
-          "column": 5
-        },
-        {
-          "title": "production surface has no hydration errors or serious accessibility violations",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 90000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "chromium-desktop",
-              "projectName": "chromium-desktop",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 1024,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-08-23T12:53:16.031Z",
-                  "annotations": [],
-                  "attachments": [
-                    {
-                      "name": "trace",
-                      "contentType": "application/zip",
-                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/playwright-artifacts/v3-nextjs-app-router-examp-165aa-us-accessibility-violations-chromium-desktop/trace.zip"
-                    }
-                  ]
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "63f1649178f8b36ed7f9-e95195638c7f788cef8d",
-          "file": "v3-nextjs-app-router-example.spec.ts",
-          "line": 287,
+          "line": 83,
           "column": 5
         }
       ]
@@ -242,9 +162,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-08-23T12:53:01.044Z",
-    "duration": 16196.95,
-    "expected": 4,
+    "startTime": "2026-08-03T16:30:31.163Z",
+    "duration": 4384.659,
+    "expected": 2,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

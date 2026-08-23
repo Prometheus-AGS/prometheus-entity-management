@@ -1,0 +1,154 @@
+{
+  "refinement_id": "7d89bc27-2055-4337-a07d-3f365ad9a592",
+  "artifact_name": "v3-tauri-universal-example-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-04T05:30:29Z",
+  "updated_at": "2026-08-04T07:29:52Z",
+  "current_iteration": 5,
+  "max_iterations": 5,
+  "goals": [
+    "Prove the bounded universal Tauri example and archive disposition without overstating unexecuted platforms, physical devices, publication, or the independently frozen React RC lane."
+  ],
+  "constraints": [
+    {
+      "id": "acceptance-direct-evidence"
+    },
+    {
+      "id": "one-graph-layered-adapter-boundary"
+    },
+    {
+      "id": "platform-evidence-integrity"
+    },
+    {
+      "id": "trust-boundaries-fail-closed"
+    },
+    {
+      "id": "visual-accessibility-integrity"
+    },
+    {
+      "id": "ledgers-and-release-contract-synchronized"
+    },
+    {
+      "id": "react-rc-lane-preserved"
+    },
+    {
+      "id": "limits-and-publication-truthful"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T05:31:40Z"
+    },
+    {
+      "iteration": 2,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T05:49:31Z"
+    },
+    {
+      "iteration": 3,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T05:57:03Z"
+    },
+    {
+      "iteration": 4,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T06:16:58Z"
+    },
+    {
+      "iteration": 5,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T06:52:14Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "7d89bc27",
+      "phase": "persist",
+      "iteration": 1,
+      "timestamp": "2026-08-04T05:31:40Z"
+    },
+    {
+      "checkpoint_id": "7d89bc27-review-remediation",
+      "phase": "persist",
+      "iteration": 2,
+      "timestamp": "2026-08-04T05:49:31Z"
+    },
+    {
+      "checkpoint_id": "7d89bc27-generated-xcode-remediation",
+      "phase": "persist",
+      "iteration": 3,
+      "timestamp": "2026-08-04T05:57:03Z"
+    },
+    {
+      "checkpoint_id": "7d89bc27-denial-proof-remediation",
+      "phase": "persist",
+      "iteration": 4,
+      "timestamp": "2026-08-04T06:16:58Z"
+    },
+    {
+      "checkpoint_id": "7d89bc27-current-mobile-remediation",
+      "phase": "persist",
+      "iteration": 5,
+      "timestamp": "2026-08-04T06:52:14Z"
+    }
+  ],
+  "prior_cycle_id": null,
+  "finalized_at": "2026-08-04T07:29:52Z"
+}

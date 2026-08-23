@@ -1,0 +1,8 @@
+{
+  "iteration": 12,
+  "delta": "The twelfth isolated review found that a string roles claim containing multiple delimited roles could hide service_role from exact-string comparison.",
+  "root_cause": "The claim inspector normalized arrays and scalar strings but treated each string as one role token instead of a possible delimited role list.",
+  "corrective_action": "Split string role claims on whitespace, comma, semicolon, and pipe delimiters, retain exact token comparison, change the JWT regression to authenticated service_role, regenerate evidence, and repeat isolated review.",
+  "blocking_violations_remaining": 0,
+  "decision": "terminate-refiner-proceed-to-adversarial-review"
+}

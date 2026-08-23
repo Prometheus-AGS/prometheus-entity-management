@@ -36,11 +36,12 @@ sync ownership in its adapter or service.
 ## Require the right evidence
 
 `pnpm run verify:tauri-plugin` proves Rust-derived bindings, registered desktop
-IPC, capability denial, packed Rust consumption, and the native payload. It
-does not execute Android Kotlin or iOS Swift. Require the receipts in
-`release/tauri-mobile-device-lane.md` before calling mobile runtime support
-certified, and require `v3-tauri-universal-example` before claiming complete
-application UX, restart/offline behavior, accessibility, or visual parity.
+IPC, capability denial, packed Rust consumption, and recomputes the checked-in
+Android physical-device and iOS simulator command/denial receipts. Require the
+receipts in `release/tauri-mobile-device-lane.md` for mobile plugin claims, and
+load `tauri-universal-example.md` before making complete application UX,
+restart/offline, accessibility, or visual-parity claims. Plugin receipts do not
+substitute for application receipts.
 
 Read `release/tauri-mobile-plugin.md` for the complete evidence matrix and
 explicit exclusions.

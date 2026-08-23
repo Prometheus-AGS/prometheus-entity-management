@@ -1,382 +1,395 @@
-#!/usr/bin/env node
-
-/**
- * Certifies the universal Tauri showcase example (desktop + mobile).
- *
- * Lanes: frontend typecheck, bridge contract tests, production Vite build,
- * Rust MockRuntime command E2E (allowed + fail-closed denied + offline
- * restart), Chromium desktop/mobile viewport scenarios with axe, and
- * platform artifact receipts (desktop binary, Android APK, iOS simulator
- * app bundle) with sha256 pins.
- *
- * Flags:
- *   --skip-platform-artifacts  do not require desktop/APK/iOS artifacts
- *   --rebuild-platform         re-run the slow native build lanes first
- *   --report <path>            write the JSON receipt (default: evidence dir)
- */
-
-import { spawnSync } from "node:child_process";
+import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { dirname, relative, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 
-const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const exampleRoot = join(root, "examples/tauri-app");
-const evidenceDirectory = resolve(
-  root,
-  ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example",
-);
-
-const args = process.argv.slice(2);
-const skipPlatformArtifacts = args.includes("--skip-platform-artifacts");
-const rebuildPlatform = args.includes("--rebuild-platform");
-const reportIndex = args.indexOf("--report");
-const reportPath =
-  reportIndex >= 0
-    ? resolve(root, args[reportIndex + 1])
-    : join(evidenceDirectory, "verification.json");
-
-const requiredFiles = [
-  "examples/tauri-app/package.json",
-  "examples/tauri-app/vite.config.ts",
-  "examples/tauri-app/index.html",
-  "examples/tauri-app/src/main.tsx",
-  "examples/tauri-app/src/App.tsx",
-  "examples/tauri-app/src/domain/types.ts",
-  "examples/tauri-app/src/domain/seed.ts",
-  "examples/tauri-app/src/domain/schema.ts",
-  "examples/tauri-app/src/platform/bridge.ts",
-  "examples/tauri-app/src/platform/tauri-bridge.ts",
-  "examples/tauri-app/src/platform/web-bridge.ts",
-  "examples/tauri-app/src/platform/index.ts",
-  "examples/tauri-app/src/graph/runtime.ts",
-  "examples/tauri-app/src/features/task-service.ts",
-  "examples/tauri-app/src/features/TaskBoard.tsx",
-  "examples/tauri-app/src/features/PlatformPanel.tsx",
-  "examples/tauri-app/tests/bridge-contract.test.ts",
-  "examples/tauri-app/src-tauri/Cargo.toml",
-  "examples/tauri-app/src-tauri/tauri.conf.json",
-  "examples/tauri-app/src-tauri/tauri.mobile-denied.conf.json",
-  "examples/tauri-app/src-tauri/capabilities/default.json",
-  "examples/tauri-app/src-tauri/capabilities/denied.json",
-  "examples/tauri-app/src-tauri/capabilities/mobile-allowed.json",
-  "examples/tauri-app/src-tauri/capabilities/mobile-denied.json",
-  "examples/tauri-app/src-tauri/src/lib.rs",
-  "examples/tauri-app/src-tauri/src/main.rs",
-  "examples/tauri-app/src-tauri/build.rs",
-  "examples/tauri-app/src-tauri/gen/android/app/build.gradle.kts",
-  "examples/tauri-app/src-tauri/gen/apple/prometheus-tauri-universal.xcodeproj/project.pbxproj",
-  "tests/browser/v3-tauri-universal-example.spec.ts",
-  "tests/browser/v3-tauri-universal-example.playwright.config.ts",
+const APP_ROOT = "examples/tauri-universal";
+const CLEAR_DENIAL =
+  "entity-graph-tauri.graph_clear not allowed. Permissions associated with this command: entity-graph-tauri:allow-graph-clear";
+const REMOVE_DENIAL =
+  "entity-graph-tauri.graph_remove_entity not allowed. Permissions associated with this command: entity-graph-tauri:allow-graph-remove-entity";
+const CURRENT_SOURCE_FILES = [
+  `${APP_ROOT}/src/features/platform/services/platform-service.ts`,
+  `${APP_ROOT}/src/features/platform/components/platform-dashboard.tsx`,
+  `${APP_ROOT}/src-tauri/src/lib.rs`,
+  `${APP_ROOT}/src-tauri/capabilities/universal-main.json`,
+  `${APP_ROOT}/src-tauri/gen/android/buildSrc/src/main/java/com/prometheusags/entitygraph/universal/kotlin/BuildTask.kt`,
+  `${APP_ROOT}/src-tauri/gen/android/gradle/wrapper/gradle-wrapper.jar`,
+  `${APP_ROOT}/src-tauri/gen/apple/project.yml`,
+  `${APP_ROOT}/src-tauri/gen/apple/prometheus-tauri-universal-example.xcodeproj/project.pbxproj`,
+  `${APP_ROOT}/src-tauri/gen/apple/prometheus-tauri-universal-example_iOS/Info.plist`,
+  `${APP_ROOT}/src-tauri/gen/apple/LaunchScreen.storyboard`,
 ];
 
-const platformArtifacts = {
-  desktopBinary: "examples/tauri-app/src-tauri/target/debug/prometheus-tauri-universal",
-  androidApk:
-    "examples/tauri-app/src-tauri/gen/android/app/build/outputs/apk/universal/debug/app-universal-debug.apk",
-  iosSimulatorAppBinary:
-    "examples/tauri-app/src-tauri/gen/apple/build/arm64-sim/Prometheus Tasks.app/Prometheus Tasks",
-};
-
-function read(path) {
-  return readFileSync(join(root, path), "utf8");
-}
-
-function assert(condition, message) {
-  if (!condition) throw new Error(message);
-}
-
-function assertMatch(value, expression, message) {
-  assert(expression.test(value), message);
-}
-
-function sha256(path) {
-  return createHash("sha256").update(readFileSync(join(root, path))).digest("hex");
-}
-
-const commands = [];
-
-function run(label, command, args, options = {}) {
-  const startedAt = new Date().toISOString();
-  const result = spawnSync(command, args, {
-    cwd: options.cwd ?? exampleRoot,
-    env: { ...process.env, FORCE_COLOR: "0", USER: process.env.USER || "gqadonis" },
-    encoding: "utf8",
-    maxBuffer: 100 * 1024 * 1024,
-    timeout: options.timeout ?? 300_000,
-  });
-  if (result.stdout) process.stdout.write(result.stdout);
-  if (result.stderr) process.stderr.write(result.stderr);
-  commands.push({
-    label,
-    command: [command, ...args].join(" "),
-    startedAt,
-    completedAt: new Date().toISOString(),
-    exitCode: result.status,
-  });
-  if (result.error) throw result.error;
-  if (result.status !== 0) throw new Error(`${label} failed with exit code ${result.status}`);
-  return result.stdout ?? "";
-}
-
 export function verifyTauriUniversalExample({
-  platformArtifacts: checkArtifacts = true,
-  rebuildPlatform: rebuild = false,
+  root = process.cwd(),
+  overrides = new Map(),
+  missingPaths = new Set(),
 } = {}) {
-  for (const path of requiredFiles) {
-    assert(existsSync(join(root, path)), `missing required example artifact: ${path}`);
-  }
+  const checks = [];
+  const readText = (path) => {
+    if (overrides.has(path)) return overrides.get(path);
+    return readFileSync(resolve(root, path), "utf8");
+  };
+  const readJson = (path) => JSON.parse(readText(path));
+  const exists = (path) => !missingPaths.has(path) && existsSync(resolve(root, path));
+  const readSourceBytes = (path) =>
+    overrides.has(path)
+      ? Buffer.from(overrides.get(path), "utf8")
+      : readFileSync(resolve(root, path));
+  const sha256 = (path) =>
+    createHash("sha256").update(readFileSync(resolve(root, path))).digest("hex");
+  const pass = (id, detail) => checks.push({ id, status: "pass", detail });
+  const requireValue = (condition, message) => {
+    if (!condition) throw new Error(message);
+  };
 
-  // ── Manifest and workspace wiring ────────────────────────────────────────
-  const exampleManifest = JSON.parse(read("examples/tauri-app/package.json"));
-  const workspaceManifest = read("pnpm-workspace.yaml");
-  const workspacePackage = JSON.parse(read("package.json"));
-  for (const [dep, range] of [
-    ["@prometheus-ags/entity-graph-core", "workspace:*"],
-    ["@prometheus-ags/entity-graph-tauri", "workspace:*"],
-    ["@prometheus-ags/prometheus-entity-management", "workspace:*"],
-  ]) {
-    assert(
-      exampleManifest.dependencies[dep] === range,
-      `example dependency ${dep} is not pinned to ${range}`,
-    );
-  }
-  for (const dep of ["@tauri-apps/api", "@tauri-apps/plugin-sql", "@tauri-apps/plugin-deep-link"]) {
-    assert(exampleManifest.dependencies[dep], `example is missing official plugin dep ${dep}`);
-  }
-  assertMatch(
-    workspaceManifest,
-    /- "examples\/tauri-app"/,
-    "example is not a pnpm workspace member",
-  );
+  const rootManifest = readJson("package.json");
+  const workspace = readText("pnpm-workspace.yaml");
+  const manifest = readJson(`${APP_ROOT}/package.json`);
+  requireValue(manifest.private === true, "the universal example must remain private");
+  requireValue(manifest.dependencies.react === "19.2.8", "React must remain pinned to 19.2.8");
+  requireValue(manifest.devDependencies.vite === "8.2.0", "Vite must remain pinned to 8.2.0");
+  requireValue(manifest.dependencies["@tauri-apps/api"] === "2.11.1", "Tauri API pin drifted");
+  requireValue(manifest.dependencies["@tauri-apps/plugin-sql"] === "2.4.0", "SQL plugin pin drifted");
+  requireValue(manifest.dependencies["@tauri-apps/plugin-deep-link"] === "2.4.9", "deep-link plugin pin drifted");
+  requireValue(workspace.includes('"examples/tauri-universal"'), "the universal example is absent from the pnpm workspace");
   for (const script of [
-    "verify:tauri-universal",
-    "test:v3-tauri-universal-example",
-    "bdd:tauri-universal",
+    "typecheck:tauri-universal",
+    "test:tauri-universal:unit",
+    "test:tauri-universal:rust",
+    "test:tauri-universal:contract",
+    "test:tauri-universal:browser",
   ]) {
-    assert(workspacePackage.scripts[script], `root script ${script} is not wired`);
+    requireValue(typeof rootManifest.scripts[script] === "string", `root script ${script} is missing`);
   }
+  pass("workspace", "private pnpm workspace and exact React/Vite/Tauri pins");
 
-  // ── Layering: platform conditionals only at the adapter boundary ─────────
-  for (const feature of [
-    "src/features/TaskBoard.tsx",
-    "src/features/PlatformPanel.tsx",
-    "src/App.tsx",
-    "src/main.tsx",
+  const cargo = readText(`${APP_ROOT}/src-tauri/Cargo.toml`);
+  const rustHost = readText(`${APP_ROOT}/src-tauri/src/lib.rs`);
+  for (const dependency of [
+    'tauri = { version = "2.11.5"',
+    'tauri-plugin-sql = { version = "2.4.0"',
+    'tauri-plugin-deep-link = "2.4.9"',
   ]) {
-    const source = read(`examples/tauri-app/${feature}`);
-    assert(
-      !source.includes("@tauri-apps/"),
-      `feature ${feature} imports @tauri-apps directly`,
-    );
-    assert(
-      !/\.upsertEntity\(|\.patchEntity\(|\.removeEntity\(|\.setListResult\(/.test(source),
-      `feature ${feature} writes the graph directly`,
-    );
+    requireValue(cargo.includes(dependency), `Cargo dependency is missing or unpinned: ${dependency}`);
   }
-  const bridge = read("examples/tauri-app/src/platform/bridge.ts");
-  assertMatch(bridge, /class BridgeDeniedError/, "fail-closed denial type missing");
-  assertMatch(
-    bridge,
-    /prometheus-tasks:\/\/task\//,
-    "deep-link allowlist prefix missing",
-  );
-  assertMatch(bridge, /return null;/, "deep-link parser must fail closed");
-  const tauriBridge = read("examples/tauri-app/src/platform/tauri-bridge.ts");
-  assertMatch(tauriBridge, /createTauriGraphPlugin/, "certified plugin entry point unused");
-
-  // ── Least-privilege capabilities ─────────────────────────────────────────
-  const granted = JSON.parse(read("examples/tauri-app/src-tauri/capabilities/default.json"));
-  const denied = JSON.parse(read("examples/tauri-app/src-tauri/capabilities/denied.json"));
-  const mobileDenied = JSON.parse(
-    read("examples/tauri-app/src-tauri/capabilities/mobile-denied.json"),
-  );
-  assert(
-    granted.permissions.includes("entity-graph-tauri:default"),
-    "main window lost the read-only plugin default",
-  );
-  assert(
-    granted.permissions.includes("entity-graph-tauri:allow-graph-upsert-entity"),
-    "mutation grant must be explicit",
-  );
-  assert(denied.permissions.length === 0, "denied capability must grant nothing");
-  assert(mobileDenied.permissions.length === 0, "mobile-denied capability must grant nothing");
-  const conf = JSON.parse(read("examples/tauri-app/src-tauri/tauri.conf.json"));
-  assert(
-    conf.plugins?.["deep-link"]?.desktop?.schemes?.includes("prometheus-tasks"),
-    "deep-link scheme is not declared",
-  );
-  assert(conf.app?.security?.csp, "CSP is not declared");
-
-  // ── Rust E2E suite presence ──────────────────────────────────────────────
-  const libRs = read("examples/tauri-app/src-tauri/src/lib.rs");
-  for (const testName of [
-    "desktop_command_e2e_round_trips_entities_and_lists",
-    "webview_without_the_capability_is_denied_fail_closed",
-    "offline_restart_persist_clear_restore_round_trip",
+  for (const registration of [
+    ".plugin(entity_graph_tauri::init())",
+    ".plugin(tauri_plugin_sql::Builder::default().build())",
+    ".plugin(tauri_plugin_deep_link::init())",
   ]) {
-    assert(libRs.includes(`fn ${testName}`), `Rust E2E test ${testName} missing`);
+    requireValue(rustHost.includes(registration), `Rust host registration is missing: ${registration}`);
   }
-  const cargoToml = read("examples/tauri-app/src-tauri/Cargo.toml");
-  assertMatch(
-    cargoToml,
-    /entity-graph-tauri = \{ path = "..\/..\/..\/packages\/entity-graph-tauri\/rust-plugin" \}/,
-    "plugin must be consumed from the workspace path",
+  requireValue(rustHost.includes("main_webview_denies_the_destructive_clear_command"), "native clear-denial test is missing");
+  requireValue(rustHost.includes("main_webview_denies_the_destructive_remove_command"), "native remove-denial test is missing");
+  requireValue(rustHost.includes("main_webview_runs_the_registered_command_round_trip"), "native command round-trip test is missing");
+  pass("native-host", "entity graph, SQLite, and deep-link plugins plus command/clear/remove denial tests");
+
+  const config = readJson(`${APP_ROOT}/src-tauri/tauri.conf.json`);
+  requireValue(config.identifier === "com.prometheusags.entitygraph.universal", "application identifier drifted");
+  requireValue(config.version === "0.0.1", "mobile application version must remain buildable at 0.0.1");
+  requireValue(config.plugins?.sql?.preload?.includes("sqlite:prometheus-entity-graph.db"), "native SQLite preload is missing");
+  requireValue(
+    config.plugins?.["deep-link"]?.desktop?.schemes?.includes("prometheus-entity"),
+    "desktop deep-link scheme is missing",
+  );
+  requireValue(
+    config.plugins?.["deep-link"]?.mobile?.some(
+      (entry) => entry.scheme?.includes("prometheus-entity") && entry.appLink === false,
+    ),
+    "mobile deep-link scheme is missing",
+  );
+  const rustToolchain = readText(`${APP_ROOT}/src-tauri/rust-toolchain.toml`);
+  const androidBuildTask = readText(
+    `${APP_ROOT}/src-tauri/gen/android/buildSrc/src/main/java/com/prometheusags/entitygraph/universal/kotlin/BuildTask.kt`,
+  );
+  const iosProject = readText(`${APP_ROOT}/src-tauri/gen/apple/project.yml`);
+  const iosGeneratedProject = readText(
+    `${APP_ROOT}/src-tauri/gen/apple/prometheus-tauri-universal-example.xcodeproj/project.pbxproj`,
+  );
+  requireValue(rustToolchain.includes('channel = "stable"'), "mobile Rust toolchain must remain stable");
+  requireValue(
+    androidBuildTask.includes('environment("RUSTUP_TOOLCHAIN", "stable")'),
+    "Android Gradle Rust build must force the stable toolchain",
+  );
+  for (const credentialName of ["CARGO_REGISTRY_TOKEN", "NPM_TOKEN", "NODE_AUTH_TOKEN"]) {
+    requireValue(
+      androidBuildTask.includes(`environment.remove("${credentialName}")`),
+      `Android Gradle Rust build must remove inherited ${credentialName}`,
+    );
+  }
+  requireValue(
+    iosProject.includes("RUSTUP_TOOLCHAIN=stable pnpm tauri ios xcode-script"),
+    "iOS Xcode Rust build must force the stable toolchain",
+  );
+  requireValue(
+    iosProject.includes("unset CARGO_REGISTRY_TOKEN NPM_TOKEN NODE_AUTH_TOKEN"),
+    "iOS Xcode Rust build must remove inherited registry credentials",
+  );
+  requireValue(
+    iosGeneratedProject.includes("unset CARGO_REGISTRY_TOKEN NPM_TOKEN NODE_AUTH_TOKEN\\nRUSTUP_TOOLCHAIN=stable"),
+    "checked-in iOS Xcode build phase must remove inherited registry credentials",
+  );
+  requireValue(
+    !iosProject.includes("- path: Externals") && !iosGeneratedProject.includes("libapp.a in Resources"),
+    "generated iOS project must exclude native build outputs from application resources",
+  );
+  requireValue(
+    iosProject.includes("CFBundleShortVersionString: 0.0.1") &&
+      iosProject.includes('CFBundleVersion: "0.0.1"'),
+    "generated iOS application metadata must remain synchronized at 0.0.1",
+  );
+  requireValue(
+    iosProject.includes("CFBundleURLName: prometheus-entity") &&
+      iosProject.includes("- prometheus-entity"),
+    "generated iOS project metadata must preserve the registered deep-link scheme",
+  );
+  requireValue(
+    iosProject.includes("- path: assets") &&
+      iosProject.includes("buildPhase: resources") &&
+      iosGeneratedProject.includes("/* assets */") &&
+      iosGeneratedProject.includes("assets in Resources"),
+    "generated iOS project must retain the Tauri-created web assets resource directory",
+  );
+  const iosInfo = readText(
+    `${APP_ROOT}/src-tauri/gen/apple/prometheus-tauri-universal-example_iOS/Info.plist`,
+  );
+  requireValue(
+    /<key>CFBundleShortVersionString<\/key>\s*<string>0\.0\.1<\/string>/.test(iosInfo) &&
+      /<key>CFBundleVersion<\/key>\s*<string>0\.0\.1<\/string>/.test(iosInfo),
+    "generated iOS Info.plist must remain synchronized at 0.0.1",
+  );
+  requireValue(
+    /<key>CFBundleURLSchemes<\/key>[\s\S]*?<string>prometheus-entity<\/string>/.test(iosInfo),
+    "generated iOS Info.plist must preserve the registered deep-link scheme",
+  );
+  pass(
+    "configuration",
+    "one buildable config owns desktop/mobile routes, stable Rust, synchronized iOS versions, and sanitized native child environments",
   );
 
-  // ── Coverage manifest reconciliation ─────────────────────────────────────
-  const coverage = JSON.parse(read("examples/coverage.json"));
-  const showcase = coverage.showcases.find((entry) => entry.id === "tauri-desktop-mobile");
-  assert(showcase, "coverage omits the tauri-desktop-mobile showcase");
-  assert(showcase.status === "implemented", "tauri-desktop-mobile showcase is not implemented");
-  assert(showcase.change === "v3-tauri-universal-example", "showcase owner drifted");
-  assert(
-    showcase.runtimeEvidence.command === "pnpm run verify:tauri-universal",
-    "showcase runtime evidence uses the wrong command",
-  );
-  assert(showcase.runtimeEvidence.status === "implemented", "showcase runtime evidence missing");
-  assert(showcase.visualEvidence.status === "implemented", "showcase visual evidence missing");
-  for (const [capabilityId, kind] of [
-    ["graph.offline-persistence-sync", "platform"],
-    ["platform.tauri", "visual"],
+  const capability = readJson(`${APP_ROOT}/src-tauri/capabilities/universal-main.json`);
+  const permissions = new Set(capability.permissions);
+  for (const expected of [
+    "core:event:default",
+    "core:window:default",
+    "deep-link:default",
+    "sql:default",
+    "sql:allow-execute",
+    "entity-graph-tauri:default",
+    "entity-graph-tauri:allow-graph-upsert-entity",
+    "entity-graph-tauri:allow-graph-set-list",
   ]) {
-    const capability = coverage.capabilities.find(({ id }) => id === capabilityId);
-    const entry = capability?.releaseEvidence.find(
-      ({ ownerChange, kind: entryKind }) =>
-        ownerChange === "v3-tauri-universal-example" && entryKind === kind,
-    );
-    assert(entry, `coverage ${capabilityId} lacks the Tauri ${kind} entry`);
-    assert(
-      entry.status === "implemented",
-      `coverage ${capabilityId} Tauri ${kind} entry is not implemented`,
-    );
+    requireValue(permissions.has(expected), `required capability permission is missing: ${expected}`);
   }
+  for (const forbidden of [
+    "entity-graph-tauri:allow-graph-clear",
+    "entity-graph-tauri:allow-graph-remove-entity",
+    "entity-graph-tauri:allow-graph-persist-snapshot",
+    "entity-graph-tauri:allow-graph-restore-snapshot",
+  ]) {
+    requireValue(!permissions.has(forbidden), `destructive or in-memory permission must remain withheld: ${forbidden}`);
+  }
+  pass("capability", "least-privilege writes with clear/remove/in-memory snapshots withheld");
 
-  // ── Executable gates ─────────────────────────────────────────────────────
-  run("typecheck", "pnpm", ["--filter", "prometheus-entity-management-tauri", "run", "typecheck"], {
-    cwd: root,
-  });
-  run("bridge-contract-tests", "pnpm", ["--filter", "prometheus-entity-management-tauri", "run", "test"], {
-    cwd: root,
-  });
-  run("vite-production-build", "pnpm", ["--filter", "prometheus-entity-management-tauri", "run", "build"], {
-    cwd: root,
-  });
-  const cargo = run("rust-command-e2e", "cargo", ["test", "--lib"], {
-    cwd: join(exampleRoot, "src-tauri"),
-    timeout: 600_000,
-  });
-  assertMatch(cargo, /3 passed; 0 failed/, "Rust command E2E suite did not pass 3/3");
-  const playwright = run(
-    "browser-viewport-scenarios",
-    "npx",
-    ["playwright", "test", "--config", "tests/browser/v3-tauri-universal-example.playwright.config.ts"],
-    { cwd: root, timeout: 300_000 },
+  const sourceRoot = `${APP_ROOT}/src`;
+  const sourceFiles = walk(resolve(root, sourceRoot))
+    .filter((path) => /\.(ts|tsx)$/.test(path))
+    .map((path) => relative(root, path));
+  const componentFiles = sourceFiles.filter((path) => path.includes("/components/"));
+  for (const path of componentFiles) {
+    const source = readText(path);
+    requireValue(!/useGraphStore|graphStore|createPlatformService/.test(source), `component boundary violation in ${path}`);
+    requireValue(!/@tauri-apps\//.test(source), `component imports a native Tauri API in ${path}`);
+  }
+  for (const path of sourceFiles.filter((path) => !path.endsWith("platform-service.ts") && !path.endsWith("platform-service.test.ts"))) {
+    requireValue(!/@tauri-apps\//.test(readText(path)), `native import escaped the platform service boundary in ${path}`);
+  }
+  requireValue(
+    !sourceFiles.some((path) => /createGraphStore/.test(readText(path))),
+    "the universal example must not create a second graph store",
   );
-  assertMatch(playwright, /2 passed/, "browser desktop/mobile viewport lanes did not pass");
+  const platformHooks = readText(`${sourceRoot}/features/platform/hooks.ts`);
+  requireValue(
+    platformHooks.includes("useGraphStore") && platformHooks.includes("usePlatformStore"),
+    "platform hooks must select the canonical graph store and platform orchestration store",
+  );
+  requireValue(
+    !platformHooks.includes("services/platform-service"),
+    "platform hooks must not bypass the platform store to call the service",
+  );
+  pass(
+    "layering",
+    "components use hooks; hooks select the canonical graph/platform stores; service and native imports remain below the platform store",
+  );
 
-  // ── Platform artifact receipts ───────────────────────────────────────────
-  if (rebuild) {
-    run("desktop-debug-build", "node", [
-      "node_modules/@tauri-apps/cli/tauri.js",
-      "build",
-      "--debug",
-      "--no-bundle",
-    ], { cwd: exampleRoot, timeout: 900_000 });
-    run("android-debug-apk", "node", [
-      "node_modules/@tauri-apps/cli/tauri.js",
-      "android",
-      "build",
-      "--debug",
-      "--apk",
-    ], { cwd: exampleRoot, timeout: 900_000 });
-    run("ios-simulator-app", "node", [
-      "node_modules/@tauri-apps/cli/tauri.js",
-      "ios",
-      "build",
-      "--debug",
-      "-t",
-      "aarch64-sim",
-    ], { cwd: exampleRoot, timeout: 900_000 });
+  const service = readText(`${sourceRoot}/features/platform/services/platform-service.ts`);
+  for (const contract of [
+    "createTauriSqlPersistenceAdapter",
+    "startLocalFirstGraph",
+    "QUEUE_STORAGE_KEY",
+    "CONNECTION_MODE_STORAGE_KEY",
+    "parseTaskDeepLink",
+    "flushQueue",
+    "cascadeInvalidation",
+    "RealtimeManager",
+    "isGraphClearCapabilityDenial",
+    'formatError(error) === GRAPH_CLEAR_CAPABILITY_DENIAL',
+    '"entity-graph-tauri.graph_clear not allowed. Permissions associated with this command: entity-graph-tauri:allow-graph-clear"',
+    "if (!isGraphClearCapabilityDenial(error)) throw error",
+    "isGraphRemoveCapabilityDenial",
+    'formatError(error) === GRAPH_REMOVE_CAPABILITY_DENIAL',
+    '"entity-graph-tauri.graph_remove_entity not allowed. Permissions associated with this command: entity-graph-tauri:allow-graph-remove-entity"',
+    "if (!isGraphRemoveCapabilityDenial(error)) throw error",
+    "KNOWN_TASK_IDS.has(candidate.taskId)",
+    'candidate.id === `task-status:${candidate.taskId}`',
+    "new Date(candidate.enqueuedAt).toISOString() === candidate.enqueuedAt",
+    "new Set(value.map((mutation) => mutation.taskId)).size === value.length",
+    'state.patchEntity(ENTITY_TYPES.task, taskId, { status, pendingSync: true })',
+  ]) {
+    requireValue(service.includes(contract), `offline or boundary contract is missing: ${contract}`);
   }
+  const firstQueueParse = service.indexOf(
+    "this.queue = parseQueue(await this.requireStorage().get(QUEUE_STORAGE_KEY));",
+  );
+  const firstGraphHydration = service.indexOf("this.runtime = startLocalFirstGraph({");
+  requireValue(
+    firstQueueParse !== -1 && firstGraphHydration !== -1 && firstQueueParse < firstGraphHydration,
+    "persisted queue input must be parsed before graph hydration",
+  );
+  const restoreStart = service.indexOf("async restore(): Promise<PlatformSnapshot>");
+  const restoreQueueParse = service.indexOf(
+    "const restoredQueue = parseQueue(await this.requireStorage().get(QUEUE_STORAGE_KEY));",
+    restoreStart,
+  );
+  const restoreHydration = service.indexOf("await this.runtime?.hydrate();", restoreStart);
+  requireValue(
+    restoreStart !== -1 &&
+      restoreQueueParse !== -1 &&
+      restoreHydration !== -1 &&
+      restoreQueueParse < restoreHydration,
+    "manual restore must validate the persisted queue before graph hydration",
+  );
+  pass(
+    "offline-runtime",
+    "persisted queue shape and known task identity validation precede SQLite/localStorage graph hydration; durable queue, optimistic patch, and deep-link validation remain present",
+  );
 
-  const receipts = {};
-  for (const [name, path] of Object.entries(platformArtifacts)) {
-    if (!checkArtifacts) {
-      receipts[name] = { status: "skipped" };
-      continue;
-    }
-    assert(existsSync(join(root, path)), `missing platform artifact: ${path}`);
-    receipts[name] = { status: "present", path, sha256: sha256(path) };
+  const requiredPlatformFiles = [
+    `${APP_ROOT}/src-tauri/gen/android/app/src/main/AndroidManifest.xml`,
+    `${APP_ROOT}/src-tauri/gen/android/app/src/main/java/com/prometheusags/entitygraph/universal/MainActivity.kt`,
+    `${APP_ROOT}/src-tauri/gen/android/gradle/wrapper/gradle-wrapper.jar`,
+    `${APP_ROOT}/src-tauri/gen/apple/project.yml`,
+    `${APP_ROOT}/src-tauri/gen/apple/LaunchScreen.storyboard`,
+    `${APP_ROOT}/src-tauri/gen/apple/Assets.xcassets/Contents.json`,
+    `${APP_ROOT}/src-tauri/gen/apple/prometheus-tauri-universal-example_iOS/Info.plist`,
+    `${APP_ROOT}/src-tauri/icons/icon.png`,
+  ];
+  for (const path of requiredPlatformFiles) {
+    requireValue(exists(path), `generated platform artifact is missing: ${path}`);
   }
+  pass(
+    "platform-shells",
+    "desktop icon, tracked Android wrapper and iOS resources, Tauri-created web assets declaration, and generated application shells",
+  );
 
-  // ── Browser evidence receipts ────────────────────────────────────────────
-  const browserEvidence = {};
-  for (const project of ["chromium-desktop", "chromium-mobile"]) {
-    const evidencePath = join(evidenceDirectory, `browser-evidence-${project}.json`);
-    assert(existsSync(evidencePath), `missing browser evidence receipt for ${project}`);
-    const receipt = JSON.parse(readFileSync(evidencePath, "utf8"));
-    assert(receipt.status === "pass", `browser evidence for ${project} did not pass`);
-    assert(
-      Object.keys(receipt.scenarios).length === 7,
-      `browser evidence for ${project} must cover 7 scenarios`,
+  const receiptPath =
+    ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-platform-evidence.json";
+  requireValue(exists(receiptPath), "task-5 platform evidence receipt is missing");
+  const receipt = readJson(receiptPath);
+  requireValue(receipt.status === "pass", "task-5 platform evidence must pass");
+  requireValue(receipt.desktop?.runtime === "pass", "desktop packaged runtime evidence is incomplete");
+  requireValue(receipt.desktop?.offlineRestart === "pass", "desktop offline restart evidence is incomplete");
+  requireValue(receipt.desktop?.capabilityDenial === "pass", "desktop capability denial evidence is incomplete");
+  requireValue(receipt.android?.runtime === "pass", "Android application runtime evidence is incomplete");
+  requireValue(receipt.android?.capabilityDenial === "pass", "Android capability denial evidence is incomplete");
+  requireValue(receipt.ios?.runtime === "pass", "iOS application runtime evidence is incomplete");
+  for (const artifact of receipt.retainedArtifacts ?? []) {
+    requireValue(exists(artifact.path), `retained platform artifact is missing: ${artifact.path}`);
+    requireValue(sha256(artifact.path) === artifact.sha256, `retained platform artifact hash drifted: ${artifact.path}`);
+  }
+  const currentReceiptPath =
+    ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-6-current-mobile-evidence.json";
+  requireValue(exists(currentReceiptPath), "task-6 current-source mobile evidence receipt is missing");
+  const currentReceipt = readJson(currentReceiptPath);
+  requireValue(currentReceipt.status === "pass", "task-6 current-source mobile evidence must pass");
+  requireValue(
+    currentReceipt.sourceBase === "0de1e81f63dace24142bc139c0da6584a698c74d",
+    "task-6 current-source base drifted",
+  );
+  const currentSourceFiles = [
+    ...CURRENT_SOURCE_FILES,
+    ...walk(resolve(root, `${APP_ROOT}/src-tauri/gen/apple/Assets.xcassets`))
+      .map((path) => relative(root, path))
+      .sort(),
+  ];
+  const currentSourceBundleSha256 = createHash("sha256");
+  for (const path of currentSourceFiles) {
+    currentSourceBundleSha256.update(path).update("\0").update(readSourceBytes(path)).update("\0");
+  }
+  requireValue(
+    currentReceipt.currentSourceBundleSha256 === currentSourceBundleSha256.digest("hex"),
+    "task-6 current-source receipt does not match the reviewed runtime and mobile generators",
+  );
+  requireValue(currentReceipt.macos?.build === "pass", "current-source macOS bundle evidence is incomplete");
+  requireValue(currentReceipt.android?.runtime === "pass", "current-source Android runtime evidence is incomplete");
+  requireValue(
+    currentReceipt.android?.capabilityDenial === "pass-exact-error-shape",
+    "current-source Android capability denial evidence is incomplete",
+  );
+  requireValue(
+    currentReceipt.android?.observedDenials?.clear === CLEAR_DENIAL,
+    "current-source Android clear-denial evidence does not match the exact native error",
+  );
+  requireValue(
+    currentReceipt.android?.observedDenials?.remove === REMOVE_DENIAL,
+    "current-source Android remove-denial evidence does not match the exact native error",
+  );
+  requireValue(currentReceipt.ios?.runtime === "pass", "current-source iOS runtime evidence is incomplete");
+  for (const artifact of currentReceipt.retainedArtifacts ?? []) {
+    requireValue(exists(artifact.path), `current-source retained artifact is missing: ${artifact.path}`);
+    requireValue(
+      sha256(artifact.path) === artifact.sha256,
+      `current-source retained artifact hash drifted: ${artifact.path}`,
     );
-    assert(
-      receipt.accessibility.serious === 0 && receipt.accessibility.critical === 0,
-      `browser evidence for ${project} has serious/critical axe violations`,
-    );
-    assert(receipt.consoleErrors.length === 0, `browser evidence for ${project} has console errors`);
-    browserEvidence[project] = { status: "pass", scenarios: Object.keys(receipt.scenarios).length };
   }
+  pass(
+    "platform-evidence",
+    "18 historical task-5 artifacts plus 5 current-source task-6 Android/iOS artifacts are hash-verified; current macOS, Android, and iOS build hashes are retained",
+  );
 
   return {
-    schemaVersion: "1",
+    schemaVersion: 1,
     change: "v3-tauri-universal-example",
-    recordedAt: new Date().toISOString(),
-    result: "pass",
-    evidenceBoundary: {
-      kind: "source-workspace",
-      countsAsPackedPackageEvidence: false,
-      note: "Evidence certifies the workspace source example; packed-package certification remains owned by v3-package-module-contracts.",
-    },
-    commands,
-    lanes: {
-      typecheck: "pass",
-      bridgeContractTests: "pass",
-      viteProductionBuild: "pass",
-      rustCommandE2e: "pass",
-      browserViewportScenarios: browserEvidence,
-      platformArtifacts: receipts,
-    },
-    platformLimits: {
-      desktopRuntime:
-        "Desktop evidence is a debug binary plus MockRuntime command E2E; no headed GUI session was driven.",
-      iosRuntime:
-        "iOS evidence is an unsigned aarch64-sim simulator app bundle; device-signed IPA requires an Apple development team absent on this runner.",
-      androidRuntime:
-        "Android evidence is a debug APK compile; no booted emulator runtime pass was driven.",
-      browserEvidence:
-        "Chromium screenshots evidence the shared frontend render at desktop/mobile viewports, not native shells.",
-    },
+    status: "pass",
+    evidenceKind: "source-workspace-contract",
+    countsAsPlatformBuildEvidence: false,
+    separatePlatformEvidence: receiptPath,
+    currentSourcePlatformEvidence: currentReceiptPath,
+    checks,
   };
 }
 
-// CLI entry
-const isMain = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
-if (isMain) {
-  try {
-    const report = verifyTauriUniversalExample({
-      platformArtifacts: !skipPlatformArtifacts,
-      rebuildPlatform,
-    });
-    mkdirSync(dirname(reportPath), { recursive: true });
-    writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`);
-    console.log(`\nverification report written: ${reportPath}`);
-    console.log("v3-tauri-universal-example: PASS");
-  } catch (error) {
-    console.error("v3-tauri-universal-example: FAIL");
-    console.error(error instanceof Error ? error.message : error);
-    process.exit(1);
+function walk(path) {
+  return readdirSync(path).flatMap((name) => {
+    const entry = resolve(path, name);
+    return statSync(entry).isDirectory() ? walk(entry) : [entry];
+  });
+}
+
+function argumentValue(flag) {
+  const index = process.argv.indexOf(flag);
+  return index === -1 ? null : process.argv[index + 1] ?? null;
+}
+
+if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url) {
+  const report = verifyTauriUniversalExample();
+  const reportPath = argumentValue("--report");
+  if (reportPath) {
+    const absolute = resolve(process.cwd(), reportPath);
+    mkdirSync(dirname(absolute), { recursive: true });
+    writeFileSync(absolute, `${JSON.stringify({ ...report, recordedAt: new Date().toISOString() }, null, 2)}\n`);
   }
+  process.stdout.write(`Universal Tauri contract passed: ${report.checks.length} checks\n`);
 }

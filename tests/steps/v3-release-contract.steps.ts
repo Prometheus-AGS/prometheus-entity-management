@@ -289,7 +289,7 @@ Then("the example coverage ledger references the {float} release contract", func
   }
 });
 
-Then("the coverage ledger marks all five showcases implemented", function () {
+Then("the coverage ledger records all showcases as implemented", function () {
   const coverage = readCoverage();
   assert.deepEqual(
     coverage.showcases.map(({ id }) => id),
@@ -345,7 +345,8 @@ Then("the project and examples documentation report the {float} release status h
   assert.match(projectReadme, new RegExp(`${version.toFixed(1)} release is \\*\\*in progress\\*\\*`));
   assert.match(projectReadme, /not yet certified or promoted/);
   assert.match(projectReadme, /packed npm package gate/);
-  assert.match(examplesReadme, /`implemented` identifies evidence-backed source or platform work/);
+  assert.match(examplesReadme, /`implemented` identifies complete declared showcase evidence/);
+  assert.match(examplesReadme, /`partial` records real evidence with named gates remaining/);
   assert.match(examplesReadme, /React 19 \+ Vite 8.*Implemented/);
   assert.match(examplesReadme, /release\.packages\.packed-module-contracts/);
   assert.match(projectReadme, /shared example contract/i);

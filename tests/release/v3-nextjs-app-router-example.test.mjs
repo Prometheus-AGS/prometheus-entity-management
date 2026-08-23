@@ -1,148 +1,99 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
-import { join } from "node:path";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
-const root = process.cwd();
-const appRoot = join(root, "examples/nextjs-app");
+const read = (path) => readFileSync(new URL(`../../${path}`, import.meta.url), "utf8");
+const manifest = JSON.parse(read("package.json"));
 
-const REQUIRED_FILES = [
-  "src/lib/hydration-payload.ts",
-  "src/lib/server/demo-data-source.ts",
-  "src/lib/server/request-graph.ts",
-  "src/lib/server/request-isolation.test.ts",
-  "src/lib/fetch-metrics.ts",
-  "src/components/request-hydration-boundary.tsx",
-  "src/app/release-showcase/page.tsx",
-  "src/app/release-showcase/loading.tsx",
-  "src/app/release-showcase/error.tsx",
-  "src/app/loading.tsx",
-  "src/app/error.tsx",
-  "src/features/release-showcase/release-showcase-service.ts",
-  "src/features/release-showcase/release-showcase-store.ts",
-  "src/features/release-showcase/release-showcase-hooks.ts",
-  "src/demo-pages/release-showcase/release-showcase-page.tsx",
-];
+test("the Next.js example forces a fresh request-owned graph for every document request", () => {
+  const layout = read("examples/nextjs-app/src/app/layout.tsx");
+  const serverGraph = read("examples/nextjs-app/src/features/next-runtime/server-graph.ts");
 
-function walk(dir) {
-  return readdirSync(dir).flatMap((entry) => {
-    const candidate = join(dir, entry);
-    return statSync(candidate).isDirectory() ? walk(candidate) : [candidate];
-  });
-}
-
-function isClientModule(path) {
-  const head = readFileSync(path, "utf8").slice(0, 200);
-  return head.includes('"use client"') || head.includes("'use client'");
-}
-
-test("the Next.js SSR showcase file surface exists", () => {
-  for (const file of REQUIRED_FILES) {
-    assert.equal(existsSync(join(appRoot, file)), true, `missing ${file}`);
-  }
-  for (const file of [
-    "tests/browser/v3-nextjs-app-router-example.spec.ts",
-    "tests/browser/v3-nextjs-app-router-example.playwright.config.ts",
-    "scripts/verify-nextjs-app-router-example.mjs",
-  ]) {
-    assert.equal(existsSync(join(root, file)), true, `missing ${file}`);
-  }
+  assert.match(layout, /export const dynamic = "force-dynamic"/);
+  assert.match(layout, /await preloadRequestGraph\(\)/);
+  assert.match(serverGraph, /createGraphStore\(\)/);
+  assert.doesNotMatch(serverGraph, /\bgraphStore\b|getState\(\).*global/i);
 });
 
-test("server modules never import the React binding (cross-request leakage boundary)", () => {
-  const serverModules = walk(join(appRoot, "src/lib/server")).filter(
-    (path) => !path.endsWith(".test.ts"),
-  );
-  assert.ok(serverModules.length >= 2, "expected server modules under src/lib/server");
-  for (const path of serverModules) {
-    const source = readFileSync(path, "utf8");
-    assert.ok(
-      !source.includes("@prometheus-ags/prometheus-entity-management"),
-      `server module ${path} imports the React binding (process-global store)`,
-    );
-  }
-
-  const routeFiles = walk(join(appRoot, "src/app")).filter(
-    (path) =>
-      /(page|layout|loading)\.tsx$/.test(path) && !isClientModule(path),
-  );
-  for (const path of routeFiles) {
-    const source = readFileSync(path, "utf8");
-    assert.ok(
-      !source.includes('from "@prometheus-ags/prometheus-entity-management"'),
-      `server route ${path} imports the React binding directly`,
-    );
-  }
+test("the focused unit gate covers store, server snapshot, realtime, and action isolation", () => {
+  assert.match(manifest.scripts["test:nextjs-app-router:unit"], /engine\.test\.ts/);
+  assert.match(manifest.scripts["test:nextjs-app-router:unit"], /realtime-manager\.test\.ts/);
+  assert.match(manifest.scripts["test:nextjs-app-router:unit"], /graph-store\.test\.tsx/);
+  assert.match(manifest.scripts["test:nextjs-app-router:unit"], /vitest\.config\.mts/);
 });
 
-test("client modules never import the per-request server layer", () => {
-  const clientFiles = walk(join(appRoot, "src")).filter(
-    (path) => /\.tsx?$/.test(path) && isClientModule(path),
-  );
-  for (const path of clientFiles) {
-    const source = readFileSync(path, "utf8");
-    assert.ok(
-      !/lib\/server\//.test(source),
-      `client module ${path} imports from src/lib/server`,
-    );
-  }
+test("the production verifier creates an external app from candidate tarballs only", () => {
+  const verifier = read("scripts/verify-nextjs-app-router-example.mjs");
+
+  assert.match(verifier, /core-package-pack/);
+  assert.match(verifier, /react-package-pack/);
+  assert.match(verifier, /candidate-tarballs-only/);
+  assert.match(verifier, /packed-consumer-production-build/);
+  assert.match(verifier, /workspaceLinksPresent: false/);
+  assert.doesNotMatch(verifier, /workspace:\*/);
 });
 
-test("the example consumes the library through package exports, not source aliases", () => {
-  const tsconfig = JSON.parse(readFileSync(join(appRoot, "tsconfig.json"), "utf8"));
-  const paths = tsconfig.compilerOptions?.paths ?? {};
-  for (const [alias, targets] of Object.entries(paths)) {
-    if (alias.startsWith("@prometheus-ags")) {
-      for (const target of targets) {
-        assert.ok(
-          !/packages\/.*\/src/.test(String(target)),
-          `source-path alias ${alias} -> ${target} must not count as packed-package evidence`,
-        );
-      }
-    }
-  }
-  const nextConfig = readFileSync(join(appRoot, "next.config.ts"), "utf8");
-  assert.ok(
-    !/packages\/[^"']*\/src/.test(nextConfig),
-    "next.config.ts must not alias the library into package sources",
+test("the packed verifier preserves and validates the checked-in Next.js config", () => {
+  const verifier = read("scripts/verify-nextjs-app-router-example.mjs");
+
+  assert.match(verifier, /packedNextConfig !== sourceNextConfig/);
+  assert.match(verifier, /packedTextFiles\.filter/);
+  assert.match(verifier, /sourceAliasFiles\.length > 0/);
+  assert.match(verifier, /preserved: true/);
+  assert.doesNotMatch(
+    verifier,
+    /writeFile\(\s*join\(packedAppDirectory, "next\.config\.ts"\)/s,
   );
-  const pkg = JSON.parse(readFileSync(join(appRoot, "package.json"), "utf8"));
+});
+
+test("the packed app excludes source-only tests and their workspace Vitest aliases", () => {
+  const verifier = read("scripts/verify-nextjs-app-router-example.mjs");
+
+  assert.match(verifier, /name !== "vitest\.config\.mts"/);
+  assert.match(verifier, /\\\.\(\?:test\|spec\)/);
+  assert.match(verifier, /excludedSourceOnlyFiles/);
+  assert.match(verifier, /aliasesFound: 0/);
+});
+
+test("scoped realtime follows provider replacement and unregisters the prior adapter", () => {
+  const hook = read(
+    "examples/nextjs-app/src/features/next-runtime/use-scoped-realtime-manager.ts",
+  );
+  const page = read("examples/nextjs-app/src/demo-pages/realtime/realtime-page.tsx");
+
+  assert.match(hook, /useMemo/);
+  assert.match(hook, /\[store, options\.flushInterval\]/);
+  assert.match(page, /\[intervalMs, scopedManager\]/);
+  assert.match(page, /unregister\(\)/);
+});
+
+test("the advertised verifier writes the implemented task-5 receipt by default", () => {
+  const verifier = read("scripts/verify-nextjs-app-router-example.mjs");
+
   assert.equal(
-    pkg.dependencies["@prometheus-ags/prometheus-entity-management"],
-    "workspace:*",
+    manifest.scripts["verify:nextjs-app-router"],
+    "node scripts/verify-nextjs-app-router-example.mjs",
   );
-  assert.equal(pkg.dependencies["@prometheus-ags/entity-graph-core"], "workspace:*");
+  assert.match(verifier, /resolve\(evidenceDirectory, "task-5-verification\.json"\)/);
+  assert.match(verifier, /task: 5/);
+  assert.doesNotMatch(verifier, /resolve\(evidenceDirectory, "task-3-verification\.json"\)/);
 });
 
-test("coverage records the nextjs showcase as implemented with its declared scenarios", () => {
-  const coverage = JSON.parse(readFileSync(join(root, "examples/coverage.json"), "utf8"));
-  const showcase = coverage.showcases.find((entry) => entry.id === "nextjs");
-  assert.ok(showcase, "nextjs showcase missing from examples/coverage.json");
-  assert.equal(showcase.status, "implemented");
-  assert.equal(showcase.change, "v3-nextjs-app-router-example");
-  for (const id of [
-    "example.graph.normalized-cross-view",
-    "example.crud.optimistic-confirm",
-    "example.relationship.cascade-invalidation",
-    "example.view.local-remote-hybrid",
-    "example.realtime.coalesced-cross-view",
-    "example.runtime.ssr-isolation-hydration",
-    "example.runtime.lifecycle-security",
-  ]) {
-    assert.ok(showcase.scenarioIds.includes(id), `showcase missing scenario ${id}`);
-  }
-  assert.equal(showcase.runtimeEvidence.status, "implemented");
-  assert.equal(showcase.runtimeEvidence.command, "pnpm run verify:nextjs-app-router");
-  assert.equal(showcase.visualEvidence.status, "implemented");
+test("the browser gate proves concurrent SSR, hydration, routes, mutation, and takeover", () => {
+  const browser = read("tests/browser/v3-nextjs-app-router-example.spec.ts");
+
+  assert.match(browser, /Array\.from\(\{ length: 12 \}/);
+  assert.match(browser, /data-client-fetch-count/);
+  assert.match(browser, /hydrationErrors/);
+  assert.match(browser, /routeTransitionPreservedGraph/);
+  assert.match(browser, /Move to review/);
+  assert.match(browser, /Apply client event/);
 });
 
-test("root gates exist for the change", () => {
-  const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
-  for (const script of [
-    "verify:nextjs-app-router",
-    "test:v3-nextjs-app-router-example",
-    "bdd:nextjs-app-router",
-  ]) {
-    assert.ok(pkg.scripts[script], `missing root script ${script}`);
-  }
+test("the browser server cannot silently fall back to a workspace source app", () => {
+  const config = read("tests/browser/v3-nextjs-app-router-example.playwright.config.ts");
+
+  assert.match(config, /PROMETHEUS_NEXT_PACKED_APP is required/);
+  assert.match(config, /reuseExistingServer: false/);
+  assert.equal(manifest.scripts["verify:nextjs-app-router"], "node scripts/verify-nextjs-app-router-example.mjs");
 });

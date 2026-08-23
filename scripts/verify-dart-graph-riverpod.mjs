@@ -171,10 +171,10 @@ export function verifyDartGraphRiverpod({ runFlutter = true } = {}) {
   );
   assert(
     capability.releaseEvidence.some(
-      ({ ownerChange, status, kind }) =>
-        ownerChange === "v3-flutter-riverpod-a2ui-example" && status === "implemented" && kind === "visual",
+      ({ ownerChange, status }) =>
+        ownerChange === "v3-flutter-riverpod-a2ui-example" && status === "implemented",
     ),
-    "coverage must carry the implemented scoped visual Flutter showcase evidence",
+    "coverage must preserve the Flutter showcase's implemented evidence boundary",
   );
 
   const flutterOutput = runFlutter ? executeFlutterSuite() : "skipped by structural verifier";

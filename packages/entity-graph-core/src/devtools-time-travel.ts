@@ -19,10 +19,10 @@
  * not in production data paths.
  */
 
-import { useGraphStore } from "./graph";
+import { graphStore, type GraphStore } from "./graph";
 
 type GraphSlice = Pick<
-  ReturnType<typeof useGraphStore.getState>,
+  ReturnType<typeof graphStore.getState>,
   "entities" | "patches" | "entityStates" | "syncMetadata" | "lists"
 >;
 
@@ -71,8 +71,8 @@ export function configureTimeTravel(opts: { capacity?: number }): void {
 }
 
 /** Capture the current live graph state into the ring. Returns the snapshot seq. */
-export function recordGraphSnapshot(label?: string): number {
-  const s = useGraphStore.getState();
+export function recordGraphSnapshot(label?: string, storeApi: GraphStore = graphStore): number {
+  const s = storeApi.getState();
   const snap: TimeTravelSnapshot = {
     seq: seqCounter++,
     at: Date.now(),
@@ -93,27 +93,27 @@ export function recordGraphSnapshot(label?: string): number {
  * captured slice, so all subscribers re-render at that historical state.
  * Returns true if restored.
  */
-export function restoreGraphSnapshot(index: number): boolean {
+export function restoreGraphSnapshot(index: number, storeApi: GraphStore = graphStore): boolean {
   const snap = ring[index];
   if (!snap) return false;
   const clone = cloneSlice(snap.data);
-  useGraphStore.setState(clone as Partial<ReturnType<typeof useGraphStore.getState>>);
+  storeApi.setState(clone as Partial<ReturnType<typeof graphStore.getState>>);
   cursor = index;
   notify();
   return true;
 }
 
 /** Restore by capture seq (stable across ring eviction within capacity). */
-export function restoreGraphSnapshotBySeq(seq: number): boolean {
+export function restoreGraphSnapshotBySeq(seq: number, storeApi: GraphStore = graphStore): boolean {
   const index = ring.findIndex((s) => s.seq === seq);
-  return index === -1 ? false : restoreGraphSnapshot(index);
+  return index === -1 ? false : restoreGraphSnapshot(index, storeApi);
 }
 
 /** Step the cursor by `delta` (negative = back in time) and restore. */
-export function stepTimeTravel(delta: number): boolean {
+export function stepTimeTravel(delta: number, storeApi: GraphStore = graphStore): boolean {
   const base = cursor ?? ring.length - 1;
   const target = Math.max(0, Math.min(ring.length - 1, base + delta));
-  return restoreGraphSnapshot(target);
+  return restoreGraphSnapshot(target, storeApi);
 }
 
 /** Snapshot metadata + cursor for the devtools UI (no heavy data payloads). */

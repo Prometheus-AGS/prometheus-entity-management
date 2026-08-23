@@ -14,31 +14,27 @@ export default defineConfig({
   retries: 0,
   timeout: 90_000,
   expect: { timeout: 15_000 },
-  outputDir: `${evidenceRoot}/playwright-artifacts`,
+  outputDir: `${evidenceRoot}/task-5-playwright-artifacts`,
   reporter: [
     ["line"],
-    ["json", { outputFile: `${evidenceRoot}/playwright-report.json` }],
+    ["json", { outputFile: `${evidenceRoot}/task-5-playwright-report.json` }],
   ],
   use: {
-    baseURL: "http://127.0.0.1:4182",
+    baseURL: "http://127.0.0.1:4181",
     trace: "on",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
   },
   projects: [
     {
-      name: "chromium-desktop",
-      use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 800 } },
-    },
-    {
-      name: "chromium-mobile",
-      use: { ...devices["Desktop Chrome"], viewport: { width: 390, height: 844 } },
+      name: "chromium-desktop-responsive",
+      use: { ...devices["Desktop Chrome"] },
     },
   ],
   webServer: {
     command:
-      "pnpm --filter prometheus-entity-management-tauri exec vite preview --port 4182 --host 127.0.0.1 --strictPort",
-    url: "http://127.0.0.1:4182/",
+      "pnpm --filter prometheus-tauri-universal-example dev --host 127.0.0.1 --port 4181 --strictPort",
+    url: "http://127.0.0.1:4181",
     reuseExistingServer: false,
     timeout: 60_000,
   },

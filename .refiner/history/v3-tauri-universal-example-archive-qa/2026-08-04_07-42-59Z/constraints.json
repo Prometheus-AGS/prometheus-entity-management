@@ -1,0 +1,98 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    {
+      "id": "acceptance-direct-evidence",
+      "description": "Every bounded universal Tauri plan criterion is mapped to direct, reproducible evidence and no mandatory lane is silently skipped.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "acceptance matrix, task receipts, focused verifier/tests, strict OpenSpec, and signed 6/6 task state"
+      }
+    },
+    {
+      "id": "one-graph-layered-adapter-boundary",
+      "description": "The shared application retains one normalized graph and ID-only lists: components use hooks; hooks select the canonical graph store and platform orchestration store; only the platform store calls the platform service; platform conditionals remain at the service adapter boundary.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "universal source verifier, 9 application tests, component/store/service import scans, and implementation receipt"
+      }
+    },
+    {
+      "id": "platform-evidence-integrity",
+      "description": "Browser, historical macOS runtime, and current-source macOS build, Android emulator, and iOS simulator evidence remains correctly classified, complete, non-empty, and hash-bound without substituting source inference for runtime proof.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "task-5 and task-6 platform receipts, reviewed-source bundle hash, 23 retained SHA-256 recomputations, current executable/APK metadata, and original-resolution inspection"
+      }
+    },
+    {
+      "id": "trust-boundaries-fail-closed",
+      "description": "Withheld destructive IPC permissions, persisted queue validation, and deep-link scheme/tenant/route/entity policy fail closed before graph mutation.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "real macOS/Android denial receipts, Rust mock-host tests, 9 unit tests, 17 source rejection tests, and capability manifest inspection"
+      }
+    },
+    {
+      "id": "visual-accessibility-integrity",
+      "description": "Prometheus branding, desktop/mobile responsive composition, visible native host state, capability denial, and accessibility evidence remain legible and accurately scoped.",
+      "severity": "blocking",
+      "type": "accessibility",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "original-resolution screenshot inspection, five Playwright traces/screenshots, and zero serious/critical axe receipt"
+      }
+    },
+    {
+      "id": "ledgers-and-release-contract-synchronized",
+      "description": "Example coverage, package exports, skills, documentation, Changesets, and the release contract agree with the implemented showcase and unchanged public declaration surface.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "coverage verifier/tests, release-contract tests, aggregate skill verifier, 26/57 Tauri ledger, Changesets status, and evidence hashes"
+      }
+    },
+    {
+      "id": "react-rc-lane-preserved",
+      "description": "The frozen React 3.0.0-rc.1 source and successful rehearsal remain independent while this continuation's Tauri patch is reserved for a later coordinated prerelease.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "remote main SHA, npm next absence, release-impact wording, and fixed-group Changesets contract"
+      }
+    },
+    {
+      "id": "limits-and-publication-truthful",
+      "description": "Windows/Linux, physical-device, assistive-technology, signing, app-store, credential-rotation, aggregate certification, and registry limits remain explicit and no stable/publication authority is implied.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "verification/release-impact cross-check, postmortem reference, coverage status, registry state, and publication wording scan"
+      }
+    }
+  ],
+  "global_rules": [
+    "pnpm is the only JavaScript package manager.",
+    "Browser preview cannot certify native desktop or mobile behavior.",
+    "Simulator/emulator receipts cannot be relabeled as physical-device or distribution evidence.",
+    "The immutable React rc.1 source on remote main must not move while later 3.0 work continues.",
+    "Completing this bounded change may authorize only its OpenSpec archive; it cannot authorize npm latest, stable 3.0, GitHub Release, Pages, or app-store publication."
+  ],
+  "termination_conditions": [
+    "Terminate only when all eight blocking constraints have current direct evidence.",
+    "Require all 23 retained artifact hashes and all focused structural/ledger gates to pass.",
+    "Keep aggregate release coverage in-progress and publication unauthorized.",
+    "Proceed to archive only after a fresh isolated adversarial review has no critical finding."
+  ]
+}

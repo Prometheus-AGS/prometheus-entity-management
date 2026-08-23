@@ -30,10 +30,10 @@ Feature: Machine-verifiable shared example coverage
     And wrong evidence commands and missing paths are rejected
     And nondeterministic or cross-tenant fixtures are rejected
 
-  Scenario: Coverage claims remain honest while platform-limited evidence is pending
+  Scenario: Coverage claims remain honest while showcase work is pending
     When the shared example contract is verified
     Then the overall example coverage remains in progress
-    And all five showcases are implemented while platform-limited capability evidence stays incomplete
+    And all five showcase evidence boundaries are implemented
     And this headless contract does not claim release certification or visual evidence
     And a complete state is accepted only after all release and showcase evidence is implemented
     And release documentation and skills teach the shared contract evidence boundary

@@ -1,97 +1,124 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { Given, Then, When, setDefaultTimeout } from "@cucumber/cucumber";
+import { Given, Then } from "@cucumber/cucumber";
 
-type VerificationReport = {
-  result: "pass";
-  evidenceBoundary: {
-    kind: "source-workspace";
-    countsAsPackedPackageEvidence: false;
-  };
-  commands: Array<{ label: string; exitCode: number }>;
-  lanes: {
-    coreFlintContract: string;
-    releaseGate: string;
-    liveLaneFailClosed: string;
-    coreTypecheck: string;
-  };
-  limits: Record<string, string>;
-};
+import { verifyFlintPortableContracts } from "../../scripts/verify-flint-portable-contracts.mjs";
 
 const root = process.cwd();
-const reportPath = join(
-  root,
-  ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flint-portable-contracts/verification.json",
+const contract = JSON.parse(
+  readFileSync(join(root, "tests/fixtures/flint/portable-contract.json"), "utf8"),
 );
-let report: VerificationReport | undefined;
+let report: Awaited<ReturnType<typeof verifyFlintPortableContracts>>;
 
-setDefaultTimeout(10 * 60 * 1_000);
-
-function ensureReport(): VerificationReport {
-  if (report) return report;
-  execFileSync("node", ["scripts/verify-flint-portable-contracts.mjs", "--report", reportPath], {
-    cwd: root,
-    env: { ...process.env, FORCE_COLOR: "0" },
-    encoding: "utf8",
-    stdio: "inherit",
-    timeout: 10 * 60 * 1_000,
-  });
-  report = JSON.parse(readFileSync(reportPath, "utf8")) as VerificationReport;
-  return report;
-}
-
-function commandExit(label: string): number | undefined {
-  return ensureReport().commands.find(({ label: l }) => l === label)?.exitCode;
-}
-
-Given("the Flint portable-contracts certification inputs are available", () => {
-  // Inputs resolve lazily in the When step so the verifier runs once per feature.
+Given("the checked Flint portable contract is verified", async function () {
+  report = await verifyFlintPortableContracts();
+  assert.equal(report.verdict, "pass");
 });
 
-When("the Flint portable-contracts certification executes", () => {
-  ensureReport();
+Then(
+  "the default Flint surface contains no machine-specific paths or silent live skips",
+  function () {
+    assert.equal(report.checks.portableRepository.machineSpecificPaths, 0);
+    assert.equal(report.checks.portableRepository.silentLiveSkips, 0);
+  },
+);
+
+Then("client examples contain no service-role credential", function () {
+  assert.equal(report.checks.clientSecrets.exposedCredentials, 0);
 });
 
-Then("the fixture lane round-trips a mutation into the graph", () => {
-  assert.equal(ensureReport().lanes.coreFlintContract, "pass");
-  assert.equal(commandExit("core-flint-contract"), 0);
+Then("watchEntities and mutateEntity remain the consumed realtime methods", function () {
+  assert.deepEqual(report.checks.realtime.methods, ["watchEntities", "mutateEntity"]);
 });
 
-Then("the live lane is env-gated and fails closed when unavailable", () => {
-  assert.equal(ensureReport().lanes.liveLaneFailClosed, "pass");
-  // The probe opts in with unresolvable module paths; a non-zero exit is the pass condition.
-  assert.notEqual(commandExit("live-lane-fail-closed-probe"), 0);
+Then(
+  "production issuer, tenant equality, kid, JWKS, role, and key separation are required",
+  function () {
+    assert.equal(contract.security.issuer.productionRequired, true);
+    assert.equal(contract.security.tenant.publishMustMatchChannel, true);
+    assert.equal(contract.security.tenant.subscribeDropsForeignTenant, true);
+    assert.equal(contract.security.tokenHeader.asymmetricKidRequired, true);
+    assert.equal(contract.security.jwks.symmetricKeysPublished, false);
+    assert.equal(contract.security.keySeparation.serviceRoleServerOnly, true);
+  },
+);
+
+Then("RSA JWKs contain standard modulus and exponent members", function () {
+  assert.deepEqual(contract.security.jwks.rsaStandardMembers, ["n", "e"]);
+  assert.equal(contract.security.jwks.rsaStrictConsumerCompatible, true);
 });
 
-Then("the default lane contains no machine-specific absolute paths", () => {
-  assert.equal(ensureReport().lanes.releaseGate, "pass");
-  assert.equal(commandExit("release-gate"), 0);
+Then("the remaining EC strict-consumer caveat names the missing coordinates", function () {
+  assert.equal(contract.security.jwks.ecStrictConsumerCompatible, false);
+  assert.deepEqual(contract.security.jwks.ecMissingStandardMembers, ["crv", "x", "y"]);
 });
 
-Then("subscription and mutation identity carry tenant and channel", () => {
-  // Asserted by flint-security.test.ts inside the core contract lane.
-  assert.equal(ensureReport().lanes.coreFlintContract, "pass");
+Then(
+  "plan apply status and DDL inspection require typed specs and a reviewed hash",
+  function () {
+    assert.deepEqual(contract.provisioning.routes, ["plan", "apply", "status", "ddl"]);
+    assert.equal(contract.provisioning.typedJsonOnly, true);
+    assert.equal(contract.provisioning.rawSqlAccepted, false);
+    assert.equal(contract.provisioning.planHashRequired, true);
+  },
+);
+
+Then(
+  "service-role authorization RLS audit transactions and restart semantics are required",
+  function () {
+    for (const field of [
+      "serviceRoleOnly",
+      "enableRls",
+      "forceRls",
+      "perVerbTenantPolicies",
+      "auditLedger",
+      "singleTransaction",
+      "restartRequiredForNewRestRoutes",
+    ]) {
+      assert.equal(contract.provisioning[field], true, field);
+    }
+  },
+);
+
+Then("no Prometheus Forge provisioning adapter is claimed", function () {
+  assert.equal(contract.provisioning.prometheusForgeAdapterImplemented, false);
 });
 
-Then("checkpoint keys are separated per channel and consumer", () => {
-  assert.equal(ensureReport().lanes.coreFlintContract, "pass");
+Then("the portable run records external source verification as not requested", function () {
+  assert.equal(report.checks.externalSources.status, "not-requested");
+  assert.equal(report.checks.externalSources.disposition, "explicit-opt-in");
 });
 
-Then("malformed and wrong-kind envelopes fail closed", () => {
-  assert.equal(ensureReport().lanes.coreFlintContract, "pass");
+Then("every external source file has a pinned revision and SHA-256 digest", function () {
+  for (const source of Object.values(contract.externalSources) as Array<{
+    revision: string;
+    files: Record<string, string>;
+  }>) {
+    assert.match(source.revision, /^[a-f0-9]{40}$/);
+    for (const hash of Object.values(source.files)) assert.match(hash, /^[a-f0-9]{64}$/);
+  }
 });
 
-Then("the claims fixture pins issuer, tenant, kid, JWKS, role, and key separation", () => {
-  assert.equal(ensureReport().lanes.releaseGate, "pass");
+Then("Flint realtime and security coverage are implemented", function () {
+  assert.equal(report.checks.documentation.coverageEntries, 2);
+  assert.equal(report.checks.documentation.status, "pass");
 });
 
-Then("the integration doc covers Forge provisioning, RLS, audit, restart, and the strict-JWK caveat", () => {
-  assert.equal(ensureReport().lanes.releaseGate, "pass");
+Then("the existing Flint runtime exports remain in the public ledger", function () {
+  assert.deepEqual(report.checks.documentation.runtimeExports, [
+    "createFlintAdapter",
+    "publishFlintMutation",
+  ]);
+  assert.equal(report.checks.documentation.runtimeLedgerChanged, false);
 });
 
-Then("client examples expose no service-role credentials", () => {
-  assert.equal(ensureReport().lanes.releaseGate, "pass");
-});
+Then(
+  "the skills and release guide preserve security and provisioning exclusions",
+  function () {
+    assert.equal(report.checks.documentation.documentedFiles, 7);
+    assert.equal(contract.provisioning.prometheusForgeAdapterImplemented, false);
+    assert.equal(contract.security.keySeparation.serviceRoleServerOnly, true);
+  },
+);

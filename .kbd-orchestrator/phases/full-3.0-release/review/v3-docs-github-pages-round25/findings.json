@@ -1,0 +1,38 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "k3",
+  "producer_model": "gpt-5.6-sol",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": "website/scripts/check-generated-artifacts.mjs",
+      "line": 33,
+      "claim": "The Pages gate hard-fails whenever release/npm-registry-status.json's candidateSourceSha moves without a packed-API regeneration, coupling every docs deployment to the release-candidate pipeline's state file.",
+      "evidence": "`assertEqual(apiInventory.revision, registryStatus.candidateSourceSha, 'packed API candidate revision drift')` where registryStatus is read from `release/npm-registry-status.json` \u2014 a file owned by the release-candidate tooling (scripts/release-candidate-pipeline.mjs, scripts/npm-trust.mjs per the file tree). The same diff removes `pnpm run docs:api` from .github/workflows/docs-pages.yml, so when the RC pipeline refreshes candidateSourceSha on main, the Pages workflow cannot self-heal; RELEASING.md states regeneration must happen in 'the release environment that owns the committed artifacts'.",
+      "suggested_fix": "Either have the release-candidate pipeline regenerate packed API in the same commit that bumps candidateSourceSha, or drop the revision equality assertion from the Pages gate and rely on sourceAggregateSha256 (which already detects real source drift)."
+    },
+    {
+      "severity": "WARNING",
+      "file": "website/scripts/static-artifact-manifest.mjs",
+      "line": 45,
+      "claim": "hashTrackedInputs hashes every tracked file under each public package directory, so a change to any test, README, changelog, or fixture under packages/* fails docs:artifacts:check even when the packed TypeDoc output cannot change \u2014 and the fix now requires platform-dependent regeneration outside the Pages workflow.",
+      "evidence": "`execFileSync('git', ['ls-files', '-z', '--', ...directories])` with the checker calling it as `hashTrackedInputs(repositoryRoot, PUBLIC_PACKAGES.map(({directory}) => directory))` (check-generated-artifacts.mjs ~line 63), then `assertEqual(apiSources.sourceAggregateSha256, apiInventory.sourceAggregateSha256, 'packed API source hash drift')`. No filtering to typedoc inputs (src/, package.json, tsconfig) exists. Combined with RELEASING.md: 'Packed tarball compression and Sharp image encoding are platform-dependent, so the Pages workflow does not rewrite those bytes' \u2014 an unrelated PR touching a package test file strands the contributor: regenerating locally produces internally consistent but platform-divergent bytes, conflicting with the release environment's ownership of the committed artifacts.",
+      "suggested_fix": "Restrict hashTrackedInputs to the actual typedoc inputs per package (e.g., src/**, package.json, tsconfig*.json, typedoc config) instead of the entire package directory."
+    },
+    {
+      "severity": "WARNING",
+      "file": "release/docs-pages-bootstrap.md",
+      "claim": "The acceptance criteria require recording verification evidence, unresolved platform/manual limits, and release impact, but the diff records no evidence: the release evidence files and the docs-pages bootstrap record are untouched.",
+      "evidence": "Acceptance criteria: 'Record verification evidence, unresolved platform/manual limits, and release impact before archive.' The diff modifies only the workflow, RELEASING.md, package.json scripts, website scripts, regenerated manifests/search-index, and one test file; release/evidence/* and release/docs-pages-bootstrap.md (present in the file tree) are absent from the diff.",
+      "suggested_fix": "Append the clean-state gate run results (docs:artifacts:check, docs:test, browser gates) and the platform-limit rationale for moving docs:api/docs:evidence regeneration out of Pages to release/docs-pages-bootstrap.md or release/evidence/ before archiving."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

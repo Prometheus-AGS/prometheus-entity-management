@@ -1,24 +1,49 @@
-/// Prometheus-branded app shell for the Flutter/Riverpod/A2UI showcase.
-library;
-
 import 'package:flutter/material.dart';
 
-import 'features/task_board_page.dart';
+import 'features/entity_management/presentation/showcase_screen.dart';
 
-/// Branded root widget. Dark ember theme matches the other 3.0 showcases.
-class PrometheusShowcaseApp extends StatelessWidget {
-  const PrometheusShowcaseApp({super.key});
+final class PrometheusEntityShowcaseApp extends StatelessWidget {
+  const PrometheusEntityShowcaseApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final scheme = ColorScheme.fromSeed(
-      seedColor: const Color(0xFFE8590C),
-      brightness: Brightness.dark,
+    const ember = Color(0xffd94f27);
+    const ink = Color(0xff17171c);
+    final lightScheme = ColorScheme.fromSeed(
+      seedColor: ember,
+      brightness: Brightness.light,
+      surface: const Color(0xfffffaf5),
     );
+    final darkScheme = ColorScheme.fromSeed(
+      seedColor: ember,
+      brightness: Brightness.dark,
+      surface: ink,
+    );
+
     return MaterialApp(
-      title: 'Prometheus Tasks',
-      theme: ThemeData(colorScheme: scheme, useMaterial3: true),
-      home: const TaskBoardPage(),
+      title: 'Prometheus Entity Graph',
+      debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.system,
+      theme: _theme(lightScheme),
+      darkTheme: _theme(darkScheme),
+      home: const ShowcaseScreen(),
     );
   }
+
+  ThemeData _theme(ColorScheme scheme) => ThemeData(
+    useMaterial3: true,
+    colorScheme: scheme,
+    scaffoldBackgroundColor: scheme.surface,
+    cardTheme: CardThemeData(
+      elevation: 0,
+      color: scheme.surfaceContainerLow,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(color: scheme.outlineVariant),
+      ),
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      border: OutlineInputBorder(),
+    ),
+  );
 }

@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-04T13:56:01.196Z",
+  "verdict": "pass",
+  "contract": "tests/fixtures/flint/portable-contract.json",
+  "sourceRevisions": {
+    "realtime": "cfc1bb2bfc5db3b152967e0383aeaaf5207a4b89",
+    "gate": "2438892dfc7177c568bf57f3339a206d728f4ff2",
+    "forge": "0135946cec589c1059a9f82ac373c7cb6c12e387"
+  },
+  "checks": {
+    "portableRepository": {
+      "status": "pass",
+      "inspectedFiles": 24,
+      "machineSpecificPaths": 0,
+      "silentLiveSkips": 0
+    },
+    "realtime": {
+      "status": "pass",
+      "methods": [
+        "watchEntities",
+        "mutateEntity"
+      ],
+      "entityChangeKind": 1
+    },
+    "security": {
+      "status": "pass",
+      "issuer": "production-required",
+      "tenant": "required-and-equality-enforced",
+      "kid": "required-for-asymmetric-tokens",
+      "jwks": "rsa-rfc7517-with-ec-strict-consumer-caveat",
+      "roleAndKeySeparation": "service-role-server-only"
+    },
+    "provisioning": {
+      "status": "pass",
+      "modes": [
+        "plan",
+        "apply",
+        "status",
+        "ddl"
+      ],
+      "adapterClaimed": false
+    },
+    "clientSecrets": {
+      "status": "pass",
+      "scope": "repository-owned-example-tree-including-generated-outputs",
+      "inspectedFiles": 481,
+      "skippedBinaryFiles": 250,
+      "traversedGeneratedDirectories": [
+        ".next",
+        "build",
+        "dist",
+        "target"
+      ],
+      "excludedDependencyDirectories": [
+        "agentic-a2ui-app/node_modules",
+        "nextjs-app/node_modules",
+        "tauri-universal/node_modules",
+        "tauri-universal/src-tauri/gen/android/.gradle",
+        "tauri-universal/src-tauri/gen/android/buildSrc/.gradle",
+        "vite-app/node_modules"
+      ],
+      "exposedCredentials": 0
+    },
+    "documentation": {
+      "status": "pass",
+      "coverageEntries": 2,
+      "documentedFiles": 7,
+      "runtimeExports": [
+        "createFlintAdapter",
+        "publishFlintMutation"
+      ],
+      "runtimeLedgerChanged": false
+    },
+    "externalSources": {
+      "status": "pass",
+      "disposition": "revision-commit-and-worktree-hash-bound",
+      "revisions": {
+        "realtime": "cfc1bb2bfc5db3b152967e0383aeaaf5207a4b89",
+        "gate": "2438892dfc7177c568bf57f3339a206d728f4ff2",
+        "forge": "0135946cec589c1059a9f82ac373c7cb6c12e387"
+      },
+      "committedFiles": 14,
+      "workingFiles": 14,
+      "files": 14
+    }
+  }
+}

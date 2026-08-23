@@ -1,0 +1,125 @@
+[
+  {
+    "version": "v0.9.1",
+    "createSurface": {
+      "surfaceId": "surface-task-sync",
+      "catalogId": "urn:prometheus-ags:a2ui:catalog:v3",
+      "sendDataModel": true
+    }
+  },
+  {
+    "version": "v0.9.1",
+    "updateComponents": {
+      "surfaceId": "surface-task-sync",
+      "components": [
+        { "id": "root", "component": "Card", "child": "content" },
+        {
+          "id": "content",
+          "component": "Column",
+          "children": [
+            "eyebrow",
+            "heading",
+            "summary",
+            "update-button",
+            "update-label",
+            "archive-button",
+            "archive-label",
+            "delete-button",
+            "delete-label",
+            "invalid-button",
+            "invalid-label",
+            "unknown-button",
+            "unknown-label"
+          ]
+        },
+        { "id": "eyebrow", "component": "Text", "text": "AGENT RECOMMENDATION", "variant": "caption" },
+        { "id": "heading", "component": "Text", "text": { "path": "/heading" }, "variant": "h2" },
+        { "id": "summary", "component": "Text", "text": { "path": "/summary" }, "variant": "body" },
+        {
+          "id": "update-button",
+          "component": "Button",
+          "child": "update-label",
+          "action": {
+            "event": {
+              "name": "task.update",
+              "context": {
+                "taskId": "task-sync",
+                "tenantId": "tenant-prometheus-demo",
+                "status": "done"
+              }
+            }
+          }
+        },
+        { "id": "update-label", "component": "Text", "text": "Mark task done" },
+        {
+          "id": "archive-button",
+          "component": "Button",
+          "child": "archive-label",
+          "action": {
+            "event": {
+              "name": "task.archive",
+              "context": {
+                "taskId": "task-sync",
+                "tenantId": "tenant-prometheus-demo"
+              }
+            }
+          }
+        },
+        { "id": "archive-label", "component": "Text", "text": "Archive with approval" },
+        {
+          "id": "delete-button",
+          "component": "Button",
+          "child": "delete-label",
+          "action": {
+            "event": {
+              "name": "task.delete",
+              "context": {
+                "taskId": "task-sync",
+                "tenantId": "tenant-prometheus-demo"
+              }
+            }
+          }
+        },
+        { "id": "delete-label", "component": "Text", "text": "Attempt denied delete" },
+        {
+          "id": "invalid-button",
+          "component": "Button",
+          "child": "invalid-label",
+          "action": {
+            "event": {
+              "name": "task.update",
+              "context": {
+                "taskId": "task-sync",
+                "tenantId": "tenant-prometheus-demo"
+              }
+            }
+          }
+        },
+        { "id": "invalid-label", "component": "Text", "text": "Send invalid update" },
+        {
+          "id": "unknown-button",
+          "component": "Button",
+          "child": "unknown-label",
+          "action": {
+            "event": {
+              "name": "system.run",
+              "context": { "command": "ignored" }
+            }
+          }
+        },
+        { "id": "unknown-label", "component": "Text", "text": "Attempt undeclared action" }
+      ]
+    }
+  },
+  {
+    "version": "v0.9.1",
+    "updateDataModel": {
+      "surfaceId": "surface-task-sync",
+      "path": "/",
+      "value": {
+        "heading": "Review: Prove offline convergence",
+        "summary": "This official A2UI surface can update the canonical task, request human approval, and prove that denied or malformed actions do not mutate the graph."
+      }
+    }
+  }
+]

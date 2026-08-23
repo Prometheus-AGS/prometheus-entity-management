@@ -1,50 +1,45 @@
 # Release impact — `v3-flint-portable-contracts`
 
-Date: 2026-08-21
+Date: 2026-08-04
 
-## Implementation-ready surface
+## What this closes
 
-The Flint adapter seam is now certified as portable and honestly labeled. The
-watch/mutate wire contract (`EventKind.ENTITY_CHANGE` decode, malformed-payload
-skip, entityType filter, channel-envelope tenant identity, offset checkpoints)
-runs in default CI against a checked fixture — no machine-specific paths, no
-silent skips. The security-relevant seam contract (tenant/channel propagation,
-per-channel+consumer checkpoint key separation, entityType scoping, fail-closed
-decode) is pinned by `flint-security.test.ts`. The flint-gate/flint-forge auth
-and provisioning contract — issuer/audience validation, strict kid/JWKS rules
-with the compatibility caveat, anon/authenticated/service_role key separation,
-service-role-only provisioning, BYPASSRLS + FORCE RLS, audit, and restart
-semantics — is pinned as a checked claims fixture with docs consistency and
-examples secret scans enforced by the release gate.
+The 3.0 candidate no longer depends on a developer's absolute sibling path or
+passes a missing Flint integration silently. Default CI executes a checked
+portable watch/mutate round trip, while a separately enabled workflow requires
+immutable Realtime Fabric, Gate, and Forge sources and fails on missing or
+incompatible inputs.
 
-This makes the Flint integration contract a certifiable part of the 3.0 RC
-surface. It does not certify live Flint interop (opt-in lane) and grants no
-publication authority.
+The change also makes the external security/provisioning boundary auditable:
+issuer, tenant equality, asymmetric `kid`, RSA/EC JWKS behavior, role/key
+separation, client secret exclusion, Forge plan/apply/RLS/audit/restart
+semantics, and the absence of a local Forge adapter are all explicit.
 
-## Design decisions that bound the blast radius
+## Package and compatibility impact
 
-- No library API changed and no new runtime dependency was introduced. The
-  fixture is imported only by tests; the package ships `dist/` built from
-  `index.ts`, which never reaches it.
-- The old silent-skip live test was replaced, not extended: default lane always
-  executes against the fixture; the live lane is env-gated
-  (`FLINT_EM_MODULE`/`FLINT_SDK_MODULE`) and verified fail-closed by a verifier
-  probe that requires a non-zero exit when the SDK is unavailable.
-- Token verification was deliberately NOT reimplemented in this repo — the
-  identity plane belongs to flint-gate. The contract is pinned as data
-  (claims fixture) plus prose (docs), enforced by tests.
-- Docs describe only the fabric surface verified against source
-  (`forge migrate` as the apply path — no `plan` subcommand exists — and
-  `forge token mint`), with an explicit "not provided by this repository"
-  boundary.
-- Two `coverage.json` entries owned by this change flipped from `planned` to
-  `implemented` with the verifier command and evidence paths.
+- No public TypeScript entry point or runtime dependency changed.
+- `createFlintAdapter` and `publishFlintMutation` retain their structural
+  client API and existing export-ledger entries.
+- No package version, Changesets policy, lockfile, npm dist-tag, or registry
+  artifact changes in this bounded change.
+- The real SDK lane is pinned evidence. Future Flint revisions must update the
+  source hashes and rerun the live contract rather than inheriting this pass.
 
-## Full-release disposition
+## React-first delivery
 
-The full 3.0 release remains in progress. Skills ecosystem, docs, examples,
-cross-ecosystem certification, and stable publication retain independent plan
-ownership. The human-gated changes `v3-release-certification` and
-`v3-stable-publication` are untouched and remain the hand-off boundary. This
-evidence grants no npm, GitHub Release, GitHub Pages, Pub, Cargo, or app-store
-publication authority.
+This archive does not delay or rewrite the independently frozen React RC source
+on remote `main@1c40eaa08da210cbe3e20a77c5db211712b5c3a1`. It improves the
+downstream full-portfolio branch while the React candidate remains separately
+available for packaging/rehearsal. Public npm RC publication still requires
+the accepted fixed-group staging lane and external trusted-publisher authority;
+this change neither grants that authority nor moves `next` or `latest`.
+
+## Remaining full-3.0 work
+
+- Complete and certify the combined skills ecosystem.
+- Build the full Prometheus-branded Docusaurus site and protected GitHub Pages
+  deployment.
+- Assemble aggregate immutable release evidence across packages, examples,
+  docs, skills, security, and platforms.
+- Verify registry authority and execute separately authorized RC/stable
+  publication without promoting `latest` prematurely.

@@ -89,16 +89,16 @@ test("the RC staging lane rejects alpha and requires a numbered rc prerelease", 
   );
 });
 
-test("the checked-in rc.1 state has consumed its React showcase changeset", async () => {
-  const pre = JSON.parse(
-    await readFile(new URL("../../.changeset/pre.json", import.meta.url), "utf8"),
+test("the checked-in stable state has exited changeset pre mode at 3.0.0", async () => {
+  // 3.0.0 stable shipped 2026-08-23 (tag v3.0.0, PR #23): pre mode is exited,
+  // pre.json is gone, and the fixed npm packages carry the stable version.
+  const preExists = await readFile(new URL("../../.changeset/pre.json", import.meta.url), "utf8")
+    .then(() => true, () => false);
+  assert.equal(preExists, false, "stable 3.0.0 must not run in changeset pre mode");
+  const core = JSON.parse(
+    await readFile(new URL("../../packages/entity-graph-core/package.json", import.meta.url), "utf8"),
   );
-  assert.equal(pre.mode, "pre");
-  assert.equal(pre.tag, "rc");
-  assert.ok(
-    pre.changesets.includes("certify-vite-react19"),
-    "the merged rc.1 source must not ask Changesets to generate an unnecessary rc.2 PR for the React showcase",
-  );
+  assert.equal(core.version, "3.0.0");
 });
 
 test("the pnpm RC workflow forwards named CLI flags without a literal separator", async () => {
@@ -114,6 +114,23 @@ test("the pnpm RC workflow forwards named CLI flags without a literal separator"
       "pnpm 10 forwards the standalone separator to release-candidate.mjs",
     );
   }
+});
+
+test("the protected stage reuses a certified run without setup-node v6 token fallback", async () => {
+  const workflow = await readFile(new URL("../../.github/workflows/publish.yml", import.meta.url), "utf8");
+  const stage = workflow.slice(workflow.indexOf("  stage:"));
+  assert.match(stage, /actions\/setup-node@v7/);
+  assert.doesNotMatch(stage, /actions\/setup-node@v6/);
+  assert.match(stage, /candidate_run_id/);
+  assert.match(stage, /candidate_sha/);
+  assert.match(stage, /Verify reused rehearsal authority/);
+  assert.match(stage, /\.path == "\.github\/workflows\/publish\.yml"/);
+  assert.match(stage, /\.name == "rehearse"/);
+  assert.match(stage, /\.conclusion == "success"/);
+  assert.match(stage, /\.expired == false/);
+  assert.match(stage, /run-id: \$\{\{ \(inputs\.candidate_run_id != '' && inputs\.candidate_sha != ''\) && inputs\.candidate_run_id \|\| github\.run_id \}\}/);
+  assert.match(stage, /github-token: \$\{\{ github\.token \}\}/);
+  assert.match(stage, /needs\.rehearse\.result == 'skipped'/);
 });
 
 test("the candidate manifest is contract-derived, non-mutating, and covers every ecosystem", async () => {
@@ -495,6 +512,7 @@ test("RC staging authority requires GitHub OIDC and can never target latest", as
     authorizedAction: "npm stage publish",
     environment: "npm-rc",
     distTag: "next",
+    sourceSha: manifest.source.sha,
   });
   assert.throws(() => assertRcStageAuthority(manifest, {}), /GitHub Actions is required/);
   assert.throws(
@@ -511,7 +529,28 @@ test("RC staging authority requires GitHub OIDC and can never target latest", as
   );
   assert.throws(
     () => assertRcStageAuthority(manifest, { ...env, GITHUB_SHA: "f".repeat(40) }),
-    /workflow SHA does not match the candidate manifest/,
+    /authorized candidate SHA does not match the candidate manifest/,
+  );
+  assert.deepEqual(
+    assertRcStageAuthority(manifest, {
+      ...env,
+      GITHUB_SHA: "f".repeat(40),
+      PROMETHEUS_RELEASE_CANDIDATE_SHA: manifest.source.sha,
+    }),
+    {
+      authorizedAction: "npm stage publish",
+      environment: "npm-rc",
+      distTag: "next",
+      sourceSha: manifest.source.sha,
+    },
+  );
+  assert.throws(
+    () =>
+      assertRcStageAuthority(manifest, {
+        ...env,
+        PROMETHEUS_RELEASE_CANDIDATE_SHA: "not-a-commit",
+      }),
+    /authorized candidate SHA must be a full Git commit/,
   );
 });
 
@@ -1278,6 +1317,8 @@ test("the release verifier certifies workflow, packed consumers, recovery, and v
   assert.equal(report.workflow.uvRuntime, "0.12.1");
   assert.equal(report.workflow.provenance, "actions-attest-v4");
   assert.equal(report.workflow.stageEnvironment, "npm-rc");
+  assert.equal(report.workflow.reusableCandidateBundle, true);
+  assert.equal(report.workflow.setupNodeDummyToken, false);
   assert.equal(report.workflow.hiddenReleaseArtifacts, true);
   assert.equal(report.workflow.longLivedNpmToken, false);
   assert.equal(report.recovery.partialRetry, "matching-skip-absent-stage-conflict-block");

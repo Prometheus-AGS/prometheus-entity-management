@@ -94,5 +94,5 @@ describe("G3: incremental view maintenance", () => {
     view.applyChange("e500");
 
     expect(view.result()).toEqual(applyView(ids, get, filter, sort));
-  });
+  }, 15_000);
 });

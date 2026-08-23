@@ -207,7 +207,7 @@ Then("coverage records the Flutter source provenance gate as implemented", funct
   assert.equal(verificationReport().releaseLedgers.qualityGateStatus, "implemented");
 });
 
-Then("Dart library and scoped Flutter showcase evidence are implemented", function () {
+Then("Dart library and Flutter app evidence are implemented independently", function () {
   assert.deepEqual(verificationReport().releaseLedgers.downstreamEvidence, [
     { ownerChange: "v3-dart-graph-riverpod", status: "implemented", kind: "platform" },
     { ownerChange: "v3-dart-graph-riverpod", status: "implemented", kind: "visual" },

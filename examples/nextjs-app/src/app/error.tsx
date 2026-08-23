@@ -1,27 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
-
-export default function Error({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
-  useEffect(() => {
-    console.error("[app] route error boundary", error.message);
-  }, [error]);
-
+export default function ErrorBoundary({ reset }: { reset: () => void }) {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-4 p-6">
-      <div role="alert" className="rounded-lg bg-red-100 p-4 text-sm text-red-800 dark:bg-red-500/15 dark:text-red-300">
-        This route failed to render: {error.message}
-      </div>
-      <Button size="sm" onClick={reset}>
-        Try again
-      </Button>
+    <div className="space-y-3 p-6" role="alert">
+      <h2 className="text-lg font-semibold">The graph route could not render.</h2>
+      <button className="rounded-md border px-3 py-2" onClick={reset} type="button">
+        Retry route
+      </button>
     </div>
   );
 }

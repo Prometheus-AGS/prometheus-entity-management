@@ -1,68 +1,56 @@
-# Verification: v3-flint-portable-contracts
+# Verification — `v3-flint-portable-contracts`
 
-**Date:** 2026-08-21
-**Evidence boundary:** source-workspace (`countsAsPackedPackageEvidence: false`)
-**Verifier:** `pnpm run verify:flint-contracts` →
-`scripts/verify-flint-portable-contracts.mjs` → `verification.json` (result: **pass**)
+Date: 2026-08-04
 
-## Acceptance matrix (plan section 19)
+Implementation commits: `9e8481b` through `5ef6ea3`, based on `342e951`
 
-| Acceptance criterion | Evidence | Status |
-|---|---|---|
-| Default CI contains no machine-specific paths | Release test scans `packages/ tests/ scripts/ examples/` + root configs for `/Users/<name>/` and `/home/<name>/` patterns; the old hard-coded sibling paths in `flint-live.test.ts` are gone. Single allowlisted file: `tests/release/v3-package-module-contracts.test.mjs` (deliberate negative fixtures the manifest validator must reject). | pass |
-| No silent Flint success | Default lane runs the round-trip against the checked fixture (`flint-live.fixture.ts`) — it executes, never skips. Receipts label the lane `fixture`; coverage.json applicability states fixture-backed, never "live". `ctx.skip` removed. | pass |
-| Enabled live integration fails if unavailable | Opt-in via `FLINT_EM_MODULE` + `FLINT_SDK_MODULE`; partial config throws; unresolvable modules fail the suite. Verifier probe lane opts in with bogus paths and REQUIRES a non-zero exit (`liveLaneFailClosed: pass`). | pass |
-| Issuer/tenant/kid/JWKS/role/key-separation tests | `tests/fixtures/flint-auth/claims-contract.json` pins the contract verified against flint-gate `jwt_verify.rs`/`jwks.rs` and flint-forge `ext-flint-auth`/migrations 0013/0014; release test asserts fixture contents and docs consistency. Seam-level behavior tested in `flint-security.test.ts` (tenant/channel propagation, per-channel+consumer checkpoint key separation, entityType scoping, fail-closed malformed/wrong-kind envelopes). | pass |
-| Watch/mutate contract verified | `flint.test.ts` (7) + `flint-live.test.ts` fixture round-trip (2) + `flint-security.test.ts` (5) — 14 tests pass; full core suite 182 passed / 1 todo. | pass |
-| Forge plan/apply, service-role-only provisioning, RLS, audit, restart semantics, strict-JWK caveat documented | `docs/flint-integration.md` sections 3–5; documents the real surface (`forge migrate` apply — no separate plan subcommand; `forge token mint`; service_role BYPASSRLS; FORCE RLS; `AuthzAuditRecord`; cold-cache restart + checkpoint resume) with an explicit "not provided by this repository" boundary — no unbuilt adapter claimed. Docs↔fixture consistency enforced by the release test. | pass |
-| Client examples never expose service-role credentials | Release test scans `examples/` for `flint_sk_*`, JWT literals, and assigned `SERVICE_ROLE_KEY` values: zero findings. | pass |
+Verdict: **PASS — IMPLEMENTATION COMPLETE; REVIEW REMEDIATION VERIFIED; FINAL ISOLATED REVIEW AND ARCHIVE PENDING**
 
-## Gates run (all green)
+## Acceptance matrix
 
-| Gate | Result |
-|---|---|
-| `pnpm run verify:flint-contracts` (4 lanes: core contract, release gate, fail-closed probe, core typecheck) | pass |
-| core vitest: flint.test + flint-live + flint-security | 14/14 pass |
-| full `entity-graph-core` suite | 182 passed, 1 todo |
-| release test `node --test tests/release/v3-flint-portable-contracts.test.mjs` | 6/6 pass |
-| BDD `pnpm run bdd:flint-contracts` | 3 scenarios / 15 steps pass |
-| `pnpm run typecheck` | 23/23 |
-| `pnpm run validate` | errors: [] |
-| `pnpm run verify:example-coverage` | errors: [] |
-| eslint on new/changed files | clean |
-| `openspec validate v3-flint-portable-contracts --strict` | valid |
+| Plan or OpenSpec criterion | Authoritative evidence | Result |
+| --- | --- | --- |
+| Default CI contains no machine-specific Flint path or silent success | Checked portable fixture, cross-platform workstation plus Unix/Windows absolute Flint-root scan, 13 Node regressions, 6/20 BDD, and task-2/3/task-6 receipts | Pass |
+| Explicit real integration fails if unavailable | Missing-root negative receipt, immutable workflow inputs, exact checkout/build/export checks, and no skip/catch branch | Pass |
+| Current watch/mutate contract works through the normalized graph | Portable adapter round trip, exact Git-HEAD equality, pinned-commit blob hashes, independent working-tree hashes for all three roots, and pinned Realtime Fabric SDK 1/1 live round trip | Pass |
+| Issuer, tenant, `kid`, JWKS, roles, and key separation are verified | Security fixture, fail-closed drift tests, current Gate hashes, and precise RSA/EC caveat | Pass |
+| Client examples never expose service-role credentials | 481 repository-owned text-like source/config and generated-output files including `.env*`, YAML, TOML, native config, `.next`, `build`, `dist`, and `target`; 250 binaries classified separately; dependency/cache exclusions enumerated; name-, assignment-, and decoded-JWT-value service-role rejection regressions | Pass |
+| Forge provisioning behavior is documented truthfully | Pinned Forge hashes plus plan/apply/status/DDL, service-role, RLS, audit, and restart guidance; adapter claim explicitly false | Pass |
+| Coverage, API, skills, and docs are synchronized | Two implemented coverage entries; 203 React exports and all companion ledgers; human API and skill references | Pass |
+| Relevant clean/package/docs/security/platform gates pass | Exact-head serialized full repository CI, packed consumers, strict OpenSpec, actionlint, Node 22/24/26, and Tauri packed-consumer receipt at `5ef6ea3` | Pass |
 
-## Live-lane verification detail
+## Evidence integrity
 
-- Fixture lane: green (default).
-- Live opt-in against the real sibling SDK (`flint-realtime-fabric/sdks/*/dist`):
-  fails closed on this machine because the sibling workspace has no installed
-  `node_modules` (`@prometheusags/frf-sdk` unresolvable from the sibling dist).
-  This is exactly the acceptance behavior: **enabled live integration fails if
-  unavailable** instead of silently skipping. Live interop itself is retained
-  as a limit below.
+- External source receipt SHA-256:
+  `bb203482164cddc6bfb1d8fb41916a45f81ab3ebde48e7f61d5b5eb33a906f6f`.
+- Task-6 revision-and-hash source receipt SHA-256:
+  `3b359bd664063886ddf26511866239d621b91f2b65babb26c7fde68c732e8972`.
+- Task-4 synchronization receipt SHA-256:
+  `a0d94cc36edfe20816699f21d33cf240f316e609b63b520696e635e316ff3131`.
+- Task-5 clean receipt SHA-256:
+  `30ba1890cbd2eb3b73a41fec9e925d164b569fe29bd2aa944759253963b92bd4`.
+- Portable contract fixture SHA-256:
+  `b1e2622c45849e9d75fbaba78c615d077d7d8c2ac5190f624ed846b2d5975747`.
+- Live workflow SHA-256:
+  `022253ef25f4c332cb8d77622abe72e39a6fe1ede0394a2b63c3584ea608094e`.
 
-## Defects found and fixed during this change
+## Explicit limits
 
-1. **Machine-specific paths in default lane** — `flint-live.test.ts` hard-coded
-   `/Users/gqadonis/...` sibling build paths → replaced with env-gated opt-in +
-   checked fixture (D-1/D-2).
-2. **Silent skip masquerading as a green lane** — old suite skipped when the
-   sibling SDK was unresolvable → default lane now always executes against the
-   fixture; opt-in failure is hard.
-3. **Release-test self-match** — the machine-path scanner matched its own
-   allowlist comment containing an example path → comment reworded.
-4. **Framework build caches embed machine paths** — `examples/nextjs-app/.next/`
-   (untracked build output) tripped the scanner → walk now skips dot-directories
-   (build caches legitimately embed build-machine paths).
+- The portable checked fixture is default-CI evidence, not real SDK execution.
+- The live receipt uses one pinned Realtime Fabric source revision; it is not a
+  compatibility claim for arbitrary future SDK commits.
+- Forge provisioning semantics are verified and documented from pinned source;
+  this repository does not implement or claim a Forge adapter.
+- Current RSA JWK publication is RFC 7517-compatible; current EC publication
+  still lacks standard `crv`, `x`, and `y` coordinates.
+- Dart, Cargo, and native platform source did not change in this Flint change;
+  their expensive builds are not rerun or claimed.
+- Complete skills ecosystem, Docusaurus/Pages, aggregate release
+  certification, registry authority, and stable publication remain downstream.
 
-## Retained limits
+## React-first boundary
 
-- **Live Flint interop** remains opt-in: requires the sibling
-  `flint-realtime-fabric` workspace with installed dependencies and built SDK
-  dists, plus `FLINT_EM_MODULE`/`FLINT_SDK_MODULE`. Not exercised green on this
-  machine (sibling deps not installed); fail-closed behavior verified instead.
-- **Token verification** is not reimplemented in this repo (identity plane is
-  flint-gate); the claims contract is pinned as a fixture + docs, enforced by
-  the release gate.
-- Booted-device / live-network lanes are out of scope for this change.
+Remote `main` remains the frozen React RC source at
+`1c40eaa08da210cbe3e20a77c5db211712b5c3a1`. npm remains `latest: 2.2.0` and
+`alpha: 3.0.0-alpha.0`, with no `next`. This change does not mutate the fixed
+twelve-package version policy or authorize publication.

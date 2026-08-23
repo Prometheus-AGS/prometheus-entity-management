@@ -70,7 +70,13 @@ export class ExternalA2AExecutor implements AgentExecutor {
   constructor(options: ExternalA2AExecutorOptions) {
     this.options = options;
     const baseUrl = new URL(options.baseUrl);
-    if (baseUrl.protocol !== "https:" && baseUrl.hostname !== "localhost" && baseUrl.hostname !== "127.0.0.1") {
+    if (baseUrl.username || baseUrl.password) {
+      throw new Error("External A2A endpoints must not embed credentials.");
+    }
+    const loopbackHttp =
+      baseUrl.protocol === "http:" &&
+      ["localhost", "127.0.0.1", "[::1]"].includes(baseUrl.hostname);
+    if (baseUrl.protocol !== "https:" && !loopbackHttp) {
       throw new Error("External A2A endpoints must use HTTPS outside local development.");
     }
   }

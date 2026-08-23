@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "codex-gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".github/workflows/publish.yml",
+      "line": 205,
+      "claim": "Supplying only one of candidate_run_id or candidate_sha does not fall back to a fresh current-run rehearsal as documented, and instead mixes old input values with the current run.",
+      "evidence": "release/release-candidate-pipeline.md adds: \"omitting either input falls back to a fresh rehearsal in the current run.\" But the stage download uses `name: prometheus-entity-management-rc-${{ inputs.candidate_sha || github.sha }}` and `run-id: ${{ inputs.candidate_run_id || github.run_id }}` independently, while the rehearse job runs when either input is empty. If only `candidate_sha` is supplied, the current run rehearses `github.sha` but stage downloads artifact `candidate_sha`; if only `candidate_run_id` is supplied, the current run rehearses but stage downloads from the supplied old run id.",
+      "suggested_fix": "Introduce a single reuse predicate that is true only when both inputs are present, and use both candidate inputs only under that predicate; otherwise use `github.run_id` and `github.sha`. Alternatively reject partial input combinations before running stage."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": ".github/workflows/publish.yml",
+      "line": 165,
+      "claim": "The reuse path accepts an arbitrary run id with matching artifact name without verifying that the run was a successful rehearsal run.",
+      "evidence": "The new input is described as an \"Existing successful rehearsal run ID\" and release/release-candidate-pipeline.md says reuse is for a candidate \"certified by a successful rehearsal job\", but the stage condition only requires `needs.rehearse.result == 'skipped'` plus non-empty inputs, and the download step only passes `run-id: ${{ inputs.candidate_run_id || github.run_id }}` to `actions/download-artifact@v8`.",
+      "suggested_fix": "Before downloading or staging, query the GitHub Actions API for `candidate_run_id` and verify it belongs to this workflow/repository/ref as required, has `conclusion: success`, and contains the expected successful rehearsal job/artifact for `candidate_sha`."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

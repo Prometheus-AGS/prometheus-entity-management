@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-flint-portable-contracts.mjs",
+      "line": 118,
+      "claim": "The client-secret verifier can still pass an actual Supabase service-role JWT if it is assigned to a public/non-service-role variable name.",
+      "evidence": "The acceptance criterion requires \u201cClient examples never expose service-role credentials,\u201d but `scanClientExamples` only rejects names/patterns such as `FLINT_SERVICE_ROLE_KEY`, `SERVICE_ROLE...=`, `service[_-]?role[_-]?key`, `flint_sk_...`, and `VITE_...SECRET|PRIVATE|SERVICE`; it never decodes JWT payloads or detects a service-role credential value such as `NEXT_PUBLIC_SUPABASE_ANON_KEY=<JWT whose payload has \"role\":\"service_role\">`.",
+      "suggested_fix": "Add value-level detection for JWT credentials by parsing base64url JWT payloads found in scanned text and rejecting payloads with `role: \"service_role\"` or equivalent server-only claims; add a regression where a service-role JWT is assigned to a misleading public variable name."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

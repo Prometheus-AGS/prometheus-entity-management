@@ -1,0 +1,127 @@
+{
+  "refinement_id": "eab2c50d-ca1e-4046-b26c-eb8c85a0aa3e",
+  "artifact_name": "v3-flint-portable-contracts-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-04T12:12:45Z",
+  "updated_at": "2026-08-04T13:56:01Z",
+  "current_iteration": 12,
+  "max_iterations": 12,
+  "goals": [
+    "Prove every bounded Flint portability, security, and provisioning criterion from current evidence.",
+    "Preserve the independently frozen React RC source and truthful broader-release limits."
+  ],
+  "constraints": [
+    {"id": "acceptance-direct-evidence", "severity": "blocking", "status": "satisfied"},
+    {"id": "portable-default-live-fail-closed", "severity": "blocking", "status": "satisfied"},
+    {"id": "realtime-contract-source-integrity", "severity": "blocking", "status": "satisfied"},
+    {"id": "security-and-secret-boundaries", "severity": "blocking", "status": "satisfied"},
+    {"id": "forge-provisioning-truthful", "severity": "blocking", "status": "satisfied"},
+    {"id": "ledgers-docs-skills-synchronized", "severity": "blocking", "status": "satisfied"},
+    {"id": "clean-and-remote-gates-current", "severity": "blocking", "status": "satisfied"},
+    {"id": "react-rc-and-release-limits-preserved", "severity": "blocking", "status": "satisfied"}
+  ],
+  "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T12:12:45Z"
+    },
+    {
+      "iteration": 2,
+      "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T12:36:21Z"
+    },
+    {
+      "iteration": 3,
+      "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T12:44:26Z"
+    },
+    {
+      "iteration": 4,
+      "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T13:04:46Z"
+    },
+    {
+      "iteration": 5,
+      "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T13:10:57Z"
+    },
+    {
+      "iteration": 6,
+      "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T13:23:37Z"
+    },
+    {
+      "iteration": 7,
+      "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T13:31:40Z"
+    },
+    {
+      "iteration": 8,
+      "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T13:41:20Z"
+    },
+    {
+      "iteration": 9,
+      "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T13:46:30Z"
+    },
+    {
+      "iteration": 10,
+      "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T13:49:26Z"
+    },
+    {
+      "iteration": 11,
+      "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T13:52:51Z"
+    },
+    {
+      "iteration": 12,
+      "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T13:56:01Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [],
+  "finalized_at": "2026-08-04T13:56:01Z"
+}

@@ -226,7 +226,10 @@ const server = createA2AServer({
 });
 ```
 
-The external endpoint is an opt-in runtime dependency. Default CI and the reference agent remain keyless and local.
+The external endpoint is an opt-in runtime dependency. HTTPS is required outside
+loopback development, and URL-embedded usernames or passwords are rejected before
+AgentCard discovery. Keep authenticated production routing and credentials in a
+server-side gateway. Default CI and the reference agent remain keyless and local.
 
 ## Migrating alpha consumers
 
@@ -270,6 +273,14 @@ pnpm --filter @prometheus-ags/entity-graph-a2a run verify:skills
 The upstream gate pins `a2aproject/a2a-tck` at commit `5996b79f9cefa6fc390980e383e358a66fb9e49e`. Its receipt separates MUST, SHOULD, MAY, binding, capability exclusions, and candidate artifact hashes. A failed applicable MUST or unexplained selected-binding skip blocks the gate.
 
 These checks certify the headless package boundary. Browser rendering, accessibility, and visual evidence are owned by the `v3-agentic-a2ui-example` showcase; no screenshot is evidence for a headless transport.
+
+The repository's dedicated
+[`agentic-a2ui-app`](../../examples/agentic-a2ui-app/README.md) is the reference
+composition for consuming the streamed A2UI artifact through the official
+renderer and application-owned action policy. Its deterministic source tests
+and clean three-flow production-browser gate are implemented. That rendered
+evidence does not change this package's headless certification boundary or
+certify an external hosted agent.
 
 The runtime export ledger is [`a2a-library-exports.json`](../../prometheus-entity-skills/_shared/references/a2a-library-exports.json). Public root or `./legacy` export changes must update it.
 

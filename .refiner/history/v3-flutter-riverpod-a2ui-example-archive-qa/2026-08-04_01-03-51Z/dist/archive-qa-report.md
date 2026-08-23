@@ -1,0 +1,20 @@
+# Flutter/Riverpod/A2UI archive QA
+
+| Blocking constraint | Result |
+| --- | --- |
+| Every bounded criterion has direct current evidence | Pass |
+| Stable Flutter host and both mobile smoke lanes are retained | Pass |
+| Three stable goldens match and accessibility limits remain explicit | Pass |
+| One normalized graph and fail-closed A2UI policy boundary remain intact | Pass |
+| Coverage, provenance, public ledger, skills, docs, Changesets, and OpenSpec agree | Pass |
+| Durability, device, accessibility, GenUI, and hosted-service limits are explicit | Pass |
+| Frozen React `rc.1` remote-main source is unchanged | Pass |
+| No registry, stable-release, physical-device, or durable-persistence overclaim | Pass |
+
+Deterministic checks: 13/13 semantic coverage scenarios, 16/16 capabilities,
+16/16 stable artifacts, 44/44 focused release tests, Flutter provenance,
+strict OpenSpec, diff hygiene, six retained SHA-256 checks, and the frozen
+remote-main reference all pass.
+
+Proceed to fresh isolated adversarial review. Archive only on a non-blocking
+verdict.

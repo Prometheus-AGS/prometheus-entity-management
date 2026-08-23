@@ -1,0 +1,19 @@
+{
+  "artifact_type": "content",
+  "variants": [
+    {"name": "archive-qa-report", "file": ".refiner/artifacts/v3-flutter-riverpod-a2ui-example-archive-qa/dist/archive-qa-report.md", "format": "markdown", "description": "Constraint-by-constraint Flutter archive QA disposition."},
+    {"name": "validation", "file": ".refiner/artifacts/v3-flutter-riverpod-a2ui-example-archive-qa/dist/validation.json", "format": "json", "description": "Machine-readable deterministic QA results and release boundary."}
+  ],
+  "preview": {"required": false, "runs": []},
+  "validation": {
+    "preview_status": "pass",
+    "has_console_errors": false,
+    "has_request_failures": false,
+    "notes": [
+      "Direct content QA artifact; no additional preview is required.",
+      "The retained stable Flutter goldens and iOS/Android smoke receipt provide the bounded visual and platform evidence."
+    ]
+  },
+  "sizes": [],
+  "generated_at": "2026-08-04T01:11:12Z"
+}

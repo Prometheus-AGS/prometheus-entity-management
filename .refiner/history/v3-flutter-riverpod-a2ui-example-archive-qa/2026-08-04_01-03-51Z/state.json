@@ -1,0 +1,91 @@
+{
+  "refinement_id": "719c5485-c5fa-48af-a984-d04503614147",
+  "artifact_name": "v3-flutter-riverpod-a2ui-example-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-04T01:00:08Z",
+  "updated_at": "2026-08-04T01:03:51Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Certify the bounded Flutter showcase against stable host and mobile evidence.",
+    "Preserve the frozen React rc.1 lane and avoid publication or durability overclaim."
+  ],
+  "constraints": [
+    {
+      "id": "acceptance-direct-evidence",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "stable-host-and-platform-evidence",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "visual-and-accessibility-integrity",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "normalized-graph-and-policy-boundary",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "ledgers-synchronized",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "durability-and-device-limits-explicit",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "react-rc-lane-preserved",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "no-publication-overclaim",
+      "severity": "blocking",
+      "status": "satisfied"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T01:00:56Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "82afda30",
+      "phase": "persist",
+      "iteration": 1,
+      "timestamp": "2026-08-04T01:03:51Z"
+    }
+  ],
+  "prior_cycle_id": null,
+  "finalized_at": "2026-08-04T01:03:51Z"
+}

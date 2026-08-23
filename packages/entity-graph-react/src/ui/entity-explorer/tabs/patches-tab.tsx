@@ -1,9 +1,8 @@
 import React from "react";
-import { useStore } from "zustand";
-import { useGraphStore } from "@prometheus-ags/entity-graph-core";
+import { useGraphStore } from "../../../graph-store";
 
 export function PatchesTab() {
-  const patches = useStore(useGraphStore, (s) => s.patches);
+  const patches = useGraphStore((s) => s.patches);
 
   const rows: Array<{ entityType: string; id: string; patch: Record<string, unknown> }> = [];
   for (const [entityType, bucket] of Object.entries(patches)) {

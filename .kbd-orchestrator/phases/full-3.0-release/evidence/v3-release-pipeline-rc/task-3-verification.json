@@ -4,8 +4,8 @@
   "source": {
     "contract": "release/v3-release-contract.json",
     "policy": "release/release-candidate-policy.json",
-    "sha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
-    "createdAt": "2026-08-23T12:44:24.972Z"
+    "sha": "afbb8de0e861739fa6facb461b69573b2a627bdb",
+    "createdAt": "2026-08-05T08:18:11.728Z"
   },
   "registryMutation": false,
   "artifacts": {
@@ -35,13 +35,15 @@
     "oidc": true,
     "stageEnvironment": "npm-rc",
     "stageAction": "npm-stage-publish",
+    "reusableCandidateBundle": true,
+    "setupNodeDummyToken": false,
     "hiddenReleaseArtifacts": true,
     "longLivedNpmToken": false,
     "humanApprovalInCi": false,
     "stablePromotionInScope": false,
     "actionlint": {
       "status": "pass",
-      "command": "actionlint /Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.github/workflows/publish.yml"
+      "command": "actionlint /private/tmp/prometheus-rc-token-fix/.github/workflows/publish.yml"
     }
   },
   "recovery": {

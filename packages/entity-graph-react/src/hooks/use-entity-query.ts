@@ -15,7 +15,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
-import { useGraphStore, EMPTY_IDS, EMPTY_LIST_STATE } from "@prometheus-ags/entity-graph-core";
+import { EMPTY_IDS, EMPTY_LIST_STATE } from "@prometheus-ags/entity-graph-core";
 import { serializeKey, getEngineOptions } from "@prometheus-ags/entity-graph-core";
 import { getEntityTransport } from "@prometheus-ags/entity-graph-core";
 import { TerminalError, TransientError, toEntityError } from "@prometheus-ags/entity-graph-core";
@@ -24,6 +24,7 @@ import { hasCustomPredicates } from "@prometheus-ags/entity-graph-core";
 import type { EntityType, EntityId } from "@prometheus-ags/entity-graph-core";
 import type { ViewDescriptor, FilterSpec, SortSpec, CompletenessMode } from "@prometheus-ags/entity-graph-core";
 import type { ListQuery } from "@prometheus-ags/entity-graph-core";
+import { useGraphStoreApi } from "../graph-store";
 
 export interface UseEntityQueryOptions {
   /** Initial view descriptor (filter/sort/search). */
@@ -103,6 +104,7 @@ export function useEntityQuery<T extends object>(
   type: EntityType,
   opts: UseEntityQueryOptions = {},
 ): UseEntityQueryResult<T> {
+  const storeApi = useGraphStoreApi();
   const {
     view: initialView = {},
     mode: forcedMode,
@@ -138,7 +140,7 @@ export function useEntityQuery<T extends object>(
   const seededRef = useRef(false);
   if (!seededRef.current && initialIds && initialIds.length > 0) {
     seededRef.current = true;
-    const store = useGraphStore.getState();
+    const store = storeApi.getState();
     if (!store.lists[baseKey]) {
       store.setListResult(baseKey, initialIds, { total: initialTotal ?? null });
     }
@@ -146,13 +148,13 @@ export function useEntityQuery<T extends object>(
 
   // --- subscribe to base list state ----------------------------------------
   const listState = useStore(
-    useGraphStore,
+    storeApi,
     useCallback((s) => s.lists[baseKey] ?? EMPTY_LIST_STATE, [baseKey]),
   );
 
   // --- subscribe to remote-view list state (pagination, total) ------------
   const remoteListState = useStore(
-    useGraphStore,
+    storeApi,
     useCallback(
       (s) => (remoteResultKey ? s.lists[remoteResultKey] ?? null : null),
       [remoteResultKey],
@@ -180,7 +182,7 @@ export function useEntityQuery<T extends object>(
 
   // --- local JS view projection --------------------------------------------
   const localViewIds = useStore(
-    useGraphStore,
+    storeApi,
     useShallow((state): EntityId[] => {
       const list = state.lists[baseKey] ?? EMPTY_LIST_STATE;
       const shouldUseRemoteIds =
@@ -204,12 +206,13 @@ export function useEntityQuery<T extends object>(
     }),
   );
 
-  const items = useMemo(
-    () =>
+  const items = useStore(
+    storeApi,
+    useShallow((state) =>
       localViewIds
-        .map((id) => useGraphStore.getState().readEntitySnapshot<T>(type, id))
+        .map((id) => state.readEntitySnapshot<T>(type, id))
         .filter((item) => item !== null) as T[],
-    [localViewIds, type],
+    ),
   );
 
   // --- remote fetch implementation ----------------------------------------
@@ -219,7 +222,7 @@ export function useEntityQuery<T extends object>(
       try { tp = getEntityTransport<T>(type); }
       catch (e) {
         const err = toEntityError(e);
-        useGraphStore.getState().setListError(baseKey, err.message, err);
+        storeApi.getState().setListError(baseKey, err.message, err);
         return;
       }
 
@@ -232,7 +235,7 @@ export function useEntityQuery<T extends object>(
       setRemoteResultKey(rKey);
       setIsFetchingState(true);
 
-      const store = useGraphStore.getState();
+      const store = storeApi.getState();
       store.setListFetching(rKey, true);
       store.setListFetching(baseKey, true);
 
@@ -255,7 +258,7 @@ export function useEntityQuery<T extends object>(
           if (thisCount !== fetchCountRef.current) return;
           if (controller.signal.aborted) return;
 
-          const graphStore = useGraphStore.getState();
+          const graphStore = storeApi.getState();
           const entries = result.rows.map((row) => ({
             id: tp.identify(row),
             data: row as Record<string, unknown>,
@@ -299,7 +302,7 @@ export function useEntityQuery<T extends object>(
             return attempt(retries + 1);
           }
 
-          const gs = useGraphStore.getState();
+          const gs = storeApi.getState();
           gs.setListError(rKey, typed.message, typed);
           gs.setListError(baseKey, typed.message, typed);
         } finally {
@@ -311,7 +314,7 @@ export function useEntityQuery<T extends object>(
 
       void effectiveStaleTime; // keep reference stable for future SWR check
     },
-    [type, baseKey, engineOpts.defaultStaleTime, engineOpts.maxRetries, engineOpts.retryBaseDelay],
+    [type, baseKey, engineOpts.defaultStaleTime, engineOpts.maxRetries, engineOpts.retryBaseDelay, storeApi],
   );
 
   // --- view-change debounce effect -----------------------------------------
@@ -336,7 +339,7 @@ export function useEntityQuery<T extends object>(
   useEffect(() => {
     if (!enabled || !transport) return;
 
-    const store = useGraphStore.getState();
+    const store = storeApi.getState();
     const existing = store.lists[baseKey];
     const effectiveStaleTime = transport.staleTime ?? engineOpts.defaultStaleTime;
     const isStale =
@@ -352,11 +355,11 @@ export function useEntityQuery<T extends object>(
 
   // --- realtime sorted insertion -------------------------------------------
   useEffect(() => {
-    const unsub = useGraphStore.subscribe(
+    const unsub = storeApi.subscribe(
       (state) => state.entities[type] ?? EMPTY_ENTITY_BUCKET,
       (newEntities, prevEntities) => {
         const view = liveViewRef.current;
-        const store = useGraphStore.getState();
+        const store = storeApi.getState();
         const list = store.lists[baseKey];
         if (!list) return;
 
@@ -392,7 +395,7 @@ export function useEntityQuery<T extends object>(
       },
     );
     return unsub;
-  }, [type, baseKey]);
+  }, [type, baseKey, storeApi]);
 
   // --- realtime subscription -----------------------------------------------
   useEffect(() => {
@@ -401,7 +404,7 @@ export function useEntityQuery<T extends object>(
     if (!tp.subscribe || !enabled) return;
 
     const unsub = tp.subscribe((ev) => {
-      const store = useGraphStore.getState();
+      const store = storeApi.getState();
       if (ev.op === "delete") {
         store.removeIdFromAllLists(type, ev.id);
         store.removeEntity(type, ev.id);
@@ -411,7 +414,7 @@ export function useEntityQuery<T extends object>(
       }
     });
     return () => unsub();
-  }, [type, enabled]);
+  }, [type, enabled, storeApi]);
 
   // --- toolbar setters -----------------------------------------------------
   const setView = useCallback(
@@ -446,9 +449,9 @@ export function useEntityQuery<T extends object>(
 
   const refetch = useCallback(() => {
     abortRef.current?.abort();
-    useGraphStore.getState().setListStale(baseKey, true);
+    storeApi.getState().setListStale(baseKey, true);
     setFetchTick((n) => n + 1);
-  }, [baseKey]);
+  }, [baseKey, storeApi]);
 
   // --- derived values ------------------------------------------------------
   const viewTotal =

@@ -1,0 +1,25 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    {"id": "acceptance-direct-evidence", "description": "Every bounded Next.js plan and OpenSpec acceptance criterion must map to reproducible current evidence.", "severity": "blocking", "type": "structural", "validation": {"requires_code_execution": true, "validation_method": "acceptance matrix, pass predicates, and evidence path checks"}},
+    {"id": "packed-consumer-boundary", "description": "The clean production claim must use packed core and React tarballs in an external application with no workspace source alias counted as package evidence.", "severity": "blocking", "type": "technical", "validation": {"requires_code_execution": true, "validation_method": "verifier command receipt and tarball hashes"}},
+    {"id": "ssr-hydration-runtime", "description": "Concurrent SSR isolation, hydration without mismatch or duplicate fetch, route persistence, reload replacement, mutation, realtime takeover, and independent garbage collection for provider-owned graphs must pass.", "severity": "blocking", "type": "technical", "validation": {"requires_code_execution": true, "validation_method": "selected-versus-sibling GC regression, focused tests, and packed browser receipt assertions"}, "target_metric": {"metric": "isolated request graphs", "operator": "==", "value": 12}},
+    {"id": "visual-accessibility-integrity", "description": "The screenshot and both traces must be retained, hash-matched, and accompanied by zero serious or critical axe violations.", "severity": "blocking", "type": "accessibility", "validation": {"requires_code_execution": true, "validation_method": "SHA-256 recomputation and Playwright/browser receipt assertions"}, "target_metric": {"metric": "serious plus critical axe violations", "operator": "==", "value": 0}},
+    {"id": "ledgers-synchronized", "description": "The final report must identify task 5, and coverage, public exports, skills, docs, OpenSpec tasks, Changesets, and evidence paths must agree that Next.js is implemented while full 3.0 remains incomplete.", "severity": "blocking", "type": "structural", "validation": {"requires_code_execution": true, "validation_method": "report metadata, coverage, export, OpenSpec, Changesets, JSON, docs, and file checks"}},
+    {"id": "limits-and-release-lanes-explicit", "description": "Uncertified browser, rendering, live-service, platform, registry, and full-portfolio limits must remain explicit, and the later Next prerelease must not move the frozen React rc.1 source.", "severity": "blocking", "type": "semantic", "validation": {"requires_code_execution": false, "validation_method": "cross-file release-impact and scope disposition review"}},
+    {"id": "security-boundary-fail-closed", "description": "Client input must not grant entity or graph authority; the Server Action must validate allowlisted values and resolve server-owned data.", "severity": "blocking", "type": "technical", "validation": {"requires_code_execution": true, "validation_method": "focused denial test, implementation inspection, and security audit"}},
+    {"id": "no-publication-overclaim", "description": "QA may certify the Next.js implementation but must not claim npm publication, stable 3.0 completion, or authority to split the fixed twelve-package group.", "severity": "blocking", "type": "semantic", "validation": {"requires_code_execution": true, "validation_method": "coverage status, release-impact, Changesets, and registry-state assertions"}}
+  ],
+  "global_rules": [
+    "Use current repository and signed KBD evidence as authoritative.",
+    "Do not convert an external or not-applicable gate into a passing repository claim.",
+    "Do not mutate npm or any public release state during QA.",
+    "Lead reflection with gaps and deltas rather than success claims."
+  ],
+  "termination_conditions": [
+    "All eight blocking constraints pass.",
+    "Both manifest variants exist and are non-empty.",
+    "Manifest, constraints, and refinement state validate.",
+    "No material correction remains before fresh adversarial review."
+  ]
+}

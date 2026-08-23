@@ -28,6 +28,7 @@ test("the checked-in release contract passes schema and workspace validation", (
   assert.equal(result.summary.npmPackages, 12);
   assert.equal(result.summary.requiredRegistries, 3);
   assert.equal(result.summary.plannedShowcases, 0);
+  assert.equal(result.summary.partialShowcases, 0);
   assert.equal(result.summary.implementedShowcases, 5);
 });
 
@@ -40,7 +41,7 @@ test("coverage links the contract and keeps unfinished showcases honest", () => 
   candidate.qualityGates = [];
   const errors = validateReleaseCoverage(baseline, candidate);
   assert.match(errors.join("\n"), /five required 3\.0 showcases/);
-  assert.match(errors.join("\n"), /showcase status must be planned or implemented/);
+  assert.match(errors.join("\n"), /showcase status must be planned, partial, or implemented/);
   assert.match(errors.join("\n"), /missing the implemented v3-main-ci-baseline quality gate/);
   assert.match(errors.join("\n"), /missing the implemented v3-package-module-contracts quality gate/);
   assert.match(errors.join("\n"), /missing the implemented v3-framework-neutral-core quality gate/);

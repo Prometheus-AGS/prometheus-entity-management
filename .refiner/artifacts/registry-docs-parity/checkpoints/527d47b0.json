@@ -1,0 +1,30 @@
+{
+  "refinement_id": "9906ea8b-e641-4c01-ab2f-5358e8bfa6d7",
+  "artifact_name": "registry-docs-parity",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-06T08:14:15Z",
+  "updated_at": "2026-08-06T08:14:15Z",
+  "current_iteration": 0,
+  "max_iterations": 5,
+  "goals": [
+    "Synchronize public README, release docs, Flutter package docs, and Docusaurus with verified npm, pub.dev, example, and Pages state.",
+    "Keep install commands truthful for published artifacts and clearly distinguish staged, published, and stable states.",
+    "Make future README and site drift fail targeted parity checks."
+  ],
+  "constraints": [
+    "Do not describe nine staged npm candidates as public or installable.",
+    "Do not rewrite historical gate artifacts as if they were current registry snapshots.",
+    "Do not imply pub.dev verified-publisher assignment, physical-device certification, app-store delivery, or full stable npm 3.0 completion.",
+    "Run targeted documentation checks only; do not dispatch general CI or expensive native/browser release matrices."
+  ],
+  "phases_completed": [
+    "specify",
+    "content-update"
+  ],
+  "convergence_status": "running",
+  "iteration_history": [],
+  "workflow_triggers": [],
+  "checkpoints": [],
+  "prior_cycle_id": null
+}

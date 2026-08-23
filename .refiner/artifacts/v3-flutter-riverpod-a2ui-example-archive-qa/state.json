@@ -1,0 +1,91 @@
+{
+  "refinement_id": "bb5be8db-9709-4fcf-86c9-3f7c59a9ad79",
+  "artifact_name": "v3-flutter-riverpod-a2ui-example-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-04T01:15:36Z",
+  "updated_at": "2026-08-04T01:18:40Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Correct the cycle-2 hosted workflow package-root defect and add a direct regression.",
+    "Retain the stable platform evidence and frozen React rc.1 boundary."
+  ],
+  "constraints": [
+    {
+      "id": "acceptance-direct-evidence",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "stable-host-and-platform-evidence",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "visual-and-accessibility-integrity",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "normalized-graph-and-policy-boundary",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "ledgers-synchronized",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "durability-and-device-limits-explicit",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "react-rc-lane-preserved",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "no-publication-overclaim",
+      "severity": "blocking",
+      "status": "satisfied"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T01:15:37Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "1e52c7ac",
+      "phase": "persist",
+      "iteration": 1,
+      "timestamp": "2026-08-04T01:18:40Z"
+    }
+  ],
+  "prior_cycle_id": "4ffe7ac2-7028-42d2-ab7d-57c5eb71ffc8",
+  "finalized_at": "2026-08-04T01:18:40Z"
+}

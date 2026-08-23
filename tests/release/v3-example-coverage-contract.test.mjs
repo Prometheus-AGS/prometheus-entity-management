@@ -192,6 +192,34 @@ test("the exact five showcase identities are required", () => {
   );
 });
 
+test("the universal Tauri ledger binds implemented platform evidence without overclaim", () => {
+  const showcase = coverage.showcases.find(({ id }) => id === "tauri-desktop-mobile");
+  assert.ok(showcase);
+  assert.equal(showcase.path, "examples/tauri-universal");
+  assert.equal(showcase.status, "implemented");
+  assert.equal(showcase.runtimeEvidence.status, "implemented");
+  assert.equal(showcase.visualEvidence.status, "implemented");
+  assert.equal(showcase.runtimeEvidence.command, "pnpm run verify:tauri-universal");
+  assert.equal(showcase.visualEvidence.command, "pnpm run test:tauri-universal:browser");
+
+  const offline = coverage.capabilities.find(
+    ({ id }) => id === "graph.offline-persistence-sync",
+  );
+  const offlineEvidence = offline.releaseEvidence.find(
+    ({ ownerChange }) => ownerChange === "v3-tauri-universal-example",
+  );
+  assert.equal(offlineEvidence.status, "implemented");
+  assert.equal(offlineEvidence.command, "pnpm run verify:tauri-universal");
+
+  const platform = coverage.capabilities.find(({ id }) => id === "platform.tauri");
+  const hostEvidence = platform.releaseEvidence.find(
+    ({ ownerChange, kind }) =>
+      ownerChange === "v3-tauri-universal-example" && kind === "desktop",
+  );
+  assert.equal(hostEvidence.status, "implemented");
+  assert.equal(hostEvidence.command, "pnpm run verify:tauri-universal");
+});
+
 test("invalid transports, list payloads, and tenant fixtures fail closed", () => {
   const transport = structuredClone(contract);
   transport.transports[0].deterministic = false;
@@ -215,19 +243,43 @@ test("coverage cannot claim completion until release and showcase evidence is im
   );
 
   const dishonestShowcase = structuredClone(coverage);
-  const plannedShowcase = dishonestShowcase.showcases[0];
+  const plannedShowcase = dishonestShowcase.showcases.find(
+    (showcase) => showcase.id === "tauri-desktop-mobile",
+  );
+  assert.ok(plannedShowcase, "the fixture must retain the Tauri showcase");
   plannedShowcase.status = "planned";
+  plannedShowcase.runtimeEvidence.status = "planned";
+  plannedShowcase.visualEvidence.status = "planned";
+  implementEvidence(plannedShowcase.runtimeEvidence);
   assert.match(
     joined(validateExampleCoverage(dishonestShowcase, contract)),
     /planned showcases must keep runtime and visual evidence planned/,
   );
 
   const incompleteShowcase = structuredClone(coverage);
-  const plannedIncompleteShowcase = incompleteShowcase.showcases[0];
+  const plannedIncompleteShowcase = incompleteShowcase.showcases.find(
+    (showcase) => showcase.id === "tauri-desktop-mobile",
+  );
+  assert.ok(plannedIncompleteShowcase, "the fixture must retain the Tauri showcase");
   plannedIncompleteShowcase.runtimeEvidence.status = "planned";
+  plannedIncompleteShowcase.visualEvidence.status = "planned";
   assert.match(
     joined(validateExampleCoverage(incompleteShowcase, contract)),
     /implemented showcases require implemented runtime and visual evidence/,
+  );
+
+  const dishonestPartial = structuredClone(coverage);
+  const partialShowcase = dishonestPartial.showcases.find(
+    (showcase) => showcase.id === "flutter-riverpod",
+  );
+  assert.ok(partialShowcase, "the fixture must retain the Flutter showcase");
+  partialShowcase.status = "partial";
+  partialShowcase.runtimeEvidence.status = "partial";
+  partialShowcase.visualEvidence.status = "partial";
+  partialShowcase.runtimeEvidence.status = "planned";
+  assert.match(
+    joined(validateExampleCoverage(dishonestPartial, contract)),
+    /partial showcases require partial or implemented runtime evidence/,
   );
 });
 

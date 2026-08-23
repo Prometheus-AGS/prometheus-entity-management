@@ -1,0 +1,78 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "k3",
+  "producer_model": "gpt-5.6-sol",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": "website/scripts/static-artifact-manifest.mjs",
+      "line": 39,
+      "claim": "The packed-API drift check can no longer detect staleness caused by generator or toolchain changes, because hashPackedApiInputs only hashes package.json, README.md, and dist *.d.ts files \u2014 not generate-packed-api.mjs, the TypeDoc version/config, or any other files that influence the generated output.",
+      "evidence": "The hunk replaces hashTrackedInputs (which hashed every git-tracked file under the package directories) with hashPackedApiInputs over only manifests/READMEs/declarations, and the workflow hunk removes the `pnpm run docs:api` regenerate-and-diff step that previously caught any output drift regardless of cause. A change to the doc generator or typedoc configuration committed without regeneration now passes docs:artifacts:check with stale committed artifacts.",
+      "suggested_fix": "Include the generator script(s) and the resolved typedoc version (or a lockfile-derived toolchain digest) in the hashed input set, or have the check compare the artifact manifest against a regeneration in an isolated temp directory on a scheduled/release workflow with alerting."
+    },
+    {
+      "severity": "WARNING",
+      "file": "website/scripts/static-artifact-manifest.mjs",
+      "line": 47,
+      "claim": "The committed apiInputAggregateSha256 depends on bytes of locally built dist declarations, so Pages recomputes it from a fresh Ubuntu `pnpm run build:packages` and will fail spuriously if tsup/TypeScript declaration output differs by toolchain environment \u2014 the same platform-dependence class this change documents for gzip and Sharp.",
+      "evidence": "The postmortem hunk states 'Packed tarball compression and Sharp image encoding are platform-dependent, so the Pages workflow does not rewrite those bytes', yet the second workflow hunk places `pnpm run docs:artifacts:check` immediately after `pnpm run build:packages`, and hashPackedApiInputs hashes `path.join(packageRoot, 'dist')` built artifacts rather than committed sources. The committed inventory value (website/static/api/packed-inventory.json, apiInputAggregateSha256 f8f39c92...) was produced in the 'release environment' per RELEASING.md.",
+      "suggested_fix": "Either pin and verify the exact build toolchain (Node/pnpm/tsup versions) in the Pages workflow before hashing, or hash only committed sources and treat built declarations as release-gate-only inputs."
+    },
+    {
+      "severity": "WARNING",
+      "file": "tests/browser/v3-docs-pages.spec.ts-snapshots/homepage-mobile.png",
+      "claim": "The non-Linux (macOS) mobile visual baseline binary was regenerated in this change with no documented justification, which can mask a genuine mobile rendering regression on non-Linux platforms.",
+      "evidence": "The diff shows 'Binary files a/.../homepage-mobile.png and b/.../homepage-mobile.png differ', while the postmortem (.prometheus/postmortems/docs-pages-native-dependencies.md) only explains the new Linux baseline ('Run 31040195164 produced the committed 390\u00d73911 Linux baseline') and never states why the macOS baseline bytes changed.",
+      "suggested_fix": "Document the rendering change that required re-capturing homepage-mobile.png, or revert it if it was captured incidentally from a local run."
+    },
+    {
+      "severity": "WARNING",
+      "file": "tests/browser/v3-docs-pages.spec.ts",
+      "line": 47,
+      "claim": "The platform-keyed snapshot selection silently falls back to the macOS baseline on Windows, guaranteeing false visual-test failures for any Windows runner or local Windows developer.",
+      "evidence": "`const mobileSnapshot = process.platform === 'linux' ? 'homepage-mobile-linux.png' : 'homepage-mobile.png';` \u2014 only linux is special-cased; win32 (and any other platform) is compared against the macOS-captured homepage-mobile.png even though the postmortem establishes that text-wrapping differences make cross-OS baselines incomparable.",
+      "suggested_fix": "Key the baseline by explicit platform map (darwin \u2192 homepage-mobile.png, linux \u2192 homepage-mobile-linux.png) and fail fast with a clear message on unsupported platforms instead of silently reusing the macOS baseline."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "website/scripts/static-artifact-manifest.mjs",
+      "line": 41,
+      "claim": "addDeclarations silently skips symbolic links inside dist (Dirent.isFile() is false for symlinks), so a symlinked declaration file would be silently omitted from the input hash, inconsistent with hashArtifactTree which hard-fails on symlinks.",
+      "evidence": "hashArtifactTree contains `if (entry.isSymbolicLink()) { throw new Error(...) }`, while addDeclarations only checks `entry.isDirectory()` and `entry.isFile() && /\\.d\\.(?:c|m)?ts$/.test(entry.name)` with no symlink handling.",
+      "suggested_fix": "Add the same isSymbolicLink() rejection (or explicit resolution) to addDeclarations."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "RELEASING.md",
+      "line": 126,
+      "claim": "The native documentation certification gate lacks the untracked-file check that the packed API/evidence gate includes, so stray untracked files under website/static/native-api pass `git diff --exit-code` undetected.",
+      "evidence": "The native gate block contains only `git diff --exit-code -- website/static/native-api`, while the packed gate immediately below it adds `test -z \"$(git status --porcelain --untracked-files=all -- ...)\"` for its paths.",
+      "suggested_fix": "Add `test -z \"$(git status --porcelain --untracked-files=all -- website/static/native-api)\"` to the native gate."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "website/scripts/check-generated-artifacts.mjs",
+      "line": 133,
+      "claim": "The evidence check hardcodes a .png extension for published originals, so the checker breaks if the allowlist ever admits a non-PNG asset even if the generator supports it.",
+      "evidence": "`const published = await readFile(path.join(evidenceRoot, 'original', `${asset.assetId}.png`));` \u2014 the extension is not derived from the allowlist or the manifest record.",
+      "suggested_fix": "Store the published filename/extension in the manifest record (or allowlist) and read from that field."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": ".github/workflows/docs-pages.yml",
+      "line": 90,
+      "claim": "The failure-evidence upload includes the committed expected baseline PNG and depends on Playwright's output landing in test-results; if the config's outputDir differs, the upload silently contains only the (useless) baseline with if-no-files-found: warn masking the gap.",
+      "evidence": "The upload-artifact step paths are `test-results` and `tests/browser/v3-docs-pages.spec.ts-snapshots/homepage-mobile-linux.png` (the checked-in expected snapshot, not a diff/actual image), with `if-no-files-found: warn`, so a missing test-results directory only warns.",
+      "suggested_fix": "Point the upload at the Playwright outputDir's actual/diff artifacts (e.g. *-actual.png / *-diff.png) and drop the committed baseline from the path list."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

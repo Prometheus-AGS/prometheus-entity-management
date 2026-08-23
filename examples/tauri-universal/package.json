@@ -1,0 +1,38 @@
+{
+  "name": "prometheus-tauri-universal-example",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --reporter verbose",
+    "tauri": "tauri",
+    "tauri:android": "tauri android dev",
+    "tauri:ios": "tauri ios dev"
+  },
+  "dependencies": {
+    "@prometheus-ags/entity-graph-core": "workspace:*",
+    "@prometheus-ags/entity-graph-tauri": "workspace:*",
+    "@prometheus-ags/prometheus-entity-management": "workspace:*",
+    "@tauri-apps/api": "2.11.1",
+    "@tauri-apps/plugin-deep-link": "2.4.9",
+    "@tauri-apps/plugin-sql": "2.4.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "zustand": "5.0.14"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "2.11.4",
+    "@types/node": "22.20.1",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "@vitejs/plugin-react": "6.0.5",
+    "jsdom": "30.0.1",
+    "typescript": "6.0.2",
+    "vite": "8.2.0",
+    "vitest": "4.1.10"
+  }
+}

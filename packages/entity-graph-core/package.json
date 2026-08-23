@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/entity-graph-core",
-  "version": "3.0.0-rc.1",
+  "version": "3.0.0",
   "description": "Framework-agnostic normalized entity graph store (zero React) — the core of the Prometheus entity-graph ecosystem.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
@@ -33,8 +33,7 @@
     "build": "tsup",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run",
-    "refresh:exports": "pnpm run build && node ../../scripts/refresh-exports-ledger.mjs --pkg core",
-    "verify:skills": "node ../../scripts/verify-skills-exports.mjs --pkg core"
+    "test:flint-live": "vitest run --config vitest.flint-live.config.ts --reporter verbose"
   },
   "peerDependencies": {
     "@ag-ui/core": ">=0.0.30",

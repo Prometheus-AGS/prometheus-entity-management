@@ -1,27 +1,34 @@
 @release @v3-flint-portable-contracts
-Feature: Portable Flint security and data contracts
-  As an application team evaluating the 3.0 release against the Flint fabric
-  I need executable evidence that the Flint watch/mutate contract, seam
-  security, and auth/provisioning claims are portable and honestly labeled
-  So that default CI has no machine-specific paths or silent Flint success
+Feature: Portable Flint realtime and security contracts
+  As a 3.0 release reviewer
+  I need deterministic local checks plus immutable external-source verification
+  So that a skipped sibling integration or copied security claim cannot certify Flint support
 
   Background:
-    Given the Flint portable-contracts certification inputs are available
+    Given the checked Flint portable contract is verified
 
-  Scenario: The watch/mutate contract round-trips through a checked fixture
-    When the Flint portable-contracts certification executes
-    Then the fixture lane round-trips a mutation into the graph
-    And the live lane is env-gated and fails closed when unavailable
-    And the default lane contains no machine-specific absolute paths
+  Scenario: Default CI is portable and fail closed
+    Then the default Flint surface contains no machine-specific paths or silent live skips
+    And client examples contain no service-role credential
 
-  Scenario: Seam security and key separation hold
-    When the Flint portable-contracts certification executes
-    Then subscription and mutation identity carry tenant and channel
-    And checkpoint keys are separated per channel and consumer
-    And malformed and wrong-kind envelopes fail closed
+  Scenario: Realtime and authentication boundaries match current Flint sources
+    Then watchEntities and mutateEntity remain the consumed realtime methods
+    And production issuer, tenant equality, kid, JWKS, role, and key separation are required
 
-  Scenario: Auth claims, provisioning docs, and secret hygiene are pinned
-    When the Flint portable-contracts certification executes
-    Then the claims fixture pins issuer, tenant, kid, JWKS, role, and key separation
-    And the integration doc covers Forge provisioning, RLS, audit, restart, and the strict-JWK caveat
-    And client examples expose no service-role credentials
+  Scenario: Current strict-JWK compatibility is stated precisely
+    Then RSA JWKs contain standard modulus and exponent members
+    And the remaining EC strict-consumer caveat names the missing coordinates
+
+  Scenario: Forge provisioning remains an external operational contract
+    Then plan apply status and DDL inspection require typed specs and a reviewed hash
+    And service-role authorization RLS audit transactions and restart semantics are required
+    And no Prometheus Forge provisioning adapter is claimed
+
+  Scenario: External source verification is explicit and immutable
+    Then the portable run records external source verification as not requested
+    And every external source file has a pinned revision and SHA-256 digest
+
+  Scenario: Coverage API skills and release guidance are synchronized
+    Then Flint realtime and security coverage are implemented
+    And the existing Flint runtime exports remain in the public ledger
+    And the skills and release guide preserve security and provisioning exclusions

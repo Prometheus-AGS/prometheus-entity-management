@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": "examples/nextjs-app/src/features/next-runtime/use-scoped-realtime-manager.ts",
+      "line": 14,
+      "claim": "Replacing a provider store abandons the previous RealtimeManager without clearing any queued realtime flush, so a pending timer can still write into the old graph after adapter cleanup.",
+      "evidence": "The hook creates a new `RealtimeManager` whenever `[store, options.flushInterval]` changes, but returns only the manager and no cleanup/dispose path; `packages/entity-graph-core/src/adapters/realtime-manager.ts` keeps `pendingChanges` and `flushTimer` as private state, while `examples/nextjs-app/src/demo-pages/realtime/realtime-page.tsx` cleanup only calls `adapter.stop()` and `unregister()`.",
+      "suggested_fix": "Add a `dispose()`/`clearPending()` method to `RealtimeManager` that clears `flushTimer`, pending queues, and registered adapters, and call it from the hook/effect cleanup when the scoped manager is replaced or unmounted."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

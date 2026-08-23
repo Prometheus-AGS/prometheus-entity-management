@@ -69,6 +69,41 @@
       "content_type": "direct:content",
       "updated_at": "2026-08-03T08:03:15Z",
       "finalized_at": "2026-08-03T08:03:15Z"
+    },
+    "v3-nextjs-app-router-example-archive-qa": {
+      "path": ".refiner/artifacts/v3-nextjs-app-router-example-archive-qa",
+      "artifact_type": "content",
+      "content_type": "direct:content",
+      "updated_at": "2026-08-03T16:34:24Z",
+      "finalized_at": "2026-08-03T16:34:24Z"
+    },
+    "v3-agentic-a2ui-example-archive-qa": {
+      "path": ".refiner/artifacts/v3-agentic-a2ui-example-archive-qa",
+      "artifact_type": "content",
+      "content_type": "direct:content",
+      "updated_at": "2026-08-03T22:23:11Z",
+      "finalized_at": "2026-08-03T22:23:11Z"
+    },
+    "v3-flutter-riverpod-a2ui-example-archive-qa": {
+      "path": ".refiner/artifacts/v3-flutter-riverpod-a2ui-example-archive-qa",
+      "artifact_type": "content",
+      "content_type": "direct:content",
+      "updated_at": "2026-08-04T01:18:40Z",
+      "finalized_at": "2026-08-04T01:18:40Z"
+    },
+    "v3-tauri-universal-example-archive-qa": {
+      "path": ".refiner/artifacts/v3-tauri-universal-example-archive-qa",
+      "artifact_type": "code",
+      "content_type": "direct:code",
+      "updated_at": "2026-08-04T10:26:01Z",
+      "finalized_at": "2026-08-04T10:26:01Z"
+    },
+    "registry-docs-parity": {
+      "path": ".refiner/artifacts/registry-docs-parity",
+      "artifact_type": "content",
+      "content_type": "direct:content",
+      "updated_at": "2026-08-06T08:40:26Z",
+      "finalized_at": "2026-08-06T08:40:26Z"
     }
   }
 }

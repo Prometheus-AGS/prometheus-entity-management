@@ -6,10 +6,9 @@
  * Key Next.js SSR pattern for prometheus-entity-management:
  *
  * 1. Server Component fetches initial data (zero client-side loading state)
- * 2. Serialises entities as JSON and passes as `initialEntities` prop
- * 3. This client provider writes them into the Zustand entity graph
- *    synchronously before the first render — so useEntity / useEntityList
- *    hooks see data immediately with no loading flash.
+ * 2. Serialises the request-owned graph and passes it as a client prop
+ * 3. This client provider creates one isolated Zustand graph from that
+ *    snapshot before rendering descendants.
  * 4. Subsequent mutations and realtime updates flow through normally.
  *
  * This is fundamentally different from TanStack Query's dehydrate/hydrate:
@@ -18,38 +17,22 @@
  *   the data immediately, not just the component that "owns" the query
  */
 
-import { useRef } from "react";
-/**
- * Infrastructure component — direct useGraphStore access is intentional here.
- * This provider bridges SSR-fetched data into the client-side entity graph
- * before any child component renders. It is NOT a UI component and does not
- * violate the "Components never touch stores directly" rule from CLAUDE.md.
- */
-import { useGraphStore } from "@prometheus-ags/prometheus-entity-management";
-import type { InitialEntity } from "@/lib/hydration-payload";
-
-export type { InitialEntity } from "@/lib/hydration-payload";
+import { useState } from "react";
+import { GraphStoreProvider } from "@prometheus-ags/prometheus-entity-management";
+import {
+  hydrateGraphStore,
+  type DehydratedGraphSnapshot,
+} from "@/features/next-runtime/graph-snapshot";
 
 interface GraphHydrationProviderProps {
-  initialEntities: InitialEntity[];
+  snapshot: DehydratedGraphSnapshot;
   children: React.ReactNode;
 }
 
 export function GraphHydrationProvider({
-  initialEntities,
+  snapshot,
   children,
 }: GraphHydrationProviderProps) {
-  const hydrated = useRef(false);
-
-  // Synchronous hydration on first render — before any child renders
-  if (!hydrated.current && initialEntities.length > 0) {
-    hydrated.current = true;
-    const store = useGraphStore.getState();
-    for (const { type, id, data } of initialEntities) {
-      store.upsertEntity(type, id, data);
-      store.setEntityFetched(type, id);
-    }
-  }
-
-  return <>{children}</>;
+  const [store] = useState(() => hydrateGraphStore(snapshot));
+  return <GraphStoreProvider store={store}>{children}</GraphStoreProvider>;
 }

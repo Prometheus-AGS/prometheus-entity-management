@@ -1,0 +1,22 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": "examples/tauri-universal/src/features/platform/stores/platform-store.ts",
+      "claim": "A transient initialization failure permanently blocks retry because the failed service remains stored and initialize returns early whenever service is non-null.",
+      "evidence": "The initialize guard returns on any existing service (`if (get().service || get().phase === \"booting\") return;`), but the catch path only sets `{ phase: \"error\", error: ... }` and does not clear `service`, so a failed `service.initialize()` leaves the store unable to retry.",
+      "suggested_fix": "In the initialize catch block, dispose the partially-created service if needed and set `service: null` so a subsequent initialize call can retry."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

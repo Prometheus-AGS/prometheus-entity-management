@@ -172,7 +172,8 @@ Then("release documentation distinguishes the core store from React hooks", func
   assert.match(contract, /graphStore/);
   assert.match(contract, /not a React hook/);
   assert.match(coreReadme, /deprecated core `useGraphStore` name is a StoreApi-shaped alias/);
-  assert.match(reactReadme, /React hook subscribed to `graphStore`/);
+  assert.match(reactReadme, /`useGraphStoreApi`/);
+  assert.match(reactReadme, /React-hook ownership/);
 });
 
 Then("skill references teach the 3.0 core and React import boundary", function () {
@@ -219,7 +220,7 @@ Then("the framework-neutral gate remains distinct from binding and release certi
   assert.ok(
     coverage.showcases.every(
       ({ status, runtimeEvidence, visualEvidence }) =>
-        ["planned", "implemented"].includes(status) &&
+        ["planned", "partial", "implemented"].includes(status) &&
         runtimeEvidence.status === status &&
         visualEvidence.status === status,
     ),

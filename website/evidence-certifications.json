@@ -1,0 +1,184 @@
+{
+  "schemaVersion": "1.0.0",
+  "certificationKind": "documentation-evidence-curation",
+  "records": [
+    {
+      "assetId": "react-graph-transports",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-browser-graph-and-transports.png",
+      "sourceSha256": "909cb813e879b7cb9c15289d8051e1fc98f6a2f8e4df45bcc516c35fa602d621",
+      "scenarioIds": [
+        "example.graph.normalized-cross-view",
+        "example.transport.rest-graphql-equivalence"
+      ],
+      "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-vite-verification.json",
+      "executionReceiptSha256": "0b9214624b0db2fdd57388231186f9671e61463d23f59a15dfcb7848560251c1",
+      "certificationStatus": "verified-browser"
+    },
+    {
+      "assetId": "react-mutations-realtime",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-browser-mutations-and-realtime.png",
+      "sourceSha256": "91ac9bc0f62b32869f300c2b40a5c210248e2c5b1947b5d68b6f2a98df0d0fc1",
+      "scenarioIds": [
+        "example.crud.optimistic-confirm",
+        "example.crud.optimistic-rollback",
+        "example.realtime.coalesced-cross-view"
+      ],
+      "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-vite-verification.json",
+      "executionReceiptSha256": "0b9214624b0db2fdd57388231186f9671e61463d23f59a15dfcb7848560251c1",
+      "certificationStatus": "verified-browser"
+    },
+    {
+      "assetId": "react-offline-lifecycle",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-browser-offline-lifecycle-a11y.png",
+      "sourceSha256": "20564fc70bd351fe63cf14b01f17dd0a87ec3cecb52da1c242e1fd18a9c3da6d",
+      "scenarioIds": [
+        "example.offline.persistence-convergence",
+        "example.runtime.lifecycle-security"
+      ],
+      "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/clean-vite-verification.json",
+      "executionReceiptSha256": "0b9214624b0db2fdd57388231186f9671e61463d23f59a15dfcb7848560251c1",
+      "certificationStatus": "verified-browser"
+    },
+    {
+      "assetId": "next-ssr-hydration",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/task-3-nextjs-ssr-hydration.png",
+      "sourceSha256": "de0e5002ed0fceacb9e6c6253aec92e2b9f8de5260274fe3604214534535d38b",
+      "scenarioIds": [
+        "example.runtime.ssr-isolation-hydration",
+        "example.graph.normalized-cross-view"
+      ],
+      "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/browser-evidence.json",
+      "executionReceiptSha256": "61e6850611de77cffa75fe9ee97630ae1be9a784db68005fb5263bb74a601978",
+      "certificationStatus": "verified-browser"
+    },
+    {
+      "assetId": "a2ui-policy-approval",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-happy-policy-approval.png",
+      "sourceSha256": "0ab64925a1f97a93459cf210eb73036bc83a9254bb50a558bdf8e3aa58f09ba2",
+      "scenarioIds": [
+        "example.protocol.a2a-a2ui-policy",
+        "example.crud.optimistic-confirm"
+      ],
+      "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-evidence.json",
+      "executionReceiptSha256": "745980c30ae9f53cfb9dacc5396c758baaa35e054f2d92a98f31afbe13f58495",
+      "certificationStatus": "verified-browser"
+    },
+    {
+      "assetId": "a2ui-malformed-denial",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-malformed-artifact.png",
+      "sourceSha256": "a81aedab564384d2a22e0ac28f96d3c358dc6463b4f789f2bfd63e4a8e6ef537",
+      "scenarioIds": [
+        "example.protocol.a2a-a2ui-policy",
+        "example.runtime.lifecycle-security"
+      ],
+      "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-evidence.json",
+      "executionReceiptSha256": "745980c30ae9f53cfb9dacc5396c758baaa35e054f2d92a98f31afbe13f58495",
+      "certificationStatus": "verified-browser"
+    },
+    {
+      "assetId": "flutter-cross-view-initial",
+      "sourcePath": "packages/entity_graph_flutter/test/goldens/cross-view-initial.png",
+      "sourceSha256": "cf8cafe9e6ef51f7138f74f73ae732d7286d695b9c3bad1afb46a8730f648e3a",
+      "scenarioIds": [
+        "example.graph.normalized-cross-view"
+      ],
+      "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-dart-report.json",
+      "executionReceiptSha256": "173831fb410a51e5dea751e914074d764c9786e71205422a318bfa6d37e700a9",
+      "certificationStatus": "verified-golden"
+    },
+    {
+      "assetId": "flutter-cross-view-optimistic",
+      "sourcePath": "packages/entity_graph_flutter/test/goldens/cross-view-optimistic.png",
+      "sourceSha256": "e1e6ea7a4e4f4fe9339111f2a4ec1a1bbe9d81ca3c3a993b60bf58cb8ca8aac3",
+      "scenarioIds": [
+        "example.crud.optimistic-confirm",
+        "example.crud.optimistic-rollback"
+      ],
+      "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-dart-report.json",
+      "executionReceiptSha256": "173831fb410a51e5dea751e914074d764c9786e71205422a318bfa6d37e700a9",
+      "certificationStatus": "verified-golden"
+    },
+    {
+      "assetId": "flutter-a2ui-phone",
+      "sourcePath": "examples/flutter-riverpod/test/goldens/showcase-phone-a2ui.png",
+      "sourceSha256": "7206f21d6672836ae6b2483aa81e508160939d7485e68221c62fc5227c11eac5",
+      "scenarioIds": [
+        "example.protocol.a2a-a2ui-policy",
+        "example.platform.adapter-boundary"
+      ],
+      "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-riverpod-a2ui-example/final-verification.json",
+      "executionReceiptSha256": "a04a293a6373b8d45564f904f5d716bc906e75af8438870a115cb094daec5810",
+      "certificationStatus": "verified-golden"
+    },
+    {
+      "assetId": "tauri-desktop-graph",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-browser-desktop-graph.png",
+      "sourceSha256": "621f9bef17c74cd62ff8d816274ada7adca2f87227fe251c76ec8aab2f89c7ee",
+      "scenarioIds": [
+        "example.graph.normalized-cross-view",
+        "example.platform.adapter-boundary"
+      ],
+      "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-browser-evidence.json",
+      "executionReceiptSha256": "032ada9cfaff174bca4d87451fb44f66412193ced5b3d58cb1c60bcb444e2322",
+      "certificationStatus": "verified-browser"
+    },
+    {
+      "assetId": "tauri-android-runtime",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-6-current-android-runtime.png",
+      "sourceSha256": "be5d10cdca947d8375cb66979951abd5768a312ab87d2728ae68ac4238eb434f",
+      "scenarioIds": [
+        "example.platform.adapter-boundary",
+        "example.runtime.lifecycle-security"
+      ],
+      "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-6-current-mobile-evidence.json",
+      "executionReceiptSha256": "1a5db67ea396b3dd9d8598d6378daa5eee86cb4675a445f9fe7bf058ea929f4f",
+      "certificationStatus": "verified-emulator"
+    },
+    {
+      "assetId": "tauri-ios-runtime",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-6-current-ios-runtime.png",
+      "sourceSha256": "34bedde2b64acb29cbf35bfdc5c0f2b841c78fc557eed29562f0bddba4e87c47",
+      "scenarioIds": [
+        "example.platform.adapter-boundary",
+        "example.runtime.lifecycle-security"
+      ],
+      "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-6-current-mobile-evidence.json",
+      "executionReceiptSha256": "1a5db67ea396b3dd9d8598d6378daa5eee86cb4675a445f9fe7bf058ea929f4f",
+      "certificationStatus": "verified-simulator"
+    },
+    {
+      "assetId": "flutter-source-lineage",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/task-2-lineage-review.png",
+      "sourceSha256": "d70e598046617f70aa3556b37bf83f916c40cc33804e3c53cb64aa7f9d031e06",
+      "scenarioIds": [
+        "example.platform.adapter-boundary"
+      ],
+      "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/provenance-verification.json",
+      "executionReceiptSha256": "abdbd8c296bd78d4b25e96fab3366d4b99f1e45ca04608c81916f78898240581",
+      "certificationStatus": "verified-provenance"
+    },
+    {
+      "assetId": "release-disposition",
+      "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/task-6-release-disposition.png",
+      "sourceSha256": "9eba2b3c98da09bb0000c3f5d32d25db682a618142f8665422d57fea787f49fa",
+      "scenarioIds": [
+        "example.runtime.lifecycle-security"
+      ],
+      "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-pipeline-rc/final-verification.json",
+      "executionReceiptSha256": "133b96da669bd9ab8f821f214922805f4eb915af37dd9db386801e26d4216ed5",
+      "certificationStatus": "verified-release-diagram"
+    },
+    {
+      "assetId": "flint-realtime-contract",
+      "sourcePath": "website/evidence-source/flint-realtime-contract.svg",
+      "sourceSha256": "2ab7aebfb5b05f48e04bd39a49ec9b952a2b5e69bf2aae7883a8b17be09f5a0f",
+      "scenarioIds": [
+        "example.realtime.coalesced-cross-view",
+        "example.runtime.lifecycle-security"
+      ],
+      "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flint-portable-contracts/task-6-external-source-verification.json",
+      "executionReceiptSha256": "3b359bd664063886ddf26511866239d621b91f2b65babb26c7fde68c732e8972",
+      "certificationStatus": "verified-contract-diagram"
+    }
+  ]
+}

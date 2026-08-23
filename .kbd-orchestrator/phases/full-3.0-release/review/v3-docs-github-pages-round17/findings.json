@@ -1,0 +1,24 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "codex-gpt-5",
+  "isolation_mode": "harness-native:fresh-context",
+  "producer_model": "gpt-5",
+  "cross_model_check": "unverified-same-harness-family",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "website/evidence-source/flint-realtime-contract.svg",
+      "line": 5,
+      "claim": "The generated Flint evidence is host-dependent, so the Ubuntu Pages workflow can regenerate different PNG/WebP bytes and fail the mandatory clean-artifact diff.",
+      "evidence": "The SVG renders every text element with font-family=system-ui, whose resolved font depends on host font configuration. generate-evidence.mjs rasterizes that SVG with Sharp, while docs-pages.yml regenerates evidence on Ubuntu and requires an empty generated-artifact diff. Repeating generation on one host does not prove cross-platform parity.",
+      "suggested_fix": "Make the SVG self-contained by embedding a pinned font or converting text to paths, regenerate the evidence artifacts on the CI platform, and add a clean Ubuntu regeneration-parity check."
+    }
+  ],
+  "checked_classes": [],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

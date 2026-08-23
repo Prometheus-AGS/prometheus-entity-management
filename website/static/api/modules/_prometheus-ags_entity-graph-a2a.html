@@ -1,0 +1,218 @@
+<!DOCTYPE html><html class="default" lang="en" data-base="../"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@prometheus-ags/entity-graph-a2a | Prometheus Entity Management API</title><meta name="description" content="Documentation for Prometheus Entity Management API"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><link rel="stylesheet" href="../assets/custom.css"/><script defer src="../assets/main.js"></script><script async src="../assets/icons.js" id="tsd-icons-script"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script><script async src="../assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container"><a href="../index.html" class="title">Prometheus Entity Management API</a>
+<div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/>
+<ul role="listbox" id="tsd-search-results"></ul>
+<div id="tsd-search-status" aria-live="polite" aria-atomic="true">
+<div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-menu"></use></svg></a></div></header>
+<div class="container container-main">
+<div class="col-content">
+<div class="tsd-page-title">
+<ul class="tsd-breadcrumb" aria-label="Breadcrumb">
+<li><a href="" aria-current="page">@prometheus-ags/entity-graph-a2a</a></li></ul>
+<h1>Module @prometheus-ags/entity-graph-a2a</h1></div>
+<section class="tsd-panel tsd-typography"><h1 id="prometheus-agsentity-graph-a2a" class="tsd-anchor-link">@prometheus-ags/entity-graph-a2a<a href="#prometheus-agsentity-graph-a2a" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h1>
+<p>Official A2A 1.0 JSON-RPC and streaming SSE for the Prometheus normalized entity graph.</p>
+<p>The package uses <code>@a2a-js/sdk@1.0.1</code> for the wire model and transport dispatcher. Prometheus owns the application policy, graph adapter, deterministic reference executor, and its versioned A2UI artifact adapter.</p>
+<h2 id="supported-boundary" class="tsd-anchor-link">Supported boundary<a href="#supported-boundary" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>Stable 3.0 contract</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Discovery</td>
+<td><code>GET /.well-known/agent-card.json</code></td>
+</tr>
+<tr>
+<td>Binding</td>
+<td>JSON-RPC only, A2A protocol <code>1.0</code></td>
+</tr>
+<tr>
+<td>Methods</td>
+<td><code>SendMessage</code>, <code>SendStreamingMessage</code>, <code>GetTask</code>, <code>ListTasks</code>, <code>CancelTask</code>, <code>SubscribeToTask</code></td>
+</tr>
+<tr>
+<td>Streaming</td>
+<td>Ordered task, status, artifact, and terminal envelopes over SSE</td>
+</tr>
+<tr>
+<td>Graph authority</td>
+<td>Default deny; application allowlists entity types, actions, and fields</td>
+</tr>
+<tr>
+<td>Destructive writes</td>
+<td><code>replace</code> and <code>remove</code> require an out-of-band approval decision</td>
+</tr>
+<tr>
+<td>A2UI</td>
+<td>Prometheus-owned structured-data adapter carrying validated A2UI <code>v0.9.1</code> messages</td>
+</tr>
+<tr>
+<td>Reference agent</td>
+<td>Deterministic and keyless, with injectable IDs, clock, and delay</td>
+</tr>
+<tr>
+<td>Remote agent</td>
+<td>Optional HTTPS/loopback JSON-RPC executor seam; never required by default CI</td>
+</tr>
+</tbody>
+</table>
+<p>The AgentCard truthfully disables push notifications and extended cards. REST, gRPC, signed AgentCards, hosted identity, and production multi-tenant routing are not certified by this package gate.</p>
+<h2 id="installation" class="tsd-anchor-link">Installation<a href="#installation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<pre><code class="bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">@prometheus-ags/entity-graph-a2a</span><span class="hl-1"> </span><span class="hl-2">@prometheus-ags/entity-graph-core</span>
+</code><button type="button">Copy</button></pre>
+
+<p>The A2A SDK is an exact production dependency of this package. Applications do not need to install a second SDK copy to use the public Prometheus API.</p>
+<h2 id="quick-start" class="tsd-anchor-link">Quick start<a href="#quick-start" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<pre><code class="ts"><span class="hl-3">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">buildAgentCard</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">createA2AServer</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">createBearerTokenAuthenticator</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">createEntityGraphA2APolicy</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/entity-graph-a2a&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">policy</span><span class="hl-1"> = </span><span class="hl-0">createEntityGraphA2APolicy</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">entities:</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-4">Invoice:</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-4">actions:</span><span class="hl-1"> [</span><span class="hl-2">&quot;upsert&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;replace&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;remove&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;query&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;snapshot&quot;</span><span class="hl-1">],</span><br/><span class="hl-1">      </span><span class="hl-4">fields:</span><span class="hl-1"> [</span><span class="hl-2">&quot;id&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;amount&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;status&quot;</span><span class="hl-1">],</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">    </span><span class="hl-2">&quot;*&quot;</span><span class="hl-4">:</span><span class="hl-1"> { </span><span class="hl-4">actions:</span><span class="hl-1"> [</span><span class="hl-2">&quot;snapshot&quot;</span><span class="hl-1">], </span><span class="hl-4">fields:</span><span class="hl-1"> [] },</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">  </span><span class="hl-0">authorize</span><span class="hl-4">:</span><span class="hl-1"> ({ </span><span class="hl-4">caller</span><span class="hl-1">, </span><span class="hl-4">tenantId</span><span class="hl-1"> }) </span><span class="hl-5">=&gt;</span><br/><span class="hl-1">    </span><span class="hl-4">caller</span><span class="hl-1">.</span><span class="hl-4">isAuthenticated</span><span class="hl-1"> &amp;&amp;</span><br/><span class="hl-1">    </span><span class="hl-4">caller</span><span class="hl-1">.</span><span class="hl-4">scopes</span><span class="hl-1">.</span><span class="hl-0">includes</span><span class="hl-1">(</span><span class="hl-2">&quot;invoice:a2a&quot;</span><span class="hl-1">) &amp;&amp;</span><br/><span class="hl-1">    </span><span class="hl-4">tenantId</span><span class="hl-1"> === </span><span class="hl-4">caller</span><span class="hl-1">.</span><span class="hl-4">claims</span><span class="hl-1">?.</span><span class="hl-4">tenantId</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">requestApproval</span><span class="hl-4">:</span><span class="hl-1"> </span><span class="hl-5">async</span><span class="hl-1"> (</span><span class="hl-4">context</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><br/><span class="hl-1">    </span><span class="hl-4">approvalService</span><span class="hl-1">.</span><span class="hl-0">decide</span><span class="hl-1">({</span><br/><span class="hl-1">      </span><span class="hl-4">callerId:</span><span class="hl-1"> </span><span class="hl-4">context</span><span class="hl-1">.</span><span class="hl-4">caller</span><span class="hl-1">.</span><span class="hl-4">id</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-4">operation:</span><span class="hl-1"> </span><span class="hl-4">context</span><span class="hl-1">.</span><span class="hl-4">operation</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-4">entityType:</span><span class="hl-1"> </span><span class="hl-4">context</span><span class="hl-1">.</span><span class="hl-4">entityType</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-4">entityId:</span><span class="hl-1"> </span><span class="hl-4">context</span><span class="hl-1">.</span><span class="hl-4">entityId</span><span class="hl-1">,</span><br/><span class="hl-1">    }),</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">authenticator</span><span class="hl-1"> = </span><span class="hl-0">createBearerTokenAuthenticator</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-0">verify</span><span class="hl-4">:</span><span class="hl-1"> </span><span class="hl-5">async</span><span class="hl-1"> (</span><span class="hl-4">token</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">identity</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-0">verifyAccessToken</span><span class="hl-1">(</span><span class="hl-4">token</span><span class="hl-1">);</span><br/><span class="hl-1">    </span><span class="hl-3">return</span><span class="hl-1"> </span><span class="hl-4">identity</span><br/><span class="hl-1">      ? {</span><br/><span class="hl-1">          </span><span class="hl-4">id:</span><span class="hl-1"> </span><span class="hl-4">identity</span><span class="hl-1">.</span><span class="hl-4">subject</span><span class="hl-1">,</span><br/><span class="hl-1">          </span><span class="hl-4">scopes:</span><span class="hl-1"> </span><span class="hl-4">identity</span><span class="hl-1">.</span><span class="hl-4">scopes</span><span class="hl-1">,</span><br/><span class="hl-1">          </span><span class="hl-4">claims:</span><span class="hl-1"> { </span><span class="hl-4">tenantId:</span><span class="hl-1"> </span><span class="hl-4">identity</span><span class="hl-1">.</span><span class="hl-4">tenantId</span><span class="hl-1"> },</span><br/><span class="hl-1">        }</span><br/><span class="hl-1">      : </span><span class="hl-5">null</span><span class="hl-1">;</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">server</span><span class="hl-1"> = </span><span class="hl-0">createA2AServer</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">card:</span><span class="hl-1"> </span><span class="hl-0">buildAgentCard</span><span class="hl-1">({</span><br/><span class="hl-1">    </span><span class="hl-4">url:</span><span class="hl-1"> </span><span class="hl-2">&quot;https://api.example.com/a2a&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-4">name:</span><span class="hl-1"> </span><span class="hl-2">&quot;Invoice Graph Agent&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-4">authentication:</span><span class="hl-1"> </span><span class="hl-2">&quot;bearer&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  }),</span><br/><span class="hl-1">  </span><span class="hl-4">authenticator</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">policy</span><span class="hl-1">,</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-7">// Fetch-compatible runtimes: Workers, Bun, Deno, Hono, or a Node adapter.</span><br/><span class="hl-3">export</span><span class="hl-1"> </span><span class="hl-3">default</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-0">fetch</span><span class="hl-1">(</span><span class="hl-4">request</span><span class="hl-1">: </span><span class="hl-10">Request</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-3">return</span><span class="hl-1"> </span><span class="hl-4">server</span><span class="hl-1">.</span><span class="hl-0">fetch</span><span class="hl-1">(</span><span class="hl-4">request</span><span class="hl-1">);</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">};</span>
+</code><button type="button">Copy</button></pre>
+
+<p><code>server.fetch()</code> serves both the discovery route and the configured JSON-RPC endpoint. Do not add a second, hand-written AgentCard route.</p>
+<h2 id="security-model" class="tsd-anchor-link">Security model<a href="#security-model" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>Protocol validity never grants application authority.</p>
+<pre><code class="text">HTTP credential
+  -&gt; caller identity
+  -&gt; request/task visibility policy
+  -&gt; official A2A dispatcher
+  -&gt; graph entity/action/field policy
+  -&gt; destructive approval
+  -&gt; one atomic graph transaction
+</code><button type="button">Copy</button></pre>
+
+<ul>
+<li><code>createDefaultDenyA2APolicy()</code> allows ordinary task protocol operations but denies every graph read and write.</li>
+<li><code>createDenyAllA2APolicy()</code> denies protocol dispatch and graph access.</li>
+<li><code>createEntityGraphA2APolicy()</code> builds explicit application rules.</li>
+<li>A batch is authorized in full before its transaction begins. One forbidden field rejects the entire batch.</li>
+<li>Hidden and nonexistent tasks have the same lookup error class for callers outside the owning scope.</li>
+<li>Approval metadata supplied by an agent cannot approve its own destructive operation.</li>
+<li>Bearer credentials are passed to the application's verifier and are never logged by the package.</li>
+</ul>
+<p>The supplied bearer helper is an adapter, not a hosted identity system. Signature, issuer, audience, expiry, revocation, and tenant validation remain the host application's responsibility.</p>
+<h2 id="entity-graph-messages" class="tsd-anchor-link">Entity graph messages<a href="#entity-graph-messages" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>Graph operations use an ordinary official A2A data part plus the Prometheus extension URI. They do not add a private member to the A2A <code>Part</code> union.</p>
+<pre><code class="ts"><span class="hl-3">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">PROMETHEUS_GRAPH_EXTENSION_URI</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">Role</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-3">type</span><span class="hl-1"> </span><span class="hl-4">EntityGraphA2ARequest</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-3">type</span><span class="hl-1"> </span><span class="hl-4">Message</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/entity-graph-a2a&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">request</span><span class="hl-1">: </span><span class="hl-10">EntityGraphA2ARequest</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-4">kind:</span><span class="hl-1"> </span><span class="hl-2">&quot;prometheus.entity-graph.request&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">version:</span><span class="hl-1"> </span><span class="hl-2">&quot;1.0&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">operation:</span><span class="hl-1"> </span><span class="hl-2">&quot;mutate&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">mutations:</span><span class="hl-1"> [</span><br/><span class="hl-1">    {</span><br/><span class="hl-1">      </span><span class="hl-4">op:</span><span class="hl-1"> </span><span class="hl-2">&quot;upsert&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-4">entityType:</span><span class="hl-1"> </span><span class="hl-2">&quot;Invoice&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-4">id:</span><span class="hl-1"> </span><span class="hl-2">&quot;invoice-1&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-4">data:</span><span class="hl-1"> { </span><span class="hl-4">id:</span><span class="hl-1"> </span><span class="hl-2">&quot;invoice-1&quot;</span><span class="hl-1">, </span><span class="hl-4">amount:</span><span class="hl-1"> </span><span class="hl-13">100</span><span class="hl-1">, </span><span class="hl-4">status:</span><span class="hl-1"> </span><span class="hl-2">&quot;open&quot;</span><span class="hl-1"> },</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">  ],</span><br/><span class="hl-1">};</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">message</span><span class="hl-1">: </span><span class="hl-10">Message</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-4">role:</span><span class="hl-1"> </span><span class="hl-4">Role</span><span class="hl-1">.</span><span class="hl-6">ROLE_USER</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">messageId:</span><span class="hl-1"> </span><span class="hl-4">crypto</span><span class="hl-1">.</span><span class="hl-0">randomUUID</span><span class="hl-1">(),</span><br/><span class="hl-1">  </span><span class="hl-4">taskId:</span><span class="hl-1"> </span><span class="hl-2">&quot;&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">contextId:</span><span class="hl-1"> </span><span class="hl-2">&quot;&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">parts:</span><span class="hl-1"> [{</span><br/><span class="hl-1">    </span><span class="hl-4">content:</span><span class="hl-1"> { </span><span class="hl-4">$case:</span><span class="hl-1"> </span><span class="hl-2">&quot;data&quot;</span><span class="hl-1">, </span><span class="hl-4">value:</span><span class="hl-1"> </span><span class="hl-4">request</span><span class="hl-1"> },</span><br/><span class="hl-1">    </span><span class="hl-4">mediaType:</span><span class="hl-1"> </span><span class="hl-2">&quot;application/json&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-4">filename:</span><span class="hl-1"> </span><span class="hl-2">&quot;&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-4">metadata:</span><span class="hl-1"> { </span><span class="hl-4">extensionUri:</span><span class="hl-1"> </span><span class="hl-6">PROMETHEUS_GRAPH_EXTENSION_URI</span><span class="hl-1"> },</span><br/><span class="hl-1">  }],</span><br/><span class="hl-1">  </span><span class="hl-4">metadata:</span><span class="hl-1"> {},</span><br/><span class="hl-1">  </span><span class="hl-4">extensions:</span><span class="hl-1"> [</span><span class="hl-6">PROMETHEUS_GRAPH_EXTENSION_URI</span><span class="hl-1">],</span><br/><span class="hl-1">  </span><span class="hl-4">referenceTaskIds:</span><span class="hl-1"> [],</span><br/><span class="hl-1">};</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Supported graph operations are <code>upsert</code>, <code>replace</code>, <code>remove</code>, <code>patch</code>, <code>clearPatch</code>, <code>query</code>, and <code>snapshot</code>. Local patches remain graph-local and are never represented as server-confirmed canonical data.</p>
+<h2 id="deterministic-a2ui-artifacts" class="tsd-anchor-link">Deterministic A2UI artifacts<a href="#deterministic-a2ui-artifacts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>The built-in executor can emit an A2UI surface without a model credential when the client requests <code>PROMETHEUS_A2UI_EXTENSION_URI</code>.</p>
+<pre><code class="ts"><span class="hl-3">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">PROMETHEUS_A2UI_EXTENSION_URI</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">PROMETHEUS_A2UI_PROTOCOL_VERSION</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">createA2UIArtifact</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">createDeterministicA2UIMessages</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/entity-graph-a2a&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">messages</span><span class="hl-1"> = </span><span class="hl-0">createDeterministicA2UIMessages</span><span class="hl-1">(</span><br/><span class="hl-1">  </span><span class="hl-2">&quot;The invoice is ready for review.&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">&quot;invoice-review&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">);</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">artifact</span><span class="hl-1"> = </span><span class="hl-0">createA2UIArtifact</span><span class="hl-1">(</span><span class="hl-4">messages</span><span class="hl-1">, {</span><br/><span class="hl-1">  </span><span class="hl-4">artifactId:</span><span class="hl-1"> </span><span class="hl-2">&quot;invoice-review-artifact&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-3">if</span><span class="hl-1"> (</span><span class="hl-6">PROMETHEUS_A2UI_PROTOCOL_VERSION</span><span class="hl-1"> !== </span><span class="hl-2">&quot;v0.9.1&quot;</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-3">throw</span><span class="hl-1"> </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-0">Error</span><span class="hl-1">(</span><span class="hl-2">&quot;unexpected protocol baseline&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">}</span><br/><span class="hl-5">void</span><span class="hl-1"> </span><span class="hl-4">artifact</span><span class="hl-1">;</span><br/><span class="hl-5">void</span><span class="hl-1"> </span><span class="hl-6">PROMETHEUS_A2UI_EXTENSION_URI</span><span class="hl-1">;</span>
+</code><button type="button">Copy</button></pre>
+
+<p>This is a Prometheus-owned versioned adapter. It does not claim that the legacy upstream A2UI-for-A2A v0.8 extension defines v0.9.1 transport semantics. Renderer action authorization is still enforced by <code>@prometheus-ags/a2ui-react</code>.</p>
+<p>For repeatable tests, pass <code>deterministicExecutor</code> options to <code>createA2AServer</code>:</p>
+<pre><code class="ts"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">server</span><span class="hl-1"> = </span><span class="hl-0">createA2AServer</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">card:</span><span class="hl-1"> </span><span class="hl-0">buildAgentCard</span><span class="hl-1">({ </span><span class="hl-4">url:</span><span class="hl-1"> </span><span class="hl-2">&quot;http://127.0.0.1/a2a&quot;</span><span class="hl-1"> }),</span><br/><span class="hl-1">  </span><span class="hl-4">deterministicExecutor:</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-0">clock</span><span class="hl-4">:</span><span class="hl-1"> () </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-2">&quot;2030-01-15T12:00:00.000Z&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-4">idFactory:</span><span class="hl-1"> (() </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-5">let</span><span class="hl-1"> </span><span class="hl-4">id</span><span class="hl-1"> = </span><span class="hl-13">0</span><span class="hl-1">;</span><br/><span class="hl-1">      </span><span class="hl-3">return</span><span class="hl-1"> () </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-2">`fixture-</span><span class="hl-5">${</span><span class="hl-1">++</span><span class="hl-4">id</span><span class="hl-5">}</span><span class="hl-2">`</span><span class="hl-1">;</span><br/><span class="hl-1">    })(),</span><br/><span class="hl-1">    </span><span class="hl-4">stepDelayMs:</span><span class="hl-1"> </span><span class="hl-13">25</span><span class="hl-1">,</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<h2 id="optional-external-executor" class="tsd-anchor-link">Optional external executor<a href="#optional-external-executor" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p><code>createExternalA2AExecutor()</code> discovers an AgentCard from an HTTPS or loopback base URL, selects JSON-RPC, streams the remote lifecycle, and remaps remote IDs into the local task boundary.</p>
+<pre><code class="ts"><span class="hl-3">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">buildAgentCard</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">createA2AServer</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">createExternalA2AExecutor</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/entity-graph-a2a&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">server</span><span class="hl-1"> = </span><span class="hl-0">createA2AServer</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">card:</span><span class="hl-1"> </span><span class="hl-0">buildAgentCard</span><span class="hl-1">({ </span><span class="hl-4">url:</span><span class="hl-1"> </span><span class="hl-2">&quot;https://gateway.example.com/a2a&quot;</span><span class="hl-1"> }),</span><br/><span class="hl-1">  </span><span class="hl-4">executor:</span><span class="hl-1"> </span><span class="hl-0">createExternalA2AExecutor</span><span class="hl-1">({</span><br/><span class="hl-1">    </span><span class="hl-4">baseUrl:</span><span class="hl-1"> </span><span class="hl-2">&quot;https://agent.example.com&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-4">serviceParameters:</span><span class="hl-1"> { </span><span class="hl-4">Authorization:</span><span class="hl-1"> </span><span class="hl-2">`Bearer </span><span class="hl-5">${</span><span class="hl-3">await</span><span class="hl-8"> </span><span class="hl-0">issueAgentToken</span><span class="hl-8">()</span><span class="hl-5">}</span><span class="hl-2">`</span><span class="hl-1"> },</span><br/><span class="hl-1">  }),</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p>The external endpoint is an opt-in runtime dependency. HTTPS is required outside
+loopback development, and URL-embedded usernames or passwords are rejected before
+AgentCard discovery. Keep authenticated production routing and credentials in a
+server-side gateway. Default CI and the reference agent remain keyless and local.</p>
+<h2 id="migrating-alpha-consumers" class="tsd-anchor-link">Migrating alpha consumers<a href="#migrating-alpha-consumers" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>The pre-v3 slash methods are intentionally absent from the package root and the A2A 1.0 endpoint.</p>
+<table>
+<thead>
+<tr>
+<th>Alpha surface</th>
+<th>Stable replacement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/.well-known/agent.json</code></td>
+<td><code>/.well-known/agent-card.json</code></td>
+</tr>
+<tr>
+<td><code>tasks/send</code></td>
+<td><code>SendMessage</code></td>
+</tr>
+<tr>
+<td><code>tasks/sendSubscribe</code></td>
+<td><code>SendStreamingMessage</code> over SSE</td>
+</tr>
+<tr>
+<td><code>tasks/get</code></td>
+<td><code>GetTask</code></td>
+</tr>
+<tr>
+<td><code>tasks/cancel</code></td>
+<td><code>CancelTask</code></td>
+</tr>
+<tr>
+<td>bespoke part/status/task types</td>
+<td>official <code>@a2a-js/sdk</code> types re-exported from the package root</td>
+</tr>
+<tr>
+<td><code>DefaultEntityGraphHandler</code></td>
+<td><code>DeterministicEntityGraphExecutor</code> plus an application policy</td>
+</tr>
+</tbody>
+</table>
+<p>For a bounded migration window, import the explicit adapter:</p>
+<pre><code class="ts"><span class="hl-3">import</span><span class="hl-1"> { </span><span class="hl-4">createLegacyA2AAdapter</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/entity-graph-a2a/legacy&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">legacy</span><span class="hl-1"> = </span><span class="hl-0">createLegacyA2AAdapter</span><span class="hl-1">({ </span><span class="hl-4">server</span><span class="hl-1"> });</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">response</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">legacy</span><span class="hl-1">.</span><span class="hl-0">handleRequest</span><span class="hl-1">(</span><span class="hl-4">oldSlashMethodRequest</span><span class="hl-1">, {</span><br/><span class="hl-1">  </span><span class="hl-4">requestedVersion:</span><span class="hl-1"> </span><span class="hl-2">&quot;1.0&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p>The legacy adapter translates retained send/get/cancel shapes. It does not expose legacy streaming; migrate streaming callers to the official SSE method. New code must not use this subpath.</p>
+<h2 id="verification" class="tsd-anchor-link">Verification<a href="#verification" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>From the repository root:</p>
+<pre><code class="bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">test:a2a-conformance</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">verify:a2a-conformance</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">test:a2a-tck</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">bdd:a2a-conformance</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-5">--filter</span><span class="hl-1"> </span><span class="hl-2">@prometheus-ags/entity-graph-a2a</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">verify:skills</span>
+</code><button type="button">Copy</button></pre>
+
+<p>The upstream gate pins <code>a2aproject/a2a-tck</code> at commit <code>5996b79f9cefa6fc390980e383e358a66fb9e49e</code>. Its receipt separates MUST, SHOULD, MAY, binding, capability exclusions, and candidate artifact hashes. A failed applicable MUST or unexplained selected-binding skip blocks the gate.</p>
+<p>These checks certify the headless package boundary. Browser rendering, accessibility, and visual evidence are owned by the <code>v3-agentic-a2ui-example</code> showcase; no screenshot is evidence for a headless transport.</p>
+<p>The repository's dedicated
+<a href="../../examples/agentic-a2ui-app/README.md"><code>agentic-a2ui-app</code></a> is the reference
+composition for consuming the streamed A2UI artifact through the official
+renderer and application-owned action policy. Its deterministic source tests
+and clean three-flow production-browser gate are implemented. That rendered
+evidence does not change this package's headless certification boundary or
+certify an external hosted agent.</p>
+<p>The runtime export ledger is <a href="../../prometheus-entity-skills/_shared/references/a2a-library-exports.json"><code>a2a-library-exports.json</code></a>. Public root or <code>./legacy</code> export changes must update it.</p>
+<h2 id="license" class="tsd-anchor-link">License<a href="#license" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>MIT</p>
+</section>
+<details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Modules"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h2 class="tsd-anchor-link" id="modules">Modules<a href="#modules" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary><dl class="tsd-member-summaries"><dt class="tsd-member-summary" id="_"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><a href="_prometheus-ags_entity-graph-a2a..html"></a><a href="#_" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="legacy"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><a href="_prometheus-ags_entity-graph-a2a.legacy.html">legacy</a><a href="#legacy" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd></dl></details></div>
+<div class="col-sidebar">
+<div class="page-menu">
+<div class="tsd-navigation settings">
+<details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div>
+<div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>On This Page</h3></summary>
+<div class="tsd-accordion-details"><a href="#prometheus-agsentity-graph-a2a"><span>@prometheus-<wbr/>ags/entity-<wbr/>graph-<wbr/>a2a</span></a>
+<ul>
+<li><a href="#supported-boundary"><span>Supported boundary</span></a></li>
+<li><a href="#installation"><span>Installation</span></a></li>
+<li><a href="#quick-start"><span>Quick start</span></a></li>
+<li><a href="#security-model"><span>Security model</span></a></li>
+<li><a href="#entity-graph-messages"><span>Entity graph messages</span></a></li>
+<li><a href="#deterministic-a2ui-artifacts"><span>Deterministic <wbr/>A2<wbr/>UI artifacts</span></a></li>
+<li><a href="#optional-external-executor"><span>Optional external executor</span></a></li>
+<li><a href="#migrating-alpha-consumers"><span>Migrating alpha consumers</span></a></li>
+<li><a href="#verification"><span>Verification</span></a></li>
+<li><a href="#license"><span>License</span></a></li></ul>
+<details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Modules"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Modules</summary>
+<div><a href="#_"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><span></span></a><a href="#legacy"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><span>legacy</span></a></div></details></div></details></div>
+<div class="site-menu">
+<nav class="tsd-navigation"><a href="../index.html">Prometheus Entity Management API</a>
+<ul class="tsd-small-nested-navigation" id="tsd-nav-container">
+<li>Loading...</li></ul></nav></div></div></div><footer>
+<p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer>
+<div class="overlay"></div></body></html>

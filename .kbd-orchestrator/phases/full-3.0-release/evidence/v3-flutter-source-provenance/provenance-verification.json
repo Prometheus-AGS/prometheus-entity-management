@@ -10,7 +10,7 @@
     "filteredTip": "cb318ddb2beb2948a1b26e5e589cff3145b788cc",
     "filteredTree": "6bd3c232073687b774e444f4196c1a4f4da2c39c",
     "mergeCommit": "eb3c9802da5ff10ad6db135fed761bd23ea80b3f",
-    "integrationMode": "content-equivalent-squash",
+    "integrationMode": "ancestry",
     "approvedFileDiff": [],
     "examined": 226,
     "retained": 8,

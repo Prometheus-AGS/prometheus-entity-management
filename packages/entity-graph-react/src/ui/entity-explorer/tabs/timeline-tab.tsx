@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useEntityExplorer } from "../context";
 import { type DevtoolsEvent } from "@prometheus-ags/entity-graph-core";
-import { useGraphStore } from "@prometheus-ags/entity-graph-core";
 import { exportGraphSnapshot } from "@prometheus-ags/entity-graph-core";
 import { recordGraphSnapshot, restoreGraphSnapshotBySeq } from "@prometheus-ags/entity-graph-core";
+import { useGraphStoreApi } from "../../../graph-store";
 
 /**
  * Timeline tab (change C5) — time-travel-style inspection of the entity graph.
@@ -43,6 +43,7 @@ function describePayload(event: DevtoolsEvent): string {
 
 export function TimelineTab() {
   const { bus } = useEntityExplorer();
+  const storeApi = useGraphStoreApi();
   const seqRef = useRef(0);
   const [entries, setEntries] = useState<TimelineEntry[]>([]);
   const [selected, setSelected] = useState<number | null>(null);
@@ -52,21 +53,21 @@ export function TimelineTab() {
     const unsub = bus.subscribe((event) => {
       // Capture a true-time-travel snapshot at each mutation so the row can
       // rewind the LIVE graph to this point (not just inspect a log).
-      const snapshotSeq = recordGraphSnapshot(event.kind);
+      const snapshotSeq = recordGraphSnapshot(event.kind, storeApi);
       setEntries((prev) => {
         const next = [{ event, seq: seqRef.current++, snapshotSeq }, ...prev];
         return next.length > MAX_TIMELINE ? next.slice(0, MAX_TIMELINE) : next;
       });
     });
     return unsub;
-  }, [bus]);
+  }, [bus, storeApi]);
 
   function handleRewind(snapshotSeq: number) {
-    restoreGraphSnapshotBySeq(snapshotSeq);
+    restoreGraphSnapshotBySeq(snapshotSeq, storeApi);
   }
 
   function handleExport() {
-    const s = useGraphStore.getState();
+    const s = storeApi.getState();
     const json = exportGraphSnapshot({
       scope: "entity-graph",
       data: {

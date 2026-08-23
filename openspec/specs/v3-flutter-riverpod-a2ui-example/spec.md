@@ -1,16 +1,24 @@
-# v3-flutter-riverpod-a2ui-example Specification
+# Flutter, Riverpod, and A2UI example
 
 ## Purpose
-TBD - created by archiving change v3-flutter-riverpod-a2ui-example. Update Purpose after archive.
+
+Define the release-certifying contract for the Prometheus Flutter showcase,
+including normalized entity management, Riverpod orchestration, safe A2UI
+handling, deterministic evidence, and explicit platform limits.
+
 ## Requirements
+
 ### Requirement: Complete Flutter, Riverpod, and A2UI example
 
-The 3.0 release SHALL implement and verify the complete `v3-flutter-riverpod-a2ui-example` scope and acceptance criteria defined in `.kbd-orchestrator/phases/full-3.0-release/plan.md`.
+The 3.0 release SHALL implement and verify the complete
+`v3-flutter-riverpod-a2ui-example` scope and acceptance criteria defined in
+`.kbd-orchestrator/phases/full-3.0-release/plan.md`.
 
 #### Scenario: Change is ready to archive
 
-- **WHEN** every task in `openspec/changes/v3-flutter-riverpod-a2ui-example/tasks.md` is complete
-- **THEN** every acceptance criterion in the plan's `v3-flutter-riverpod-a2ui-example` section has reproducible evidence
+- **WHEN** every task in the Flutter/Riverpod/A2UI example change is complete
+- **THEN** every acceptance criterion in the plan's
+  `v3-flutter-riverpod-a2ui-example` section has reproducible evidence
 - **AND** no mandatory test or platform lane is silently skipped
-- **AND** public API, example coverage, skills, and documentation ledgers are synchronized when affected
-
+- **AND** public API, example coverage, skills, and documentation ledgers are
+  synchronized when affected

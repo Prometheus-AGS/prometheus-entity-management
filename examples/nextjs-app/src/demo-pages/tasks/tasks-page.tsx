@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useCallback } from "react";
 import { type ColumnDef } from "@tanstack/react-table";
 import { useEntityAugment } from "@prometheus-ags/prometheus-entity-management";

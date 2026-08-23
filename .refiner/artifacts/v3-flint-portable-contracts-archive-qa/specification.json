@@ -1,0 +1,7 @@
+{
+  "artifact_name": "v3-flint-portable-contracts-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "target_state": "All bounded Flint acceptance criteria have direct evidence; mandatory live behavior fails closed; security/provisioning claims match pinned source; React and npm state remain unchanged.",
+  "source_constraints": "Generic KBD constraints adapted to the actual Flint plan, OpenSpec, repository architecture, and trust boundaries because .kbd-orchestrator/constraints.md is absent."
+}

@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-flint-portable-contracts.mjs",
+      "line": 342,
+      "claim": "The machine-specific path verifier still misses Windows user-profile paths written with forward slashes.",
+      "evidence": "The refiner constraint/evidence claims Windows-profile absolute paths are rejected, but `findMachineSpecificPath` only matches Windows profiles with `/[A-Za-z]:\\\\Users\\\\[^\\\\\\s\"'`]+(?:\\\\|$)/i`; a common portable-config form like `C:/Users/alice/project/file.ts` does not match unless it also contains a Flint repository name.",
+      "suggested_fix": "Change the Windows user-profile pattern to accept both separators, e.g. `/[A-Za-z]:[\\\\/]Users[\\\\/][^\\\\/\\s\"'`]+(?:[\\\\/]|$)/i`, and add a `C:/Users/...` regression."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-flint-portable-contracts.mjs",
+      "line": 158,
+      "claim": "The JWT service-role scanner only inspects tokens whose header starts with `eyJ`, so valid compact JWTs with a JSON header serialized with leading whitespace can bypass value-level credential detection.",
+      "evidence": "The security boundary requires service-role JWT values to be rejected, but `containsServiceRoleJwt` extracts candidates with `/(?<![A-Za-z0-9_-])eyJ[A-Za-z0-9_-]*\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]*(?![A-Za-z0-9_-])/g`; a valid JWT header such as ` {\"alg\":\"HS256\",\"typ\":\"JWT\"}` base64url-encodes to a token not beginning with `eyJ`, so its `role: \"service_role\"` payload is never decoded.",
+      "suggested_fix": "Extract generic base64url compact-JWT triplets with delimiter lookarounds, decode and JSON-parse the header and payload, and reject service-role claims regardless of the header segment prefix."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

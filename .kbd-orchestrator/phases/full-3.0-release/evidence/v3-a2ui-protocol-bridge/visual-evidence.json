@@ -9,7 +9,7 @@
   },
   "artifact": {
     "entry": "packages/a2ui-react/dist/index.mjs",
-    "sha256": "24ad752b2e48555badbe30c7b9406231745dcee00beee194270d10f9b5a58ee6"
+    "sha256": "1d524a58dcf87de6d97831fc1570728c133a6c4339efefc7825411c71cc8e8fe"
   },
   "screenshots": [
     {

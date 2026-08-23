@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-flint-portable-contracts.mjs",
+      "line": 118,
+      "claim": "The client-secret scan still allows common service-role environment variables such as `SUPABASE_SERVICE_ROLE_KEY` in example `.env` files.",
+      "evidence": "The acceptance criterion says \"Client examples never expose service-role credentials,\" and the new scan now includes `.env*` files, but the forbidden patterns only check `FLINT_SERVICE_ROLE_KEY`, `service_role_...`, `flint_sk_...`, and `VITE_...SECRET|PRIVATE|SERVICE`; a non-VITE `SUPABASE_SERVICE_ROLE_KEY=...` or generic `SERVICE_ROLE_KEY=...` in `examples/**/.env` is not matched.",
+      "suggested_fix": "Reject generic service-role variable names in scanned text, e.g. `/\\b(?:SUPABASE_)?SERVICE_ROLE(?:_KEY)?\\b/i`, and add a regression with `SUPABASE_SERVICE_ROLE_KEY` in an example env file."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-flint-portable-contracts.mjs",
+      "line": 302,
+      "claim": "The machine-specific path verifier still misses Windows absolute Flint sibling roots outside `C:\\Users`.",
+      "evidence": "The acceptance/evidence constraint requires rejecting machine-specific absolute Flint paths, but `findMachineSpecificPath` only matches Windows paths under `[A-Za-z]:\\\\Users\\\\...` and the `absoluteFlintRoot` regex only matches Unix-style `/.../flint-realtime-fabric|flint-gate|flint-forge`; paths like `D:\\checkouts\\flint-gate\\src\\index.ts` evade the check.",
+      "suggested_fix": "Add a Windows drive-root Flint path pattern such as `/[A-Za-z]:\\\\(?:[^\\\\\\s\"'`]+\\\\)*?(?:flint-realtime-fabric|flint-gate|flint-forge)(?:\\\\|$)/i` and cover it in the path regression test."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

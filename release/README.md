@@ -77,7 +77,22 @@ official Flutter 3.44.8 stable SDK. This gate does not certify the complete
 Flutter/A2UI showcase, Android/iOS devices, accessibility, pub.dev authority,
 the immutable full-release SHA, documentation deployment, or stable promotion.
 
-## Partial Tauri desktop/mobile plugin gate
+## Partial Flutter, Riverpod, and A2UI showcase
+
+[`flutter-riverpod-a2ui-example.md`](flutter-riverpod-a2ui-example.md)
+documents the complete application at `examples/flutter-riverpod`. It composes
+one canonical graph, generated Riverpod controllers, optimistic/offline-aware
+CRUD, relationship and realtime invalidation, policy-gated official GenUI,
+responsive phone/tablet UI, and an optional FFI transport. The current host
+boundary passes analyzer, 25 tests, and three hash-recorded goldens.
+
+The coverage status is deliberately `partial`: those receipts do not establish
+frozen resolution under Flutter 3.44.8 stable or Android/iOS runtime and visual
+behavior. The shared mobile integration test and workflow lanes are authored,
+but execution remains the next platform gate. The example adds no public Dart
+declaration and authorizes no registry publication.
+
+## Implemented Tauri desktop/mobile plugin gate
 
 [`tauri-mobile-plugin.md`](tauri-mobile-plugin.md) documents the implemented
 Rust-derived binding, registered desktop IPC, capability-denial, and packed
@@ -85,11 +100,21 @@ native-payload evidence. The plugin default permission is read-only, and its
 native snapshot map is explicitly in-memory; durable SQLite remains owned by
 the core adapter.
 
-The gate remains partial because packaged Kotlin and Swift sources are not
-Android/iOS execution evidence. Stable mobile certification requires the
-documented simulator/device command and denial receipts. The full Tauri
-application, restart/offline behavior, accessibility, and visual parity remain
+The plugin gate includes hash-verified Android physical-device and iOS
+simulator command/denial receipts. Those receipts certify the packaged native
+bridge, not the universal application. Full application restart/offline
+behavior, accessibility, visual parity, and desktop/mobile packaging remain
 owned by `v3-tauri-universal-example`.
+
+## Implemented universal Tauri application gate
+
+[`tauri-universal-example.md`](tauri-universal-example.md) documents the shared
+React/Vite application, normalized graph, persistence/queue boundary, and
+native host. Five Chromium flows, packaged macOS IPC/denial/offline restart,
+Android API 36 emulator build/runtime/denial, and iOS 26.5 simulator
+archive/runtime passed. The coverage ledger records the showcase as
+implemented while explicitly excluding Windows/Linux bundles, physical
+devices, signing, stores, npm publication, and stable-release certification.
 
 ## Implemented recoverable release-candidate gate
 
@@ -119,11 +144,56 @@ the application gate for a core + React preview RC while other showcases are
 finished; a new tarball-only report, immutable rehearsal, and protected npm
 approval remain required before `next` can be used from the registry.
 
+## Implemented Next.js App Router showcase
+
+[`nextjs-app-router-example.md`](nextjs-app-router-example.md) documents the
+request-owned graph, RSC serialization, scoped React hydration, route
+persistence, Server Action, and client realtime boundaries now implemented in
+the Next.js 16 example. Its clean packed tarball-only production verifier
+installs core and React `3.0.0-rc.1` candidates into an external application
+and validates concurrent request isolation, hydration, route persistence,
+Server Action mutation, realtime takeover, accessibility, screenshot, and
+trace receipts. The evidence-backed coverage entry is implemented; npm
+publication and the remaining showcases remain separate gates.
+
+## Implemented Agentic A2A and A2UI showcase
+
+[`agentic-a2ui-example.md`](agentic-a2ui-example.md) documents the dedicated
+React 19/Vite 8 application that composes the certified A2A v1 server and A2UI
+v0.9.1 renderer with exact `task.update`, `task.archive`, and `task.delete`
+application policies. Its deletion-aware clean verifier passes the keyless
+stream, golden fixtures, normalized cross-view mutation, denials, human
+approval, cancellation, four package builds, both protocol export ledgers, a
+Vite production build, three Chromium flows, accessibility, screenshots,
+traces, coverage, security, and strict OpenSpec.
+
+The evidence-backed coverage entry is implemented. The receipt remains
+source-workspace evidence and does not add a package export, packed-consumer or
+external-agent claim, registry authority, or stable-release certification.
+
+## Implemented portable Flint contract gate
+
+[`flint-portable-contracts.md`](flint-portable-contracts.md) documents the
+structural `watchEntities`/`mutateEntity` bridge, immutable Realtime
+Fabric/Gate/Forge source pins, production issuer and tenant isolation, key and
+role separation, current RSA/EC JWKS compatibility boundary, and external
+Forge plan/apply/RLS/audit/restart semantics. Default CI uses checked fixtures;
+the real-SDK lane is explicit, immutable, and fail-closed.
+
+The gate adds no public runtime export: `createFlintAdapter` and
+`publishFlintMutation` were already in the React facade's machine export
+ledger. It does not implement Forge provisioning, deploy Flint services, prove
+unpinned future source compatibility, authorize npm staging, or certify the
+full 3.0 release.
+
 ## Registry decision
 
-The stable 3.0.0 release requires all twelve npm packages, a GitHub Release, and the production GitHub Pages documentation site. Dart and standalone Rust artifacts remain versioned and certified in the monorepo, while first publication to pub.dev/crates.io is deferred until registry ownership is verified. The Tauri Rust crate is embedded in the npm plugin tarball.
+The stable npm 3.0.0 release requires all twelve npm packages, a GitHub Release, and the production GitHub Pages documentation site. `entity_graph_flutter@3.0.0` is now public and consumer-verified on pub.dev, although a verified publisher is not yet assigned. Standalone Rust publication to crates.io remains deferred. The Tauri Rust crate is embedded in the npm plugin tarball.
 
-This distinction prevents source availability from being misreported as registry availability. A deferred registry can be promoted in a later 3.x release without changing the normalized graph contract.
+The live npm and pub.dev snapshots are recorded in
+[`npm-registry-status.json`](npm-registry-status.json) and
+[`pubdev-registry-status.json`](pubdev-registry-status.json). This distinction
+prevents source, staged, and public registry availability from being conflated.
 
 ## Historical specifications
 

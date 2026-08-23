@@ -1,0 +1,57 @@
+{
+  "reflection": {
+    "iteration": 1,
+    "max_iterations": 5,
+    "delta": "The fifth isolated review found that initialize validated the durable queue before hydration but manual restore did not. Continuation cycle 1 moves restore validation ahead of hydration, adds behavioral and source regressions, cryptographically binds the current-source receipt, and rebuilds and reruns the three native targets.",
+    "constraint_evaluation": [
+      {
+        "constraint_id": "acceptance-direct-evidence",
+        "status": "satisfied",
+        "notes": "Signed revision 122, 9 units, 17 source contracts, current target builds, runtime screenshots, and refreshed hashes provide direct evidence."
+      },
+      {
+        "constraint_id": "one-graph-layered-adapter-boundary",
+        "status": "satisfied",
+        "notes": "The correction changes only validation order inside the service; components, hooks, stores, and the single canonical graph remain unchanged."
+      },
+      {
+        "constraint_id": "platform-evidence-integrity",
+        "status": "satisfied",
+        "notes": "A source-bundle hash now binds the receipt to the reviewed runtime and generators. macOS, Android, and iOS were rebuilt; Android and iOS were launched again; 23 retained hashes match."
+      },
+      {
+        "constraint_id": "trust-boundaries-fail-closed",
+        "status": "satisfied",
+        "notes": "Both initialize and manual restore parse untrusted durable queue bytes before hydration. Malformed restore input leaves entities and lists empty."
+      },
+      {
+        "constraint_id": "visual-accessibility-integrity",
+        "status": "satisfied",
+        "notes": "Fresh Android runtime/denial and iOS runtime captures were inspected at original resolution; Android shows the exact denied command and permission pair."
+      },
+      {
+        "constraint_id": "ledgers-and-release-contract-synchronized",
+        "status": "satisfied",
+        "notes": "The correction adds no public export or showcase claim; affected coverage, release, skills, OpenSpec, and Changesets gates remain green."
+      },
+      {
+        "constraint_id": "react-rc-lane-preserved",
+        "status": "satisfied",
+        "notes": "Remote main remains the rehearsed rc.1 SHA and npm next remains absent."
+      },
+      {
+        "constraint_id": "limits-and-publication-truthful",
+        "status": "satisfied",
+        "notes": "The refreshed receipt remains emulator/simulator/build evidence and does not authorize physical devices, signing, registries, aggregate certification, or publication."
+      }
+    ],
+    "deterministic_validation": "Universal verifier 8/8; application 9/9; source contract 17/17; TypeScript and ESLint pass; current macOS app/DMG, Android APK/runtime/exact denial, and iOS simulator app/runtime pass; 23/23 retained hashes match; signed revision 122 and React/npm isolation remain unchanged.",
+    "target_alignment": "Every observed durable-queue entry path now fails before hydration, and the current native receipt is bound to the exact reviewed source bundle.",
+    "regression_check": "The new unit corrupts the queue before manual restore and proves entities/lists remain empty; source tests reject unsafe restore order and source drift after receipt creation.",
+    "convergence": {
+      "decision": "terminate",
+      "reason": "All eight blocking constraints pass in continuation cycle 1 after the isolated-review trust-boundary correction.",
+      "next_focus": "Run a new isolated cumulative-diff review; archive only on a non-blocking verdict."
+    }
+  }
+}

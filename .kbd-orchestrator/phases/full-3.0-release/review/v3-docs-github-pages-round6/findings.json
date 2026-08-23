@@ -1,0 +1,39 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "codex-gpt-5",
+  "isolation_mode": "harness-native:fresh-context",
+  "producer_model": "codex-gpt-5",
+  "cross_model_check": "unverified-same-harness-family",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".github/workflows/docs-pages.yml",
+      "line": 108,
+      "claim": "The deployed-route and Lighthouse quality gates run only after the artifact has already been published, so their failure cannot prevent a defective site from shipping.",
+      "evidence": "The deploy job runs before certify-deployment and the build job omits Lighthouse.",
+      "suggested_fix": "Run Lighthouse against the built artifact before upload while retaining deployed-origin probes."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-github-pages/",
+      "claim": "The change records no target-specific verification evidence or unresolved deployment limits despite an explicit acceptance criterion requiring both before archive.",
+      "evidence": "No target-specific verification report records executed gates, pending public deployment, and release impact.",
+      "suggested_fix": "Add a target-specific final verification receipt with local results and public/manual limits."
+    },
+    {
+      "severity": "WARNING",
+      "file": "website/scripts/serve-built-site.mjs",
+      "line": 41,
+      "claim": "A request for an existing directory without an index.html is treated as a successful file lookup and can terminate the local test server with an unhandled read-stream error.",
+      "evidence": "findFile returns a joined index path without statting it and the stream has no error listener.",
+      "suggested_fix": "Verify the directory index and handle stream failures."
+    }
+  ],
+  "checked_classes": [],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

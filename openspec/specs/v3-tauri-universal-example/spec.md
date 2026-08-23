@@ -13,4 +13,3 @@ The 3.0 release SHALL implement and verify the complete `v3-tauri-universal-exam
 - **THEN** every acceptance criterion in the plan's `v3-tauri-universal-example` section has reproducible evidence
 - **AND** no mandatory test or platform lane is silently skipped
 - **AND** public API, example coverage, skills, and documentation ledgers are synchronized when affected
-

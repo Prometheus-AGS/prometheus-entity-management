@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the toEntityGraphError function from the entity_graph_flutter library, for the Dart programming language.">
+  <title>toEntityGraphError function - entity_graph_flutter library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">entity_graph_flutter</a></li>
+    <li><a href="../entity_graph_flutter/">entity_graph_flutter.dart</a></li>
+    <li class="self-crumb">toEntityGraphError function</li>
+  </ol>
+  <div class="self-name">toEntityGraphError</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="entity_graph_flutter&#47;entity_graph_flutter-library-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-function">toEntityGraphError</span> function 
+ 
+</h1></div>
+
+    <section class="multi-line-signature">
+        
+<span class="returntype"><a href="../entity_graph_flutter/EntityGraphError-class.html">EntityGraphError</a></span>
+<span class="name ">toEntityGraphError</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="toEntityGraphError-param-error"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">error</span></span></li>
+</ol>)
+
+        
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Convert an arbitrary exception to a typed <a href="../entity_graph_flutter/EntityGraphError-class.html">EntityGraphError</a>.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">EntityGraphError toEntityGraphError(Object error) {
+  if (error is EntityGraphError) return error;
+  if (error is UnimplementedError || error is UnsupportedError) {
+    return TerminalError(error.toString());
+  }
+
+  &#47;&#47; HTTP-status-bearing objects (e.g. Dio DioException, http.Response).
+  final status = _extractStatus(error);
+  if (status != null) {
+    final msg = error.toString();
+    if (status &gt;= 400 &amp;&amp; status &lt; 500) {
+      return TerminalError(msg, statusCode: status);
+    }
+    if (status &gt;= 500) {
+      return TransientError(msg, statusCode: status);
+    }
+  }
+
+  return TransientError(error.toString());
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">entity_graph_flutter</a></li>
+    <li><a href="../entity_graph_flutter/">entity_graph_flutter</a></li>
+    <li class="self-crumb">toEntityGraphError function</li>
+</ol>
+
+    <h5>entity_graph_flutter library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    entity_graph_flutter
+      3.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

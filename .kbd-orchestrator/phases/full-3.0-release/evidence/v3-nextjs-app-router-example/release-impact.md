@@ -1,49 +1,91 @@
 # Release impact — `v3-nextjs-app-router-example`
 
-## Implementation-ready surface
+Date: 2026-08-03
+Implementation source through review corrections: `996750f`
+Change status: implementation evidence complete; certification and archive are
+separate quality gates
 
-The Next.js App Router example now demonstrates and verifies per-request SSR
-graph isolation, server prefetch/dehydrate with post-mount client hydration
-(no mismatch, no duplicate fetch inside staleTime), a dynamic
-`/release-showcase` route with seven scenario cards, loading/error boundaries,
-mutations, deterministic realtime takeover, route transitions, and browser
-accessibility.
+## Package impact
 
-The React binding's hooks remain hard-bound to the process-global Zustand
-store; server-side graph work therefore uses per-request `createGraphStore()`
-via `src/lib/server/request-graph.ts`, and a release contract test statically
-guards that server modules never write the global store. No framework-neutral
-core public API was changed.
+This change adds application-owned graph scope to the core and React packages.
+The public React surface adds `GraphStoreProvider`, `useGraphStoreApi`, and
+`GraphStoreProviderProps`. Engine requests, subscribers, Suspense waiters,
+mutations, CRUD invalidation, GraphQL/ElectricSQL paths, DevTools, and realtime
+can resolve the selected graph while preserving the default singleton for
+existing non-provider applications. Garbage collection now follows the same
+ownership boundary: each selected graph has its own interval and the public
+start/stop helpers accept an optional graph while retaining singleton defaults.
+React hooks reference-count each selected graph's focus/reconnect listeners and
+collector, then remove the window callbacks and stop GC after the final hook
+unmounts. Discarded provider trees therefore do not remain retained by engine
+lifecycle infrastructure.
 
-This evidence makes Next.js/React a viable early RC consumer surface alongside
-the certified Vite example. It does not make the complete 3.0 portfolio stable
-or authorize registry mutation.
+The example's scoped realtime manager also follows provider replacement: a new
+manager is created for the new graph, the prior adapter is unregistered, and
+running intent survives adapter recreation. The packed verifier preserves the
+checked-in Next config rather than substituting an empty release-only config.
+After focused source tests run, the packed boundary excludes their files and
+Vitest config, then scans all 112 remaining command-relevant text files and
+fails if any workspace source alias remains.
 
-## Parallel prior implementation — operator follow-up
+The checked-in Changeset requests a patch prerelease for:
 
-Branch `origin/codex/full-3.0-continue` contains a complete, never-merged
-prior implementation of this same change (commits `85847e3` feat → `a698de3`
-test harness → `3090304` certify → `d643b81` archive), using a divergent
-library-touching approach (scoped graph runtime, GC/listener fixes `9051b10`,
-`b44126b`) across ~2675 files. This session deliberately shipped an
-example-only implementation on `main-takeover-kimi` instead of reconciling
-that branch. The operator should decide whether any of the codex-branch
-library fixes (GC, listener handling) warrant their own OpenSpec change; they
-were not ported here because they are unobserved on this surface.
+- `@prometheus-ags/entity-graph-core`;
+- `@prometheus-ags/prometheus-entity-management`.
 
-## Changeset disposition
+The fixed Changesets group means those changes eventually advance all twelve
+npm candidates together. The Next.js example itself is private and is not a
+published artifact.
 
-An empty changeset `.changeset/certify-nextjs-app-router.md` records that this
-example-only change requires no version bump. `changeset status` failure on
-this branch without it is a pre-existing baseline condition (local `main` lags
-430 package files; prior changesets consumed in `pre.json` rc mode).
+## React-first release lane
 
-## Full-release disposition
+This continuation work is not part of the frozen React `3.0.0-rc.1` candidate
+merged at `30fc348ca529214db5d9b9ab8f0702b41c61ebf1`. The isolated post-merge
+gate fixes remain on PR #9. Therefore:
 
-The full 3.0 release remains in progress. Agentic A2UI, Flutter/Riverpod,
-universal Tauri, Flint portable contracts, skills, Docusaurus/GitHub Pages,
-cross-ecosystem certification, and stable publication retain independent plan
-ownership. The human-gated changes `v3-release-certification` and
-`v3-stable-publication` are untouched and remain the hand-off boundary. This
-evidence grants no npm, GitHub Release, GitHub Pages, Pub, Cargo, or app-store
-publication authority.
+- React `rc.1` can be merged, rehearsed, approved, and staged without waiting
+  for this Next.js change or the rest of the showcase portfolio;
+- merging this continuation later will consume its Changeset and require a
+  subsequent coordinated prerelease rather than mutating the frozen `rc.1`;
+- consumers of `rc.1` receive the certified React/Vite surface but not the new
+  request-scoped provider API from this continuation branch.
+
+This separation is intentional. It avoids silently moving the React candidate
+SHA while still allowing the full 3.0 program to continue.
+
+## Stable-release impact
+
+The Next.js showcase now satisfies its own plan acceptance criteria and can be
+used as evidence for `runtime.ssr-hydration`. It does not complete stable 3.0.0.
+Agentic A2UI, Flutter/Riverpod/A2UI, universal Tauri, the Prometheus Docusaurus
+site and GitHub Pages deployment, aggregate release certification, registry
+promotion, and stable publication remain separate changes.
+
+## Security boundary
+
+The observed server trust boundary remains fail-closed: the Server Action
+accepts only an allowlisted task ID and status, then resolves authoritative
+entity data from server-owned fixtures. A client-supplied object cannot grant
+entity or graph authority. The focused denial test and packed browser flow pass.
+No secrets, tokens, hosted credentials, or external registry writes are used by
+the Next.js verifier.
+
+## Explicit limits
+
+- Browser certification covers Chromium desktop, not Firefox, WebKit, or a
+  mobile browser.
+- The example forces dynamic documents to certify request isolation. Static
+  generation, ISR, partial prerendering, and shared-cache policies are not
+  certified by this change.
+- REST, GraphQL, mutation, and realtime behavior uses deterministic local
+  fixtures. No live hosted backend is claimed.
+- The consumer installs local packed tarballs; it does not prove npm `next`
+  registry installation or trusted-publisher configuration.
+- The evidence runs on Node `26.5.0` with pnpm `10.33.0`; the repository's
+  separate main CI matrix owns Node 22/24/26 compatibility.
+- Dart/Melos, Cargo, Flutter devices, and Tauri platforms are not applicable to
+  this Next.js-only change and were not run.
+- A replaced scoped realtime manager can still flush an already-queued batch
+  into its abandoned old graph before the timer expires. The review classifies
+  this as non-blocking because no write crosses into the replacement graph;
+  explicit manager disposal remains a later-prerelease follow-up.

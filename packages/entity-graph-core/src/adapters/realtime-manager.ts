@@ -5,11 +5,13 @@
  * Coalesces rapid-fire updates within a 16ms flush window so that
  * e.g. 10 Supabase row updates for the same entity become one Zustand write.
  */
-import { useGraphStore } from "../graph";
+import { graphStore } from "../graph";
+import type { GraphStore } from "../graph";
 import type { RealtimeAdapter, ChangeSet, EntityChange, AdapterStatus, UnsubscribeFn, ChannelConfig } from "./types";
 
 export interface ManagerOptions {
   flushInterval?: number;
+  store?: GraphStore;
   onStatusChange?: (adapter: string, status: AdapterStatus) => void;
   onChangeReceived?: (adapter: string, change: EntityChange) => void;
 }
@@ -21,9 +23,11 @@ export class RealtimeManager {
   private pendingChanges: EntityChange[] = [];
   private pendingListKeys = new Set<string>();
   private flushTimer: ReturnType<typeof setTimeout> | null = null;
-  private opts: Required<ManagerOptions>;
+  private opts: Required<Omit<ManagerOptions, "store">>;
+  private store: GraphStore;
 
   constructor(opts: ManagerOptions = {}) {
+    this.store = opts.store ?? graphStore;
     this.opts = {
       flushInterval: opts.flushInterval ?? 16,
       onStatusChange: opts.onStatusChange ?? (() => {}),
@@ -77,7 +81,7 @@ export class RealtimeManager {
     if (this.pendingChanges.length === 0 && this.pendingListKeys.size === 0) return;
     const changes = this.pendingChanges.splice(0);
     const listKeys = new Set(this.pendingListKeys); this.pendingListKeys.clear();
-    const store = useGraphStore.getState();
+    const store = this.store.getState();
     for (const change of coalesceChanges(changes)) {
       switch (change.op) {
         case "insert": case "upsert":

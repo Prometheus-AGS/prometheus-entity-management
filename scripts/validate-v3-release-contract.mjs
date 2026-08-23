@@ -106,8 +106,8 @@ export function validateReleaseCoverage(contract, coverage = readReleaseCoverage
     errors.push("coverage must declare the five required 3.0 showcases exactly once");
   }
   for (const showcase of showcases) {
-    if (!new Set(["planned", "implemented"]).has(showcase.status)) {
-      errors.push(`${showcase.id}: showcase status must be planned or implemented`);
+    if (!new Set(["planned", "partial", "implemented"]).has(showcase.status)) {
+      errors.push(`${showcase.id}: showcase status must be planned, partial, or implemented`);
     } else if (
       showcase.runtimeEvidence?.status !== showcase.status ||
       showcase.visualEvidence?.status !== showcase.status
@@ -420,6 +420,7 @@ export function validateReleaseContract(contract) {
       rustCrates: artifacts.filter(({ ecosystem }) => ecosystem === "rust").length,
       requiredRegistries: requiredRegistries.length,
       plannedShowcases: coverage.showcases.filter(({ status }) => status === "planned").length,
+      partialShowcases: coverage.showcases.filter(({ status }) => status === "partial").length,
       implementedShowcases: coverage.showcases.filter(({ status }) => status === "implemented").length,
     },
   };
