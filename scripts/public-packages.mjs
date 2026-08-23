@@ -21,7 +21,7 @@ export const PUBLIC_PACKAGES = Object.freeze([
 
 export const PACKAGE_NODE_ENGINE = "^22.14.0 || ^24.0.0 || >=26.0.0";
 export const PACKAGE_REPOSITORY_URL =
-  "git+https://github.com/prometheus-ags/prometheus-entity-management.git";
+  "https://github.com/Prometheus-AGS/prometheus-entity-management";
 export const PACKAGE_BUGS_URL =
   "https://github.com/prometheus-ags/prometheus-entity-management/issues";
 
