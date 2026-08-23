@@ -1263,3 +1263,30 @@
   with `onFail: error` makes EVERY npm command fail in the repo root
   (EBADDEVENGINES) — run npm from a package dir or /tmp. This masked the
   dead-token 401 as a generic error and cost a debugging round.
+
+## 2026-08-23 — workspace: protocol leak; corrective 3.0.1/3.0.2 republication
+
+- POSTMORTEM (summary): the 3.0.0 stable run published with `npm publish`,
+  which does not rewrite pnpm `workspace:` specifiers at pack time. 10 of 12
+  packages shipped literal `workspace:` manifests — 5 in hard `dependencies`
+  (sync, tauri, htmx, a2a, a2ui-react; uninstallable under npm AND pnpm),
+  5 in `peerDependencies` (pem, svelte, solid, alpine, web-components; broken
+  for npm consumers, which auto-install peers). Root cause: pipeline used npm
+  in a pnpm workspace; the tarball gate was never wired into the publish path.
+- npm registry immutability: `name@version` can NEVER be reused, even after
+  unpublish — "no version bump" was not achievable; corrective versions were
+  mandatory. 3.0.1 published clean from this session (pnpm publish + registry
+  re-read); the concurrent Codex line then shipped the coordinated,
+  provenance-attested 3.0.2 via the governed path (PRs #27–#37, tag v3.0.2,
+  GitHub release). The ten broken 3.0.0 versions are deprecated.
+- PR #38 (this session): publish-script hardening (scratch-cwd npm reads —
+  devEngines EBADDEVENGINES would false-abort the leak check; visibility
+  retry — registry read replication raced the 3.0.1 run), README/CHANGELOG
+  corrective notes, website RC-reference sweep to the 3.0.2 line.
+- Coordination lesson: two agent sessions fixed the same defect concurrently
+  (3.0.1 vs 3.0.2). Reconciliation cost a superseded PR (#31). For shared
+  release work, claim the publish step in the status JSON BEFORE running it.
+- Pre-existing failures left alone (reproduce on pristine origin/main):
+  v3-docs-github-pages (4), v3-docs-operations-migration (1 — publish.yml
+  invokes release-candidate.mjs directly, not via the release:rc:* aliases
+  the test asserts; drift from 3441c6e).
