@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/a2ui-react",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "description": "Official A2UI v0.9.1 React renderer and default-deny Prometheus entity graph action bridge.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",

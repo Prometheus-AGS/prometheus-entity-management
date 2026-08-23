@@ -58,6 +58,7 @@ export async function verifyStablePublicationPre({
   const releasingGuide = await readFile(resolve(root, "RELEASING.md"), "utf8");
 
   const checks = [];
+  const targetVersion = contract.release.version;
   const check = (id, fn) => {
     fn();
     checks.push({ id, status: "pass" });
@@ -76,8 +77,9 @@ export async function verifyStablePublicationPre({
   });
 
   check("contract-version-set", () => {
-    assert(contract.release.version === "3.0.0", "release version must be 3.0.0");
+    assert(/^3\.0\.\d+$/.test(targetVersion), "release version must be a stable 3.0 patch");
     assert(contract.versionPolicy.npm.strategy === "fixed", "npm strategy must be fixed");
+    assert(contract.versionPolicy.npm.version === targetVersion, "npm version must match release version");
     assert(contract.versionPolicy.npm.stableTag === "latest", "stable tag must be latest");
     assert(contract.versionPolicy.npm.prereleaseTag !== "latest", "prerelease tag must differ");
     assert(contract.versionPolicy.npm.packages.length === 12, "exactly twelve npm packages");
@@ -88,11 +90,12 @@ export async function verifyStablePublicationPre({
   });
 
   check("version-assertion-stable-branch", () => {
-    assertReleaseCandidateVersion("3.0.0", "3.0.0", "stable");
-    for (const bad of ["3.0.0-rc.1", "3.0.1", "3.0.0-alpha.0"]) {
+    assertReleaseCandidateVersion(targetVersion, targetVersion, "stable");
+    for (const bad of [`${targetVersion}-rc.1`, "3.0.0", `${targetVersion}-alpha.0`]) {
+      if (bad === targetVersion) continue;
       let threw = false;
       try {
-        assertReleaseCandidateVersion("3.0.0", bad, "stable");
+        assertReleaseCandidateVersion(targetVersion, bad, "stable");
       } catch {
         threw = true;
       }
@@ -213,7 +216,7 @@ export async function verifyStablePublicationPre({
     result: "pass",
     checkedAt: createdAt,
     sourceSha,
-    targetVersion: contract.release.version,
+    targetVersion,
     packages: contract.versionPolicy.npm.packages,
     checks,
     excludedRegistries: contract.artifacts

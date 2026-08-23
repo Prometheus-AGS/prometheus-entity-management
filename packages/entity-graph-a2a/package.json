@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/entity-graph-a2a",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "description": "Policy-gated A2A v1 JSON-RPC and streaming SSE for the Prometheus entity graph, with deterministic A2UI artifacts.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "release": "3.0.0",
+  "release": "3.0.2",
   "contract": "release/v3-release-contract.json",
   "status": "in-progress",
   "semanticContract": {
