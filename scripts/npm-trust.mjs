@@ -2,6 +2,7 @@
 
 import {execFileSync, spawnSync} from "node:child_process";
 import {readFile} from "node:fs/promises";
+import {tmpdir} from "node:os";
 import process from "node:process";
 
 import {PUBLIC_PACKAGES} from "./public-packages.mjs";
@@ -66,6 +67,17 @@ export function assertExactTrust(packageName, response, manifest) {
   return {packageName, trustId: record.id ?? null, verified: true};
 }
 
+export function assertReplaceableTrust(packageName, response, manifest) {
+  const records = Array.isArray(response) ? response : [response];
+  assert(records.length === 1, `${packageName} must have exactly one trusted publisher to replace`);
+  const record = records[0];
+  assert(record.type === "github", `${packageName} existing trusted publisher is not github`);
+  assert(record.repository === manifest.repository, `${packageName} existing repository claim is not replaceable`);
+  assert(record.file === manifest.workflowFile, `${packageName} existing workflow claim is not replaceable`);
+  assert(record.id, `${packageName} existing trusted publisher has no revocation id`);
+  return {packageName, trustId: record.id, replaceable: true};
+}
+
 function rejectWriteTokenEnvironment(env = process.env) {
   assert(!env.NODE_AUTH_TOKEN && !env.NPM_TOKEN, "long-lived npm write token environment variables are forbidden");
 }
@@ -85,6 +97,7 @@ function assertSupportedNpm(version) {
 function npmJson(args) {
   return execFileSync("npm", args, {
     encoding: "utf8",
+    cwd: tmpdir(),
     env: {...process.env, NPM_CONFIG_REGISTRY: "https://registry.npmjs.org/"},
     stdio: ["ignore", "pipe", "pipe"],
   });
@@ -142,6 +155,29 @@ export async function registerAll() {
   console.log("The first package opens npm 2FA; choose the five-minute authorization window for the remaining packages.");
 
   for (const [index, packageName] of manifest.packages.entries()) {
+    const current = parseTrustOutput(
+      npmJson(["trust", "list", packageName, "--json", "--registry", manifest.registry]),
+      packageName,
+    );
+    try {
+      assertExactTrust(packageName, current, manifest);
+      console.log(`[${index + 1}/${manifest.packages.length}] ${packageName} already has exact authority`);
+      continue;
+    } catch {
+      const replacement = assertReplaceableTrust(packageName, current, manifest);
+      const revoke = spawnSync("npm", [
+        "trust", "revoke", packageName,
+        "--id", replacement.trustId,
+        "--registry", manifest.registry,
+      ], {
+        cwd: tmpdir(),
+        stdio: "inherit",
+        env: {...process.env, NPM_CONFIG_REGISTRY: manifest.registry},
+      });
+      if (revoke.status !== 0) {
+        throw new Error(`npm trust revocation failed for ${packageName}; no replacement was attempted`);
+      }
+    }
     const args = [
       "trust", "github", packageName,
       "--file", manifest.workflowFile,
@@ -153,6 +189,7 @@ export async function registerAll() {
     ];
     console.log(`[${index + 1}/${manifest.packages.length}] npm ${args.slice(0, -2).join(" ")}`);
     const result = spawnSync("npm", args, {
+      cwd: tmpdir(),
       stdio: "inherit",
       env: {...process.env, NPM_CONFIG_REGISTRY: manifest.registry},
     });
