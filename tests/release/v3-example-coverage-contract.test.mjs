@@ -215,22 +215,16 @@ test("coverage cannot claim completion until release and showcase evidence is im
   );
 
   const dishonestShowcase = structuredClone(coverage);
-  const plannedShowcase = dishonestShowcase.showcases.find(
-    (showcase) => showcase.status === "planned",
-  );
-  assert.ok(plannedShowcase, "the fixture must retain at least one planned showcase");
-  implementEvidence(plannedShowcase.runtimeEvidence);
+  const plannedShowcase = dishonestShowcase.showcases[0];
+  plannedShowcase.status = "planned";
   assert.match(
     joined(validateExampleCoverage(dishonestShowcase, contract)),
     /planned showcases must keep runtime and visual evidence planned/,
   );
 
   const incompleteShowcase = structuredClone(coverage);
-  const plannedIncompleteShowcase = incompleteShowcase.showcases.find(
-    (showcase) => showcase.status === "planned",
-  );
-  assert.ok(plannedIncompleteShowcase, "the fixture must retain at least one planned showcase");
-  plannedIncompleteShowcase.status = "implemented";
+  const plannedIncompleteShowcase = incompleteShowcase.showcases[0];
+  plannedIncompleteShowcase.runtimeEvidence.status = "planned";
   assert.match(
     joined(validateExampleCoverage(incompleteShowcase, contract)),
     /implemented showcases require implemented runtime and visual evidence/,

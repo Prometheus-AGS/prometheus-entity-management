@@ -217,21 +217,26 @@ Then("the overall example coverage remains in progress", function () {
   assert.equal(ensureReport().summary.overallCoverageStatus, "in-progress");
 });
 
-Then("React Vite is implemented while the other showcase evidence stays planned", function () {
+Then("all five showcases are implemented while platform-limited capability evidence stays incomplete", function () {
   for (const showcase of readExampleCoverage().showcases) {
-    const expectedStatus = showcase.id === "react-19-vite-8" ? "implemented" : "planned";
-    assert.equal(showcase.status, expectedStatus);
-    assert.equal(showcase.runtimeEvidence.status, expectedStatus);
-    assert.equal(showcase.visualEvidence.status, expectedStatus);
+    assert.equal(showcase.status, "implemented");
+    assert.equal(showcase.runtimeEvidence.status, "implemented");
+    assert.equal(showcase.visualEvidence.status, "implemented");
     assert.equal(showcase.runtimeEvidence.ownerChange, showcase.change);
     assert.equal(showcase.visualEvidence.ownerChange, showcase.change);
-    if (expectedStatus === "implemented") {
-      assert.equal(showcase.runtimeEvidence.command, "pnpm run verify:vite-react19");
-      assert.equal(showcase.visualEvidence.command, "pnpm run verify:vite-react19");
-      assert.ok(showcase.runtimeEvidence.paths?.length);
-      assert.ok(showcase.visualEvidence.paths?.length);
-    }
+    assert.match(showcase.runtimeEvidence.command, /^pnpm run verify:/);
+    assert.ok(showcase.runtimeEvidence.paths?.length);
+    assert.ok(showcase.visualEvidence.paths?.length);
   }
+  const incomplete = readExampleCoverage().capabilities.flatMap((capability) =>
+    (capability.releaseEvidence ?? [])
+      .filter((evidence) => evidence.status !== "implemented")
+      .map((evidence) => `${capability.id}:${evidence.ownerChange}`),
+  );
+  assert.deepEqual(incomplete.sort(), [
+    "graph.realtime-batching:v3-dart-graph-riverpod",
+    "security.tenant-actions-secrets:v3-tauri-mobile-plugin",
+  ]);
 });
 
 Then("this headless contract does not claim release certification or visual evidence", function () {
