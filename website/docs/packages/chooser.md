@@ -62,7 +62,7 @@ Flutter applications install the public stable Dart package:
 flutter pub add entity_graph_flutter:^3.0.0
 ```
 
-All twelve npm packages are public at stable `3.0.1`, and the examples in
+All twelve npm packages are public at stable `3.0.2`, and the examples in
 this workspace build against the same versions. The exact registry state and
 protected tags are recorded in the [release operations
 guide](../operations/release.md).

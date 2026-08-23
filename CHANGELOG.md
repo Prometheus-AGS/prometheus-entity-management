@@ -7,6 +7,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased] — 3.0 release program
 
+### Fixed — 3.0.1 / 3.0.2 (2026-08-23)
+
+- Republished all twelve npm packages: `3.0.1`, then the coordinated stable
+  set at `3.0.2`. The `3.0.0` run used `npm publish`, which does not rewrite
+  pnpm `workspace:` specifiers while packing, so ten packages shipped a
+  literal `workspace:` specifier in their registry manifests and could not be
+  installed. The corrective releases use `pnpm publish`, re-read every
+  manifest from the registry after publishing, and the broken `3.0.0`
+  versions are deprecated. `scripts/publish-stable-3.0.0.sh` now fails closed
+  on any leaked protocol, runs registry reads outside the repo (root
+  `devEngines` blocks npm), and waits out registry read replication instead
+  of racing it. See `scripts/verify-no-workspace-leak.mjs`.
+
 ### Added
 
 - Official A2UI v0.9.1 React rendering through the maintained `@a2ui/react` and `@a2ui/web_core` engine.
