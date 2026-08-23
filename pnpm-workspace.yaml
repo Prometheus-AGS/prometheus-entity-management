@@ -13,3 +13,17 @@ allowBuilds:
   esbuild: true
   msw: false
   sharp: true
+# pnpm 11 no longer reads the `pnpm` field in package.json; overrides live
+# here so CI (pinned pnpm) and local pnpm 10 resolve the same config and the
+# frozen-lockfile config hash matches on both.
+overrides:
+  "@changesets/parse>js-yaml": "4.3.0"
+  "@lhci/cli>tmp": "0.2.7"
+  "@lhci/utils>js-yaml": "3.15.0"
+  "cosmiconfig>js-yaml": "4.3.0"
+  "external-editor>tmp": "0.2.7"
+  "read-yaml-file>js-yaml": "3.15.0"
+  fast-uri: "3.1.5"
+  postcss: "8.5.25"
+  serialize-javascript: "7.0.3"
+  sharp: "0.35.0"
