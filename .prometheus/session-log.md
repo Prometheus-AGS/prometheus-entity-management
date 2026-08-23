@@ -492,3 +492,27 @@
 - PHASE BOUNDARY: `v3-stable-publication` (28) is the last change and remains
   the human-gated hand-off — release disposition blocked by design until
   operator authorization.
+
+## 2026-08-23 — v3-stable-publication machinery staged (change 28, publication still human-gated)
+
+- Pipeline is now channel-aware (`scripts/release-candidate-pipeline.mjs`):
+  `buildReleaseCandidateManifest` derives channel/distTag/action from whether
+  the candidate IS the target version; `assertStableStageAuthority` is the
+  npm-stable boundary (OIDC only, no long-lived tokens, latest-targeting,
+  SHA-bound); `assertStableTagsPromoted` is the one assertion allowed to see
+  `latest` move. RC authority refuses stable manifests outright.
+- New `scripts/verify-stable-publication.mjs`: pre mode (9 checks — policy,
+  contract, workflow `stage-stable` job, authority boundary, sealed bundle,
+  blocked disposition, docs) passes on the rc.1 line; live mode (post-publish)
+  proves all 12 packages resolve at 3.0.0 with `latest === 3.0.0`.
+- `publish.yml` gained `mode: stable` + a `stage-stable` job on the protected
+  `npm-stable` environment; `RELEASING.md` documents the promotion flow and
+  recovery. Root scripts: `verify:stable-publication`,
+  `test:v3-stable-publication`, `bdd:stable-publication`.
+- Coverage: 20 unit tests + 4 BDD scenarios (13 steps); RC pipeline unit (26)
+  and BDD (13 scenarios) suites re-run green — no regression on the rc line.
+- BOUNDARY UNCHANGED: publication itself stays blocked. Remaining operator
+  actions: configure npm trusted publishing + the `npm-stable` GitHub
+  environment with reviewer approval, merge the version bump from
+  `release/v3.0.0-staging` (tag `v3.0.0`), then one workflow_dispatch with
+  `mode=stable`.

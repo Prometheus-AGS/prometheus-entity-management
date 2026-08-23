@@ -134,8 +134,9 @@ test("the candidate manifest is contract-derived, non-mutating, and covers every
 
   assert.deepEqual(repeated, manifest, "identical inputs must produce identical manifests");
   assert.equal(manifest.schemaVersion, "1.0.0");
-  assert.equal(manifest.release.channel, "rc");
-  assert.equal(manifest.release.distTag, "next");
+  const isStable = manifest.release.candidateVersion === manifest.release.targetVersion;
+  assert.equal(manifest.release.channel, isStable ? "stable" : "rc");
+  assert.equal(manifest.release.distTag, isStable ? "latest" : "next");
   assert.equal(manifest.release.stableTag, "latest");
   assert.equal(manifest.publication.authorized, false);
   assert.equal(manifest.publication.latestMutationAllowed, false);
@@ -151,7 +152,9 @@ test("the candidate manifest is contract-derived, non-mutating, and covers every
   assert.ok(
     npmArtifacts.every(
       ({ version, distTag, action }) =>
-        version === "3.0.0-rc.1" && distTag === "next" && action === "stage-rc",
+        version === manifest.release.candidateVersion &&
+        distTag === manifest.release.distTag &&
+        action === (isStable ? "stage-stable" : "stage-rc"),
     ),
   );
   assert.equal(

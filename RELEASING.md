@@ -183,6 +183,29 @@ passed; neither means “3.0 may be published.” Stable certification, the GitH
 Release, production documentation deployment, post-publication checks, and npm
 `latest` remain downstream.
 
+## Stable promotion (v3-stable-publication)
+
+Stable publication runs only after the sealed certification bundle
+(`pnpm run release:check:seal`, verdict `complete`) exists for the tagged
+source. The pipeline is channel-aware: when every fixed npm package version
+equals the contract release version exactly (no prerelease suffix), the
+manifest switches to the `stable` channel — `latest` dist-tag, `stage-stable`
+action — and the RC authority boundary no longer applies.
+
+- Pre-publish guards: `pnpm run verify:stable-publication` (offline; policy,
+  workflow, authority-boundary, bundle-seal, and disposition checks).
+- Publication: `publish.yml` → `workflow_dispatch` mode `stable`, which runs
+  the full certification gate and rehearsal, then the `stage-stable` job in
+  the protected `npm-stable` environment (human approval) with GitHub OIDC
+  trusted publishing — long-lived npm tokens remain forbidden.
+- Recovery: matching immutable versions are skipped and recorded, absent
+  versions publish in dependency order, conflicts block; a partial run is
+  recovered with a corrective patch version, never by overwriting.
+- Post-publish: `pnpm run verify:stable-publication -- --live true` confirms
+  every declared artifact resolves at 3.0.0 and npm `latest` points at it.
+  Only a complete stable stage may move `latest`; the promotion guard
+  (`assertStableTagsPromoted`) fails the run if any package lags behind.
+
 ## Documentation site deployment
 
 The 3.0 documentation site deploys to GitHub Pages through the quality-gated,
