@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/entity-graph-web-components",
-  "version": "3.0.0-rc.1",
+  "version": "3.0.0",
   "description": "Lit 3 custom elements (<entity-list>, <entity-detail>, <entity-form>) using ReactiveController to subscribe to the core entity graph. Framework-agnostic.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
