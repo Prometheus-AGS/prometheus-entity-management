@@ -11,6 +11,7 @@
 //   at it. Network access required; run only after the stable stage completes.
 
 import { readFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -281,7 +282,12 @@ async function main() {
     const { promisify } = await import("node:util");
     const execFileAsync = promisify(execFile);
     const runView = async (packageName, commandArgs) => {
-      const { stdout } = await execFileAsync("npm", commandArgs, { encoding: "utf8" });
+      // Registry reads must not inherit this pnpm workspace's `devEngines`
+      // policy; npm enforces it before executing even a read-only `npm view`.
+      const { stdout } = await execFileAsync("npm", commandArgs, {
+        encoding: "utf8",
+        cwd: tmpdir(),
+      });
       return JSON.parse(stdout);
     };
     report = await verifyStablePublicationLive({ runView });
