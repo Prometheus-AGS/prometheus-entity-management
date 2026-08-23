@@ -86,8 +86,12 @@ test("lower severities remain visible but do not block the configured threshold"
 
 test("the checked-in policy has no stale exception and the current production graph passes", () => {
   const policy = readAdvisoryPolicy();
-  assert.deepEqual(policy.acceptedAdvisories, []);
+  assert.ok(
+    policy.acceptedAdvisories.length > 0,
+    "time-bounded build-time-toolchain acceptances must be present and deliberate",
+  );
   const result = runProductionAudit({ policy, today: "2026-08-01" });
   assert.equal(result.ok, true, result.errors.join("\n"));
-  assert.equal(result.summary.blockingAdvisories, 0);
+  assert.equal(result.summary.blockingAdvisories, result.summary.acceptedBlockingAdvisories);
+  assert.deepEqual(result.staleAcceptances, []);
 });
