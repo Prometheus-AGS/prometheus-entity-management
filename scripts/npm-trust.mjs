@@ -47,7 +47,7 @@ export function parseTrustOutput(output, packageName) {
   try {
     return JSON.parse(trimmed);
   } catch (error) {
-    throw new Error(`npm trust list returned invalid JSON for ${packageName}: ${error.message}`);
+    throw new Error(`npm trust list returned invalid JSON for ${packageName}: ${error.message}`, { cause: error });
   }
 }
 
@@ -116,6 +116,7 @@ export async function verifyAll() {
       const detail = sanitizeNpmError(error.stderr ?? error.message);
       throw new Error(
         `cannot read npm trust for ${packageName}. Run npm login --auth-type=web with a 2FA-enabled maintainer account, then retry. ${detail}`,
+        { cause: error },
       );
     }
     results.push(assertExactTrust(packageName, parseTrustOutput(output, packageName), manifest));

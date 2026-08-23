@@ -31,9 +31,11 @@
   },
   "scripts": {
     "build": "tsup",
-    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "refresh:exports": "pnpm run build && node ../../scripts/refresh-exports-ledger.mjs --pkg core",
     "test": "vitest run",
-    "test:flint-live": "vitest run --config vitest.flint-live.config.ts --reporter verbose"
+    "test:flint-live": "vitest run --config vitest.flint-live.config.ts --reporter verbose",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "verify:skills": "node ../../scripts/verify-skills-exports.mjs --pkg core"
   },
   "peerDependencies": {
     "@ag-ui/core": ">=0.0.30",
