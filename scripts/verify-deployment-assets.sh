@@ -19,6 +19,15 @@ test -s "$asset_dir/SHA256SUMS"
 manifest_sha=$(node -e 'const fs=require("fs"); const m=JSON.parse(fs.readFileSync(process.argv[1],"utf8")); process.stdout.write(m.source?.sha ?? "")' "$asset_dir/manifest.json")
 [ "$manifest_sha" = "$expected_sha" ] || { echo "manifest source SHA does not match candidate SHA" >&2; exit 1; }
 
+# GitHub Release assets are downloaded into one flat directory, while the
+# certified rehearsal addresses tarballs beneath packages/. Reconstruct that
+# directory only after the flat assets pass their published checksums.
+mkdir -p "$asset_dir/packages"
+for archive in "$asset_dir"/*.tgz; do
+  [ -f "$archive" ] || continue
+  mv "$archive" "$asset_dir/packages/$(basename "$archive")"
+done
+
 if [ -n "$candidate_run_id" ]; then
   case "$candidate_run_id" in *[!0-9]*) echo "candidate run ID must be numeric" >&2; exit 1 ;; esac
   run_json=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${candidate_run_id}")
