@@ -67,8 +67,9 @@ export async function verifyStablePublicationPre({
     assert(stable.change === "v3-stable-publication", "stable promotion must belong to v3-stable-publication");
     assert(stable.requiresExplicitHumanAuthority === true, "stable promotion requires human authority");
     assert(stable.channel === "stable", "stable promotion channel must be stable");
-    assert(stable.npmAction === "stage-stable", "stable promotion action must be stage-stable");
+    assert(stable.npmAction === "publish-stable", "stable promotion action must be publish-stable");
     assert(stable.environment === "npm-stable", "stable promotion environment must be npm-stable");
+    assert(stable.allowedAction === "npm publish", "stable promotion must use direct npm publish");
     assert(policy.candidate.publicationAuthorized === false, "policy cannot pre-authorize publication");
     assert(policy.candidate.latestMutationAllowed === false, "policy cannot pre-authorize latest mutation");
   });
@@ -100,29 +101,29 @@ export async function verifyStablePublicationPre({
 
   check("workflow-stable-guards", () => {
     const jobs = workflow.jobs ?? {};
-    const stableJob = jobs["stage-stable"];
-    assert(stableJob, "publish.yml must define a stage-stable job");
-    assert(stableJob.environment === "npm-stable", "stage-stable must use the npm-stable environment");
+    const stableJob = jobs["publish-stable"];
+    assert(stableJob, "publish.yml must define a publish-stable job");
+    assert(stableJob.environment === "npm-stable", "publish-stable must use the npm-stable environment");
     assert(
       stableJob.permissions?.["id-token"] === "write",
-      "stage-stable requires OIDC id-token permission",
+      "publish-stable requires OIDC id-token permission",
     );
     assert(
-      stableJob.env?.PROMETHEUS_RELEASE_AUTHORITY === "stage-stable",
-      "stage-stable authority flag is required",
+      stableJob.env?.PROMETHEUS_RELEASE_AUTHORITY === "publish-stable",
+      "publish-stable authority flag is required",
     );
     assert(
-      JSON.stringify(stableJob).includes("verify:stable-publication"),
-      "stage-stable must run the live post-publish verifier",
+      JSON.stringify(stableJob).includes("verify-deployment-assets.sh"),
+      "publish-stable must verify immutable local assets",
     );
     assert(
-      !/\bnpm\s+(?:stage\s+)?publish\b/.test(workflowSource.replace(/release:rc:stage/g, "")),
-      "direct npm publication in the workflow is forbidden",
+      !/pnpm\s+(?:install|run\s+(?:ci|test|build|lint|typecheck))/.test(workflowSource),
+      "hosted publication workflow must not build or test",
     );
-    const modeInput = workflow.on?.workflow_dispatch?.inputs?.mode;
+    const modeInput = workflow.on?.workflow_dispatch?.inputs?.channel;
     assert(
       modeInput?.options?.includes("stable"),
-      "workflow_dispatch mode input must offer stable",
+      "workflow_dispatch channel input must offer stable",
     );
   });
 
@@ -130,11 +131,12 @@ export async function verifyStablePublicationPre({
     const manifest = {
       source: { sha: sourceSha },
       release: { channel: "stable", distTag: "latest", stableTag: "latest" },
+      publication: { action: "publish-stable", latestMutationAllowed: true },
     };
     const baseEnv = {
       GITHUB_ACTIONS: "true",
       PROMETHEUS_RELEASE_ENVIRONMENT: "npm-stable",
-      PROMETHEUS_RELEASE_AUTHORITY: "stage-stable",
+      PROMETHEUS_RELEASE_AUTHORITY: "publish-stable",
       ACTIONS_ID_TOKEN_REQUEST_URL: "https://oidc",
       ACTIONS_ID_TOKEN_REQUEST_TOKEN: "token",
       GITHUB_SHA: sourceSha,
@@ -201,7 +203,7 @@ export async function verifyStablePublicationPre({
 
   check("recovery-and-exclusions-documented", () => {
     assert(/publish-corrective-version/.test(JSON.stringify(policy.recovery)), "recovery policy documented");
-    assert(/npm-stable/.test(releasingGuide) || /stage-stable/.test(releasingGuide), "RELEASING.md must document the stable promotion path");
+    assert(/npm-stable/.test(releasingGuide) || /publish-stable/.test(releasingGuide), "RELEASING.md must document the stable promotion path");
   });
 
   return {

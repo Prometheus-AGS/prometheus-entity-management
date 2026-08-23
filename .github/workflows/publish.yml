@@ -1,180 +1,33 @@
-name: Release candidate
+name: Publish immutable release assets
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
     inputs:
-      mode:
-        description: Rehearse only, stage the rehearsed RC, or promote stable for human approval
+      channel:
+        description: Publish an RC candidate or the coordinated stable release
         required: true
         type: choice
-        default: rehearse
-        options:
-          - rehearse
-          - stage
-          - stable
-      candidate_run_id:
-        description: Existing successful rehearsal run ID to reuse in stage mode
-        required: false
+        options: [rc, stable]
+      release_tag:
+        description: Draft GitHub Release tag containing the locally certified assets
+        required: true
         type: string
       candidate_sha:
-        description: Exact source SHA of the existing rehearsed candidate
+        description: Exact locally certified source commit
+        required: true
+        type: string
+      candidate_run_id:
+        description: Optional prior deployment run whose immutable candidate is being reused
         required: false
         type: string
 
 concurrency:
-  group: release-candidate-${{ github.ref }}-${{ inputs.mode || 'version-pr' }}
+  group: npm-${{ inputs.channel }}-${{ inputs.candidate_sha }}
   cancel-in-progress: false
 
 jobs:
-  version-pr:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - uses: pnpm/action-setup@v6
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: "24"
-          cache: "pnpm"
-          package-manager-cache: false
-
-      - name: Install the pinned uv runtime
-        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
-        with:
-          version: "0.12.1"
-
-      - name: Install
-        run: pnpm install --frozen-lockfile
-
-      - name: Create or update the Changesets version PR
-        uses: changesets/action@v1
-        with:
-          version: pnpm version-packages
-          commit: "chore(release): version 3.0 packages"
-          title: "chore(release): version 3.0 packages"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  rehearse:
-    if: >-
-      github.event_name == 'workflow_dispatch' &&
-      (inputs.mode == 'rehearse' ||
-       inputs.candidate_run_id == '' ||
-       inputs.candidate_sha == '')
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-      attestations: write
-      artifact-metadata: write
-
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - uses: pnpm/action-setup@v6
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: "24"
-          cache: "pnpm"
-          package-manager-cache: false
-
-      - name: Install the pinned uv runtime
-        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
-        with:
-          version: "0.12.1"
-
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.44.8"
-          channel: stable
-          cache: true
-
-      - uses: dtolnay/rust-toolchain@stable
-
-      - name: Install Rust minimum-supported toolchain
-        run: rustup toolchain install 1.88.0 --profile minimal
-
-      - name: Install the certified Tauri Linux prerequisites
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y \
-            libwebkit2gtk-4.1-dev \
-            build-essential \
-            curl \
-            wget \
-            file \
-            libxdo-dev \
-            libssl-dev \
-            libayatana-appindicator3-dev \
-            librsvg2-dev
-
-      - name: Fetch locked Rust dependencies for offline verification
-        run: |
-          cargo +stable fetch --locked \
-            --manifest-path packages/entity-graph-tauri/rust-plugin/Cargo.toml
-          cargo +1.88.0 fetch --locked \
-            --manifest-path tests/fixtures/tauri-plugin-host/Cargo.toml
-
-      - name: Install
-        run: pnpm install --frozen-lockfile
-
-      - name: Install the certified Chromium runtime
-        run: pnpm exec playwright install --with-deps chromium
-
-      - name: Install the current npm CLI through pnpm
-        run: pnpm add --global npm@12.0.2
-
-      - name: Run the complete certification gate
-        run: pnpm run ci
-
-      - name: Rehearse every declared release artifact
-        run: |
-          candidate_created_at=$(date -u +%Y-%m-%dT%H:%M:%S.000Z)
-          pnpm run release:rc:rehearse \
-            --source-sha "${GITHUB_SHA}" \
-            --created-at "${candidate_created_at}" \
-            --output-dir .release-candidate
-
-      - name: Attest candidate packages and native dry-run evidence
-        uses: actions/attest@v4
-        with:
-          subject-path: |
-            .release-candidate/packages/*
-            .release-candidate/manifest.json
-            .release-candidate/rehearsal.json
-
-      - name: Upload the immutable candidate bundle
-        uses: actions/upload-artifact@v7
-        with:
-          name: prometheus-entity-management-rc-${{ github.sha }}
-          path: .release-candidate
-          if-no-files-found: error
-          include-hidden-files: true
-          retention-days: 30
-
-  stage:
-    if: >-
-      always() &&
-      github.event_name == 'workflow_dispatch' &&
-      inputs.mode == 'stage' &&
-      (needs.rehearse.result == 'success' ||
-       (needs.rehearse.result == 'skipped' &&
-        inputs.candidate_run_id != '' &&
-        inputs.candidate_sha != ''))
-    needs: rehearse
+  publish-rc:
+    if: inputs.channel == 'rc'
     runs-on: ubuntu-latest
     environment: npm-rc
     permissions:
@@ -182,134 +35,94 @@ jobs:
       contents: read
       id-token: write
     env:
-      NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
       PROMETHEUS_RELEASE_AUTHORITY: stage-rc
       PROMETHEUS_RELEASE_ENVIRONMENT: npm-rc
-      PROMETHEUS_RELEASE_CANDIDATE_SHA: ${{ (inputs.candidate_run_id != '' && inputs.candidate_sha != '') && inputs.candidate_sha || github.sha }}
-
+      PROMETHEUS_RELEASE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
     steps:
       - uses: actions/checkout@v6
-
-      - uses: pnpm/action-setup@v6
-
+        with:
+          ref: ${{ inputs.candidate_sha }}
+          fetch-depth: 1
       - uses: actions/setup-node@v7
         with:
           node-version: "24"
+          registry-url: https://registry.npmjs.org/
           package-manager-cache: false
-
-      - name: Install
-        run: pnpm install --frozen-lockfile
-
-      - name: Install the current npm CLI through pnpm
-        run: pnpm add --global npm@12.0.2
-
-      - name: Verify reused rehearsal authority
-        if: needs.rehearse.result == 'skipped'
+      - name: Install the trusted-publishing npm client
+        run: npm install --global npm@11.16.0
+      - name: Download immutable locally certified assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release download "${{ inputs.release_tag }}"
+          --pattern 'manifest.json' --pattern 'rehearsal.json'
+          --pattern 'SHA256SUMS' --pattern '*.tgz' --dir .release-assets
+      - name: Verify exact source, optional reused run, and checksums
         env:
           GH_TOKEN: ${{ github.token }}
           CANDIDATE_RUN_ID: ${{ inputs.candidate_run_id }}
-          CANDIDATE_SHA: ${{ inputs.candidate_sha }}
-        run: |
-          [[ "$CANDIDATE_RUN_ID" =~ ^[0-9]+$ ]]
-          [[ "$CANDIDATE_SHA" =~ ^[0-9a-f]{40}$ ]]
-          run_json="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${CANDIDATE_RUN_ID}")"
-          jq -e --arg sha "$CANDIDATE_SHA" '
-            .event == "workflow_dispatch" and
-            .status == "completed" and
-            .head_sha == $sha and
-            .path == ".github/workflows/publish.yml"
-          ' <<<"$run_json" >/dev/null
-          gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${CANDIDATE_RUN_ID}/jobs?per_page=100" \
-            --jq 'any(.jobs[]; .name == "rehearse" and .status == "completed" and .conclusion == "success")' \
-            | grep -qx true
-          artifact_name="prometheus-entity-management-rc-${CANDIDATE_SHA}"
-          gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${CANDIDATE_RUN_ID}/artifacts?per_page=100" \
-            --jq "any(.artifacts[]; .name == \"${artifact_name}\" and .expired == false)" \
-            | grep -qx true
-
-      - name: Download the attested candidate bundle
-        uses: actions/download-artifact@v8
-        with:
-          name: prometheus-entity-management-rc-${{ (inputs.candidate_run_id != '' && inputs.candidate_sha != '') && inputs.candidate_sha || github.sha }}
-          path: .release-candidate
-          github-token: ${{ github.token }}
-          run-id: ${{ (inputs.candidate_run_id != '' && inputs.candidate_sha != '') && inputs.candidate_run_id || github.run_id }}
-
-      - name: Stage RC packages in dependency order
-        run: |
-          pnpm run release:rc:stage \
-            --manifest .release-candidate/manifest.json \
-            --rehearsal .release-candidate/rehearsal.json \
-            --output .release-candidate/stage-report.json
-
+        run: ./scripts/verify-deployment-assets.sh .release-assets "${{ inputs.candidate_sha }}" "$CANDIDATE_RUN_ID"
+      - name: Stage RC packages without rebuilding
+        run: >-
+          node scripts/release-candidate.mjs stage
+          --manifest .release-assets/manifest.json
+          --rehearsal .release-assets/rehearsal.json
+          --output .release-assets/deployment-report.json
       - name: Preserve the staging recovery journal
         if: ${{ always() }}
         uses: actions/upload-artifact@v7
         with:
-          name: prometheus-entity-management-rc-stage-${{ github.sha }}
-          path: .release-candidate/stage-report.json
+          name: entity-management-rc-deployment-${{ inputs.candidate_sha }}
+          path: .release-assets/deployment-report.json
           if-no-files-found: error
-          include-hidden-files: true
           retention-days: 30
 
-  stage-stable:
-    if: >-
-      github.event_name == 'workflow_dispatch' &&
-      inputs.mode == 'stable' &&
-      needs.rehearse.result == 'success'
-    needs: rehearse
+  publish-stable:
+    if: inputs.channel == 'stable'
     runs-on: ubuntu-latest
     environment: npm-stable
     permissions:
+      actions: read
       contents: read
       id-token: write
     env:
-      NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
-      PROMETHEUS_RELEASE_AUTHORITY: stage-stable
+      PROMETHEUS_RELEASE_AUTHORITY: publish-stable
       PROMETHEUS_RELEASE_ENVIRONMENT: npm-stable
-
     steps:
       - uses: actions/checkout@v6
-
-      - uses: pnpm/action-setup@v6
-
+        with:
+          ref: ${{ inputs.candidate_sha }}
+          fetch-depth: 1
       - uses: actions/setup-node@v7
         with:
           node-version: "24"
+          registry-url: https://registry.npmjs.org/
           package-manager-cache: false
-
-      - name: Install
-        run: pnpm install --frozen-lockfile
-
-      - name: Install the current npm CLI through pnpm
-        run: pnpm add --global npm@12.0.2
-
-      - name: Verify pre-publish stable promotion guards
-        run: pnpm run verify:stable-publication
-
-      - name: Download the attested candidate bundle
-        uses: actions/download-artifact@v8
-        with:
-          name: prometheus-entity-management-rc-${{ github.sha }}
-          path: .release-candidate
-
-      - name: Stage stable packages in dependency order
-        run: |
-          pnpm run release:rc:stage \
-            --manifest .release-candidate/manifest.json \
-            --rehearsal .release-candidate/rehearsal.json \
-            --output .release-candidate/stable-stage-report.json
-
-      - name: Verify every stable artifact resolves from the public registry
-        if: ${{ success() }}
-        run: pnpm run verify:stable-publication -- --live true
-
-      - name: Preserve the stable staging recovery journal
+      - name: Install the trusted-publishing npm client
+        run: npm install --global npm@11.16.0
+      - name: Download immutable locally certified assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release download "${{ inputs.release_tag }}"
+          --pattern 'manifest.json' --pattern 'rehearsal.json'
+          --pattern 'SHA256SUMS' --pattern '*.tgz' --dir .release-assets
+      - name: Verify exact source, optional reused run, and checksums
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CANDIDATE_RUN_ID: ${{ inputs.candidate_run_id }}
+        run: ./scripts/verify-deployment-assets.sh .release-assets "${{ inputs.candidate_sha }}" "$CANDIDATE_RUN_ID"
+      - name: Publish stable packages directly without rebuilding
+        run: >-
+          node scripts/release-candidate.mjs stage
+          --manifest .release-assets/manifest.json
+          --rehearsal .release-assets/rehearsal.json
+          --output .release-assets/deployment-report.json
+      - name: Preserve the stable publication recovery journal
         if: ${{ always() }}
         uses: actions/upload-artifact@v7
         with:
-          name: prometheus-entity-management-stable-stage-${{ github.sha }}
-          path: .release-candidate/stable-stage-report.json
+          name: entity-management-stable-deployment-${{ inputs.candidate_sha }}
+          path: .release-assets/deployment-report.json
           if-no-files-found: error
-          include-hidden-files: true
-          retention-days: 30
+          retention-days: 90

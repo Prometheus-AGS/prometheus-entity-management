@@ -89,16 +89,12 @@ test("the RC staging lane rejects alpha and requires a numbered rc prerelease", 
   );
 });
 
-test("the checked-in stable state has exited changeset pre mode at 3.0.0", async () => {
-  // 3.0.0 stable shipped 2026-08-23 (tag v3.0.0, PR #23): pre mode is exited,
-  // pre.json is gone, and the fixed npm packages carry the stable version.
-  const preExists = await readFile(new URL("../../.changeset/pre.json", import.meta.url), "utf8")
-    .then(() => true, () => false);
-  assert.equal(preExists, false, "stable 3.0.0 must not run in changeset pre mode");
-  const core = JSON.parse(
-    await readFile(new URL("../../packages/entity-graph-core/package.json", import.meta.url), "utf8"),
-  );
-  assert.equal(core.version, "3.0.0");
+test("the checked-in stable state has exited Changesets prerelease mode", async () => {
+  assert.equal(existsSync(new URL("../../.changeset/pre.json", import.meta.url)), false);
+  for (const { directory } of PUBLIC_PACKAGES) {
+    const manifest = JSON.parse(await readFile(new URL(`../../${directory}/package.json`, import.meta.url)));
+    assert.equal(manifest.version, "3.0.0");
+  }
 });
 
 test("the pnpm RC workflow forwards named CLI flags without a literal separator", async () => {
@@ -118,19 +114,16 @@ test("the pnpm RC workflow forwards named CLI flags without a literal separator"
 
 test("the protected stage reuses a certified run without setup-node v6 token fallback", async () => {
   const workflow = await readFile(new URL("../../.github/workflows/publish.yml", import.meta.url), "utf8");
-  const stage = workflow.slice(workflow.indexOf("  stage:"));
+  const stage = workflow.slice(workflow.indexOf("  publish-rc:"));
   assert.match(stage, /actions\/setup-node@v7/);
   assert.doesNotMatch(stage, /actions\/setup-node@v6/);
   assert.match(stage, /candidate_run_id/);
   assert.match(stage, /candidate_sha/);
-  assert.match(stage, /Verify reused rehearsal authority/);
-  assert.match(stage, /\.path == "\.github\/workflows\/publish\.yml"/);
-  assert.match(stage, /\.name == "rehearse"/);
-  assert.match(stage, /\.conclusion == "success"/);
-  assert.match(stage, /\.expired == false/);
-  assert.match(stage, /run-id: \$\{\{ \(inputs\.candidate_run_id != '' && inputs\.candidate_sha != ''\) && inputs\.candidate_run_id \|\| github\.run_id \}\}/);
-  assert.match(stage, /github-token: \$\{\{ github\.token \}\}/);
-  assert.match(stage, /needs\.rehearse\.result == 'skipped'/);
+  assert.match(stage, /Verify exact source, optional reused run, and checksums/);
+  assert.match(stage, /verify-deployment-assets\.sh/);
+  assert.match(stage, /manifest\.json/);
+  assert.match(stage, /SHA256SUMS/);
+  assert.doesNotMatch(stage, /pnpm run (?:ci|test|build|lint|typecheck)/);
 });
 
 test("the candidate manifest is contract-derived, non-mutating, and covers every ecosystem", async () => {
@@ -151,12 +144,11 @@ test("the candidate manifest is contract-derived, non-mutating, and covers every
 
   assert.deepEqual(repeated, manifest, "identical inputs must produce identical manifests");
   assert.equal(manifest.schemaVersion, "1.0.0");
-  const isStable = manifest.release.candidateVersion === manifest.release.targetVersion;
-  assert.equal(manifest.release.channel, isStable ? "stable" : "rc");
-  assert.equal(manifest.release.distTag, isStable ? "latest" : "next");
+  assert.equal(manifest.release.channel, "stable");
+  assert.equal(manifest.release.distTag, "latest");
   assert.equal(manifest.release.stableTag, "latest");
   assert.equal(manifest.publication.authorized, false);
-  assert.equal(manifest.publication.latestMutationAllowed, false);
+  assert.equal(manifest.publication.latestMutationAllowed, true);
   assert.equal(manifest.artifacts.length, 16);
 
   const npmArtifacts = manifest.artifacts.filter(({ ecosystem }) => ecosystem === "npm");
@@ -169,9 +161,7 @@ test("the candidate manifest is contract-derived, non-mutating, and covers every
   assert.ok(
     npmArtifacts.every(
       ({ version, distTag, action }) =>
-        version === manifest.release.candidateVersion &&
-        distTag === manifest.release.distTag &&
-        action === (isStable ? "stage-stable" : "stage-rc"),
+        version === "3.0.0" && distTag === "latest" && action === "publish-stable",
     ),
   );
   assert.equal(
@@ -624,7 +614,7 @@ test("the plan CLI writes a deterministic candidate manifest and never publishes
     assert.match(stdout, /candidate manifest written/);
     const manifest = JSON.parse(await readFile(output, "utf8"));
     assert.equal(manifest.publication.authorized, false);
-    assert.equal(manifest.publication.latestMutationAllowed, false);
+    assert.equal(manifest.publication.latestMutationAllowed, true);
     assert.equal(manifest.npm.publishOrder.length, 12);
   } finally {
     await rm(directory, { recursive: true, force: true });
@@ -1313,17 +1303,16 @@ test("the release verifier certifies workflow, packed consumers, recovery, and v
   assert.equal(report.artifacts.declared, 16);
   assert.equal(report.artifacts.npm, 12);
   assert.equal(report.workflow.privateRootDenied, true);
-  assert.equal(report.workflow.releaseNotes, "changesets-version-pr");
-  assert.equal(report.workflow.uvRuntime, "0.12.1");
-  assert.equal(report.workflow.provenance, "actions-attest-v4");
+  assert.equal(report.workflow.releaseNotes, "immutable-github-release-assets");
+  assert.equal(report.workflow.provenance, "npm-trusted-publishing");
   assert.equal(report.workflow.stageEnvironment, "npm-rc");
   assert.equal(report.workflow.reusableCandidateBundle, true);
   assert.equal(report.workflow.setupNodeDummyToken, false);
-  assert.equal(report.workflow.hiddenReleaseArtifacts, true);
+  assert.equal(report.workflow.hiddenReleaseArtifacts, false);
   assert.equal(report.workflow.longLivedNpmToken, false);
   assert.equal(report.recovery.partialRetry, "matching-skip-absent-stage-conflict-block");
   assert.equal(report.recovery.candidateBundle, "bundle-relative-cross-job");
-  assert.equal(report.protectedTags.latestMutationAllowed, false);
+  assert.equal(report.protectedTags.latestMutationAllowed, true);
   assert.equal(report.consumers.candidateSet, "tarballs-only");
   assert.deepEqual(report.platforms, {
     dart: "dry-run-only",
