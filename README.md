@@ -22,7 +22,7 @@ The production documentation is available at
 [prometheus-ags.github.io/prometheus-entity-management](https://prometheus-ags.github.io/prometheus-entity-management/).
 
 <!-- BEGIN GENERATED:RELEASE_TAGS -->
-Registry snapshot: 2026-08-23T19:25:00Z. Expected candidate: `3.0.2`.
+Registry snapshot: 2026-08-23T19:20:41Z. Expected candidate: `3.0.2`.
 
 | Package | `latest` | `alpha` | `next` | Release state |
 | --- | --- | --- | --- | --- |

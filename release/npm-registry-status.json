@@ -1,12 +1,14 @@
 {
   "schemaVersion": "1.1.0",
-  "verifiedAt": "2026-08-23T19:25:00Z",
+  "verifiedAt": "2026-08-23T19:20:41Z",
   "registry": "https://registry.npmjs.org/",
   "expectedCandidate": "3.0.2",
-  "candidateRunId": 30976967778,
-  "candidateSourceSha": "afbb8de0e861739fa6facb461b69573b2a627bdb",
-  "stageRunId": 31082488746,
+  "candidateRunId": 32660845187,
+  "candidateSourceSha": "f29a701649799df3ff64f5f986e3c016246d34b6",
+  "stageRunId": 32660845187,
   "releaseStatus": "stable-published",
+  "releaseUrl": "https://github.com/Prometheus-AGS/prometheus-entity-management/releases/tag/v3.0.2",
+  "provenance": "verified-for-all-packages",
   "packages": {
     "@prometheus-ags/entity-graph-core": {
       "alpha": "3.0.0-alpha.0",

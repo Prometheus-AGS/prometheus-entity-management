@@ -17,7 +17,7 @@ The immutable candidate was staged in GitHub Actions run
 [`31082488746`](https://github.com/Prometheus-AGS/prometheus-entity-management/actions/runs/31082488746).
 
 <!-- BEGIN GENERATED:NPM_REGISTRY_STATUS -->
-Registry snapshot: 2026-08-23T19:25:00Z. Expected candidate: `3.0.2`.
+Registry snapshot: 2026-08-23T19:20:41Z. Expected candidate: `3.0.2`.
 
 | Package | `latest` | `alpha` | `next` | Release state |
 | --- | --- | --- | --- | --- |
