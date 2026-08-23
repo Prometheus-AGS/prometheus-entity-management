@@ -50,9 +50,16 @@
   "stablePromotion": {
     "change": "v3-stable-publication",
     "requiresExplicitHumanAuthority": true,
-    "implementedByThisChange": false,
+    "implementedByThisChange": true,
     "channel": "stable",
-    "npmAction": "stage-stable",
-    "environment": "npm-stable"
+    "npmAction": "publish-stable",
+    "environment": "npm-stable",
+    "tag": "latest",
+    "allowedAction": "npm publish",
+    "longLivedWriteTokenAllowed": false,
+    "requiresOidc": true,
+    "requiresExactSourceSha": true,
+    "requiresArtifactIntegrity": true,
+    "resultContract": "published-package-without-stage-id"
   }
 }

@@ -23,7 +23,7 @@ function stableManifest(releaseOverrides = {}) {
       stableTag: "latest",
       ...releaseOverrides,
     },
-    publication: { authorized: false, latestMutationAllowed: true },
+    publication: { authorized: false, action: "publish-stable", latestMutationAllowed: true },
     npm: { publishOrder: ["core", "binding"] },
     artifacts: [
       {
@@ -50,7 +50,7 @@ function stableEnv(overrides = {}) {
   return {
     GITHUB_ACTIONS: "true",
     PROMETHEUS_RELEASE_ENVIRONMENT: "npm-stable",
-    PROMETHEUS_RELEASE_AUTHORITY: "stage-stable",
+    PROMETHEUS_RELEASE_AUTHORITY: "publish-stable",
     ACTIONS_ID_TOKEN_REQUEST_URL: "https://oidc.example.invalid",
     ACTIONS_ID_TOKEN_REQUEST_TOKEN: "oidc-token",
     GITHUB_SHA: STABLE_SHA,
@@ -65,7 +65,8 @@ test("release policy declares the stable-promotion boundary explicitly", async (
   assert.equal(stable.change, "v3-stable-publication");
   assert.equal(stable.requiresExplicitHumanAuthority, true);
   assert.equal(stable.channel, "stable");
-  assert.equal(stable.npmAction, "stage-stable");
+  assert.equal(stable.npmAction, "publish-stable");
+  assert.equal(stable.allowedAction, "npm publish");
   assert.equal(stable.environment, "npm-stable");
   assert.equal(policy.candidate.publicationAuthorized, false);
   assert.equal(policy.candidate.latestMutationAllowed, false);
@@ -84,9 +85,10 @@ test("stable channel version assertion accepts only the exact target version", (
 test("stable stage authority passes at the real boundary", () => {
   const result = assertStableStageAuthority(stableManifest(), stableEnv());
   assert.deepEqual(result, {
-    authorizedAction: "npm stable publish",
+    authorizedAction: "npm publish",
     environment: "npm-stable",
     distTag: "latest",
+    sourceSha: STABLE_SHA,
   });
 });
 
@@ -107,7 +109,7 @@ test("stable stage authority rejects the RC environment", () => {
 test("stable stage authority rejects RC authority flags", () => {
   assert.throws(
     () => assertStableStageAuthority(stableManifest(), stableEnv({ PROMETHEUS_RELEASE_AUTHORITY: "stage-rc" })),
-    /stage-stable authority/,
+    /publish-stable authority/,
   );
 });
 
@@ -191,11 +193,10 @@ test("stable staging publishes every package and verifies latest promotion", asy
     stageNpm: async (artifact, candidate) => {
       staged.push(artifact.packageName);
       return {
-        receipt: `stage-${artifact.packageName}`,
+        receipt: `publish-${artifact.packageName}`,
         packageName: artifact.packageName,
         version: artifact.version,
         integrity: candidate.integrity,
-        stageId: "2e227719-6f83-4ccb-8a61-041a96518779",
       };
     },
   });
@@ -228,11 +229,10 @@ test("stable staging skips packages already at the target with matching integrit
     stageNpm: async (artifact, candidate) => {
       staged.push(artifact.packageName);
       return {
-        receipt: `stage-${artifact.packageName}`,
+        receipt: `publish-${artifact.packageName}`,
         packageName: artifact.packageName,
         version: artifact.version,
         integrity: candidate.integrity,
-        stageId: "2e227719-6f83-4ccb-8a61-041a96518779",
       };
     },
   });
@@ -280,11 +280,10 @@ test("stable staging fails when latest was not actually promoted", async () => {
       snapshotTags: async () => structuredClone(tags),
       lookupNpmVersion: async () => null,
       stageNpm: async (artifact, candidate) => ({
-        receipt: `stage-${artifact.packageName}`,
+        receipt: `publish-${artifact.packageName}`,
         packageName: artifact.packageName,
         version: artifact.version,
         integrity: candidate.integrity,
-        stageId: "2e227719-6f83-4ccb-8a61-041a96518779",
       }),
     }),
     /stable promotion incomplete/,

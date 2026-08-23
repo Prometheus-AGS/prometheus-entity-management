@@ -214,14 +214,24 @@ export async function buildReleaseCandidateManifest({
     },
     publication: {
       authorized: false,
-      latestMutationAllowed: false,
+      latestMutationAllowed: isStable,
+      action: npmAction,
       stablePromotionChange: policy.stablePromotion.change,
       authorityEnvironment: isStable ? stablePromotion.environment : "npm-rc",
+      allowedCommand: isStable ? stablePromotion.allowedAction : policy.trustedPublishing.allowedAction,
+      requiresOidc: isStable ? stablePromotion.requiresOidc : true,
+      sourceSha,
     },
     npm: {
       publishOrder,
-      action: policy.candidate.npmAction,
-      trustedPublishing: policy.trustedPublishing,
+      action: npmAction,
+      trustedPublishing: isStable
+        ? {
+            ...policy.trustedPublishing,
+            environment: stablePromotion.environment,
+            allowedAction: stablePromotion.allowedAction,
+          }
+        : policy.trustedPublishing,
     },
     protectedTags: {
       names: [contract.versionPolicy.npm.stableTag],
@@ -442,6 +452,31 @@ export function validateStagedNpmResult(candidate, stagedResult) {
   return stagedResult;
 }
 
+/** Validate direct `npm publish --json` output for the stable lane. */
+export function validatePublishedNpmResult(candidate, publishedResult) {
+  assert(candidate?.packageName, "published candidate packageName is required");
+  assert(candidate?.version, "published candidate version is required");
+  assert(candidate?.integrity, "published candidate integrity is required");
+  assert(publishedResult?.receipt, `${candidate.packageName}: publication receipt is required`);
+  assert(
+    !Object.hasOwn(publishedResult, "stageId") || publishedResult.stageId == null,
+    `${candidate.packageName}: stable publication must not return an RC stageId`,
+  );
+  assert(
+    publishedResult.packageName === candidate.packageName,
+    `${candidate.packageName}: published package name differs from the candidate`,
+  );
+  assert(
+    publishedResult.version === candidate.version,
+    `${candidate.packageName}: published version differs from the candidate`,
+  );
+  assert(
+    publishedResult.integrity === candidate.integrity,
+    `${candidate.packageName}: published integrity differs from the rehearsed candidate`,
+  );
+  return publishedResult;
+}
+
 export function createRecoveryJournal(manifest) {
   assert(Array.isArray(manifest?.npm?.publishOrder), "manifest npm publish order is required");
   const npmArtifacts = manifest.artifacts.filter(({ ecosystem }) => ecosystem === "npm");
@@ -550,10 +585,11 @@ export function assertProtectedTagsUnchanged(before, after, tag = "latest") {
  */
 export async function rehearseReleaseCandidate(manifest, adapters) {
   assert(manifest.publication?.authorized === false, "rehearsal cannot use a publication-authorized manifest");
-  assert(
-    manifest.publication?.latestMutationAllowed === false,
-    "rehearsal cannot allow npm latest mutation",
-  );
+  if (manifest.release?.channel === "stable") {
+    assert(manifest.publication?.latestMutationAllowed === true, "stable manifest must authorize latest only at publication time");
+  } else {
+    assert(manifest.publication?.latestMutationAllowed === false, "RC rehearsal cannot allow npm latest mutation");
+  }
   for (const name of ["snapshotTags", "packNpm", "dryRunNpm", "dryRunNative"]) {
     assert(typeof adapters?.[name] === "function", `${name} adapter is required`);
   }
@@ -712,7 +748,10 @@ export async function stageReleaseCandidate(manifest, candidates, adapters, { on
           integrity: rawStagedResult?.integrity ?? null,
         };
         await persist();
-        const stagedResult = validateStagedNpmResult(
+        const resultValidator = manifest.release?.channel === "stable"
+          ? validatePublishedNpmResult
+          : validateStagedNpmResult;
+        const stagedResult = resultValidator(
           { packageName, version: artifact.version, integrity: candidate.integrity },
           rawStagedResult,
         );
@@ -720,7 +759,7 @@ export async function stageReleaseCandidate(manifest, candidates, adapters, { on
           packageName,
           state: "validated",
           receipt: stagedResult.receipt,
-          stageId: stagedResult.stageId,
+          stageId: stagedResult.stageId ?? null,
           integrity: stagedResult.integrity,
         };
         receipt = stagedResult.receipt;
@@ -730,12 +769,14 @@ export async function stageReleaseCandidate(manifest, candidates, adapters, { on
         await advance(packageName, "submitted", {
           outcome,
           receipt,
-          stageId: stagedResult.stageId,
+          ...(stagedResult.stageId ? { stageId: stagedResult.stageId } : {}),
         });
         await advance(packageName, "registry-verified", {
           registryIntegrity: stagedResult.integrity,
-          stageId: stagedResult.stageId,
-          authority: "npm-stage-publish-response",
+          ...(stagedResult.stageId ? { stageId: stagedResult.stageId } : {}),
+          authority: manifest.release?.channel === "stable"
+            ? "npm-publish-response"
+            : "npm-stage-publish-response",
           receipt,
         });
         await advance(packageName, "complete", { receipt });
@@ -838,16 +879,16 @@ export function assertRcStageAuthority(manifest, env) {
 export function assertStableStageAuthority(manifest, env) {
   assert(
     manifest.release?.channel === "stable",
-    "stable staging requires a stable-channel manifest",
+    "stable publication requires a stable-channel manifest",
   );
-  assert(env.GITHUB_ACTIONS === "true", "GitHub Actions is required for stable staging");
+  assert(env.GITHUB_ACTIONS === "true", "GitHub Actions is required for stable publication");
   assert(
     env.PROMETHEUS_RELEASE_ENVIRONMENT === "npm-stable",
     "the protected npm-stable environment is required",
   );
   assert(
-    env.PROMETHEUS_RELEASE_AUTHORITY === "stage-stable",
-    "explicit stage-stable authority is required",
+    env.PROMETHEUS_RELEASE_AUTHORITY === "publish-stable",
+    "explicit publish-stable authority is required",
   );
   assert(
     env.ACTIONS_ID_TOKEN_REQUEST_URL && env.ACTIONS_ID_TOKEN_REQUEST_TOKEN,
@@ -866,10 +907,13 @@ export function assertStableStageAuthority(manifest, env) {
     env.GITHUB_SHA === manifest.source.sha,
     "workflow SHA does not match the stable manifest",
   );
+  assert(manifest.publication.action === "publish-stable", "stable manifest action must be publish-stable");
+  assert(manifest.publication.latestMutationAllowed === true, "stable manifest must allow the latest promotion");
   return {
-    authorizedAction: "npm stable publish",
+    authorizedAction: "npm publish",
     environment: "npm-stable",
     distTag: manifest.release.distTag,
+    sourceSha: env.GITHUB_SHA,
   };
 }
 
@@ -1019,18 +1063,30 @@ export function createReleaseCommandAdapters({
 
     async stageNpm(artifact, candidate, manifest, authorityEnvironment = releaseEnvironment) {
       assertStageAuthorityForChannel(manifest, authorityEnvironment);
+      const stable = manifest.release?.channel === "stable";
       const result = await runCommand(
         "npm",
-        [
-          "stage",
+        stable
+          ? [
           "publish",
           candidate.path,
           "--tag",
           artifact.distTag,
           "--access",
           "public",
+          "--provenance",
           "--json",
-        ],
+        ]
+          : [
+              "stage",
+              "publish",
+              candidate.path,
+              "--tag",
+              artifact.distTag,
+              "--access",
+              "public",
+              "--json",
+            ],
         {
           cwd: rootPath,
           mutation: true,
@@ -1038,13 +1094,13 @@ export function createReleaseCommandAdapters({
           env: authorityEnvironment,
         },
       );
-      const output = parseJsonOutput(result.stdout, `${artifact.packageName} stage publish`);
-      const staged = output?.[artifact.packageName] ?? output;
+      const output = parseJsonOutput(result.stdout, `${artifact.packageName} ${stable ? "publish" : "stage publish"}`);
+      const staged = output?.[artifact.packageName] ?? (Array.isArray(output) ? output.at(-1) : output);
       return {
-        packageName: staged?.name,
+        packageName: staged?.name ?? staged?.packageName,
         version: staged?.version,
-        integrity: staged?.integrity,
-        stageId: staged?.stageId,
+        integrity: staged?.integrity ?? staged?.dist?.integrity,
+        ...(stable ? {} : { stageId: staged?.stageId }),
         receipt: compactReceipt(result.stdout),
       };
     },

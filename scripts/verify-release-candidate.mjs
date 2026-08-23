@@ -190,150 +190,53 @@ export function renderReleaseCandidateEvidence(report) {
 
 function verifyWorkflow({ workflow, workflowSource, rootManifest }) {
   assert(workflow?.jobs, "publish workflow jobs are required");
-  const versionJob = workflow.jobs["version-pr"];
-  const rehearsalJob = workflow.jobs.rehearse;
-  const stageJob = workflow.jobs.stage;
-  assert(versionJob && rehearsalJob && stageJob, "version, rehearsal, and stage jobs are required");
+  const rcJob = workflow.jobs["publish-rc"];
+  const stableJob = workflow.jobs["publish-stable"];
+  assert(rcJob && stableJob, "RC and stable deployment jobs are required");
   assert(rootManifest.private === true, "private workspace root protection is required");
   const dispatchInputs = workflow.on?.workflow_dispatch?.inputs;
-  assert(dispatchInputs?.candidate_run_id, "candidate rehearsal run input is required");
+  assert(dispatchInputs?.channel, "deployment channel input is required");
+  assert(dispatchInputs?.release_tag, "immutable GitHub Release input is required");
+  assert(dispatchInputs?.candidate_run_id, "reused deployment run input is required");
   assert(dispatchInputs?.candidate_sha, "candidate source SHA input is required");
-
-  const versionAction = findStep(versionJob, ({ uses }) => /^changesets\/action@v1/.test(uses ?? ""));
-  assert(versionAction?.with?.version, "Changesets version PR command is required");
-  assert(!versionAction.with.publish, "Changesets action cannot publish from the version PR job");
-  const rehearsalUvAction = findStep(
-    rehearsalJob,
-    ({ uses }) => /^astral-sh\/setup-uv@[0-9a-f]{40}$/.test(uses ?? ""),
-  );
-  assert(rehearsalUvAction, "the rehearsal job must install uv for the A2A TCK");
-  assert(
-    rehearsalUvAction.with?.version === "0.12.1",
-    "the rehearsal uv runtime must use the certified 0.12.1 pin",
-  );
-  assert(findStep(rehearsalJob, ({ run }) => /pnpm run ci/.test(run ?? "")), "full CI gate is required");
-  assert(
-    findStep(rehearsalJob, ({ run }) => /release:rc:rehearse/.test(run ?? "")),
-    "release rehearsal command is required",
-  );
-  assert(
-    findStep(rehearsalJob, ({ uses }) => /^actions\/attest@v4/.test(uses ?? "")),
-    "candidate provenance attestation is required",
-  );
-  assert(rehearsalJob.permissions?.["id-token"] === "write", "rehearsal OIDC permission is required");
-  assert(rehearsalJob.permissions?.attestations === "write", "attestation permission is required");
-  assert(
-    /candidate_run_id/.test(String(rehearsalJob.if)) &&
-      /candidate_sha/.test(String(rehearsalJob.if)),
-    "rehearsal must be skippable only for an explicit existing candidate",
-  );
-  assert(stageJob.environment === "npm-rc", "stage job must use the protected npm-rc environment");
-  assert(stageJob.permissions?.actions === "read", "stage job needs read-only artifact access");
-  assert(stageJob.permissions?.["id-token"] === "write", "stage OIDC permission is required");
-  assert(stageJob.env?.PROMETHEUS_RELEASE_AUTHORITY === "stage-rc", "stage authority flag is required");
-  assert(
-    /candidate_run_id/.test(stageJob.env?.PROMETHEUS_RELEASE_CANDIDATE_SHA ?? "") &&
-      /candidate_sha/.test(stageJob.env?.PROMETHEUS_RELEASE_CANDIDATE_SHA ?? "") &&
-      /github\.sha/.test(stageJob.env?.PROMETHEUS_RELEASE_CANDIDATE_SHA ?? ""),
-    "stage authority must use both reuse inputs or the current workflow SHA",
-  );
-  assert(
-    /always\(\)/.test(String(stageJob.if)) &&
-      /needs\.rehearse\.result == 'skipped'/.test(String(stageJob.if)),
-    "stage must accept a skipped rehearsal only through the explicit reuse path",
-  );
-  const stageNodeAction = findStep(
-    stageJob,
-    ({ uses }) => /^actions\/setup-node@/.test(uses ?? ""),
-  );
-  assert(
-    stageNodeAction?.uses === "actions/setup-node@v7",
-    "stage must use setup-node v7 without the v6 dummy NODE_AUTH_TOKEN fallback",
-  );
-  assert(
-    stageNodeAction.with?.["registry-url"] === undefined,
-    "stage must not generate a token-shaped npmrc through setup-node",
-  );
-  assert(
-    stageJob.env?.NPM_CONFIG_REGISTRY === "https://registry.npmjs.org/",
-    "stage must target the public npm registry through NPM_CONFIG_REGISTRY",
-  );
-  const candidateDownload = findStep(
-    stageJob,
-    ({ uses }) => /^actions\/download-artifact@v8$/.test(uses ?? ""),
-  );
-  assert(candidateDownload, "candidate artifact download is required");
-  assert(
-    /candidate_run_id/.test(candidateDownload.with?.["run-id"] ?? "") &&
-      /candidate_sha/.test(candidateDownload.with?.["run-id"] ?? "") &&
-      /github\.run_id/.test(candidateDownload.with?.["run-id"] ?? ""),
-    "candidate download must use both reuse inputs or the current workflow run",
-  );
-  assert(candidateDownload.with?.["github-token"], "cross-run candidate download needs a GitHub token");
-  assert(
-    /candidate_run_id/.test(candidateDownload.with?.name ?? "") &&
-      /candidate_sha/.test(candidateDownload.with?.name ?? "") &&
-      /github\.sha/.test(candidateDownload.with?.name ?? ""),
-    "candidate artifact name must use both reuse inputs or the current workflow SHA",
-  );
-  const reuseAuthorityStep = findStep(
-    stageJob,
-    ({ name }) => name === "Verify reused rehearsal authority",
-  );
-  assert(reuseAuthorityStep, "reused candidate authority verification is required");
-  assert(
-    /needs\.rehearse\.result == 'skipped'/.test(String(reuseAuthorityStep.if)),
-    "reused candidate authority verification must run on the reuse path",
-  );
-  assert(
-    /workflow_dispatch/.test(reuseAuthorityStep.run ?? "") &&
-      /\.status == "completed"/.test(reuseAuthorityStep.run ?? "") &&
-      /\.head_sha == \$sha/.test(reuseAuthorityStep.run ?? "") &&
-      /\.path == "\.github\/workflows\/publish\.yml"/.test(reuseAuthorityStep.run ?? "") &&
-      /\.name == "rehearse"/.test(reuseAuthorityStep.run ?? "") &&
-      /\.conclusion == "success"/.test(reuseAuthorityStep.run ?? "") &&
-      /\.expired == false/.test(reuseAuthorityStep.run ?? ""),
-    "reused candidate must come from a completed successful rehearsal with a live artifact",
-  );
-  assert(
-    findStep(stageJob, ({ run }) => /release:rc:stage/.test(run ?? "")),
-    "guarded staging command is required",
-  );
-  for (const [job, label] of [
-    [rehearsalJob, "candidate bundle"],
-    [stageJob, "staging recovery journal"],
+  for (const [job, environment, authority] of [
+    [rcJob, "npm-rc", "stage-rc"],
+    [stableJob, "npm-stable", "publish-stable"],
   ]) {
-    const uploadAction = findStep(
-      job,
-      ({ uses }) => /^actions\/upload-artifact@v7$/.test(uses ?? ""),
-    );
-    assert(uploadAction, `${label} upload is required`);
-    assert(
-      uploadAction.with?.["include-hidden-files"] === true,
-      `${label} upload must include the hidden .release-candidate path`,
-    );
+    assert(job.environment === environment, `${environment} protected environment is required`);
+    assert(job.permissions?.actions === "read", `${environment} needs read-only run access`);
+    assert(job.permissions?.contents === "read", `${environment} needs read-only release access`);
+    assert(job.permissions?.["id-token"] === "write", `${environment} OIDC permission is required`);
+    assert(job.env?.PROMETHEUS_RELEASE_AUTHORITY === authority, `${authority} flag is required`);
+    const nodeAction = findStep(job, ({ uses }) => /^actions\/setup-node@/.test(uses ?? ""));
+    assert(nodeAction?.uses === "actions/setup-node@v7", `${environment} must use setup-node v7`);
+    assert(nodeAction.with?.["registry-url"] === "https://registry.npmjs.org/", `${environment} registry is required`);
+    assert(findStep(job, ({ run }) => /gh release download/.test(run ?? "")), `${environment} must download release assets`);
+    assert(findStep(job, ({ run }) => /verify-deployment-assets\.sh/.test(run ?? "")), `${environment} must verify immutable assets`);
+    assert(findStep(job, ({ run }) => /release-candidate\.mjs stage/.test(run ?? "")), `${environment} deployment command is required`);
+    assert(findStep(job, ({ uses }) => /^actions\/upload-artifact@v7$/.test(uses ?? "")), `${environment} recovery journal upload is required`);
   }
   assert(!/NODE_AUTH_TOKEN|NPM_TOKEN/.test(workflowSource), "long-lived npm write tokens are forbidden");
   assert(!/npm\s+stage\s+(approve|reject)/.test(workflowSource), "human 2FA actions cannot run in CI");
-  assert(!/npm\s+dist-tag\s+add/.test(workflowSource), "stable tag promotion is out of scope");
-  assert(!/\bnpm\s+publish\b(?![^\n]*--dry-run)/.test(workflowSource), "direct npm publication is forbidden");
+  assert(!/pnpm\s+(?:install|run\s+(?:ci|test|build|lint|typecheck))/.test(workflowSource), "hosted workflow cannot build or test");
 
   return {
     privateRootDenied: true,
-    releaseNotes: "changesets-version-pr",
-    uvRuntime: "0.12.1",
-    provenance: "actions-attest-v4",
+    releaseNotes: "immutable-github-release-assets",
+    provenance: "npm-trusted-publishing",
     oidc: true,
     stageEnvironment: "npm-rc",
     stageAction: "npm-stage-publish",
+    stableEnvironment: "npm-stable",
+    stableAction: "npm-publish",
     reusableCandidateBundle: true,
     setupNodeDummyToken: false,
     setupNodeTokenNpmrc: false,
-    registryConfiguration: "NPM_CONFIG_REGISTRY",
-    hiddenReleaseArtifacts: true,
+    registryConfiguration: "setup-node-registry-url",
+    hiddenReleaseArtifacts: false,
     longLivedNpmToken: false,
     humanApprovalInCi: false,
-    stablePromotionInScope: false,
+    stablePromotionInScope: true,
   };
 }
 
