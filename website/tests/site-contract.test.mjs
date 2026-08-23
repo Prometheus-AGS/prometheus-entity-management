@@ -62,7 +62,7 @@ test('publishes the complete primary navigation and RC boundary', () => {
     'Start Here', 'Concepts', 'Frameworks', 'Integrations', 'Examples',
     'Packages & API', 'Evidence', 'Migration & Operations',
   ]) assert.match(config, new RegExp(`label: '${label.replace('&', '\\&')}'`));
-  assert.match(config, /3\.0 RC/);
+  assert.match(config, /3\.0\.2 stable/);
   assert.match(config, /label: '3\.x'/);
 });
 
@@ -73,24 +73,22 @@ test('keeps install guidance in registry-snapshot parity', () => {
   const staged = npmEntries.filter(([, tags]) => tags.candidateState === 'staged-awaiting-approval');
   const releaseSearch = searchIndex.records.find(({route}) => route === '/docs/3.x/operations/release/');
   assert.ok(releaseSearch, 'release guide is missing from the generated search index');
-  assert.equal(npmRegistryStatus.releaseStatus, 'partial-rc-published');
-  assert.equal(published.length, 3);
-  assert.equal(staged.length, 9);
+  assert.equal(npmRegistryStatus.releaseStatus, 'stable-published');
+  assert.equal(published.length, 12);
+  assert.equal(staged.length, 0);
   for (const [name, tags] of npmEntries) {
     const values = [tags.latest ?? 'absent', tags.alpha ?? 'absent', tags.next ?? 'absent', tags.candidateState];
     const markdownRow = `| \`${name}\` | ${values.slice(0, 3).map((value) => `\`${value}\``).join(' | ')} | ${tags.candidateState} |`;
     assert.ok(releaseGuide.includes(markdownRow), `${name} release-guide row drifted`);
     assert.match(releaseSearch.text, new RegExp([name, ...values].map(escapeRegex).join('\\s+')), `${name} search row drifted`);
   }
-  for (const [name, tags] of published) assert.equal(tags.next, npmRegistryStatus.expectedCandidate, name);
+  for (const [name, tags] of published) assert.equal(tags.latest, npmRegistryStatus.expectedCandidate, name);
   const installGuidance = [packageChooser, reactGuide, flutterGuide].join('\n');
-  for (const [name] of staged) {
-    assert.doesNotMatch(installGuidance, new RegExp(`${escapeRegex(name)}@(?:next|${escapeRegex(npmRegistryStatus.expectedCandidate)})`));
-  }
-  assert.match(config, /nine npm packages remain staged/);
-  assert.match(packageIndex, /Remaining nine npm packages/);
-  assert.match(reactGuide, /entity-graph-core@next/);
-  assert.match(reactGuide, /prometheus-entity-management@latest/);
+  assert.doesNotMatch(installGuidance, /@next/, 'stable install guidance must not pin the archived RC channel');
+  assert.match(config, /all twelve npm packages are public/);
+  assert.match(packageIndex, /all twelve npm packages public at stable\s+`3\.0\.2`/);
+  assert.match(reactGuide, /pnpm add @prometheus-ags\/entity-graph-core/);
+  assert.match(reactGuide, /pnpm add @prometheus-ags\/entity-graph-core \\?\n?\s*@prometheus-ags\/prometheus-entity-management/);
   assert.equal(pubdevRegistryStatus.releaseStatus, 'published');
   assert.equal(pubdevRegistryStatus.consumerVerification, 'passed');
   assert.equal(pubdevRegistryStatus.publisherId, null);

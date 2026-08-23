@@ -76,9 +76,9 @@ const config: Config = {
     ],
     colorMode: {defaultMode: 'light', respectPrefersColorScheme: true},
     announcementBar: {
-      id: 'v3_rc',
+      id: 'v3_stable',
       content:
-        '<strong>3.0 RC</strong> — React, core, and A2UI are public RCs; nine npm packages remain staged. Flutter 3.0.0 is public on pub.dev.',
+        '<strong>3.0.2 stable</strong> — all twelve npm packages are public on npm at 3.0.2. Flutter 3.0.0 is public on pub.dev.',
       backgroundColor: '#0B0F14',
       textColor: '#FFFFFF',
       isCloseable: false,
