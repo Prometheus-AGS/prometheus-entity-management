@@ -206,6 +206,32 @@ action — and the RC authority boundary no longer applies.
   Only a complete stable stage may move `latest`; the promotion guard
   (`assertStableTagsPromoted`) fails the run if any package lags behind.
 
+### Publish-day pre-flight checklist (operator, ~15 minutes)
+
+1. **npm trusted publishing** — on npmjs.com, for each of the 12 packages
+   (`@prometheus-ags/*`): Settings → Trusted Publisher → GitHub Actions,
+   repository `<org>/<repo>`, workflow `publish.yml`, environment
+   `npm-stable`. One-time per package. (Alternative if trusted publishing is
+   unavailable: a granular access token scoped to `@prometheus-ags/*` with
+   publish permission and "bypass 2FA" enabled, stored as the `NPM_TOKEN`
+   secret — but the pipeline rejects long-lived tokens by design, so this
+   requires a deliberate policy change; prefer OIDC.)
+2. **GitHub environment** — repo Settings → Environments → create
+   `npm-stable`, add yourself as a required reviewer. This is the human
+   approval gate that `assertStableStageAuthority` verifies.
+3. **Merge the version bump** — bring `release/v3.0.0-staging` (workspace
+   `3.0.0`, tag `v3.0.0`) onto the release branch and push. The pipeline
+   derives the stable channel from the version equality, so no other edit is
+   needed.
+4. **Dispatch** — Actions → `publish.yml` → Run workflow → `mode: stable`.
+   Approve the `npm-stable` environment prompt when the `stage-stable` job
+   pauses.
+5. **Confirm** — the job's live verification step proves all 12 packages
+   resolve at `3.0.0` with `latest === 3.0.0`; the uploaded
+   `stable-stage-report.json` is the receipt. If it fails, the recovery
+   journal in the same artifact names exactly which packages published and
+   which did not — re-run the dispatch; matching versions are skipped.
+
 ## Documentation site deployment
 
 The 3.0 documentation site deploys to GitHub Pages through the quality-gated,
