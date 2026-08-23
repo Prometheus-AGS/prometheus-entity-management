@@ -50,22 +50,40 @@ function leaks(manifest) {
 }
 
 const pinned = process.argv.slice(2).find((a) => !a.startsWith("--"));
+const local = process.argv.includes("--local");
+const packDirectory = local ? mkdtempSync(path.join(tmpdir(), "ws-leak-pack-")) : null;
 let failed = 0;
 let checked = 0;
 
-for (const { json } of publicPackages) {
+for (const { file, json } of publicPackages) {
   const version = pinned ?? json.version;
   let manifest;
   try {
-    manifest = JSON.parse(
-      execFileSync("npm", ["view", `${json.name}@${version}`, "--json"], {
+    if (local) {
+      const before = new Set(readdirSync(packDirectory));
+      execFileSync("pnpm", ["--dir", path.dirname(file), "pack", "--pack-destination", packDirectory], {
         encoding: "utf8",
-        stdio: ["ignore", "pipe", "ignore"],
-        cwd: NEUTRAL_CWD,
-      }),
-    );
+        stdio: ["ignore", "pipe", "pipe"],
+        cwd: root,
+      });
+      const archive = readdirSync(packDirectory).find((name) => !before.has(name));
+      if (!archive) throw new Error(`pnpm pack produced no archive for ${json.name}`);
+      manifest = JSON.parse(
+        execFileSync("tar", ["-xOf", path.join(packDirectory, archive), "package/package.json"], {
+          encoding: "utf8",
+        }),
+      );
+    } else {
+      manifest = JSON.parse(
+        execFileSync("npm", ["view", `${json.name}@${version}`, "--json"], {
+          encoding: "utf8",
+          stdio: ["ignore", "pipe", "ignore"],
+          cwd: NEUTRAL_CWD,
+        }),
+      );
+    }
   } catch {
-    console.log(`  skip  ${json.name}@${version} (not on the registry)`);
+    console.log(`  skip  ${json.name}@${version} (${local ? "pack failed" : "not on the registry"})`);
     continue;
   }
   checked += 1;
@@ -83,8 +101,8 @@ if (checked === 0) {
   process.exit(2);
 }
 if (failed > 0) {
-  console.error(`\n${failed} of ${checked} published package(s) leaked a workspace: protocol.`);
+  console.error(`\n${failed} of ${checked} ${local ? "packed" : "published"} package(s) leaked a workspace: protocol.`);
   console.error("Republish with `pnpm publish` (npm publish does not rewrite the protocol).");
   process.exit(1);
 }
-console.log(`\nAll ${checked} published package(s) are free of the workspace: protocol.`);
+console.log(`\nAll ${checked} ${local ? "packed" : "published"} package(s) are free of the workspace: protocol.`);

@@ -17,6 +17,7 @@ test("stable manifest has a separate direct-publish authority contract", async (
     sourceSha,
     createdAt: "2026-08-23T18:30:00.000Z",
   });
+  const contract = JSON.parse(await readFile(new URL("../../release/v3-release-contract.json", import.meta.url), "utf8"));
 
   assert.equal(manifest.release.channel, "stable");
   assert.equal(manifest.release.distTag, "latest");
@@ -27,7 +28,7 @@ test("stable manifest has a separate direct-publish authority contract", async (
   assert.equal(manifest.publication.sourceSha, sourceSha);
   assert.equal(manifest.npm.action, "publish-stable");
   assert.ok(manifest.artifacts.filter(({ ecosystem }) => ecosystem === "npm").every(
-    ({ action, distTag, version }) => action === "publish-stable" && distTag === "latest" && version === "3.0.0",
+    ({ action, distTag, version }) => action === "publish-stable" && distTag === "latest" && version === contract.release.version,
   ));
 });
 

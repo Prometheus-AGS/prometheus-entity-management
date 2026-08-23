@@ -1,5 +1,10 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { test } from "node:test";
+
+const LIVE_TARGET = JSON.parse(
+  await readFile(new URL("../../release/v3-release-contract.json", import.meta.url), "utf8"),
+).release.version;
 
 const pipeline = await import("../../scripts/release-candidate-pipeline.mjs");
 const {
@@ -304,12 +309,12 @@ test("stable publication live verification confirms registry state via runView",
   const calls = [];
   const runView = async (packageName, args) => {
     calls.push([packageName, ...args]);
-    if (args.includes("dist-tags")) return { latest: "3.0.0", next: "3.0.0-rc.1" };
-    return "3.0.0";
+    if (args.includes("dist-tags")) return { latest: LIVE_TARGET, next: "3.0.0-rc.1" };
+    return LIVE_TARGET;
   };
   const report = await verifyStablePublicationLive({ runView, createdAt: "2026-08-23T00:00:00.000Z" });
   assert.equal(report.result, "pass");
-  assert.equal(report.targetVersion, "3.0.0");
+  assert.equal(report.targetVersion, LIVE_TARGET);
   assert.equal(report.stableArtifactsResolved, 12);
   assert.equal(report.packages.length, 12);
   assert.equal(calls.length, 24);
@@ -321,20 +326,20 @@ test("stable publication live verification rejects an unpromoted latest tag", as
     if (args.includes("dist-tags")) {
       return packageName === "@prometheus-ags/prometheus-entity-management"
         ? { latest: "2.2.0" }
-        : { latest: "3.0.0" };
+        : { latest: LIVE_TARGET };
     }
-    return "3.0.0";
+    return LIVE_TARGET;
   };
   await assert.rejects(
     verifyStablePublicationLive({ runView }),
-    /npm latest is 2\.2\.0, expected 3\.0\.0/,
+    new RegExp(`npm latest is 2\\.2\\.0, expected ${LIVE_TARGET.replaceAll(".", "\\.")}`),
   );
 });
 
 test("stable publication live verification rejects a missing registry version", async () => {
   const { verifyStablePublicationLive } = await import("../../scripts/verify-stable-publication.mjs");
   const runView = async (_packageName, args) => {
-    if (args.includes("dist-tags")) return { latest: "3.0.0" };
+    if (args.includes("dist-tags")) return { latest: LIVE_TARGET };
     return null;
   };
   await assert.rejects(

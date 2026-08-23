@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/entity-graph-sdl",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "description": "Schema Definition Language (SDL) for the entity graph — the shared contract every code generator (Rust CLI, Flutter, framework bindings) consumes.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
