@@ -4,10 +4,10 @@
   "provider": "github",
   "repository": "Prometheus-AGS/prometheus-entity-management",
   "workflowFile": "publish.yml",
-  "environment": "npm-rc",
+  "environment": null,
   "permissions": {
     "stagePublish": true,
-    "directPublish": false
+    "directPublish": true
   },
   "packages": [
     "@prometheus-ags/entity-graph-core",

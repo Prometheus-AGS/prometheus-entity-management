@@ -38,6 +38,7 @@ jobs:
       PROMETHEUS_RELEASE_AUTHORITY: stage-rc
       PROMETHEUS_RELEASE_ENVIRONMENT: npm-rc
       PROMETHEUS_RELEASE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+      NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
     steps:
       - uses: actions/checkout@v6
         with:
@@ -46,7 +47,6 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: "24"
-          registry-url: https://registry.npmjs.org/
           package-manager-cache: false
       - name: Install the trusted-publishing npm client
         run: npm install --global npm@11.16.0
@@ -88,6 +88,7 @@ jobs:
     env:
       PROMETHEUS_RELEASE_AUTHORITY: publish-stable
       PROMETHEUS_RELEASE_ENVIRONMENT: npm-stable
+      NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
     steps:
       - uses: actions/checkout@v6
         with:
@@ -96,7 +97,6 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: "24"
-          registry-url: https://registry.npmjs.org/
           package-manager-cache: false
       - name: Install the trusted-publishing npm client
         run: npm install --global npm@11.16.0

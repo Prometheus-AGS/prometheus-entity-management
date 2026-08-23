@@ -27,9 +27,9 @@ export function validateAuthorityManifest(manifest, publicPackages = PUBLIC_PACK
     "npm trust repository does not match the release authority",
   );
   assert(manifest.workflowFile === "publish.yml", "npm trust workflow must be publish.yml only");
-  assert(manifest.environment === "npm-rc", "npm trust environment must be npm-rc");
+  assert(manifest.environment === null, "npm trust binding must not claim one channel-specific environment");
   assert(manifest.permissions?.stagePublish === true, "stage publish authority is required");
-  assert(manifest.permissions?.directPublish === false, "direct publish authority is forbidden");
+  assert(manifest.permissions?.directPublish === true, "stable direct publish authority is required");
 
   const expected = new Set(publicPackages.map(({name}) => name));
   const declared = new Set(manifest.packages);
@@ -58,11 +58,11 @@ export function assertExactTrust(packageName, response, manifest) {
   assert(record.type === "github", `${packageName} trusted publisher must be github`);
   assert(record.repository === manifest.repository, `${packageName} repository claim is incorrect`);
   assert(record.file === manifest.workflowFile, `${packageName} workflow claim is incorrect`);
-  assert(record.environment === manifest.environment, `${packageName} environment claim is incorrect`);
+  assert((record.environment ?? null) === manifest.environment, `${packageName} environment claim is incorrect`);
   const permissions = new Set(record.permissions ?? []);
   assert(permissions.has(STAGE_PERMISSION), `${packageName} is missing stage publish authority`);
-  assert(!permissions.has(DIRECT_PERMISSION), `${packageName} incorrectly grants direct publish authority`);
-  assert(permissions.size === 1, `${packageName} has unexpected trusted-publisher permissions`);
+  assert(permissions.has(DIRECT_PERMISSION), `${packageName} is missing stable publish authority`);
+  assert(permissions.size === 2, `${packageName} has unexpected trusted-publisher permissions`);
   return {packageName, trustId: record.id ?? null, verified: true};
 }
 
@@ -121,7 +121,7 @@ export async function verifyAll() {
     }
     results.push(assertExactTrust(packageName, parseTrustOutput(output, packageName), manifest));
   }
-  console.log(JSON.stringify({schemaVersion: "1.0.0", authority: "stage-only-oidc", results}, null, 2));
+  console.log(JSON.stringify({schemaVersion: "1.0.0", authority: "dual-channel-oidc", results}, null, 2));
 }
 
 const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -138,7 +138,7 @@ export async function registerAll() {
   } catch {
     throw new Error("authenticate first with npm login --auth-type=web using a 2FA-enabled maintainer account");
   }
-  console.log(`Registering stage-only trusted publishing as npm user ${username}.`);
+  console.log(`Registering dual-channel trusted publishing as npm user ${username}.`);
   console.log("The first package opens npm 2FA; choose the five-minute authorization window for the remaining packages.");
 
   for (const [index, packageName] of manifest.packages.entries()) {
@@ -146,8 +146,8 @@ export async function registerAll() {
       "trust", "github", packageName,
       "--file", manifest.workflowFile,
       "--repo", manifest.repository,
-      "--env", manifest.environment,
       "--allow-stage-publish",
+      "--allow-publish",
       "--yes",
       "--registry", manifest.registry,
     ];

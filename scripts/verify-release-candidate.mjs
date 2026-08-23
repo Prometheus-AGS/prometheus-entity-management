@@ -208,9 +208,10 @@ function verifyWorkflow({ workflow, workflowSource, rootManifest }) {
     assert(job.permissions?.contents === "write", `${environment} needs draft-release asset access`);
     assert(job.permissions?.["id-token"] === "write", `${environment} OIDC permission is required`);
     assert(job.env?.PROMETHEUS_RELEASE_AUTHORITY === authority, `${authority} flag is required`);
+    assert(job.env?.NPM_CONFIG_REGISTRY === "https://registry.npmjs.org/", `${environment} registry is required`);
     const nodeAction = findStep(job, ({ uses }) => /^actions\/setup-node@/.test(uses ?? ""));
     assert(nodeAction?.uses === "actions/setup-node@v7", `${environment} must use setup-node v7`);
-    assert(nodeAction.with?.["registry-url"] === "https://registry.npmjs.org/", `${environment} registry is required`);
+    assert(nodeAction.with?.["registry-url"] === undefined, `${environment} must not generate a token-shaped npmrc`);
     assert(findStep(job, ({ run }) => /gh release download/.test(run ?? "")), `${environment} must download release assets`);
     assert(findStep(job, ({ run }) => /verify-deployment-assets\.sh/.test(run ?? "")), `${environment} must verify immutable assets`);
     assert(findStep(job, ({ run }) => /release-candidate\.mjs stage/.test(run ?? "")), `${environment} deployment command is required`);
