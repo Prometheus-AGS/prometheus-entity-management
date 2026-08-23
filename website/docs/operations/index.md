@@ -12,7 +12,8 @@ testing, deployment, troubleshooting, skills, release recovery, and partial
 publication. Stable promotion remains a human-reviewed operation over an
 immutable certification bundle.
 
-React `latest` was intentionally moved to `3.0.0-rc.1`; documentation deployment
-and example tests cannot authorize or perform that mutation. Registry trust,
-staged approval, package integrity, and post-publish consumers remain separate
-gates for the other packages.
+All twelve npm packages are public at stable `3.0.1` on `latest` (the broken
+`3.0.0` manifests are deprecated). Documentation deployment and example tests
+never authorize or perform registry mutations. Registry trust, approval,
+package integrity, and post-publish consumer gates remain in force for future
+releases.
