@@ -13,20 +13,21 @@ singletons. Generated API pages are built from packed public artifacts rather
 than source-only aliases.
 
 Use the [package chooser](chooser.md) to select a binding or integration. The
-verified registry snapshot currently has three public npm RCs:
+verified registry snapshot has all twelve npm packages public at stable
+`3.0.2`:
 
-| Package | Install tag | Current `latest` |
+| Package | Install | Current `latest` |
 | --- | --- | --- |
-| `@prometheus-ags/entity-graph-core` | `@next` → `3.0.0-rc.1` | `3.0.0-alpha.0` |
-| `@prometheus-ags/prometheus-entity-management` | `@latest` or `@next` → `3.0.0-rc.1` | `3.0.0-rc.1` |
-| `@prometheus-ags/a2ui-react` | `@next` → `3.0.0-rc.1` | `3.0.0-alpha.0` |
-| Remaining nine npm packages | staged; not yet installable as RC | `3.0.0-alpha.0` |
+| `@prometheus-ags/prometheus-entity-management` (React) | `pnpm add @prometheus-ags/prometheus-entity-management` | `3.0.2` |
+| `@prometheus-ags/entity-graph-core` | `pnpm add @prometheus-ags/entity-graph-core` | `3.0.2` |
+| Other ten `@prometheus-ags/*` packages | `pnpm add <package>` | `3.0.2` |
 | `entity_graph_flutter` | pub.dev `3.0.0` | `3.0.0` |
 
-“Staged” is not equivalent to published: do not request `@next` for one of the
-nine packages until its npm approval is complete and the registry table is
-updated. Flutter is public and consumer-verified, although pub.dev has not yet
-associated the package with a verified publisher.
+Installs resolve stable `3.0.2` from `latest` by default. The withdrawn
+`3.0.0` manifests are deprecated (unresolved `workspace:` protocol), and
+`@next` still points at the archived `3.0.0-rc.1` candidate. Flutter is public
+and consumer-verified, although pub.dev has not yet associated the package
+with a verified publisher.
 
 [Browse the generated TypeScript API reference](https://prometheus-ags.github.io/prometheus-entity-management/api/).
 It is generated from the declarations inside all twelve packed npm tarballs.

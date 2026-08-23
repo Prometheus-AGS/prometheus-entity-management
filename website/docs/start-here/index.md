@@ -25,12 +25,12 @@ flowchart LR
 
 ## Current release boundary
 
-The active documentation line is **3.x**. React, the framework-neutral core,
-and A2UI React are public as `3.0.0-rc.1`; nine integration packages remain
-staged pending npm approval. React's `latest` and `next` tags resolve to the RC.
-Core and A2UI publish the RC on `next` while retaining their alpha `latest`
-tags. Flutter is public as `entity_graph_flutter@3.0.0` on pub.dev. See the
-[verified registry snapshot](../packages/index.md) before choosing an install command.
+The active documentation line is **3.x**. All twelve npm packages are public
+at stable `3.0.2` on the `latest` tag (published 2026-08-23; the short-lived
+`3.0.0` manifests shipped an unresolved `workspace:` protocol and are
+deprecated). Flutter is public as `entity_graph_flutter@3.0.0` on pub.dev. See
+the [verified registry snapshot](../packages/index.md) before choosing an
+install command.
 
 ## Choose your next step
 

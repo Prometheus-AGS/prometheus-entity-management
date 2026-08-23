@@ -5,6 +5,11 @@ sidebar_position: 6
 
 # Stage 3.0.0-rc.1 without a write token
 
+> **Status:** the 3.0 line is complete. Stable `3.0.2` holds `latest` on all
+> twelve npm packages (published 2026-08-23; the short-lived `3.0.0` stable
+> manifests shipped an unresolved `workspace:` protocol and are deprecated).
+> This page remains the runbook for staging future release candidates.
+
 ## Current registry state
 
 The stage-only trust relationships are configured for all twelve npm packages.
@@ -41,9 +46,9 @@ The published archive passed a clean consumer resolution, import, and analyzer c
 pub.dev does not yet associate the package with a verified publisher.
 <!-- END GENERATED:PUBDEV_REGISTRY_STATUS -->
 
-This is a partial npm publication. Do not describe staged packages as
-installable and do not rerun staging merely to obtain the already-published
-three versions.
+The rc.1 stage completed and stable `3.0.2` now holds `latest` on all twelve
+packages. The historical stage run below is kept for reference; do not rerun
+staging for versions that are already immutable on the registry.
 
 The release candidate workflow separates a non-mutating rehearsal from a
 protected stage operation. Rehearsal builds and packs the fixed artifact set,

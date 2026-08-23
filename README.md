@@ -12,9 +12,12 @@ parallel query caches.
 
 ## 3.0 release status
 
-**3.0.0 stable is published.** All twelve npm packages are public at `3.0.0`
-with the `latest` tag promoted (tag `v3.0.0`, published 2026-08-23).
-Flutter is public on pub.dev as `entity_graph_flutter@3.0.0`.
+**3.0.2 stable is published.** All twelve npm packages are public at `3.0.2`
+with the `latest` tag promoted (published 2026-08-23). `3.0.0` shipped with an
+unresolved pnpm `workspace:` protocol in its manifests and is deprecated;
+`3.0.1` and `3.0.2` are the same-day corrective republications, verified
+installable against the live registry. Flutter is public on pub.dev as
+`entity_graph_flutter@3.0.0`.
 The production documentation is available at
 [prometheus-ags.github.io/prometheus-entity-management](https://prometheus-ags.github.io/prometheus-entity-management/).
 
@@ -37,7 +40,7 @@ Registry snapshot: 2026-08-23T19:20:41Z. Expected candidate: `3.0.2`.
 | `@prometheus-ags/entity-graph-htmx` | `3.0.2` | `3.0.0-alpha.0` | `absent` | published |
 <!-- END GENERATED:RELEASE_TAGS -->
 
-The stable release is tagged `v3.0.0` and was verified live against the public
+The stable release is tagged `v3.0.2` and was verified live against the public
 registry after publication. See [RELEASING.md](RELEASING.md) for the release
 contract, the governed OIDC promotion path, and recovery rules.
 
