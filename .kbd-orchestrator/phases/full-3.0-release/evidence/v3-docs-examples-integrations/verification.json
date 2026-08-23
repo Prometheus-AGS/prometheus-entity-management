@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "change": "v3-docs-examples-integrations",
-  "generatedAt": "2026-08-23T12:02:25.716Z",
+  "generatedAt": "2026-08-23T12:49:01.089Z",
   "evidenceBoundary": {
     "kind": "packed-consumer",
     "countsAsPackedPackageEvidence": true,

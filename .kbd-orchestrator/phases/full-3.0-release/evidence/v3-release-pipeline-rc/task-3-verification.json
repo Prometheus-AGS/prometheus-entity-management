@@ -4,8 +4,8 @@
   "source": {
     "contract": "release/v3-release-contract.json",
     "policy": "release/release-candidate-policy.json",
-    "sha": "49b9d7030ba2b1f081aa100391d41114349fd186",
-    "createdAt": "2026-08-23T10:07:03.830Z"
+    "sha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+    "createdAt": "2026-08-23T12:44:24.972Z"
   },
   "registryMutation": false,
   "artifacts": {

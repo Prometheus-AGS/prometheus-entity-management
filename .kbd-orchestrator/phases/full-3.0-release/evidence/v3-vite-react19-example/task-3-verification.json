@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "change": "v3-vite-react19-example",
   "task": 3,
-  "recordedAt": "2026-08-23T12:09:55.300Z",
+  "recordedAt": "2026-08-23T12:55:34.196Z",
   "status": "pass",
   "evidenceBoundary": {
     "kind": "source-workspace-production-browser",
@@ -22,57 +22,57 @@
     {
       "label": "react-typecheck",
       "command": "pnpm --filter @prometheus-ags/prometheus-entity-management typecheck",
-      "startedAt": "2026-08-23T12:09:19.200Z",
-      "completedAt": "2026-08-23T12:09:21.453Z",
+      "startedAt": "2026-08-23T12:54:58.939Z",
+      "completedAt": "2026-08-23T12:55:00.931Z",
       "exitCode": 0
     },
     {
       "label": "vite-typecheck",
       "command": "pnpm --filter prometheus-entity-management-vite typecheck",
-      "startedAt": "2026-08-23T12:09:21.453Z",
-      "completedAt": "2026-08-23T12:09:24.901Z",
+      "startedAt": "2026-08-23T12:55:00.931Z",
+      "completedAt": "2026-08-23T12:55:04.123Z",
       "exitCode": 0
     },
     {
       "label": "entity-query-unit",
       "command": "pnpm --filter @prometheus-ags/prometheus-entity-management exec vitest run src/hooks/use-entity-query.test.ts src/hooks-suspense.test.tsx --reporter verbose",
-      "startedAt": "2026-08-23T12:09:24.901Z",
-      "completedAt": "2026-08-23T12:09:26.809Z",
+      "startedAt": "2026-08-23T12:55:04.123Z",
+      "completedAt": "2026-08-23T12:55:05.709Z",
       "exitCode": 0
     },
     {
       "label": "core-package-build",
       "command": "pnpm --filter @prometheus-ags/entity-graph-core build",
-      "startedAt": "2026-08-23T12:09:26.809Z",
-      "completedAt": "2026-08-23T12:09:28.730Z",
+      "startedAt": "2026-08-23T12:55:05.709Z",
+      "completedAt": "2026-08-23T12:55:07.255Z",
       "exitCode": 0
     },
     {
       "label": "react-package-build",
       "command": "pnpm --filter @prometheus-ags/prometheus-entity-management build",
-      "startedAt": "2026-08-23T12:09:28.730Z",
-      "completedAt": "2026-08-23T12:09:31.569Z",
+      "startedAt": "2026-08-23T12:55:07.255Z",
+      "completedAt": "2026-08-23T12:55:10.324Z",
       "exitCode": 0
     },
     {
       "label": "sync-package-build",
       "command": "pnpm --filter @prometheus-ags/entity-graph-sync build",
-      "startedAt": "2026-08-23T12:09:31.569Z",
-      "completedAt": "2026-08-23T12:09:32.768Z",
+      "startedAt": "2026-08-23T12:55:10.324Z",
+      "completedAt": "2026-08-23T12:55:11.526Z",
       "exitCode": 0
     },
     {
       "label": "vite-production-build",
       "command": "pnpm --filter prometheus-entity-management-vite build",
-      "startedAt": "2026-08-23T12:09:32.768Z",
-      "completedAt": "2026-08-23T12:09:36.997Z",
+      "startedAt": "2026-08-23T12:55:11.526Z",
+      "completedAt": "2026-08-23T12:55:15.815Z",
       "exitCode": 0
     },
     {
       "label": "vite-production-browser",
       "command": "pnpm exec playwright test --config tests/browser/v3-vite-react19-example.playwright.config.ts",
-      "startedAt": "2026-08-23T12:09:36.997Z",
-      "completedAt": "2026-08-23T12:09:55.299Z",
+      "startedAt": "2026-08-23T12:55:15.815Z",
+      "completedAt": "2026-08-23T12:55:34.195Z",
       "exitCode": 0
     }
   ],
@@ -208,27 +208,27 @@
   "artifacts": [
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-browser-graph-and-transports.png",
-      "sha256": "342c544676d071a0ffe279831c0b642239d321b30b0be1244d77e901202eb977"
+      "sha256": "c6309d47bc73e218783b5aa29ba696525cea4d39ee344177965ce43062d940b0"
     },
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-browser-mutations-and-realtime.png",
-      "sha256": "2f9ce1817b1ca46c7264e04df62e2d1f85d88537bc93704fd2b522a7a1bfdd29"
+      "sha256": "e2b693b7426c31b8afcdb6877b87bc93c35f5b8a03e9b837939b95e977842969"
     },
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-browser-offline-lifecycle-a11y.png",
-      "sha256": "e995f5cccd3b0c9c5684169ad7de4e93be1be12ae1e8b8497da8bae58495849e"
+      "sha256": "dcd285a68e873e154246bd56f3f33c94c6cb30b7bf46ab4a13c34c72896b58c8"
     },
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/playwright-artifacts/v3-vite-react19-example-PG-1be77--DevTools-and-accessibility-chromium-desktop/trace.zip",
-      "sha256": "342ed95854c4af7f28298284a246a5d2ae1840967951a4b84da1aed2dae93550"
+      "sha256": "fb43aa18f549d82d9cad82fec0ce49c36801c1ba826cf258e51abdbc0a4385fa"
     },
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/playwright-artifacts/v3-vite-react19-example-no-73518-odes-and-REST-GraphQL-seams-chromium-desktop/trace.zip",
-      "sha256": "6c25e9c4fbb6e674d88a173669bfc9cb33082b7602280faa34f8d9a55c56de63"
+      "sha256": "faaee252dc56270035459d7a062ff58c04c38e0395bbc180d013219494819a96"
     },
     {
       "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/playwright-artifacts/v3-vite-react19-example-op-f8f42-ade-and-realtime-coalescing-chromium-desktop/trace.zip",
-      "sha256": "f47623c9cfd7b3e2d9bfada493f23ccb7d5b9875fc7220820ce090c29cb10d6c"
+      "sha256": "02db734a5478dd72f4a21882dc5f648823992f007c5429580977c8a038792914"
     }
   ]
 }

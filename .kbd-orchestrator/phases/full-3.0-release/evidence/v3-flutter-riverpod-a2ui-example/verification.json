@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1",
   "change": "v3-flutter-riverpod-a2ui-example",
-  "recordedAt": "2026-08-23T12:06:33.096Z",
+  "recordedAt": "2026-08-23T12:52:37.503Z",
   "result": "pass",
   "evidenceBoundary": {
     "kind": "source-workspace",
@@ -18,36 +18,36 @@
     {
       "label": "dart-analyze",
       "command": "dart analyze --fatal-infos --fatal-warnings",
-      "startedAt": "2026-08-23T12:05:46.783Z",
-      "completedAt": "2026-08-23T12:05:53.333Z",
+      "startedAt": "2026-08-23T12:52:00.450Z",
+      "completedAt": "2026-08-23T12:52:06.402Z",
       "exitCode": 0
     },
     {
       "label": "dart-format-check",
       "command": "dart format --output=none --set-exit-if-changed .",
-      "startedAt": "2026-08-23T12:05:53.333Z",
-      "completedAt": "2026-08-23T12:05:53.603Z",
+      "startedAt": "2026-08-23T12:52:06.402Z",
+      "completedAt": "2026-08-23T12:52:06.630Z",
       "exitCode": 0
     },
     {
       "label": "flutter-test",
       "command": "flutter test --reporter compact",
-      "startedAt": "2026-08-23T12:05:53.603Z",
-      "completedAt": "2026-08-23T12:06:00.443Z",
+      "startedAt": "2026-08-23T12:52:06.630Z",
+      "completedAt": "2026-08-23T12:52:12.459Z",
       "exitCode": 0
     },
     {
       "label": "android-apk-smoke",
       "command": "flutter build apk --debug",
-      "startedAt": "2026-08-23T12:06:00.443Z",
-      "completedAt": "2026-08-23T12:06:05.927Z",
+      "startedAt": "2026-08-23T12:52:12.459Z",
+      "completedAt": "2026-08-23T12:52:17.219Z",
       "exitCode": 0
     },
     {
       "label": "ios-simulator-smoke",
       "command": "flutter build ios --simulator --no-codesign",
-      "startedAt": "2026-08-23T12:06:05.927Z",
-      "completedAt": "2026-08-23T12:06:32.851Z",
+      "startedAt": "2026-08-23T12:52:17.219Z",
+      "completedAt": "2026-08-23T12:52:37.271Z",
       "exitCode": 0
     }
   ],

@@ -3,11 +3,11 @@
   "category": "examples",
   "mandatory": true,
   "command": "pnpm run verify:agentic-a2ui",
-  "sourceSha": "49b9d7030ba2b1f081aa100391d41114349fd186",
-  "startedAt": "2026-08-23T10:00:29.854Z",
-  "durationMs": 25237,
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:42:23.314Z",
+  "durationMs": 20665,
   "exitCode": 0,
   "logFile": "logs/example-agentic-a2ui.log",
-  "logSha256": "919e6ac90a91beba1a584412ed493305ff8053c19afd3d44c9303401e2272f3a",
-  "logBytes": 7510
+  "logSha256": "a4869c81e2b3ef346155c8246eac4c06bfc0dc3557d47e41e4b2013f66c81b1d",
+  "logBytes": 7508
 }

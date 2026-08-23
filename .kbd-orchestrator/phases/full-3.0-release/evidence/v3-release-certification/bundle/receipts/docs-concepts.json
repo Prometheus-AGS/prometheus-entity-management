@@ -3,11 +3,11 @@
   "category": "docs",
   "mandatory": true,
   "command": "pnpm run verify:docs-concepts",
-  "sourceSha": "60c6e21160f84ad3c2136ca3b26ccea5c6563b95",
-  "startedAt": "2026-08-23T09:40:03.299Z",
-  "durationMs": 47828,
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:36:22.893Z",
+  "durationMs": 38479,
   "exitCode": 0,
   "logFile": "logs/docs-concepts.log",
-  "logSha256": "24427271f5cfa2603f61082cae0451e69cb6535a7c018848c28f6be07a1d25f1",
-  "logBytes": 2100
+  "logSha256": "e41eddb0d38d0b50d8f03bc257e7c202178b4a0793a76ebbf9c3e7c166471b91",
+  "logBytes": 2099
 }

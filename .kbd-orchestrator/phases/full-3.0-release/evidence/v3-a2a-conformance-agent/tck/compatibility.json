@@ -1,7 +1,7 @@
 {
   "summary": {
-    "timestamp": "2026-08-23T12:14:40.523131+00:00",
-    "sut_url": "http://127.0.0.1:49524/",
+    "timestamp": "2026-08-23T12:46:41.747152+00:00",
+    "sut_url": "http://127.0.0.1:62042/",
     "spec_version": "",
     "overall_compatibility": "100.0%",
     "must_compatibility": "100.0%",
@@ -1633,7 +1633,7 @@
     "description": "A policy-gated A2A v1 JSON-RPC agent for the Prometheus normalized entity graph and deterministic A2UI artifacts.",
     "supportedInterfaces": [
       {
-        "url": "http://127.0.0.1:49524/",
+        "url": "http://127.0.0.1:62042/",
         "protocolBinding": "JSONRPC",
         "protocolVersion": "1.0"
       }

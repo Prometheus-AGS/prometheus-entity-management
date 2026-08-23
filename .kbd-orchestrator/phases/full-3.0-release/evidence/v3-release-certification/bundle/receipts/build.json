@@ -3,11 +3,11 @@
   "category": "builds",
   "mandatory": true,
   "command": "pnpm run ci:build",
-  "sourceSha": "60c6e21160f84ad3c2136ca3b26ccea5c6563b95",
-  "startedAt": "2026-08-23T09:36:49.575Z",
-  "durationMs": 49903,
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:31:08.887Z",
+  "durationMs": 641,
   "exitCode": 0,
   "logFile": "logs/build.log",
-  "logSha256": "0a97ac2648b25e3c3e66a013c909144b431cf9cf230af8cc8393e3c9e672ce92",
-  "logBytes": 43517
+  "logSha256": "4584c06639bc1ff0c95ac67740dfac7ca7c429224a1ead2b159d776dd9c9f322",
+  "logBytes": 43300
 }

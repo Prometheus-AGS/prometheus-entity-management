@@ -473,3 +473,22 @@
   First live deployment is operator-confirmed (Pages must be enabled).
 - PHASE BOUNDARY: `v3-release-certification` (27) and
   `v3-stable-publication` (28) are the human-gated hand-off — not started.
+
+## 2026-08-23 — v3-release-certification certified (27/28)
+
+- New root command `pnpm run release:check` (`scripts/release-check.mjs`): 35
+  mandatory lanes across 14 plan categories; `--lanes` chunking; fail-closed
+  `--seal` producing SHA-256-hashed manifest bound to one source SHA.
+- Clean tagged run: annotated tag `v3.0.0-rc.1` (`55dc8dc`), verdict
+  **complete**, 35/35 pass, 1245 s. Tag is unsigned (no signing key
+  configured) — hashed, not signed; recorded as explicit limit.
+- Sweep fixed cross-change drift: 10 time-bounded build-time-only security
+  acceptances (expire 2026-11-21); stale "planned" assertions in six gates
+  after the Flutter example shipped; A2A/A2UI ledger format drift; ci-baseline
+  generated-artifact false positives; cargo registry cache re-warm.
+- Archived as `2026-08-23-v3-release-certification`; evidence in
+  `.kbd-orchestrator/phases/full-3.0-release/evidence/v3-release-certification/`
+  (bundle/, verification.md, release-impact.md).
+- PHASE BOUNDARY: `v3-stable-publication` (28) is the last change and remains
+  the human-gated hand-off — release disposition blocked by design until
+  operator authorization.

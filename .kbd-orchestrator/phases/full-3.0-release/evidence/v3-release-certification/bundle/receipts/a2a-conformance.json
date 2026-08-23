@@ -3,11 +3,11 @@
   "category": "protocol-bridges",
   "mandatory": true,
   "command": "pnpm run verify:a2a-conformance",
-  "sourceSha": "60c6e21160f84ad3c2136ca3b26ccea5c6563b95",
-  "startedAt": "2026-08-23T09:46:35.560Z",
-  "durationMs": 10921,
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:32:48.782Z",
+  "durationMs": 8255,
   "exitCode": 0,
   "logFile": "logs/a2a-conformance.log",
-  "logSha256": "9646f092ebeca5472a76a3df66ce1bf279c5938a91d30d3870f92e931b16aa7c",
-  "logBytes": 3077
+  "logSha256": "c8b2a18b832f839efe3fd6608678d8e9e34beb82dc284ceae302ee91580bd6db",
+  "logBytes": 3076
 }

@@ -3,11 +3,11 @@
   "category": "packed-consumers",
   "mandatory": true,
   "command": "pnpm run verify:binding-singletons",
-  "sourceSha": "60c6e21160f84ad3c2136ca3b26ccea5c6563b95",
-  "startedAt": "2026-08-23T09:45:42.042Z",
-  "durationMs": 7810,
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:31:43.432Z",
+  "durationMs": 7372,
   "exitCode": 0,
   "logFile": "logs/binding-singletons.log",
-  "logSha256": "e07cabf701471884e4d4516d70fbcc9e9c9955bef5a4cdb84f4bc48bf2bb9a6b",
+  "logSha256": "f3965ae749f9d5d077dae49c76dc6209d15477eda973ec9755e30e156f31e8b7",
   "logBytes": 25316
 }

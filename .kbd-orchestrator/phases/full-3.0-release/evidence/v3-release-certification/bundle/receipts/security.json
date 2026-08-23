@@ -3,11 +3,11 @@
   "category": "audits",
   "mandatory": true,
   "command": "pnpm run ci:security",
-  "sourceSha": "60c6e21160f84ad3c2136ca3b26ccea5c6563b95",
-  "startedAt": "2026-08-23T09:36:30.367Z",
-  "durationMs": 1648,
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:30:30.582Z",
+  "durationMs": 1385,
   "exitCode": 0,
   "logFile": "logs/security.log",
-  "logSha256": "62ccf70ce1596b3e8d1625c277e7948ab4ba7c3b0732307671e84ed0c48e2bd1",
+  "logSha256": "8eaa9a688d41a49e58e2954827d4c66af0eec572b3fe4cbbf474f290b1767630",
   "logBytes": 715
 }

@@ -3,11 +3,11 @@
   "category": "packed-consumers",
   "mandatory": true,
   "command": "pnpm run verify:framework-neutral-core",
-  "sourceSha": "60c6e21160f84ad3c2136ca3b26ccea5c6563b95",
-  "startedAt": "2026-08-23T09:45:37.309Z",
-  "durationMs": 4708,
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:31:38.983Z",
+  "durationMs": 4424,
   "exitCode": 0,
   "logFile": "logs/framework-neutral-core.log",
-  "logSha256": "dfdfa55a24f71c9e703f3c49c223ea9bbbf8efcf36e2964b0d6c46ef54189f57",
+  "logSha256": "22f300f778f2c6bb747b551c2d57b49f7ccecdfd620ff49ab221bedfc4bc191a",
   "logBytes": 1256
 }

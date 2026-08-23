@@ -3,11 +3,11 @@
   "category": "portable-contracts",
   "mandatory": true,
   "command": "pnpm run verify:flint-contracts",
-  "sourceSha": "60c6e21160f84ad3c2136ca3b26ccea5c6563b95",
-  "startedAt": "2026-08-23T09:45:49.884Z",
-  "durationMs": 3567,
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:31:50.823Z",
+  "durationMs": 3329,
   "exitCode": 0,
   "logFile": "logs/flint-contracts.log",
-  "logSha256": "ee05b3fcfd90870b0e2259bc03207c026cfd2682604e6be109e0987b3abf4c22",
-  "logBytes": 1784
+  "logSha256": "b7eadc15b02c03cd7a45b24a5de8148240098c85a20672aa2da6b7d932677dfd",
+  "logBytes": 1780
 }

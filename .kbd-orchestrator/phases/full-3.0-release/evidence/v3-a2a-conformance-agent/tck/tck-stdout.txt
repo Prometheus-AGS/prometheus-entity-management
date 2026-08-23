@@ -1,8 +1,8 @@
 ============================= test session starts ==============================
-platform darwin -- Python 3.13.1, pytest-9.0.2, pluggy-1.6.0 -- /var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-a2a-tck-EU5auz/a2a-tck/.venv/bin/python
+platform darwin -- Python 3.13.1, pytest-9.0.2, pluggy-1.6.0 -- /var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-a2a-tck-NkIwQY/a2a-tck/.venv/bin/python
 cachedir: .pytest_cache
-metadata: {'Python': '3.13.1', 'Platform': 'macOS-26.6-arm64-arm-64bit-Mach-O', 'Packages': {'pytest': '9.0.2', 'pluggy': '1.6.0'}, 'Plugins': {'anyio': '4.12.1', 'metadata': '3.1.1', 'html': '4.2.0', 'asyncio': '1.3.0'}}
-rootdir: /private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-a2a-tck-EU5auz/a2a-tck
+metadata: {'Python': '3.13.1', 'Platform': 'macOS-26.6-arm64-arm-64bit-Mach-O', 'Packages': {'pytest': '9.0.2', 'pluggy': '1.6.0'}, 'Plugins': {'anyio': '4.12.1', 'metadata': '3.1.1', 'html': '4.2.0', 'asyncio': '1.3.0'}, 'CI': 'true'}
+rootdir: /private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-a2a-tck-NkIwQY/a2a-tck
 configfile: pyproject.toml
 plugins: anyio-4.12.1, metadata-3.1.1, html-4.2.0, asyncio-1.3.0
 asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
@@ -277,8 +277,8 @@ tests/compatibility/jsonrpc/test_sse_streaming.py::TestSseSubscribeToTask::test_
 ═══════════════════════════════════════════════════════
              A2A TCK Compatibility Report              
 ═══════════════════════════════════════════════════════
-SUT: http://127.0.0.1:49524/
-Timestamp: 2026-08-23T12:14:40.523131+00:00
+SUT: http://127.0.0.1:62042/
+Timestamp: 2026-08-23T12:46:41.747152+00:00
 
 OVERALL COMPATIBILITY: 100.0%
 
@@ -299,8 +299,8 @@ BY TRANSPORT:
 ═══════════════════════════════════════════════════════
 
 
-- generated xml file: /private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-a2a-tck-EU5auz/a2a-tck/reports/junitreport.xml -
-- Generated html report: file:///private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-a2a-tck-EU5auz/a2a-tck/reports/tck_report.html -
-======================= 93 passed, 172 skipped in 31.50s =======================
-Command: /var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-a2a-tck-EU5auz/a2a-tck/.venv/bin/python -m pytest tests/compatibility/ --sut-host=http://127.0.0.1:49524/ --tb=short --transport=jsonrpc -v --compatibility-report=reports/compatibility --html=reports/tck_report.html --self-contained-html --junitxml=reports/junitreport.xml
+- generated xml file: /private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-a2a-tck-NkIwQY/a2a-tck/reports/junitreport.xml -
+- Generated html report: file:///private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-a2a-tck-NkIwQY/a2a-tck/reports/tck_report.html -
+======================= 93 passed, 172 skipped in 31.52s =======================
+Command: /var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-a2a-tck-NkIwQY/a2a-tck/.venv/bin/python -m pytest tests/compatibility/ --sut-host=http://127.0.0.1:62042/ --tb=short --transport=jsonrpc -v --compatibility-report=reports/compatibility --html=reports/tck_report.html --self-contained-html --junitxml=reports/junitreport.xml
 

@@ -3,11 +3,11 @@
   "category": "docs",
   "mandatory": true,
   "command": "pnpm run verify:docs-examples",
-  "sourceSha": "60c6e21160f84ad3c2136ca3b26ccea5c6563b95",
-  "startedAt": "2026-08-23T09:40:51.166Z",
-  "durationMs": 45810,
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:37:01.398Z",
+  "durationMs": 39118,
   "exitCode": 0,
   "logFile": "logs/docs-examples.log",
-  "logSha256": "bc049059fb71326c11b7e8c52a8799ed98cf0c5d2056b2c125d2e7e2301cdae3",
+  "logSha256": "4a30409e44247b8933a6baad26997e312850044c06b1dd9b9368a5b736141053",
   "logBytes": 2229
 }

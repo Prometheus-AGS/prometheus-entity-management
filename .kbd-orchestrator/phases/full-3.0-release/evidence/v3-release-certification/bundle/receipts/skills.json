@@ -3,11 +3,11 @@
   "category": "skills",
   "mandatory": true,
   "command": "pnpm run ci:skills",
-  "sourceSha": "60c6e21160f84ad3c2136ca3b26ccea5c6563b95",
-  "startedAt": "2026-08-23T09:36:32.035Z",
-  "durationMs": 5075,
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:30:31.991Z",
+  "durationMs": 4336,
   "exitCode": 0,
   "logFile": "logs/skills.log",
-  "logSha256": "1214bffc7deae2231c48bce7ba9be171166e2d3dc5585a9a97629e467e208389",
+  "logSha256": "217ab94a2bc8beaf701030173e58a6e6e8a11f5aa4f97c425ccd9b834151346e",
   "logBytes": 5319
 }

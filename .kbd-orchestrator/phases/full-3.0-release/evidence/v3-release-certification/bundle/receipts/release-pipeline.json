@@ -3,11 +3,11 @@
   "category": "registry-dry-runs",
   "mandatory": true,
   "command": "pnpm run verify:release-pipeline",
-  "sourceSha": "49b9d7030ba2b1f081aa100391d41114349fd186",
-  "startedAt": "2026-08-23T10:06:33.448Z",
-  "durationMs": 30620,
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:43:53.191Z",
+  "durationMs": 31992,
   "exitCode": 0,
   "logFile": "logs/release-pipeline.log",
-  "logSha256": "c8cd543f7b17c781c8a00036bfed5ef75ac29fae18de015edee9a61034c87d16",
-  "logBytes": 50044
+  "logSha256": "e53a84cdf08521c6d5e7ec73aa480e748e857d8e7a40406ff3b213aec78ef54f",
+  "logBytes": 50045
 }

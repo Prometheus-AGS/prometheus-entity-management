@@ -3,11 +3,11 @@
   "category": "cargo-tauri",
   "mandatory": true,
   "command": "pnpm run verify:tauri-plugin",
-  "sourceSha": "49b9d7030ba2b1f081aa100391d41114349fd186",
-  "startedAt": "2026-08-23T09:57:56.463Z",
-  "durationMs": 17614,
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:33:24.824Z",
+  "durationMs": 20161,
   "exitCode": 0,
   "logFile": "logs/tauri-plugin.log",
-  "logSha256": "2b12e9c496cc9dab81955526d231e0a9c1edde065a85d286b2a2f71155606444",
+  "logSha256": "56f0b367f275d5de38f0508b0818ff11fc2f1d8d20ad0a6876772c5b23cb31d0",
   "logBytes": 8584
 }
