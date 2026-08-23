@@ -32,7 +32,9 @@
   "scripts": {
     "build": "node ../../scripts/build-web-components-package.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "refresh:exports": "pnpm run build && node ../../scripts/refresh-exports-ledger.mjs --pkg web-components",
+    "verify:skills": "node ../../scripts/verify-skills-exports.mjs --pkg web-components"
   },
   "peerDependencies": {
     "@prometheus-ags/entity-graph-core": "workspace:^",

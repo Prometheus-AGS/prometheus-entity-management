@@ -1,580 +1,580 @@
 {
-  "conflictCount": 0,
-  "cursor": [
-    "full-3.0-release",
-    "v3-release-contract",
-    "Confirm dependencies are complete: NONE."
-  ],
-  "derivedRevision": 28,
-  "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 28
-  },
-  "generatedBy": "kbd-runtime",
-  "root": {
+ "conflictCount": 0,
+ "cursor": [
+  "full-3.0-release",
+  "v3-stable-publication",
+  "Confirm dependencies are complete: v3-release-certification."
+ ],
+ "derivedRevision": 37,
+ "frontier": {
+  "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 37
+ },
+ "generatedBy": "kbd-runtime",
+ "root": {
+  "annotations": [],
+  "children": [
+   {
     "annotations": [],
+    "canonicalId": "full-3.0-release",
     "children": [
-      {
-        "annotations": [],
-        "canonicalId": "full-3.0-release",
-        "children": [
-          {
-            "id": "v3-release-contract",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-main-ci-baseline",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-package-module-contracts",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-framework-neutral-core",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-binding-singleton-contract",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-release-pipeline-rc",
-            "progress": {
-              "done": 2,
-              "total": 2
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-example-coverage-contract",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-sync-persistence-path",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-a2ui-protocol-bridge",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-a2a-conformance-agent",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-flutter-source-provenance",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-dart-graph-riverpod",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-tauri-mobile-plugin",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-vite-react19-example",
-            "progress": {
-              "done": 6,
-              "total": 6
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-nextjs-app-router-example",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-agentic-a2ui-example",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-flutter-riverpod-a2ui-example",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-tauri-universal-example",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-flint-portable-contracts",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-skills-ecosystem",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-docs-foundation-brand",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-docs-api-reference",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-docs-concepts-packages",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-docs-examples-integrations",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-docs-operations-migration",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-docs-github-pages",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-release-certification",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          },
-          {
-            "id": "v3-stable-publication",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "PENDING",
-            "type": "change"
-          }
-        ],
-        "id": "full-3.0-release",
-        "progress": {
-          "done": 2,
-          "total": 28
-        },
-        "status": "PENDING",
-        "type": "phase"
+     {
+      "id": "v3-release-contract",
+      "progress": {
+       "done": 0,
+       "total": 0
       },
-      {
-        "annotations": [],
-        "canonicalId": "phase-v1-npm-framework",
-        "children": [],
-        "id": "phase-v1-npm-framework",
-        "progress": {
-          "done": 0,
-          "total": 0
-        },
-        "status": "PENDING",
-        "type": "phase"
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-main-ci-baseline",
+      "progress": {
+       "done": 0,
+       "total": 0
       },
-      {
-        "annotations": [],
-        "canonicalId": "phase-v2-examples-and-docs-coverage",
-        "children": [],
-        "id": "phase-v2-examples-and-docs-coverage",
-        "progress": {
-          "done": 0,
-          "total": 0
-        },
-        "status": "PENDING",
-        "type": "phase"
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-package-module-contracts",
+      "progress": {
+       "done": 0,
+       "total": 0
       },
-      {
-        "annotations": [],
-        "canonicalId": "phase-v2-realtime-fabric-parity",
-        "children": [
-          {
-            "id": "v2-crdt-merge-strategy-port",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v2-tauri-sqlite-persistence",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v2-devtools-time-travel",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v2-incremental-query-spike",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v2-eslint-layering-rule",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v2-agui-ingestion-bridge",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v2-flint-realtime-adapter",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v2-devtools-graph-visualization",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          }
-        ],
-        "id": "phase-v2-realtime-fabric-parity",
-        "progress": {
-          "done": 8,
-          "total": 8
-        },
-        "status": "COMPLETE",
-        "type": "phase"
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-framework-neutral-core",
+      "progress": {
+       "done": 0,
+       "total": 0
       },
-      {
-        "annotations": [],
-        "canonicalId": "phase-v3-universal-platform-evolution",
-        "children": [
-          {
-            "id": "v3-monorepo-and-tooling",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-core-extraction",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-sdl-spec",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-electricsql-react-extract",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-react-parity",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-svelte-bindings",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-solid-bindings",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-sync-providers",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-lit-webcomponents",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-alpine-plugin",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-htmx-server-adapter",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-rust-cli",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-mcp-server",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-a2a-server",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-tauri-plugin",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-flutter-package",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          },
-          {
-            "id": "v3-a2ui-react",
-            "progress": {
-              "done": 0,
-              "total": 0
-            },
-            "status": "COMPLETE",
-            "type": "change"
-          }
-        ],
-        "id": "phase-v3-universal-platform-evolution",
-        "progress": {
-          "done": 17,
-          "total": 17
-        },
-        "status": "COMPLETE",
-        "type": "phase"
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-binding-singleton-contract",
+      "progress": {
+       "done": 0,
+       "total": 0
       },
-      {
-        "annotations": [],
-        "canonicalId": "phase-v4-prometheus-entity-sync",
-        "children": [],
-        "id": "phase-v4-prometheus-entity-sync",
-        "progress": {
-          "done": 0,
-          "total": 0
-        },
-        "status": "PENDING",
-        "type": "phase"
-      }
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-release-pipeline-rc",
+      "progress": {
+       "done": 2,
+       "total": 2
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-example-coverage-contract",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-sync-persistence-path",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-a2ui-protocol-bridge",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-a2a-conformance-agent",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-flutter-source-provenance",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-dart-graph-riverpod",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-tauri-mobile-plugin",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-vite-react19-example",
+      "progress": {
+       "done": 6,
+       "total": 6
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-nextjs-app-router-example",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-agentic-a2ui-example",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-flutter-riverpod-a2ui-example",
+      "progress": {
+       "done": 6,
+       "total": 6
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-tauri-universal-example",
+      "progress": {
+       "done": 6,
+       "total": 6
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-flint-portable-contracts",
+      "progress": {
+       "done": 6,
+       "total": 6
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-skills-ecosystem",
+      "progress": {
+       "done": 6,
+       "total": 6
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-docs-foundation-brand",
+      "progress": {
+       "done": 6,
+       "total": 6
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-docs-api-reference",
+      "progress": {
+       "done": 6,
+       "total": 6
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-docs-concepts-packages",
+      "progress": {
+       "done": 6,
+       "total": 6
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-docs-examples-integrations",
+      "progress": {
+       "done": 6,
+       "total": 6
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-docs-operations-migration",
+      "progress": {
+       "done": 6,
+       "total": 6
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-docs-github-pages",
+      "progress": {
+       "done": 6,
+       "total": 6
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-release-certification",
+      "progress": {
+       "done": 6,
+       "total": 6
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-stable-publication",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "PENDING",
+      "type": "change"
+     }
     ],
-    "id": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
+    "id": "full-3.0-release",
     "progress": {
-      "done": 27,
-      "total": 53
+     "done": 27,
+     "total": 28
     },
-    "status": "running",
+    "status": "PENDING",
     "type": "phase"
+   },
+   {
+    "annotations": [],
+    "canonicalId": "phase-v1-npm-framework",
+    "children": [],
+    "id": "phase-v1-npm-framework",
+    "progress": {
+     "done": 0,
+     "total": 0
+    },
+    "status": "PENDING",
+    "type": "phase"
+   },
+   {
+    "annotations": [],
+    "canonicalId": "phase-v2-examples-and-docs-coverage",
+    "children": [],
+    "id": "phase-v2-examples-and-docs-coverage",
+    "progress": {
+     "done": 0,
+     "total": 0
+    },
+    "status": "PENDING",
+    "type": "phase"
+   },
+   {
+    "annotations": [],
+    "canonicalId": "phase-v2-realtime-fabric-parity",
+    "children": [
+     {
+      "id": "v2-crdt-merge-strategy-port",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v2-tauri-sqlite-persistence",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v2-devtools-time-travel",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v2-incremental-query-spike",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v2-eslint-layering-rule",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v2-agui-ingestion-bridge",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v2-flint-realtime-adapter",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v2-devtools-graph-visualization",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     }
+    ],
+    "id": "phase-v2-realtime-fabric-parity",
+    "progress": {
+     "done": 8,
+     "total": 8
+    },
+    "status": "COMPLETE",
+    "type": "phase"
+   },
+   {
+    "annotations": [],
+    "canonicalId": "phase-v3-universal-platform-evolution",
+    "children": [
+     {
+      "id": "v3-monorepo-and-tooling",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-core-extraction",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-sdl-spec",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-electricsql-react-extract",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-react-parity",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-svelte-bindings",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-solid-bindings",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-sync-providers",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-lit-webcomponents",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-alpine-plugin",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-htmx-server-adapter",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-rust-cli",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-mcp-server",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-a2a-server",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-tauri-plugin",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-flutter-package",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     },
+     {
+      "id": "v3-a2ui-react",
+      "progress": {
+       "done": 0,
+       "total": 0
+      },
+      "status": "COMPLETE",
+      "type": "change"
+     }
+    ],
+    "id": "phase-v3-universal-platform-evolution",
+    "progress": {
+     "done": 17,
+     "total": 17
+    },
+    "status": "COMPLETE",
+    "type": "phase"
+   },
+   {
+    "annotations": [],
+    "canonicalId": "phase-v4-prometheus-entity-sync",
+    "children": [],
+    "id": "phase-v4-prometheus-entity-sync",
+    "progress": {
+     "done": 0,
+     "total": 0
+    },
+    "status": "PENDING",
+    "type": "phase"
+   }
+  ],
+  "id": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
+  "progress": {
+   "done": 38,
+   "total": 53
   },
-  "schemaVersion": "1",
-  "sourceRevision": 28,
-  "updatedAt": "2026-08-03T08:14:05.069372Z"
+  "status": "running",
+  "type": "phase"
+ },
+ "schemaVersion": "1",
+ "sourceRevision": 37,
+ "updatedAt": "2026-08-23T08:20:00Z"
 }

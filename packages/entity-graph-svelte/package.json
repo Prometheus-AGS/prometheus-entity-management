@@ -32,7 +32,9 @@
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "refresh:exports": "pnpm run build && node ../../scripts/refresh-exports-ledger.mjs --pkg svelte",
+    "verify:skills": "node ../../scripts/verify-skills-exports.mjs --pkg svelte"
   },
   "peerDependencies": {
     "@prometheus-ags/entity-graph-core": "workspace:^",

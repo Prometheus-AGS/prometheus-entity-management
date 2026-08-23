@@ -1,0 +1,59 @@
+---
+title: Package selection
+description: Which 3.0 artifact for which stack — the 12 npm packages, the Dart package, and the Rust crates, with their evidence gates.
+---
+
+# Package selection
+
+Pick the smallest set of packages that covers your stack. Everything builds
+on `@prometheus-ags/entity-graph-core`; bindings are singleton facades over
+it — **one graph per application**, regardless of how many bindings you mix.
+
+## npm packages
+
+| Package | Use it for |
+| ------- | ---------- |
+| `@prometheus-ags/entity-graph-core` | Framework-neutral graph, engine, view layer, realtime manager, adapters |
+| `@prometheus-ags/prometheus-entity-management` | React 19: hooks, CRUD, UI components, GraphQL, Prisma helpers |
+| `@prometheus-ags/entity-graph-sync` | Local-first sync: Yjs/Loro CRDT providers, convergence |
+| `@prometheus-ags/entity-graph-svelte` | Svelte 5 runes stores |
+| `@prometheus-ags/entity-graph-solid` | SolidJS signals |
+| `@prometheus-ags/entity-graph-alpine` | Alpine.js plugin |
+| `@prometheus-ags/entity-graph-htmx` | HTMX + SSE server rendering |
+| `@prometheus-ags/entity-graph-web-components` | Framework-agnostic custom elements |
+| `@prometheus-ags/a2ui-react` | A2UI agent-driven UI surfaces |
+| `@prometheus-ags/entity-graph-a2a` | A2A agent server with graph policy authority |
+| `@prometheus-ags/entity-graph-tauri` | Tauri 2 plugin bindings |
+| `@prometheus-ags/entity-graph-sdl` | SDL schema parsing and validation |
+
+## Dart and Rust
+
+- **`entity_graph_flutter`** — canonical Dart graph + Riverpod providers
+  ([Flutter guide](/docs/guides/bindings/flutter)).
+- **`entity-graph-cli`** (Rust crate) — scaffold `schema.json`, generate
+  TypeScript types and transport stubs.
+- **`entity-graph-mcp`** (Rust crate) — expose the graph as MCP
+  resources/tools over stdio or Streamable HTTP.
+
+## Decision shortcuts
+
+- React web app → `prometheus-entity-management` only. Core comes with it.
+- Non-React web app → `entity-graph-core` + your binding package.
+- Offline / multi-device → add `entity-graph-sync`.
+- Server-rendered, minimal JS → `entity-graph-htmx` (server-side).
+- Desktop → `entity-graph-tauri`; mobile → `entity_graph_flutter`.
+- Agents driving UI → `a2ui-react`; agents calling your app →
+  `entity-graph-a2a` or the MCP crate.
+
+## Install rules
+
+Always install from the npm registry with pnpm:
+
+```bash
+pnpm add @prometheus-ags/prometheus-entity-management
+```
+
+Never wire `file:`, `link:`, or `workspace:` protocol dependencies into an
+application that consumes these packages — publish prereleases to a registry
+(or use pnpm overrides in a throwaway sandbox) when testing unreleased
+changes, so lockfiles stay reproducible.

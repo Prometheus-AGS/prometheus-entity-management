@@ -50,6 +50,9 @@
   "stablePromotion": {
     "change": "v3-stable-publication",
     "requiresExplicitHumanAuthority": true,
-    "implementedByThisChange": false
+    "implementedByThisChange": false,
+    "channel": "stable",
+    "npmAction": "stage-stable",
+    "environment": "npm-stable"
   }
 }

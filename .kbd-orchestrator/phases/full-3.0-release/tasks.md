@@ -65,55 +65,120 @@
 
 ## v3-nextjs-app-router-example — v3-nextjs-app-router-example
 
-- [ ] No tasks registered
+- [x] 1 — Confirm dependencies are complete: v3-framework-neutral-core; v3-binding-singleton-contract; v3-example-coverage-contract; v3-sync-persistence-path. (COMPLETE)
+- [x] 2 — Implement the full scope in the `v3-nextjs-app-router-example` plan section without weakening its explicit exclusions. (COMPLETE)
+- [x] 3 — Add or update unit, integration, consumer, platform, documentation, and/or E2E checks required by the plan acceptance criteria. (COMPLETE)
+- [x] 4 — Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface. (COMPLETE)
+- [x] 5 — Run the relevant pnpm, Dart/Melos, Cargo, OpenSpec, package, docs, security, and platform gates from a clean state. (COMPLETE)
+- [x] 6 — Record verification evidence, unresolved platform/manual limits, and release impact before archive. (COMPLETE)
 
 ## v3-agentic-a2ui-example — v3-agentic-a2ui-example
 
-- [ ] No tasks registered
+- [x] 1 — Confirm dependencies are complete: v3-example-coverage-contract; v3-a2ui-protocol-bridge; v3-a2a-conformance-agent. (COMPLETE)
+- [x] 2 — Implement the full scope in the `v3-agentic-a2ui-example` plan section without weakening its explicit exclusions. (COMPLETE)
+- [x] 3 — Add or update unit, integration, consumer, platform, documentation, and/or E2E checks required by the plan acceptance criteria. (COMPLETE)
+- [x] 4 — Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface. (COMPLETE)
+- [x] 5 — Run the relevant pnpm, Dart/Melos, Cargo, OpenSpec, package, docs, security, and platform gates from a clean state. (COMPLETE)
+- [x] 6 — Record verification evidence, unresolved platform/manual limits, and release impact before archive. (COMPLETE)
 
 ## v3-flutter-riverpod-a2ui-example — v3-flutter-riverpod-a2ui-example
 
-- [ ] No tasks registered
+- [x] 1 — Confirm dependencies are complete: v3-dart-graph-riverpod; v3-a2ui-protocol-bridge; v3-example-coverage-contract. (COMPLETE)
+- [x] 2 — Implement the full scope in the `v3-flutter-riverpod-a2ui-example` plan section without weakening its explicit exclusions. (COMPLETE)
+- [x] 3 — Add or update unit, integration, consumer, platform, documentation, and/or E2E checks required by the plan acceptance criteria. (COMPLETE)
+- [x] 4 — Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface. (COMPLETE)
+- [x] 5 — Run the relevant pnpm, Dart/Melos, Cargo, OpenSpec, package, docs, security, and platform gates from a clean state. (COMPLETE)
+- [x] 6 — Record verification evidence, unresolved platform/manual limits, and release impact before archive. (COMPLETE)
 
 ## v3-tauri-universal-example — v3-tauri-universal-example
 
-- [ ] No tasks registered
+- [x] 1 — Confirm dependencies are complete: v3-tauri-mobile-plugin; v3-example-coverage-contract; v3-sync-persistence-path. (COMPLETE)
+- [x] 2 — Implement the full scope in the `v3-tauri-universal-example` plan section without weakening its explicit exclusions. (COMPLETE)
+- [x] 3 — Add or update unit, integration, consumer, platform, documentation, and/or E2E checks required by the plan acceptance criteria. (COMPLETE)
+- [x] 4 — Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface. (COMPLETE)
+- [x] 5 — Run the relevant pnpm, Dart/Melos, Cargo, OpenSpec, package, docs, security, and platform gates from a clean state. (COMPLETE)
+- [x] 6 — Record verification evidence, unresolved platform/manual limits, and release impact before archive. (COMPLETE)
 
 ## v3-flint-portable-contracts — v3-flint-portable-contracts
 
-- [ ] No tasks registered
+- [x] 1 — Confirm dependencies are complete: v3-framework-neutral-core; v3-example-coverage-contract. (COMPLETE)
+- [x] 2 — Implement the full scope in the `v3-flint-portable-contracts` plan section without weakening its explicit exclusions. (COMPLETE)
+- [x] 3 — Add or update unit, integration, consumer, platform, documentation, and/or E2E checks required by the plan acceptance criteria. (COMPLETE)
+- [x] 4 — Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface. (COMPLETE)
+- [x] 5 — Run the relevant pnpm, Dart/Melos, Cargo, OpenSpec, package, docs, security, and platform gates from a clean state. (COMPLETE)
+- [x] 6 — Record verification evidence, unresolved platform/manual limits, and release impact before archive. (COMPLETE)
 
 ## v3-skills-ecosystem — v3-skills-ecosystem
 
-- [ ] No tasks registered
+- [x] 1 — Confirm dependencies are complete: v3-sync-persistence-path; v3-a2ui-protocol-bridge; v3-a2a-conformance-agent; v3-dart-graph-riverpod; v3-tauri-mobile-plugin; v3-flint-portable-contracts; v3-vite-react19-example; v3-nextjs-app-router-example. (COMPLETE)
+- [x] 2 — Implement the full scope in the `v3-skills-ecosystem` plan section without weakening its explicit exclusions. (COMPLETE)
+- [x] 3 — Add or update unit, integration, consumer, platform, documentation, and/or E2E checks required by the plan acceptance criteria. (COMPLETE)
+- [x] 4 — Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface. (COMPLETE)
+- [x] 5 — Run the relevant pnpm, Dart/Melos, Cargo, OpenSpec, package, docs, security, and platform gates from a clean state. (COMPLETE)
+- [x] 6 — Record verification evidence, unresolved platform/manual limits, and release impact before archive. (COMPLETE)
 
 ## v3-docs-foundation-brand — v3-docs-foundation-brand
 
-- [ ] No tasks registered
+- [x] 1 — Confirm dependencies are complete: v3-release-contract; v3-example-coverage-contract. (COMPLETE)
+- [x] 2 — Implement the full scope in the `v3-docs-foundation-brand` plan section without weakening its explicit exclusions. (COMPLETE)
+- [x] 3 — Add or update unit, integration, consumer, platform, documentation, and/or E2E checks required by the plan acceptance criteria. (COMPLETE)
+- [x] 4 — Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface. (COMPLETE)
+- [x] 5 — Run the relevant pnpm, Dart/Melos, Cargo, OpenSpec, package, docs, security, and platform gates from a clean state. (COMPLETE)
+- [x] 6 — Record verification evidence, unresolved platform/manual limits, and release impact before archive. (COMPLETE)
 
 ## v3-docs-api-reference — v3-docs-api-reference
 
-- [ ] No tasks registered
+- [x] 1 — Confirm dependencies are complete: v3-package-module-contracts; v3-dart-graph-riverpod; v3-tauri-mobile-plugin; v3-docs-foundation-brand. (COMPLETE)
+- [x] 2 — Implement the full scope in the `v3-docs-api-reference` plan section without weakening its explicit exclusions. (COMPLETE)
+- [x] 3 — Add or update unit, integration, consumer, platform, documentation, and/or E2E checks required by the plan acceptance criteria. (COMPLETE)
+- [x] 4 — Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface. (COMPLETE)
+- [x] 5 — Run the relevant pnpm, Dart/Melos, Cargo, OpenSpec, package, docs, security, and platform gates from a clean state. (COMPLETE)
+- [x] 6 — Record verification evidence, unresolved platform/manual limits, and release impact before archive. (COMPLETE)
 
 ## v3-docs-concepts-packages — v3-docs-concepts-packages
 
-- [ ] No tasks registered
+- [x] 1 — Confirm dependencies are complete: v3-framework-neutral-core; v3-binding-singleton-contract; v3-sync-persistence-path; v3-docs-foundation-brand. (COMPLETE)
+- [x] 2 — Implement the full scope in the `v3-docs-concepts-packages` plan section without weakening its explicit exclusions. (COMPLETE)
+- [x] 3 — Add or update unit, integration, consumer, platform, documentation, and/or E2E checks required by the plan acceptance criteria. (COMPLETE)
+- [x] 4 — Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface. (COMPLETE)
+- [x] 5 — Run the relevant pnpm, Dart/Melos, Cargo, OpenSpec, package, docs, security, and platform gates from a clean state. (COMPLETE)
+- [x] 6 — Record verification evidence, unresolved platform/manual limits, and release impact before archive. (COMPLETE)
 
 ## v3-docs-examples-integrations — v3-docs-examples-integrations
 
-- [ ] No tasks registered
+- [x] 1 — Confirm dependencies are complete: v3-vite-react19-example; v3-nextjs-app-router-example; v3-agentic-a2ui-example; v3-flutter-riverpod-a2ui-example; v3-tauri-universal-example; v3-flint-portable-contracts; v3-docs-foundation-brand. (COMPLETE)
+- [x] 2 — Implement the full scope in the `v3-docs-examples-integrations` plan section without weakening its explicit exclusions. (COMPLETE)
+- [x] 3 — Add or update unit, integration, consumer, platform, documentation, and/or E2E checks required by the plan acceptance criteria. (COMPLETE)
+- [x] 4 — Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface. (COMPLETE)
+- [x] 5 — Run the relevant pnpm, Dart/Melos, Cargo, OpenSpec, package, docs, security, and platform gates from a clean state. (COMPLETE)
+- [x] 6 — Record verification evidence, unresolved platform/manual limits, and release impact before archive. (COMPLETE)
 
 ## v3-docs-operations-migration — v3-docs-operations-migration
 
-- [ ] No tasks registered
+- [x] 1 — Confirm dependencies are complete: v3-release-pipeline-rc; v3-skills-ecosystem; v3-docs-foundation-brand. (COMPLETE)
+- [x] 2 — Implement the full scope in the `v3-docs-operations-migration` plan section without weakening its explicit exclusions. (COMPLETE)
+- [x] 3 — Add or update unit, integration, consumer, platform, documentation, and/or E2E checks required by the plan acceptance criteria. (COMPLETE)
+- [x] 4 — Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface. (COMPLETE)
+- [x] 5 — Run the relevant pnpm, Dart/Melos, Cargo, OpenSpec, package, docs, security, and platform gates from a clean state. (COMPLETE)
+- [x] 6 — Record verification evidence, unresolved platform/manual limits, and release impact before archive. (COMPLETE)
 
 ## v3-docs-github-pages — v3-docs-github-pages
 
-- [ ] No tasks registered
+- [x] 1 — Confirm dependencies are complete: v3-docs-api-reference; v3-docs-concepts-packages; v3-docs-examples-integrations; v3-docs-operations-migration. (COMPLETE)
+- [x] 2 — Implement the full scope in the `v3-docs-github-pages` plan section without weakening its explicit exclusions. (COMPLETE)
+- [x] 3 — Add or update unit, integration, consumer, platform, documentation, and/or E2E checks required by the plan acceptance criteria. (COMPLETE)
+- [x] 4 — Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface. (COMPLETE)
+- [x] 5 — Run the relevant pnpm, Dart/Melos, Cargo, OpenSpec, package, docs, security, and platform gates from a clean state. (COMPLETE)
+- [x] 6 — Record verification evidence, unresolved platform/manual limits, and release impact before archive. (COMPLETE)
 
 ## v3-release-certification — v3-release-certification
 
-- [ ] No tasks registered
+- [x] 1 — Confirm dependencies are complete: v3-release-pipeline-rc; v3-sync-persistence-path; v3-a2a-conformance-agent; v3-dart-graph-riverpod; v3-tauri-mobile-plugin; all five examples; v3-skills-ecosystem; v3-docs-github-pages. (COMPLETE)
+- [x] 2 — Implement the full scope in the `v3-release-certification` plan section without weakening its explicit exclusions. (COMPLETE)
+- [x] 3 — Add or update unit, integration, consumer, platform, documentation, and/or E2E checks required by the plan acceptance criteria. (COMPLETE)
+- [x] 4 — Update `examples/coverage.json`, public API ledgers, skills, and documentation whenever this change affects their declared surface. (COMPLETE)
+- [x] 5 — Run the relevant pnpm, Dart/Melos, Cargo, OpenSpec, package, docs, security, and platform gates from a clean state. (COMPLETE)
+- [x] 6 — Record verification evidence, unresolved platform/manual limits, and release impact before archive. (COMPLETE)
 
 ## v3-stable-publication — v3-stable-publication
 

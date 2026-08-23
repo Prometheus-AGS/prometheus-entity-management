@@ -89,16 +89,16 @@ test("the RC staging lane rejects alpha and requires a numbered rc prerelease", 
   );
 });
 
-test("the checked-in rc.1 state has consumed its React showcase changeset", async () => {
-  const pre = JSON.parse(
-    await readFile(new URL("../../.changeset/pre.json", import.meta.url), "utf8"),
+test("the checked-in stable state has exited changeset pre mode at 3.0.0", async () => {
+  // 3.0.0 stable shipped 2026-08-23 (tag v3.0.0, PR #23): pre mode is exited,
+  // pre.json is gone, and the fixed npm packages carry the stable version.
+  const preExists = await readFile(new URL("../../.changeset/pre.json", import.meta.url), "utf8")
+    .then(() => true, () => false);
+  assert.equal(preExists, false, "stable 3.0.0 must not run in changeset pre mode");
+  const core = JSON.parse(
+    await readFile(new URL("../../packages/entity-graph-core/package.json", import.meta.url), "utf8"),
   );
-  assert.equal(pre.mode, "pre");
-  assert.equal(pre.tag, "rc");
-  assert.ok(
-    pre.changesets.includes("certify-vite-react19"),
-    "the merged rc.1 source must not ask Changesets to generate an unnecessary rc.2 PR for the React showcase",
-  );
+  assert.equal(core.version, "3.0.0");
 });
 
 test("the pnpm RC workflow forwards named CLI flags without a literal separator", async () => {
@@ -151,8 +151,9 @@ test("the candidate manifest is contract-derived, non-mutating, and covers every
 
   assert.deepEqual(repeated, manifest, "identical inputs must produce identical manifests");
   assert.equal(manifest.schemaVersion, "1.0.0");
-  assert.equal(manifest.release.channel, "rc");
-  assert.equal(manifest.release.distTag, "next");
+  const isStable = manifest.release.candidateVersion === manifest.release.targetVersion;
+  assert.equal(manifest.release.channel, isStable ? "stable" : "rc");
+  assert.equal(manifest.release.distTag, isStable ? "latest" : "next");
   assert.equal(manifest.release.stableTag, "latest");
   assert.equal(manifest.publication.authorized, false);
   assert.equal(manifest.publication.latestMutationAllowed, false);
@@ -168,7 +169,9 @@ test("the candidate manifest is contract-derived, non-mutating, and covers every
   assert.ok(
     npmArtifacts.every(
       ({ version, distTag, action }) =>
-        version === "3.0.0-rc.1" && distTag === "next" && action === "stage-rc",
+        version === manifest.release.candidateVersion &&
+        distTag === manifest.release.distTag &&
+        action === (isStable ? "stage-stable" : "stage-rc"),
     ),
   );
   assert.equal(

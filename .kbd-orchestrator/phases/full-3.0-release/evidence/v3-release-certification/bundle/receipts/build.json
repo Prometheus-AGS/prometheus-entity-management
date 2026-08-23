@@ -1,0 +1,13 @@
+{
+  "lane": "build",
+  "category": "builds",
+  "mandatory": true,
+  "command": "pnpm run ci:build",
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:31:08.887Z",
+  "durationMs": 641,
+  "exitCode": 0,
+  "logFile": "logs/build.log",
+  "logSha256": "4584c06639bc1ff0c95ac67740dfac7ca7c429224a1ead2b159d776dd9c9f322",
+  "logBytes": 43300
+}

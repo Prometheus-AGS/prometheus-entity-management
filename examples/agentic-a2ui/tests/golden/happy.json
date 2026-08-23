@@ -1,0 +1,22 @@
+{
+  "finalState": "TASK_STATE_COMPLETED",
+  "canonicalStatus": "done",
+  "events": [
+    {
+      "kind": "task",
+      "state": "TASK_STATE_SUBMITTED"
+    },
+    {
+      "kind": "status",
+      "state": "TASK_STATE_WORKING"
+    },
+    {
+      "kind": "artifact",
+      "state": null
+    },
+    {
+      "kind": "status",
+      "state": "TASK_STATE_COMPLETED"
+    }
+  ]
+}

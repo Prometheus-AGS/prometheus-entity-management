@@ -1,0 +1,148 @@
+[
+  {
+    "version": "v0.9.1",
+    "createSurface": {
+      "surfaceId": "surface-task-sync",
+      "catalogId": "urn:prometheus-ags:a2ui:catalog:v3",
+      "sendDataModel": true
+    }
+  },
+  {
+    "version": "v0.9.1",
+    "updateComponents": {
+      "surfaceId": "surface-task-sync",
+      "components": [
+        {
+          "id": "root",
+          "component": "Card",
+          "child": "layout"
+        },
+        {
+          "id": "layout",
+          "component": "Column",
+          "children": [
+            "heading",
+            "status",
+            "actions"
+          ]
+        },
+        {
+          "id": "heading",
+          "component": "Text",
+          "text": {
+            "path": "/title"
+          },
+          "variant": "h2"
+        },
+        {
+          "id": "status",
+          "component": "Text",
+          "text": {
+            "path": "/status"
+          },
+          "variant": "body"
+        },
+        {
+          "id": "actions",
+          "component": "Row",
+          "children": [
+            "mark-done",
+            "replace-task",
+            "delete-task"
+          ]
+        },
+        {
+          "id": "mark-done",
+          "component": "Button",
+          "child": "mark-done-label",
+          "action": {
+            "event": {
+              "name": "prometheus.entity.upsert",
+              "context": {
+                "entityType": "Task",
+                "entityId": "task-sync",
+                "tenantId": "tenant-a",
+                "data": {
+                  "path": "/markDoneData"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "mark-done-label",
+          "component": "Text",
+          "text": "Mark done",
+          "variant": "body"
+        },
+        {
+          "id": "replace-task",
+          "component": "Button",
+          "child": "replace-task-label",
+          "action": {
+            "event": {
+              "name": "prometheus.entity.replace",
+              "context": {
+                "entityType": "Task",
+                "entityId": "task-sync",
+                "tenantId": "tenant-a",
+                "data": {
+                  "path": "/replaceData"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "replace-task-label",
+          "component": "Text",
+          "text": "Reset task (approval)",
+          "variant": "body"
+        },
+        {
+          "id": "delete-task",
+          "component": "Button",
+          "child": "delete-task-label",
+          "action": {
+            "event": {
+              "name": "prometheus.entity.remove",
+              "context": {
+                "entityType": "Task",
+                "entityId": "task-sync",
+                "tenantId": "tenant-a"
+              }
+            }
+          }
+        },
+        {
+          "id": "delete-task-label",
+          "component": "Text",
+          "text": "Delete task",
+          "variant": "body"
+        }
+      ]
+    }
+  },
+  {
+    "version": "v0.9.1",
+    "updateDataModel": {
+      "surfaceId": "surface-task-sync",
+      "path": "/",
+      "value": {
+        "title": "Wire realtime sync",
+        "status": "Status: todo",
+        "markDoneData": {
+          "status": "done"
+        },
+        "replaceData": {
+          "id": "task-sync",
+          "tenantId": "tenant-a",
+          "projectId": "project-atlas",
+          "title": "Wire realtime sync",
+          "status": "todo",
+          "version": 1
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,102 @@
+---
+title: Recipes
+description: Copy-paste patterns for the common jobs — optimistic toggles, cross-view selection, partial lists with detail hydration, and load-more pagination.
+---
+
+# Recipes
+
+Battle-tested patterns over the public API. Each one names the mechanism it
+relies on so you can adapt it, not just paste it.
+
+## Optimistic toggle
+
+For checkboxes and sliders where waiting for the server feels sluggish. The
+buffer mirrors into graph patches immediately; the save replaces the
+canonical entity and clears the patch. **Mechanism:**
+[edit-buffer isolation](/docs/guides/concepts/crud-and-relations).
+
+```ts
+import { useEntityCRUD } from "@prometheus-ags/prometheus-entity-management";
+import type { CRUDOptions } from "@prometheus-ags/prometheus-entity-management";
+
+interface Task extends Record<string, unknown> {
+  id: string;
+  done: boolean;
+}
+
+declare const crudOptions: CRUDOptions<Task>;
+
+const crud = useEntityCRUD<Task>(crudOptions);
+
+function toggleDone(task: Task) {
+  crud.startEdit(task.id);
+  crud.setField("done", !task.done);
+  crud.applyOptimistic(); // instant UI feedback via graph patch
+  void crud.save(); // server confirm → replaceEntity → clearPatch
+}
+```
+
+## Cross-view selection
+
+Select a row in a table; a detail sheet elsewhere on the page reacts.
+**Mechanism:** [patches merge at read time](/docs/guides/concepts/graph-patches-lists),
+so every subscriber sees the patch.
+
+```tsx
+import { useEntityAugment } from "@prometheus-ags/prometheus-entity-management";
+
+function useRowSelection(taskId: string) {
+  const { patch, augment, unaugment } = useEntityAugment<{ _selected?: boolean }>(
+    "task",
+    taskId,
+  );
+  return {
+    selected: patch?._selected === true,
+    toggle: () =>
+      patch?._selected === true
+        ? unaugment(["_selected"])
+        : augment({ _selected: true }),
+  };
+}
+```
+
+## Partial lists + detail hydration
+
+List rows carry only a title; opening detail needs the full record. Provide
+`detailFetch` on `useEntityCRUD` — the detail hook subscribes with
+`enabled: !!selectedId` and hydrates the same graph slot the list row reads.
+Because both views share one entity, hydrating detail enriches the row for
+free. **Mechanism:** [entities live exactly once](/docs/guides/concepts/normalized-entities).
+
+## Load-more pagination
+
+`useEntityList` with `mode: "append"` tracks cursors for you;
+`fetchNextPage()` fetches the next page and appends IDs:
+
+```tsx
+import { useEntityList } from "@prometheus-ags/prometheus-entity-management";
+import type {
+  ListFetchParams,
+  ListResponse,
+} from "@prometheus-ags/prometheus-entity-management";
+
+interface Order {
+  id: string;
+  total: number;
+}
+
+declare function listOrders(params: ListFetchParams): Promise<ListResponse<Order>>;
+
+function useOrdersPaged() {
+  return useEntityList<Order, Order>({
+    type: "order",
+    queryKey: ["orders"],
+    fetch: listOrders,
+    normalize: (raw) => ({ id: raw.id, data: raw }),
+    mode: "append",
+  });
+}
+```
+
+Your `fetch` receives `params.cursor` and returns `nextCursor` /
+`hasNextPage` in the `ListResponse` — the graph stores only the ordered IDs.

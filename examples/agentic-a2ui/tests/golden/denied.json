@@ -1,0 +1,18 @@
+{
+  "finalState": "TASK_STATE_REJECTED",
+  "survived": true,
+  "events": [
+    {
+      "kind": "task",
+      "state": "TASK_STATE_SUBMITTED"
+    },
+    {
+      "kind": "status",
+      "state": "TASK_STATE_WORKING"
+    },
+    {
+      "kind": "status",
+      "state": "TASK_STATE_REJECTED"
+    }
+  ]
+}

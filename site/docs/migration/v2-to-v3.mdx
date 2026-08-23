@@ -1,0 +1,188 @@
+---
+title: Migrate from 2.x to 3.0
+description: Breaking changes, renamed and moved APIs, and step-by-step recipes for upgrading Prometheus Entity Management from 2.x to 3.0.
+---
+
+# Migrate from 2.x to 3.0
+
+## Who this affects
+
+This guide applies to applications on 2.x (including 2.1 and 2.2) upgrading to
+3.0. If you ran a 3.0 alpha or release candidate, read
+[alpha-to-stable](alpha-to-stable.mdx) instead — it covers the additional alpha
+package-boundary changes on top of this guide.
+
+The headline change: the entity graph is now a **framework-neutral core**
+(`@prometheus-ags/entity-graph-core`) with React shipped as one binding among
+eight (`@prometheus-ags/prometheus-entity-management` remains the React
+package). Most React application code keeps working unchanged; the breaking
+surface is concentrated in *where* imperative store access and presentation
+types are imported from.
+
+## Breaking changes
+
+| # | Previous (2.x) | 3.0 | Recipe |
+| - | --- | --- | --- |
+| 1 | `useGraphStore.getState()` imported from core | `graphStore.getState()` from core | [Core store access](#core-store-access) |
+| 2 | `useGraphStore(selector)` in React | `useGraphStore(selector)` from the React package | [React hook import](#react-hook-import) |
+| 3 | one implicit global store in SSR | `createGraphStore()` once per server request | [SSR isolation](#ssr-isolation) |
+| 4 | `useGraphSyncStatus()` imported from core | `getGraphSyncStatus()` in non-React code, `useGraphSyncStatus()` from React | [Sync status readers](#sync-status-readers) |
+| 5 | React table/view presentation types imported from core | the same type names imported from the React package | [React presentation types](#react-presentation-types) |
+
+The deprecated `useGraphStore` export in core is a temporary StoreApi-shaped
+migration alias for `graphStore` — it is **not a React hook**. It follows the
+[current-plus-next-major removal policy](compatibility-policy.mdx) and exists so
+imperative migrations can proceed incrementally. New core code should use
+`graphStore` explicitly.
+
+## Core store access
+
+In 2.x, imperative code imported `useGraphStore` from the single package and
+called `useGraphStore.getState()`. In 3.0 the core store is a Zustand vanilla
+`StoreApi`, exposed as the `graphStore` singleton.
+
+**Before (2.x):**
+
+```text
+import { useGraphStore } from "@prometheus-ags/prometheus-entity-management";
+
+useGraphStore.getState().upsertEntity("Project", "p1", { name: "Prometheus" });
+```
+
+**After (3.0):**
+
+```ts
+import { graphStore } from "@prometheus-ags/entity-graph-core";
+
+graphStore.getState().upsertEntity("Project", "p1", { name: "Prometheus" });
+```
+
+## React hook import
+
+React component code is unchanged in shape — `useGraphStore(selector)` is still
+a callable hook — but it now lives in the React package, which subscribes to
+the same vanilla singleton core exposes imperatively.
+
+```tsx
+import { useGraphStore } from "@prometheus-ags/prometheus-entity-management";
+
+export function ProjectName(props: { id: string }) {
+  const project = useGraphStore((state) =>
+    state.readEntity<{ name: string }>("Project", props.id),
+  );
+  return <span>{project?.name ?? "Unknown project"}</span>;
+}
+```
+
+Application components should still prefer domain hooks such as `useEntity` and
+`useEntityList` to preserve the required Components → Hooks → Stores layering;
+direct store selection stays an escape hatch.
+
+## SSR isolation
+
+2.x had one implicit global store. Under server rendering that leaks state
+between requests. In 3.0, create an isolated graph per server request with the
+core factory:
+
+```ts
+import { createGraphStore, type GraphStore } from "@prometheus-ags/entity-graph-core";
+
+export function handleRequest(): GraphStore {
+  const requestGraph: GraphStore = createGraphStore();
+  requestGraph.getState().upsertEntity("Project", "p2", { name: "Isolated" });
+  return requestGraph;
+}
+```
+
+Use `createGraphStore()` for SSR requests, tests, workers, or any host that
+must not share process state. Browser singletons keep using `graphStore`.
+
+## Sync status readers
+
+`graphSyncStatusStore` and the persistence/runtime status reader moved to core
+so Node services, workers, and Tauri commands can read them without importing
+React types.
+
+- **Non-React code:** use `getGraphSyncStatus()` (imperative) or subscribe to
+  `graphSyncStatusStore` directly.
+- **React code:** keep using the `useGraphSyncStatus()` hook, imported from the
+  React package.
+
+```ts
+import {
+  getGraphSyncStatus,
+  graphSyncStatusStore,
+} from "@prometheus-ags/entity-graph-core";
+
+const status = getGraphSyncStatus();
+const unsubscribe = graphSyncStatusStore.subscribe(() => {
+  getGraphSyncStatus();
+});
+unsubscribe();
+export { status };
+```
+
+## React presentation types
+
+The headless table engine remains in core. Types whose values are React render
+nodes or component types — column builders, action items, empty states, batch
+actions, and React renderer aliases — are exported by the React package under
+their existing names.
+
+```tsx
+import {
+  actionsColumn,
+  booleanColumn,
+  dateColumn,
+  EmptyState,
+  type ActionItem,
+  type EmptyStateConfig,
+} from "@prometheus-ags/prometheus-entity-management";
+
+interface Project {
+  id: string;
+  name: string;
+  active: boolean;
+  updatedAt: string;
+}
+
+const archiveAction: ActionItem<Project> = {
+  label: "Archive",
+  destructive: true,
+  onClick: (row) => {
+    void row.id;
+  },
+};
+
+export const columns = [
+  booleanColumn<Project>({ field: "active", header: "Active" }),
+  dateColumn<Project>({ field: "updatedAt", header: "Updated" }),
+  actionsColumn<Project>([archiveAction]),
+];
+
+const emptyConfig: EmptyStateConfig = {
+  title: "No projects",
+  description: "Create a project to see it listed here.",
+};
+
+export function ProjectEmptyState() {
+  return <EmptyState config={emptyConfig} />;
+}
+```
+
+## Upgrade validation fixtures
+
+Every recipe above is backed by a compilable fixture, not prose. The fixtures
+under `tests/release/fixtures/upgrade/` are type-checked against the packed
+3.0 packages by `pnpm run verify:docs-operations`; a drifted recipe fails the
+gate.
+
+| Fixture | Proves |
+| --- | --- |
+| `tests/release/fixtures/upgrade/core-graph-store.ts` | `graphStore` singleton + `createGraphStore()` isolation |
+| `tests/release/fixtures/upgrade/react-hook-entry.tsx` | React `useGraphStore(selector)` hook from the React package |
+| `tests/release/fixtures/upgrade/sync-status-non-react.ts` | `getGraphSyncStatus()` + `graphSyncStatusStore` outside React |
+| `tests/release/fixtures/upgrade/react-table-types.tsx` | Column builders and presentation types from the React package |
+
+See [compatibility-policy](compatibility-policy.mdx) for the deprecation and
+removal commitments that govern these changes.

@@ -1,0 +1,13 @@
+{
+  "lane": "typecheck",
+  "category": "typecheck",
+  "mandatory": true,
+  "command": "pnpm run ci:typecheck",
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:30:29.759Z",
+  "durationMs": 797,
+  "exitCode": 0,
+  "logFile": "logs/typecheck.log",
+  "logSha256": "28daebebbc93f2375ad06cc9f8a825fe8ae26a7171caa7b32d569743e1c78bff",
+  "logBytes": 23772
+}

@@ -1,0 +1,13 @@
+{
+  "lane": "docs-examples",
+  "category": "docs",
+  "mandatory": true,
+  "command": "pnpm run verify:docs-examples",
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:37:01.398Z",
+  "durationMs": 39118,
+  "exitCode": 0,
+  "logFile": "logs/docs-examples.log",
+  "logSha256": "4a30409e44247b8933a6baad26997e312850044c06b1dd9b9368a5b736141053",
+  "logBytes": 2229
+}

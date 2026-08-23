@@ -1,0 +1,143 @@
+[
+  {
+    "version": "v0.9",
+    "createSurface": {
+      "surfaceId": "surface-task-sync",
+      "catalogId": "https://a2ui.org/specification/v0_9/basic_catalog.json",
+      "sendDataModel": true
+    }
+  },
+  {
+    "version": "v0.9",
+    "updateComponents": {
+      "surfaceId": "surface-task-sync",
+      "components": [
+        {
+          "id": "root",
+          "component": "Card",
+          "child": "layout"
+        },
+        {
+          "id": "layout",
+          "component": "Column",
+          "children": [
+            "heading",
+            "status",
+            "actions"
+          ]
+        },
+        {
+          "id": "heading",
+          "component": "Text",
+          "text": {
+            "path": "/title"
+          },
+          "variant": "h2"
+        },
+        {
+          "id": "status",
+          "component": "Text",
+          "text": {
+            "path": "/status"
+          },
+          "variant": "body"
+        },
+        {
+          "id": "actions",
+          "component": "Row",
+          "children": [
+            "mark-done",
+            "replace-task",
+            "delete-task"
+          ]
+        },
+        {
+          "id": "mark-done",
+          "component": "Button",
+          "child": "mark-done-label",
+          "variant": "primary",
+          "action": {
+            "event": {
+              "name": "task.update",
+              "context": {
+                "entityType": "Task",
+                "entityId": "task-sync",
+                "tenantId": "tenant-a",
+                "data": {
+                  "path": "/markDoneData"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "mark-done-label",
+          "component": "Text",
+          "text": "Mark done",
+          "variant": "body"
+        },
+        {
+          "id": "replace-task",
+          "component": "Button",
+          "child": "replace-task-label",
+          "action": {
+            "event": {
+              "name": "task.replace",
+              "context": {
+                "entityType": "Task",
+                "entityId": "task-sync",
+                "tenantId": "tenant-a",
+                "data": {
+                  "path": "/replaceData"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "replace-task-label",
+          "component": "Text",
+          "text": "Replace title",
+          "variant": "body"
+        },
+        {
+          "id": "delete-task",
+          "component": "Button",
+          "child": "delete-task-label",
+          "action": {
+            "event": {
+              "name": "task.delete",
+              "context": {
+                "entityType": "Task",
+                "entityId": "task-sync",
+                "tenantId": "tenant-a"
+              }
+            }
+          }
+        },
+        {
+          "id": "delete-task-label",
+          "component": "Text",
+          "text": "Delete",
+          "variant": "body"
+        }
+      ]
+    }
+  },
+  {
+    "version": "v0.9",
+    "updateDataModel": {
+      "surfaceId": "surface-task-sync",
+      "value": {
+        "title": "Wire realtime sync",
+        "status": "Status: todo",
+        "markDoneData": {
+          "status": "done"
+        },
+        "replaceData": {
+          "title": "Wire realtime sync (replaced)"
+        }
+      }
+    }
+  }
+]

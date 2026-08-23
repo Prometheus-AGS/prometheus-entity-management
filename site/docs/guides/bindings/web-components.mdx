@@ -1,0 +1,88 @@
+---
+title: Web Components binding
+description: Framework-agnostic custom elements — entity-list, entity-detail, and entity-form built on Lit, usable from plain HTML, React, Vue, or server-rendered pages.
+---
+
+# Web Components binding
+
+`@prometheus-ags/entity-graph-web-components` ships standards-based custom
+elements. Because they are real DOM elements, they work in any framework —
+or no framework — while reading the same core graph as every other binding.
+
+```bash
+pnpm add @prometheus-ags/entity-graph-web-components lit
+```
+
+## The elements
+
+Importing the package registers three elements:
+
+- `<entity-list>` — a reactive list with load-more.
+- `<entity-detail>` — a single-entity panel.
+- `<entity-form>` — an edit form backed by the CRUD edit buffer.
+
+```html
+<script type="module">
+  import "@prometheus-ags/entity-graph-web-components";
+  import { listInvoices } from "./api.js";
+
+  // Attributes carry identity; fetchers are wired once via configure().
+  const list = document.querySelector("entity-list");
+  list.configure({
+    queryKey: ["invoices"],
+    fetch: (params) => listInvoices(params),
+    normalize: (raw) => ({ id: raw.id, data: raw }),
+  });
+</script>
+
+<entity-list entity-type="invoice"></entity-list>
+<entity-detail entity-type="invoice" entity-id="inv-1"></entity-detail>
+```
+
+## Controllers for custom elements
+
+Building your own element? Use the controllers — they implement Lit's
+`ReactiveController` protocol and handle subscription, fetch, and cleanup:
+
+```ts
+import { EntityListController } from "@prometheus-ags/entity-graph-web-components";
+import { LitElement, html } from "lit";
+import { customElement } from "lit/decorators.js";
+import type {
+  ListFetchParams,
+  ListResponse,
+} from "@prometheus-ags/entity-graph-core";
+
+interface Invoice extends Record<string, unknown> {
+  id: string;
+  total: number;
+}
+
+declare function listInvoices(params: ListFetchParams): Promise<ListResponse<Invoice>>;
+
+@customElement("invoice-list")
+export class InvoiceList extends LitElement {
+  private list = new EntityListController<Invoice, Invoice>(this, "invoice", {
+    queryKey: ["invoices"],
+    fetch: (params) => listInvoices(params),
+    normalize: (raw) => ({ id: raw.id, data: raw }),
+  });
+
+  render() {
+    return html`
+      <ul>
+        ${this.list.items.map((inv) => html`<li>${inv.total}</li>`)}
+      </ul>
+      ${this.list.hasNextPage
+        ? html`<button @click=${() => this.list.loadMore()}>Load more</button>`
+        : null}
+    `;
+  }
+}
+```
+
+## When to choose it
+
+Design-system widgets, micro-frontends, and mixed-framework pages. A graph
+write from a React island re-renders an `<entity-detail>` elsewhere on the
+page with no glue code — the graph underneath is shared.

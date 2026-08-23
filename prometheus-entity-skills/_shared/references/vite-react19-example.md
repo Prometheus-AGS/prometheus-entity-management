@@ -40,6 +40,15 @@ The receipt must report:
 In Vite/browser code, pass a statically visible optional-peer loader:
 
 ```ts
+import {
+  createLoroProvider,
+  type LoroChannel,
+} from "@prometheus-ags/entity-graph-sync";
+
+declare const channel: LoroChannel;
+declare const peerId: number;
+
+// Browser bundlers: supply the loader so the runtime-only peer import resolves.
 const loadLoro = () => import("loro-crdt");
 createLoroProvider({ channel, peerId, loadLoro });
 ```

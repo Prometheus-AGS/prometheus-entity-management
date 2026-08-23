@@ -1,0 +1,83 @@
+---
+title: Failure modes
+description: The ways entity-graph apps actually break — split-brain IDs, parallel state copies, retry storms, layering leaks — and the mechanism that prevents each.
+---
+
+# Failure modes
+
+Every failure below has been observed in real entity-graph codebases. Each
+entry names the symptom, the root cause, and the structural fix — not a
+defensive band-aid.
+
+## Split-brain IDs
+
+**Symptom:** updating an entity in the detail view does not update the list
+row; two copies of "the same" record disagree.
+
+**Root cause:** list and detail hooks use different `normalize` functions
+that derive different IDs (e.g. `raw.id` vs. `raw.invoice_id`), so the graph
+stores two entities.
+
+**Fix:** one entity type, one normalization contract. Export the shared
+`normalize` from your services layer and import it in every hook for that
+type.
+
+## Parallel row copies
+
+**Symptom:** table cells go stale after an edit; re-sorting "loses" changes.
+
+**Root cause:** a component copied `items` into `useState` "for convenience."
+The copy never sees graph writes.
+
+**Fix:** render from the hook result directly. `EntityTable` takes
+`viewResult={crud.list}` — IDs resolve against the graph at render time.
+If you need derived row state, derive it during render or via
+[augmentation](/docs/guides/concepts/graph-patches-lists), never by copying.
+
+## Retry storms on permanent errors
+
+**Symptom:** a 404'd entity refetches in a tight loop.
+
+**Root cause:** treating every error as transient. The engine stamps
+`lastFetched` on failure precisely so SWR does not refire immediately — but a
+custom fetcher that throws transient-shaped errors for terminal failures
+defeats it.
+
+**Fix:** throw `TerminalError` for 4xx responses and `TransientError` for
+network/5xx. The engine retries transient errors with backoff and surfaces
+terminal ones to error boundaries without retrying.
+
+## Layering leaks
+
+**Symptom:** components call `fetch()` or import `useGraphStore`; tests
+require mounting the whole tree; the same request fires from three places.
+
+**Root cause:** I/O written where it is used instead of where it belongs.
+
+**Fix:** follow the [layering rule](/docs/guides/concepts/layers-and-dataflow):
+components → hooks → stores → services. Fetch functions live in the services
+layer; hooks receive them as parameters. This is enforced by the docs
+language gate — guides must never prescribe fetching inside components or
+hook bodies beyond the declared `fetch` parameter.
+
+## Patch leaks to the server
+
+**Symptom:** `_selected` / `_expanded` fields appear in PUT payloads.
+
+**Root cause:** spreading a merged read (`{ ...entity, ...patch }`) into a
+mutation payload.
+
+**Fix:** mutation payloads come from the CRUD edit buffer or from explicit
+field lists — never from a merged read. Patches are UI-only; the canonical
+entity underneath is the only server-safe data.
+
+## Manual invalidation drift
+
+**Symptom:** after a mutation, some related lists refresh and others do not;
+`invalidateLists` calls accumulate across the codebase.
+
+**Root cause:** hand-maintained invalidation that drifted from the schema.
+
+**Fix:** register relation schemas and let
+[cascade invalidation](/docs/guides/concepts/crud-and-relations) diff foreign
+keys and mark exactly the affected queries stale.

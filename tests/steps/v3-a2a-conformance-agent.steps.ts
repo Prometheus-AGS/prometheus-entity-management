@@ -204,8 +204,8 @@ Then("coverage records implemented JSON-RPC and graph-policy evidence", function
 
 Then("A2A root and legacy export ledgers match built artifacts", function () {
   const output = runPnpm(["--filter", "@prometheus-ags/entity-graph-a2a", "run", "verify:skills"]);
-  assert.match(output, /OK: A2A root: 30 runtime exports match ledger\./);
-  assert.match(output, /OK: A2A \.\/legacy: 2 runtime exports match ledger\./);
+  assert.match(output, /OK: a2a \.: 30 runtime exports match ledger\./);
+  assert.match(output, /OK: a2a \.\/legacy: 2 runtime exports match ledger\./);
 });
 
 Then(

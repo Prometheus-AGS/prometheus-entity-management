@@ -6,13 +6,14 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Rehearse only, or stage the rehearsed RC for human 2FA approval
+        description: Rehearse only, stage the rehearsed RC, or promote stable for human approval
         required: true
         type: choice
         default: rehearse
         options:
           - rehearse
           - stage
+          - stable
       candidate_run_id:
         description: Existing successful rehearsal run ID to reuse in stage mode
         required: false
@@ -247,6 +248,68 @@ jobs:
         with:
           name: prometheus-entity-management-rc-stage-${{ github.sha }}
           path: .release-candidate/stage-report.json
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 30
+
+  stage-stable:
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      inputs.mode == 'stable' &&
+      needs.rehearse.result == 'success'
+    needs: rehearse
+    runs-on: ubuntu-latest
+    environment: npm-stable
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
+      PROMETHEUS_RELEASE_AUTHORITY: stage-stable
+      PROMETHEUS_RELEASE_ENVIRONMENT: npm-stable
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Install the current npm CLI through pnpm
+        run: pnpm add --global npm@12.0.2
+
+      - name: Verify pre-publish stable promotion guards
+        run: pnpm run verify:stable-publication
+
+      - name: Download the attested candidate bundle
+        uses: actions/download-artifact@v8
+        with:
+          name: prometheus-entity-management-rc-${{ github.sha }}
+          path: .release-candidate
+
+      - name: Stage stable packages in dependency order
+        run: |
+          pnpm run release:rc:stage \
+            --manifest .release-candidate/manifest.json \
+            --rehearsal .release-candidate/rehearsal.json \
+            --output .release-candidate/stable-stage-report.json
+
+      - name: Verify every stable artifact resolves from the public registry
+        if: ${{ success() }}
+        run: pnpm run verify:stable-publication -- --live true
+
+      - name: Preserve the stable staging recovery journal
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: prometheus-entity-management-stable-stage-${{ github.sha }}
+          path: .release-candidate/stable-stage-report.json
           if-no-files-found: error
           include-hidden-files: true
           retention-days: 30

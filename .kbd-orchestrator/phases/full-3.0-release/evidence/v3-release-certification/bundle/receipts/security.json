@@ -1,0 +1,13 @@
+{
+  "lane": "security",
+  "category": "audits",
+  "mandatory": true,
+  "command": "pnpm run ci:security",
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:30:30.582Z",
+  "durationMs": 1385,
+  "exitCode": 0,
+  "logFile": "logs/security.log",
+  "logSha256": "8eaa9a688d41a49e58e2954827d4c66af0eec572b3fe4cbbf474f290b1767630",
+  "logBytes": 715
+}

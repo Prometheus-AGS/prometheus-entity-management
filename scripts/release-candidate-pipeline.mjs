@@ -36,6 +36,13 @@ export function resolveCandidateBundlePath(bundleRoot, bundlePath) {
  */
 export function assertReleaseCandidateVersion(targetVersion, candidateVersion, channel) {
   assert(targetVersion && candidateVersion && channel, "candidate version inputs are required");
+  if (channel === "stable") {
+    assert(
+      candidateVersion === targetVersion && !candidateVersion.includes("-"),
+      `stable candidate version ${candidateVersion} must equal ${targetVersion} exactly, with no prerelease suffix`,
+    );
+    return candidateVersion;
+  }
   const escape = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const expected = new RegExp(`^${escape(targetVersion)}-${escape(channel)}\\.[0-9]+$`);
   assert(
@@ -136,9 +143,6 @@ export async function buildReleaseCandidateManifest({
       registry: artifact.registry,
       registryDecision: artifact.registryDecision,
       version: packageManifest.version,
-      distTag: contract.versionPolicy.npm.prereleaseTag,
-      stableTag: contract.versionPolicy.npm.stableTag,
-      action: policy.candidate.npmAction,
       internalDependencies,
     });
   }
@@ -147,11 +151,26 @@ export async function buildReleaseCandidateManifest({
   const versions = new Set(npmArtifacts.map(({ version }) => version));
   assert(versions.size === 1, "fixed npm packages must share one candidate version");
   const [candidateVersion] = versions;
-  assertReleaseCandidateVersion(
-    contract.release.version,
-    candidateVersion,
-    policy.candidate.channel,
-  );
+  const stablePromotion = policy.stablePromotion ?? {};
+  const isStable = candidateVersion === contract.release.version;
+  if (isStable) {
+    assert(
+      stablePromotion.requiresExplicitHumanAuthority === true,
+      "stable promotion requires explicit human authority",
+    );
+    assert(stablePromotion.npmAction, "stable promotion npm action is required");
+    assert(stablePromotion.environment, "stable promotion environment is required");
+  }
+  const channel = isStable ? "stable" : policy.candidate.channel;
+  const distTag = isStable
+    ? contract.versionPolicy.npm.stableTag
+    : contract.versionPolicy.npm.prereleaseTag;
+  const npmAction = isStable ? stablePromotion.npmAction : policy.candidate.npmAction;
+  assertReleaseCandidateVersion(contract.release.version, candidateVersion, channel);
+  for (const artifact of npmArtifacts) {
+    artifact.distTag = distTag;
+    artifact.action = npmAction;
+  }
 
   const publishOrder = topologicalOrder(
     npmArtifacts.map(({ packageName: name, internalDependencies }) => ({
@@ -189,14 +208,15 @@ export async function buildReleaseCandidateManifest({
     release: {
       targetVersion: contract.release.version,
       candidateVersion,
-      channel: policy.candidate.channel,
-      distTag: contract.versionPolicy.npm.prereleaseTag,
+      channel,
+      distTag,
       stableTag: contract.versionPolicy.npm.stableTag,
     },
     publication: {
       authorized: false,
       latestMutationAllowed: false,
       stablePromotionChange: policy.stablePromotion.change,
+      authorityEnvironment: isStable ? stablePromotion.environment : "npm-rc",
     },
     npm: {
       publishOrder,
@@ -631,7 +651,8 @@ export async function stageReleaseCandidate(manifest, candidates, adapters, { on
     registryMutation: attempts.length > 0 || staged.length > 0,
     staged: [...staged],
     attempts: attempts.map((attempt) => ({ ...attempt })),
-    latestUnchanged: status === "complete" ? true : null,
+    latestUnchanged:
+      status === "complete" ? manifest.release?.channel !== "stable" : null,
     protectedTags: { before: before ?? null, after: after ?? null },
     journal,
     ...(error ? { error: { name: error.name, message: error.message } } : {}),
@@ -730,7 +751,11 @@ export async function stageReleaseCandidate(manifest, candidates, adapters, { on
     }
 
     after = await adapters.snapshotTags(manifest);
-    assertProtectedTagsUnchanged(before, after);
+    if (manifest.release?.channel === "stable") {
+      assertStableTagsPromoted(before, after, manifest.release.candidateVersion);
+    } else {
+      assertProtectedTagsUnchanged(before, after);
+    }
     return await persist("complete");
   } catch (error) {
     const failure = error instanceof Error ? error : new Error(String(error));
@@ -760,6 +785,10 @@ export async function stageReleaseCandidate(manifest, candidates, adapters, { on
  * A green rehearsal never satisfies this boundary on its own.
  */
 export function assertRcStageAuthority(manifest, env) {
+  assert(
+    manifest.release?.channel !== "stable",
+    "RC staging cannot use a stable-channel manifest",
+  );
   assert(env.GITHUB_ACTIONS === "true", "GitHub Actions is required for RC staging");
   assert(
     env.PROMETHEUS_RELEASE_ENVIRONMENT === "npm-rc",
@@ -800,6 +829,79 @@ export function assertRcStageAuthority(manifest, env) {
   };
 }
 
+/**
+ * Validate the external authority boundary before a mutating stable publish.
+ * Stable promotion moves npm latest, so it requires the dedicated npm-stable
+ * environment and an explicit stage-stable authority flag; a green RC
+ * rehearsal or RC authority never satisfies this boundary.
+ */
+export function assertStableStageAuthority(manifest, env) {
+  assert(
+    manifest.release?.channel === "stable",
+    "stable staging requires a stable-channel manifest",
+  );
+  assert(env.GITHUB_ACTIONS === "true", "GitHub Actions is required for stable staging");
+  assert(
+    env.PROMETHEUS_RELEASE_ENVIRONMENT === "npm-stable",
+    "the protected npm-stable environment is required",
+  );
+  assert(
+    env.PROMETHEUS_RELEASE_AUTHORITY === "stage-stable",
+    "explicit stage-stable authority is required",
+  );
+  assert(
+    env.ACTIONS_ID_TOKEN_REQUEST_URL && env.ACTIONS_ID_TOKEN_REQUEST_TOKEN,
+    "GitHub OIDC request credentials are required",
+  );
+  assert(
+    !env.NODE_AUTH_TOKEN && !env.NPM_TOKEN,
+    "long-lived npm write tokens are forbidden",
+  );
+  assert(
+    manifest.release.distTag === manifest.release.stableTag &&
+      manifest.release.distTag === "latest",
+    "stable staging must target npm latest exactly",
+  );
+  assert(
+    env.GITHUB_SHA === manifest.source.sha,
+    "workflow SHA does not match the stable manifest",
+  );
+  return {
+    authorizedAction: "npm stable publish",
+    environment: "npm-stable",
+    distTag: manifest.release.distTag,
+  };
+}
+
+export function assertStageAuthorityForChannel(manifest, env) {
+  return manifest.release?.channel === "stable"
+    ? assertStableStageAuthority(manifest, env)
+    : assertRcStageAuthority(manifest, env);
+}
+
+/**
+ * Stable promotion is the one flow allowed to move a protected tag: after a
+ * stable stage, every published package's latest tag must equal the staged
+ * version exactly — no more, no less.
+ */
+export function assertStableTagsPromoted(before, after, targetVersion, tag = "latest") {
+  assert(before && after, "protected tag snapshots are required");
+  assert(/^\d+\.\d+\.\d+$/.test(targetVersion ?? ""), "targetVersion must be an exact stable version");
+  const beforeNames = Object.keys(before).sort();
+  const afterNames = Object.keys(after).sort();
+  assert(
+    JSON.stringify(beforeNames) === JSON.stringify(afterNames),
+    "stable promotion cannot add or remove packages",
+  );
+  for (const packageName of beforeNames) {
+    const promoted = after[packageName]?.[tag];
+    assert(
+      promoted === targetVersion,
+      `stable promotion incomplete: ${packageName} ${tag} is ${promoted ?? "missing"}, expected ${targetVersion}`,
+    );
+  }
+}
+
 export function createReleaseCommandAdapters({
   root,
   candidateDirectory,
@@ -813,7 +915,7 @@ export function createReleaseCommandAdapters({
 
   return {
     assertStageAuthority(manifest, authorityEnvironment = releaseEnvironment) {
-      return assertRcStageAuthority(manifest, authorityEnvironment);
+      return assertStageAuthorityForChannel(manifest, authorityEnvironment);
     },
 
     async snapshotTags(manifest) {
@@ -916,7 +1018,7 @@ export function createReleaseCommandAdapters({
     },
 
     async stageNpm(artifact, candidate, manifest, authorityEnvironment = releaseEnvironment) {
-      assertRcStageAuthority(manifest, authorityEnvironment);
+      assertStageAuthorityForChannel(manifest, authorityEnvironment);
       const result = await runCommand(
         "npm",
         [

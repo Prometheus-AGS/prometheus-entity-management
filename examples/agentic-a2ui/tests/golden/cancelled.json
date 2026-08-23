@@ -1,0 +1,17 @@
+{
+  "finalState": "TASK_STATE_CANCELED",
+  "events": [
+    {
+      "kind": "task",
+      "state": "TASK_STATE_SUBMITTED"
+    },
+    {
+      "kind": "status",
+      "state": "TASK_STATE_WORKING"
+    },
+    {
+      "kind": "status",
+      "state": "TASK_STATE_CANCELED"
+    }
+  ]
+}

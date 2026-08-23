@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "denied",
+  "description": "Intentionally grants nothing: the denied probe webview must fail closed on every entity-graph command.",
+  "windows": ["denied"],
+  "permissions": []
+}

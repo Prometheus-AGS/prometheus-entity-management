@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Prometheus ember mark, light-theme variant.
+     Provenance: created in-repo for v3-docs-foundation-brand (2026-08-22);
+     colors are the org brand tokens documented in docs/branding/ASSETS.md. -->
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Prometheus ember mark">
+  <path d="M32 4c5 11 18 15 18 30a18 18 0 1 1-36 0c0-9 6-13 8-20 2 6 6 8 10 9-2-7-2-13 0-19z" fill="#E04E28"/>
+  <circle cx="32" cy="42" r="7" fill="#0B0F14"/>
+</svg>

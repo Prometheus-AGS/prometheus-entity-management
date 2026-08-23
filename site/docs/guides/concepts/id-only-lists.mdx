@@ -1,0 +1,50 @@
+---
+title: ID-only lists
+description: Lists store ordered arrays of entity IDs plus pagination state — never entity data — and join against the graph at render time.
+---
+
+# ID-only lists
+
+`lists[queryKey]` holds **ordered entity IDs** and list metadata — `total`,
+`nextCursor`, `hasNextPage`, `isFetching` — never entity data.
+
+```text
+lists: {
+  '["tasks","open"]': {
+    ids: ["t-1", "t-7", "t-9"],
+    total: 42,
+    nextCursor: "cursor-abc",
+    hasNextPage: true,
+    isFetching: false,
+  },
+}
+```
+
+## The render-time join
+
+Components never read from `lists` directly. Hooks perform the join:
+
+```text
+useEntityList("task", ["tasks","open"])
+  → lists['["tasks","open"]'].ids          (order + membership)
+  → entities["task"][id] for each id        (data, merged with patches)
+```
+
+Because the list holds IDs only, an entity update needs no list surgery: the
+next join picks up the new record automatically. This is the mechanical core of
+cross-view reactivity.
+
+## What list state is for
+
+- **Order and membership** — sorted insertion, pagination windows.
+- **Pagination** — `nextCursor` / `hasNextPage` drive "load more" flows; see
+  [Recipes](/docs/guides/practices/recipes).
+- **Fetch state** — `isFetching` separates "list is refreshing" from "entities
+  are updating".
+
+## Realtime sorted insertion
+
+When a realtime event delivers a new or changed entity, the view layer places
+its ID by binary search against the active sort — no full re-sort, no list
+rewrite. See [Realtime batching](/docs/guides/concepts/realtime-batching) and
+[Views & filtering](/docs/guides/concepts/views-and-filtering).

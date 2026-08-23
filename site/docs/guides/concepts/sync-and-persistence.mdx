@@ -1,0 +1,73 @@
+---
+title: Sync and persistence
+description: CRDT-backed multi-device sync with Yjs or Loro, and local persistence adapters — the graph stays the source of truth on every peer.
+---
+
+# Sync and persistence
+
+`@prometheus-ags/entity-graph-sync` replicates the entity graph across
+devices and tabs using CRDTs. Each entity type maps to one CRDT document;
+fields merge last-writer-wins by default, with pluggable merge strategies.
+
+## Yjs provider
+
+```ts
+import {
+  createYjsProvider,
+  registerSyncProvider,
+} from "@prometheus-ags/entity-graph-sync";
+
+const provider = createYjsProvider({
+  transport: "websocket",
+  wsServerUrl: "ws://localhost:1234",
+});
+
+registerSyncProvider({
+  entityTypes: ["Document", "Comment"],
+  provider,
+});
+```
+
+Yjs, `y-websocket`, and `y-webrtc` load lazily — install them only in apps
+that use sync, and the base bundle stays lean.
+
+## Loro provider
+
+Loro exchanges compact binary snapshots over a channel you supply. The
+WebSocket channel reconnects losslessly: writes made while offline flush on
+reconnect, and peers answer sync requests with their cached snapshots.
+
+```ts
+import {
+  createLoroProvider,
+  createWebSocketLoroChannel,
+  registerSyncProvider,
+} from "@prometheus-ags/entity-graph-sync";
+
+const channel = createWebSocketLoroChannel("ws://localhost:8080");
+const provider = createLoroProvider({
+  channel,
+  peerId: 1,
+  // Browser bundlers: supply the loader so the runtime-only peer import
+  // resolves.
+  loadLoro: () => import("loro-crdt"),
+});
+
+registerSyncProvider({ entityTypes: ["Task"], provider });
+```
+
+## Persistence adapters
+
+Persistence is an adapter concern, not a graph concern. The core package
+ships adapters for PGlite (in-browser Postgres) and Tauri SQL; both write
+snapshots out of the graph and restore them at bootstrap. The pattern is
+always:
+
+1. Restore persisted snapshot into the graph before first render.
+2. Subscribe to graph changes and persist on a debounce.
+3. Let normal fetches revalidate over the restored data — restored rows are
+   immediately stale-checked like any other cached entity.
+
+Because persistence reads and writes the **graph** (never a parallel store),
+a restored app behaves identically to a freshly fetched one: same hooks, same
+views, same revalidation.

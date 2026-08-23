@@ -59,7 +59,7 @@ interface RegistryEntry {
 }
 const registry = new Map<string, RegistryEntry>();
 
-/** @internal Test-only. NOT re-exported from index.ts. */
+/** Test-only helper: clears the devtools store registry between test runs. */
 export function __resetStoreRegistry(): void {
   registry.clear();
 }

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Prometheus Tasks",
+  "version": "0.1.0",
+  "identifier": "com.prometheusags.entitygraph.universal",
+  "build": {
+    "devUrl": "http://localhost:5178",
+    "frontendDist": "../dist"
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": ["icons/icon.png"]
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Prometheus Tasks · Entity Graph",
+        "width": 1100,
+        "height": 760,
+        "resizable": true
+      },
+      {
+        "label": "denied",
+        "title": "Denied capability probe",
+        "visible": false,
+        "width": 400,
+        "height": 300
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'",
+      "capabilities": ["default", "denied", "mobile-allowed"]
+    }
+  },
+  "plugins": {
+    "deep-link": {
+      "desktop": {
+        "schemes": ["prometheus-tasks"]
+      }
+    }
+  }
+}

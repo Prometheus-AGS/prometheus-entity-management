@@ -1,0 +1,96 @@
+---
+title: Quickstart — React 19
+description: Progressive first path — install, seed the graph, read one entity, render a list, and edit with CRUD isolation.
+---
+
+# Quickstart: React 19
+
+This path gets one entity on screen in five steps, then shows where to go next.
+Every command is pnpm-only, and every package resolves from the public registry
+— never from a local source alias.
+
+## 1. Install
+
+```bash
+pnpm add @prometheus-ags/prometheus-entity-management
+```
+
+The React package re-exports the full framework-neutral core, so a single
+dependency covers the graph, engine, and hooks.
+
+## 2. Describe a query
+
+Queries are instructions to populate the graph — they never own data. A fetch
+returns raw rows; `normalize` turns a raw row into the entity the graph stores.
+
+```tsx
+import { useEntity } from "@prometheus-ags/prometheus-entity-management";
+
+interface Task extends Record<string, unknown> {
+  id: string;
+  title: string;
+}
+
+// Your services layer owns this I/O — hooks never fetch directly.
+declare function fetchTask(id: string): Promise<Task>;
+
+function TaskTitle({ taskId }: { taskId: string }) {
+  const { data, isLoading } = useEntity<Task, Task>({
+    type: "task",
+    id: taskId,
+    fetch: fetchTask,
+    normalize: (raw) => raw,
+  });
+  if (isLoading) return <span>Loading…</span>;
+  return <span>{data?.title}</span>;
+}
+```
+
+## 3. Render a list
+
+Lists store ordered IDs, never copies. The hook joins IDs against the graph at
+render time, so any later update to a task — from any view — re-renders this
+list automatically.
+
+```tsx
+import { useEntityList } from "@prometheus-ags/prometheus-entity-management";
+import type { ListFetchParams, ListResponse } from "@prometheus-ags/prometheus-entity-management";
+
+interface Task extends Record<string, unknown> {
+  id: string;
+  title: string;
+}
+
+declare function listTasks(params: ListFetchParams): Promise<ListResponse<Task>>;
+
+function TaskList() {
+  const { items } = useEntityList<Task, Task>({
+    type: "task",
+    queryKey: ["tasks", "open"],
+    fetch: listTasks,
+    normalize: (raw) => ({ id: raw.id, data: raw }),
+  });
+  return (
+    <ul>
+      {items.map((task) => (
+        <li key={task.id}>{task.title}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+## 4. Edit with buffer isolation
+
+`useEntityCRUD` keeps its edit buffer in component state — other views keep
+showing the original data until `save()` succeeds and the graph updates.
+
+See [CRUD & relations](/docs/guides/concepts/crud-and-relations) for the full
+lifecycle, including optimistic patches for toggles and sliders.
+
+## 5. Go deeper
+
+- [Normalized entities](/docs/guides/concepts/normalized-entities) — why entities live exactly once
+- [Engine, SWR, GC & Suspense](/docs/guides/concepts/engine-swr-gc-suspense) — staleness and background revalidation
+- [Realtime batching](/docs/guides/concepts/realtime-batching) — coalesced live updates
+- [Package chooser](/docs/packages/prometheus-entity-management) — full runtime matrix

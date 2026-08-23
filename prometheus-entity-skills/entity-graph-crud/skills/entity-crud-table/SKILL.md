@@ -43,13 +43,37 @@ Key **`EntityTableProps`** fields:
 ## Wiring
 
 ```tsx
-<EntityTable<Task>
-  viewResult={crud.list}
-  columns={taskColumns}
-  selectedId={crud.selectedId}
-  onRowClick={(row) => crud.openDetail(String(row.id))}
-  paginationMode="loadMore"
-/>
+import {
+  EntityTable,
+  textColumn,
+  useEntityCRUD,
+} from "@prometheus-ags/prometheus-entity-management";
+import type { ColumnDef } from "@tanstack/react-table";
+
+interface Task extends Record<string, unknown> {
+  id: string;
+  title: string;
+  status: string;
+}
+
+declare const crud: ReturnType<typeof useEntityCRUD<Task>>;
+
+const taskColumns: ColumnDef<Task>[] = [
+  textColumn<Task>({ field: "title", header: "Title" }),
+  textColumn<Task>({ field: "status", header: "Status" }),
+];
+
+export function TaskTable() {
+  return (
+    <EntityTable<Task>
+      viewResult={crud.list}
+      columns={taskColumns}
+      selectedId={crud.selectedId}
+      onRowClick={(row) => crud.openDetail(String(row.id))}
+      paginationMode="loadMore"
+    />
+  );
+}
 ```
 
 ## Playbook

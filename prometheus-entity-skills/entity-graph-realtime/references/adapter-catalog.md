@@ -7,11 +7,18 @@ Source: **`src/adapters/types.ts`**, **`src/adapters/realtime-adapters.ts`**, **
 ## Contract: `RealtimeAdapter`
 
 ```ts
-interface RealtimeAdapter {
-  readonly name: string;
-  subscribe(config: SubscriptionConfig, handler: (changeset: ChangeSet) => void): UnsubscribeFn;
-  onStatusChange?: (cb: (status: AdapterStatus) => void) => UnsubscribeFn;
-}
+import type {
+  AdapterStatus,
+  ChangeSet,
+  RealtimeAdapter,
+  SubscriptionConfig,
+  UnsubscribeFn,
+} from "@prometheus-ags/prometheus-entity-management";
+
+// RealtimeAdapter contract (from src/adapters/types.ts):
+//   readonly name: string;
+//   subscribe(config: SubscriptionConfig, handler: (changeset: ChangeSet) => void): UnsubscribeFn;
+//   onStatusChange?: (cb: (status: AdapterStatus) => void) => UnsubscribeFn;
 ```
 
 - Handlers receive **`ChangeSet`**: `{ changes: EntityChange[]; affectedListKeys?; timestamp? }`
@@ -127,12 +134,18 @@ import {
   getRealtimeManager,
   createWebSocketAdapter,
   type ChannelConfig,
+  type EntityChange,
 } from "@prometheus-ags/prometheus-entity-management";
+
+declare const WS_URL: string;
 
 const manager = getRealtimeManager({ flushInterval: 16 });
 const ws = createWebSocketAdapter({
   url: WS_URL,
-  parseMessage: (msg) => { /* ... */ },
+  parseMessage: (msg): EntityChange[] | null => {
+    // map your server's message shape to EntityChange[] here
+    return Array.isArray(msg) ? (msg as EntityChange[]) : null;
+  },
 });
 
 const channels: ChannelConfig[] = [{ type: "Task" /*, filter, id, operations */ }];

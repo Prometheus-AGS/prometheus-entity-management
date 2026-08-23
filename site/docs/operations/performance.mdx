@@ -1,0 +1,68 @@
+---
+title: Performance tuning
+description: Engine options, realtime coalescing, incremental views, and graph hygiene for keeping the 3.0 entity graph fast at scale.
+---
+
+# Performance tuning
+
+The entity graph is designed so that the default path is already the fast one:
+normalized storage, ID-only lists, and selective subscriptions. This page
+covers the knobs that matter when profiles tell you to reach for them.
+
+## Engine behavior worth knowing first
+
+- **Selective subscriptions** — components re-render only when the entities
+  they selected change. If a view re-renders too often, check what its hooks
+  select before tuning anything else.
+- **Stale-while-revalidate** — `useEntity`/`useEntityList` render cached graph
+  data immediately and revalidate in the background. Entities older than
+  `staleTime` (default 30 seconds) refetch in the background; on window focus
+  or reconnect, subscribed entities are marked stale and revalidated.
+- **Subscriber ref-counting** — background revalidation skips entities with no
+  subscribers. Unmounted views stop costing network work automatically.
+
+## Realtime coalescing
+
+The `RealtimeManager` coalesces changes inside a **16 ms window**: repeated
+updates to the same entity collapse into a single store write and a single
+render cycle. This is what keeps high-frequency sources (WebSocket fan-out,
+Supabase Realtime, sync backends) from thrashing the UI.
+
+- Leave the default flush interval for UI-bound traffic.
+- Set `flushInterval: 0` only when synchronous, unbatched behavior is
+  explicitly needed (for example, a deterministic test), and expect a render
+  per change.
+
+## Large lists: incremental views
+
+For very large sorted/filtered lists, `IncrementalView` maintains the derived
+list incrementally: a single-entity change updates in O(log n) instead of
+re-deriving the whole view. At 100k rows one update touches under 200 entity
+reads versus ~100k for a full re-derivation. Reach for it when the view layer
+profiles hot on re-sorting, not before.
+
+## Local-first writes
+
+With the sync package, writes apply to the graph immediately and persist
+through the PGlite/Loro path asynchronously; reconnect replays bounded retries
+with backoff. Tune retry bounds for your backend rather than disabling them —
+an unbounded offline queue is a memory leak with extra steps.
+
+## Graph hygiene
+
+- **GC and eviction** — the engine's garbage collection evicts entities with
+  no subscribers past their retention window. If you pin large entity sets in
+  long-lived subscriptions, size that window deliberately.
+- **Patches are for UI state** — the patches layer (`_selected`, `_expanded`,
+  `_loading`) merges at read time and is never sent to the server. Using it
+  for bulk server data duplicates storage and defeats normalization.
+- **DevTools in development** — the event bus buffers and coalesces bursts;
+  keep DevTools instrumentation out of production bundles.
+
+## Measure before tuning
+
+Use the entity DevTools (timeline, graph tabs) and your framework's profiler.
+The performance anti-pattern this architecture eliminates is cross-view
+refetch storms; if you see one, the cause is almost always a component talking
+to an API directly instead of reading the graph — a layering violation, not a
+tuning problem.

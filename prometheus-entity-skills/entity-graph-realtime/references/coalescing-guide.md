@@ -38,9 +38,13 @@ Per `(type, id)` key:
 ## Observability
 
 ```ts
+import { getRealtimeManager } from "@prometheus-ags/prometheus-entity-management";
+
 getRealtimeManager({
   onChangeReceived: (adapter, change) => {
-    // dev log: pre-coalesce volume
+    // dev log: pre-coalesce volume — adapter is the adapter name string
+    void adapter;
+    void change;
   },
 });
 ```

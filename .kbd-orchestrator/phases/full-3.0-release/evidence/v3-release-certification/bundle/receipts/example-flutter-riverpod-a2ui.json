@@ -1,0 +1,13 @@
+{
+  "lane": "example-flutter-riverpod-a2ui",
+  "category": "dart-flutter",
+  "mandatory": true,
+  "command": "pnpm run verify:flutter-riverpod-a2ui",
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:43:12.225Z",
+  "durationMs": 40933,
+  "exitCode": 0,
+  "logFile": "logs/example-flutter-riverpod-a2ui.log",
+  "logSha256": "7ebb6db2055f1c716e12909781cbc92d8cdf97ddb228d2bb69d7914483752e2b",
+  "logBytes": 13638
+}

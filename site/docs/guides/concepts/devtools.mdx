@@ -1,0 +1,76 @@
+---
+title: DevTools and time travel
+description: The devtools event bus, store registry, and snapshot-based time travel built into the core package.
+---
+
+# DevTools and time travel
+
+Because all state lives in one explicit graph store, debugging tooling can
+observe everything without framework-specific hacks. The core package ships
+the primitives; any UI (browser extension, in-app panel, CLI) can build on
+them.
+
+## Event bus
+
+Every engine and graph action emits a `DevtoolsEvent`. Create a bus to
+subscribe with replay — new subscribers immediately receive buffered history,
+and bursts coalesce into a single list event instead of flooding the UI:
+
+```ts
+import { createDevtoolsEventBus } from "@prometheus-ags/entity-graph-core";
+
+const bus = createDevtoolsEventBus({ bufferSize: 500, coalesceBurstThreshold: 20 });
+
+const unsubscribe = bus.subscribe((event) => {
+  // event.kind: "entity" | "list" | "patch" | ...
+  console.log(event.kind, event.at);
+});
+```
+
+## Store registry
+
+Multi-store apps (e.g. micro-frontends) register each store's event source so
+DevTools can enumerate them:
+
+```ts
+import {
+  createDevtoolsEventBus,
+  getRegisteredStores,
+  registerStore,
+  subscribeDevtoolsEvent,
+} from "@prometheus-ags/entity-graph-core";
+
+const bus = createDevtoolsEventBus();
+// subscribeDevtoolsEvent is the engine's raw event tap — a DevtoolsSourceFn.
+registerStore(bus, subscribeDevtoolsEvent, "entity-graph");
+const stores = getRegisteredStores();
+```
+
+## Time travel
+
+Snapshot-based time travel records graph states and restores them by index or
+sequence number:
+
+```ts
+import {
+  configureTimeTravel,
+  getTimeTravelState,
+  recordGraphSnapshot,
+  restoreGraphSnapshot,
+  stepTimeTravel,
+} from "@prometheus-ags/entity-graph-core";
+
+configureTimeTravel({ capacity: 100 });
+
+const index = recordGraphSnapshot("before-mutation");
+// ... user edits, mutations land ...
+restoreGraphSnapshot(index); // rewind
+stepTimeTravel(1); // step forward again
+
+const state: ReturnType<typeof getTimeTravelState> = getTimeTravelState();
+```
+
+Restoring a snapshot rewrites the graph — every subscribed view across every
+binding re-renders from the restored state, because no view holds its own
+copy. That is the payoff of the normalized architecture: time travel is a
+store operation, not a UI operation.

@@ -2,8 +2,11 @@ packages:
   - "packages/*"
   - "examples/vite-app"
   - "examples/nextjs-app"
+  - "examples/agentic-a2ui"
+  - "examples/tauri-app"
   - "examples/agentic-a2ui-app"
   - "examples/tauri-universal"
+  - "site"
   - "website"
 allowBuilds:
   better-sqlite3: true

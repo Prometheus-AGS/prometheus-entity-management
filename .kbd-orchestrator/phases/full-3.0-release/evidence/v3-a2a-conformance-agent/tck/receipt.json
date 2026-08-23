@@ -1,9 +1,9 @@
 {
   "schemaVersion": "2",
-  "generatedAt": "2026-08-02T14:43:21.686Z",
-  "candidateSha": "eb3c9802da5ff10ad6db135fed761bd23ea80b3f",
+  "generatedAt": "2026-08-23T12:46:41.925Z",
+  "candidateSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
   "candidate": {
-    "revision": "eb3c9802da5ff10ad6db135fed761bd23ea80b3f",
+    "revision": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
     "worktreeDirty": true,
     "artifacts": {
       "packages/entity-graph-a2a/dist/index.mjs": {
@@ -27,12 +27,12 @@
   "protocolFamily": "1.0",
   "sdk": "@a2a-js/sdk@1.0.1",
   "binding": "JSONRPC",
-  "target": "http://127.0.0.1:50501/",
+  "target": "http://127.0.0.1:62042/",
   "tck": {
     "repository": "https://github.com/a2aproject/a2a-tck.git",
     "commit": "5996b79f9cefa6fc390980e383e358a66fb9e49e"
   },
-  "command": "uv run --project /var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-a2a-tck-UDB0mt/a2a-tck python run_tck.py --sut-host http://127.0.0.1:50501/ --transport jsonrpc -v",
+  "command": "uv run --project /var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-a2a-tck-NkIwQY/a2a-tck python run_tck.py --sut-host http://127.0.0.1:62042/ --transport jsonrpc -v",
   "processExitCode": 0,
   "levels": {
     "MUST": {
@@ -207,28 +207,28 @@
   "artifacts": {
     "compatibility.json": {
       "bytes": 64379,
-      "sha256": "c18522adfd3e6ba1c8aa926deef592b272b3077b65edaf31e6e601dbb5b7b470"
+      "sha256": "050806825e4caf0117c8064488668e597e748d2099268d67a3123f932e85618e"
     },
     "compatibility.html": {
       "bytes": 139421,
-      "sha256": "5391342e26d46b396327ae7077614015533b762cc35c490c23d6936adf0690fd"
+      "sha256": "1c2dbb469c90b39f4938fc4cb59dae985a10cc8dd24930b0d6dc671217aa39be"
     },
     "tck_report.html": {
-      "bytes": 289870,
-      "sha256": "c07141e62e4874f7d0fe559a0dd22de8ccd364191f400fbd5be92a5d220efa8f"
+      "bytes": 289853,
+      "sha256": "f0e9aea0189d0b10363dc5454501e9b10ec91d9c47fdee3e8fc84ac7bc88c451"
     },
     "junitreport.xml": {
       "bytes": 90911,
-      "sha256": "a19cd458acb2e489eabd463a0130d76665e3dfa35df95528414e30292d74000b"
+      "sha256": "6f0a6a7756b8eb5c9c48546d8e0963c9394dbe3dd147b7e1c5d4dcb939c1dfa4"
     },
     "tck-stdout.txt": {
-      "bytes": 37711,
-      "sha256": "74fce7b6c561c309fb0846ea670e2d62690f339b25f3307fbd01b29460de7528"
+      "bytes": 37698,
+      "sha256": "279047abf5ae657d3b9cfbd189e7142401b7c7b6931df4c0dd9ba68743a4dff0"
     },
     "tck-stderr.txt": {
       "bytes": 397,
-      "sha256": "d40ff5e6f0a942aad30ee581d318f4cdb44af7f4df1778a8c1c17b42902009b0"
+      "sha256": "c7b24aaa3c050f297c14b5ba95c54400e0bfdf0884145e1404d8b619252c09a7"
     }
   },
-  "compatibilitySha256": "c18522adfd3e6ba1c8aa926deef592b272b3077b65edaf31e6e601dbb5b7b470"
+  "compatibilitySha256": "050806825e4caf0117c8064488668e597e748d2099268d67a3123f932e85618e"
 }

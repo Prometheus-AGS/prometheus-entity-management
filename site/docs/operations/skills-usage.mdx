@@ -1,0 +1,85 @@
+---
+title: Skills usage
+description: The complete prometheus-entity-skills pack — bundle layout, plugin map, sub-skills, shared ledgers, and validation gates.
+---
+
+# Skills usage
+
+`prometheus-entity-skills/` is the canonical Agent Skills pack shipped beside
+the library. It teaches coding agents the normalized entity graph across the
+full 3.0 ecosystem — core, React, Svelte, Solid, Alpine, HTMX, Web Components,
+sync, SDL, A2A, A2UI, Tauri, Dart/Flutter, Rust CLI/MCP tooling, and Flint
+fabric contracts.
+
+## Progressive disclosure
+
+| Tier | Load | Purpose |
+| --- | --- | --- |
+| 1 | `SKILLS.md` (bundle index) | Pick a plugin by task |
+| 2 | Plugin root `SKILL.md` | Workflow and constraints |
+| 3 | `skills/<sub-skill>/SKILL.md` | Focused playbooks |
+| 4 | `references/`, `agents/`, `prompts/` | Load on demand |
+
+## Plugin map
+
+| Plugin directory | Plugin name | Focus |
+| --- | --- | --- |
+| `entity-graph-setup/` | `prometheus-entity-graph-setup` | Adopt the library; detect legacy data layers; migration plans |
+| `entity-graph-crud/` | `prometheus-entity-graph-crud` | CRUD UI, `useEntityCRUD`, tables, forms, relations |
+| `entity-graph-graphql/` | `prometheus-entity-graph-graphql` | GQL client, descriptors, hooks, subscriptions |
+| `entity-graph-realtime/` | `prometheus-entity-graph-realtime` | RealtimeManager, adapters, channels, local-first |
+| `entity-graph-prisma/` | `prometheus-entity-graph-prisma` | Prisma mapping, generators, API routes |
+| `entity-graph-optimize/` | `prometheus-entity-graph-optimize` | Audits, performance, GC / eviction |
+
+Each plugin nests sub-skills (for example `entity-graph-setup` nests
+`entity-graph-init`, `entity-graph-detect`, `entity-graph-migrate`) — each a
+normal Agent Skill directory with its own `SKILL.md` whose frontmatter `name`
+matches the folder name.
+
+## Installing plugins
+
+Each first-level folder with `.claude-plugin/plugin.json` is an installable
+Claude Code plugin. Add the marketplace by pointing Claude Code at the
+directory containing `prometheus-entity-skills/.claude-plugin/marketplace.json`,
+then install by name:
+
+```text
+/plugin install prometheus-entity-graph-crud@prometheus-entity-skills
+```
+
+## Shared references and ledgers
+
+`_shared/references/` holds the machine-readable contract the skills are
+verified against:
+
+- **Export ledgers** — one JSON ledger per public package (runtime export
+  names), plus the Dart source declaration ledger. After changing a package's
+  exports, regenerate with `pnpm run refresh:exports`.
+- **Package selection and claims** — `package-selection.md` maps stacks to the
+  twelve npm packages, the Dart package, and the Rust crates;
+  `ecosystem-claims.json` maps every binding/integration claim to a consumer
+  fixture or example.
+- **Boundary references** — A2UI protocol bridge, A2A conformance, sync
+  persistence path, Tauri mobile plugin, Dart graph/Riverpod, RC pipeline, and
+  the v3 release contract.
+
+## Validation gates
+
+| Gate | Verifies |
+| --- | --- |
+| `pnpm run verify:skills` | All twelve npm ledgers plus the Dart declaration ledger match built artifacts |
+| `pnpm run verify:skills-snippets` | Every public ```ts/tsx snippet compiles against packed packages |
+| `pnpm run verify:skills-ecosystem` | Ledgers + snippets + referenced paths exist + claims backed + data-flow language |
+
+## Standing constraints for skill authors
+
+- No skill may prescribe component- or hook-level fetching; stores and
+  adapters own I/O.
+- Skills that generate code follow the repository's `AGENTS.md` layering
+  rules.
+- Every claim names its evidence gate: packed-candidate evidence for module
+  and type claims, the framework-neutral verifier for React-free core claims,
+  the binding verifier for singleton claims, `verify:example-coverage` for
+  shared scenarios, fixture-backed default lanes for Flint, and the RC
+  pipeline reference for release claims. An implemented showcase never
+  authorizes publication by itself.

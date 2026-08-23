@@ -71,7 +71,7 @@ export interface EntityBindingOptions {
  * 4. Kick off an initial fetch if data is stale or absent.
  * 5. `destroy()` unsubscribes from the graph and releases the engine token.
  *
- * @internal Called by the `$entity` magic factory.
+ * Advanced/testing use: called by the `$entity` magic factory.
  */
 export function createEntityBinding<T extends Record<string, unknown>>(
   alpineReactive: <U extends object>(obj: U) => U,

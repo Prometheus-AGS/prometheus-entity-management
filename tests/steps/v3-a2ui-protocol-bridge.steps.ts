@@ -236,8 +236,8 @@ Then("coverage records implemented official protocol and graph-policy evidence",
 
 Then("the A2UI root and AG-UI compatibility export ledgers match built artifacts", function () {
   const receipt = runPnpm(["--filter", "@prometheus-ags/a2ui-react", "run", "verify:skills"]);
-  assert.match(receipt, /A2UI root: 18 runtime exports match ledger/);
-  assert.match(receipt, /A2UI \.\/ag-ui: 9 runtime exports match ledger/);
+  assert.match(receipt, /OK: a2ui \.: 18 runtime exports match ledger/);
+  assert.match(receipt, /OK: a2ui \.\/ag-ui: 9 runtime exports match ledger/);
 });
 
 Then(

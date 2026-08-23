@@ -80,7 +80,7 @@ interface ListCell<T extends Record<string, unknown>> {
  * The core engine handles fetch deduplication, retries, and graph writes.
  * This binding only reads the graph and delegates all I/O to `fetchList`.
  *
- * @internal Called by the `$entityList` magic factory.
+ * Advanced/testing use: called by the `$entityList` magic factory.
  */
 export function createListBinding<T extends Record<string, unknown>>(
   alpineReactive: <U extends object>(obj: U) => U,

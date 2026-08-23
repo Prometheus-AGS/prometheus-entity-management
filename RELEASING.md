@@ -2,12 +2,13 @@
 
 ## 3.0 status: partial RC publication
 
-The full npm 3.0.0 release is still in progress. React, core, and A2UI React are
-public as `3.0.0-rc.1`; nine npm packages remain staged. React `latest` has been
-intentionally moved to the RC. `entity_graph_flutter@3.0.0` is public on
-pub.dev. Do not run `changeset publish`, publish an individual workspace
-package, or move any other npm `latest` tag based only on local builds or the
-main CI baseline.
+**Update 2026-08-23: 3.0.0 stable is published.** All twelve
+`@prometheus-ags/*` npm packages are public at `3.0.0` with `latest` promoted
+(tag `v3.0.0`, PR #23). The publication ran directly with a granular npm token
+at operator direction; the governed OIDC path below remains for future
+releases. `entity_graph_flutter@3.0.0` is public on pub.dev. Do not run
+`changeset publish`, publish an individual workspace package, or move any npm
+`latest` tag based only on local builds or the main CI baseline.
 
 The verified registry snapshots are
 [`release/npm-registry-status.json`](release/npm-registry-status.json) and
@@ -257,3 +258,64 @@ passed; neither means “3.0 may be published.” Stable certification, the GitH
 Release, complete npm post-publication checks, and the remaining stable npm
 promotion gates remain downstream. The production documentation deployment and
 React `latest` move have already occurred.
+
+## Stable promotion (v3-stable-publication)
+
+Stable publication runs only after the sealed certification bundle
+(`pnpm run release:check:seal`, verdict `complete`) exists for the tagged
+source. The pipeline is channel-aware: when every fixed npm package version
+equals the contract release version exactly (no prerelease suffix), the
+manifest switches to the `stable` channel — `latest` dist-tag, `stage-stable`
+action — and the RC authority boundary no longer applies.
+
+- Pre-publish guards: `pnpm run verify:stable-publication` (offline; policy,
+  workflow, authority-boundary, bundle-seal, and disposition checks).
+- Publication: `publish.yml` → `workflow_dispatch` mode `stable`, which runs
+  the full certification gate and rehearsal, then the `stage-stable` job in
+  the protected `npm-stable` environment (human approval) with GitHub OIDC
+  trusted publishing — long-lived npm tokens remain forbidden.
+- Recovery: matching immutable versions are skipped and recorded, absent
+  versions publish in dependency order, conflicts block; a partial run is
+  recovered with a corrective patch version, never by overwriting.
+- Post-publish: `pnpm run verify:stable-publication -- --live true` confirms
+  every declared artifact resolves at 3.0.0 and npm `latest` points at it.
+  Only a complete stable stage may move `latest`; the promotion guard
+  (`assertStableTagsPromoted`) fails the run if any package lags behind.
+
+### Publish-day pre-flight checklist (operator, ~15 minutes)
+
+1. **npm trusted publishing** — on npmjs.com, for each of the 12 packages
+   (`@prometheus-ags/*`): Settings → Trusted Publisher → GitHub Actions,
+   repository `<org>/<repo>`, workflow `publish.yml`, environment
+   `npm-stable`. One-time per package. (Alternative if trusted publishing is
+   unavailable: a granular access token scoped to `@prometheus-ags/*` with
+   publish permission and "bypass 2FA" enabled, stored as the `NPM_TOKEN`
+   secret — but the pipeline rejects long-lived tokens by design, so this
+   requires a deliberate policy change; prefer OIDC.)
+2. **GitHub environment** — repo Settings → Environments → create
+   `npm-stable`, add yourself as a required reviewer. This is the human
+   approval gate that `assertStableStageAuthority` verifies.
+3. **Merge the version bump** — bring `release/v3.0.0-staging` (workspace
+   `3.0.0`, tag `v3.0.0`) onto the release branch and push. The pipeline
+   derives the stable channel from the version equality, so no other edit is
+   needed.
+4. **Dispatch** — Actions → `publish.yml` → Run workflow → `mode: stable`.
+   Approve the `npm-stable` environment prompt when the `stage-stable` job
+   pauses.
+5. **Confirm** — the job's live verification step proves all 12 packages
+   resolve at `3.0.0` with `latest === 3.0.0`; the uploaded
+   `stable-stage-report.json` is the receipt. If it fails, the recovery
+   journal in the same artifact names exactly which packages published and
+   which did not — re-run the dispatch; matching versions are skipped.
+
+## Documentation site deployment
+
+The 3.0 documentation site deploys to GitHub Pages through the quality-gated,
+release-aware workflow in `.github/workflows/docs-pages.yml`: pull requests
+build and gate but cannot deploy; only the protected `main` branch publishes
+to the `github-pages` environment after build, links, snippet, search-index,
+route-probe, accessibility, Lighthouse-budget, and secrets/absolute-path
+gates pass. The canonical deployment URL is recorded in
+[`release/docs-site.json`](release/docs-site.json) and the 3.0 release points
+there. First live deployment requires Pages to be enabled for the repository
+and remains an operator-confirmed action.

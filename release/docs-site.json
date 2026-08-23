@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0.0",
+  "recordedAt": "2026-08-23",
+  "url": "https://prometheus-ags.github.io/prometheus-entity-management/",
+  "basePath": "/prometheus-entity-management/",
+  "environment": "github-pages",
+  "workflow": ".github/workflows/docs-pages.yml",
+  "docsVersionLabel": "3.0",
+  "note": "Canonical deployment target for the 3.0 documentation site. The URL is derived from the site configuration defaults (SITE_URL/BASE_URL) and is published only by the protected main branch through the quality-gated docs-pages workflow. First live deployment requires GitHub Pages to be enabled for the repository and is an operator-confirmed action."
+}

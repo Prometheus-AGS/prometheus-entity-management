@@ -1,0 +1,13 @@
+{
+  "lane": "skills",
+  "category": "skills",
+  "mandatory": true,
+  "command": "pnpm run ci:skills",
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:30:31.991Z",
+  "durationMs": 4336,
+  "exitCode": 0,
+  "logFile": "logs/skills.log",
+  "logSha256": "217ab94a2bc8beaf701030173e58a6e6e8a11f5aa4f97c425ccd9b834151346e",
+  "logBytes": 5319
+}

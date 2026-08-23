@@ -1,0 +1,72 @@
+---
+title: "Tutorial: Flutter + Riverpod + A2UI"
+description: Mobile showcase — official A2UI surfaces through genui, a fail-closed app-owned action policy, and optimistic CRUD with offline convergence on the Dart graph.
+---
+
+# Tutorial: Flutter + Riverpod + A2UI
+
+`examples/flutter-riverpod` proves the mobile slice of the 3.0 contract: a
+Flutter/Riverpod 3 app renders official A2UI surfaces and drives optimistic
+CRUD plus offline persistence/convergence against the certified
+`entity_graph_flutter` package.
+
+## Architecture
+
+The app composes published surfaces only — no library changes:
+
+- `entity_graph_flutter` — the canonical Dart graph plus Riverpod provider
+  families (`entityListProvider`, `entityCrudProvider`, …).
+- `genui` + `a2ui_core` — official A2UI `SurfaceController` rendering.
+- An **app-owned, fail-closed action policy**: allowlisted `task.update`,
+  approval-gated `task.replace`, denied `task.delete`, a tenant guard, and
+  malformed-message rejection.
+
+Mutations land once in the normalized graph and propagate to every joined
+view — the same invariant the TypeScript bindings certify.
+
+## Setup
+
+```bash
+pnpm run dart:bootstrap          # flutter pub get across the pub workspace
+cd examples/flutter-riverpod
+flutter run                      # attach a device or emulator
+```
+
+## Feature scenarios
+
+| Scenario | Coverage ID | What to watch |
+| -------- | ----------- | ------------- |
+| A2UI render + policy | `example.protocol.a2a-a2ui-policy` | Surface actions cross the app-owned policy |
+| Optimistic CRUD | `example.crud.optimistic-confirm`, `example.crud.optimistic-rollback` | Edit buffer isolation, save/rollback semantics |
+| Offline persistence + convergence | `example.offline.persistence-convergence` | Persisted graph reloads; offline edits converge |
+| Cross-view normalization | `example.graph.normalized-cross-view` | One canonical entity drives every widget |
+| Platform boundary | `example.platform.adapter-boundary` | Mobile host stays a transport adapter |
+| Schema round-trip | `example.schema.roundtrip` | Dart models match the shared SDL schema |
+
+## Test commands
+
+```bash
+pnpm run verify:flutter-riverpod-a2ui   # analyzer, widget tests, compile-level platform builds
+pnpm run dart:test                      # melos test across the pub workspace
+```
+
+Platform verification is **compile-level**: `flutter build apk --debug` and
+`flutter build ios --simulator --no-codesign`. No booted-device run was
+performed for the 3.0 evidence — that limit is retained, not waived.
+
+## Deployment and platform notes
+
+Android and iOS scaffolding live in the example (`android/`, `ios/`). Build
+receipts: debug APK and an unsigned iOS simulator bundle. Release signing,
+store upload, and device certification remain downstream operator work.
+
+## Troubleshooting
+
+- **Provider family forking per rebuild:** lambda `toGraph` closures recreate
+  Riverpod families; use static `encode` tear-offs instead.
+- **CRUD provider dies between read and save:** watch `.notifier` from the
+  tile so the auto-dispose provider stays alive.
+- **Conflict merge loses the base value:** fixed in the example's merge path;
+  keep merge strategies total when forking.
+
+Runnable source: [`examples/flutter-riverpod`](https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/examples/flutter-riverpod).

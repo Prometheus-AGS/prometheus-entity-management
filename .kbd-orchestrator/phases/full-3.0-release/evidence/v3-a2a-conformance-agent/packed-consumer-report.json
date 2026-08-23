@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-02T14:42:37.717Z",
+  "generatedAt": "2026-08-23T12:45:59.046Z",
   "packages": {
     "@prometheus-ags/entity-graph-core": {
       "payload": "pass",

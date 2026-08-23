@@ -1,0 +1,13 @@
+{
+  "lane": "docs-pages-quality",
+  "category": "docs",
+  "mandatory": true,
+  "command": "pnpm run verify:docs-pages-quality",
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:38:55.955Z",
+  "durationMs": 40090,
+  "exitCode": 0,
+  "logFile": "logs/docs-pages-quality.log",
+  "logSha256": "abb34ffb9f591540b45d62b667963b1dadd1744b1e62c993f02c1f714a14b17a",
+  "logBytes": 571
+}

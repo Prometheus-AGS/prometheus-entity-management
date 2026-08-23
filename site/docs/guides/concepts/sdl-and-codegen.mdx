@@ -1,0 +1,82 @@
+---
+title: SDL and code generation
+description: Define entities and relations once in the entity-graph SDL, validate with parseSdl, and generate types, schemas, and server artifacts from the same IR.
+---
+
+# SDL and code generation
+
+`@prometheus-ags/entity-graph-sdl` is the schema layer of the ecosystem. You
+declare entities, fields, and relations once; `parseSdl` validates the
+document into an intermediate representation (IR) that code generators and
+runtimes consume.
+
+## The document shape
+
+```ts
+import { parseSdl, SdlValidationError } from "@prometheus-ags/entity-graph-sdl";
+
+const doc = {
+  version: "1.0",
+  entities: {
+    Task: {
+      fields: {
+        id: { type: "string", primary: true },
+        title: { type: "string" },
+        status: { type: "enum", values: ["open", "done"] },
+        projectId: { type: "string" },
+      },
+      relations: {
+        project: { type: "belongsTo", target: "Project" },
+      },
+    },
+    Project: {
+      fields: {
+        id: { type: "string", primary: true },
+        name: { type: "string" },
+      },
+      relations: {
+        tasks: { type: "hasMany", target: "Task" },
+      },
+    },
+  },
+};
+
+try {
+  const ir = parseSdl(doc);
+  // ir.entities → IrEntity[] with fields, primaryKey, and relations resolved.
+  console.log(ir.entities.map((e) => e.name));
+} catch (err) {
+  if (err instanceof SdlValidationError) {
+    // Precise path, e.g. "$.entities.Task.fields.status".
+    console.error(err.message);
+  }
+}
+```
+
+## Validation is strict by design
+
+`parseSdl` fails fast on the first problem and reports a JSON-path: unknown
+scalar types, enums without `values`, missing or multiple primary keys, and
+relation targets that are not defined entities. Catching schema errors at
+generation time is cheaper than debugging cascade invalidation against a
+relation that does not exist.
+
+## What the IR feeds
+
+- **TypeScript types** and graph relation schemas (drives
+  [cascade invalidation](/docs/guides/concepts/crud-and-relations)).
+- **Server artifacts** — the HTMX SSE server consumes the IR directly to
+  know entity types and renderers (see the
+  [HTMX guide](/docs/guides/bindings/htmx)).
+- **Rust and Flutter tooling** — the same IR generates Dart models and Rust
+  structs, keeping every platform on one schema.
+
+`parseSdlJson(json)` is the string-input variant for loading `.json` schema
+files from disk or over the network.
+
+## One schema, every surface
+
+The SDL is the single place where relations are declared. Because cascade
+invalidation, relation reads, server fragments, and generated code all derive
+from the same IR, a schema change propagates everywhere instead of drifting
+across hand-maintained copies.

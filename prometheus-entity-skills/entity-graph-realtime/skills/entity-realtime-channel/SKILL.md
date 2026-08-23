@@ -29,10 +29,24 @@ metadata:
 ## Registration
 
 ```ts
-manager.register(adapter, [
+import type {
+  ChannelConfig,
+  EntityChange,
+  RealtimeAdapter,
+  RealtimeManager,
+} from "@prometheus-ags/prometheus-entity-management";
+
+declare const manager: RealtimeManager;
+declare const adapter: RealtimeAdapter;
+
+const normalizeRawEvent = (raw: unknown): EntityChange | null =>
+  raw && typeof raw === "object" ? (raw as EntityChange) : null;
+
+const channels: ChannelConfig[] = [
   { type: "Task", filter: { status: "open" } },
   { type: "Comment" },
-], normalizeRawEvent);
+];
+manager.register(adapter, channels, normalizeRawEvent);
 ```
 
 - **`normalize`**: `(raw: unknown) => EntityChange | null` — drop heartbeats, unknown tables

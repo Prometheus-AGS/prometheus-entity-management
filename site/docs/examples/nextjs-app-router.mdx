@@ -1,0 +1,71 @@
+---
+title: "Tutorial: Next.js App Router"
+description: SSR-safe entity graph usage — per-request server graphs, prefetch/dehydrate/hydrate without mismatch, mutations, and realtime takeover.
+---
+
+# Tutorial: Next.js App Router
+
+`examples/nextjs-app` proves the SSR slice of the contract: concurrent server
+requests stay isolated, and hydrated client graphs never duplicate a fetch
+inside `staleTime`.
+
+## Architecture
+
+The React binding's hooks bind to a **process-global** store — correct in the
+browser, wrong during server rendering where concurrent requests would share
+it. The example therefore splits the world:
+
+- **Server:** `src/lib/server/request-graph.ts` mints a fresh graph per
+  request with the core's `createGraphStore()`. A release contract test
+  statically guards that server modules never write the global store.
+- **Handoff:** the RSC page prefetches into the request graph, dehydrates a
+  serializable payload (entities + list slots keyed by `serializeKey`), and
+  renders data HTML directly from it.
+- **Client:** `RequestHydrationBoundary` renders an identical shell on server
+  and first client pass (no hydration mismatch), writes the payload post-mount
+  with freshness stamps, then mounts graph-reading children.
+
+## Setup
+
+```bash
+pnpm install
+pnpm run dev:next
+```
+
+Open `http://localhost:3000` (redirects to `/dashboard`); the certified SSR
+route is `/release-showcase` (`force-dynamic`).
+
+## Feature scenarios
+
+| Scenario | Coverage ID | What to watch |
+| -------- | ----------- | ------------- |
+| SSR isolation + hydration | `example.runtime.ssr-isolation-hydration` | Two concurrent requests never share graph state |
+| Normalized cross-view update | `example.graph.normalized-cross-view` | Hydrated entities drive list + detail |
+| Optimistic confirm/rollback | `example.crud.optimistic-confirm`, `example.crud.optimistic-rollback` | Mutations after hydration behave identically to the SPA |
+| View modes | `example.view.local-remote-hybrid` | FilterSpec compiles identically post-hydration |
+| Realtime takeover | `example.realtime.coalesced-cross-view` | Live updates join the hydrated graph deterministically |
+| Lifecycle security | `example.runtime.lifecycle-security` | Loading/error boundaries per route segment |
+
+## Test commands
+
+```bash
+pnpm run verify:nextjs-app-router   # full showcase gate incl. browser lanes
+```
+
+## Deployment and platform notes
+
+A standard Next.js production build (`pnpm run build:next`). The key
+deployment rule: **never write the global graph during server rendering** —
+keep server data flow behind per-request `createGraphStore()` instances and
+hand data across with the hydration boundary.
+
+## Troubleshooting
+
+- **Hydration mismatch warnings:** the boundary must render the identical
+  shell before mount; do not read graph state during the first client pass.
+- **Duplicate fetches after navigation:** the hydration payload carries
+  freshness stamps; if you bypass it, SWR treats the entities as unfetched.
+- **Data leaking between requests in dev:** a server module imported the React
+  binding's global store — the release contract test catches exactly this.
+
+Runnable source: [`examples/nextjs-app`](https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/examples/nextjs-app).

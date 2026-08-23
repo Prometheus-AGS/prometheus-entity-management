@@ -1,0 +1,54 @@
+---
+title: "Integration: WebSocket"
+description: Point the core WebSocket adapter at any socket source — reconnection, heartbeat, and message parsing land in the RealtimeManager's coalescing window.
+---
+
+# Integration: WebSocket
+
+The core package ships a reconnecting WebSocket adapter. It owns the socket
+lifecycle; the [RealtimeManager](/docs/guides/concepts/realtime-batching) owns
+batching.
+
+## Setup
+
+```bash
+pnpm add @prometheus-ags/entity-graph-core
+```
+
+```ts
+import {
+  RealtimeManager,
+  createWebSocketAdapter,
+  type EntityChange,
+} from "@prometheus-ags/entity-graph-core";
+
+const adapter = createWebSocketAdapter({
+  url: "wss://api.example.com/stream",
+  // Map your wire format to EntityChange; return null to skip a message.
+  parseMessage: (data): EntityChange[] | null => {
+    const msg = data as { type?: string; id?: string; data?: Record<string, unknown> };
+    if (!msg.type || !msg.id) return null;
+    return [{ op: "upsert", type: msg.type, id: msg.id, data: msg.data }];
+  },
+  reconnectBaseDelay: 1_000, // exponential backoff base
+  pingInterval: 30_000, // heartbeat
+});
+
+const manager = new RealtimeManager({ flushInterval: 16 });
+manager.register(adapter, [{ type: "task" }]);
+```
+
+## Deterministic demo mode vs. live credentials
+
+- **Demo:** point `url` at a loopback echo server (the vite example's
+  realtime scenario does this) — keyless, CI-safe, fully deterministic.
+- **Live:** terminate the socket at your own infrastructure and authenticate
+  the **connect** request (cookie or ticket query param). Never place tokens
+  in entity payloads, and never let the adapter store credentials.
+
+## Troubleshooting
+
+- **Messages ignored:** `parseMessage` returned null — log the raw frame
+  before blaming the manager.
+- **Reconnect storms:** `maxReconnectAttempts` defaults to `Infinity`; cap it
+  for flaky networks and surface `onStatusChange` in the UI.
