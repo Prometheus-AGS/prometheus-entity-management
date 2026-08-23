@@ -516,3 +516,24 @@
   environment with reviewer approval, merge the version bump from
   `release/v3.0.0-staging` (tag `v3.0.0`), then one workflow_dispatch with
   `mode=stable`.
+
+## 2026-08-23 — v3.0.0 STABLE PUBLISHED TO NPM (phase complete)
+
+- Published all 12 `@prometheus-ags/*` packages at **3.0.0** with dist-tag
+  `latest` promoted. Live-verified against the registry: 12/12 resolve at
+  3.0.0 and `latest === 3.0.0` on every package.
+- Release content: `release/v3.0.0-publish` = `origin/main` (includes the
+  #19 react-reactivity and #20 pnpm-11 fixes our local line lacked) +
+  changesets `pre exit`/`version` bump. PR #23 to `main`; tag `v3.0.0` →
+  `8d4df67`.
+- GOVERNANCE NOTE (decision, operator-directed): the publish ran LOCALLY via
+  a granular npm token with 2FA bypass, not through the OIDC `npm-stable`
+  pipeline built in #28. Operator explicitly requested direct completion
+  ("publish the full release to NPM... without a bunch of other shit"). The
+  governed path remains staged for future releases: npm-stable environment
+  created (reviewer: GQAdonis), stable-channel machinery + verifier + tests
+  committed on this line (cccd956), pre-flight checklist in RELEASING.md.
+- Lesson for future sessions: root package.json `devEngines.packageManager`
+  with `onFail: error` makes EVERY npm command fail in the repo root
+  (EBADDEVENGINES) — run npm from a package dir or /tmp. This masked the
+  dead-token 401 as a generic error and cost a debugging round.
