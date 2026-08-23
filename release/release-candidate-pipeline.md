@@ -68,10 +68,12 @@ target only the `next` channel through npm's staging operation.
 ### Register the exact npm authority
 
 The checked-in [`npm-trusted-publishing.json`](npm-trusted-publishing.json)
-manifest is the secret-free authority contract for all twelve packages. It
-allows only `npm stage publish` from repository
-`Prometheus-AGS/prometheus-entity-management`, workflow filename `publish.yml`,
-and GitHub environment `npm-rc`. Direct `npm publish` authority is forbidden.
+manifest is the secret-free authority contract for all twelve packages. npm
+supports one trusted publisher per package, so that relationship binds the
+repository and `publish.yml` workflow without a channel-specific environment
+claim and grants both `npm stage publish` and `npm publish`. The workflow keeps
+the two operations separate behind protected `npm-rc` and `npm-stable`
+environments and validates the channel-specific authority before mutation.
 
 An npm maintainer must establish this relationship from an interactive terminal:
 
@@ -84,8 +86,8 @@ pnpm run release:npm-trust:verify
 The account must have package write access and 2FA enabled. Registration pauses
 two seconds between packages as recommended by npm and then reads every
 relationship back with `npm trust list`. The verifier rejects inventory drift,
-an incorrect repository/workflow/environment, missing stage authority, direct
-publish authority, or extra permissions. It also rejects `NPM_TOKEN` and
+an incorrect repository/workflow, any environment claim, missing stage or
+stable-publish authority, or extra permissions. It also rejects `NPM_TOKEN` and
 `NODE_AUTH_TOKEN`; neither command accepts or prints registry credentials.
 
 The stage workflow configures the public registry through
