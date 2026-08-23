@@ -48,9 +48,9 @@ Keep unsaved form state in the view model. Use a graph patch only for an
 explicit optimistic experience, record exact previous state, clear the patch on
 confirmation, and restore the previous projection on failure.
 
-## 5. Alpha-to-RC moves
+## 5. Alpha-to-stable moves
 
-- Consume the fixed twelve-package candidate set; do not mix alpha and RC core
+- Consume the fixed twelve-package stable set; do not mix alpha and 3.x core
   peers.
 - Use the official A2UI renderer at the package root; alpha AG-UI chat/state
   helpers live under the explicit `./ag-ui` subpath.

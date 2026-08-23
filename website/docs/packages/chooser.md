@@ -42,18 +42,18 @@ against the release contract.
 
 ## Install public releases
 
-React 19 applications can install the public, matching RC pair now:
+React 19 applications install the stable pair:
 
 ```bash
-pnpm add @prometheus-ags/entity-graph-core@next \
-  @prometheus-ags/prometheus-entity-management@latest \
+pnpm add @prometheus-ags/entity-graph-core \
+  @prometheus-ags/prometheus-entity-management \
   react@19 react-dom@19
 ```
 
-Add the public A2UI renderer when the application accepts generated surfaces:
+Add the A2UI renderer when the application accepts generated surfaces:
 
 ```bash
-pnpm add @prometheus-ags/a2ui-react@next
+pnpm add @prometheus-ags/a2ui-react
 ```
 
 Flutter applications install the public stable Dart package:
@@ -62,9 +62,9 @@ Flutter applications install the public stable Dart package:
 flutter pub add entity_graph_flutter:^3.0.0
 ```
 
-The other nine npm RCs are staged but not public. Build their examples from
-this workspace until npm approval and registry verification finish. The exact
-state and protected tags are recorded in the [release operations
+All twelve npm packages are public at stable `3.0.1`, and the examples in
+this workspace build against the same versions. The exact registry state and
+protected tags are recorded in the [release operations
 guide](../operations/release.md).
 
 For exact symbols, open the [packed TypeScript API reference](https://prometheus-ags.github.io/prometheus-entity-management/api/).

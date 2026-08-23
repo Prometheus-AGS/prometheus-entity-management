@@ -15,11 +15,11 @@ inside stores or adapters. The verified showcase covers:
 - local, remote, and hybrid views with realtime coalescing;
 - PGlite, Loro, Suspense, DevTools, and accessibility.
 
-Install the published matching RC pair:
+Install the published stable pair:
 
 ```bash
-pnpm add @prometheus-ags/entity-graph-core@next \
-  @prometheus-ags/prometheus-entity-management@latest \
+pnpm add @prometheus-ags/entity-graph-core \
+  @prometheus-ags/prometheus-entity-management \
   react@19 react-dom@19
 ```
 
