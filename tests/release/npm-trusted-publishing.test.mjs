@@ -5,6 +5,7 @@ import test from "node:test";
 import {PUBLIC_PACKAGES} from "../../scripts/public-packages.mjs";
 import {
   assertExactTrust,
+  assertReplaceableTrust,
   DIRECT_PERMISSION,
   loadAuthorityManifest,
   parseTrustOutput,
@@ -56,6 +57,31 @@ test("incorrect claims and missing permissions fail closed", async () => {
   );
   assert.throws(() => assertExactTrust("pkg", {...base, environment: "npm-rc"}, manifest), /environment claim/);
   assert.throws(() => assertExactTrust("pkg", [base, base], manifest), /exactly one/);
+});
+
+test("registration may replace only the same repository and workflow authority", async () => {
+  const manifest = await loadAuthorityManifest();
+  const legacy = {
+    id: "trust-legacy",
+    type: "github",
+    repository: manifest.repository,
+    file: manifest.workflowFile,
+    environment: "npm-rc",
+    permissions: [STAGE_PERMISSION],
+  };
+  assert.deepEqual(assertReplaceableTrust("pkg", legacy, manifest), {
+    packageName: "pkg",
+    trustId: "trust-legacy",
+    replaceable: true,
+  });
+  assert.throws(
+    () => assertReplaceableTrust("pkg", {...legacy, repository: "other/repo"}, manifest),
+    /not replaceable/,
+  );
+  assert.throws(
+    () => assertReplaceableTrust("pkg", {...legacy, file: "other.yml"}, manifest),
+    /not replaceable/,
+  );
 });
 
 test("both release jobs are OIDC-only and keep separate protected environments", async () => {
