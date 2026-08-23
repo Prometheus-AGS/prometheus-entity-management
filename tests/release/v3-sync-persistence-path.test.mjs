@@ -97,12 +97,8 @@ test("coverage promotes only certified npm sync receipts", async () => {
       { kind: "integration", status: "implemented", command: "pnpm run test:sync-persistence" },
       { kind: "packed-consumer", status: "implemented", command: "pnpm run verify:sync-persistence" },
       { kind: "browser", status: "implemented", command: "pnpm run verify:vite-react19" },
-      { kind: "integration", status: "partial", command: "pnpm run dart:ci" },
-      {
-        kind: "platform",
-        status: "implemented",
-        command: "pnpm run verify:tauri-universal",
-      },
+      { kind: "mobile", status: "implemented", command: "pnpm run verify:flutter-riverpod-a2ui" },
+      { kind: "platform", status: "implemented", command: "pnpm run verify:tauri-universal" },
     ],
   );
   assert.equal(coverage.status, "in-progress");
@@ -110,7 +106,7 @@ test("coverage promotes only certified npm sync receipts", async () => {
   assert.ok(
     coverage.showcases.every(
       ({ status, runtimeEvidence, visualEvidence }) =>
-        ["planned", "partial", "implemented"].includes(status) &&
+        ["planned", "implemented"].includes(status) &&
         runtimeEvidence.status === status &&
         visualEvidence.status === status,
     ),
@@ -142,7 +138,9 @@ test("sync runtime exports and skills have a dedicated drift gate", async () => 
   ]);
   const manifest = JSON.parse(await source("packages/entity-graph-sync/package.json"));
   assert.match(manifest.scripts["verify:skills"], /--sync$/);
-  assert.match(await source("scripts/verify-skills-exports.mjs"), /sync-library-exports\.json/);
+  const registry = await source("scripts/skills-package-registry.mjs");
+  assert.match(registry, /id: "sync"/);
+  assert.match(registry, /ledger: "sync-library-exports\.json"/);
 });
 
 test("documentation and skills teach the certified scope and exclusions", async () => {
