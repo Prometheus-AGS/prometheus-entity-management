@@ -28,7 +28,27 @@ for dir in "${order[@]}"; do
     continue
   fi
   echo "publish $name@$version"
-  (cd "$dir" && npm publish --tag latest --access public)
+  # MUST be `pnpm publish`, never `npm publish`. These packages declare their
+  # sibling deps with pnpm's `workspace:` protocol; pnpm rewrites those to real
+  # semver ranges as it packs, npm does not. Publishing 3.0.0 with `npm publish`
+  # shipped a literal "workspace:^" to the registry in 10 of these 12 packages,
+  # making them uninstallable (npm: EUNSUPPORTEDPROTOCOL; pnpm:
+  # ERR_PNPM_WORKSPACE_PKG_NOT_FOUND where the leak was in hard dependencies).
+  #
+  # --no-git-checks: this script is invoked from release automation on a
+  # detached//release branch; the tree cleanliness gate runs upstream.
+  (cd "$dir" && pnpm publish --tag latest --access public --no-git-checks)
+
+  # Fail closed: re-read what the registry actually received. The pre-publish
+  # tarball gate (scripts/package-contract-validation.mjs) was never wired into
+  # this script, so nothing caught the leak in the 3.0.0 run.
+  if npm view "$name@$version" --json 2>/dev/null \
+     | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const m=JSON.parse(s||'{}');const bad=[];for(const k of ['dependencies','peerDependencies','devDependencies','optionalDependencies'])for(const [a,b] of Object.entries(m[k]||{}))if(String(b).includes('workspace:'))bad.push(k+'/'+a+'='+b);if(bad.length){console.error('  workspace protocol leaked: '+bad.join(', '));process.exit(1)}})"; then
+    echo "  verified $name@$version — no workspace protocol on the registry"
+  else
+    echo "ERROR: $name@$version published with a leaked workspace: protocol" >&2
+    exit 1
+  fi
 done
 
 echo "done; verifying dist-tags"
