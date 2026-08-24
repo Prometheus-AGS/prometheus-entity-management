@@ -1290,3 +1290,69 @@
   v3-docs-github-pages (4), v3-docs-operations-migration (1 — publish.yml
   invokes release-candidate.mjs directly, not via the release:rc:* aliases
   the test asserts; drift from 3441c6e).
+
+## 2026-08-23 — Atomic fetched-list ingestion prepared for 3.0.3
+
+- Reproduced release 3.0.2's split-write defect: 7,248 rows emitted 7,250
+  success publications and the first attempt exceeded 30 seconds.
+- Added the typed core `ingestFetchedList` action and routed core `fetchList`,
+  React `useEntities`, React `useEntityQuery`, legacy `useEntityView`, and the
+  Electric/PGlite adapter through it. The final production inventory contains
+  no remaining bulk-upsert/per-row-fetched loop.
+- Bounded post-code verification passed: core 8/8 and React 17/17 focused
+  cases; 1, 12, and 7,248 rows each emitted one success publication; the final
+  7,248-row atomic case completed in 60 ms. Core and React typecheck, scoped
+  ESLint, builds, packed type/module checks, and strict OpenSpec validation
+  passed locally.
+- The standard fixed-group changeset advanced all 12 public packages to
+  3.0.3 and updated affected private dependents. No npm publish, tag, registry
+  mutation, broad suite, soak, or GitHub Actions product test ran.
+
+## 2026-08-23 — Atomic ingestion adversarial correction
+
+- An isolated artifact critic blocked the first 3.0.3 candidate because
+  GraphQL normalization still wrote per row, paginated/legacy projection
+  subscribers recreated per-row list writes, duplicate IDs changed the merge
+  origin after the first occurrence, and the negative control command was a
+  placeholder rather than a retained reproduction.
+- Corrected the core action to snapshot pre-ingestion origins and update
+  filter/search/sort projections in the same transaction. GraphQL now batches
+  by descriptor and attaches the `getItems`-derived list membership to that
+  same action. Actual paginated query, remote view, GraphQL list, common list,
+  and PGlite paths now exercise the implementation instead of a simulator.
+- Superseding bounded evidence: core 10/10 and React 20/20 focused contracts
+  passed. The executable control ran against a clean detached checkout at full
+  SHA `e25210010a8eb4e575f7e4fc6e04be598a8c8213` and observed 7,250
+  publications for 7,248 rows. The earlier 8/8 and 17/17 evidence remains
+  historical but is not the completion basis.
+
+## 2026-08-23 — Atomic ingestion final adversarial correction
+
+- The second critic pass found that GraphQL descriptor batches were still
+  separate transactions, a later side merge could therefore leave primary
+  state published, and cursor base projection ordering had drifted from the
+  existing start-insertion behavior. It also requested an explicit missing
+  GraphQL entity lifecycle control; the guard was present by then but unproven.
+- Added side descriptor batches to the primary core action so one thrown merge
+  rolls back the complete response with zero publications. Restored cursor
+  start-insertion ordering. Added direct controls for side-merge rollback,
+  missing entity completion, and empty-list completion.
+- Final bounded evidence supersedes the earlier counts: core 11/11 and React
+  23/23 focused contracts passed; typechecks, scoped ESLint, builds, packed
+  module/declaration checks, and strict OpenSpec validation passed. The
+  isolated critic then returned APPROVE with no remaining finding.
+
+## 2026-08-23 — Signed 3.0.2 evidence correction
+
+- The artifact judge rejected the first negative-control evidence because
+  `e2521001` was an untagged `origin/main` commit with 3.0.2 manifests, not the
+  signed release commit. `v3.0.2` resolves to
+  `f29a701649799df3ff64f5f986e3c016246d34b6`.
+- Reran the 7,248-row control from a clean detached checkout of that tag and
+  again observed 7,250 publications. Hardened the retained script to verify
+  checkout HEAD and `v3.0.2^{commit}` against the supplied full SHA before it
+  imports source; the old untagged SHA now fails with a source-mismatch error.
+- This entry supersedes only the source-identity claim in the earlier evidence;
+  the observed N+2 defect and the implementation baseline remain unchanged.
+- The independent judge re-reviewed the corrected artifact and returned
+  APPROVE with no remaining blocker.

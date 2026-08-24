@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/entity-graph-tauri",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Tauri v2 entity-graph plugin with generated TypeScript bindings, least-privilege capabilities, and bundled Rust, Android, and iOS sources.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",

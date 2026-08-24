@@ -41,7 +41,8 @@ export {
 } from "./graph";
 export type {
   GraphState, GraphStore, EntityState, ListState, EntityType, EntityId,
-  EntitySyncMetadata, EntitySnapshot, QueryKey, SyncOrigin,
+  EntitySyncMetadata, EntitySnapshot, QueryKey, SyncOrigin, ListResultMeta,
+  FetchedListTarget, FetchedEntityBatch, FetchedListProjection, IngestFetchedListOptions,
 } from "./graph";
 
 // ── Object-path utilities (shared by schema + UI field rendering) ─────────

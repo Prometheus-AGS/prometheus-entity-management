@@ -1,4 +1,4 @@
-import { act, renderHook } from "@testing-library/react";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import {
   serializeKey,
@@ -75,5 +75,40 @@ describe("entity view projection reactivity", () => {
 
     expect(result.current.viewIds).toEqual(["row-1"]);
     expect(result.current.items[0]?.name).toBe("After");
+  });
+
+  it("applies a remote projection page with one success publication", async () => {
+    const rows = Array.from({ length: 12 }, (_, index) => ({
+      id: `row-${index}`,
+      name: index % 2 === 0 ? `Keep ${index}` : `Skip ${index}`,
+      rank: 12 - index,
+    }));
+    const baseKey = serializeKey(["remote-rows"]);
+    const remoteFetch = async () => ({ items: rows, total: rows.length });
+    const successSnapshots: string[][] = [];
+    const unsubscribe = useGraphStore.subscribe((state) => {
+      const ids = state.lists[baseKey]?.ids ?? [];
+      if (ids.length === 6) successSnapshots.push(ids);
+    });
+
+    const { result } = renderHook(() =>
+      useEntityView<{ id: string; name: string; rank: number }>({
+        type: "RemoteProjectionRow",
+        baseQueryKey: ["remote-rows"],
+        mode: "remote",
+        remoteDebounce: 60_000,
+        view: {
+          filter: [{ field: "name", op: "startsWith", value: "Keep" }],
+          sort: [{ field: "rank", direction: "asc" }],
+        },
+        remoteFetch,
+      }),
+    );
+
+    await waitFor(() => expect(result.current.viewIds).toHaveLength(6));
+    unsubscribe();
+
+    expect(successSnapshots).toHaveLength(1);
+    expect(successSnapshots[0]).toEqual(["row-10", "row-8", "row-6", "row-4", "row-2", "row-0"]);
   });
 });

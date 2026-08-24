@@ -60,28 +60,17 @@ async function simulateViewFetch<T extends object>(
       id: transport.identify(row),
       data: row as Record<string, unknown>,
     }));
-    graphStore.upsertEntities(type, entries);
-    for (const { id } of entries) graphStore.setEntityFetched(type, id);
-    const ids = entries.map(({ id }) => id);
-
-    if (cursor !== undefined) {
-      graphStore.appendListResult(rKey, ids, {
-        total: result.total,
-        nextCursor: typeof result.nextCursor === "string" ? result.nextCursor : null,
-        hasNextPage: result.nextCursor !== null,
-      });
-    } else {
-      graphStore.setListResult(rKey, ids, {
-        total: result.total,
-        nextCursor: typeof result.nextCursor === "string" ? result.nextCursor : null,
-        hasNextPage: result.nextCursor !== null,
-      });
-      graphStore.setListResult(bk, ids, {
-        total: result.total,
-        nextCursor: typeof result.nextCursor === "string" ? result.nextCursor : null,
-        hasNextPage: result.nextCursor !== null,
-      });
-    }
+    const meta = {
+      total: result.total,
+      nextCursor: typeof result.nextCursor === "string" ? result.nextCursor : null,
+      hasNextPage: result.nextCursor !== null,
+    };
+    graphStore.ingestFetchedList(type, entries, {
+      lists: cursor !== undefined
+        ? [{ key: rKey, mode: "append", meta }]
+        : [{ key: rKey, meta }, { key: bk, meta }],
+      projections: cursor !== undefined ? [{ key: bk, view, completeFetch: true }] : undefined,
+    });
   } catch (err) {
     const typed = toEntityError(err);
     const gs = useGraphStore.getState();
@@ -289,6 +278,45 @@ describe("useEntityQuery — graph contract", () => {
     await simulateViewFetch<FooRow>("Bar", view, "cursor-1");
     const rk2 = viewKey("Bar", view, "cursor-1");
     expect(useGraphStore.getState().lists[rk2]?.ids).toEqual(["2"]);
+  });
+
+  it("paginated remote ingestion adds a full projected page with one success publication", async () => {
+    const page1: FooRow[] = [{ id: "first", name: "First", score: 1 }];
+    const page2: FooRow[] = Array.from({ length: 12 }, (_, index) => ({
+      id: `next-${index}`,
+      name: `Next ${index}`,
+      score: index + 2,
+    }));
+    let call = 0;
+    registerEntityTransport<FooRow>("AtomicPage", {
+      identify: (row) => row.id,
+      authoritative: false,
+      list: async () => {
+        call += 1;
+        return call === 1
+          ? { rows: page1, total: 13, nextCursor: "next-page" }
+          : { rows: page2, total: 13, nextCursor: null };
+      },
+    });
+
+    const { result } = renderHook(() =>
+      useEntityQuery<FooRow>("AtomicPage", { mode: "remote", remoteDebounce: 60_000 }),
+    );
+    await waitFor(() => expect(result.current.hasNextPage).toBe(true));
+
+    const successSnapshots: string[][] = [];
+    const unsubscribe = useGraphStore.subscribe((state) => {
+      const ids = state.lists[baseKey("AtomicPage")]?.ids ?? [];
+      if (ids.length === 13) successSnapshots.push(ids);
+    });
+    act(() => result.current.fetchNextPage());
+    await waitFor(() => {
+      expect(useGraphStore.getState().lists[baseKey("AtomicPage")]?.ids).toHaveLength(13);
+    });
+    unsubscribe();
+
+    expect(successSnapshots).toHaveLength(1);
+    expect(successSnapshots[0]).toEqual([...page2.map((row) => row.id).reverse(), "first"]);
   });
 
   it("no transport → TerminalError on base key", async () => {

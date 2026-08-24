@@ -46,8 +46,10 @@ export function usePGliteQuery<T extends object>(opts: {
     adapter.query<T>(sql, params).then((r) => {
       if (cancelled) return;
       const store = storeApi.getState();
-      store.upsertEntities(type, r.rows.map((row) => ({ id: String((row as Record<string, unknown>)[idColumn]), data: normalize ? normalize(row) : (row as Record<string, unknown>) })));
-      for (const row of r.rows) store.setEntityFetched(type, String((row as Record<string, unknown>)[idColumn]));
+      store.ingestFetchedList(type, r.rows.map((row) => ({
+        id: String((row as Record<string, unknown>)[idColumn]),
+        data: normalize ? normalize(row) : (row as Record<string, unknown>),
+      })));
       setIsLoading(false); setError(null);
     }).catch((e) => { if (!cancelled) { setError(String(e)); setIsLoading(false); } });
     return () => { cancelled = true; };

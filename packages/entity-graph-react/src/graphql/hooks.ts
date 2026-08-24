@@ -50,7 +50,9 @@ export function useGQLEntity<TData, TEntity extends object>(opts: GQLEntityOptio
       cacheKey: `gql-entity:${type}:${id}:${document.slice(0, 40)}`,
       store: storeApi,
     }).then((r) => {
-      storeApi.getState().setEntityFetched(type, id);
+      if (storeApi.getState().entityStates[`${type}:${id}`]?.isFetching) {
+        storeApi.getState().setEntityFetched(type, id);
+      }
       if (r.data) onSuccess?.(r.data);
     }).catch((e: Error) => { storeApi.getState().setEntityError(type, id, e.message); onError?.(e); });
   }, [id, type, enabled, storeApi]);
@@ -110,14 +112,26 @@ export function useGQLList<TData, TEntity extends object>(opts: GQLListOptions<T
       descriptors: sideDescriptors ? [descriptor as EntityDescriptor<unknown, Record<string, unknown>>, ...sideDescriptors] : [descriptor as EntityDescriptor<unknown, Record<string, unknown>>],
       cacheKey: `gql-list:${key}:${cursor ?? "first"}`,
       store: storeApi,
-    }).then((r) => {
-      if (!r.data) return;
-      const rawItems = getItems(r.data); const pag = getPagination?.(r.data) ?? {};
-      const { extractId = (n: Record<string, unknown>) => String(n.id) } = descriptor;
-      const ids = rawItems.map((item) => extractId(item as Record<string, unknown>));
-      const meta = { total: pag.total ?? null, nextCursor: pag.nextCursor ?? null, hasNextPage: pag.hasNextPage ?? !!pag.nextCursor, currentPage: pag.page ?? null, pageSize: pag.pageSize ?? null };
-      if (append && mode === "append") storeApi.getState().appendListResult(key, ids, meta);
-      else storeApi.getState().setListResult(key, ids, meta);
+      listIngestion: {
+        descriptor: descriptor as EntityDescriptor<unknown, Record<string, unknown>>,
+        getTargets: (data) => {
+          const pag = getPagination?.(data) ?? {};
+          const { extractId = (node: Record<string, unknown>) => String(node.id) } = descriptor;
+          const ids = getItems(data).map((item) => extractId(item as Record<string, unknown>));
+          return [{
+            key,
+            mode: append && mode === "append" ? "append" : "replace",
+            ids,
+            meta: {
+              total: pag.total ?? null,
+              nextCursor: pag.nextCursor ?? null,
+              hasNextPage: pag.hasNextPage ?? !!pag.nextCursor,
+              currentPage: pag.page ?? null,
+              pageSize: pag.pageSize ?? null,
+            },
+          }];
+        },
+      },
     }).catch((e: Error) => storeApi.getState().setListError(key, e.message));
   }, [key, enabled, mode, storeApi]);
 

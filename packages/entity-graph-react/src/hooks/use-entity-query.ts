@@ -263,33 +263,21 @@ export function useEntityQuery<T extends object>(
             id: tp.identify(row),
             data: row as Record<string, unknown>,
           }));
-          graphStore.upsertEntities(type, entries);
-          for (const { id } of entries) graphStore.setEntityFetched(type, id);
-
-          const ids = entries.map(({ id }) => id);
-
-          // Pagination: if cursor provided, append to view key; otherwise replace
-          if (cursor !== undefined) {
-            graphStore.appendListResult(rKey, ids, {
-              total: result.total,
-              nextCursor: typeof result.nextCursor === "string" ? result.nextCursor : null,
-              hasNextPage: result.nextCursor !== null && result.nextCursor !== undefined,
-            });
-          } else {
-            graphStore.setListResult(rKey, ids, {
-              total: result.total,
-              nextCursor: typeof result.nextCursor === "string" ? result.nextCursor : null,
-              hasNextPage: result.nextCursor !== null && result.nextCursor !== undefined,
-            });
+          const meta = {
+            total: result.total,
+            nextCursor: typeof result.nextCursor === "string" ? result.nextCursor : null,
+            hasNextPage: result.nextCursor !== null && result.nextCursor !== undefined,
+          };
+          graphStore.ingestFetchedList(type, entries, {
             // The first page is also the raw base list used by local and
-            // hybrid projections. Without this write, those modes have no
-            // source ids even though the transport returned rows.
-            graphStore.setListResult(baseKey, ids, {
-              total: result.total,
-              nextCursor: typeof result.nextCursor === "string" ? result.nextCursor : null,
-              hasNextPage: result.nextCursor !== null && result.nextCursor !== undefined,
-            });
-          }
+            // hybrid projections. Both projections belong to one response.
+            lists: cursor !== undefined
+              ? [{ key: rKey, mode: "append", meta }]
+              : [{ key: rKey, meta }, { key: baseKey, meta }],
+            projections: cursor !== undefined
+              ? [{ key: baseKey, view, completeFetch: true }]
+              : undefined,
+          });
         } catch (err) {
           if (thisCount !== fetchCountRef.current) return;
           if (controller.signal.aborted) return;

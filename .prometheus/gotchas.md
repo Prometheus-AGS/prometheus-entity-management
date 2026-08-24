@@ -96,3 +96,22 @@
   `packageManager` SHA-512 suffix is wrong. Certification must resolve the pin
   with a fresh `COREPACK_HOME`; GitHub's clean runner rejected the stale digest
   before any package build could start.
+
+## Changeset version consumes empty documentation changesets
+
+- `changeset version` removes every pending changeset, including an empty
+  frontmatter-only record that produces no package bump. During the 3.0.3
+  atomic-ingestion version pass it consumed the unrelated tracked
+  `certify-nextjs-app-router.md` record.
+- Before committing a bounded release change, compare deleted changesets with
+  the baseline and restore unrelated empty records byte-for-byte. Package-bump
+  output alone does not reveal that historical record loss.
+
+## Atomic ingestion can be undone by projection subscribers
+
+- One atomic entity/list write is insufficient when an entity-bucket
+  subscriber reacts by inserting each returned ID into another list. Count
+  publications through the complete production hook, not only the core action.
+- Put response-owned base projections in the same graph transaction. Keep
+  realtime subscribers for independent events, but make the response's success
+  snapshot already contain every matching ID so those subscribers have no work.
