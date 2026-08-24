@@ -14,18 +14,18 @@ than source-only aliases.
 
 Use the [package chooser](chooser.md) to select a binding or integration. The
 verified registry snapshot has all twelve npm packages public at stable
-`3.0.2`:
+`3.0.3`:
 
 | Package | Install | Current `latest` |
 | --- | --- | --- |
-| `@prometheus-ags/prometheus-entity-management` (React) | `pnpm add @prometheus-ags/prometheus-entity-management` | `3.0.2` |
-| `@prometheus-ags/entity-graph-core` | `pnpm add @prometheus-ags/entity-graph-core` | `3.0.2` |
-| Other ten `@prometheus-ags/*` packages | `pnpm add <package>` | `3.0.2` |
+| `@prometheus-ags/prometheus-entity-management` (React) | `pnpm add @prometheus-ags/prometheus-entity-management` | `3.0.3` |
+| `@prometheus-ags/entity-graph-core` | `pnpm add @prometheus-ags/entity-graph-core` | `3.0.3` |
+| Other ten `@prometheus-ags/*` packages | `pnpm add <package>` | `3.0.3` |
 | `entity_graph_flutter` | pub.dev `3.0.0` | `3.0.0` |
 
-Installs resolve stable `3.0.2` from `latest` by default. The withdrawn
+Installs resolve stable `3.0.3` from `latest` by default. The withdrawn
 `3.0.0` manifests are deprecated (unresolved `workspace:` protocol), and
-`@next` still points at the archived `3.0.0-rc.1` candidate. Flutter is public
+`@next` now points at stable `3.0.3` as well. Flutter is public
 and consumer-verified, although pub.dev has not yet associated the package
 with a verified publisher.
 

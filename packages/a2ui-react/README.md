@@ -3,9 +3,8 @@
 Official A2UI v0.9.1 React rendering with a default-deny Prometheus entity-graph
 action bridge.
 
-> Release status: the workspace package is `3.0.0-rc.1`. The bridge is
-> implemented and verified, but the full repository-wide 3.0 certification and
-> npm publication or `latest` promotion have not happened.
+> Release status: published on npm at stable `3.0.3` with the `latest` tag. The
+> bridge is implemented and verified.
 
 ## Two protocol surfaces
 

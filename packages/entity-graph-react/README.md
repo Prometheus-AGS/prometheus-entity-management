@@ -4,9 +4,9 @@
 
 Update a post in one screen and every list row, detail panel, and badge that reads that entity updates automatically—without hand-maintained query keys. Normalization is built around your `type` + `id` + `normalize` function, not a separate cache product. The same graph holds data from **REST**, **GraphQL**, **WebSocket / Supabase / Convex**, **Prisma-shaped APIs**, and **ElectricSQL + PGlite** local-first sync.
 
-## 3.0 React release candidate
+## 3.0 React release
 
-This package is prepared as `3.0.0-rc.1` and its React 19/Vite 8
+This package is published at stable `3.0.3` and its React 19/Vite 8
 source-workspace showcase is implemented. The production-browser gate covers
 normalized cross-view updates, optimistic confirm/rollback, relationships,
 view completeness modes, REST/GraphQL seams, realtime coalescing, PGlite/Loro,

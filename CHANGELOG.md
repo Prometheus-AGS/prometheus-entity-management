@@ -7,6 +7,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased] — 3.0 release program
 
+### Fixed — 3.0.3 (2026-08-24)
+
+- Ingest fetched entity lists, lifecycle metadata, and list projections in one
+  atomic graph publication. The core and React list paths previously published
+  once per returned row, so a fetch of N rows produced N graph writes and N
+  render passes, and subscribers could observe a partially populated list
+  between those writes. Both paths now publish a single update per fetch.
+- Published all twelve npm packages at `3.0.3` and moved both `latest` and
+  `next` to it. `next` had been left pointing at `3.0.0-rc.1`, which was older
+  than `latest` and served a stale prerelease to anyone tracking that tag.
+  These publications ran with a granular npm token rather than the governed
+  OIDC pipeline, so `3.0.3` carries no npm provenance attestation.
+
 ### Fixed — 3.0.1 / 3.0.2 (2026-08-23)
 
 - Republished all twelve npm packages: `3.0.1`, then the coordinated stable

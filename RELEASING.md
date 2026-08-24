@@ -1,14 +1,22 @@
 # Releasing Prometheus Entity Management
 
-## 3.0 status: partial RC publication
+## 3.0 status: stable published
 
-**Update 2026-08-23: 3.0.0 stable is published.** All twelve
-`@prometheus-ags/*` npm packages are public at `3.0.0` with `latest` promoted
-(tag `v3.0.0`, PR #23). The publication ran directly with a granular npm token
-at operator direction; the governed OIDC path below remains for future
-releases. `entity_graph_flutter@3.0.0` is public on pub.dev. Do not run
-`changeset publish`, publish an individual workspace package, or move any npm
-`latest` tag based only on local builds or the main CI baseline.
+**Update 2026-08-24: 3.0.3 stable is published.** All twelve
+`@prometheus-ags/*` npm packages are public at `3.0.3` with both `latest` and
+`next` pointing at it (tag `v3.0.3`). `3.0.0` shipped with an unresolved pnpm
+`workspace:` protocol in ten of twelve manifests and is deprecated; `3.0.1` and
+`3.0.2` were the corrective republications, and `3.0.3` makes fetched list
+ingestion atomic. These publications ran directly with a granular npm token at
+operator direction, so they carry no npm provenance attestation; the governed
+OIDC path below remains for future releases. `entity_graph_flutter@3.0.0` is
+public on pub.dev. Do not run `changeset publish`, publish an individual
+workspace package, or move any npm `latest` tag based only on local builds or
+the main CI baseline.
+
+For the operational procedure — including the `pnpm publish` requirement that
+prevents `workspace:` protocol leakage — see the `npm-release-and-cleanup`
+skill in [`.agents/skills/`](.agents/skills/npm-release-and-cleanup/SKILL.md).
 
 The verified registry snapshots are
 [`release/npm-registry-status.json`](release/npm-registry-status.json) and

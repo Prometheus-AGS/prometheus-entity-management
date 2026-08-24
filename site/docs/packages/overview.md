@@ -5,9 +5,8 @@ description: Which 3.0 artifact to use for which stack — twelve npm packages, 
 
 # Package selection
 
-All npm packages are `3.0.0-rc.x` prereleases until stable publication
-completes. Every row names its evidence gate; run the gate before repeating
-the claim.
+All twelve npm packages are public at stable `3.0.3` on the `latest` tag.
+Every row names its evidence gate; run the gate before repeating the claim.
 
 ## npm packages (12 public)
 
