@@ -1,6 +1,7 @@
 import {execFileSync} from 'node:child_process';
 import {createHash, randomBytes} from 'node:crypto';
-import {mkdtemp, mkdir, readdir, readFile, symlink, writeFile} from 'node:fs/promises';
+import {existsSync} from 'node:fs';
+import {mkdtemp, mkdir, readdir, readFile, rm, symlink, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import {fileURLToPath} from 'node:url';
@@ -63,6 +64,20 @@ try {
     );
   }
   await mkdir(path.join(dependencyRoot, '@prometheus-ags'), {recursive: true});
+  // The flat pnpm store exposes whichever @types/node copy it hoisted, which is
+  // not necessarily the one this workspace declares. TypeDoc compiles with
+  // `types: ['node']`, so an unrelated hoisted copy (e.g. a transitive 17.x)
+  // makes every package fail to convert on modern TypeScript lib types. Pin the
+  // ambient types to the version website/package.json actually depends on.
+  const websiteTypesRoot = path.join(websiteRoot, 'node_modules/@types');
+  if (existsSync(websiteTypesRoot)) {
+    const pinnedTypes = path.join(dependencyRoot, '@types');
+    await rm(pinnedTypes, {recursive: true, force: true});
+    await mkdir(pinnedTypes, {recursive: true});
+    for (const scoped of await readdir(websiteTypesRoot)) {
+      await symlink(path.join(websiteTypesRoot, scoped), path.join(pinnedTypes, scoped), 'dir');
+    }
+  }
   const entryPoints = [];
   const inventory = [];
 

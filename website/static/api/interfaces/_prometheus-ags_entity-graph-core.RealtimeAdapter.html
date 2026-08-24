@@ -12,14 +12,14 @@
 <li><a href="" aria-current="page">RealtimeAdapter</a></li></ul>
 <h1>Interface RealtimeAdapter</h1></div>
 <div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">RealtimeAdapter</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#name">name</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#onstatuschange">onStatusChange</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">cb</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">status</span><span class="tsd-signature-symbol">:</span> <a href="../types/_prometheus-ags_entity-graph-core.AdapterStatus.html" class="tsd-signature-type tsd-kind-type-alias">AdapterStatus</a><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <a href="../types/_prometheus-ags_entity-graph-core.UnsubscribeFn.html" class="tsd-signature-type tsd-kind-type-alias">UnsubscribeFn</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#subscribe-1">subscribe</a><span class="tsd-signature-symbol">(</span><br/>        <span class="tsd-kind-parameter">config</span><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_entity-graph-core.SubscriptionConfig.html" class="tsd-signature-type tsd-kind-interface">SubscriptionConfig</a><span class="tsd-signature-symbol">,</span><br/>        <span class="tsd-kind-parameter">handler</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">changeset</span><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_entity-graph-core.ChangeSet.html" class="tsd-signature-type tsd-kind-interface">ChangeSet</a><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="../types/_prometheus-ags_entity-graph-core.UnsubscribeFn.html" class="tsd-signature-type tsd-kind-type-alias">UnsubscribeFn</a><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div>
-<section class="tsd-panel tsd-hierarchy" data-refl="50459">
+<section class="tsd-panel tsd-hierarchy" data-refl="51789">
 <h4>Hierarchy (<a href="../hierarchy.html#@prometheus-ags/entity-graph-core.RealtimeAdapter">View Summary</a>)</h4>
 <ul class="tsd-hierarchy">
 <li class="tsd-hierarchy-item"><span class="tsd-hierarchy-target">RealtimeAdapter</span>
 <ul class="tsd-hierarchy">
 <li class="tsd-hierarchy-item"><a href="_prometheus-ags_entity-graph-core.SyncAdapter.html" class="tsd-signature-type tsd-kind-interface">SyncAdapter</a></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2244</li></ul></aside>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2311</li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -41,12 +41,12 @@
 <h3 class="tsd-anchor-link" id="name"><code class="tsd-tag">Readonly</code><span>name</span><a href="#name" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">name</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2245</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2312</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="onstatuschange"><code class="tsd-tag">Optional</code><span>on<wbr/>Status<wbr/>Change</span><a href="#onstatuschange" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">onStatusChange</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">cb</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">status</span><span class="tsd-signature-symbol">:</span> <a href="../types/_prometheus-ags_entity-graph-core.AdapterStatus.html" class="tsd-signature-type tsd-kind-type-alias">AdapterStatus</a><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <a href="../types/_prometheus-ags_entity-graph-core.UnsubscribeFn.html" class="tsd-signature-type tsd-kind-type-alias">UnsubscribeFn</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2247</li></ul></aside></section></section></details>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2314</li></ul></aside></section></section></details>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="methods-1">Methods<a href="#methods-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
@@ -63,7 +63,7 @@
 <li><span><span class="tsd-kind-parameter">handler</span>: <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">changeset</span><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_entity-graph-core.ChangeSet.html" class="tsd-signature-type tsd-kind-interface">ChangeSet</a><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">void</span></span></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="../types/_prometheus-ags_entity-graph-core.UnsubscribeFn.html" class="tsd-signature-type tsd-kind-type-alias">UnsubscribeFn</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2246</li></ul></aside></div></li></ul></section></section></details></div>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2313</li></ul></aside></div></li></ul></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

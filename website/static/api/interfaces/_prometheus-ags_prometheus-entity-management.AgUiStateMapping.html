@@ -16,7 +16,7 @@
 </div></section>
 <div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">AgUiStateMapping</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#constantid">constantId</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#entitytype">entityType</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#idfield">idField</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#kind">kind</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;single&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;collection&quot;</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#pointer">pointer</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#write">write</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">&quot;replace&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;upsert&quot;</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2165</li></ul></aside>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2232</li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -40,14 +40,14 @@
 <div class="tsd-comment tsd-typography"><p>Constant id for <code>single</code> mappings whose object has no id field.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2181</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2248</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="entitytype"><span>entity<wbr/>Type</span><a href="#entitytype" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">entityType</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 <div class="tsd-comment tsd-typography"><p>Entity type the mapped object(s) belong to.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2167</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2234</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="idfield"><code class="tsd-tag">Optional</code><span>id<wbr/>Field</span><a href="#idfield" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">idField</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div>
@@ -55,14 +55,14 @@
 pass a constant id via <code>constantId</code>.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2179</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2246</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="kind"><span>kind</span><a href="#kind" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">kind</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;single&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;collection&quot;</span></div>
 <div class="tsd-comment tsd-typography"><p>Whether <code>pointer</code> addresses one object or a collection (array/record).</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2174</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2241</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="pointer"><span>pointer</span><a href="#pointer" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">pointer</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
@@ -70,7 +70,7 @@ pass a constant id via <code>constantId</code>.</p>
 lives. <code>&quot;/order&quot;</code> → a single entity; <code>&quot;/orders&quot;</code> → a collection keyed by id.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2172</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2239</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="write"><code class="tsd-tag">Optional</code><span>write</span><a href="#write" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">write</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">&quot;replace&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;upsert&quot;</span></div>
@@ -78,7 +78,7 @@ lives. <code>&quot;/order&quot;</code> → a single entity; <code>&quot;/orders&
 (full overwrite). Snapshots typically replace; deltas typically upsert.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2186</li></ul></aside></section></section></details></div>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2253</li></ul></aside></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

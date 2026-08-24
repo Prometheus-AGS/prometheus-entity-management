@@ -13,7 +13,7 @@
 <h1>Interface CreateFlintAdapterOptions</h1></div>
 <div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">CreateFlintAdapterOptions</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#channelid">channelId</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#checkpoints">checkpoints</a><span class="tsd-signature-symbol">?:</span> <a href="_prometheus-ags_entity-graph-core.FlintCheckpointStore.html" class="tsd-signature-type tsd-kind-interface">FlintCheckpointStore</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#client">client</a><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_entity-graph-core.FlintClientLike.html" class="tsd-signature-type tsd-kind-interface">FlintClientLike</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#consumerid">consumerId</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#entitytype">entityType</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#name">name</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#resolveop">resolveOp</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">event</span><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_entity-graph-core.FlintEntityEvent.html" class="tsd-signature-type tsd-kind-interface">FlintEntityEvent</a><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <a href="../types/_prometheus-ags_entity-graph-core.ChangeOperation.html" class="tsd-signature-type tsd-kind-type-alias">ChangeOperation</a><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2485</li></ul></aside>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2552</li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -38,47 +38,47 @@
 <div class="tsd-comment tsd-typography"><p>Channel to subscribe/publish on.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2490</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2557</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="checkpoints"><code class="tsd-tag">Optional</code><span>checkpoints</span><a href="#checkpoints" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">checkpoints</span><span class="tsd-signature-symbol">?:</span> <a href="_prometheus-ags_entity-graph-core.FlintCheckpointStore.html" class="tsd-signature-type tsd-kind-interface">FlintCheckpointStore</a></div>
 <div class="tsd-comment tsd-typography"><p>Resume-offset store; reconnects start <code>fromOffset = lastSeen + 1</code>.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2496</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2563</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="client"><span>client</span><a href="#client" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">client</span><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_entity-graph-core.FlintClientLike.html" class="tsd-signature-type tsd-kind-interface">FlintClientLike</a></div>
 <div class="tsd-comment tsd-typography"><p>The Flint entity-management client (frf-entity-management RealtimeAdapter).</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2488</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2555</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="consumerid"><span>consumer<wbr/>Id</span><a href="#consumerid" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">consumerId</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 <div class="tsd-comment tsd-typography"><p>Consumer id for this subscription.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2492</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2559</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="entitytype"><code class="tsd-tag">Optional</code><span>entity<wbr/>Type</span><a href="#entitytype" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">entityType</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div>
 <div class="tsd-comment tsd-typography"><p>Restrict to one entity type (optional).</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2494</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2561</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="name"><code class="tsd-tag">Optional</code><span>name</span><a href="#name" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">name</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2486</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2553</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="resolveop"><code class="tsd-tag">Optional</code><span>resolve<wbr/>Op</span><a href="#resolveop" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">resolveOp</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">event</span><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_entity-graph-core.FlintEntityEvent.html" class="tsd-signature-type tsd-kind-interface">FlintEntityEvent</a><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <a href="../types/_prometheus-ags_entity-graph-core.ChangeOperation.html" class="tsd-signature-type tsd-kind-type-alias">ChangeOperation</a></div>
 <div class="tsd-comment tsd-typography"><p>Map a Flint event to a change operation. Defaults to &quot;upsert&quot;.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2498</li></ul></aside></section></section></details></div>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2565</li></ul></aside></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

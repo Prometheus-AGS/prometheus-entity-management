@@ -3,7 +3,7 @@
   "verifiedAt": "2026-08-24T08:06:48Z",
   "registry": "https://registry.npmjs.org/",
   "expectedCandidate": "3.0.3",
-  "candidateSourceSha": "f29a701649799df3ff64f5f986e3c016246d34b6",
+  "candidateSourceSha": "9a9e3e4d88ce356b4688628e9ba4f9cd15f93252",
   "releaseStatus": "stable-published",
   "releaseUrl": "https://github.com/Prometheus-AGS/prometheus-entity-management/releases/tag/v3.0.3",
   "provenance": "absent-manual-publication",
@@ -81,6 +81,5 @@
       "next": "3.0.3"
     }
   },
-  "publicationMethod": "manual-pnpm-publish",
-  "packedApiRevisionNote": "Packed API artifacts under website/static/api were generated from the 3.0.2 tree (f29a7016). The 3.0.3 change did not alter any public type surface; regenerate and bump this SHA when the API changes."
+  "publicationMethod": "manual-pnpm-publish"
 }

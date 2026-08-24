@@ -13,7 +13,7 @@
 <h1>Interface SurrealLiveAdapterOptions</h1></div>
 <div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">SurrealLiveAdapterOptions</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#checkpointfield">checkpointField</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#checkpointstore">checkpointStore</a><span class="tsd-signature-symbol">?:</span> <a href="_prometheus-ags_prometheus-entity-management.SurrealCheckpointStore.html" class="tsd-signature-type tsd-kind-interface">SurrealCheckpointStore</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#connectedsettlems">connectedSettleMs</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#initialdelayms">initialDelayMs</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#initialquerystrategy">initialQueryStrategy</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">&quot;select-then-live&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;live-only&quot;</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#listkeyresolver">listKeyResolver</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">change</span><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_prometheus-entity-management.EntityChange.html" class="tsd-signature-type tsd-kind-interface">EntityChange</a><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#maxdelayms">maxDelayMs</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#name">name</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#permanenterrorpatterns">permanentErrorPatterns</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">RegExp</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#surreal">surreal</a><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_prometheus-entity-management.SurrealLike.html" class="tsd-signature-type tsd-kind-interface">SurrealLike</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#tables">tables</a><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_prometheus-entity-management.SurrealTableConfig.html" class="tsd-signature-type tsd-kind-interface">SurrealTableConfig</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2415</li></ul></aside>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2482</li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -40,57 +40,57 @@
 <h3 class="tsd-anchor-link" id="checkpointfield"><code class="tsd-tag">Optional</code><span>checkpoint<wbr/>Field</span><a href="#checkpointfield" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">checkpointField</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2424</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2491</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="checkpointstore"><code class="tsd-tag">Optional</code><span>checkpoint<wbr/>Store</span><a href="#checkpointstore" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">checkpointStore</span><span class="tsd-signature-symbol">?:</span> <a href="_prometheus-ags_prometheus-entity-management.SurrealCheckpointStore.html" class="tsd-signature-type tsd-kind-interface">SurrealCheckpointStore</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2423</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2490</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="connectedsettlems"><code class="tsd-tag">Optional</code><span>connected<wbr/>Settle<wbr/>Ms</span><a href="#connectedsettlems" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">connectedSettleMs</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2422</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2489</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="initialdelayms"><code class="tsd-tag">Optional</code><span>initial<wbr/>Delay<wbr/>Ms</span><a href="#initialdelayms" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">initialDelayMs</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2420</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2487</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="initialquerystrategy"><code class="tsd-tag">Optional</code><span>initial<wbr/>Query<wbr/>Strategy</span><a href="#initialquerystrategy" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">initialQueryStrategy</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">&quot;select-then-live&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;live-only&quot;</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2419</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2486</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="listkeyresolver"><code class="tsd-tag">Optional</code><span>list<wbr/>Key<wbr/>Resolver</span><a href="#listkeyresolver" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">listKeyResolver</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">change</span><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_prometheus-entity-management.EntityChange.html" class="tsd-signature-type tsd-kind-interface">EntityChange</a><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">undefined</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2425</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2492</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="maxdelayms"><code class="tsd-tag">Optional</code><span>max<wbr/>Delay<wbr/>Ms</span><a href="#maxdelayms" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">maxDelayMs</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2421</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2488</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="name"><code class="tsd-tag">Optional</code><span>name</span><a href="#name" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">name</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2416</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2483</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="permanenterrorpatterns"><code class="tsd-tag">Optional</code><span>permanent<wbr/>Error<wbr/>Patterns</span><a href="#permanenterrorpatterns" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">permanentErrorPatterns</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">RegExp</span><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2426</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2493</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="surreal"><span>surreal</span><a href="#surreal" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">surreal</span><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_prometheus-entity-management.SurrealLike.html" class="tsd-signature-type tsd-kind-interface">SurrealLike</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2417</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2484</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="tables"><span>tables</span><a href="#tables" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">tables</span><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_prometheus-entity-management.SurrealTableConfig.html" class="tsd-signature-type tsd-kind-interface">SurrealTableConfig</a><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:2418</li></ul></aside></section></section></details></div>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:2485</li></ul></aside></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

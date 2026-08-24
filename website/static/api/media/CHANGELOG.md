@@ -1,5 +1,15 @@
 # @prometheus-ags/prometheus-entity-management
 
+## 3.0.3
+
+### Patch Changes
+
+- Ingest fetched entity lists, lifecycle metadata, and list projections in one
+  atomic graph publication. Core and React list paths no longer publish once per
+  returned row.
+- Updated dependencies
+  - @prometheus-ags/entity-graph-core@3.0.3
+
 ## 3.0.0
 
 ### Patch Changes
