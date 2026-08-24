@@ -1356,3 +1356,11 @@
   the observed N+2 defect and the implementation baseline remain unchanged.
 - The independent judge re-reviewed the corrected artifact and returned
   APPROVE with no remaining blocker.
+
+## 2026-08-23 — Atomic fetched-list upstream handoff
+
+- Committed the corrected 3.0.3 source and release metadata as `dab8a438`,
+  pushed `codex/fix-atomic-fetched-list-ingestion`, and opened upstream PR #41:
+  `https://github.com/Prometheus-AGS/prometheus-entity-management/pull/41`.
+- No package was published, no tag or dist-tag moved, and UAR remains pinned to
+  the released 3.0.2 package until a fixed upstream release exists.
