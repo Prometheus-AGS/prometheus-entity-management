@@ -4,15 +4,41 @@
 
 Update a post in one screen and every list row, detail panel, and badge that reads that entity updates automatically—without hand-maintained query keys. Normalization is built around your `type` + `id` + `normalize` function, not a separate cache product. The same graph holds data from **REST**, **GraphQL**, **WebSocket / Supabase / Convex**, **Prisma-shaped APIs**, and **ElectricSQL + PGlite** local-first sync.
 
+## 3.0 React release candidate
+
+This package is prepared as `3.0.0-rc.1` and its React 19/Vite 8
+source-workspace showcase is implemented. The production-browser gate covers
+normalized cross-view updates, optimistic confirm/rollback, relationships,
+view completeness modes, REST/GraphQL seams, realtime coalescing, PGlite/Loro,
+Suspense/error containment, DevTools, and accessibility.
+
+See the [React 19/Vite 8 release guide](../../release/vite-react19-example.md)
+and run `pnpm run bdd:vite-react19` from the monorepo root. That application
+receipt is intentionally not packed-package or npm publication evidence.
+
+After the protected RC workflow has actually staged the candidate under npm's
+`next` tag, consumers can install the matching core and React pair with:
+
+```bash
+pnpm add @prometheus-ags/entity-graph-core@next \
+  @prometheus-ags/prometheus-entity-management@next \
+  react@^19 react-dom@^19
+```
+
+Do not use that command as evidence that `next` already exists; registry status
+and the immutable rehearsal remain release-pipeline concerns.
+
 ### Documentation map
 
 | Doc | Purpose |
 |-----|---------|
-| [docs/tanstack-query-and-table.md](docs/tanstack-query-and-table.md) | How this library fits with TanStack Query and TanStack Table |
-| [docs/tanstack-comparison.md](docs/tanstack-comparison.md) | Detailed comparison against TanStack DB, Query, Table, AI, and Intent |
-| [docs/advanced.md](docs/advanced.md) | Engine, GC, Suspense, DevTools, SSR, testing |
-| [RELEASING.md](RELEASING.md) | Versioning, `prepublishOnly`, npm publish |
+| [../../docs/tanstack-query-and-table.md](../../docs/tanstack-query-and-table.md) | How this library fits with TanStack Query and TanStack Table |
+| [../../docs/tanstack-comparison.md](../../docs/tanstack-comparison.md) | Detailed comparison against TanStack DB, Query, Table, AI, and Intent |
+| [../../docs/advanced.md](../../docs/advanced.md) | Engine, GC, Suspense, DevTools, SSR, testing |
+| [../../RELEASING.md](../../RELEASING.md) | Versioning, `prepublishOnly`, npm publish |
 | [CHANGELOG.md](CHANGELOG.md) | Release history |
+| [../../release/binding-singleton-contract.md](../../release/binding-singleton-contract.md) | Core peer ownership and packed singleton verification |
+| [../../release/vite-react19-example.md](../../release/vite-react19-example.md) | React 19/Vite 8 showcase scenarios, commands, and evidence boundary |
 
 ---
 
@@ -21,10 +47,12 @@ Update a post in one screen and every list row, detail panel, and badge that rea
 ### 1. Install
 
 ```bash
-pnpm add @prometheus-ags/prometheus-entity-management zustand immer
+pnpm add @prometheus-ags/entity-graph-core @prometheus-ags/prometheus-entity-management react react-dom
 ```
 
 (`npm install` works for consumers too; this repository itself is `pnpm`-only.)
+
+`@prometheus-ags/entity-graph-core` is a required peer: install it explicitly so the application owns the one compatible graph instance. The React package must not install a private core copy. See the [binding singleton contract](../../release/binding-singleton-contract.md).
 
 ### 2. Define an entity type
 
@@ -174,7 +202,10 @@ These additions are intentionally graph-native. They extend the entity graph for
 | Garbage collection | Yes (automatic, configurable) | Yes | Yes | No |
 | Bundle size | See [Bundle size](#bundle-size) | ~39KB | ~130KB | ~4KB |
 
-Peer dependencies (`react`, `react-dom`, optional `@tanstack/react-table`) are **not** included in any column. Published `dist` sizes change with each release—measure before quoting numbers in docs or talks.
+Peer dependencies (`react` and `react-dom`) are **not** included in any column.
+The package installs `@tanstack/react-table` because the root entry exports the
+built-in table components that use it at runtime. Published `dist` sizes change
+with each release—measure before quoting numbers in docs or talks.
 
 ### Bundle size
 
@@ -196,14 +227,18 @@ Compare against peers only when measurement methodology matches (minified vs unm
 
 | Export | Description |
 |--------|-------------|
-| `useGraphStore` | Zustand store: `entities`, `patches`, `lists`, and graph mutations. Prefer hooks in UI; `getState()` is for effects/adapters. |
+| `createGraphStore` / `graphStore` | Create an isolated vanilla graph or access the default core singleton. |
+| `GraphStoreProvider` | Scope all descendant React hooks to an application-owned `GraphStore`; use one request graph per SSR render and one hydrated graph per mounted browser tree. |
+| `useGraphStoreApi` | Resolve the nearest provider-owned graph, falling back to the public singleton. React-hook ownership reference-counts focus/reconnect listeners and GC, releasing them after the final hook unmounts. |
+| `useGraphStore` | React hook subscribed to the nearest scoped graph; compatibility `getState`, `setState`, and `subscribe` methods remain attached to the default singleton. Prefer domain hooks in components. |
 | `configureEngine` | App-wide defaults: stale time, retries, GC interval, GC time, etc. |
 | `getEngineOptions` | Read merged engine options. |
 | `serializeKey` | Stable string key for list `queryKey` serialization. |
 | `fetchEntity` | Imperative single-entity fetch with dedupe and graph write (for custom hooks/adapters). |
 | `fetchList` | Imperative list fetch with dedupe and graph write. |
 | `dedupe` | Process-global in-flight promise deduplication helper. |
-| `startGarbageCollector` / `stopGarbageCollector` | Periodic eviction of unsubscribed, stale entities (also started via `configureEngine`). |
+| `startGarbageCollector(storeApi?)` / `stopGarbageCollector(storeApi?)` | Periodic eviction of unsubscribed, stale entities in the selected graph; omitting the store targets the compatibility singleton. |
+| `attachGlobalListeners(storeApi?)` | Reference-count focus/reconnect listeners and GC for one graph; call the returned disposer to release the attachment. React hooks manage this automatically. |
 
 ### Graph runtime
 
@@ -237,6 +272,7 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | `hydrateGraphFromStorage` | Restore graph state from a storage adapter using a JSON-serializable snapshot payload. |
 | `persistGraphToStorage` | Persist graph state and pending action metadata through a storage adapter. |
 | `useGraphSyncStatus` | Hook exposing online/offline/hydrating/syncing/ready state for PWAs and IPC-safe hosts. |
+| `getGraphSyncStatus` / `graphSyncStatusStore` | Imperative reader and vanilla store for non-component local-first orchestration. |
 | `replayActionWithRetry` | Replay a single pending action with configurable exponential-backoff retry. |
 | `createPGlitePersistenceAdapter` | PGlite-backed `GraphPersistenceAdapter`; stores the snapshot in a PGlite table alongside synced data. |
 
@@ -283,6 +319,8 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | `createSupabaseRealtimeAdapter` | Supabase Realtime payloads → graph. |
 | `createConvexAdapter` | Convex-shaped streams → graph. |
 | `createGraphQLSubscriptionAdapter` | GraphQL over WebSocket subscriptions → graph. |
+| `createFlintAdapter` | Flint `watchEntities` stream → graph through the structural client contract. |
+| `publishFlintMutation` | Publish one entity record through the caller-owned Flint client. |
 
 ### GraphQL
 
@@ -579,8 +617,8 @@ Use `Posts.crud()` with `useEntityCRUD` when you want the full list + detail + f
 
 | Example | Path | What it demonstrates |
 |--------|------|---------------------|
-| **Vite app** | [`examples/vite-app/`](examples/vite-app/) | Full CRUD, realtime adapters, **TanStack Query → graph bridge** (`/tanstack-bridge`), `EntityTable` / sheets, mock API with latency |
-| **Next.js app** | [`examples/nextjs-app/`](examples/nextjs-app/) | Same feature set as the Vite example (Project/Task/User CRUD, realtime, engine settings, pure list view, TanStack Query → graph bridge). **SSR:** `GraphHydrationProvider` seeds the client graph from the shared demo data on first load |
+| **Vite app** | [`examples/vite-app/`](../../examples/vite-app/) | Full CRUD, realtime adapters, **TanStack Query → graph bridge** (`/tanstack-bridge`), `EntityTable` / sheets, mock API with latency |
+| **Next.js app** | [`examples/nextjs-app/`](../../examples/nextjs-app/) | Next.js 16 App Router with a new `createGraphStore()` per document request, serializable RSC snapshot, one hydrated `GraphStoreProvider`, zero duplicate client fetches, route persistence, validated Server Action mutation, and client-only realtime takeover. |
 
 From the repo root (this monorepo uses **pnpm**):
 

@@ -1,0 +1,92 @@
+{
+  "refinement_id": "6c61d76f-8bef-471e-afcc-90c7585c27a6",
+  "artifact_name": "v3-agentic-a2ui-example-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-03T21:37:20Z",
+  "updated_at": "2026-08-03T21:38:45Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Resolve the cycle-2 cancellation race at the component-facing hook boundary.",
+    "Classify validation failures by actual error type rather than requested scenario.",
+    "Regenerate all clean evidence before a third isolated review."
+  ],
+  "constraints": [
+    {
+      "id": "acceptance-direct-evidence",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "official-protocol-runtime",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "action-boundary-fails-closed",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "normalized-layering-preserved",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "lifecycle-and-golden-coverage",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "evidence-integrity",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "ledgers-synchronized",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "limits-and-release-impact-explicit",
+      "severity": "blocking",
+      "status": "satisfied"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-03T21:37:20Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "ff71276b",
+      "phase": "persist",
+      "iteration": 1,
+      "timestamp": "2026-08-03T21:38:43Z"
+    }
+  ],
+  "prior_cycle_id": "01d5079a-7445-4301-b278-61b117dce87b",
+  "finalized_at": "2026-08-03T21:38:45Z"
+}

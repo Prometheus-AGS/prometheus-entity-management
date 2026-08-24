@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "flint-auth-claims-contract",
+  "description": "Checked fixture pinning the Flint fabric auth/data contract that this repository's Flint adapter depends on. Facts verified against flint-gate crates/flint-gate-core/src/auth/{jwt_verify.rs,jwks.rs}, flint-forge crates/ext-flint-auth/sql/flint_auth.sql, flint-forge migrations 0013_force_rls.sql / 0014_service_role_bypassrls.sql, flint-forge crates/forge-cli/src/main.rs, and the FLINT_ANON_SERVICE_ROLE_KEYS_SPEC.md key-separation spec. This repo does NOT verify tokens itself; the identity plane is flint-gate.",
+  "tokenVerification": {
+    "owner": "flint-gate",
+    "claims": {
+      "issuer": { "claim": "iss", "rule": "validated when an issuer is configured" },
+      "audience": { "claim": "aud", "rule": "validated when an audience is configured; validation disabled when none is configured" },
+      "tenant": { "claim": "tenant binding", "rule": "tenant identity rides the channel envelope (channel.tenantId); subscriptions and mutations must carry tenantId + channelId" },
+      "role": { "claim": "role", "rule": "maps to the Postgres role for the connection" }
+    },
+    "jwks": {
+      "kidRequiredAgainstMultiKeySet": true,
+      "noKidMultiKeyBehavior": "rejected as ambiguous; never pick-first",
+      "unknownKidBehavior": "forces at most one rate-limited JWKS refresh (MIN_REFRESH_INTERVAL), then re-checks",
+      "keySelection": "asymmetric keys only; symmetric-downgrade / alg-confusion rejected",
+      "compatibilityCaveat": "strict-JWK: clients MUST send a kid header matching a published JWK, and any JWKS consumer MUST NOT fall back to the first key when kid is absent"
+    }
+  },
+  "roles": {
+    "anon": { "login": false, "bypassRls": false, "keyPrefix": "flint_pk_", "exposure": "publishable; safe for clients, gated by RLS" },
+    "authenticated": { "login": false, "bypassRls": false, "keyPrefix": null, "exposure": "end-user session tokens, gated by RLS" },
+    "service_role": { "login": false, "bypassRls": true, "keyPrefix": "flint_sk_", "exposure": "secret; server-side provisioning only, MUST never ship in client examples, bundles, logs, or evidence" }
+  },
+  "rls": {
+    "default": "tables are RLS-governed; internal tables carry FORCE ROW LEVEL SECURITY (migration 0013)",
+    "serviceRoleBypass": "service_role holds a real BYPASSRLS attribute (migration 0014); operators must apply FORCE ROW LEVEL SECURITY to their own tables"
+  },
+  "provisioning": {
+    "tool": "forge-cli",
+    "apply": "forge migrate applies the SQL migrations directory (no separate plan subcommand exists; review migration files before applying)",
+    "tokenMint": "forge token mint creates operator JWTs",
+    "serviceRoleOnly": true
+  },
+  "audit": {
+    "owner": "flint-gate",
+    "surface": "AuthzAuditRecord decisions (allow/deny/step-up) written by the middleware pipeline; shadow mode logs the deny but lets the request pass"
+  },
+  "restartSemantics": {
+    "gateCaches": "in-process (moka) with LISTEN/NOTIFY invalidation and optional Redis L2; a restart starts cold, so JWKS and route config are refetched",
+    "clientResume": "after reconnect, subscriptions resume from the last checkpoint at fromOffset = lastSeen + 1"
+  }
+}

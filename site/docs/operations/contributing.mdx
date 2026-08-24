@@ -1,0 +1,69 @@
+---
+title: Contributing
+description: How to contribute to Prometheus Entity Management — setup, architecture rules, code style, and the change workflow.
+---
+
+# Contributing
+
+## Setup
+
+`pnpm` is the only package manager for this monorepo — never `npm` or `yarn`.
+
+```bash
+corepack prepare pnpm@10.33.0 --activate
+pnpm install --frozen-lockfile
+
+pnpm run dev:vite      # Vite example → http://localhost:5173
+pnpm run dev:next      # Next.js example → http://localhost:3000
+pnpm run typecheck     # type-check the library and examples
+```
+
+The examples resolve the library directly to source through TypeScript path
+aliases; there is no standalone library build step during development.
+
+## Non-negotiable architecture
+
+Contributions must preserve the layered data flow:
+
+- **Components** only use hooks — never `useGraphStore` directly, never `fetch`.
+- **Hooks** orchestrate between components and stores — no direct API calls.
+- **Stores/adapters** own all external communication (REST, GraphQL,
+  realtime) and all writes to the entity graph.
+- **Entities live exactly once** in the graph; lists store IDs only.
+
+These rules exist because breaking them creates data silos and defeats
+cross-view reactivity. `prometheusEntityLayeringRule` (a copyable ESLint
+flat-config) bans direct store/graph imports in components.
+
+## Code style
+
+- TypeScript strict mode; no `any` except at documented adapter boundaries.
+- Immer for all graph mutations — no direct state writes.
+- Every public hook carries JSDoc explaining its purpose and the problem it
+  solves.
+- Callbacks use `useRef` where needed to avoid stale closures in effects.
+
+## Change workflow
+
+1. Keep diffs minimal and scoped; do not refactor adjacent working code.
+2. Add or update the gates that prove your change (unit, consumer, docs, BDD)
+   — untested claims do not merge.
+3. If your change touches a public surface, synchronize the export ledgers
+   (`pnpm run refresh:exports`, then `pnpm run verify:skills`), the example
+   coverage contract, and the relevant documentation.
+4. Run `pnpm run ci` before requesting review.
+5. Version user-facing changes with Changesets; the release pipeline owns
+   numbering and publication.
+
+## Adding a realtime adapter
+
+1. Implement the `RealtimeAdapter` interface (`subscribe(config, handler)`,
+   optional `onStatusChange`) in a new adapter module.
+2. Emit `ChangeSet` objects; the `RealtimeManager` handles coalescing and
+   graph writes — the adapter must not touch the graph directly.
+3. Export it from the package entry point and add a usage example.
+4. Add a deterministic integration test with recorded change sets.
+
+## License
+
+MIT.

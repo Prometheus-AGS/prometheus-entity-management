@@ -1,0 +1,35 @@
+{
+  "format": "research-package",
+  "formatVersion": "1.0.0",
+  "okfType": "research-session",
+  "jobId": "v3-tauri-mobile-plugin-task-3",
+  "query": "Which executable tests and evidence are necessary to certify the v3 Tauri plugin's desktop IPC, capability denial, packed Rust consumer, and Android/iOS bridge lanes?",
+  "depth": "deep",
+  "createdAt": "2026-08-02T04:00:00Z",
+  "completedAt": "2026-08-02T04:00:00Z",
+  "stagesCompleted": 10,
+  "sourcesCount": 8,
+  "claimsCount": 6,
+  "confidence": 0.97,
+  "verificationStatus": "verified-with-mobile-runtime-blocker",
+  "feynmanGrade": null,
+  "feynmanGateUsed": true,
+  "misconceptionsAbsent": null,
+  "contradictionsResolved": 4,
+  "contradictionsUnresolved": 0,
+  "surrealMemoryUsed": false,
+  "sycophancyCorrectionUsed": true,
+  "citationStyle": "APA",
+  "toolAvailability": {
+    "firecrawl": false,
+    "webOfficialSearch": true,
+    "installedOfficialSource": true,
+    "learnGrade": false
+  },
+  "modelRouting": {
+    "planner": "session-frontier",
+    "search": "official-web-and-installed-upstream-source",
+    "verify": "session-frontier",
+    "report": "session-frontier"
+  }
+}

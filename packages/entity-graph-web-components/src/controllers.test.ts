@@ -10,7 +10,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { useGraphStore } from "@prometheus-ags/entity-graph-core";
+import { graphStore } from "@prometheus-ags/entity-graph-core";
 
 // ── Minimal ReactiveControllerHost stub ────────────────────────────────────
 
@@ -35,8 +35,8 @@ function makeHost() {
 // ── Helpers ────────────────────────────────────────────────────────────────
 
 function seedEntity(type: string, id: string, data: Record<string, unknown>) {
-  useGraphStore.getState().upsertEntity(type, id, data);
-  useGraphStore.getState().setEntityFetched(type, id);
+  graphStore.getState().upsertEntity(type, id, data);
+  graphStore.getState().setEntityFetched(type, id);
 }
 
 function seedList(
@@ -45,9 +45,9 @@ function seedList(
   entries: Array<{ id: string; data: Record<string, unknown> }>
 ) {
   for (const { id, data } of entries) {
-    useGraphStore.getState().upsertEntity(type, id, data);
+    graphStore.getState().upsertEntity(type, id, data);
   }
-  useGraphStore.getState().setListResult(queryKey, entries.map((e) => e.id), {
+  graphStore.getState().setListResult(queryKey, entries.map((e) => e.id), {
     total: entries.length,
     hasNextPage: false,
   });
@@ -58,7 +58,7 @@ function seedList(
 describe("EntityDetailController", () => {
   beforeEach(() => {
     // Reset graph state between tests.
-    useGraphStore.setState({
+    graphStore.setState({
       entities: {},
       patches: {},
       entityStates: {},
@@ -133,7 +133,7 @@ describe("EntityDetailController", () => {
     host._connect();
 
     // Subscription fires synchronously when we set fetching.
-    useGraphStore.getState().setEntityFetching("Invoice", "inv-3", true);
+    graphStore.getState().setEntityFetching("Invoice", "inv-3", true);
 
     // isLoading is updated synchronously by the subscription callback.
     expect(ctrl.isLoading).toBe(true);
@@ -190,7 +190,7 @@ describe("EntityDetailController", () => {
 
 describe("EntityListController", () => {
   beforeEach(() => {
-    useGraphStore.setState({
+    graphStore.setState({
       entities: {},
       patches: {},
       entityStates: {},
@@ -267,7 +267,7 @@ describe("EntityListController", () => {
     host._connect();
 
     // Subscription fires synchronously when list fetching is set.
-    useGraphStore.getState().setListFetching(JSON.stringify(["tasks-paged"]), true);
+    graphStore.getState().setListFetching(JSON.stringify(["tasks-paged"]), true);
 
     expect(ctrl.isLoading).toBe(true);
   });
@@ -277,7 +277,7 @@ describe("EntityListController", () => {
 
 describe("EntityFormController", () => {
   beforeEach(() => {
-    useGraphStore.setState({
+    graphStore.setState({
       entities: {},
       patches: {},
       entityStates: {},

@@ -1,0 +1,22 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flint-portable-contracts/task-6-external-source-verification.json",
+      "claim": "The post-correction external-source receipt required by the evidence packet is not added by the diff, so the exact Git-HEAD/hash verification evidence is not reproducible from the repository.",
+      "evidence": "The acceptance packet includes a required \"TASK 6 EXTERNAL RECEIPT\" and `task-5-clean-gates.md` says positive external verification is \"retained in `task-6-external-source-verification.json`\", but the diff adds task-3 and task-4 verification JSON files and no `.kbd-orchestrator/phases/full-3.0-release/evidence/v3-flint-portable-contracts/task-6-external-source-verification.json` file.",
+      "suggested_fix": "Add the referenced `task-6-external-source-verification.json` file with the exact post-correction external-source verification receipt, or update all evidence references to point to a tracked receipt that exists."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

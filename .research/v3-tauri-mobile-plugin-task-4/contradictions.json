@@ -1,0 +1,32 @@
+{
+  "contradictions": [
+    {
+      "id": "specta-doc-version",
+      "claimA": "docs.rs latest for tauri-specta is 1.0.2 and documents the previous Tauri/Specta generation.",
+      "claimB": "The upstream main branch is Tauri Specta v2 and states that Tauri v2 requires Specta v2.",
+      "resolution": "Use the repository-pinned v2 release candidate and its generated output as the executable source of truth; do not copy v1 exporter examples into the skill reference.",
+      "status": "resolved"
+    },
+    {
+      "id": "desktop-versus-mobile",
+      "claimA": "The desktop MockRuntime host proves registered IPC and runtime capability denial.",
+      "claimB": "Android and iOS execute Kotlin and Swift plugin implementations through platform bridges.",
+      "resolution": "Record desktop proof as implemented and retain separate planned Android/iOS runtime evidence. Native source presence and cross-compilation cannot certify a device invocation.",
+      "status": "resolved"
+    },
+    {
+      "id": "snapshot-durability",
+      "claimA": "Existing package copy calls graph_persist_snapshot SQLite persistence.",
+      "claimB": "GraphPluginState stores snapshots in an in-memory Rust map; durable SQLite is a separate core adapter responsibility.",
+      "resolution": "Describe plugin snapshot commands as an in-memory IPC mirror and point durable applications to createTauriSqlPersistenceAdapter. Do not claim restart durability for this plugin gate.",
+      "status": "resolved"
+    },
+    {
+      "id": "default-authority",
+      "claimA": "A plugin default capability may be read as permission to call the full command surface.",
+      "claimB": "The package default contains only get-entity, get-list, and platform-ping; mutations, persistence, and clear require explicit permissions.",
+      "resolution": "Publish an exact permission table and keep the default explicitly read-only.",
+      "status": "resolved"
+    }
+  ]
+}

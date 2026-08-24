@@ -1,0 +1,145 @@
+// @ts-check
+
+// API routes and package-chooser pages are generated at prebuild by
+// scripts/generate-api-reference.mjs; this file must exist before
+// docusaurus.config.js loads.
+const generated = require('./api-sidebar.generated.json');
+
+/** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
+const sidebars = {
+  guidesSidebar: [
+    'guides/quickstart-react',
+    {
+      type: 'category',
+      label: 'Concepts',
+      link: { type: 'generated-index' },
+      collapsible: false,
+      items: [
+        'guides/concepts/normalized-entities',
+        'guides/concepts/id-only-lists',
+        'guides/concepts/queries-as-instructions',
+        'guides/concepts/layers-and-dataflow',
+        'guides/concepts/graph-patches-lists',
+        'guides/concepts/engine-swr-gc-suspense',
+        'guides/concepts/views-and-filtering',
+        'guides/concepts/crud-and-relations',
+        'guides/concepts/realtime-batching',
+        'guides/concepts/graphql-and-rest',
+        'guides/concepts/sync-and-persistence',
+        'guides/concepts/sdl-and-codegen',
+        'guides/concepts/devtools',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Bindings',
+      link: { type: 'generated-index' },
+      collapsible: false,
+      items: [
+        'guides/bindings/react',
+        'guides/bindings/svelte',
+        'guides/bindings/solid',
+        'guides/bindings/alpine',
+        'guides/bindings/htmx',
+        'guides/bindings/web-components',
+        'guides/bindings/flutter',
+        'guides/bindings/tauri',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Practices',
+      link: { type: 'generated-index' },
+      collapsible: false,
+      items: [
+        'guides/practices/recipes',
+        'guides/practices/failure-modes',
+        'guides/practices/performance',
+        'guides/practices/security',
+        'guides/practices/package-selection',
+      ],
+    },
+  ],
+  productSidebar: [
+    {
+      type: 'category',
+      label: 'Product',
+      link: { type: 'generated-index' },
+      collapsible: false,
+      items: ['product/overview', 'product/architecture'],
+    },
+  ],
+  packagesSidebar: [
+    {
+      type: 'category',
+      label: 'Packages',
+      link: { type: 'generated-index' },
+      collapsible: false,
+      items: ['packages/overview', generated.packageChooserCategory],
+    },
+  ],
+  examplesSidebar: [
+    'examples/overview',
+    {
+      type: 'category',
+      label: 'Tutorials',
+      link: { type: 'generated-index' },
+      collapsible: false,
+      items: [
+        'examples/vite-react19',
+        'examples/nextjs-app-router',
+        'examples/agentic-a2ui',
+        'examples/flutter-riverpod',
+        'examples/tauri-universal',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Integrations',
+      link: { type: 'generated-index' },
+      collapsible: false,
+      items: [
+        'integrations/websocket',
+        'integrations/supabase',
+        'integrations/graphql',
+        'integrations/pglite-loro',
+        'integrations/a2a-a2ui',
+        'integrations/flint',
+      ],
+    },
+  ],
+  operationsSidebar: [
+    {
+      type: 'category',
+      label: 'Migration',
+      link: { type: 'generated-index' },
+      collapsible: false,
+      items: [
+        'migration/v2-to-v3',
+        'migration/alpha-to-stable',
+        'migration/compatibility-policy',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Operations',
+      link: { type: 'generated-index' },
+      collapsible: false,
+      items: [
+        'operations/release-notes',
+        'operations/release-runbook',
+        'operations/security',
+        'operations/performance',
+        'operations/testing',
+        'operations/deployment',
+        'operations/troubleshooting',
+        'operations/faq',
+        'operations/contributing',
+        'operations/skills-usage',
+      ],
+    },
+  ],
+  apiSidebar: generated.apiSidebar,
+};
+
+module.exports = sidebars;

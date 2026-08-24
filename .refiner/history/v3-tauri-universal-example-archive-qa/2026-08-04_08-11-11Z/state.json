@@ -1,0 +1,68 @@
+{
+  "refinement_id": "04b8ea1d-388b-4eeb-b451-0ba5ac6dc0a0",
+  "artifact_name": "v3-tauri-universal-example-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:code",
+  "started_at": "2026-08-04T08:08:45Z",
+  "updated_at": "2026-08-04T08:11:11Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Resolve the sixth review's generated-resource inventory ambiguity with direct source and clean-directory build evidence.",
+    "Keep the bounded Tauri archive and frozen React RC release lane truthful and independent."
+  ],
+  "constraints": [
+    {
+      "id": "acceptance-direct-evidence"
+    },
+    {
+      "id": "one-graph-layered-adapter-boundary"
+    },
+    {
+      "id": "platform-evidence-integrity"
+    },
+    {
+      "id": "trust-boundaries-fail-closed"
+    },
+    {
+      "id": "visual-accessibility-integrity"
+    },
+    {
+      "id": "ledgers-and-release-contract-synchronized"
+    },
+    {
+      "id": "react-rc-lane-preserved"
+    },
+    {
+      "id": "limits-and-publication-truthful"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T08:09:22Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [],
+  "prior_cycle_id": "faebf77f-2fba-4037-89b7-57e2407783d7",
+  "finalized_at": "2026-08-04T08:11:11Z"
+}

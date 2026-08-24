@@ -1,0 +1,31 @@
+{
+  "grade_id": "grade-stable-v3-release-proof-system-1785583800",
+  "goal_id": "full-3.0-release-execution-readiness",
+  "concept_id": "stable-v3-release-proof-system",
+  "learner_id": "codex-root",
+  "graded_at": "2026-08-01T11:30:00Z",
+  "explanation_excerpt": "A stable release is a chain of evidence that the thing users install behaves like the thing the project promises.",
+  "scores": {
+    "completeness": 0.88,
+    "accuracy": 0.96,
+    "clarity": 0.90,
+    "misconceptions_absent": 1.0
+  },
+  "overall_score": 0.935,
+  "gaps": [
+    {
+      "dimension": "completeness",
+      "description": "The teaching explanation intentionally omits individual framework version numbers; those remain in the research report and execution contract.",
+      "corpus_ref": "runtime-boundaries"
+    }
+  ],
+  "transfer_problems": [
+    "A release candidate passes every workspace test, but a clean CommonJS consumer fails to require the core package. Should the RC advance, and what is the next action?",
+    "A Flutter A2UI screen renders and a Tauri desktop build passes, but denied-action, mobile command, and signing evidence are absent. What may the release claim?"
+  ],
+  "transfer_scores": [0.95, 0.93],
+  "passed": true,
+  "pass_threshold": 0.7,
+  "misconception_review": "No corpus misconception appears in the explanation or transfer answers.",
+  "grading_method": "Source-grounded self-assessment because the user explicitly authorized autonomous teach-yourself execution; no claim of human learner mastery is made."
+}

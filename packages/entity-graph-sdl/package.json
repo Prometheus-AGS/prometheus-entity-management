@@ -1,22 +1,30 @@
 {
   "name": "@prometheus-ags/entity-graph-sdl",
-  "version": "3.0.0-alpha.0",
+  "version": "3.0.3",
   "description": "Schema Definition Language (SDL) for the entity graph — the shared contract every code generator (Rust CLI, Flutter, framework bindings) consumes.",
+  "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     }
   },
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
   ],
   "publishConfig": {
     "access": "public"
@@ -24,12 +32,26 @@
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "refresh:exports": "pnpm run build && node ../../scripts/refresh-exports-ledger.mjs --pkg sdl",
+    "verify:skills": "node ../../scripts/verify-skills-exports.mjs --pkg sdl"
   },
   "keywords": [
     "entity-graph",
     "schema",
     "sdl",
     "codegen"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Prometheus-AGS/prometheus-entity-management",
+    "directory": "packages/entity-graph-sdl"
+  },
+  "homepage": "https://github.com/prometheus-ags/prometheus-entity-management/tree/main/packages/entity-graph-sdl#readme",
+  "bugs": {
+    "url": "https://github.com/prometheus-ags/prometheus-entity-management/issues"
+  },
+  "engines": {
+    "node": "^22.14.0 || ^24.0.0 || >=26.0.0"
+  }
 }

@@ -1,0 +1,16 @@
+{
+  "nodes": [
+    {"id": "binding", "label": "generated TypeScript command"},
+    {"id": "authority", "label": "Tauri runtime authority"},
+    {"id": "rust", "label": "registered Rust plugin command"},
+    {"id": "native", "label": "Kotlin or Swift plugin command"},
+    {"id": "evidence", "label": "machine-readable plus visual evidence"}
+  ],
+  "edges": [
+    {"from": "binding", "to": "authority", "relation": "IPC request"},
+    {"from": "authority", "to": "rust", "relation": "allows or denies"},
+    {"from": "rust", "to": "native", "relation": "PluginHandle on mobile"},
+    {"from": "rust", "to": "evidence", "relation": "desktop host result"},
+    {"from": "native", "to": "evidence", "relation": "device result"}
+  ]
+}

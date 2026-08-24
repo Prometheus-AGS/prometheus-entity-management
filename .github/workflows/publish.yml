@@ -1,66 +1,128 @@
-name: Publish
+name: Publish immutable release assets
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: Publish an RC candidate or the coordinated stable release
+        required: true
+        type: choice
+        options: [rc, stable]
+      release_tag:
+        description: Draft GitHub Release tag containing the locally certified assets
+        required: true
+        type: string
+      candidate_sha:
+        description: Exact locally certified source commit
+        required: true
+        type: string
+      candidate_run_id:
+        description: Optional prior deployment run whose immutable candidate is being reused
+        required: false
+        type: string
 
 concurrency:
-  group: publish-${{ github.ref }}
+  group: npm-${{ inputs.channel }}-${{ inputs.candidate_sha }}
   cancel-in-progress: false
 
 jobs:
-  publish:
+  publish-rc:
+    if: inputs.channel == 'rc'
     runs-on: ubuntu-latest
+    environment: npm-rc
     permissions:
-      contents: read
+      actions: read
+      contents: write
       id-token: write
-
+    env:
+      PROMETHEUS_RELEASE_AUTHORITY: stage-rc
+      PROMETHEUS_RELEASE_ENVIRONMENT: npm-rc
+      PROMETHEUS_RELEASE_CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+      NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
         with:
-          node-version: "22"
-          cache: "pnpm"
-          registry-url: "https://registry.npmjs.org"
-
-      - name: Install
-        run: pnpm install --frozen-lockfile
-
-      - name: Check if version already published
-        id: version-check
-        run: |
-          PKG_VERSION=$(node -p "require('./package.json').version")
-          PKG_NAME=$(node -p "require('./package.json').name")
-          echo "version=$PKG_VERSION" >> $GITHUB_OUTPUT
-          if npm view "${PKG_NAME}@${PKG_VERSION}" version 2>/dev/null | grep -q "${PKG_VERSION}"; then
-            echo "already_published=true" >> $GITHUB_OUTPUT
-            echo "Version ${PKG_VERSION} already exists on npm — skipping publish."
-          else
-            echo "already_published=false" >> $GITHUB_OUTPUT
-            echo "Version ${PKG_VERSION} not yet published — will publish."
-          fi
-
-      - name: Typecheck
-        if: steps.version-check.outputs.already_published == 'false'
-        run: pnpm run typecheck
-
-      - name: Build
-        if: steps.version-check.outputs.already_published == 'false'
-        run: pnpm run build
-
-      - name: Test
-        if: steps.version-check.outputs.already_published == 'false'
-        run: pnpm run test
-
-      - name: Verify skills exports ledger
-        if: steps.version-check.outputs.already_published == 'false'
-        run: pnpm run verify:skills
-
-      - name: Publish to npm
-        if: steps.version-check.outputs.already_published == 'false'
-        run: pnpm publish --no-git-checks --access public
+          ref: ${{ inputs.candidate_sha }}
+          fetch-depth: 1
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - name: Install the trusted-publishing npm client
+        run: npm install --global npm@11.16.0
+      - name: Download immutable locally certified assets
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release download "${{ inputs.release_tag }}"
+          --pattern 'manifest.json' --pattern 'rehearsal.json'
+          --pattern 'SHA256SUMS' --pattern '*.tgz' --dir .release-assets
+      - name: Verify exact source, optional reused run, and checksums
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CANDIDATE_RUN_ID: ${{ inputs.candidate_run_id }}
+        run: ./scripts/verify-deployment-assets.sh .release-assets "${{ inputs.candidate_sha }}" "$CANDIDATE_RUN_ID"
+      - name: Stage RC packages without rebuilding
+        run: >-
+          node scripts/release-candidate.mjs stage
+          --manifest .release-assets/manifest.json
+          --rehearsal .release-assets/rehearsal.json
+          --output .release-assets/deployment-report.json
+      - name: Preserve the staging recovery journal
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: entity-management-rc-deployment-${{ inputs.candidate_sha }}
+          path: .release-assets/deployment-report.json
+          if-no-files-found: error
+          retention-days: 30
+
+  publish-stable:
+    if: inputs.channel == 'stable'
+    runs-on: ubuntu-latest
+    environment: npm-stable
+    permissions:
+      actions: read
+      contents: write
+      id-token: write
+    env:
+      PROMETHEUS_RELEASE_AUTHORITY: publish-stable
+      PROMETHEUS_RELEASE_ENVIRONMENT: npm-stable
+      NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.candidate_sha }}
+          fetch-depth: 1
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - name: Install the trusted-publishing npm client
+        run: npm install --global npm@11.16.0
+      - name: Download immutable locally certified assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh release download "${{ inputs.release_tag }}"
+          --pattern 'manifest.json' --pattern 'rehearsal.json'
+          --pattern 'SHA256SUMS' --pattern '*.tgz' --dir .release-assets
+      - name: Verify exact source, optional reused run, and checksums
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CANDIDATE_RUN_ID: ${{ inputs.candidate_run_id }}
+        run: ./scripts/verify-deployment-assets.sh .release-assets "${{ inputs.candidate_sha }}" "$CANDIDATE_RUN_ID"
+      - name: Publish stable packages directly without rebuilding
+        run: >-
+          node scripts/release-candidate.mjs stage
+          --manifest .release-assets/manifest.json
+          --rehearsal .release-assets/rehearsal.json
+          --output .release-assets/deployment-report.json
+      - name: Preserve the stable publication recovery journal
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: entity-management-stable-deployment-${{ inputs.candidate_sha }}
+          path: .release-assets/deployment-report.json
+          if-no-files-found: error
+          retention-days: 90

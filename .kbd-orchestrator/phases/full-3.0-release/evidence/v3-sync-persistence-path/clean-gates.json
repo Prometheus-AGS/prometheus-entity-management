@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-sync-persistence-path",
+  "recordedAt": "2026-08-01T18:19:25Z",
+  "status": "pass",
+  "environment": {
+    "os": "Darwin 25.6.0 arm64",
+    "node": "24.16.0",
+    "pnpm": "10.33.0"
+  },
+  "source": {
+    "head": "dd5d70c9954381d3af4519ccedeb5cb565d6027e",
+    "worktreeDirtyEntries": 210,
+    "certificationScope": "current source content, not an immutable commit, release candidate, registry artifact, or npm tag",
+    "cleanRoom": "fresh 21 MB source-only copy excluding .git, dependency trees, build output, caches, native targets, coverage, and tarballs",
+    "lockfileSha256": "ab31dc4f8b3a48596d63b89a5061cff8ca4a37b42dc2676c4cc18670ab81308e"
+  },
+  "gates": [
+    {
+      "id": "frozen-install",
+      "command": "pnpm install --frozen-lockfile --prefer-offline",
+      "status": "pass",
+      "summary": "777 locked packages installed; 766 reused and zero downloaded"
+    },
+    {
+      "id": "complete-ci",
+      "command": "pnpm run ci",
+      "status": "pass",
+      "summary": "validate, lint, typecheck, build, test, skills, and security all passed"
+    },
+    {
+      "id": "release-and-example-validation",
+      "command": "pnpm run validate",
+      "status": "pass",
+      "summary": "16 artifacts, 12 npm packages, 1 Dart package, 3 Rust crates, 13/13 semantic scenarios, and 5 planned showcases; release remains uncertified"
+    },
+    {
+      "id": "typecheck",
+      "command": "pnpm run typecheck",
+      "status": "pass",
+      "summary": "17/17 Turbo tasks"
+    },
+    {
+      "id": "build",
+      "command": "pnpm run build",
+      "status": "pass",
+      "summary": "14/14 Turbo tasks, including Vite and Next.js production builds"
+    },
+    {
+      "id": "full-bdd",
+      "command": "pnpm run bdd",
+      "status": "pass",
+      "summary": "33/33 scenarios and 181/181 steps"
+    },
+    {
+      "id": "focused-sync-tests",
+      "command": "pnpm run test:sync-persistence",
+      "status": "pass",
+      "summary": "1 real PGlite close/reopen test, 8 Loro/relay tests, and 8 release guards passed with zero skips or todos"
+    },
+    {
+      "id": "focused-sync-bdd",
+      "command": "pnpm run bdd:sync-persistence -- --format summary",
+      "status": "pass",
+      "summary": "5/5 scenarios and 27/27 steps"
+    },
+    {
+      "id": "focused-packed-sync-consumers",
+      "command": "pnpm run verify:sync-persistence -- --report ...",
+      "status": "pass",
+      "summary": "packed core/sync payloads and manifests plus ESM, CommonJS, TypeScript NodeNext, and loopback convergence consumers passed",
+      "report": "clean-sync-packed-consumer-report.json"
+    },
+    {
+      "id": "packed-package-contract",
+      "command": "pnpm run verify:package-contracts -- --report ...",
+      "status": "pass",
+      "summary": "12/12 tarballs; manifest/payload allowlists; Publint/ATTW; ESM/CJS; TypeScript NodeNext/Node16/Bundler; tarball-only candidate set",
+      "report": "clean-package-contract-report.json"
+    },
+    {
+      "id": "skills-export-ledgers",
+      "command": "pnpm run verify:skills",
+      "status": "pass",
+      "summary": "201 React runtime exports and 16 sync runtime exports match their ledgers"
+    },
+    {
+      "id": "production-security",
+      "command": "pnpm run security:audit",
+      "status": "pass",
+      "summary": "309 dependencies; 1 low; 0 moderate/high/critical; 0 blocking or accepted blocking advisories"
+    },
+    {
+      "id": "openspec",
+      "command": "openspec validate <item> --strict --no-interactive",
+      "status": "pass",
+      "summary": "active sync change and release, package, and example dependency specifications are valid"
+    },
+    {
+      "id": "changeset-status",
+      "command": "pnpm changeset status",
+      "status": "pass",
+      "summary": "original git worktree recognizes patch bumps for all 12 npm packages, including the dedicated sync changeset"
+    },
+    {
+      "id": "whitespace",
+      "command": "git diff --check",
+      "status": "pass",
+      "summary": "original current-content worktree has no whitespace errors"
+    }
+  ],
+  "applicability": {
+    "dartMelos": {
+      "status": "not-applicable",
+      "reason": "This change owns no Dart/Flutter source, pubspec, lockfile, generated code, or Dart package boundary. The dedicated Dart/Riverpod and Flutter showcase changes retain those gates."
+    },
+    "cargo": {
+      "status": "not-applicable",
+      "reason": "This change owns no Rust source, Cargo manifest, Tauri capability, generated binding, or native command behavior. The Tauri plugin and universal showcase changes retain Cargo and device gates."
+    },
+    "docusaurus": {
+      "status": "not-applicable",
+      "reason": "The planned website directory does not exist yet. The documentation foundation, content, visual certification, and GitHub Pages changes retain site build, link, accessibility, and deployment gates."
+    },
+    "browserDeviceVisual": {
+      "status": "not-applicable",
+      "reason": "This is a headless storage, convergence, relay, and package-contract change and renders no interface. Downstream showcases must still provide real browser/device, accessibility, screenshot, trace, video/golden, and hash receipts."
+    }
+  },
+  "knownOutput": [
+    "One external Flint live integration remains explicitly skipped and is not used as sync evidence.",
+    "One core benchmark remains todo.",
+    "Existing Next.js migration messages, a Vite chunk-size warning, Vitest native-loader warnings, and Turbo output-declaration warnings remain visible and assigned to later owners."
+  ],
+  "publicationAuthorized": false
+}

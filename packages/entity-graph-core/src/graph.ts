@@ -1,9 +1,11 @@
-import { create } from "zustand";
+import { createStore } from "zustand/vanilla";
 import { subscribeWithSelector } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import type { EntityError } from "./errors";
 import { getMergeStrategy } from "./merge/registry";
 import type { MergeContext } from "./merge/types";
+import { findInsertionIndex, matchesFilter, matchesSearch } from "./view/evaluator";
+import type { ViewDescriptor } from "./view/types";
 
 /** Logical entity kind (e.g. `"Post"`). Used to partition the normalized graph. */
 export type EntityType = string;
@@ -67,6 +69,46 @@ export interface ListState {
   pageSize: number | null;
 }
 
+/** Pagination and lifecycle metadata accepted by successful list writes. */
+export type ListResultMeta = Partial<Omit<
+  ListState,
+  "ids" | "isFetching" | "isFetchingMore" | "error" | "stale"
+>>;
+
+/** One list projection updated as part of an atomic fetched-list ingestion. */
+export interface FetchedListTarget {
+  key: QueryKey;
+  mode?: "replace" | "append";
+  meta?: ListResultMeta;
+  /** Override list membership when the transport derives ids separately. */
+  ids?: EntityId[];
+}
+
+/** Additional normalized entity rows committed with the primary fetched list. */
+export interface FetchedEntityBatch {
+  type: EntityType;
+  entries: Array<{ id: EntityId; data: Record<string, unknown> }>;
+}
+
+/** Incrementally project fetched rows into an existing view-backed list. */
+export interface FetchedListProjection {
+  key: QueryKey;
+  view: ViewDescriptor;
+  /** Complete the projection's fetch lifecycle without replacing its ids. */
+  completeFetch?: boolean;
+}
+
+/** Additional graph projections completed by one fetched-list response. */
+export interface IngestFetchedListOptions {
+  lists?: FetchedListTarget[];
+  /** Side-descriptor rows that must commit or fail with the primary batch. */
+  sideBatches?: FetchedEntityBatch[];
+  /** View-backed lists that receive matching fetched ids in the same publication. */
+  projections?: FetchedListProjection[];
+  /** List fetch flags to clear without replacing their existing ids or metadata. */
+  finishListFetches?: QueryKey[];
+}
+
 /**
  * Stable fallbacks for missing `lists[key]` / `entityStates[key]` slots.
  * Inline `?? { ... }` defaults allocate new objects every `getSnapshot` call and trigger React 19
@@ -106,7 +148,8 @@ export const EMPTY_LIST_STATE: ListState = {
 
 /**
  * Canonical Zustand store: **entities** (server truth), **patches** (UI-only overlay), **lists** (id order + list meta), and **entityStates** (per-entity fetch state).
- * Prefer hooks for React reads; use `useGraphStore.getState()` inside stores/adapters/engine code where React is not available.
+ * Framework bindings subscribe to the vanilla store; stores, adapters, and
+ * engines can read it synchronously through `graphStore.getState()`.
  */
 export interface GraphState {
   /** Normalized server-confirmed records. Mutate only via upsert/replace/remove — not from components. */
@@ -132,6 +175,15 @@ export interface GraphState {
    * @param entries - Pairs of id + partial/full payloads to merge
    */
   upsertEntities: (type: EntityType, entries: Array<{ id: EntityId; data: Record<string, unknown> }>) => void;
+  /**
+   * Merge one fetched page, mark every row fetched, and update its list
+   * projections in one Zustand publication.
+   */
+  ingestFetchedList: (
+    type: EntityType,
+    entries: Array<{ id: EntityId; data: Record<string, unknown> }>,
+    options?: IngestFetchedListOptions,
+  ) => void;
   /**
    * Replace the canonical entity entirely (no merge). Use when the server returns a full snapshot and partial merge would leave stale keys behind.
    */
@@ -261,11 +313,9 @@ function readCachedEntitySnapshot<T extends Record<string, unknown>>(
   return snapshot;
 }
 
-/**
- * Global entity graph store (Zustand + Immer). **Components should not subscribe directly** — use hooks so layering stays `Component → hook → store`.
- * `getState()` is intended for non-React code paths (engine, adapters, mutations) that must write or read the graph synchronously.
- */
-export const useGraphStore = create<GraphState>()(
+/** Creates an isolated, framework-neutral entity graph store. */
+export function createGraphStore() {
+  return createStore<GraphState>()(
   subscribeWithSelector(
     immer((set, get) => ({
       entities: {}, patches: {}, entityStates: {}, syncMetadata: {}, lists: {},
@@ -288,6 +338,133 @@ export const useGraphStore = create<GraphState>()(
           const ctx: MergeContext = { type, id, origin: s.syncMetadata[key]?.origin ?? "server", updatedAt: Date.now() };
           s.entities[type][id] = strategy(s.entities[type][id], data, ctx);
           if (!s.syncMetadata[key]) s.syncMetadata[key] = defaultSyncMetadata();
+        }
+      }),
+      ingestFetchedList: (type, entries, options = {}) => set((s) => {
+        const fetchedAt = Date.now();
+        const ids = entries.map(({ id }) => id);
+        const batches: FetchedEntityBatch[] = [
+          { type, entries },
+          ...(options.sideBatches ?? []),
+        ];
+        const origins = new Map<string, SyncOrigin>();
+
+        for (const batch of batches) {
+          if (!s.entities[batch.type]) s.entities[batch.type] = {};
+          for (const { id } of batch.entries) {
+            const key = ek(batch.type, id);
+            if (!origins.has(key)) {
+              origins.set(key, s.syncMetadata[key]?.origin ?? "server");
+            }
+          }
+        }
+
+        for (const batch of batches) {
+          const strategy = getMergeStrategy(batch.type);
+          for (const { id, data } of batch.entries) {
+            const key = ek(batch.type, id);
+            const ctx: MergeContext = {
+              type: batch.type,
+              id,
+              origin: origins.get(key) ?? "server",
+              updatedAt: fetchedAt,
+            };
+            s.entities[batch.type][id] = strategy(s.entities[batch.type][id], data, ctx);
+          }
+        }
+
+        const completed = new Set<string>();
+        for (const batch of batches) {
+          for (const { id } of batch.entries) {
+            const key = ek(batch.type, id);
+            if (completed.has(key)) continue;
+            completed.add(key);
+            if (!s.entityStates[key]) s.entityStates[key] = defaultEntityState();
+            s.entityStates[key].lastFetched = fetchedAt;
+            s.entityStates[key].isFetching = false;
+            s.entityStates[key].error = null;
+            s.entityStates[key].stale = false;
+            s.syncMetadata[key] = {
+              ...(s.syncMetadata[key] ?? defaultSyncMetadata()),
+              synced: true,
+              origin: "server",
+              updatedAt: fetchedAt,
+            };
+          }
+        }
+
+        const readDraftEntity = (id: EntityId): Record<string, unknown> | null => {
+          const base = s.entities[type]?.[id];
+          if (!base) return null;
+          const patch = s.patches[type]?.[id];
+          const metadata = s.syncMetadata[ek(type, id)] ?? defaultSyncMetadata();
+          return {
+            ...base,
+            ...(patch ?? {}),
+            $synced: metadata.synced,
+            $origin: metadata.origin,
+            $updatedAt: metadata.updatedAt,
+          };
+        };
+
+        for (const target of options.lists ?? []) {
+          const existing = s.lists[target.key] ?? defaultListState();
+          const targetIds = target.ids ?? ids;
+          const nextIds = target.mode === "append"
+            ? Array.from(new Set([...existing.ids, ...targetIds]))
+            : targetIds;
+          s.lists[target.key] = {
+            ...existing,
+            ...(target.meta ?? {}),
+            ids: nextIds,
+            isFetching: false,
+            isFetchingMore: false,
+            error: null,
+            lastError: null,
+            stale: false,
+            lastFetched: fetchedAt,
+          };
+        }
+
+        for (const projection of options.projections ?? []) {
+          const existing = s.lists[projection.key] ?? defaultListState();
+          const nextIds = [...existing.ids];
+          const { filter, sort, search } = projection.view;
+
+          for (const id of new Set(ids)) {
+            if (nextIds.includes(id)) continue;
+            const entity = readDraftEntity(id);
+            if (!entity) continue;
+            const matches =
+              (!filter || matchesFilter(entity, filter)) &&
+              (!search?.query || matchesSearch(entity, search.query, search.fields));
+            if (!matches) continue;
+
+            if (sort && sort.length > 0) {
+              const index = findInsertionIndex(entity, nextIds, readDraftEntity, sort);
+              nextIds.splice(index, 0, id);
+            } else {
+              nextIds.unshift(id);
+            }
+          }
+
+          s.lists[projection.key] = projection.completeFetch
+            ? {
+                ...existing,
+                ids: nextIds,
+                isFetching: false,
+                isFetchingMore: false,
+                error: null,
+                lastError: null,
+                stale: false,
+                lastFetched: fetchedAt,
+              }
+            : { ...existing, ids: nextIds };
+        }
+
+        for (const key of options.finishListFetches ?? []) {
+          if (!s.lists[key]) s.lists[key] = defaultListState();
+          s.lists[key].isFetching = false;
         }
       }),
       replaceEntity: (type, id, data) => set((s) => {
@@ -430,4 +607,20 @@ export const useGraphStore = create<GraphState>()(
       },
     }))
   )
-);
+  );
+}
+
+/**
+ * Default process-wide entity graph store. Framework bindings subscribe to
+ * this vanilla store; non-React consumers use its `getState`, `setState`, and
+ * `subscribe` methods directly.
+ */
+export const graphStore = createGraphStore();
+
+export type GraphStore = ReturnType<typeof createGraphStore>;
+
+/**
+ * @deprecated Import `graphStore` from core, or `useGraphStore` from the React
+ * binding. This StoreApi-shaped alias remains for non-React 2.x migrations.
+ */
+export const useGraphStore = graphStore;

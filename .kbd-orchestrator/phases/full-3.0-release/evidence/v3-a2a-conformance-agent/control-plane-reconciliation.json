@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-a2a-conformance-agent",
+  "recordedAt": "2026-08-01T21:05:17Z",
+  "reason": "The per-task driver had registered only task 1, so completing it temporarily projected the six-task OpenSpec change as complete. Tasks 2-6 were registered canonically without starting them.",
+  "before": {
+    "runtimeRevision": 22,
+    "changeStatus": "complete",
+    "registeredTasks": 1,
+    "phaseChangesCompleted": 9
+  },
+  "after": {
+    "runtimeRevision": 27,
+    "changeStatus": "pending",
+    "registeredTasks": 6,
+    "tasksComplete": 1,
+    "tasksPending": 5,
+    "phaseChangesCompleted": 8,
+    "phaseChangesTotal": 28,
+    "exactNextWork": "/kbd-apply v3-a2a-conformance-agent"
+  },
+  "commands": [
+    "reconcile:task-register:full-3.0-release:v3-a2a-conformance-agent:2",
+    "reconcile:task-register:full-3.0-release:v3-a2a-conformance-agent:3",
+    "reconcile:task-register:full-3.0-release:v3-a2a-conformance-agent:4",
+    "reconcile:task-register:full-3.0-release:v3-a2a-conformance-agent:5",
+    "reconcile:task-register:full-3.0-release:v3-a2a-conformance-agent:6"
+  ],
+  "manualProjectionEdits": false
+}

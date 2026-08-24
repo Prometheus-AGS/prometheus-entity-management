@@ -13,7 +13,7 @@
 
 import type { ReactiveControllerHost } from "lit";
 import {
-  useGraphStore,
+  graphStore,
 } from "@prometheus-ags/entity-graph-core";
 import type { EntityId } from "@prometheus-ags/entity-graph-core";
 import { EntityDetailController } from "./entity-detail-controller.js";
@@ -42,12 +42,12 @@ import type { EntityFormControllerOptions } from "./types.js";
  *     normalize: (raw) => raw,
  *     onSave: async (buf) => {
  *       const updated = await api.updateInvoice(buf);
- *       useGraphStore.getState().upsertEntity("Invoice", updated.id, updated);
+ *       graphStore.getState().upsertEntity("Invoice", updated.id, updated);
  *     },
  *     onDelete: async (id) => {
  *       await api.deleteInvoice(id);
- *       useGraphStore.getState().removeEntity("Invoice", id);
- *       useGraphStore.getState().removeIdFromAllLists("Invoice", id);
+ *       graphStore.getState().removeEntity("Invoice", id);
+ *       graphStore.getState().removeIdFromAllLists("Invoice", id);
  *     },
  *   });
  *

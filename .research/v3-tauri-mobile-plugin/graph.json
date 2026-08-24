@@ -1,0 +1,22 @@
+{
+  "topics": [
+    {"id": "dependency-gate", "name": "Dependency gate", "claims": ["deps-complete", "scope-unblocked"]},
+    {"id": "plugin-boundary", "name": "Tauri plugin boundary", "claims": ["manifest-required", "permissions-required", "mobile-libraries-required"]},
+    {"id": "release-evidence", "name": "Stable release evidence", "claims": ["host-is-not-runtime", "real-command-lanes-required"]}
+  ],
+  "claims": [
+    {"id": "deps-complete", "text": "Both declared prerequisite changes are archived, promoted, and complete.", "confidence": 1.0, "sources": ["local-release-contract", "local-package-contract-evidence"], "contradicts": []},
+    {"id": "scope-unblocked", "text": "OpenSpec task 2 is dependency-ready, but the plugin itself is not release-ready.", "confidence": 1.0, "sources": ["local-release-contract", "local-package-contract-evidence"], "contradicts": []},
+    {"id": "manifest-required", "text": "The plugin build must use tauri-plugin build support to emit its command/permission manifest.", "confidence": 0.98, "sources": ["tauri-store-build", "tauri-store-manifest", "tauri-barcode-build"], "contradicts": []},
+    {"id": "permissions-required", "text": "Every frontend-visible command requires named least-privilege permissions and capability fixtures, including denial.", "confidence": 0.98, "sources": ["tauri-permissions-docs", "tauri-capabilities-docs"], "contradicts": []},
+    {"id": "mobile-libraries-required", "text": "A real mobile plugin contract includes Android and iOS native projects and registration seams.", "confidence": 0.98, "sources": ["tauri-mobile-docs", "tauri-barcode-build", "tauri-barcode-runtime"], "contradicts": []},
+    {"id": "host-is-not-runtime", "text": "Host Cargo compilation and mobile cross-compilation do not prove plugin command execution.", "confidence": 1.0, "sources": ["local-package-contract-evidence", "tauri-mobile-docs"], "contradicts": []},
+    {"id": "real-command-lanes-required", "text": "Stable acceptance needs desktop plus Android and/or iOS lanes that invoke real commands under allow and deny capabilities.", "confidence": 1.0, "sources": ["local-release-contract", "tauri-capabilities-docs", "tauri-mobile-docs"], "contradicts": []}
+  ],
+  "relations": [
+    {"from": "deps-complete", "to": "scope-unblocked", "type": "enables"},
+    {"from": "manifest-required", "to": "permissions-required", "type": "supports"},
+    {"from": "mobile-libraries-required", "to": "real-command-lanes-required", "type": "requires-verification"},
+    {"from": "host-is-not-runtime", "to": "real-command-lanes-required", "type": "motivates"}
+  ]
+}

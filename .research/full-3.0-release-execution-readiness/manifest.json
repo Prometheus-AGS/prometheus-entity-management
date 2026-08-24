@@ -1,0 +1,42 @@
+{
+  "format": "research-package",
+  "format_version": "1.0.0",
+  "okf_type": "research-session",
+  "job_id": "full-3.0-release-execution-readiness",
+  "query": "Primary-source implementation blueprint for shipping and certifying the Prometheus entity-management 3.0 monorepo in 2026",
+  "depth": "exhaustive",
+  "created_at": "2026-08-01T11:26:18Z",
+  "completed_at": "2026-08-01T11:26:18Z",
+  "stages_completed": 10,
+  "sources_count": 26,
+  "claims_count": 16,
+  "confidence": 0.88,
+  "verification_status": "verified",
+  "feynman_grade": 0.91,
+  "feynman_gate_used": true,
+  "misconceptions_absent": 1.0,
+  "contradictions_resolved": 4,
+  "contradictions_unresolved": 0,
+  "surreal_memory_used": false,
+  "sycophancy_correction_used": true,
+  "citation_style": "none",
+  "model_routing": {
+    "planner": "frontier",
+    "search": "frontier",
+    "verify": "frontier",
+    "report": "frontier"
+  },
+  "automation": {
+    "attempted_jobs": [
+      "job-1785583327-41f3d82e",
+      "job-1785583387-42f6851e"
+    ],
+    "result": "Both background workers stalled before stage 1; jobs were cancelled and the ten-stage package was completed manually from primary sources.",
+    "web_retrieval": "Firecrawl-backed web search through the configured web research interface"
+  },
+  "sycophancy_result": {
+    "score": 0.01785714365541935,
+    "correction_mandatory": false,
+    "finding": "One low-severity verbosity flag; no substantive sycophantic pattern."
+  }
+}

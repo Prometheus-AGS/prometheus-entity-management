@@ -1,0 +1,234 @@
+{
+  "schemaVersion": "2",
+  "generatedAt": "2026-08-23T12:46:41.925Z",
+  "candidateSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "candidate": {
+    "revision": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+    "worktreeDirty": true,
+    "artifacts": {
+      "packages/entity-graph-a2a/dist/index.mjs": {
+        "bytes": 41987,
+        "sha256": "573f523b89599e4f3489af7bec1e2764604a9e83f0ee9a1d342782c2a5be9967"
+      },
+      "packages/entity-graph-a2a/dist/index.cjs": {
+        "bytes": 43665,
+        "sha256": "5f6619e6d2d5bfc7f83e95c29196b4fdf0bffd42a1b1a04d23af8279fa0c06da"
+      },
+      "packages/entity-graph-a2a/dist/index.d.ts": {
+        "bytes": 6691,
+        "sha256": "1dec6104fb34941e4dbfb70caf112f8474fd21e0e25ec5fedd709c83b9320e33"
+      },
+      "packages/entity-graph-a2a/dist/index.d.cts": {
+        "bytes": 8395,
+        "sha256": "3122ffc08294204667ca5808c0ab0618acee67d4f60054bd0d9b44cd4967e5f4"
+      }
+    }
+  },
+  "protocolFamily": "1.0",
+  "sdk": "@a2a-js/sdk@1.0.1",
+  "binding": "JSONRPC",
+  "target": "http://127.0.0.1:62042/",
+  "tck": {
+    "repository": "https://github.com/a2aproject/a2a-tck.git",
+    "commit": "5996b79f9cefa6fc390980e383e358a66fb9e49e"
+  },
+  "command": "uv run --project /var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-a2a-tck-NkIwQY/a2a-tck python run_tck.py --sut-host http://127.0.0.1:62042/ --transport jsonrpc -v",
+  "processExitCode": 0,
+  "levels": {
+    "MUST": {
+      "total": 114,
+      "passed": 59,
+      "failed": 0,
+      "skipped": 14,
+      "notTested": 41
+    },
+    "SHOULD": {
+      "total": 11,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "notTested": 6
+    },
+    "MAY": {
+      "total": 4,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "notTested": 1
+    }
+  },
+  "transportLevels": {
+    "jsonrpc": {
+      "MUST": {
+        "total": 114,
+        "passed": 59,
+        "failed": 0,
+        "skipped": 14,
+        "notTested": 41
+      },
+      "SHOULD": {
+        "total": 11,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "notTested": 6
+      },
+      "MAY": {
+        "total": 4,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "notTested": 1
+      }
+    },
+    "agentCard": {
+      "MUST": {
+        "total": 114,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0,
+        "notTested": 109
+      },
+      "SHOULD": {
+        "total": 11,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "notTested": 9
+      },
+      "MAY": {
+        "total": 4,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "notTested": 3
+      }
+    }
+  },
+  "failedApplicableMust": [],
+  "skippedJsonRpc": [
+    {
+      "id": "CORE-CAP-002",
+      "level": "MUST",
+      "status": "inapplicable",
+      "rationale": "The card truthfully enables streaming, so the streaming-disabled negative scenario is inapplicable."
+    },
+    {
+      "id": "CORE-CAP-004",
+      "level": "MUST",
+      "status": "inapplicable",
+      "rationale": "The card declares no required extensions, so the missing-required-extension negative scenario is inapplicable."
+    },
+    {
+      "id": "CARD-EXT-002",
+      "level": "MUST",
+      "status": "inapplicable",
+      "rationale": "The card truthfully disables the extended AgentCard capability."
+    },
+    {
+      "id": "PUSH-CREATE-001",
+      "level": "MUST",
+      "status": "inapplicable",
+      "rationale": "The card truthfully disables push notifications."
+    },
+    {
+      "id": "PUSH-CREATE-002",
+      "level": "MUST",
+      "status": "inapplicable",
+      "rationale": "The card truthfully disables push notifications."
+    },
+    {
+      "id": "PUSH-GET-001",
+      "level": "MUST",
+      "status": "inapplicable",
+      "rationale": "The card truthfully disables push notifications."
+    },
+    {
+      "id": "PUSH-GET-002",
+      "level": "MUST",
+      "status": "inapplicable",
+      "rationale": "The card truthfully disables push notifications."
+    },
+    {
+      "id": "PUSH-LIST-001",
+      "level": "MUST",
+      "status": "inapplicable",
+      "rationale": "The card truthfully disables push notifications."
+    },
+    {
+      "id": "PUSH-DEL-001",
+      "level": "MUST",
+      "status": "inapplicable",
+      "rationale": "The card truthfully disables push notifications."
+    },
+    {
+      "id": "PUSH-DEL-002",
+      "level": "MUST",
+      "status": "inapplicable",
+      "rationale": "The card truthfully disables push notifications."
+    },
+    {
+      "id": "PUSH-DELIVER-001",
+      "level": "MUST",
+      "status": "inapplicable",
+      "rationale": "The card truthfully disables push notifications."
+    },
+    {
+      "id": "PUSH-DELIVER-002",
+      "level": "MUST",
+      "status": "inapplicable",
+      "rationale": "The card truthfully disables push notifications."
+    },
+    {
+      "id": "PUSH-DELIVER-003",
+      "level": "MUST",
+      "status": "inapplicable",
+      "rationale": "The card truthfully disables push notifications."
+    },
+    {
+      "id": "CARD-EXT-001",
+      "level": "MUST",
+      "status": "inapplicable",
+      "rationale": "The card truthfully disables the extended AgentCard capability."
+    }
+  ],
+  "unexplainedSkips": [],
+  "excludedBindings": [
+    "GRPC",
+    "HTTP+JSON"
+  ],
+  "excludedCapabilities": [
+    "push notifications",
+    "extended AgentCard",
+    "signed AgentCard",
+    "REST binding",
+    "gRPC binding"
+  ],
+  "artifacts": {
+    "compatibility.json": {
+      "bytes": 64379,
+      "sha256": "050806825e4caf0117c8064488668e597e748d2099268d67a3123f932e85618e"
+    },
+    "compatibility.html": {
+      "bytes": 139421,
+      "sha256": "1c2dbb469c90b39f4938fc4cb59dae985a10cc8dd24930b0d6dc671217aa39be"
+    },
+    "tck_report.html": {
+      "bytes": 289853,
+      "sha256": "f0e9aea0189d0b10363dc5454501e9b10ec91d9c47fdee3e8fc84ac7bc88c451"
+    },
+    "junitreport.xml": {
+      "bytes": 90911,
+      "sha256": "6f0a6a7756b8eb5c9c48546d8e0963c9394dbe3dd147b7e1c5d4dcb939c1dfa4"
+    },
+    "tck-stdout.txt": {
+      "bytes": 37698,
+      "sha256": "279047abf5ae657d3b9cfbd189e7142401b7c7b6931df4c0dd9ba68743a4dff0"
+    },
+    "tck-stderr.txt": {
+      "bytes": 397,
+      "sha256": "c7b24aaa3c050f297c14b5ba95c54400e0bfdf0884145e1404d8b619252c09a7"
+    }
+  },
+  "compatibilitySha256": "050806825e4caf0117c8064488668e597e748d2099268d67a3123f932e85618e"
+}

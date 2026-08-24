@@ -1,0 +1,233 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-agentic-a2ui-example",
+  "recordedAt": "2026-08-23T12:47:16.194Z",
+  "status": "pass",
+  "evidenceBoundary": {
+    "kind": "source-workspace-production-browser",
+    "countsAsPackedPackageEvidence": false,
+    "packageCertificationOwnedBy": "v3-package-module-contracts"
+  },
+  "versions": {
+    "node": "v24.15.0",
+    "pnpm": "10.33.0",
+    "react": "19.2.8",
+    "a2aSdk": "1.0.1",
+    "playwright": "1.62.1",
+    "typescript": "6.0.2",
+    "packageCandidate": "3.0.0-rc.1"
+  },
+  "commands": [
+    {
+      "label": "agentic-typecheck",
+      "command": "pnpm --filter prometheus-entity-management-agentic-a2ui typecheck",
+      "startedAt": "2026-08-23T12:46:56.788Z",
+      "completedAt": "2026-08-23T12:46:57.785Z",
+      "exitCode": 0
+    },
+    {
+      "label": "golden-protocol-replay",
+      "command": "pnpm --filter prometheus-entity-management-agentic-a2ui run test:golden",
+      "startedAt": "2026-08-23T12:46:57.785Z",
+      "completedAt": "2026-08-23T12:46:58.566Z",
+      "exitCode": 0
+    },
+    {
+      "label": "core-package-build",
+      "command": "pnpm --filter @prometheus-ags/entity-graph-core build",
+      "startedAt": "2026-08-23T12:46:58.566Z",
+      "completedAt": "2026-08-23T12:47:00.350Z",
+      "exitCode": 0
+    },
+    {
+      "label": "react-package-build",
+      "command": "pnpm --filter @prometheus-ags/prometheus-entity-management build",
+      "startedAt": "2026-08-23T12:47:00.351Z",
+      "completedAt": "2026-08-23T12:47:02.920Z",
+      "exitCode": 0
+    },
+    {
+      "label": "a2ui-package-build",
+      "command": "pnpm --filter @prometheus-ags/a2ui-react build",
+      "startedAt": "2026-08-23T12:47:02.920Z",
+      "completedAt": "2026-08-23T12:47:04.872Z",
+      "exitCode": 0
+    },
+    {
+      "label": "a2a-package-build",
+      "command": "pnpm --filter @prometheus-ags/entity-graph-a2a build",
+      "startedAt": "2026-08-23T12:47:04.872Z",
+      "completedAt": "2026-08-23T12:47:06.432Z",
+      "exitCode": 0
+    },
+    {
+      "label": "agentic-production-build",
+      "command": "pnpm --filter prometheus-entity-management-agentic-a2ui build",
+      "startedAt": "2026-08-23T12:47:06.432Z",
+      "completedAt": "2026-08-23T12:47:07.791Z",
+      "exitCode": 0
+    },
+    {
+      "label": "agentic-production-browser",
+      "command": "pnpm exec playwright test --config tests/browser/v3-agentic-a2ui-example.playwright.config.ts",
+      "startedAt": "2026-08-23T12:47:07.791Z",
+      "completedAt": "2026-08-23T12:47:16.192Z",
+      "exitCode": 0
+    }
+  ],
+  "protocol": {
+    "status": "pass",
+    "keyless": true,
+    "modelCredentialRequired": false,
+    "goldenFixtures": [
+      "happy",
+      "denied",
+      "malformed",
+      "cancelled",
+      "surface-task-sync",
+      "tenant-denied"
+    ],
+    "happyFinalState": "TASK_STATE_COMPLETED",
+    "deniedFinalState": "TASK_STATE_REJECTED",
+    "malformedRejected": true,
+    "cancelledFinalState": "TASK_STATE_CANCELED",
+    "tenantMismatchStatus": 403
+  },
+  "production": {
+    "typecheck": "pass",
+    "build": "pass",
+    "app": "examples/agentic-a2ui"
+  },
+  "browser": {
+    "status": "pass",
+    "project": "chromium-desktop",
+    "expectedTests": 4,
+    "unexpectedTests": 0,
+    "declaredScenarioIds": [
+      "example.graph.normalized-cross-view",
+      "example.crud.optimistic-confirm",
+      "example.realtime.coalesced-cross-view",
+      "example.protocol.a2a-a2ui-policy",
+      "example.runtime.lifecycle-security"
+    ],
+    "scenarios": {
+      "example.graph.normalized-cross-view": {
+        "status": "pass",
+        "proof": {
+          "canonicalCopies": 1,
+          "listEntriesAreIds": true,
+          "taskSchemaStatus": "done",
+          "a2aStates": [
+            "TASK_STATE_SUBMITTED",
+            "TASK_STATE_WORKING",
+            "artifact",
+            "TASK_STATE_COMPLETED"
+          ]
+        }
+      },
+      "example.protocol.a2a-a2ui-policy": {
+        "status": "pass",
+        "proof": {
+          "a2aFinalState": "completed",
+          "surfaceId": "surface-task-sync",
+          "approvedMutation": "task.update",
+          "deniedMutation": "task.delete",
+          "malformedRejected": true,
+          "modelKeyRequired": false,
+          "approvalRequiredForDestructive": true
+        }
+      },
+      "example.runtime.lifecycle-security": {
+        "status": "pass",
+        "proof": {
+          "tenantMismatchRejected": true,
+          "destructiveRequiresApproval": true,
+          "secretFindings": 0,
+          "cancelledState": "TASK_STATE_CANCELED",
+          "malformedRejected": true
+        }
+      },
+      "example.crud.optimistic-confirm": {
+        "status": "pass",
+        "proof": {
+          "duringPatch": "done",
+          "afterConfirm": "done",
+          "patchCleared": true
+        }
+      },
+      "example.realtime.coalesced-cross-view": {
+        "status": "pass",
+        "proof": {
+          "queuedEvents": 3,
+          "coalescedEntities": 2,
+          "flushWindows": 1,
+          "listStatus": "in-progress"
+        }
+      }
+    },
+    "accessibility": {
+      "status": "pass",
+      "serious": 0,
+      "critical": 0
+    },
+    "actionCatalogBypassed": false
+  },
+  "artifacts": [
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-happy-cross-view.png",
+      "sha256": "1937855b91fd3e6c14a07a5bc01c6353ebf82f5e828e60291bc593b6c91a6457"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-a2ui-policy.png",
+      "sha256": "2511a6bb6a5848c1ad09b5fedf6c161b19f8ffc9ee23bc2a230f3264f15621b7"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-denied-malformed-cancel.png",
+      "sha256": "d6b4c804c9d40aa69926475be9de1898b9a229175ddfc9a7c952de8538ec5965"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-tenant-realtime-lifecycle.png",
+      "sha256": "1f597e7811c03d9b37e8c13a3384aee68f3ceeb38ad22700fd7c6da8cb5dc9fa"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/playwright-artifacts/v3-agentic-a2ui-example-A2-cd1cf-s-cross-the-policy-boundary-chromium-desktop/trace.zip",
+      "sha256": "3148c6e62f1744055adee6e8f004240736e255239ff5773df365acd3eee7fdfe"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/playwright-artifacts/v3-agentic-a2ui-example-de-219ba--protocol-flows-are-visible-chromium-desktop/trace.zip",
+      "sha256": "4727d9ee4ac9a4378cab45f1f10e4c842f4336ccee3c5b99edeeec6b74fa3b89"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/playwright-artifacts/v3-agentic-a2ui-example-ha-8531a-tates-every-normalized-view-chromium-desktop/trace.zip",
+      "sha256": "4f20da8cd9187bd2fb07b0cca197358364f626daacfa7e4bb8b0f05ab9421529"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/playwright-artifacts/v3-agentic-a2ui-example-te-fe858-me-coalescing-and-lifecycle-chromium-desktop/trace.zip",
+      "sha256": "95d2f2b37ec72a6edfa554998067bd341648a16bde6d8840a931e3e54d7c5788"
+    },
+    {
+      "path": "examples/agentic-a2ui/tests/golden/cancelled.json",
+      "sha256": "e4f28a3a9533ae92c8ff2e6e7e9927cb775f2f7fd78192b73cdef2de6b50195d"
+    },
+    {
+      "path": "examples/agentic-a2ui/tests/golden/denied.json",
+      "sha256": "8ac3b9de3329cbd9c3fcec1af2aa44bc939336c52274667530ebd871a697821c"
+    },
+    {
+      "path": "examples/agentic-a2ui/tests/golden/happy.json",
+      "sha256": "c41bd576e2b9588fb11ca9fd8e996336b25c1ed22fc12f605955f71220858663"
+    },
+    {
+      "path": "examples/agentic-a2ui/tests/golden/malformed.json",
+      "sha256": "4b7faf0e716393a58a92fed244cfec744cd0c335cd0f51489983ee8fd627ecaf"
+    },
+    {
+      "path": "examples/agentic-a2ui/tests/golden/surface-task-sync.json",
+      "sha256": "4fd9cbbf27d9931b496e5a6497f1e19727ef27ff27b7aeb3ee4366d0fd2fadd6"
+    },
+    {
+      "path": "examples/agentic-a2ui/tests/golden/tenant-denied.json",
+      "sha256": "882c445988743af74b8c5d31cf7da7d4b0771460ae0ec9128309584721d415c7"
+    }
+  ]
+}

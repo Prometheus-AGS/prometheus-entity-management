@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-tauri-universal-example",
+  "status": "pass",
+  "recordedAt": "2026-08-04T04:56:00Z",
+  "sourceBase": "76b68d792215cdc4b901ef665b1283ff4d23e6cd",
+  "browser": {
+    "status": "pass",
+    "flows": 5,
+    "seriousAccessibilityFindings": 0,
+    "criticalAccessibilityFindings": 0,
+    "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-browser-evidence.json"
+  },
+  "desktop": {
+    "runtime": "pass",
+    "offlineRestart": "pass",
+    "capabilityDenial": "pass",
+    "platform": "macOS",
+    "bundle": "Prometheus Entity Graph.app",
+    "executableSha256": "67b74080bd312206fddc11a96fc3474ec87c14b64e217324b4eea8505dc2f982"
+  },
+  "android": {
+    "runtime": "pass",
+    "capabilityDenial": "pass",
+    "platform": "Android 16 API 36 arm64 Pixel_9_Pro_XL emulator",
+    "package": "com.prometheusags.entitygraph.universal",
+    "version": "0.0.1",
+    "minSdk": 24,
+    "targetSdk": 36,
+    "apkSha256": "aa11fccfa33401c17f6df9afceaffaf15bb74c0a416eed25b5897a05af4e1376"
+  },
+  "ios": {
+    "runtime": "pass",
+    "platform": "iPhone 17 iOS 26.5 arm64 simulator",
+    "bundleIdentifier": "com.prometheusags.entitygraph.universal",
+    "version": "0.0.1",
+    "signing": "not-applicable-simulator-no-sign",
+    "executableSha256": "34bdc49878fb68b2fbfe7404e6f4425699a6903530791d605f92f8b1de665aa6"
+  },
+  "retainedArtifacts": [
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-browser-desktop-graph.png",
+      "sha256": "621f9bef17c74cd62ff8d816274ada7adca2f87227fe251c76ec8aab2f89c7ee"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-browser-relationship-invalidation.png",
+      "sha256": "0c4ac8b7a28c022b7343d2e416dc2d0a8f0ac911f959d6dd41a67c0e41d29214"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-browser-realtime-coalescing.png",
+      "sha256": "de6aebd30eb9f608cfdda04ef025f7c22ff0fc9c7953a402065ff97370fb9689"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-browser-offline-restart.png",
+      "sha256": "cc022885bdf491bbe9fdf0b812d48f90b8eca7b993c89e24407eaee0c56bffc0"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-browser-mobile-responsive.png",
+      "sha256": "3a3bca908bee16e88ae4ac0f09baddc71cf54a5bf6fa9678cba48d36ab91d439"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-macos-runtime.png",
+      "sha256": "c3e54f26e325142d4fdd34a4487f64a604c12c86e410df70be087522da181df9"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-macos-capability-denial.png",
+      "sha256": "da19e70aef9364cf4e671f156af70d49adf1a95c1a1c891cac0cf61e8d530b97"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-macos-offline-queued.png",
+      "sha256": "ff11312b9a80b8036bbcb003a03b367f1e3f8c855f56f580277acd4b64b5b085"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-macos-offline-restored.png",
+      "sha256": "7dd9e8fd12eecff5284096da8613f26473f57a95fa81f3a39802af9ec7e30450"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-macos-reconnected.png",
+      "sha256": "8ef016142083b2b0f12999d16ad825fe2de0b3e6650e6f0ea026358cd15a67d1"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-android-runtime.png",
+      "sha256": "6099b3e1aee395305fedb688f6a70daf7fe8f78ef11cd95a2885a8261f00ca48"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-android-capability-denial.png",
+      "sha256": "56c59c80a2882af56f43134d4c61d3d632783b45debfae2151caa665339b3388"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-ios-runtime.png",
+      "sha256": "ce9b15c1d17d2d817f76fc76760e12acb78af60c5f9e53e5044bbf5ee6c60463"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-playwright-artifacts/v3-tauri-universal-example-020f7-s-when-a-task-is-reassigned-chromium-desktop-responsive/trace.zip",
+      "sha256": "41ca0ac4ef4dda7be7c4557755cdd34a75d83899e19b1d1c779e4412fff6b8af"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-playwright-artifacts/v3-tauri-universal-example-8ff59-ious-accessibility-findings-chromium-desktop-responsive/trace.zip",
+      "sha256": "91179a71f8929965bea7d98b78c599eb1574145806591baaf985f13adc5294af"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-playwright-artifacts/v3-tauri-universal-example-98353-rough-list-and-detail-views-chromium-desktop-responsive/trace.zip",
+      "sha256": "4051a228ac40a358464a27bb7cb88156761ef4e78fc33d52c7f2985e283e65ca"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-playwright-artifacts/v3-tauri-universal-example-9ff67-d-converges-after-reconnect-chromium-desktop-responsive/trace.zip",
+      "sha256": "d4174c54f328059d1f8582f4d4031185cff5bf6d723468721f388e77c2150ce8"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-5-playwright-artifacts/v3-tauri-universal-example-add28--one-cross-view-graph-write-chromium-desktop-responsive/trace.zip",
+      "sha256": "7d13ce3adef5f024d2ebae8268d7638676a56cba2d25817ee11f92404d5646e9"
+    }
+  ],
+  "limits": [
+    "Windows and Linux desktop bundles were not executed in this task.",
+    "Android evidence comes from an API 36 emulator, not a physical device.",
+    "iOS evidence comes from an unsigned simulator archive, not a physical device or signed distribution.",
+    "App-store signing and publication are not claimed.",
+    "The independently frozen React 3.0.0-rc.1 source and npm tags are unchanged."
+  ]
+}

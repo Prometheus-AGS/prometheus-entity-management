@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-tauri-universal-example.mjs",
+      "line": 251,
+      "claim": "The universal Tauri verifier requires a desktop icon file that is not added or listed in the reviewed source tree, so a clean checkout cannot pass `pnpm run verify:tauri-universal`.",
+      "evidence": "The verifier's `requiredPlatformFiles` includes `${APP_ROOT}/src-tauri/icons/icon.png`, but the diff adds no `examples/tauri-universal/src-tauri/icons/icon.png` file and the packet file_tree has no `examples/tauri-universal/src-tauri/icons/` entry; acceptance requires reproducible evidence and the constraints require focused verifier/tests to pass.",
+      "suggested_fix": "Add and track `examples/tauri-universal/src-tauri/icons/icon.png` (and any other generated icons required by Tauri), or remove/replace the verifier requirement with the actual tracked icon contract."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

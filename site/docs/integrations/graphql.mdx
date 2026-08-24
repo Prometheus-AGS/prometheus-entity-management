@@ -1,0 +1,92 @@
+---
+title: "Integration: GraphQL"
+description: Queries, mutations, and subscriptions over one normalized graph — descriptors for reads, the subscription adapter for live data.
+---
+
+# Integration: GraphQL
+
+GraphQL support has two halves: **descriptor-driven reads** (covered in
+[GraphQL and REST](/docs/guides/concepts/graphql-and-rest)) and **live
+subscriptions** through the core subscription adapter.
+
+## Setup
+
+```bash
+pnpm add @prometheus-ags/prometheus-entity-management
+```
+
+## Queries and mutations
+
+`useGQLEntity` / `useGQLList` normalize responses through descriptors;
+`useGQLMutation` writes through the same graph mutation paths as REST CRUD,
+so cascade invalidation applies unchanged.
+
+## Live subscriptions
+
+`createGraphQLSubscriptionAdapter` bridges a `graphql-ws`-style client into
+the RealtimeManager:
+
+```ts
+import {
+  RealtimeManager,
+  createGraphQLSubscriptionAdapter,
+} from "@prometheus-ags/entity-graph-core";
+
+interface TaskNode extends Record<string, unknown> {
+  id: string;
+  title: string;
+}
+
+interface SubscriptionData {
+  taskChanged: { type?: string; node?: TaskNode; id?: string };
+}
+
+interface GQLWsClient {
+  subscribe<T>(
+    payload: { query: string; variables?: Record<string, unknown> },
+    sink: {
+      next: (value: { data: T }) => void;
+      error: (err: unknown) => void;
+      complete: () => void;
+    },
+  ): () => void;
+}
+
+declare const wsClient: GQLWsClient;
+declare const taskChangedDocument: string;
+
+const adapter = createGraphQLSubscriptionAdapter<SubscriptionData>({
+  client: wsClient,
+  subscriptions: [
+    {
+      type: "task",
+      document: taskChangedDocument,
+      getPayload: (data) => data.taskChanged,
+    },
+  ],
+  extractId: (node) => String(node.id),
+});
+
+const manager = new RealtimeManager();
+manager.register(adapter, [{ type: "task" }]);
+```
+
+Payloads shaped `{ type: "deleted", id }` delete; anything else upserts the
+node through `extractId`/`normalize`.
+
+## Deterministic demo mode vs. live credentials
+
+- **Demo:** the vite example's REST/GraphQL equivalence scenario
+  (`example.transport.rest-graphql-equivalence`) runs against in-process
+  fixtures — keyless and CI-safe.
+- **Live:** authenticate the WebSocket connection at connect time
+  (`connectionParams` computed per connect, not captured at bootstrap). The
+  `GQLClient` computes headers per request for the same reason.
+
+## Troubleshooting
+
+- **Subscription data not merging:** the node must carry the same ID your
+  query descriptors produce — mixed ID derivation is the split-brain failure
+  from [Failure modes](/docs/guides/practices/failure-modes).
+- **Duplicate updates:** one subscription per type; registering the same
+  subscription under two types double-writes the graph.

@@ -1,0 +1,21 @@
+{
+  "reflection": {
+    "iteration": 1,
+    "max_iterations": 5,
+    "delta": "Cycle 3 was not archive-ready: the fresh judge found that the packed verifier replaced the checked-in Next config and that the scoped realtime manager remained bound to its initial provider store. Cycle 4 preserves and validates the real config, records its hash, memoizes the manager by store and flush interval, unregisters prior adapters on manager replacement, and adds a runtime provider-replacement regression.",
+    "constraint_evaluation": [
+      {"constraint_id": "acceptance-direct-evidence", "status": "satisfied", "notes": "The latest critical and warning each map to corrected source plus structural and runtime regressions."},
+      {"constraint_id": "packed-consumer-boundary", "status": "satisfied", "notes": "The exact command preserves the checked-in config byte for byte, rejects workspace aliases, records hash 49ebd9f8..., and passes from candidate tarballs."},
+      {"constraint_id": "ssr-hydration-runtime", "status": "satisfied", "notes": "Provider replacement writes only to the new graph and the page unregisters the prior adapter; lifecycle, 12 request graphs, hydration, mutation, realtime, transition, and reload checks pass."},
+      {"constraint_id": "visual-accessibility-integrity", "status": "satisfied", "notes": "The regenerated screenshot and both traces match current hashes; serious and critical axe counts are zero."},
+      {"constraint_id": "ledgers-synchronized", "status": "satisfied", "notes": "The report says task 5 and records the config hash; coverage, 203 React exports, docs, OpenSpec, Changesets, lockfile, and evidence agree."},
+      {"constraint_id": "limits-and-release-lanes-explicit", "status": "satisfied", "notes": "Browser/rendering/live/platform exclusions and frozen React rc.1 separation remain explicit."},
+      {"constraint_id": "security-boundary-fail-closed", "status": "satisfied", "notes": "Server Action input remains allowlisted and resolved from server-owned data; denial and production audit gates pass."},
+      {"constraint_id": "no-publication-overclaim", "status": "satisfied", "notes": "The bundle certifies bounded Next implementation readiness and preserves fixed-group/protected staging policy."}
+    ],
+    "deterministic_validation": "Both latest findings are corrected; the exact verifier passes 10/10 commands, 16/16 focused runtime tests, 8/8 structural tests, 12/12 request graphs, 2/2 browser tests, 3/3 visual artifacts, 203 exports, 13/13 semantic scenarios, 14/14 coverage regressions, strict OpenSpec, release contract, Changesets, frozen install, security, and evidence predicates.",
+    "target_alignment": "The corrected Next.js implementation can return to a complete isolated review without entering the frozen React rc.1 source or claiming full release completion.",
+    "regression_check": "The verifier certifies the checked-in config rather than a substitute, the runtime test proves provider rebinding, the caller effect owns adapter cleanup, and a fresh packed production/browser run certifies the changed bytes. No evidence was removed or severity downgraded.",
+    "convergence": {"decision": "terminate", "reason": "The latest critical, warning, and all eight blocking constraints now have direct current evidence.", "next_focus": "Rebuild the complete isolated diff packet and archive only on a non-blocking verdict."}
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "stage": "plan",
+  "completedAt": "2026-08-01T11:15:41Z",
+  "outputs": [
+    "plan.md"
+  ],
+  "nextStage": "execute",
+  "summaryForNext": "28 changes across 10 dependency rounds; package correctness and release contracts lead, followed by five examples, Flutter/Tauri/A2UI, skills, a full Prometheus Docusaurus/Pages product, certification, and manual stable publication. Adversarial review passed with 0 critical, 3 warnings, and 1 suggestion; all three dependency warnings were corrected before OpenSpec emission. First change: v3-release-contract.",
+  "skipped": false,
+  "skipReason": null
+}

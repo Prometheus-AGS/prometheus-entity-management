@@ -1,78 +1,83 @@
 /**
- * @prometheus-ags/a2ui-react
+ * Official A2UI v0.9.1 React rendering and Prometheus entity-graph policy bridge.
  *
- * A2UI React component library — agentic UI components backed by the
- * Prometheus entity graph. Components project AG-UI agent state directly into
- * the entity graph so every view in the app reacts to agent changes.
- *
- * Exports:
- *
- * Components:
- *   EntityChat           — full chat surface with streaming, tool calls, entity projection
- *   EntityCopilot        — compact embedded copilot panel
- *   EntityStream         — raw streaming text renderer with entity projection
- *   EntityDiff           — field-level before/after diff table (reuses time-travel)
- *   EntityApproval       — human-in-the-loop approval gate with auto restore on reject
- *   EntityToolProviderContext — React context provider for MCP / tool execution
- *
- * Hooks:
- *   useChatSession       — core chat session management (drives Chat + Copilot)
- *   useEntityDiff        — imperative diff computation reusing time-travel snapshots
- *   useEntityToolProvider — read the nearest EntityToolProvider from context
- *
- * Types:
- *   ChatMessage, MessageRole, ToolCall, ToolDefinition, ToolCallRequest, ToolCallResult
- *   EntityToolProvider, StreamEvent, StreamEventType, ChatSession, SendMessageFn
- *   FieldDiff, DiffOperation, EntityDiffResult, ApprovalRequest, ApprovalStatus
- *   AgUiStateMapping, ApplyAgUiOptions
+ * AG-UI chat/state compatibility APIs intentionally live at
+ * `@prometheus-ags/a2ui-react/ag-ui`; AG-UI transport and A2UI rendering are
+ * separate protocol layers.
  */
 
-// ── Components ────────────────────────────────────────────────────────────────
-export { EntityChat } from "./entity-chat.js";
-export type { EntityChatProps, EntityChatClassNames } from "./entity-chat.js";
-
-export { EntityCopilot } from "./entity-copilot.js";
-export type { EntityCopilotProps } from "./entity-copilot.js";
-
-export { EntityStream } from "./entity-stream.js";
-export type { EntityStreamProps } from "./entity-stream.js";
-
-export { EntityDiff } from "./entity-diff.js";
-export type { EntityDiffProps, EntityDiffClassNames } from "./entity-diff.js";
-
-export { EntityApproval } from "./entity-approval.js";
-export type { EntityApprovalProps } from "./entity-approval.js";
-
-export { EntityToolProviderContext } from "./entity-tool-provider.js";
-export type { EntityToolProviderProps } from "./entity-tool-provider.js";
-
-// ── Hooks ─────────────────────────────────────────────────────────────────────
-export { useChatSession } from "./use-chat-session.js";
-export type { UseChatSessionOptions, UseChatSessionReturn } from "./use-chat-session.js";
-
-export { useEntityDiff } from "./use-entity-diff.js";
-export type { UseEntityDiffOptions, UseEntityDiffReturn } from "./use-entity-diff.js";
-
-export { useEntityToolProvider } from "./entity-tool-provider.js";
-
-// ── Types ─────────────────────────────────────────────────────────────────────
+export {
+  PROMETHEUS_A2UI_CATALOG_ID,
+  PROMETHEUS_A2UI_PROTOCOL_VERSION,
+  DEFAULT_PROMETHEUS_A2UI_COMPONENTS,
+  DEFAULT_PROMETHEUS_A2UI_FUNCTIONS,
+  createPrometheusA2uiCatalog,
+} from "./official/catalog.js";
 export type {
-  MessageRole,
-  ChatMessage,
-  ToolCall,
-  ToolDefinition,
-  ToolCallRequest,
-  ToolCallResult,
-  EntityToolProvider,
-  StreamEvent,
-  StreamEventType,
-  ChatSession,
-  SendMessageFn,
-  FieldDiff,
-  DiffOperation,
-  EntityDiffResult,
-  ApprovalRequest,
-  ApprovalStatus,
-  AgUiStateMapping,
-  ApplyAgUiOptions,
-} from "./types.js";
+  PrometheusA2uiCatalogOptions,
+  PrometheusA2uiComponentName,
+  PrometheusA2uiFunctionName,
+} from "./official/catalog.js";
+
+export {
+  PrometheusA2uiError,
+  PrometheusA2uiRuntime,
+  createPrometheusA2uiRuntime,
+} from "./official/runtime.js";
+export type { PrometheusA2uiComponentImplementation } from "./official/types.js";
+export type {
+  CreatePrometheusA2uiRuntimeOptions,
+  PrometheusA2uiErrorCode,
+  PrometheusA2uiMessageInput,
+} from "./official/runtime.js";
+
+export {
+  createA2uiActionPolicy,
+  createDenyAllA2uiActionPolicy,
+} from "./policy/action-policy.js";
+export type {
+  A2uiActionDecision,
+  A2uiActionDeniedCode,
+  A2uiActionPolicy,
+  A2uiActionPolicyOptions,
+  A2uiActionRule,
+  A2uiApprovalRequest,
+  A2uiAuthorizationDecision,
+} from "./policy/action-policy.js";
+
+export {
+  ENTITY_GRAPH_A2UI_ACTIONS,
+  createEntityGraphA2uiActionPolicy,
+} from "./policy/entity-graph-policy.js";
+export type {
+  CreateEntityGraphA2uiActionPolicyOptions,
+  EntityGraphA2uiActionName,
+  EntityGraphA2uiAuthorizationContext,
+  EntityGraphA2uiEntityPolicy,
+} from "./policy/entity-graph-policy.js";
+
+export {
+  PrometheusA2uiProvider,
+  PrometheusA2uiSurface,
+  PrometheusA2uiSurfaces,
+  usePrometheusA2ui,
+  usePrometheusA2uiRuntime,
+  usePrometheusA2uiSurfaces,
+} from "./react/a2ui-provider.js";
+export type {
+  PrometheusA2uiProviderProps,
+  PrometheusA2uiSurfaceProps,
+  PrometheusA2uiSurfacesProps,
+  UsePrometheusA2uiResult,
+} from "./react/a2ui-provider.js";
+
+// Selected official types are re-exported for consumers without claiming
+// ownership of the A2UI protocol/runtime.
+export type {
+  A2uiClientAction,
+  A2uiClientCapabilities,
+  A2uiClientDataModel,
+  A2uiMessage,
+  Catalog,
+  SurfaceModel,
+} from "@a2ui/web_core/v0_9" with { "resolution-mode": "import" };

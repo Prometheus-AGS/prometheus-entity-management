@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-flint-portable-contracts.mjs",
+      "line": 342,
+      "claim": "The machine-specific path verifier still misses Windows drive-root Flint paths written with forward slashes.",
+      "evidence": "The acceptance evidence requires cross-platform absolute Flint-root rejection, but `findMachineSpecificPath` only matches Windows drive roots with backslashes via `/[A-Za-z]:\\\\(?:[^\\\\\\s\"'`]+\\\\)*?(?:flint-realtime-fabric|flint-gate|flint-forge)(?:\\\\|$)/i`; the added regression in `tests/release/v3-flint-portable-contracts.test.mjs` covers `D:\\\\checkouts\\\\flint-gate...` but not common config forms such as `D:/checkouts/flint-gate/src/index.ts`.",
+      "suggested_fix": "Match both separators for Windows drive-root Flint paths, e.g. use `[\\\\/]` throughout the drive-root pattern, and add a `D:/checkouts/flint-gate/...` regression."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-flint-portable-contracts.mjs",
+      "line": 158,
+      "claim": "The JWT value scanner can miss valid JWT-shaped service-role tokens whose signature segment ends with a base64url non-word character.",
+      "evidence": "`containsServiceRoleJwt` extracts candidates with `/\\beyJ[A-Za-z0-9_-]*\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\b/g`; because the trailing `\\b` only succeeds after a word character, a JWT whose final signature character is `-` is not matched even though `-` is allowed by the `[A-Za-z0-9_-]` base64url character set and the acceptance criterion requires rejecting service-role JWT values.",
+      "suggested_fix": "Replace the trailing word-boundary with explicit delimiter lookarounds such as `(?<![A-Za-z0-9_-])([A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]*)(?![A-Za-z0-9_-])`, then decode candidates and add a regression with a service-role JWT ending in `-`."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

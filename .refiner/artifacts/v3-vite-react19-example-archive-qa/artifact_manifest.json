@@ -1,0 +1,16 @@
+{
+  "artifact_type": "content",
+  "variants": [
+    {"name": "archive-qa-report", "file": "dist/archive-qa-report.md", "format": "markdown", "description": "Constraint-by-constraint React change QA disposition."},
+    {"name": "validation", "file": "dist/validation.json", "format": "json", "description": "Machine-readable deterministic QA results and scope boundary."}
+  ],
+  "preview": {"required": false, "runs": []},
+  "validation": {
+    "preview_status": "pass",
+    "has_console_errors": false,
+    "has_request_failures": false,
+    "notes": ["Direct content QA artifact; no additional browser preview is required.", "The retained implementation and clean-room browser evidence already provides visual and accessibility proof."]
+  },
+  "sizes": [],
+  "generated_at": "2026-08-03T07:45:47Z"
+}

@@ -1,0 +1,22 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "codex-gpt-5",
+  "isolation_mode": "harness-native:fresh-context",
+  "producer_model": "gpt-5",
+  "cross_model_check": "unverified-same-harness-family",
+  "findings": [],
+  "checked_classes": [
+    "Spec violations \u2014 prerequisite completion, documentation and deployment surfaces, targeted gates, evidence, release impact, and unresolved deployment and registry limits were checked without finding a concrete violation.",
+    "Correctness \u2014 workflow gating, base-path routing, search state flow, generated API and evidence pipelines, native artifact parity, containment helpers, and local request handling were checked without finding a concrete defect.",
+    "Regressions \u2014 runtime changes are documentation-comment-only, README parity is generated from authoritative inventories, and protected npm tags and publication behavior remain unchanged.",
+    "Security \u2014 Pages permissions are least-privilege, actions are commit-pinned, npm staging is stage-only OIDC, evidence is hash and receipt bound, and filesystem and request boundaries reject traversal and symlink escape.",
+    "Constraint breaches \u2014 the diff preserves pnpm-only operation and the component-to-hook-to-store-to-service search layering.",
+    "Silent failure \u2014 search loading failures surface an unavailable state, HTTP resolution failures return explicit errors, generators and verifiers fail closed, and public deployment and npm registration limits remain recorded."
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

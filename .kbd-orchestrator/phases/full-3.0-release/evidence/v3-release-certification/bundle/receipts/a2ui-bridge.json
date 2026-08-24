@@ -1,0 +1,13 @@
+{
+  "lane": "a2ui-bridge",
+  "category": "protocol-bridges",
+  "mandatory": true,
+  "command": "pnpm run verify:a2ui-bridge",
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:32:27.633Z",
+  "durationMs": 21130,
+  "exitCode": 0,
+  "logFile": "logs/a2ui-bridge.log",
+  "logSha256": "77e12003f0f88fc38e84042bcd79e2c9a72278e9173759f930c2dab491f3adcb",
+  "logBytes": 3121
+}

@@ -1,0 +1,82 @@
+name: Flutter example platform smoke
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: flutter-example-platform-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  android-smoke:
+    name: Android emulator smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.44.8"
+          channel: stable
+          cache: true
+
+      - name: Resolve the frozen Flutter workspace
+        working-directory: examples/flutter-riverpod
+        run: flutter pub get
+
+      - name: Run the Android integration smoke test
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          script: >-
+            cd examples/flutter-riverpod &&
+            flutter test
+            integration_test/mobile_smoke_test.dart
+            -d emulator-5554
+
+  ios-smoke:
+    name: iOS simulator smoke
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.44.8"
+          channel: stable
+          cache: true
+
+      - name: Resolve the frozen Flutter workspace
+        working-directory: examples/flutter-riverpod
+        run: flutter pub get
+
+      - name: Boot an available iPhone simulator
+        id: simulator
+        shell: bash
+        run: |
+          device_id=$(xcrun simctl list devices available -j | \
+            jq -r '[.devices[][] | select(.name | startswith("iPhone"))][0].udid')
+          test -n "$device_id"
+          xcrun simctl boot "$device_id" 2>/dev/null || true
+          xcrun simctl bootstatus "$device_id" -b
+          echo "device_id=$device_id" >> "$GITHUB_OUTPUT"
+
+      - name: Run the iOS integration smoke test
+        working-directory: examples/flutter-riverpod
+        run: >-
+          flutter test
+          integration_test/mobile_smoke_test.dart
+          -d "${{ steps.simulator.outputs.device_id }}"

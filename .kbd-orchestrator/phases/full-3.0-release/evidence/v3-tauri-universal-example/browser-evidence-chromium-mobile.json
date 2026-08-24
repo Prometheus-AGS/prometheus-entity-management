@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-tauri-universal-example",
+  "project": "chromium-mobile",
+  "recordedAt": "2026-08-23T12:54:58.403Z",
+  "status": "pass",
+  "evidenceKind": "source-workspace-production-browser",
+  "countsAsPackedPackageEvidence": false,
+  "note": "Browser-rendered frontend evidence at desktop and mobile viewports; native desktop/iOS/Android receipts are separate artifacts in this directory.",
+  "expectedScenarioIds": [
+    "example.graph.normalized-cross-view",
+    "example.crud.optimistic-confirm",
+    "example.relationship.cascade-invalidation",
+    "example.realtime.coalesced-cross-view",
+    "example.offline.persistence-convergence",
+    "example.platform.adapter-boundary",
+    "example.runtime.lifecycle-security"
+  ],
+  "scenarios": {
+    "example.graph.normalized-cross-view": {
+      "status": "pass",
+      "proof": {
+        "project": "chromium-mobile",
+        "canonicalCopies": 1,
+        "views": [
+          "task-list",
+          "task-detail",
+          "document-title"
+        ]
+      }
+    },
+    "example.crud.optimistic-confirm": {
+      "status": "pass",
+      "proof": {
+        "project": "chromium-mobile",
+        "mutation": "task-offline todo → in-progress",
+        "rolledBack": false
+      }
+    },
+    "example.relationship.cascade-invalidation": {
+      "status": "pass",
+      "proof": {
+        "project": "chromium-mobile",
+        "filter": "project-beacon",
+        "visibleTasks": 1
+      }
+    },
+    "example.realtime.coalesced-cross-view": {
+      "status": "pass",
+      "proof": {
+        "project": "chromium-mobile",
+        "ticks": 2,
+        "flushWindowMs": 16,
+        "viewsUpdated": [
+          "task-list",
+          "task-detail"
+        ]
+      }
+    },
+    "example.offline.persistence-convergence": {
+      "status": "pass",
+      "proof": {
+        "project": "chromium-mobile",
+        "lane": "web localStorage behind the same bridge contract; native lane uses SQLite via the SQL plugin",
+        "tasksAfterRestart": 3
+      }
+    },
+    "example.platform.adapter-boundary": {
+      "status": "pass",
+      "proof": {
+        "project": "chromium-mobile",
+        "lane": "web",
+        "nativeDenialProof": "src-tauri MockRuntime suite (denied webview fails closed)"
+      }
+    },
+    "example.runtime.lifecycle-security": {
+      "status": "pass",
+      "proof": {
+        "project": "chromium-mobile",
+        "lifecycleResumesObserved": true,
+        "axeSerious": 0,
+        "axeCritical": 0
+      }
+    }
+  },
+  "accessibility": {
+    "status": "pass",
+    "serious": 0,
+    "critical": 0
+  },
+  "consoleErrors": [],
+  "artifacts": {
+    "screenshots": [
+      "browser-board-chromium-mobile.png",
+      "browser-platform-chromium-mobile.png"
+    ],
+    "tracePolicy": "on",
+    "playwrightReport": "playwright-report.json",
+    "playwrightOutput": "playwright-artifacts"
+  }
+}

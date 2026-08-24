@@ -1,0 +1,13 @@
+{
+  "style": "none",
+  "citations": [
+    {"id":"cite-npm","url":"https://docs.npmjs.com/trusted-publishers/","formatted":"npm Docs — Trusted publishing for npm packages","credibility_score":98,"confidence":0.98},
+    {"id":"cite-node","url":"https://nodejs.org/api/packages.html","formatted":"Node.js Docs — Packages and conditional exports","credibility_score":98,"confidence":0.98},
+    {"id":"cite-next","url":"https://nextjs.org/docs/app/getting-started/server-and-client-components","formatted":"Next.js Docs — Server and Client Components","credibility_score":97,"confidence":0.97},
+    {"id":"cite-a2ui","url":"https://a2ui.org/specification/v0.9-a2ui/","formatted":"A2UI — v0.9 specification","credibility_score":98,"confidence":0.98},
+    {"id":"cite-genui","url":"https://github.com/flutter/genui","formatted":"Flutter — genui upstream repository","credibility_score":94,"confidence":0.96},
+    {"id":"cite-tauri","url":"https://v2.tauri.app/distribute/","formatted":"Tauri — Distribution","credibility_score":97,"confidence":0.97},
+    {"id":"cite-pages","url":"https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages","formatted":"GitHub Docs — Custom workflows with GitHub Pages","credibility_score":98,"confidence":0.98},
+    {"id":"cite-playwright","url":"https://playwright.dev/docs/test-snapshots","formatted":"Playwright Docs — Visual comparisons","credibility_score":97,"confidence":0.97}
+  ]
+}

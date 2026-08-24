@@ -8,7 +8,7 @@ SolidJS bindings for `@prometheus-ags/entity-graph-core` — fine-grained reacti
 Component (SolidJS)
   └─ createEntity / createEntityList  (this package, Layer 2)
        └─ core engine fetchEntity / fetchList  (entity-graph-core, Layer 1)
-            └─ useGraphStore (Zustand, Layer 0)
+            └─ graphStore (vanilla Zustand, Layer 0)
 ```
 
 Components access data only through `createEntity` / `createEntityList`. The store (Zustand) is the single source of truth; SolidJS signals mirror it for fine-grained reactivity.
@@ -18,6 +18,8 @@ Components access data only through `createEntity` / `createEntityList`. The sto
 ```bash
 pnpm add @prometheus-ags/entity-graph-solid @prometheus-ags/entity-graph-core solid-js
 ```
+
+`@prometheus-ags/entity-graph-core` is a required peer: install it explicitly so the application owns the one compatible graph instance. The Solid binding must not install a private core copy. See the [binding singleton contract](../../release/binding-singleton-contract.md).
 
 ## Quick Start
 
@@ -162,6 +164,10 @@ console.log(invoiceCount()); // reactive SolidJS signal
 ### `createGraphStore(selector, equalityFn?)`
 
 Returns a fine-grained SolidJS accessor that updates when the selected graph slice changes.
+
+### `graphStore` and deprecated `useGraphStore`
+
+`graphStore` is the vanilla StoreApi re-exported from the application-owned core and is intended for framework internals, adapters, and imperative integration code. The same-named Solid `createGraphStore(selector)` above returns a reactive accessor; it does not create an independent normalized graph. `useGraphStore` remains a deprecated core StoreApi alias for alpha migration and is not a Solid primitive.
 
 ### `setupGraphProvider(opts?)`
 

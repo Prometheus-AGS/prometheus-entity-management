@@ -1,0 +1,40 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "codex-gpt-5",
+  "isolation_mode": "harness-native:fresh-context",
+  "producer_model": "gpt-5",
+  "cross_model_check": "unverified-same-harness-family",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/generate-native-api.mjs",
+      "line": 37,
+      "claim": "The recursive-output safety check can be bypassed through a symlink beneath the system temporary directory.",
+      "evidence": "The check uses lexical path resolution without real-path or ownership validation before recursive cleanup.",
+      "suggested_fix": "Resolve real paths, reject symlinks, require a generator-created ownership marker, and revalidate before cleanup."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-github-pages/final-verification.json",
+      "line": 8,
+      "claim": "The verification receipt is not bound to the tested revision.",
+      "evidence": "The source section records the base SHA and mutable branch name, not an exact verified implementation commit.",
+      "suggested_fix": "Record the exact verified implementation HEAD SHA used for reported gates."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-github-pages/final-verification.json",
+      "line": 14,
+      "claim": "The receipt does not confirm completion of the four prerequisite documentation changes.",
+      "evidence": "The verification block does not name v3-docs-api-reference, v3-docs-concepts-packages, v3-docs-examples-integrations, or v3-docs-operations-migration.",
+      "suggested_fix": "Add fail-closed prerequisite verification naming all four changes and their evidence."
+    }
+  ],
+  "checked_classes": [],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

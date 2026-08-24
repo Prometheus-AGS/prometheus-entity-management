@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "examples/tauri-universal/src/features/platform/services/platform-service.ts",
+      "line": 128,
+      "claim": "Capability-denial classification is substring-based, so it does not enforce the exact native denial strings required by the trust-boundary evidence.",
+      "evidence": "The classifiers return true when `message.includes(\"entity-graph-tauri.graph_clear not allowed\")` and `message.includes(\"entity-graph-tauri:allow-graph-clear\")`, and similarly for remove, while the blocking constraint `trust-boundaries-fail-closed` requires \"exact current clear/removal denial strings\" and verification.md claims \"only the observed graph-clear and graph-remove command/permission pairs\" are accepted.",
+      "suggested_fix": "Compare the formatted error to the exact expected denial strings, or parse a structured Tauri denial object and require exact command and permission fields with no unrelated suffix/prefix."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "examples/tauri-universal/src/features/platform/services/platform-service.ts",
+      "line": 105,
+      "claim": "Persisted queue validation accepts any string taskId, allowing a tampered but well-formed queue to pass validation and let graph hydration/seed mutation occur before the queued mutation fails.",
+      "evidence": "`isQueuedTaskMutation` only checks `typeof candidate.taskId === \"string\"` plus status shape; `initialize()` then runs `parseQueue(...)` before `startLocalFirstGraph(...)`, hydrates/seeds the graph, and only later calls `flushQueue()`, while the blocking constraint `trust-boundaries-fail-closed` requires persisted queue validation to fail closed before graph mutation.",
+      "suggested_fix": "Validate queued task IDs against the allowed/known task set before starting or hydrating the graph, or parse persisted graph state into a temporary structure and reject unknown queued entity IDs before mutating the canonical graph."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

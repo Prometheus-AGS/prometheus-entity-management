@@ -1,0 +1,76 @@
+---
+title: "Tutorial: Agentic A2UI"
+description: A keyless A2A agent streaming official A2UI surfaces, with every agent action crossing a declared policy catalog before any graph write.
+---
+
+# Tutorial: Agentic A2UI
+
+`examples/agentic-a2ui` proves the agentic slice end to end without any
+external credential: a deterministic A2A v1 agent runs in-page, streams
+official A2UI v0.9.1 surfaces, and every agent-initiated action crosses a
+fail-closed policy boundary.
+
+## Architecture
+
+The app composes two published surfaces with no library changes:
+
+- `@prometheus-ags/entity-graph-a2a` — `createA2AServer`, `buildAgentCard`,
+  and a deterministic executor speaking the official JSON-RPC wire in-page.
+- `@prometheus-ags/a2ui-react` — `createPrometheusA2uiRuntime` and
+  `createEntityGraphA2uiActionPolicy` rendering agent output as A2UI
+  surfaces.
+
+The policy catalog (entity/action/field allowlists, tenant authorization,
+human approval for destructive operations) sits **between** the agent and the
+graph — the agent cannot bypass it. Mutations land once in the normalized
+graph; every joined view updates from the single canonical copy.
+
+## Setup
+
+```bash
+pnpm install
+pnpm --filter prometheus-entity-management-agentic-a2ui dev
+```
+
+## Feature scenarios
+
+| Scenario | Coverage ID | What to watch |
+| -------- | ----------- | ------------- |
+| A2A policy + A2UI rendering | `example.protocol.a2a-a2ui-policy` | Agent stream → surface render → policy-gated action |
+| Normalized propagation | `example.graph.normalized-cross-view` | Agent mutation updates every joined view |
+| Optimistic complete | `example.crud.optimistic-confirm` | Local patch visible everywhere; confirm clears it |
+| Realtime burst | `example.realtime.coalesced-cross-view` | Three adapter events coalesce into one flush |
+| Lifecycle security | `example.runtime.lifecycle-security` | Denied/terminal flows record closed lifecycle logs |
+
+Interactive probes on the showcase: stream an authorized update, ask the
+agent to delete (denied — `remove` is outside the Task allowlist), send a
+malformed payload (protocol error), cancel mid-stream, and switch tenants
+(`tenant-b` is refused before any graph access).
+
+## Test commands
+
+```bash
+pnpm run verify:agentic-a2ui   # typecheck, golden replay, builds, browser E2E
+```
+
+Golden transcripts pin the four protocol flows; drift is a hard CI failure
+with an explicit `UPDATE_GOLDEN=1` regeneration path.
+
+## Deployment and platform notes
+
+**Deterministic demo mode is the default and needs no credentials.** The
+external-agent panel accepts HTTPS or loopback endpoints only and stores no
+credentials — that is the deliberate boundary between the keyless demo and
+live agents.
+
+## Troubleshooting
+
+- **Golden replay drift:** regenerate with `UPDATE_GOLDEN=1` only when the
+  protocol change is intentional; review the transcript diff.
+- **Surface not re-rendering:** the evidence loop fixed unstable Zustand
+  selector snapshots (React #185) — keep slice selection stable and joins
+  memoized if you fork the app.
+- **Duplicate realtime writes:** register each adapter channel once; a past
+  defect double-registered across two channels.
+
+Runnable source: [`examples/agentic-a2ui`](https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/examples/agentic-a2ui).

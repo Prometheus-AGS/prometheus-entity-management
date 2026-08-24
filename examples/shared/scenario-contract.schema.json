@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prometheus-ags.dev/schemas/entity-example-scenario-contract-v1.json",
+  "title": "Prometheus Entity Management shared example scenario contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "contractId",
+    "version",
+    "fixedClock",
+    "tenant",
+    "domain",
+    "security",
+    "transports",
+    "scenarios"
+  ],
+  "properties": {
+    "$schema": { "const": "./scenario-contract.schema.json" },
+    "schemaVersion": { "const": "1.0.0" },
+    "contractId": { "const": "prometheus.entity-management.shared-example" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "fixedClock": { "type": "string", "format": "date-time" },
+    "tenant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^tenant-" },
+        "name": { "type": "string", "minLength": 1 }
+      }
+    },
+    "domain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entityTypes", "seed", "lists"],
+      "properties": {
+        "entityTypes": {
+          "type": "array",
+          "minItems": 5,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/entityType" }
+        },
+        "seed": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "object", "required": ["id"], "additionalProperties": true }
+          }
+        },
+        "lists": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "string" },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "security": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["syntheticData", "externalCredentials", "tenantBoundary", "actionPolicy", "secretPolicy"],
+      "properties": {
+        "syntheticData": { "const": true },
+        "externalCredentials": { "const": false },
+        "tenantBoundary": { "type": "string", "minLength": 1 },
+        "actionPolicy": { "type": "string", "minLength": 1 },
+        "secretPolicy": { "type": "string", "minLength": 1 }
+      }
+    },
+    "transports": {
+      "type": "array",
+      "minItems": 8,
+      "items": { "$ref": "#/$defs/transport" }
+    },
+    "scenarios": {
+      "type": "array",
+      "minItems": 13,
+      "items": { "$ref": "#/$defs/scenario" }
+    }
+  },
+  "$defs": {
+    "entityType": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "idField", "fields", "relationships"],
+      "properties": {
+        "id": { "enum": ["User", "Project", "Task", "Comment", "Activity"] },
+        "idField": { "const": "id" },
+        "fields": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["field", "target", "cardinality", "onChange"],
+            "properties": {
+              "field": { "type": "string" },
+              "target": { "enum": ["User", "Project", "Task", "Comment", "Activity"] },
+              "cardinality": { "enum": ["one", "many"] },
+              "onChange": { "enum": ["invalidate", "cascade-delete", "retain-audit"] }
+            }
+          }
+        }
+      }
+    },
+    "transport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "deterministic", "externalCredentials", "fixture"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^transport\\." },
+        "kind": { "enum": ["rest", "graphql", "realtime", "offline", "a2a", "a2ui", "ssr", "platform"] },
+        "deterministic": { "const": true },
+        "externalCredentials": { "const": false },
+        "fixture": { "type": "object", "additionalProperties": true }
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "capabilityIds", "transportIds", "steps", "expected"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^example\\.[a-z0-9-]+(?:\\.[a-z0-9-]+)+$" },
+        "title": { "type": "string", "minLength": 8 },
+        "capabilityIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^[a-z0-9-]+(?:\\.[a-z0-9-]+)+$" },
+          "uniqueItems": true
+        },
+        "transportIds": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^transport\\." },
+          "uniqueItems": true
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "type": "string", "minLength": 4 }
+        },
+        "expected": { "type": "object", "minProperties": 1, "additionalProperties": true }
+      }
+    }
+  }
+}

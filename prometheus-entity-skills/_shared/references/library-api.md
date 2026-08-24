@@ -4,22 +4,62 @@ Generated from `src/index.ts`. Use this when scaffolding imports or explaining c
 
 **Runtime exports ledger:** Agent skills that must match shipped code should align with `library-exports.json` (export names from the built ESM bundle). After changing `src/index.ts` exports, run `pnpm run refresh:exports` at the repo root and commit `prometheus-entity-skills/_shared/references/library-exports.json`. CI runs `pnpm run verify:skills`.
 
+**3.0 release surface:** Packaging, compatibility, protocol maturity, publication, and rollback claims come from [`v3-release-contract.md`](v3-release-contract.md), which links to the authoritative machine-readable contract. These release concerns are intentionally separate from the runtime export ledger.
+
+**CI and dependency policy:** The implemented main-CI quality gate and its dependency/advisory policies are linked from `v3-release-contract.md`. CI-policy changes do not alter this API reference or `library-exports.json` unless a public package entry point changes.
+
+**Packed package contract:** Loader, declaration, metadata, and tarball-payload claims are verified by `release/package-contracts.md` and `pnpm run verify:package-contracts`. These artifact rules remain separate from the runtime export-name ledger; update `library-exports.json` only when the built export set changes.
+
+**Framework boundary:** Core/React store claims are verified by `release/framework-neutral-core.md` and `pnpm run verify:framework-neutral-core`. Cross-binding package resolution and behavior are separately verified by `release/binding-singleton-contract.md` and `pnpm run verify:binding-singletons`. Core exports vanilla stores and imperative readers; React owns callable subscription hooks. The application installs one required compatible core peer for each binding.
+
+**Companion A2UI boundary:** `@prometheus-ags/a2ui-react` has its own two-entry-point [`a2ui-library-exports.json`](a2ui-library-exports.json) ledger and [`a2ui-protocol-bridge.md`](a2ui-protocol-bridge.md) agent reference. Its root is official A2UI v0.9.1; `./ag-ui` is the alpha chat/state compatibility surface. Protocol validity never grants application authority.
+
+**Companion A2A boundary:** `@prometheus-ags/entity-graph-a2a` has its own two-entry-point [`a2a-library-exports.json`](a2a-library-exports.json) ledger and [`a2a-conformance-agent.md`](a2a-conformance-agent.md) reference. Its root implements official A2A v1 JSON-RPC; `./legacy` is only the pre-v3 slash-method migration surface. Protocol validity never grants application authority.
+
 ---
 
 ## Core (`graph.ts`)
 
 | Export | Kind | Description |
 |--------|------|-------------|
-| `useGraphStore` | hook/store | Zustand store for the normalized graph: `entities`, `patches`, `lists`, `entityStates`, and mutation actions. Prefer hooks in components; `getState()` in non-React code. |
-| `GraphState` | type | Full store shape: canonical entities, UI patches, per-entity fetch state, list slots keyed by query key. |
+| `createGraphStore` | function | Create an isolated vanilla graph StoreApi for an SSR request, test, worker, or other non-shared host. |
+| `graphStore` | store | Default process-wide vanilla graph singleton used by bindings and imperative consumers. |
+| `GraphStoreProvider` | React provider | Scope all descendant React hooks to an application-owned `GraphStore`; required for per-request SSR hydration instead of process-global request state. |
+| `useGraphStoreApi` | React hook | Resolve the nearest provider-owned `GraphStore`, falling back to `graphStore`; hook ownership releases scoped listeners and GC after the final unmount. |
+| `useGraphStore` | React hook/store | React-package hook over the nearest scoped graph, with the default singleton's StoreApi methods attached for compatibility. Core's same-named export is only a deprecated StoreApi alias; never call it as a hook. |
+| `GraphStoreProviderProps` | type | Provider input containing the application-owned `store` and React `children`. |
+| `GraphStore` | type | Vanilla StoreApi returned by `createGraphStore()`. |
+| `GraphState` | type | Full store shape: canonical entities, UI patches, per-entity fetch state, list slots keyed by query key, and the atomic `ingestFetchedList` action. |
 | `EntityState` | type | Per-entity cache metadata: `isFetching`, `lastFetched`, `error`, `stale`. |
 | `EntitySyncMetadata` | type | Optional sync/provenance metadata stored beside canonical rows (`synced`, `origin`, `updatedAt`). |
 | `EntitySnapshot` | type | Sync-aware entity view returned by snapshot reads and graph query helpers (`$synced`, `$origin`, `$updatedAt`). |
 | `ListState` | type | List slot: ordered **`ids`** only (not row copies), pagination cursors, `total`, fetch flags, page metadata. |
+| `ListResultMeta` | type | Successful-list pagination and lifecycle metadata accepted by atomic list targets. |
+| `FetchedListTarget` | type | Replace/append list target applied with a fetched response; may carry transport-derived IDs and metadata. |
+| `FetchedEntityBatch` | type | Side-descriptor entity rows that commit or roll back with the primary fetched list. |
+| `FetchedListProjection` | type | Existing view-backed list updated with matching fetched IDs inside the same graph publication. |
+| `IngestFetchedListOptions` | type | Atomic ingestion options for list targets, side batches, view projections, and fetch completion. |
 | `EntityType` | type | String key partitioning the graph (e.g. `"Post"`). |
 | `EntityId` | type | Primary key string for an entity within its `EntityType`. |
 | `QueryKey` | type | Stable string key used for list slots. |
 | `SyncOrigin` | type | Provenance enum for sync metadata: `server`, `client`, or `optimistic`. |
+
+---
+
+## Stable JavaScript binding singleton surface
+
+The runtime export ledger above is generated from the React package. The other stable JavaScript entry points expose these binding-level graph adapters; their package manifests keep core application-owned through a required peer.
+
+| Package | Primary reactive surface | Shared-core evidence |
+| --- | --- | --- |
+| `@prometheus-ags/prometheus-entity-management` | `useEntity`, `useEntityList`, callable React `useGraphStore` | React hook/store observes `graphStore` writes |
+| `@prometheus-ags/entity-graph-svelte` | `createEntityStore`, `createEntityList`, `initEntityGraph` | Svelte store observes the application core |
+| `@prometheus-ags/entity-graph-solid` | `createEntity`, `createEntityList`, Solid `createGraphStore`, vanilla `graphStore` | `graphStore` identity matches core; deprecated core `useGraphStore` remains an alias |
+| `@prometheus-ags/entity-graph-web-components` | entity controllers and registered custom elements | Lit controller observes the application core |
+| `@prometheus-ags/entity-graph-alpine` | plugin, `$entity`/`$entityList`, binding factories | Alpine binding observes the application core |
+| `@prometheus-ags/entity-graph-htmx` | SSE server, `createServerGraph`, fragment helpers | server graph and core observe two-way writes |
+
+Use [`release/binding-singleton-contract.md`](../../../release/binding-singleton-contract.md) for the packed resolution contract and its explicit native/browser/publication limits.
 
 ---
 
@@ -80,12 +120,21 @@ Generated from `src/index.ts`. Use this when scaffolding imports or explaining c
 | `hydrateGraphFromStorage` | function | Restore a persisted graph snapshot into the Zustand graph. |
 | `persistGraphToStorage` | function | Persist the current graph snapshot plus pending action metadata. |
 | `useGraphSyncStatus` | hook | Read serializable sync status for browser/PWA/Tauri-style hosts. |
+| `getGraphSyncStatus` | function | Imperatively read sync status without React. |
+| `graphSyncStatusStore` | store | Framework-neutral vanilla sync-status StoreApi subscribed to by the React hook. |
 | `GraphPersistenceAdapter` | type | Storage adapter contract: `get`, `set`, optional `remove`. |
 | `PersistedGraphActionRecord` | type | Re-exported persisted action metadata shape used by the local-first runtime. |
 | `GraphSyncStatus` | type | Status payload: phase, online state, sync state, pending count, hydration/persistence timestamps, error. |
 | `GraphSnapshotPayload` | type | Persisted JSON payload containing graph snapshot and pending actions. |
 | `StartLocalFirstGraphOptions` | type | Runtime bootstrap options for storage, replay, and online-source integration. |
 | `LocalFirstGraphRuntime` | type | Returned runtime handle with `ready`, `persistNow`, `hydrate`, `dispose`, and `getStatus`. |
+
+## Merge strategies
+
+| Export | Kind | Description |
+| --- | --- | --- |
+| `createLoroMergeStrategy(loadLoro?)` | async function | Creates the optional Loro-backed entity merge strategy. Browser bundlers should supply `() => import("loro-crdt")`; Node consumers may use the runtime peer import. |
+| `LoroModuleLoader` | type | Bundler-visible optional-peer loader returning a module with `LoroDoc`; it keeps `loro-crdt` out of the mandatory core bundle. |
 
 ---
 
@@ -95,11 +144,12 @@ Generated from `src/index.ts`. Use this when scaffolding imports or explaining c
 |--------|------|-------------|
 | `configureEngine` | function | App-wide engine options: base fetch, default `staleTime`, retry behavior, etc. |
 | `serializeKey` | function | Stable string key from a query key array (for `lists` map and dedupe). |
-| `fetchEntity` | function | Loads/refreshes a single entity through dedupe + graph writes (used by hooks internally). |
-| `fetchList` | function | Loads/refreshes a list query: normalizes rows into entities and stores **IDs** under the list key. |
-| `dedupe` | function | Process-global promise deduplication for in-flight identical requests. |
-| `startGarbageCollector` | function | Starts optional TTL-based cleanup of unused graph data (when configured). |
-| `stopGarbageCollector` | function | Stops the garbage collection loop. |
+| `fetchEntity` | function | Loads/refreshes one entity through store-scoped dedupe and graph writes; accepts an optional application-owned graph. |
+| `fetchList` | function | Loads/refreshes a list into one selected graph, normalizes rows, and stores **IDs** under the list key. |
+| `dedupe` | function | Collapse an in-flight key within one graph; same keys in different request stores remain independent. |
+| `startGarbageCollector` | function | Starts optional TTL-based cleanup for a selected application-owned graph; defaults to the compatibility singleton. |
+| `stopGarbageCollector` | function | Stops the selected graph's garbage-collection loop; defaults to the compatibility singleton. |
+| `attachGlobalListeners` | function | Reference-count focus/reconnect listeners and GC for one graph; returns the matching disposer. React hooks own this lifecycle automatically. |
 | `EngineOptions` | type | Configuration object for `configureEngine`. |
 | `EntityQueryOptions` | type | Options for single-entity fetch pipeline (normalizer, subscriber behavior, etc.). |
 | `ListQueryOptions` | type | Options for list fetch (pagination mode, normalizer, merge strategy). |
@@ -194,6 +244,8 @@ Generated from `src/index.ts`. Use this when scaffolding imports or explaining c
 | `createSupabaseRealtimeAdapter` | function | Adapter for Supabase Realtime channels. |
 | `createConvexAdapter` | function | Adapter for Convex subscription-style feeds. |
 | `createGraphQLSubscriptionAdapter` | function | Adapter bridging GraphQL subscriptions to `ChangeSet`s. |
+| `createFlintAdapter` | function | Bridge a caller-owned Flint client's `watchEntities` stream into `RealtimeManager`. |
+| `publishFlintMutation` | function | Delegate one `FlintEntityRecord` to the caller-owned client's `mutateEntity` method. |
 | `ManagerOptions` | type | Options for realtime manager construction. |
 | `WebSocketAdapterOptions` | type | WebSocket adapter configuration. |
 | `SupabaseAdapterOptions` | type | Supabase-specific adapter options. |
@@ -206,6 +258,10 @@ Generated from `src/index.ts`. Use this when scaffolding imports or explaining c
 | `AdapterStatus` | type | Connection health enum / union. |
 | `UnsubscribeFn` | type | Teardown function returned from subscriptions. |
 | `SubscriptionConfig` | type | Subscription parameters. |
+| `FlintClientLike` | type | Structural `watchEntities` / `mutateEntity` client boundary; no Flint SDK is bundled. |
+| `CreateFlintAdapterOptions` | type | Channel, consumer, entity filter, checkpoint store, and operation resolver. |
+| `FlintEntityEvent`, `FlintEntityQuery`, `FlintEntityRecord` | types | Decoded event, subscription query, and mutation record contracts. |
+| `FlintCheckpointStore` | type | Optional per-channel/consumer bigint resume-offset persistence. |
 
 ---
 
@@ -250,6 +306,25 @@ Generated from `src/index.ts`. Use this when scaffolding imports or explaining c
 | `createElectricAdapter` | function | ElectricSQL / shape stream adapter emitting `ChangeSet`s compatible with `RealtimeManager`. |
 | `useLocalFirst` | hook | Orchestrates local-first sync + graph hydration patterns with PGlite/Electric. |
 | `usePGliteQuery` | hook | Run SQL against embedded PGlite and reflect results into React + graph workflows. |
+
+## Companion peer-sync package
+
+`@prometheus-ags/entity-graph-sync` is a separately published companion package;
+its runtime export ledger is `sync-library-exports.json` and its full certified
+boundary is documented in `sync-persistence-path.md`.
+
+| Export | Kind | Purpose |
+| --- | --- | --- |
+| `createSyncProviderRegistry` | function | Create client-owned provider registration state for an injected graph store. |
+| `startSyncBridge` | function | Bridge one store/registry pair to its providers while suppressing inbound echo. |
+| `applyPeerChanges` | function | Apply peer fields and sync metadata to the default or injected graph store. |
+| `createLoroProvider` | function | Create deterministic per-type Loro documents over a selected channel. |
+| `createLoroLoopbackNetwork` | function | Create the deterministic offline/reconnect reference fabric. |
+| `createWebSocketLoroChannel` | function | Create a queued, reconnecting, peer-resynchronizing WebSocket channel. |
+| `encodeLoroWebSocketMessage`, `decodeLoroWebSocketMessage` | functions | Encode/decode stable opaque relay frames. |
+| `SyncProviderRegistry`, `SyncBridgeOptions` | types | Client ownership and bridge configuration contracts. |
+| `LoroProviderOptions`, `LoroChannel`, `LoroChannelStatus` | types | Loro provider and transport lifecycle contracts. `LoroProviderOptions.loadLoro` exposes the bundler-visible optional-peer loader. |
+| `LoroLoopbackNetwork`, `LoroWebSocketChannelOptions` | types | Deterministic and real-transport channel configuration contracts. |
 | `ElectricAdapterOptions` | type | Shape URLs, table maps, auth, etc. |
 | `ElectricTableConfig` | type | Per-table sync configuration. |
 | `UseLocalFirstResult` | type | Hook result: status, connection, helpers. |
@@ -295,3 +370,12 @@ import {
 ```
 
 In this monorepo’s examples, the package may resolve via TypeScript path alias to `src/index.ts` during development.
+
+## Canonical Dart companion library
+
+`entity_graph_flutter` has an independent declaration ledger at
+`dart-library-exports.json` and detailed agent guidance in
+`dart-graph-riverpod.md`. Its generated Riverpod families orchestrate one
+Dart-native graph; it is not a wrapper around this React package and does not
+share a runtime singleton across JavaScript and Dart processes. Run
+`pnpm run verify:dart-exports` after any Dart public declaration change.

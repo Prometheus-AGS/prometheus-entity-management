@@ -1,0 +1,76 @@
+---
+title: "Tutorial: Universal Tauri"
+description: One React 19/Vite 8 frontend as a Tauri 2 app on desktop and mobile — native commands, least-privilege capabilities, offline snapshots, deep links.
+---
+
+# Tutorial: Universal Tauri
+
+`examples/tauri-app` proves the universal-platform slice: one React 19 /
+Vite 8 frontend runs as a Tauri 2 application on desktop (macOS/Windows/
+Linux) and mobile (Android/iOS), composed on the certified
+`@prometheus-ags/entity-graph-tauri` plugin.
+
+## Architecture
+
+- **Native command channel.** Every mutation mirrors through the plugin's
+  Rust commands (`upsertEntity` / `removeEntity` / snapshot commands) with
+  least-privilege capabilities: the `main` window gets read-only default plus
+  explicit mutation grants; a denied probe window gets nothing and fails
+  closed.
+- **Offline persistence.** Durable SQLite via `@tauri-apps/plugin-sql` behind
+  `createTauriSqlPersistenceAdapter`; the web fallback uses `localStorage`
+  behind the same `GraphPersistenceAdapter` contract.
+- **Platform boundary.** All platform conditionals live in `src/platform/`
+  (`tauri-bridge.ts` / `web-bridge.ts` behind `PlatformBridge`). Feature
+  components never import `@tauri-apps/*` and never write the graph directly
+  — pinned structurally by the release test.
+
+## Setup
+
+```bash
+pnpm install
+pnpm --filter prometheus-entity-management-tauri-app dev          # web fallback
+pnpm --filter prometheus-entity-management-tauri-app tauri dev    # desktop
+```
+
+Mobile targets use the standard Tauri 2 flow (`tauri android dev` /
+`tauri ios dev`) after `tauri android init` / `tauri ios init`.
+
+## Feature scenarios
+
+| Scenario | Coverage ID | What to watch |
+| -------- | ----------- | ------------- |
+| Platform adapter boundary | `example.platform.adapter-boundary` | Same frontend, desktop + Android + iOS |
+| Offline persistence | `example.offline.persistence-convergence` | Persist/clear/restore across a restart |
+| Cross-view normalization | `example.graph.normalized-cross-view` | Native events re-render every joined view |
+| Lifecycle security | `example.runtime.lifecycle-security` | Denied capability fails closed; deep links parse fail-closed |
+| Optimistic CRUD | `example.crud.optimistic-confirm` | Edit buffer isolation on the mobile layout too |
+
+## Test commands
+
+```bash
+pnpm run verify:tauri-universal   # Rust MockRuntime E2E, bridge contracts, desktop + mobile lanes
+```
+
+Receipts include Rust MockRuntime E2E (3/3), bridge contract tests (5/5),
+Chromium desktop and mobile viewport lanes (7 scenarios each, zero
+serious/critical axe findings), a desktop debug binary, an Android debug APK,
+and an unsigned iOS simulator bundle.
+
+## Deployment and platform notes
+
+Debug artifacts build from the example; release signing, mobile store
+distribution, and device certification remain operator work. The
+`pnpm run verify:tauri-plugin` lane (plugin contract) runs in the
+`tauri-plugin-platform` CI workflow.
+
+## Troubleshooting
+
+- **Reload hydration crash:** a past defect was a storage-key collision —
+  keep one `storageKey` per app and per adapter.
+- **Gradle/Java mismatch on Android:** the generated mobile scaffolding pins
+  a compatible toolchain; do not upgrade Gradle independently.
+- **iOS init is `$USER`-sensitive:** run mobile init from a clean shell; the
+  evidence loop fixed a path that broke under nonstandard usernames.
+
+Runnable source: [`examples/tauri-app`](https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/examples/tauri-app).

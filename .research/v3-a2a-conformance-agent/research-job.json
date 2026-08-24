@@ -1,0 +1,8 @@
+{
+  "job_id": "job-1785617542-b1bd0de1",
+  "requested_mode": "background deep research",
+  "observed_state": "stage 0, progress 0 on repeated polls",
+  "resolution": "cancelled",
+  "fallback": "Manual ten-stage research package completed from primary sources.",
+  "impact": "No evidence was lost and task 1 was not blocked; the automation failure is retained for auditability."
+}

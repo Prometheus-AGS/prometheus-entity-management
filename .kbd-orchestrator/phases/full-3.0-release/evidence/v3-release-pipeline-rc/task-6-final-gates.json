@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-release-pipeline-rc",
+  "task": 6,
+  "recordedAt": "2026-08-02T14:47:22Z",
+  "candidateCommit": "eb3c9802da5ff10ad6db135fed761bd23ea80b3f",
+  "workspaceState": "dirty-change-candidate",
+  "status": "pass-change-archive-ready",
+  "releaseCertified": false,
+  "publicationAuthorized": false,
+  "registryMutation": false,
+  "toolchains": {
+    "nodeLocal": "26.5.0",
+    "pnpm": "10.33.0",
+    "flutter": "3.44.8",
+    "flutterRevision": "058e0af2c2b57e369d905a03ac9748b0ebf543c6",
+    "dart": "3.12.2"
+  },
+  "locks": {
+    "pnpm": {
+      "frozenInstall": "pass",
+      "sha256": "c53a72fc54c9419f2d2ca15b187779d0d2a1c8274fca871a82b11a48a6ce42da"
+    },
+    "dartWorkspace": {
+      "stableToolchainVerified": true,
+      "sha256": "b1d5f04a06b6cef20b5b0304835a30cc512bf59cd49382b91e6e384f3c650952"
+    }
+  },
+  "gates": {
+    "fullCi": {
+      "status": "pass",
+      "bddHooks": 6,
+      "bddScenarios": 87,
+      "bddSteps": 414,
+      "securityDependencies": 325,
+      "vulnerabilities": {
+        "info": 0,
+        "low": 2,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0
+      },
+      "blockingAdvisories": 0
+    },
+    "releasePipelineUnit": {
+      "status": "pass",
+      "tests": 24
+    },
+    "releasePipelineBdd": {
+      "status": "pass",
+      "scenarios": 13,
+      "steps": 57,
+      "hooks": 6
+    },
+    "releaseCandidateVerifier": {
+      "status": "pass",
+      "declaredArtifacts": 16,
+      "packedNpmCandidates": 12,
+      "version": "3.0.0-rc.1",
+      "consumers": [
+        "node-esm",
+        "node-commonjs",
+        "typescript-nodenext",
+        "typescript-node16",
+        "typescript-bundler"
+      ],
+      "registryMutation": false
+    },
+    "skills": {
+      "status": "pass",
+      "reactRuntimeExports": 201,
+      "syncRuntimeExports": 16,
+      "a2uiRootRuntimeExports": 18,
+      "a2uiAguiRuntimeExports": 9,
+      "a2aRootRuntimeExports": 30,
+      "a2aLegacyRuntimeExports": 2,
+      "tauriRuntimeExports": 26,
+      "tauriDeclarationExports": 57,
+      "dartDeclarations": 81
+    },
+    "actionlint": "pass",
+    "openSpecStrict": "pass",
+    "diffCheck": "pass"
+  },
+  "adversarialReview": {
+    "status": "pass-with-retained-warnings",
+    "critical": 0,
+    "warnings": 2,
+    "suggestions": 0,
+    "sycophancyScore": 0.0
+  },
+  "externalAuthority": {
+    "npmTrustedPublisher": "unproven",
+    "githubNpmRcEnvironment": "unproven",
+    "githubAttestationRun": "unproven"
+  },
+  "reactPreview": {
+    "packageArtifactsReadyLocally": true,
+    "showcaseCertification": "pending-v3-vite-react19-example",
+    "publicRcAuthorized": false
+  }
+}

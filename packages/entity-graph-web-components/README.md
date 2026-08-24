@@ -9,7 +9,7 @@ anywhere you can include a `<script type="module">`.
 ```
 Custom element
   └── EntityListController / EntityDetailController / EntityFormController
-        └── useGraphStore (entity-graph-core, Zustand)
+        └── graphStore (entity-graph-core, vanilla Zustand)
               └── fetchEntity / fetchList / engine (entity-graph-core)
 ```
 
@@ -23,6 +23,8 @@ logic lives in `entity-graph-core`.
 ```bash
 pnpm add @prometheus-ags/entity-graph-web-components lit @prometheus-ags/entity-graph-core
 ```
+
+`@prometheus-ags/entity-graph-core` is a required peer: install it explicitly so the application owns the one compatible graph instance. The Web Components binding must not install a private core copy. See the [binding singleton contract](../../release/binding-singleton-contract.md).
 
 ## Custom Elements
 
@@ -100,7 +102,7 @@ pnpm add @prometheus-ags/entity-graph-web-components lit @prometheus-ags/entity-
 
 <script type="module">
   import "@prometheus-ags/entity-graph-web-components";
-  import { useGraphStore } from "@prometheus-ags/entity-graph-core";
+  import { graphStore } from "@prometheus-ags/entity-graph-core";
 
   const el = document.querySelector("#inv-form");
 
@@ -113,12 +115,12 @@ pnpm add @prometheus-ags/entity-graph-web-components lit @prometheus-ags/entity-
         body: JSON.stringify(buf),
         headers: { "Content-Type": "application/json" },
       }).then(r => r.json());
-      useGraphStore.getState().upsertEntity("Invoice", saved.id, saved);
+      graphStore.getState().upsertEntity("Invoice", saved.id, saved);
     },
     onDelete: async (id) => {
       await fetch(`/api/invoices/${id}`, { method: "DELETE" });
-      useGraphStore.getState().removeEntity("Invoice", id);
-      useGraphStore.getState().removeIdFromAllLists("Invoice", id);
+      graphStore.getState().removeEntity("Invoice", id);
+      graphStore.getState().removeIdFromAllLists("Invoice", id);
     },
   });
 

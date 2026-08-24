@@ -12,7 +12,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
-  useGraphStore,
+  graphStore as sharedGraphStore,
   __resetEntityTransports,
 } from "@prometheus-ags/entity-graph-core";
 import { createEntityList } from "./create-entity-list.js";
@@ -21,7 +21,7 @@ type Post = { id: string; title: string; views: number };
 type RawPost = Post;
 
 function resetGraph() {
-  const state = useGraphStore.getState();
+  const state = sharedGraphStore.getState();
   const entities = state.entities["Post"];
   if (entities) {
     for (const id of Object.keys(entities)) {
@@ -68,7 +68,7 @@ describe("createEntityList", () => {
   });
 
   it("resolves items from graph when list is pre-populated", () => {
-    const graphStore = useGraphStore.getState();
+    const graphStore = sharedGraphStore.getState();
 
     // Pre-populate entities and list.
     graphStore.upsertEntity("Post", "p1", { id: "p1", title: "Hello", views: 10 });
@@ -97,7 +97,7 @@ describe("createEntityList", () => {
   });
 
   it("cross-view reactivity: upsertEntity updates items without refetch", () => {
-    const graphStore = useGraphStore.getState();
+    const graphStore = sharedGraphStore.getState();
 
     graphStore.upsertEntity("Post", "p3", { id: "p3", title: "Initial", views: 0 });
     graphStore.setEntityFetched("Post", "p3");
@@ -126,7 +126,7 @@ describe("createEntityList", () => {
   });
 
   it("destroy stops reactive updates", () => {
-    const graphStore = useGraphStore.getState();
+    const graphStore = sharedGraphStore.getState();
 
     graphStore.upsertEntity("Post", "p4", { id: "p4", title: "Stable", views: 5 });
     graphStore.setEntityFetched("Post", "p4");
@@ -152,7 +152,7 @@ describe("createEntityList", () => {
   });
 
   it("hasNextPage and total reflect list state", () => {
-    const graphStore = useGraphStore.getState();
+    const graphStore = sharedGraphStore.getState();
 
     graphStore.upsertEntity("Post", "p5", { id: "p5", title: "Page1", views: 1 });
     graphStore.setEntityFetched("Post", "p5");

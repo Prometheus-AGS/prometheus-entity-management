@@ -1,0 +1,129 @@
+{
+  "$schema": "./v3-release-contract.schema.json",
+  "schemaVersion": "1.0.0",
+  "release": {
+    "name": "Prometheus Entity Management",
+    "version": "3.0.2",
+    "channel": "stable",
+    "owner": "Prometheus AGS",
+    "repository": "https://github.com/Prometheus-AGS/prometheus-entity-management",
+    "license": "MIT"
+  },
+  "sourceOfTruth": {
+    "contract": "release/v3-release-contract.json",
+    "openSpec": "openspec/specs/v3-release-contract/spec.md",
+    "coverage": "examples/coverage.json",
+    "skillsExports": "prometheus-entity-skills/_shared/references/library-exports.json"
+  },
+  "versionPolicy": {
+    "npm": {
+      "strategy": "fixed",
+      "version": "3.0.2",
+      "prereleaseTag": "next",
+      "stableTag": "latest",
+      "packages": [
+        "@prometheus-ags/entity-graph-core",
+        "@prometheus-ags/prometheus-entity-management",
+        "@prometheus-ags/entity-graph-sdl",
+        "@prometheus-ags/entity-graph-sync",
+        "@prometheus-ags/entity-graph-svelte",
+        "@prometheus-ags/entity-graph-solid",
+        "@prometheus-ags/entity-graph-web-components",
+        "@prometheus-ags/entity-graph-alpine",
+        "@prometheus-ags/entity-graph-htmx",
+        "@prometheus-ags/entity-graph-a2a",
+        "@prometheus-ags/a2ui-react",
+        "@prometheus-ags/entity-graph-tauri"
+      ]
+    },
+    "native": {
+      "strategy": "independent-aligned-major",
+      "version": "3.0.0",
+      "note": "Native packages remain version-aligned in source. Their public registries are explicitly deferred until registry ownership and platform-specific release gates are verified."
+    }
+  },
+  "registryScope": {
+    "requiredForStable": ["npm", "github-releases", "github-pages"],
+    "deferred": ["pub.dev", "crates.io", "apple-app-store", "google-play", "microsoft-store"],
+    "deferredPolicy": "A deferred registry does not block the npm 3.0.2 release, but documentation must not claim the artifact is installable from that registry until post-publish smoke evidence exists."
+  },
+  "artifacts": [
+    {"id":"npm-core","ecosystem":"npm","packageName":"@prometheus-ags/entity-graph-core","path":"packages/entity-graph-core","owner":"Prometheus AGS Entity Graph Team","registry":"npm","registryDecision":"required","versionPolicy":"npm-fixed-3.x","stability":"stable","role":"framework-neutral normalized graph"},
+    {"id":"npm-react","ecosystem":"npm","packageName":"@prometheus-ags/prometheus-entity-management","path":"packages/entity-graph-react","owner":"Prometheus AGS Entity Graph Team","registry":"npm","registryDecision":"required","versionPolicy":"npm-fixed-3.x","stability":"stable","role":"React 19 hooks and UI"},
+    {"id":"npm-sdl","ecosystem":"npm","packageName":"@prometheus-ags/entity-graph-sdl","path":"packages/entity-graph-sdl","owner":"Prometheus AGS Entity Graph Team","registry":"npm","registryDecision":"required","versionPolicy":"npm-fixed-3.x","stability":"stable","role":"schema definition language"},
+    {"id":"npm-sync","ecosystem":"npm","packageName":"@prometheus-ags/entity-graph-sync","path":"packages/entity-graph-sync","owner":"Prometheus AGS Entity Graph Team","registry":"npm","registryDecision":"required","versionPolicy":"npm-fixed-3.x","stability":"stable","role":"local-first and CRDT sync providers"},
+    {"id":"npm-svelte","ecosystem":"npm","packageName":"@prometheus-ags/entity-graph-svelte","path":"packages/entity-graph-svelte","owner":"Prometheus AGS Entity Graph Team","registry":"npm","registryDecision":"required","versionPolicy":"npm-fixed-3.x","stability":"stable","role":"Svelte 5 binding"},
+    {"id":"npm-solid","ecosystem":"npm","packageName":"@prometheus-ags/entity-graph-solid","path":"packages/entity-graph-solid","owner":"Prometheus AGS Entity Graph Team","registry":"npm","registryDecision":"required","versionPolicy":"npm-fixed-3.x","stability":"stable","role":"Solid binding"},
+    {"id":"npm-web-components","ecosystem":"npm","packageName":"@prometheus-ags/entity-graph-web-components","path":"packages/entity-graph-web-components","owner":"Prometheus AGS Entity Graph Team","registry":"npm","registryDecision":"required","versionPolicy":"npm-fixed-3.x","stability":"stable","role":"Lit web components"},
+    {"id":"npm-alpine","ecosystem":"npm","packageName":"@prometheus-ags/entity-graph-alpine","path":"packages/entity-graph-alpine","owner":"Prometheus AGS Entity Graph Team","registry":"npm","registryDecision":"required","versionPolicy":"npm-fixed-3.x","stability":"stable","role":"Alpine plugin"},
+    {"id":"npm-htmx","ecosystem":"npm","packageName":"@prometheus-ags/entity-graph-htmx","path":"packages/entity-graph-htmx","owner":"Prometheus AGS Entity Graph Team","registry":"npm","registryDecision":"required","versionPolicy":"npm-fixed-3.x","stability":"stable","role":"HTMX server adapter"},
+    {"id":"npm-a2a","ecosystem":"npm","packageName":"@prometheus-ags/entity-graph-a2a","path":"packages/entity-graph-a2a","owner":"Prometheus AGS Agent Interop Team","registry":"npm","registryDecision":"required","versionPolicy":"npm-fixed-3.x","stability":"stable","role":"A2A reference server"},
+    {"id":"npm-a2ui","ecosystem":"npm","packageName":"@prometheus-ags/a2ui-react","path":"packages/a2ui-react","owner":"Prometheus AGS Agent Interop Team","registry":"npm","registryDecision":"required","versionPolicy":"npm-fixed-3.x","stability":"stable","role":"A2UI React renderer and graph bridge after AG-UI migration"},
+    {"id":"npm-tauri","ecosystem":"npm","packageName":"@prometheus-ags/entity-graph-tauri","path":"packages/entity-graph-tauri","owner":"Prometheus AGS Native Platform Team","registry":"npm","registryDecision":"required","versionPolicy":"npm-fixed-3.x","stability":"stable","role":"Tauri JavaScript binding and bundled Rust plugin"},
+    {"id":"dart-flutter","ecosystem":"dart","packageName":"entity_graph_flutter","path":"packages/entity_graph_flutter","owner":"Prometheus AGS Native Platform Team","registry":"pub.dev","registryDecision":"deferred","versionPolicy":"native-aligned-3.x","stability":"stable","role":"Dart graph and Riverpod adapter"},
+    {"id":"rust-cli","ecosystem":"rust","packageName":"entity-graph-cli","path":"packages/entity-graph-cli","owner":"Prometheus AGS Developer Tools Team","registry":"crates.io","registryDecision":"deferred","versionPolicy":"native-aligned-3.x","stability":"stable","role":"SDL scaffold and code-generation CLI"},
+    {"id":"rust-mcp","ecosystem":"rust","packageName":"entity-graph-mcp","path":"packages/entity-graph-mcp","owner":"Prometheus AGS Agent Interop Team","registry":"crates.io","registryDecision":"deferred","versionPolicy":"native-aligned-3.x","stability":"stable","role":"MCP server binary and library"},
+    {"id":"rust-tauri","ecosystem":"rust","packageName":"entity-graph-tauri","path":"packages/entity-graph-tauri/rust-plugin","owner":"Prometheus AGS Native Platform Team","registry":"bundled-in-npm","registryDecision":"embedded","versionPolicy":"native-aligned-3.x","stability":"stable","role":"Tauri desktop and mobile plugin crate"}
+  ],
+  "compatibility": {
+    "node": "^22.14.0 || ^24.0.0 || >=26.0.0",
+    "pnpm": ">=10.33.0 <12",
+    "typescript": ">=6.0.0 <7",
+    "react": ">=19.0.0 <20",
+    "vite": ">=8.0.0 <9",
+    "nextjs": ">=16.0.0 <17",
+    "flutter": ">=3.44.0 <4",
+    "dart": ">=3.12.0 <4",
+    "rust": ">=1.88.0",
+    "tauri": ">=2.0.0 <3"
+  },
+  "moduleContract": {
+    "npmFormats": ["esm", "commonjs", "typescript-declarations"],
+    "packedConsumerEvidence": ["node-esm", "node-commonjs", "typescript-node16", "typescript-nodenext", "typescript-bundler"],
+    "commonJsExtension": ".cjs",
+    "esmExtension": ".mjs",
+    "declarationExtensions": [".d.ts", ".d.cts"]
+  },
+  "graphContract": {
+    "canonicalCorePackage": "@prometheus-ags/entity-graph-core",
+    "bindings": ["react", "svelte", "solid", "web-components", "alpine", "htmx", "tauri", "flutter"],
+    "singletonRequired": true,
+    "listsStore": "entity-ids-only",
+    "componentDataAccess": "hooks-only",
+    "externalIoOwner": "stores-and-adapters",
+    "nextjsPerRequestGraph": true
+  },
+  "protocols": {
+    "a2ui": {"version":"0.9.1","stability":"stable","renderer":"official-engine","applicationActionPolicy":"allowlisted"},
+    "agui": {"stability":"stable","role":"event-transport","distinctFromA2uiRendering":true},
+    "a2a": {"versionPolicy":"pinned-conformance-matrix","stability":"stable","authenticationBoundary":"http-transport"},
+    "flutterGenui": {"stability":"experimental","protocol":"A2UI 0.9.1","mayOwnCanonicalGraph":false}
+  },
+  "securityBoundaries": {
+    "agentActions": "validated allowlist with explicit approval for destructive mutations",
+    "tenantIsolation": "validated claims and server-enforced authorization",
+    "secrets": "never committed, rendered into client code, logs, screenshots, videos, or evidence manifests",
+    "tauri": "least-privilege capabilities with denial tests",
+    "publication": "OIDC trusted publishing and provenance where supported"
+  },
+  "releaseGates": {
+    "candidate": ["frozen-install","all-tests-and-builds","packed-consumers","security-license-review","five-example-bdd","docs-build-and-links","evidence-manifest"],
+    "stable": ["immutable-sha-certified","rc-clean-consumer","provenance-verified","migration-and-rollback-published","explicit-latest-approval"],
+    "manualAuthority": ["npm-latest","github-pages-production","native-registry-first-publish","platform-signing-and-stores"]
+  },
+  "recoveryPolicy": {
+    "partialPublish": "Stop promotion, inventory immutable published versions, repair only unpublished artifacts, republish a new patch when a published artifact is defective, and move no stable tag until the complete set is certified.",
+    "immutableVersions": "Never overwrite or unpublish a relied-on registry version as a retry mechanism.",
+    "rollback": "Move mutable distribution tags and documentation pointers back to the last certified release; publish a corrective version for immutable artifacts.",
+    "deprecation": "Announce deprecated APIs in types, runtime warnings where safe, changelog, migration guide, and current plus next-major removal policy."
+  },
+  "explicitExclusions": [
+    "KnowMe product applications and product-specific state",
+    "unlicensed Flutter source",
+    "hybrid-mobile-architecture-src placeholder packages",
+    "a first-class Forge adapter without a stable claim requiring it",
+    "assistant-ui without an evidenced UX requirement",
+    "per-patch documentation snapshots",
+    "moving npm latest during a rehearsal"
+  ]
+}

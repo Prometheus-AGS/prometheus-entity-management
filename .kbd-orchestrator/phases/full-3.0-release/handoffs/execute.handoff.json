@@ -1,0 +1,12 @@
+{
+  "stage": "execute",
+  "completedAt": "2026-08-01T11:34:59Z",
+  "outputs": [
+    "execution.md",
+    "progress.json"
+  ],
+  "nextStage": "reflect",
+  "summaryForNext": "OpenSpec is dispatched through KBD-aware /kbd-apply for 28 dependency-ordered changes. Deep-research, Feynman, BDD, and visual-proof contracts are active; the first pending change is v3-release-contract.",
+  "skipped": false,
+  "skipReason": null
+}

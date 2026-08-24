@@ -32,6 +32,8 @@ interface LoroModuleLike {
   LoroDoc: new () => LoroDocLike;
 }
 
+export type LoroModuleLoader = () => Promise<{ LoroDoc: unknown }>;
+
 const ROOT_MAP = "entity";
 
 /** Per-(type:id) Loro document cache so repeated writes converge on one CRDT. */
@@ -51,7 +53,9 @@ function ek(type: string, id: string): string {
  * registerMergeStrategy("Document", loro);
  * ```
  */
-export async function createLoroMergeStrategy(): Promise<MergeStrategy> {
+export async function createLoroMergeStrategy(
+  loadLoro?: LoroModuleLoader,
+): Promise<MergeStrategy> {
   let mod: LoroModuleLike;
   try {
     // `loro-crdt` is an OPTIONAL peer dependency for consumers. It is present as a
@@ -60,7 +64,13 @@ export async function createLoroMergeStrategy(): Promise<MergeStrategy> {
     // (not `@ts-expect-error`) so this stays valid whether or not the module
     // resolves at type-check time in a given install.
     // @ts-ignore optional peer dependency, resolved at runtime
-    mod = (await import(/* @vite-ignore */ "loro-crdt")) as unknown as LoroModuleLike;
+    const loaded = loadLoro
+      ? await loadLoro()
+      : await import(/* @vite-ignore */ "loro-crdt");
+    if (typeof loaded.LoroDoc !== "function") {
+      throw new TypeError("loro-crdt did not export a LoroDoc constructor");
+    }
+    mod = loaded as unknown as LoroModuleLike;
   } catch (cause) {
     throw new Error(
       "[merge/loro] createLoroMergeStrategy requires the optional peer dependency 'loro-crdt'. " +

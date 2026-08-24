@@ -16,7 +16,8 @@ sealed class EntityGraphError implements Exception {
   final int? statusCode;
 
   @override
-  String toString() => '$runtimeType($message${statusCode != null ? ', HTTP $statusCode' : ''})';
+  String toString() =>
+      '$runtimeType($message${statusCode != null ? ', HTTP $statusCode' : ''})';
 }
 
 /// Permanent failure — do not retry.
@@ -38,6 +39,9 @@ final class TransientError extends EntityGraphError {
 /// Convert an arbitrary exception to a typed [EntityGraphError].
 EntityGraphError toEntityGraphError(Object error) {
   if (error is EntityGraphError) return error;
+  if (error is UnimplementedError || error is UnsupportedError) {
+    return TerminalError(error.toString());
+  }
 
   // HTTP-status-bearing objects (e.g. Dio DioException, http.Response).
   final status = _extractStatus(error);

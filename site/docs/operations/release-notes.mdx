@@ -1,0 +1,50 @@
+---
+title: Release notes and changelog
+description: How to read the 3.0 release notes — changelog format, release channels, and where machine-readable release evidence lives.
+---
+
+# Release notes and changelog
+
+## The changelog
+
+`CHANGELOG.md` at the repository root follows
+[Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Each release entry
+groups changes under **Added**, **Changed**, and **Fixed**, states whether the
+release is additive/backward-compatible, and calls out migration-relevant
+items explicitly.
+
+For 3.0, the changelog's *Unreleased — 3.0 release program* section tracks the
+in-progress release; it becomes the stable 3.0.0 entry at publication. The
+2.2.0 entry documents the last 2.x line and is the starting point for the
+[2.x → 3.0 migration](../migration/v2-to-v3.mdx).
+
+## Release channels
+
+| Channel | npm dist-tag | What you get |
+| --- | --- | --- |
+| Stable | `latest` | Certified stable releases |
+| Release candidate | `next` | Numbered `3.0.0-rc.N` candidates from the fail-closed pipeline |
+
+Pin production applications to exact stable versions. Evaluate RCs from `next`
+when you want early access to 3.0 surface and are prepared to follow the
+[alpha/RC → stable migration](../migration/alpha-to-stable.mdx).
+
+## Machine-readable release evidence
+
+Release claims are backed by checked-in contracts, not prose:
+
+| Artifact | Role |
+| --- | --- |
+| `release/v3-release-contract.json` | Artifact, compatibility, maturity, promotion, and recovery authority |
+| `examples/coverage.json` | Implemented quality checks versus planned/certified showcases |
+| `release/dependency-policy.json` | Compatible-current dependency holds |
+| `security/advisory-policy.json` | Production advisory dispositions |
+| `RELEASING.md` | Current publication status and release rules |
+
+## Writing release notes (for maintainers)
+
+- Every user-visible change lands in the changelog **before** its release
+  candidate is planned.
+- Breaking changes link to their migration guide section.
+- Evidence boundaries are stated plainly: an implemented gate certifies its
+  declared scope and nothing more.

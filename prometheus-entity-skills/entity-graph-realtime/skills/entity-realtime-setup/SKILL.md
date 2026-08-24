@@ -35,6 +35,8 @@ metadata:
 
 - WebSocket and most subscriptions are **client-only**: dynamic import or `useEffect` guard with `typeof window !== "undefined"`.
 - Do not instantiate adapters in Server Components.
+- Resolve the provider-owned graph with `useGraphStoreApi()` and pass it as `new RealtimeManager({ store, ... })`; otherwise request-isolated hydration can silently hand realtime writes to the default singleton.
+- Follow `_shared/references/nextjs-app-router.md` for the full request/hydration boundary.
 
 ## Verification
 

@@ -1,0 +1,216 @@
+<!DOCTYPE html><html class="default" lang="en" data-base="../"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@prometheus-ags/entity-graph-alpine | Prometheus Entity Management API</title><meta name="description" content="Documentation for Prometheus Entity Management API"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><link rel="stylesheet" href="../assets/custom.css"/><script defer src="../assets/main.js"></script><script async src="../assets/icons.js" id="tsd-icons-script"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script><script async src="../assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container"><a href="../index.html" class="title">Prometheus Entity Management API</a>
+<div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/>
+<ul role="listbox" id="tsd-search-results"></ul>
+<div id="tsd-search-status" aria-live="polite" aria-atomic="true">
+<div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-menu"></use></svg></a></div></header>
+<div class="container container-main">
+<div class="col-content">
+<div class="tsd-page-title">
+<ul class="tsd-breadcrumb" aria-label="Breadcrumb">
+<li><a href="" aria-current="page">@prometheus-ags/entity-graph-alpine</a></li></ul>
+<h1>Module @prometheus-ags/entity-graph-alpine</h1></div>
+<section class="tsd-panel tsd-typography"><h1 id="prometheus-agsentity-graph-alpine" class="tsd-anchor-link">@prometheus-ags/entity-graph-alpine<a href="#prometheus-agsentity-graph-alpine" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h1>
+<p>Alpine.js plugin for the <a href="../../README.md">Prometheus entity graph</a>. Registers
+<code>$entity(type, id)</code> and <code>$entityList(type, query)</code> magics that wire the
+framework-agnostic <code>@prometheus-ags/entity-graph-core</code> Zustand store into
+Alpine's reactive system via <code>Alpine.reactive()</code>.</p>
+<h2 id="installation" class="tsd-anchor-link">Installation<a href="#installation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<pre><code class="bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">@prometheus-ags/entity-graph-core</span><span class="hl-1"> </span><span class="hl-2">@prometheus-ags/entity-graph-alpine</span><span class="hl-1"> </span><span class="hl-2">alpinejs</span>
+</code><button type="button">Copy</button></pre>
+
+<p><code>@prometheus-ags/entity-graph-core</code> is a required peer: install it explicitly so the application owns the one compatible graph instance. The Alpine binding must not install a private core copy. See the <a href="../../release/binding-singleton-contract.md">binding singleton contract</a>.</p>
+<h2 id="quick-start" class="tsd-anchor-link">Quick Start<a href="#quick-start" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<pre><code class="js"><span class="hl-3">import</span><span class="hl-1"> </span><span class="hl-4">Alpine</span><span class="hl-1"> </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;alpinejs&quot;</span><span class="hl-1">;</span><br/><span class="hl-3">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">EntityGraphAlpinePlugin</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/entity-graph-alpine&quot;</span><span class="hl-1">;</span><br/><span class="hl-3">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">registerEntityTransport</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">makeRestTransport</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/entity-graph-core&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-7">// 1. Register entity transports at app boot (once per entity type).</span><br/><span class="hl-0">registerEntityTransport</span><span class="hl-1">(</span><br/><span class="hl-1">  </span><span class="hl-2">&quot;Invoice&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">makeRestTransport</span><span class="hl-1">({ </span><span class="hl-4">supabase</span><span class="hl-1">, </span><span class="hl-4">table:</span><span class="hl-1"> </span><span class="hl-2">&quot;invoice&quot;</span><span class="hl-1"> }),</span><br/><span class="hl-1">);</span><br/><br/><span class="hl-7">// 2. Install the plugin before Alpine.start().</span><br/><span class="hl-4">Alpine</span><span class="hl-1">.</span><span class="hl-0">plugin</span><span class="hl-1">(</span><span class="hl-4">EntityGraphAlpinePlugin</span><span class="hl-1">);</span><br/><br/><span class="hl-7">// 3. Start Alpine.</span><br/><span class="hl-4">Alpine</span><span class="hl-1">.</span><span class="hl-0">start</span><span class="hl-1">();</span>
+</code><button type="button">Copy</button></pre>
+
+<h2 id="magics" class="tsd-anchor-link">Magics<a href="#magics" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="_" class="tsd-anchor-link"><code>$entity(type, id)</code><a href="#_" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Returns an <code>AlpineEntitySnapshot</code> whose properties update automatically when
+the underlying graph slice changes.</p>
+<pre><code class="html"><span class="hl-9">&lt;</span><span class="hl-12">div</span><span class="hl-1"> </span><span class="hl-11">x-data</span><span class="hl-1">=</span><span class="hl-14">&quot;{ inv: $entity(&#39;Invoice&#39;, invoiceId) }&quot;</span><span class="hl-9">&gt;</span><br/><span class="hl-1">  </span><span class="hl-9">&lt;</span><span class="hl-12">p</span><span class="hl-1"> </span><span class="hl-11">x-show</span><span class="hl-1">=</span><span class="hl-14">&quot;inv.isLoading&quot;</span><span class="hl-9">&gt;</span><span class="hl-1">Loading…</span><span class="hl-9">&lt;/</span><span class="hl-12">p</span><span class="hl-9">&gt;</span><br/><span class="hl-1">  </span><span class="hl-9">&lt;</span><span class="hl-12">p</span><span class="hl-1"> </span><span class="hl-11">x-show</span><span class="hl-1">=</span><span class="hl-14">&quot;inv.error&quot;</span><span class="hl-1"> </span><span class="hl-11">x-text</span><span class="hl-1">=</span><span class="hl-14">&quot;&#39;Error: &#39; + inv.error&quot;</span><span class="hl-9">&gt;&lt;/</span><span class="hl-12">p</span><span class="hl-9">&gt;</span><br/><span class="hl-1">  </span><span class="hl-9">&lt;</span><span class="hl-12">div</span><span class="hl-1"> </span><span class="hl-11">x-show</span><span class="hl-1">=</span><span class="hl-14">&quot;inv.isReady&quot;</span><span class="hl-9">&gt;</span><br/><span class="hl-1">    </span><span class="hl-9">&lt;</span><span class="hl-12">h2</span><span class="hl-1"> </span><span class="hl-11">x-text</span><span class="hl-1">=</span><span class="hl-14">&quot;inv.data.title&quot;</span><span class="hl-9">&gt;&lt;/</span><span class="hl-12">h2</span><span class="hl-9">&gt;</span><br/><span class="hl-1">    </span><span class="hl-9">&lt;</span><span class="hl-12">span</span><span class="hl-1"> </span><span class="hl-11">x-text</span><span class="hl-1">=</span><span class="hl-14">&quot;inv.data.amount&quot;</span><span class="hl-9">&gt;&lt;/</span><span class="hl-12">span</span><span class="hl-9">&gt;</span><br/><span class="hl-1">  </span><span class="hl-9">&lt;/</span><span class="hl-12">div</span><span class="hl-9">&gt;</span><br/><span class="hl-1">  </span><span class="hl-9">&lt;</span><span class="hl-12">button</span><span class="hl-1"> </span><span class="hl-11">@click</span><span class="hl-1">=</span><span class="hl-14">&quot;inv.refetch()&quot;</span><span class="hl-9">&gt;</span><span class="hl-1">Refresh</span><span class="hl-9">&lt;/</span><span class="hl-12">button</span><span class="hl-9">&gt;</span><br/><span class="hl-9">&lt;/</span><span class="hl-12">div</span><span class="hl-9">&gt;</span>
+</code><button type="button">Copy</button></pre>
+
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data</code></td>
+<td><code>T | null</code></td>
+<td>Merged entity (<code>canonical + patches</code>), or <code>null</code> if not loaded</td>
+</tr>
+<tr>
+<td><code>isLoading</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code> while a fetch is in flight</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td><code>string | null</code></td>
+<td>Last fetch error message</td>
+</tr>
+<tr>
+<td><code>isReady</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code> when data is present and not loading</td>
+</tr>
+<tr>
+<td><code>refetch()</code></td>
+<td><code>() =&gt; void</code></td>
+<td>Invalidate and re-fetch</td>
+</tr>
+<tr>
+<td><code>destroy()</code></td>
+<td><code>() =&gt; void</code></td>
+<td>Release graph subscription (called automatically on component destroy)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_-1" class="tsd-anchor-link"><code>$entityList(type, query)</code><a href="#_-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Returns an <code>AlpineEntityList</code> whose <code>items</code> update automatically when any entity
+in the list changes anywhere in the app.</p>
+<pre><code class="html"><span class="hl-9">&lt;</span><span class="hl-12">div</span><span class="hl-1"> </span><span class="hl-11">x-data</span><span class="hl-1">=</span><span class="hl-14">&quot;{ list: $entityList(&#39;Invoice&#39;, { queryKey: [&#39;invoices&#39;], limit: 20 }) }&quot;</span><span class="hl-9">&gt;</span><br/><span class="hl-1">  </span><span class="hl-9">&lt;</span><span class="hl-12">p</span><span class="hl-1"> </span><span class="hl-11">x-show</span><span class="hl-1">=</span><span class="hl-14">&quot;list.isLoading&quot;</span><span class="hl-9">&gt;</span><span class="hl-1">Loading…</span><span class="hl-9">&lt;/</span><span class="hl-12">p</span><span class="hl-9">&gt;</span><br/><span class="hl-1">  </span><span class="hl-9">&lt;</span><span class="hl-12">ul</span><span class="hl-9">&gt;</span><br/><span class="hl-1">    </span><span class="hl-9">&lt;</span><span class="hl-12">template</span><span class="hl-1"> </span><span class="hl-11">x-for</span><span class="hl-1">=</span><span class="hl-14">&quot;item in list.items&quot;</span><span class="hl-1"> </span><span class="hl-11">:key</span><span class="hl-1">=</span><span class="hl-14">&quot;item.id&quot;</span><span class="hl-9">&gt;</span><br/><span class="hl-1">      </span><span class="hl-9">&lt;</span><span class="hl-12">li</span><span class="hl-1"> </span><span class="hl-11">x-text</span><span class="hl-1">=</span><span class="hl-14">&quot;item.title&quot;</span><span class="hl-9">&gt;&lt;/</span><span class="hl-12">li</span><span class="hl-9">&gt;</span><br/><span class="hl-1">    </span><span class="hl-9">&lt;/</span><span class="hl-12">template</span><span class="hl-9">&gt;</span><br/><span class="hl-1">  </span><span class="hl-9">&lt;/</span><span class="hl-12">ul</span><span class="hl-9">&gt;</span><br/><span class="hl-1">  </span><span class="hl-9">&lt;</span><span class="hl-12">p</span><span class="hl-1"> </span><span class="hl-11">x-show</span><span class="hl-1">=</span><span class="hl-14">&quot;list.total !== null&quot;</span><span class="hl-1"> </span><span class="hl-11">x-text</span><span class="hl-1">=</span><span class="hl-14">&quot;list.items.length + &#39; / &#39; + list.total&quot;</span><span class="hl-9">&gt;&lt;/</span><span class="hl-12">p</span><span class="hl-9">&gt;</span><br/><span class="hl-1">  </span><span class="hl-9">&lt;</span><span class="hl-12">button</span><span class="hl-1"> </span><span class="hl-11">@click</span><span class="hl-1">=</span><span class="hl-14">&quot;list.loadMore()&quot;</span><span class="hl-1"> </span><span class="hl-11">x-show</span><span class="hl-1">=</span><span class="hl-14">&quot;list.hasNextPage&quot;</span><span class="hl-1"> </span><span class="hl-11">:disabled</span><span class="hl-1">=</span><span class="hl-14">&quot;list.isLoadingMore&quot;</span><span class="hl-9">&gt;</span><br/><span class="hl-1">    Load more</span><br/><span class="hl-1">  </span><span class="hl-9">&lt;/</span><span class="hl-12">button</span><span class="hl-9">&gt;</span><br/><span class="hl-9">&lt;/</span><span class="hl-12">div</span><span class="hl-9">&gt;</span>
+</code><button type="button">Copy</button></pre>
+
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>items</code></td>
+<td><code>T[]</code></td>
+<td>Resolved entities in list order</td>
+</tr>
+<tr>
+<td><code>isLoading</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code> while the first page loads</td>
+</tr>
+<tr>
+<td><code>isLoadingMore</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code> while loading additional pages</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td><code>string | null</code></td>
+<td>Last fetch error</td>
+</tr>
+<tr>
+<td><code>hasNextPage</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code> when more pages are available</td>
+</tr>
+<tr>
+<td><code>total</code></td>
+<td><code>number | null</code></td>
+<td>Server-reported total row count</td>
+</tr>
+<tr>
+<td><code>loadMore()</code></td>
+<td><code>() =&gt; void</code></td>
+<td>Fetch the next page</td>
+</tr>
+<tr>
+<td><code>refetch()</code></td>
+<td><code>() =&gt; void</code></td>
+<td>Reset and re-fetch from page one</td>
+</tr>
+<tr>
+<td><code>destroy()</code></td>
+<td><code>() =&gt; void</code></td>
+<td>Release graph subscription</td>
+</tr>
+</tbody>
+</table>
+<h4 id="query-options" class="tsd-anchor-link">Query Options<a href="#query-options" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4>
+<pre><code class="ts"><span class="hl-5">interface</span><span class="hl-1"> </span><span class="hl-10">AlpineListQuery</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">queryKey</span><span class="hl-1">: </span><span class="hl-10">unknown</span><span class="hl-1">[] | </span><span class="hl-10">string</span><span class="hl-1">; </span><span class="hl-7">// Stable cache key</span><br/><span class="hl-1">  </span><span class="hl-4">filter</span><span class="hl-1">?: </span><span class="hl-10">Record</span><span class="hl-1">&lt;</span><span class="hl-10">string</span><span class="hl-1">, </span><span class="hl-10">unknown</span><span class="hl-1">&gt;; </span><span class="hl-7">// Transport-agnostic filter</span><br/><span class="hl-1">  </span><span class="hl-4">search</span><span class="hl-1">?: </span><span class="hl-10">string</span><span class="hl-1">;               </span><span class="hl-7">// Free-text search</span><br/><span class="hl-1">  </span><span class="hl-4">limit</span><span class="hl-1">?: </span><span class="hl-10">number</span><span class="hl-1">;                </span><span class="hl-7">// Page size</span><br/><span class="hl-1">  </span><span class="hl-4">enabled</span><span class="hl-1">?: </span><span class="hl-10">boolean</span><span class="hl-1">;             </span><span class="hl-7">// Default true</span><br/><span class="hl-1">  </span><span class="hl-4">staleTime</span><span class="hl-1">?: </span><span class="hl-10">number</span><span class="hl-1">;            </span><span class="hl-7">// ms; overrides engine default</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<h2 id="custom-magic-names" class="tsd-anchor-link">Custom Magic Names<a href="#custom-magic-names" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>Use <code>createEntityGraphPlugin</code> when another plugin already claims <code>$entity</code>:</p>
+<pre><code class="js"><span class="hl-3">import</span><span class="hl-1"> { </span><span class="hl-4">createEntityGraphPlugin</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/entity-graph-alpine&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">Alpine</span><span class="hl-1">.</span><span class="hl-0">plugin</span><span class="hl-1">(</span><br/><span class="hl-1">  </span><span class="hl-0">createEntityGraphPlugin</span><span class="hl-1">({ </span><span class="hl-4">entityMagicName:</span><span class="hl-1"> </span><span class="hl-2">&quot;$ent&quot;</span><span class="hl-1">, </span><span class="hl-4">listMagicName:</span><span class="hl-1"> </span><span class="hl-2">&quot;$entList&quot;</span><span class="hl-1"> })</span><br/><span class="hl-1">);</span>
+</code><button type="button">Copy</button></pre>
+
+<h2 id="how-it-works" class="tsd-anchor-link">How It Works<a href="#how-it-works" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<ol>
+<li>The plugin calls <code>Alpine.magic(name, factory)</code> for each magic.</li>
+<li>Each factory creates an internal reactive cell via <code>Alpine.reactive({})</code>.</li>
+<li>The cell subscribes to <code>graphStore</code> from <code>@prometheus-ags/entity-graph-core</code>
+using Zustand's <code>subscribe</code> with a selector. When the graph slice changes,
+the cell properties are updated — Alpine's reactivity system detects the
+mutation and schedules re-renders for any template expression that read them.</li>
+<li>On component <code>destroy()</code> (or when Alpine calls the registered <code>cleanup</code> fn),
+the Zustand subscription is torn down and the engine subscriber token is
+released (enabling garbage collection of idle entities).</li>
+</ol>
+<h2 id="prerequisites" class="tsd-anchor-link">Prerequisites<a href="#prerequisites" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<ul>
+<li><code>alpinejs &gt;= 3.13</code></li>
+<li>one compatible <code>@prometheus-ags/entity-graph-core</code> version installed by the application (required peer)</li>
+</ul>
+<p>Entity fetching requires at least one transport registered via
+<code>registerEntityTransport(type, transport)</code> before Alpine starts. See
+<a href="_prometheus-ags_entity-graph-core.html">entity-graph-core README</a> for transport setup.</p>
+<h2 id="license" class="tsd-anchor-link">License<a href="#license" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>MIT</p>
+</section>
+<details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Interfaces"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h2 class="tsd-anchor-link" id="interfaces">Interfaces<a href="#interfaces" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary><dl class="tsd-member-summaries"><dt class="tsd-member-summary" id="alpineentitylist"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-alpine.AlpineEntityList.html">AlpineEntityList</a><a href="#alpineentitylist" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="alpineentitysnapshot"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-alpine.AlpineEntitySnapshot.html">AlpineEntitySnapshot</a><a href="#alpineentitysnapshot" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="alpinelistquery"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-alpine.AlpineListQuery.html">AlpineListQuery</a><a href="#alpinelistquery" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="entitybindingoptions"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-alpine.EntityBindingOptions.html">EntityBindingOptions</a><a href="#entitybindingoptions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="entitygraphalpinepluginoptions"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><a href="../interfaces/_prometheus-ags_entity-graph-alpine.EntityGraphAlpinePluginOptions.html">EntityGraphAlpinePluginOptions</a><a href="#entitygraphalpinepluginoptions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd></dl></details>
+<details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Type Aliases"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h2 class="tsd-anchor-link" id="type-aliases">Type Aliases<a href="#type-aliases" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary><dl class="tsd-member-summaries"><dt class="tsd-member-summary" id="entityid"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Type Alias"><use href="../assets/icons.svg#icon-2097152"></use></svg><a href="../types/_prometheus-ags_entity-graph-alpine.EntityId.html">EntityId</a><a href="#entityid" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="entitytype"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Type Alias"><use href="../assets/icons.svg#icon-2097152"></use></svg><a href="../types/_prometheus-ags_entity-graph-alpine.EntityType.html">EntityType</a><a href="#entitytype" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd></dl></details>
+<details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Functions"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h2 class="tsd-anchor-link" id="functions">Functions<a href="#functions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary><dl class="tsd-member-summaries"><dt class="tsd-member-summary" id="createentitybinding"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-alpine.createEntityBinding.html">createEntityBinding</a><a href="#createentitybinding" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="createentitygraphplugin"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-alpine.createEntityGraphPlugin.html">createEntityGraphPlugin</a><a href="#createentitygraphplugin" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="createlistbinding"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-alpine.createListBinding.html">createListBinding</a><a href="#createlistbinding" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="entitygraphalpineplugin"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><a href="../functions/_prometheus-ags_entity-graph-alpine.EntityGraphAlpinePlugin.html">EntityGraphAlpinePlugin</a><a href="#entitygraphalpineplugin" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd></dl></details></div>
+<div class="col-sidebar">
+<div class="page-menu">
+<div class="tsd-navigation settings">
+<details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div>
+<div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>On This Page</h3></summary>
+<div class="tsd-accordion-details"><a href="#prometheus-agsentity-graph-alpine"><span>@prometheus-<wbr/>ags/entity-<wbr/>graph-<wbr/>alpine</span></a>
+<ul>
+<li><a href="#installation"><span>Installation</span></a></li>
+<li><a href="#quick-start"><span>Quick <wbr/>Start</span></a></li>
+<li><a href="#magics"><span>Magics</span></a></li>
+<li>
+<ul>
+<li><a href="#_"><span></span></a></li>
+<li><a href="#_-1"><span></span></a></li>
+<li>
+<ul>
+<li><a href="#query-options"><span>Query <wbr/>Options</span></a></li></ul></li></ul></li>
+<li><a href="#custom-magic-names"><span>Custom <wbr/>Magic <wbr/>Names</span></a></li>
+<li><a href="#how-it-works"><span>How <wbr/>It <wbr/>Works</span></a></li>
+<li><a href="#prerequisites"><span>Prerequisites</span></a></li>
+<li><a href="#license"><span>License</span></a></li></ul>
+<details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Interfaces"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Interfaces</summary>
+<div><a href="#alpineentitylist"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Alpine<wbr/>Entity<wbr/>List</span></a><a href="#alpineentitysnapshot"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Alpine<wbr/>Entity<wbr/>Snapshot</span></a><a href="#alpinelistquery"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Alpine<wbr/>List<wbr/>Query</span></a><a href="#entitybindingoptions"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Entity<wbr/>Binding<wbr/>Options</span></a><a href="#entitygraphalpinepluginoptions"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Interface"><use href="../assets/icons.svg#icon-256"></use></svg><span>Entity<wbr/>Graph<wbr/>Alpine<wbr/>Plugin<wbr/>Options</span></a></div></details>
+<details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Type Aliases"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Type Aliases</summary>
+<div><a href="#entityid"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Type Alias"><use href="../assets/icons.svg#icon-2097152"></use></svg><span>Entity<wbr/>Id</span></a><a href="#entitytype"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Type Alias"><use href="../assets/icons.svg#icon-2097152"></use></svg><span>Entity<wbr/>Type</span></a></div></details>
+<details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Functions"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Functions</summary>
+<div><a href="#createentitybinding"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>create<wbr/>Entity<wbr/>Binding</span></a><a href="#createentitygraphplugin"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>create<wbr/>Entity<wbr/>Graph<wbr/>Plugin</span></a><a href="#createlistbinding"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>create<wbr/>List<wbr/>Binding</span></a><a href="#entitygraphalpineplugin"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Function"><use href="../assets/icons.svg#icon-64"></use></svg><span>Entity<wbr/>Graph<wbr/>Alpine<wbr/>Plugin</span></a></div></details></div></details></div>
+<div class="site-menu">
+<nav class="tsd-navigation"><a href="../index.html">Prometheus Entity Management API</a>
+<ul class="tsd-small-nested-navigation" id="tsd-nav-container">
+<li>Loading...</li></ul></nav></div></div></div><footer>
+<p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer>
+<div class="overlay"></div></body></html>

@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-vite-react19-example",
+  "task": 3,
+  "recordedAt": "2026-08-23T12:55:34.196Z",
+  "status": "pass",
+  "evidenceBoundary": {
+    "kind": "source-workspace-production-browser",
+    "countsAsPackedPackageEvidence": false,
+    "packageCertificationOwnedBy": "v3-package-module-contracts"
+  },
+  "versions": {
+    "node": "v24.15.0",
+    "pnpm": "10.33.0",
+    "react": "19.2.8",
+    "vite": "8.2.0",
+    "playwright": "1.62.1",
+    "typescript": "6.0.2",
+    "packageCandidate": "3.0.0-rc.1"
+  },
+  "commands": [
+    {
+      "label": "react-typecheck",
+      "command": "pnpm --filter @prometheus-ags/prometheus-entity-management typecheck",
+      "startedAt": "2026-08-23T12:54:58.939Z",
+      "completedAt": "2026-08-23T12:55:00.931Z",
+      "exitCode": 0
+    },
+    {
+      "label": "vite-typecheck",
+      "command": "pnpm --filter prometheus-entity-management-vite typecheck",
+      "startedAt": "2026-08-23T12:55:00.931Z",
+      "completedAt": "2026-08-23T12:55:04.123Z",
+      "exitCode": 0
+    },
+    {
+      "label": "entity-query-unit",
+      "command": "pnpm --filter @prometheus-ags/prometheus-entity-management exec vitest run src/hooks/use-entity-query.test.ts src/hooks-suspense.test.tsx --reporter verbose",
+      "startedAt": "2026-08-23T12:55:04.123Z",
+      "completedAt": "2026-08-23T12:55:05.709Z",
+      "exitCode": 0
+    },
+    {
+      "label": "core-package-build",
+      "command": "pnpm --filter @prometheus-ags/entity-graph-core build",
+      "startedAt": "2026-08-23T12:55:05.709Z",
+      "completedAt": "2026-08-23T12:55:07.255Z",
+      "exitCode": 0
+    },
+    {
+      "label": "react-package-build",
+      "command": "pnpm --filter @prometheus-ags/prometheus-entity-management build",
+      "startedAt": "2026-08-23T12:55:07.255Z",
+      "completedAt": "2026-08-23T12:55:10.324Z",
+      "exitCode": 0
+    },
+    {
+      "label": "sync-package-build",
+      "command": "pnpm --filter @prometheus-ags/entity-graph-sync build",
+      "startedAt": "2026-08-23T12:55:10.324Z",
+      "completedAt": "2026-08-23T12:55:11.526Z",
+      "exitCode": 0
+    },
+    {
+      "label": "vite-production-build",
+      "command": "pnpm --filter prometheus-entity-management-vite build",
+      "startedAt": "2026-08-23T12:55:11.526Z",
+      "completedAt": "2026-08-23T12:55:15.815Z",
+      "exitCode": 0
+    },
+    {
+      "label": "vite-production-browser",
+      "command": "pnpm exec playwright test --config tests/browser/v3-vite-react19-example.playwright.config.ts",
+      "startedAt": "2026-08-23T12:55:15.815Z",
+      "completedAt": "2026-08-23T12:55:34.195Z",
+      "exitCode": 0
+    }
+  ],
+  "unit": {
+    "status": "pass",
+    "testFiles": [
+      "packages/entity-graph-react/src/hooks/use-entity-query.test.ts",
+      "packages/entity-graph-react/src/hooks-suspense.test.tsx"
+    ],
+    "sourceModes": [
+      "local",
+      "remote",
+      "hybrid"
+    ],
+    "initialRemoteSeedsBaseList": true
+  },
+  "production": {
+    "typecheck": "pass",
+    "build": "pass",
+    "app": "examples/vite-app"
+  },
+  "browser": {
+    "status": "pass",
+    "project": "chromium-desktop",
+    "expectedTests": 3,
+    "unexpectedTests": 0,
+    "declaredScenarioIds": [
+      "example.graph.normalized-cross-view",
+      "example.crud.optimistic-confirm",
+      "example.crud.optimistic-rollback",
+      "example.relationship.cascade-invalidation",
+      "example.view.local-remote-hybrid",
+      "example.transport.rest-graphql-equivalence",
+      "example.realtime.coalesced-cross-view",
+      "example.offline.persistence-convergence",
+      "example.runtime.lifecycle-security"
+    ],
+    "scenarios": {
+      "example.graph.normalized-cross-view": {
+        "status": "pass",
+        "proof": {
+          "firstTitle": "Implement Iroh QUIC transport layer",
+          "selectedTitle": "Tauri v2 shell integration",
+          "listAndDetailShareGraph": true
+        }
+      },
+      "example.view.local-remote-hybrid": {
+        "status": "pass",
+        "proof": {
+          "modes": [
+            "local",
+            "remote",
+            "hybrid"
+          ],
+          "oneTypedViewContract": true
+        }
+      },
+      "example.transport.rest-graphql-equivalence": {
+        "status": "pass",
+        "proof": {
+          "modes": [
+            "demo-rest",
+            "demo-graphql"
+          ],
+          "liveModesRemainExplicitOptIn": true
+        }
+      },
+      "example.crud.optimistic-confirm": {
+        "status": "pass",
+        "proof": {
+          "outcome": "confirmed",
+          "patchClearedAfterConfirmation": true
+        }
+      },
+      "example.crud.optimistic-rollback": {
+        "status": "pass",
+        "proof": {
+          "outcome": "rolled-back",
+          "patchClearedAfterRejection": true
+        }
+      },
+      "example.relationship.cascade-invalidation": {
+        "status": "pass",
+        "proof": {
+          "priorProject": "p1",
+          "relationEdgesInvalidated": true
+        }
+      },
+      "example.realtime.coalesced-cross-view": {
+        "status": "pass",
+        "proof": {
+          "receivedChanges": 3,
+          "graphWrites": 1,
+          "finalStatus": "review"
+        }
+      },
+      "example.offline.persistence-convergence": {
+        "status": "pass",
+        "proof": {
+          "pglitePersisted": true,
+          "pgliteHydrated": true,
+          "loroConverged": true
+        }
+      },
+      "example.runtime.lifecycle-security": {
+        "status": "pass",
+        "proof": {
+          "suspenseResolved": true,
+          "errorContainedByNearestBoundary": true,
+          "seriousAccessibilityViolations": 0,
+          "criticalAccessibilityViolations": 0
+        }
+      },
+      "example.runtime.devtools": {
+        "status": "pass",
+        "proof": {
+          "metrics": [
+            "Entities",
+            "Lists",
+            "Subscribers",
+            "Patches"
+          ],
+          "projectsLiveGraphOnly": true
+        }
+      }
+    },
+    "accessibility": {
+      "status": "pass",
+      "serious": 0,
+      "critical": 0
+    }
+  },
+  "artifacts": [
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-browser-graph-and-transports.png",
+      "sha256": "c6309d47bc73e218783b5aa29ba696525cea4d39ee344177965ce43062d940b0"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-browser-mutations-and-realtime.png",
+      "sha256": "e2b693b7426c31b8afcdb6877b87bc93c35f5b8a03e9b837939b95e977842969"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-browser-offline-lifecycle-a11y.png",
+      "sha256": "dcd285a68e873e154246bd56f3f33c94c6cb30b7bf46ab4a13c34c72896b58c8"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/playwright-artifacts/v3-vite-react19-example-PG-1be77--DevTools-and-accessibility-chromium-desktop/trace.zip",
+      "sha256": "fb43aa18f549d82d9cad82fec0ce49c36801c1ba826cf258e51abdbc0a4385fa"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/playwright-artifacts/v3-vite-react19-example-no-73518-odes-and-REST-GraphQL-seams-chromium-desktop/trace.zip",
+      "sha256": "faaee252dc56270035459d7a062ff58c04c38e0395bbc180d013219494819a96"
+    },
+    {
+      "path": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/playwright-artifacts/v3-vite-react19-example-op-f8f42-ade-and-realtime-coalescing-chromium-desktop/trace.zip",
+      "sha256": "02db734a5478dd72f4a21882dc5f648823992f007c5429580977c8a038792914"
+    }
+  ]
+}

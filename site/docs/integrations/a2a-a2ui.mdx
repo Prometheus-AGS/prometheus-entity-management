@@ -1,0 +1,51 @@
+---
+title: "Integration: A2A + A2UI"
+description: Expose the graph to agents over the A2A protocol and render agent output as A2UI surfaces, with policy authority enforced server-side.
+---
+
+# Integration: A2A + A2UI
+
+Two packages cover agent-facing surfaces:
+
+- `@prometheus-ags/entity-graph-a2a` — an A2A v1 JSON-RPC agent server with
+  **graph policy authority**: entity/action/field allowlists, tenant
+  authorization, human approval for destructive operations.
+- `@prometheus-ags/a2ui-react` — official A2UI v0.9.1 surfaces plus AG-UI
+  chat entry points for rendering agent output.
+
+## Setup
+
+```bash
+pnpm add @prometheus-ags/entity-graph-a2a @prometheus-ags/a2ui-react
+```
+
+## The policy boundary
+
+The agent never touches the graph directly. Every agent-initiated action
+crosses the declared catalog before any write — the agentic example proves
+this with denied deletes, tenant refusals, and malformed-payload rejection.
+Policy configuration lives in the server, not the client; see the
+[agentic tutorial](/docs/examples/agentic-a2ui) for the full walkthrough.
+
+## Rendering agent output
+
+Agent artifacts render as official A2UI surfaces through the maintained
+renderer; application-owned surface projections (like the example's
+task-board sync messages) validate against the official schema.
+
+## Deterministic demo mode vs. live credentials
+
+- **Demo:** the agentic example runs a deterministic A2A agent **in-page** —
+  no HTTP hop, no model credential, golden transcripts pinned in CI.
+- **Live:** point external-agent endpoints at HTTPS or loopback only; store
+  no credentials in the client. Model keys belong to the agent host
+  (server-side), never to the graph, the A2UI surface, or entity data.
+
+## Troubleshooting
+
+- **Actions silently dropped:** the catalog is fail-closed — an undeclared
+  entity/action/field is denied, not warned. Check the policy log.
+- **Golden transcript drift:** regenerate with `UPDATE_GOLDEN=1` only for
+  intentional protocol changes and review the diff.
+
+Runnable source: [`examples/agentic-a2ui`](https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/examples/agentic-a2ui).

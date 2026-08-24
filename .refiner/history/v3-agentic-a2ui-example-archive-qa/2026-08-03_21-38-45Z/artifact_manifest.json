@@ -1,0 +1,19 @@
+{
+  "artifact_type": "content",
+  "variants": [
+    {"name": "archive-qa-report", "file": "dist/archive-qa-report.md", "format": "markdown", "description": "Constraint-by-constraint agentic A2UI archive-readiness disposition."},
+    {"name": "validation", "file": "dist/validation.json", "format": "json", "description": "Machine-readable deterministic QA results and scope boundary."}
+  ],
+  "preview": {"required": false, "runs": []},
+  "validation": {
+    "preview_status": "pass",
+    "has_console_errors": false,
+    "has_request_failures": false,
+    "notes": [
+      "Direct content QA artifact; no additional browser preview is required.",
+      "The retained task-5 production Chromium evidence supplies visual and accessibility proof."
+    ]
+  },
+  "sizes": [],
+  "generated_at": "2026-08-03T21:37:20Z"
+}

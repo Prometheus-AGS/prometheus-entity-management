@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/task-6-current-mobile-evidence.json",
+      "line": 52,
+      "claim": "The change records task-6 retained PNG evidence as required runtime artifacts but the diff does not add those PNG bodies, so a clean checkout of this diff cannot satisfy the 23-artifact hash requirement.",
+      "evidence": "The task-6 receipt lists retained PNG artifacts at lines 52, 60, and 68, while the diff only adds the task-6 XML files and JSON receipt; the packet inventory also states those five task-6 artifacts are `git-index-tracked=false | pending-in-this-change=true`, and the blocking termination condition requires `all 23 retained artifact hashes` to pass.",
+      "suggested_fix": "Stage and include the three task-6 PNG artifacts (`task-6-current-android-runtime.png`, `task-6-current-android-capability-denial.png`, and `task-6-current-ios-runtime.png`) in the final diff/commit, or remove the receipt claims and verifier requirements."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

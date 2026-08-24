@@ -14,7 +14,7 @@
  * Alpine.start();
  * ```
  *
- * Both magics wire `useGraphStore.subscribe` to `Alpine.reactive()` so that
+ * Both magics wire `graphStore.subscribe` to `Alpine.reactive()` so that
  * any `x-text` / `:bind` / `x-show` expression that reads a property from the
  * returned object is automatically tracked and re-evaluated when the underlying
  * graph slice changes.

@@ -1,7 +1,8 @@
 import { useMemo, useSyncExternalStore } from "react";
 import { useStore } from "zustand";
-import { useGraphStore, type GraphState } from "@prometheus-ags/entity-graph-core";
+import type { GraphState } from "@prometheus-ags/entity-graph-core";
 import { getActiveSubscriberCount, subscribeSubscriberStats } from "@prometheus-ags/entity-graph-core";
+import { useGraphStoreApi } from "./graph-store";
 
 function collectGraphDevStats(
   entities: GraphState["entities"],
@@ -75,16 +76,17 @@ function subscriberCountServerSnapshot() {
  * update through the Zustand store.
  */
 export function useGraphDevTools() {
+  const storeApi = useGraphStoreApi();
   const subscriberCount = useSyncExternalStore(
     subscribeSubscriberStats,
-    getActiveSubscriberCount,
+    () => getActiveSubscriberCount(storeApi),
     subscriberCountServerSnapshot
   );
 
-  const entities = useStore(useGraphStore, (state) => state.entities);
-  const patches = useStore(useGraphStore, (state) => state.patches);
-  const entityStates = useStore(useGraphStore, (state) => state.entityStates);
-  const listsState = useStore(useGraphStore, (state) => state.lists);
+  const entities = useStore(storeApi, (state) => state.entities);
+  const patches = useStore(storeApi, (state) => state.patches);
+  const entityStates = useStore(storeApi, (state) => state.entityStates);
+  const listsState = useStore(storeApi, (state) => state.lists);
 
   const graphPart = useMemo(
     () => collectGraphDevStats(entities, patches, entityStates, listsState),

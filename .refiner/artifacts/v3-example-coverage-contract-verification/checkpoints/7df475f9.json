@@ -1,0 +1,31 @@
+{
+  "refinement_id": "9ca882b1-6885-47d9-9d68-40ff3c976201",
+  "artifact_name": "v3-example-coverage-contract-verification",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-01T17:17:13Z",
+  "updated_at": "2026-08-01T17:19:06Z",
+  "current_iteration": 0,
+  "max_iterations": 5,
+  "goals": [],
+  "constraints": [],
+  "phases_completed": [],
+  "convergence_status": "running",
+  "iteration_history": [],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "ea75f4a0",
+      "phase": "specify",
+      "iteration": 0,
+      "timestamp": "2026-08-01T17:19:04Z"
+    },
+    {
+      "checkpoint_id": "cd19ea7c",
+      "phase": "plan",
+      "iteration": 0,
+      "timestamp": "2026-08-01T17:19:06Z"
+    }
+  ],
+  "prior_cycle_id": null
+}

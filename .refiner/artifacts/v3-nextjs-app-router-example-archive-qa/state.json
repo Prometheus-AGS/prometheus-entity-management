@@ -1,0 +1,91 @@
+{
+  "refinement_id": "eb548fe2-93fa-4cbf-a1d7-c8e067a2c188",
+  "artifact_name": "v3-nextjs-app-router-example-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-03T16:31:55Z",
+  "updated_at": "2026-08-03T16:34:24Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Correct the cycle-4 incomplete-alias-scan critical with complete copied-tree evidence.",
+    "Preserve the frozen React rc.1 lane and avoid publication overclaim."
+  ],
+  "constraints": [
+    {
+      "id": "acceptance-direct-evidence",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "packed-consumer-boundary",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "ssr-hydration-runtime",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "visual-accessibility-integrity",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "ledgers-synchronized",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "limits-and-release-lanes-explicit",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "security-boundary-fail-closed",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "no-publication-overclaim",
+      "severity": "blocking",
+      "status": "satisfied"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-03T16:31:55Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "23ae3822",
+      "phase": "persist",
+      "iteration": 1,
+      "timestamp": "2026-08-03T16:34:23Z"
+    }
+  ],
+  "prior_cycle_id": "002133fd-50f7-45e4-b762-9693aa8f442b",
+  "finalized_at": "2026-08-03T16:34:24Z"
+}

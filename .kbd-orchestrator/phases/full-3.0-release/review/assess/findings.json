@@ -1,0 +1,57 @@
+{
+  "mode": "artifact",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "assessment.md",
+      "claim": "The assessment's release-workflow blocker is unsupported by the packet because it relies on a workflow file that is absent from the file tree and cited paths.",
+      "evidence": "Assessment claim: \"`.github/workflows/publish.yml` reads the private root workspace manifest... and invokes `pnpm publish` at the root\" and \"Direct repository evidence: publish workflow lines 35\u201336... line 64...\". Packet evidence omission: `file_tree` contains no `.github` directory or `.github/workflows/publish.yml`, and `cited_paths` does not list that workflow.",
+      "suggested_fix": "Include `.github/workflows/publish.yml` in the evidence packet or restate the blocker as unverified until the workflow file is available for review."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "assessment.md",
+      "claim": "The assessment treats remote `main` installation failure as a critical blocker without packet evidence for the remote manifest, lockfile diff, or CI failure.",
+      "evidence": "Assessment claim: \"Remote `main` changes `examples/nextjs-app` from Recharts `3.8.0` to `3.9.2` without synchronizing the lockfile. The latest CI and Publish runs fail during frozen installation.\" Packet evidence omission: neither `examples/nextjs-app/package.json`, `pnpm-lock.yaml` contents, CI logs, nor a remote diff are included in `cited_paths`; `file_tree` only lists the paths' existence.",
+      "suggested_fix": "Add the relevant manifest/lockfile diff and CI failure output, or downgrade this to a hypothesis requiring verification from current `origin/main`."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "assessment.md",
+      "claim": "The assessment asserts all twelve packages have invalid CommonJS entries, but the packet does not contain per-package manifests or built entry files to substantiate the all-packages scope.",
+      "evidence": "Assessment claim: \"All twelve packages emit CommonJS code as `dist/index.js` while declaring `\\\"type\\\": \\\"module\\\"`\" and \"Publint reports the same three material warnings for every package.\" Packet evidence omission: `cited_paths` lists only `EXISTS dist/index.js` and does not list any `packages/*/package.json`, `packages/*/dist/index.js`, publint output, or tarball metadata for the twelve packages.",
+      "suggested_fix": "Include a per-package table with package.json `type`/`exports` values, built file paths, and publint/Node smoke output for each package."
+    },
+    {
+      "severity": "WARNING",
+      "file": "assessment.md",
+      "claim": "The assessment's package inventory includes exact versions for twelve npm packages without packet evidence for those package manifests.",
+      "evidence": "Assessment claim: \"Twelve npm packages exist at `3.0.0-alpha.0`\" followed by twelve package names. Packet evidence omission: `file_tree` shows package directories, but `cited_paths` does not include the corresponding `packages/*/package.json` files needed to verify package names, npm publishability, or versions.",
+      "suggested_fix": "Cite each package manifest or add a generated inventory showing package name, version, private flag, and publish target."
+    },
+    {
+      "severity": "WARNING",
+      "file": "assessment.md",
+      "claim": "The Flint ecosystem alignment section makes external-repository factual claims that are not supported by the packet.",
+      "evidence": "Assessment claim: \"The latest local and fetched remote changes in `flint-realtime-fabric`, `flint-gate`, and `flint-forge` materially affect the v3 documentation, skills, and integration contract.\" Packet evidence omission: `file_tree` contains only this repository and no Flint repositories; `cited_paths` includes no Flint repository files, commits, or fetched remote evidence.",
+      "suggested_fix": "Either attach the Flint repository evidence used for these conclusions or mark this section as external context requiring separate validation before it drives planning."
+    },
+    {
+      "severity": "WARNING",
+      "file": "assessment.md",
+      "claim": "The dependency/security assessment relies on audit counts and latest-version claims without including the audit report or dependency manifests needed to verify them.",
+      "evidence": "Assessment claim: \"`pnpm audit --prod --json` reports 1 critical, 25 high, 38 moderate, and 5 low advisories\" and a table of \"Current/resolved\" versus \"Latest observed\" versions. Packet evidence omission: no `pnpm audit` output, relevant package manifests, lockfile excerpts, or registry-query output are included in `cited_paths`.",
+      "suggested_fix": "Attach the audit JSON summary and dependency/version evidence, or separate these as recommendations pending dependency-audit verification."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

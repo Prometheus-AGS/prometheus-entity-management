@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["GraphPluginState","ListEntry"],"type":["EntityMap","ListMap","SnapshotMap"]};

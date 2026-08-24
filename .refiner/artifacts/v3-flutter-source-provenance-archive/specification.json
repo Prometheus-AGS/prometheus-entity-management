@@ -1,0 +1,36 @@
+{
+  "specification": {
+    "artifact_name": "v3-flutter-source-provenance-archive",
+    "clarified_intent": {
+      "description": "Independently audit the Flutter provenance implementation and archive evidence without overclaiming Dart runtime or full-release readiness.",
+      "domain": "source-provenance-and-release-evidence"
+    },
+    "constraints": [
+      "Every plan acceptance claim must have direct repository-contained evidence.",
+      "One canonical Dart owner and the non-buildable provenance boundary must remain intact.",
+      "Unapproved source, missing mappings, license drift, duplicate ownership, and publication authority must fail closed.",
+      "Visual evidence must prove lineage without fabricating Flutter UI or accessibility evidence.",
+      "All runtime, platform, legal, security, certification, and publication limits must remain explicit."
+    ],
+    "target_state": {
+      "description": "A reproducible archive bundle with zero unsupported runtime, platform, certification, or publication claims.",
+      "success_criteria": [
+        "All provenance tests and BDD pass",
+        "Git history, mappings, licenses, and canonical ownership verify",
+        "Evidence JSON parses and every referenced path exists",
+        "Coverage, skills, package, documentation, and release ledgers agree",
+        "Visual boundary is hash-bound and independently inspected",
+        "Publication remains unauthorized"
+      ],
+      "measurable_outcomes": [
+        { "metric": "blocking validation failures", "threshold": "0" },
+        { "metric": "unsupported publication claims", "threshold": "0" },
+        { "metric": "mandatory skipped task-owned tests", "threshold": "0" }
+      ]
+    },
+    "content_type": "direct:content",
+    "unknowns": [],
+    "requires_code_execution": true,
+    "likely_tools": ["node-test", "cucumber", "git", "package-contract-verifier", "json-parser", "image-inspection"]
+  }
+}

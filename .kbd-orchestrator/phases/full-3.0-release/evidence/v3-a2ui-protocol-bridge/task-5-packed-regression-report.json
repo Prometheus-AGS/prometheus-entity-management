@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-01T20:08:57.324Z",
+  "packages": {
+    "@prometheus-ags/entity-graph-core": {
+      "payload": "pass",
+      "manifest": "pass",
+      "files": 9
+    },
+    "@prometheus-ags/a2ui-react": {
+      "payload": "pass",
+      "manifest": "pass",
+      "files": 17
+    }
+  },
+  "consumers": {
+    "esm": "pass",
+    "commonjs": "pass",
+    "typescriptNodeNext": "pass",
+    "typescriptNode16": "pass",
+    "serverRender": "pass"
+  },
+  "protocol": "v0.9.1",
+  "workspaceAliases": "forbidden"
+}

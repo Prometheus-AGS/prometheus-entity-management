@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-23T12:33:45.268Z",
+  "docsRoot": "prometheus-entity-skills",
+  "evidenceBoundary": {
+    "kind": "packed-consumer",
+    "countsAsPackedPackageEvidence": true
+  },
+  "snippets": {
+    "total": 19,
+    "sources": 15
+  },
+  "packages": [
+    "@prometheus-ags/a2ui-react",
+    "@prometheus-ags/entity-graph-a2a",
+    "@prometheus-ags/entity-graph-core",
+    "@prometheus-ags/entity-graph-sync",
+    "@prometheus-ags/prometheus-entity-management"
+  ],
+  "lanes": {
+    "pack": "pass",
+    "consumerInstall": "pass",
+    "snippetCompile": "pass"
+  }
+}

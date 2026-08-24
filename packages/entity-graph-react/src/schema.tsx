@@ -53,11 +53,12 @@ export interface BuildEntityFieldsFromSchemaOptions {
 export function useSchemaEntityFields<TEntity extends object = Record<string, unknown>>(
   opts: GetEntityJsonSchemaOptions & { schema?: JsonSchemaObject; rootField?: string },
 ) {
+  const { entityType, field, rootField, schemaId, schema: suppliedSchema } = opts;
   return useMemo(() => {
-    const schema = opts.schema ?? getEntityJsonSchema(opts)?.schema;
+    const schema = suppliedSchema ?? getEntityJsonSchema({ entityType, field, schemaId })?.schema;
     if (!schema) return [];
-    return buildEntityFieldsFromSchema<TEntity>({ schema, rootField: opts.rootField ?? opts.field });
-  }, [opts.entityType, opts.field, opts.rootField, opts.schemaId, opts.schema]);
+    return buildEntityFieldsFromSchema<TEntity>({ schema, rootField: rootField ?? field });
+  }, [entityType, field, rootField, schemaId, suppliedSchema]);
 }
 
 export function buildEntityFieldsFromSchema<TEntity extends object = Record<string, unknown>>(

@@ -1,0 +1,35 @@
+{
+  "specification": {
+    "artifact_name": "v3-a2a-conformance-agent-archive",
+    "clarified_intent": {
+      "description": "Independently audit the A2A implementation and archive evidence so KBD does not overclaim release readiness.",
+      "domain": "code-and-release-evidence"
+    },
+    "constraints": [
+      "All claimed A2A behavior must have executable source or packed-artifact evidence.",
+      "Public exports, declarations, examples, skills, and release docs must agree.",
+      "Known protocol, platform, security, visual, and publication limits must remain explicit.",
+      "No visual evidence may be fabricated for a headless protocol boundary.",
+      "Deterministic tests, types, lint, package contracts, and structured evidence must pass."
+    ],
+    "target_state": {
+      "description": "A technically sound, reproducible archive bundle with no unsupported full-3.0 or publication claim.",
+      "success_criteria": [
+        "A2A conformance and release tests pass",
+        "Packed external executor is exercised",
+        "Evidence JSON parses and referenced evidence exists",
+        "Skills and coverage ledgers validate",
+        "Publication remains unauthorized"
+      ],
+      "measurable_outcomes": [
+        { "metric": "blocking validation failures", "threshold": "0" },
+        { "metric": "unsupported publication claims", "threshold": "0" },
+        { "metric": "mandatory skipped task-owned tests", "threshold": "0" }
+      ]
+    },
+    "content_type": "direct:code",
+    "unknowns": [],
+    "requires_code_execution": true,
+    "likely_tools": ["vitest", "typescript", "eslint", "package-contract-verifier", "json-parser"]
+  }
+}

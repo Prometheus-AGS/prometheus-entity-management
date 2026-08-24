@@ -1,0 +1,9 @@
+{
+  "executedAt": "2026-08-02T12:34:51.902572Z",
+  "strictness": "strict",
+  "evaluationDomain": "software release certification",
+  "score": 0.0,
+  "classifications": [],
+  "correctionMandatory": false,
+  "deltaSummary": "No changes needed: the disposition keeps change archive readiness, full certification, external authority, and stable publication independent and makes no public-state claim."
+}

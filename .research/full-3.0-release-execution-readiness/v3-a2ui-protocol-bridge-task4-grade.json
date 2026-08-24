@@ -1,0 +1,28 @@
+{
+  "grade_id": "grade-v3-a2ui-protocol-bridge-task4-1785613528",
+  "goal_id": "full-3.0-release-execution-readiness",
+  "concept_id": "official-a2ui-documentation-boundary",
+  "learner_id": "codex-root",
+  "graded_at": "2026-08-01T19:45:28Z",
+  "explanation_excerpt": "Official A2UI is the blueprint interpreter; Prometheus policy is the security desk. Protocol validity never grants application authority.",
+  "scores": {
+    "completeness": 0.98,
+    "accuracy": 0.99,
+    "clarity": 0.97,
+    "misconceptions_absent": 1
+  },
+  "overall_score": 0.985,
+  "gaps": [],
+  "transfer_problems": [
+    "What happens when a schema-valid action targets a non-allowlisted tenant field?",
+    "Does bundling the official ESM runtime into a CommonJS artifact transfer protocol ownership to Prometheus?"
+  ],
+  "transfer_scores": [
+    1,
+    1
+  ],
+  "passed": true,
+  "pass_threshold": 0.7,
+  "grading_method": "Source-grounded self-assessment against primary A2UI documentation, local source, built artifacts, and executable receipts; no claim of human learner mastery is made."
+}
+

@@ -1,0 +1,33 @@
+{
+  "grade_id": "grade-a2a-v1-prometheus-boundary-1785618000",
+  "goal_id": "v3-a2a-conformance-agent",
+  "concept_id": "a2a-v1-prometheus-boundary",
+  "learner_id": "codex-root",
+  "graded_at": "2026-08-01T21:00:00Z",
+  "explanation_excerpt": "Calling a wooden box a standard container does not make it fit cranes, ships, or customs systems.",
+  "scores": {
+    "completeness": 0.95,
+    "accuracy": 0.97,
+    "clarity": 0.96,
+    "misconceptions_absent": 1.0
+  },
+  "overall_score": 0.96,
+  "gaps": [
+    {
+      "dimension": "completeness",
+      "description": "Exact official SDK executor event types and TCK invocation flags remain implementation details for tasks 2 and 3, where they will be verified against the pinned source rather than guessed here.",
+      "corpus_ref": "extension-and-proof"
+    }
+  ],
+  "transfer_problems": [
+    "A caller authenticates successfully but requests a forbidden graph field mutation. Where must the request stop, and what invariant proves the denial?",
+    "A JSON-RPC TCK subset passes while REST and gRPC were not declared. What may the release claim?",
+    "How should A2UI v0.9.1 be represented when the dedicated official A2A extension page remains v0.8 legacy?",
+    "What happens when a consumer sends tasks/send to the stable v1 endpoint?"
+  ],
+  "transfer_scores": [0.98, 0.98, 0.94, 0.96],
+  "passed": true,
+  "pass_threshold": 0.7,
+  "misconception_review": "No corpus misconception appears in the explanation or transfer answers.",
+  "grading_method": "Source-grounded self-assessment because the user explicitly authorized autonomous teach-yourself execution; no claim of human learner mastery is made."
+}

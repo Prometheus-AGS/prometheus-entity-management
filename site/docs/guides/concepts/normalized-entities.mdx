@@ -1,0 +1,60 @@
+---
+title: Normalized entities
+description: Why every entity lives exactly once in the graph, keyed by type and ID, and how updates propagate to every view.
+---
+
+# Normalized entities
+
+In a query-owns-data stack, the same task can live in a list cache, a detail
+cache, and a search cache at once — three copies, three drift risks. Prometheus
+inverts this: **the graph is the single source of truth**, and every entity
+lives exactly once.
+
+## The rule
+
+`entities[type][id]` holds the canonical, server-confirmed record. Nothing
+else in the application is allowed to hold a copy of entity data — only the
+`(type, id)` reference.
+
+```text
+entities: {
+  task: {
+    "t-1": { id: "t-1", title: "Ship 3.0", status: "open" },
+  },
+  project: {
+    "p-9": { id: "p-9", name: "Release" },
+  },
+}
+```
+
+When `task/t-1` changes, every component reading `(task, t-1)` — a row in a
+list, a detail sheet, a badge in a header — re-renders from the same write.
+There is no invalidation choreography because there is nothing to invalidate:
+there is only one copy.
+
+## Writes go through the store
+
+Graph mutations (`upsertEntity`, `replaceEntity`, `removeEntity`) live on the
+graph store and are called by stores/adapters and the engine — never by UI
+code:
+
+```ts
+import { useGraphStore } from "@prometheus-ags/prometheus-entity-management";
+
+// Inside a store/adapter or engine fetcher — the I/O-owning layer:
+useGraphStore.getState().upsertEntity("task", "t-1", {
+  id: "t-1",
+  title: "Ship 3.0",
+  status: "open",
+});
+```
+
+## Why normalization wins
+
+- **Cross-view reactivity for free** — one write, every reader updates.
+- **Bounded memory** — N views of the same entity cost one record.
+- **Deterministic merge points** — normalization happens once, in the query's
+  `normalize` function, not ad hoc in components.
+
+Next: [ID-only lists](/docs/guides/concepts/id-only-lists) — how collections
+stay live without storing data.

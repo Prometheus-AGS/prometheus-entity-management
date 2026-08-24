@@ -1,0 +1,24 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    {"id": "acceptance-direct-evidence", "description": "Every bounded React plan acceptance criterion must map to reproducible current evidence.", "severity": "blocking", "type": "structural", "validation": {"requires_code_execution": true, "validation_method": "acceptance matrix and evidence path checks"}},
+    {"id": "clean-and-packed-boundaries-distinct", "description": "Source-workspace browser evidence must remain distinct from tarball-only package evidence.", "severity": "blocking", "type": "semantic", "validation": {"requires_code_execution": true, "validation_method": "receipt boundary assertions and packed-package report"}},
+    {"id": "scenario-surface-complete", "description": "All nine React-owned scenario IDs plus DevTools diagnostics must have passing evidence.", "severity": "blocking", "type": "technical", "validation": {"requires_code_execution": true, "validation_method": "coverage verifier and browser receipt assertions"}, "target_metric": {"metric": "owned scenarios", "operator": "==", "value": 9}},
+    {"id": "visual-and-hash-integrity", "description": "Implementation and clean-room browser evidence must remain separately named, hash-matched, and free of serious or critical axe violations.", "severity": "blocking", "type": "accessibility", "validation": {"requires_code_execution": true, "validation_method": "SHA-256 recomputation and receipt assertions"}, "target_metric": {"metric": "serious plus critical axe violations", "operator": "==", "value": 0}},
+    {"id": "ledgers-and-evidence-synchronized", "description": "Coverage, docs, OpenSpec tasks, Changesets, and evidence paths must agree on the implemented React state and incomplete full release.", "severity": "blocking", "type": "structural", "validation": {"requires_code_execution": true, "validation_method": "coverage, OpenSpec, Changesets, JSON, and file checks"}},
+    {"id": "limits-and-broader-blockers-explicit", "description": "Uncertified browsers/live integrations and current broader Flutter/Tauri/full-portfolio blockers must remain explicit and unwaived.", "severity": "blocking", "type": "semantic", "validation": {"requires_code_execution": false, "validation_method": "cross-file scope disposition review"}},
+    {"id": "no-publication-overclaim", "description": "QA may certify implementation but must not claim npm publication, immutable-source certification, or authority to split the twelve-package fixed group.", "severity": "blocking", "type": "semantic", "validation": {"requires_code_execution": true, "validation_method": "publication fields and release-policy assertions"}}
+  ],
+  "global_rules": [
+    "Use current repository evidence as authoritative.",
+    "Do not convert an external/manual gate into a passing repository claim.",
+    "Do not mutate npm or any other public release state.",
+    "Lead reflection with gaps and deltas rather than success claims."
+  ],
+  "termination_conditions": [
+    "All seven blocking constraints pass.",
+    "Both manifest variants exist and are non-empty.",
+    "Manifest, constraints, and refinement state validate.",
+    "No material correction remains before fresh adversarial review."
+  ]
+}

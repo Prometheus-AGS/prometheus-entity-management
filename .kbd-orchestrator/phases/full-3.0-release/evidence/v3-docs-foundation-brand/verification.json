@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-docs-foundation-brand",
+  "generatedAt": "2026-08-23T12:49:37.999Z",
+  "evidenceBoundary": {
+    "kind": "static-build",
+    "countsAsPackedPackageEvidence": false,
+    "note": "Proves the private docs workspace builds with broken-links-throw and that site dependencies are isolated from publishable packages."
+  },
+  "commands": [
+    {
+      "label": "static-build",
+      "command": "pnpm --filter @prometheus-ags/entity-graph-docs-site build",
+      "exitCode": 0
+    }
+  ],
+  "lanes": {
+    "configIntegrity": "pass",
+    "dependencyIsolation": "pass",
+    "brandAssets": "pass",
+    "staticBuild": "pass"
+  },
+  "failures": [],
+  "limits": {
+    "visualReview": "Light/dark theme rendering and responsive nav are asserted via build output and CSS presence; pixel-level visual review remains manual.",
+    "deployment": "GitHub Pages deployment and DNS are owned by v3-docs-github-pages; this lane proves local static build only."
+  },
+  "result": "pass"
+}

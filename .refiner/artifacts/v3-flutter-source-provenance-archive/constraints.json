@@ -1,0 +1,21 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    { "id": "c1", "description": "Every provenance acceptance claim has direct evidence.", "severity": "blocking", "type": "technical", "validation": { "requires_code_execution": true, "validation_method": "history, manifest, verifier, unit, and BDD evidence" } },
+    { "id": "c2", "description": "One canonical Dart owner and the non-public provenance boundary remain intact.", "severity": "blocking", "type": "structural", "validation": { "requires_code_execution": true, "validation_method": "workspace, export, package, release, and docs ledgers" } },
+    { "id": "c3", "description": "Exclusions, tampering, duplicate ownership, and publication overclaims fail closed.", "severity": "blocking", "type": "security", "validation": { "requires_code_execution": true, "validation_method": "adversarial unit and BDD tests" } },
+    { "id": "c4", "description": "Visual evidence is legible, hash-bound, and limited to source lineage.", "severity": "blocking", "type": "visual", "validation": { "requires_code_execution": true, "validation_method": "original-resolution inspection and sha256" } },
+    { "id": "c5", "description": "Runtime, platform, legal, security, certification, and publication limits remain explicit.", "severity": "blocking", "type": "semantic", "validation": { "requires_code_execution": true, "validation_method": "structured final evidence assertions" } },
+    { "id": "c6", "description": "All deterministic archive gates pass without hidden mandatory skips.", "severity": "blocking", "type": "technical", "validation": { "requires_code_execution": true, "validation_method": "clean/focused gate set and skip audit" } }
+  ],
+  "global_rules": [
+    "pnpm is the only JavaScript package manager.",
+    "The provenance import must never become a build or publication package.",
+    "Archiving this change cannot authorize publication or full-release certification.",
+    "Headless lineage evidence cannot be described as Flutter UI or accessibility certification."
+  ],
+  "termination_conditions": [
+    "Terminate only when blocking validation failures are zero.",
+    "Terminate with publicationAuthorized=false and all downstream owners explicit."
+  ]
+}

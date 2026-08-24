@@ -1,7 +1,7 @@
 /**
  * EntityListController — Lit 3 ReactiveController for a list query.
  *
- * Subscribes to `useGraphStore` and calls `requestUpdate()` on the host
+ * Subscribes to `graphStore` and calls `requestUpdate()` on the host
  * whenever the list ids, entity payloads, or list metadata change.
  * `items` is resolved by joining list ids against the entity graph on every
  * read, providing the same cross-view reactivity guarantee as the React binding.
@@ -11,7 +11,7 @@
 
 import type { ReactiveController, ReactiveControllerHost } from "lit";
 import {
-  useGraphStore,
+  graphStore,
   fetchList,
   getEngineOptions,
   serializeKey,
@@ -31,7 +31,7 @@ function resolveItems<TEntity extends object>(
   type: EntityType,
   ids: EntityId[]
 ): TEntity[] {
-  const state = useGraphStore.getState();
+  const state = graphStore.getState();
   const bucket = state.entities[type] ?? {};
   const patchBucket = state.patches[type] ?? {};
   const items: TEntity[] = [];
@@ -122,7 +122,7 @@ export class EntityListController<TRaw, TEntity extends object>
   refetch(): void {
     const { fetch: fetchFn, normalize } = this.#opts;
     if (!fetchFn || !normalize) return;
-    useGraphStore.getState().invalidateLists(this.#listKey);
+    graphStore.getState().invalidateLists(this.#listKey);
     this.#doFetch(true);
   }
 
@@ -135,7 +135,7 @@ export class EntityListController<TRaw, TEntity extends object>
       this.#opts;
     if (!fetchFn || !normalize) return;
 
-    const graphState = useGraphStore.getState();
+    const graphState = graphStore.getState();
     const listState = graphState.lists[this.#listKey] ?? EMPTY_LIST_STATE;
     if (!listState.hasNextPage) return;
     if (listState.isFetching || listState.isFetchingMore) return;
@@ -172,7 +172,7 @@ export class EntityListController<TRaw, TEntity extends object>
     const type = this.#type;
     const listKey = this.#listKey;
 
-    this.#unsubscribe = useGraphStore.subscribe(
+    this.#unsubscribe = graphStore.subscribe(
       (state) => ({
         listSlice: state.lists[listKey] ?? EMPTY_LIST_STATE,
         entities: state.entities[type],
@@ -186,7 +186,7 @@ export class EntityListController<TRaw, TEntity extends object>
   }
 
   #syncFromGraph(): void {
-    const state = useGraphStore.getState();
+    const state = graphStore.getState();
     const listState = state.lists[this.#listKey] ?? EMPTY_LIST_STATE;
 
     this.items = resolveItems<TEntity>(this.#type, listState.ids);
@@ -214,7 +214,7 @@ export class EntityListController<TRaw, TEntity extends object>
 
     const engineOpts = getEngineOptions();
     const effectiveStaleTime = staleTime ?? engineOpts.defaultStaleTime;
-    const graphState = useGraphStore.getState();
+    const graphState = graphStore.getState();
     const listState = graphState.lists[this.#listKey];
     const lastFetched = listState?.lastFetched ?? 0;
     const isStale = force || Date.now() - lastFetched > effectiveStaleTime;

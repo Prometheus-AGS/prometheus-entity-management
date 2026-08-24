@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the EntityGraph class from the entity_graph_flutter library, for the Dart programming language.">
+  <title>EntityGraph class - entity_graph_flutter library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">entity_graph_flutter</a></li>
+    <li><a href="../entity_graph_flutter/">entity_graph_flutter.dart</a></li>
+    <li class="self-crumb">EntityGraph class</li>
+  </ol>
+  <div class="self-name">EntityGraph</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="entity_graph_flutter&#47;entity_graph_flutter-library-sidebar.html"
+    data-below-sidebar="entity_graph_flutter&#47;EntityGraph-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">EntityGraph</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>Normalized entity graph — the single source of truth.</p>
+<p>Mirrors the Zustand <code>GraphState</code> from entity-graph-core's graph.ts.
+All writes are synchronous and notify <a href="../entity_graph_flutter/EntityGraph/changes.html">changes</a>.</p>
+</section>
+
+
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="EntityGraph.new" class="callable">
+          <span class="name"><a href="../entity_graph_flutter/EntityGraph/EntityGraph.html">EntityGraph</a></span><span class="signature">()</span>
+        </dt>
+        <dd>
+          Creates an isolated graph, primarily for provider overrides and tests.
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="changes" class="property">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/changes.html">changes</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../entity_graph_flutter/GraphChange-class.html">GraphChange</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  Stream of all graph changes. Subscribe once at a high level and
+selectively react to <a href="../entity_graph_flutter/EntityChanged-class.html">EntityChanged</a> / <a href="../entity_graph_flutter/ListChanged-class.html">ListChanged</a> events.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="appendListResult" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/appendListResult.html">appendListResult</a></span><span class="signature">(<wbr><span class="parameter" id="appendListResult-param-queryKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">queryKey</span>, </span><span class="parameter" id="appendListResult-param-ids"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">ids</span>, {</span><span class="parameter" id="appendListResult-param-entityType"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">entityType</span>, </span><span class="parameter" id="appendListResult-param-total"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">total</span>, </span><span class="parameter" id="appendListResult-param-nextCursor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nextCursor</span>, </span><span class="parameter" id="appendListResult-param-hasNextPage"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">hasNextPage</span> = <span class="default-value">false</span></span>})
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="clearPatch" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/clearPatch.html">clearPatch</a></span><span class="signature">(<wbr><span class="parameter" id="clearPatch-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="clearPatch-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Drop all patches for an entity.
+  
+
+</dd>
+
+        <dt id="dispose" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/dispose.html">dispose</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Dispose the change stream. Call when the graph is no longer needed.
+  
+
+</dd>
+
+        <dt id="entityIds" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/entityIds.html">entityIds</a></span><span class="signature">(<wbr><span class="parameter" id="entityIds-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Iterable-class.html">Iterable</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  All entity ids for a given type.
+  
+
+</dd>
+
+        <dt id="entityState" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/entityState.html">entityState</a></span><span class="signature">(<wbr><span class="parameter" id="entityState-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="entityState-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../entity_graph_flutter/EntityState-class.html">EntityState</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Fetch/cache state for a single entity.
+  
+
+</dd>
+
+        <dt id="insertIdInList" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/insertIdInList.html">insertIdInList</a></span><span class="signature">(<wbr><span class="parameter" id="insertIdInList-param-queryKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">queryKey</span>, </span><span class="parameter" id="insertIdInList-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span>, </span><span class="parameter" id="insertIdInList-param-position"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">position</span>, {</span><span class="parameter" id="insertIdInList-param-entityType"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">entityType</span></span>})
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="invalidateEntity" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/invalidateEntity.html">invalidateEntity</a></span><span class="signature">(<wbr><span class="parameter" id="invalidateEntity-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, {</span><span class="parameter" id="invalidateEntity-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">id</span></span>})
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="invalidateLists" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/invalidateLists.html">invalidateLists</a></span><span class="signature">(<wbr><span class="parameter" id="invalidateLists-param-prefix"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">prefix</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="invalidateListsForType" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/invalidateListsForType.html">invalidateListsForType</a></span><span class="signature">(<wbr><span class="parameter" id="invalidateListsForType-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Mark every list registered for <code>type</code> stale.
+  
+
+</dd>
+
+        <dt id="invalidateType" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/invalidateType.html">invalidateType</a></span><span class="signature">(<wbr><span class="parameter" id="invalidateType-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="listState" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/listState.html">listState</a></span><span class="signature">(<wbr><span class="parameter" id="listState-param-queryKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">queryKey</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../entity_graph_flutter/ListState-class.html">ListState</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  List slot for a query key.
+  
+
+</dd>
+
+        <dt id="markEntityOptimistic" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/markEntityOptimistic.html">markEntityOptimistic</a></span><span class="signature">(<wbr><span class="parameter" id="markEntityOptimistic-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="markEntityOptimistic-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Mark the current visible entity as a local optimistic value.
+  
+
+</dd>
+
+        <dt id="markEntitySynced" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/markEntitySynced.html">markEntitySynced</a></span><span class="signature">(<wbr><span class="parameter" id="markEntitySynced-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="markEntitySynced-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Mark an entity as confirmed without changing its canonical payload.
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="patchEntity" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/patchEntity.html">patchEntity</a></span><span class="signature">(<wbr><span class="parameter" id="patchEntity-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="patchEntity-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span>, </span><span class="parameter" id="patchEntity-param-patch"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a>?</span>&gt;</span></span> <span class="parameter-name">patch</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Merge UI-only fields into the patch layer.
+  
+
+</dd>
+
+        <dt id="readCanonicalEntity" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/readCanonicalEntity.html">readCanonicalEntity</a></span><span class="signature">(<wbr><span class="parameter" id="readCanonicalEntity-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="readCanonicalEntity-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a>?</span>&gt;</span>?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Read canonical server-confirmed data without UI/optimistic patches.
+  
+
+</dd>
+
+        <dt id="readEntity" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/readEntity.html">readEntity</a></span><span class="signature">(<wbr><span class="parameter" id="readEntity-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="readEntity-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a>?</span>&gt;</span>?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Read canonical entity merged with patches, or <code>null</code> if absent.
+  
+
+</dd>
+
+        <dt id="readEntityPatch" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/readEntityPatch.html">readEntityPatch</a></span><span class="signature">(<wbr><span class="parameter" id="readEntityPatch-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="readEntityPatch-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a>?</span>&gt;</span>?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Read only the local patch layer for an entity.
+  
+
+</dd>
+
+        <dt id="readEntitySnapshot" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/readEntitySnapshot.html">readEntitySnapshot</a></span><span class="signature">(<wbr><span class="parameter" id="readEntitySnapshot-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="readEntitySnapshot-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a>?</span>&gt;</span>?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Read entity + sync metadata fields (<code>\$synced</code>, <code>\$origin</code>, <code>\$updatedAt</code>).
+  
+
+</dd>
+
+        <dt id="removeEntity" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/removeEntity.html">removeEntity</a></span><span class="signature">(<wbr><span class="parameter" id="removeEntity-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="removeEntity-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Remove canonical entity, patches, and entity state.
+  
+
+</dd>
+
+        <dt id="removeEntityOptimistically" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/removeEntityOptimistically.html">removeEntityOptimistically</a></span><span class="signature">(<wbr><span class="parameter" id="removeEntityOptimistically-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="removeEntityOptimistically-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../entity_graph_flutter/EntityRemovalSnapshot-class.html">EntityRemovalSnapshot</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Remove an entity optimistically and return everything needed to roll back.
+  
+
+</dd>
+
+        <dt id="removeIdFromAllLists" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/removeIdFromAllLists.html">removeIdFromAllLists</a></span><span class="signature">(<wbr><span class="parameter" id="removeIdFromAllLists-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="removeIdFromAllLists-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="replaceEntity" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/replaceEntity.html">replaceEntity</a></span><span class="signature">(<wbr><span class="parameter" id="replaceEntity-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="replaceEntity-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span>, </span><span class="parameter" id="replaceEntity-param-data"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a>?</span>&gt;</span></span> <span class="parameter-name">data</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Replace the canonical entity entirely (no merge).
+  
+
+</dd>
+
+        <dt id="reset" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/reset.html">reset</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Reset the entire graph state. Intended for tests only.
+  
+
+</dd>
+
+        <dt id="restoreRemovedEntity" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/restoreRemovedEntity.html">restoreRemovedEntity</a></span><span class="signature">(<wbr><span class="parameter" id="restoreRemovedEntity-param-snapshot"><span class="type-annotation"><a href="../entity_graph_flutter/EntityRemovalSnapshot-class.html">EntityRemovalSnapshot</a></span> <span class="parameter-name">snapshot</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Restore a failed optimistic removal from its graph-owned receipt.
+  
+
+</dd>
+
+        <dt id="setEntityError" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/setEntityError.html">setEntityError</a></span><span class="signature">(<wbr><span class="parameter" id="setEntityError-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="setEntityError-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span>, </span><span class="parameter" id="setEntityError-param-error"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">error</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="setEntityFetched" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/setEntityFetched.html">setEntityFetched</a></span><span class="signature">(<wbr><span class="parameter" id="setEntityFetched-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="setEntityFetched-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="setEntityFetching" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/setEntityFetching.html">setEntityFetching</a></span><span class="signature">(<wbr><span class="parameter" id="setEntityFetching-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="setEntityFetching-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span>, {</span><span class="parameter" id="setEntityFetching-param-fetching"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">fetching</span></span>})
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="setEntityStale" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/setEntityStale.html">setEntityStale</a></span><span class="signature">(<wbr><span class="parameter" id="setEntityStale-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="setEntityStale-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span>, {</span><span class="parameter" id="setEntityStale-param-stale"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">stale</span></span>})
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="setEntitySyncMetadata" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/setEntitySyncMetadata.html">setEntitySyncMetadata</a></span><span class="signature">(<wbr><span class="parameter" id="setEntitySyncMetadata-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="setEntitySyncMetadata-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span>, </span><span class="parameter" id="setEntitySyncMetadata-param-metadata"><span class="type-annotation"><a href="../entity_graph_flutter/EntitySyncMetadata-class.html">EntitySyncMetadata</a></span> <span class="parameter-name">metadata</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Restore an exact sync-metadata value after optimistic rollback.
+  
+
+</dd>
+
+        <dt id="setListError" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/setListError.html">setListError</a></span><span class="signature">(<wbr><span class="parameter" id="setListError-param-queryKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">queryKey</span>, </span><span class="parameter" id="setListError-param-error"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">error</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="setListFetching" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/setListFetching.html">setListFetching</a></span><span class="signature">(<wbr><span class="parameter" id="setListFetching-param-queryKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">queryKey</span>, {</span><span class="parameter" id="setListFetching-param-fetching"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">fetching</span></span>})
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="setListFetchingMore" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/setListFetchingMore.html">setListFetchingMore</a></span><span class="signature">(<wbr><span class="parameter" id="setListFetchingMore-param-queryKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">queryKey</span>, {</span><span class="parameter" id="setListFetchingMore-param-fetchingMore"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">fetchingMore</span></span>})
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="setListResult" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/setListResult.html">setListResult</a></span><span class="signature">(<wbr><span class="parameter" id="setListResult-param-queryKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">queryKey</span>, </span><span class="parameter" id="setListResult-param-ids"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">ids</span>, {</span><span class="parameter" id="setListResult-param-entityType"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">entityType</span>, </span><span class="parameter" id="setListResult-param-total"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">total</span>, </span><span class="parameter" id="setListResult-param-nextCursor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nextCursor</span>, </span><span class="parameter" id="setListResult-param-prevCursor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">prevCursor</span>, </span><span class="parameter" id="setListResult-param-hasNextPage"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">hasNextPage</span> = <span class="default-value">false</span>, </span><span class="parameter" id="setListResult-param-hasPrevPage"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">hasPrevPage</span> = <span class="default-value">false</span></span>})
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="setListStale" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/setListStale.html">setListStale</a></span><span class="signature">(<wbr><span class="parameter" id="setListStale-param-queryKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">queryKey</span>, {</span><span class="parameter" id="setListStale-param-stale"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">stale</span></span>})
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="syncMetadata" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/syncMetadata.html">syncMetadata</a></span><span class="signature">(<wbr><span class="parameter" id="syncMetadata-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="syncMetadata-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../entity_graph_flutter/EntitySyncMetadata-class.html">EntitySyncMetadata</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Sync metadata for an entity, defaulting to a server-confirmed record.
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="unpatchEntity" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/unpatchEntity.html">unpatchEntity</a></span><span class="signature">(<wbr><span class="parameter" id="unpatchEntity-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="unpatchEntity-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span>, </span><span class="parameter" id="unpatchEntity-param-keys"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">keys</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Remove specific patch keys.
+  
+
+</dd>
+
+        <dt id="upsertEntities" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/upsertEntities.html">upsertEntities</a></span><span class="signature">(<wbr><span class="parameter" id="upsertEntities-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="upsertEntities-param-entries"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter">(<span class="field">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a>?</span>&gt;</span></span> <span class="field-name">data</span>, </span><span class="field"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="field-name">id</span>}</span>)</span>&gt;</span></span> <span class="parameter-name">entries</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Batch upsert — single notification pass.
+  
+
+</dd>
+
+        <dt id="upsertEntity" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/upsertEntity.html">upsertEntity</a></span><span class="signature">(<wbr><span class="parameter" id="upsertEntity-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="upsertEntity-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span>, </span><span class="parameter" id="upsertEntity-param-data"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a>?</span>&gt;</span></span> <span class="parameter-name">data</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Shallow-merge <code>data</code> into the canonical entity.
+  
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section class="summary offset-anchor" id="static-properties">
+    <h2>Static Properties</h2>
+    <dl class="properties">
+        <dt id="instance" class="property">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/instance.html">instance</a></span>
+  <span class="signature">&#8594; <a href="../entity_graph_flutter/EntityGraph-class.html">EntityGraph</a></span>
+  
+
+</dt>
+<dd>
+  Singleton instance (mirrors the module-global Zustand store).
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">entity_graph_flutter</a></li>
+    <li><a href="../entity_graph_flutter/">entity_graph_flutter</a></li>
+    <li class="self-crumb">EntityGraph class</li>
+</ol>
+
+    <h5>entity_graph_flutter library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    entity_graph_flutter
+      3.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

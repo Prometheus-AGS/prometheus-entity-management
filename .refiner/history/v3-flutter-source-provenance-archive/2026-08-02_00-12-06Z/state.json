@@ -1,0 +1,49 @@
+{
+  "refinement_id": "666c17a6-edc9-4c76-a4b3-c5ff85d0238a",
+  "artifact_name": "v3-flutter-source-provenance-archive",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-02T00:06:59Z",
+  "updated_at": "2026-08-02T00:12:06Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Prove every provenance archive claim without overclaiming Dart runtime or full-release readiness."
+  ],
+  "constraints": [
+    "c1",
+    "c2",
+    "c3",
+    "c4",
+    "c5",
+    "c6"
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "blocking_satisfied": 6,
+      "blocking_violated": 0,
+      "decision": "terminate",
+      "timestamp": "2026-08-02T00:08:00Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "40ded141",
+      "phase": "persist",
+      "iteration": 1,
+      "timestamp": "2026-08-02T00:12:06Z"
+    }
+  ],
+  "prior_cycle_id": null,
+  "finalized_at": "2026-08-02T00:12:06Z"
+}

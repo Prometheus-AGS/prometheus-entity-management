@@ -5,21 +5,29 @@
     "README.md",
     "AGENTS.md",
     "CLAUDE.md",
-    "openspec/specs/v1-0.md"
+    "release/v3-release-contract.json",
+    "openspec/specs/v3-release-contract/spec.md",
+    "openspec/specs/v3-main-ci-baseline/spec.md",
+    "openspec/specs/v3-package-module-contracts/spec.md",
+    "openspec/specs/v3-framework-neutral-core/spec.md",
+    "openspec/specs/v3-binding-singleton-contract/spec.md",
+    "openspec/specs/v3-example-coverage-contract/spec.md"
   ],
   "openspec": {
     "config": "openspec/config.yaml",
-    "umbrella_change": "openspec/changes/archive/2026-04-04-prometheus-v1-0-release"
+    "umbrella_change": "openspec/changes/archive/2026-08-01-v3-release-contract"
   },
   "kbd": {
-    "process_state": "assessment_ready",
-    "activePhase": "phase-v3-universal-platform-evolution",
+    "process_state": "executing",
+    "activePhase": "full-3.0-release",
     "last_closed_phase": "phase-v2-realtime-fabric-parity",
     "last_closure_at": "2026-06-21T20:15:00.000Z",
-    "active_phase": "phase-v3-universal-platform-evolution"
+    "active_phase": "full-3.0-release"
   },
   "source_roots": [
     "src"
   ],
-  "stack": "typescript-react-zustand"
+  "stack": "typescript-react-zustand",
+  "activePhase": "full-3.0-release",
+  "updatedAt": "2026-08-01T17:26:50Z"
 }

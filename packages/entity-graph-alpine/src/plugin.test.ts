@@ -9,12 +9,12 @@
  * 5. Custom magic names via `createEntityGraphPlugin` options.
  *
  * We stub Alpine's `magic()` and `reactive()` to keep this test pure (no DOM,
- * no JSDOM). The core `useGraphStore` is the real Zustand store — we write
+ * no JSDOM). The core `graphStore` is the real Zustand store — we write
  * directly into it to simulate graph updates.
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { useGraphStore } from "@prometheus-ags/entity-graph-core";
+import { graphStore } from "@prometheus-ags/entity-graph-core";
 import { EntityGraphAlpinePlugin, createEntityGraphPlugin, createEntityBinding, createListBinding } from "./index.js";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -52,9 +52,9 @@ function makeAlpineStub() {
 
 beforeEach(() => {
   // Clear all entities/lists/patches between tests.
-  const s = useGraphStore.getState();
+  const s = graphStore.getState();
   // Reset by removing any seeded entities to avoid cross-test pollution.
-  useGraphStore.setState({
+  graphStore.setState({
     entities: {},
     patches: {},
     entityStates: {},
@@ -104,7 +104,7 @@ describe("createEntityBinding", () => {
 
   it("returns entity data when already in the graph", () => {
     // Seed the graph directly (simulates what fetchEntity would do).
-    useGraphStore.getState().upsertEntity("Post", "post-1", {
+    graphStore.getState().upsertEntity("Post", "post-1", {
       id: "post-1",
       title: "Hello World",
     });
@@ -116,8 +116,8 @@ describe("createEntityBinding", () => {
   });
 
   it("isReady is false while loading", () => {
-    useGraphStore.getState().upsertEntity("Post", "post-2", { id: "post-2" });
-    useGraphStore.getState().setEntityFetching("Post", "post-2", true);
+    graphStore.getState().upsertEntity("Post", "post-2", { id: "post-2" });
+    graphStore.getState().setEntityFetching("Post", "post-2", true);
 
     const binding = createEntityBinding(stubReactive, "Post", "post-2");
     expect(binding.isLoading).toBe(true);
@@ -126,12 +126,12 @@ describe("createEntityBinding", () => {
   });
 
   it("syncs updates when the graph slice changes", async () => {
-    useGraphStore.getState().upsertEntity("Post", "post-3", { id: "post-3", title: "v1" });
+    graphStore.getState().upsertEntity("Post", "post-3", { id: "post-3", title: "v1" });
     const binding = createEntityBinding(stubReactive, "Post", "post-3");
     expect((binding.data as Record<string, unknown>)?.title).toBe("v1");
 
     // Simulate a graph update (e.g. from a realtime event).
-    useGraphStore.getState().upsertEntity("Post", "post-3", { id: "post-3", title: "v2" });
+    graphStore.getState().upsertEntity("Post", "post-3", { id: "post-3", title: "v2" });
 
     // The subscription fires synchronously in Zustand (no await needed).
     expect((binding.data as Record<string, unknown>)?.title).toBe("v2");
@@ -146,13 +146,13 @@ describe("createEntityBinding", () => {
   });
 
   it("destroy() stops receiving graph updates", () => {
-    useGraphStore.getState().upsertEntity("Post", "post-4", { id: "post-4", title: "initial" });
+    graphStore.getState().upsertEntity("Post", "post-4", { id: "post-4", title: "initial" });
     const binding = createEntityBinding(stubReactive, "Post", "post-4");
     binding.destroy();
 
     // After destroy, further graph writes should not update the binding.
     const dataBefore = binding.data;
-    useGraphStore.getState().upsertEntity("Post", "post-4", { id: "post-4", title: "updated" });
+    graphStore.getState().upsertEntity("Post", "post-4", { id: "post-4", title: "updated" });
     // The binding's cell was not mutated after destroy — data is still the old value
     // (the cell object itself is no longer subscribed).
     // We just verify no error is thrown and the binding remains usable as a snapshot.
@@ -161,8 +161,8 @@ describe("createEntityBinding", () => {
   });
 
   it("merges patches into data", () => {
-    useGraphStore.getState().upsertEntity("Post", "post-5", { id: "post-5", title: "Base" });
-    useGraphStore.getState().patchEntity("Post", "post-5", { _selected: true });
+    graphStore.getState().upsertEntity("Post", "post-5", { id: "post-5", title: "Base" });
+    graphStore.getState().patchEntity("Post", "post-5", { _selected: true });
 
     const binding = createEntityBinding(stubReactive, "Post", "post-5");
     const data = binding.data as Record<string, unknown>;
@@ -191,7 +191,7 @@ describe("createListBinding", () => {
 
   it("returns resolved items when list ids are present in the graph", () => {
     // Seed entities and a list slot.
-    const gs = useGraphStore.getState();
+    const gs = graphStore.getState();
     gs.upsertEntity("Post", "p1", { id: "p1", title: "Post 1" });
     gs.upsertEntity("Post", "p2", { id: "p2", title: "Post 2" });
     gs.setListResult(JSON.stringify(["posts"]), ["p1", "p2"], { total: 2, hasNextPage: false });
@@ -204,7 +204,7 @@ describe("createListBinding", () => {
   });
 
   it("reflects loading state from list slot", () => {
-    const gs = useGraphStore.getState();
+    const gs = graphStore.getState();
     gs.setListFetching(JSON.stringify(["posts"]), true);
 
     const binding = createListBinding(stubReactive, "Post", QUERY);
@@ -213,7 +213,7 @@ describe("createListBinding", () => {
   });
 
   it("syncs when an entity in the list is updated", () => {
-    const gs = useGraphStore.getState();
+    const gs = graphStore.getState();
     gs.upsertEntity("Post", "p3", { id: "p3", title: "Old" });
     gs.setListResult(JSON.stringify(["posts"]), ["p3"], { total: 1, hasNextPage: false });
 
@@ -226,7 +226,7 @@ describe("createListBinding", () => {
   });
 
   it("reflects hasNextPage and total from list state", () => {
-    const gs = useGraphStore.getState();
+    const gs = graphStore.getState();
     gs.upsertEntity("Post", "p4", { id: "p4" });
     gs.setListResult(JSON.stringify(["posts"]), ["p4"], {
       total: 42,
@@ -241,7 +241,7 @@ describe("createListBinding", () => {
   });
 
   it("destroy() stops receiving updates", () => {
-    const gs = useGraphStore.getState();
+    const gs = graphStore.getState();
     gs.upsertEntity("Post", "p5", { id: "p5", title: "v1" });
     gs.setListResult(JSON.stringify(["posts"]), ["p5"], { total: 1, hasNextPage: false });
 
@@ -262,7 +262,7 @@ describe("cleanup integration", () => {
     EntityGraphAlpinePlugin(alpine as unknown as Parameters<typeof EntityGraphAlpinePlugin>[0]);
 
     // Seed entity in graph.
-    useGraphStore.getState().upsertEntity("Post", "cleanup-1", { id: "cleanup-1" });
+    graphStore.getState().upsertEntity("Post", "cleanup-1", { id: "cleanup-1" });
 
     // Call the $entity magic factory.
     const entityFactory = alpine.magics["$entity"] as (
@@ -276,7 +276,7 @@ describe("cleanup integration", () => {
     alpine.runCleanups();
 
     // After cleanup, no error when making further graph changes.
-    useGraphStore.getState().upsertEntity("Post", "cleanup-1", { id: "cleanup-1", x: 1 });
+    graphStore.getState().upsertEntity("Post", "cleanup-1", { id: "cleanup-1", x: 1 });
     expect(binding).toBeDefined();
   });
 });

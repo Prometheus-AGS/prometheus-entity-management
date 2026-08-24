@@ -1,0 +1,70 @@
+---
+title: Security model
+description: Tenant boundaries, secret and key handling, agent action policies, and the dependency advisory policy for the 3.0 ecosystem.
+---
+
+# Security model
+
+## Tenant boundaries
+
+The entity graph is in-process state; **tenant isolation is enforced at the
+server and agent boundaries**, not by the graph itself.
+
+- **A2A agent server** — `createEntityGraphA2APolicy` scopes every agent
+  operation to explicit entity/action/field allowlists. `authorize` receives
+  the authenticated caller and is the hook for tenant checks; destructive
+  operations (`replace`, `remove`) should route through `requestApproval`,
+  whose answer must come from a trusted host-owned workflow, never from the
+  agent's own output. `createDefaultDenyA2APolicy` / `createDenyAllA2APolicy`
+  are the fail-closed starting points.
+- **A2UI surfaces** — action policies are **default-deny**:
+  `createDenyAllA2uiActionPolicy` rejects everything;
+  `createEntityGraphA2uiActionPolicy` opens exactly the
+  tenant/entity/action/field combinations you list, with destructive approval
+  required for destructive actions.
+- **Server rendering** — never share `graphStore` between requests. Create one
+  `createGraphStore()` per request so one tenant's entities cannot leak into
+  another tenant's render (see
+  [SSR isolation](../migration/v2-to-v3.mdx#ssr-isolation)).
+- **Supabase realtime** — the client uses the **anon key only** and Row Level Security is the tenant boundary. The graph client never holds a service-role
+  key; see the [Supabase integration](../integrations/supabase.mdx).
+- **Flint fabric** — auth claims are owned and enforced by `flint-gate`; this
+  repository's adapter consumes the claims contract and keeps its default CI
+  lane fixture-backed with live interop env-gated. See
+  [Flint integration](../integrations/flint.mdx).
+
+## Secret and key handling
+
+- **Client-safe keys only in the browser.** Publishable/anon keys (Supabase
+  anon, A2UI development surfaces) may reach client bundles. Service-role keys,
+  signing secrets, and database credentials must never appear in client code,
+  client environment variables, or the graph itself.
+- **Bearer tokens stay server-side.** `createBearerTokenAuthenticator` from
+  `@prometheus-ags/entity-graph-a2a` validates inbound agent tokens on the
+  server; tokens are never written into entity data or patches.
+- **No secrets in the graph.** Entity data and local patches are inspectable
+  application state (DevTools, snapshots, persistence adapters). Do not upsert
+  tokens, session secrets, or credentials as entity fields.
+- **Release credentials** — publishing uses GitHub Actions OIDC trusted
+  publishing against the protected `npm-rc` environment; there is no
+  long-lived npm write token to leak. Details and recovery rules are in the
+  [release runbook](release-runbook.mdx).
+- **External endpoints** — agentic demos run in-page keyless agents; external
+  A2A/A2UI endpoints must be HTTPS (or loopback for local development).
+
+## Dependency advisory policy
+
+`security/advisory-policy.json` is the machine-readable policy:
+
+- Every active **critical/high** production advisory must be remediated or
+  carry a time-bounded acceptance with an owner and rationale.
+- Resolved advisories record the exact action (for example, upgrading Next.js
+  and forcing patched PostCSS/Sharp through root `pnpm` overrides).
+- Lower severities remain visible and are never described as zero risk.
+
+## Reporting
+
+Report vulnerabilities through the repository's security contact rather than
+public issues. Include the affected package version, a reproduction, and
+whether the surface is the graph core, a binding, an agent boundary, or the
+release pipeline.

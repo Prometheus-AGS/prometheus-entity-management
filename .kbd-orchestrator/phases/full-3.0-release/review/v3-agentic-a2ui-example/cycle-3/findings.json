@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "openspec/changes/v3-agentic-a2ui-example/tasks.md",
+      "line": 9,
+      "claim": "The change still leaves the required verification/limits/release-impact recording task incomplete while the acceptance criteria require it before archive.",
+      "evidence": "Acceptance criteria list `- [ ] Record verification evidence, unresolved platform/manual limits, and release impact before archive.` and the diff leaves `openspec/changes/v3-agentic-a2ui-example/tasks.md` with `- [ ] Record verification evidence, unresolved platform/manual limits, and release impact before archive.` even though verification evidence was added.",
+      "suggested_fix": "Mark the task complete after confirming the current `verification.md` and evidence receipts cover verification evidence, unresolved limits, and release impact, or keep the change unarchived until that task is completed."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

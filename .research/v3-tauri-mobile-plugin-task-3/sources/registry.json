@@ -1,0 +1,74 @@
+{
+  "sources": [
+    {
+      "id": "tauri-mocking",
+      "title": "Mock Tauri APIs",
+      "url": "https://v2.tauri.app/develop/tests/mocking/",
+      "publisher": "Tauri",
+      "kind": "official-documentation",
+      "credibilityScore": 97,
+      "claims": ["mockIPC intercepts frontend requests", "mockIPC does not run a real Rust backend"]
+    },
+    {
+      "id": "tauri-runtime-authority",
+      "title": "Runtime Authority",
+      "url": "https://v2.tauri.app/security/runtime-authority/",
+      "publisher": "Tauri",
+      "kind": "official-documentation",
+      "credibilityScore": 98,
+      "claims": ["Runtime authority checks origins, capabilities, permissions, and scopes", "Unauthorized commands are not invoked"]
+    },
+    {
+      "id": "tauri-capabilities",
+      "title": "Capabilities",
+      "url": "https://v2.tauri.app/security/capabilities/",
+      "publisher": "Tauri",
+      "kind": "official-documentation",
+      "credibilityScore": 97,
+      "claims": ["Capabilities bind permissions to windows and webviews"]
+    },
+    {
+      "id": "tauri-plugin-permissions",
+      "title": "Writing Plugin Permissions",
+      "url": "https://v2.tauri.app/learn/security/writing-plugin-permissions/",
+      "publisher": "Tauri",
+      "kind": "official-documentation",
+      "credibilityScore": 97,
+      "claims": ["Plugin commands require generated allow/deny permissions", "A consumer capability grants the plugin permission"]
+    },
+    {
+      "id": "tauri-mobile",
+      "title": "Mobile Plugin Development",
+      "url": "https://v2.tauri.app/develop/plugins/develop-mobile/",
+      "publisher": "Tauri",
+      "kind": "official-documentation",
+      "credibilityScore": 98,
+      "claims": ["Android commands run through an annotated Kotlin plugin", "iOS commands run through a Swift plugin", "PluginHandle calls native mobile commands"]
+    },
+    {
+      "id": "tauri-test-source",
+      "title": "Tauri 2.11.5 test module",
+      "path": "/Users/gqadonis/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tauri-2.11.5/src/test/mod.rs",
+      "kind": "installed-official-source",
+      "credibilityScore": 99,
+      "claims": ["mock_builder registers real command handlers under MockRuntime", "get_ipc_response dispatches an InvokeRequest through a webview"]
+    },
+    {
+      "id": "rust-1-95-release",
+      "title": "Rust 1.95 release",
+      "url": "https://github.com/rust-lang/rust/releases/tag/1.95.0",
+      "publisher": "Rust Project",
+      "kind": "official-release",
+      "credibilityScore": 99,
+      "claims": ["fmt::from_fn stabilized after the project's Rust 1.88 minimum"]
+    },
+    {
+      "id": "local-plan",
+      "title": "Full 3.0 release plan",
+      "path": ".kbd-orchestrator/phases/full-3.0-release/plan.md",
+      "kind": "local-authoritative-contract",
+      "credibilityScore": 100,
+      "claims": ["Rust >=1.88.0 is required", "Capability denial is acceptance-critical", "Desktop and Android/iOS real command lanes are required"]
+    }
+  ]
+}

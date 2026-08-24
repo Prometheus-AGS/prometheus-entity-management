@@ -1,0 +1,29 @@
+{
+  "query": "What public-surface contract must agents preserve for the stable Tauri v2 entity graph plugin?",
+  "depth": "moderate",
+  "startedAt": "2026-08-02T05:31:00Z",
+  "pipeline": [
+    "planner",
+    "search",
+    "retrieve",
+    "collect",
+    "verify",
+    "resolve",
+    "graph",
+    "cite",
+    "report",
+    "export"
+  ],
+  "subquestions": [
+    "Which public JavaScript and TypeScript declarations require a fail-closed ledger?",
+    "Which permissions are granted by the default capability and which remain explicit?",
+    "What do desktop MockRuntime and packed-consumer tests prove?",
+    "What evidence is still required for Android and iOS?",
+    "Which persistence and generated-binding claims would mislead an agent?"
+  ],
+  "automatedWorker": {
+    "jobId": "job-1785648659-cd439552",
+    "status": "cancelled-after-stalled-initialization",
+    "fallback": "manual-primary-source-pipeline"
+  }
+}

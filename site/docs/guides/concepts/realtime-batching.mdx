@@ -1,0 +1,73 @@
+---
+title: Realtime batching
+description: How the RealtimeManager coalesces high-frequency updates into single graph writes, and how adapters feed it from WebSocket, Supabase, ElectricSQL, or SurrealDB.
+---
+
+# Realtime batching
+
+Realtime sources (WebSocket, Supabase Realtime, ElectricSQL, SurrealDB Live)
+can emit dozens of updates per second. Writing each one straight into the
+graph would thrash React with a render per message. The `RealtimeManager`
+sits in between and **coalesces**: changes inside a 16 ms window collapse
+into a single Zustand write and a single render cycle.
+
+## The contract
+
+Adapters never write to the graph directly. They emit `ChangeSet` objects to
+the manager, which batches and applies them:
+
+```ts
+import { RealtimeManager } from "@prometheus-ags/entity-graph-core";
+import type { RealtimeAdapter } from "@prometheus-ags/entity-graph-core";
+
+declare const myAdapter: RealtimeAdapter;
+
+const manager = new RealtimeManager({ flushInterval: 16 });
+// Register the adapter against the entity types it feeds.
+manager.register(myAdapter, [{ type: "task" }]);
+```
+
+- `flushInterval: 16` (default) — batch within one animation frame.
+- `flushInterval: 0` — synchronous, unbatched. Use only when a consumer
+  explicitly requires it (e.g. a test asserting intermediate states).
+
+## Sorted insertion under load
+
+Because the view layer inserts incoming entities by binary search, a burst of
+updates lands each row in its sorted position without a full re-sort. Lists
+stay ordered even when the batch contains hundreds of changes.
+
+## Writing an adapter
+
+Implement the `RealtimeAdapter` interface and let the manager own batching,
+reconnect, and backpressure:
+
+```ts
+import type {
+  ChangeSet,
+  RealtimeAdapter,
+  SubscriptionConfig,
+  UnsubscribeFn,
+} from "@prometheus-ags/entity-graph-core";
+
+export function createMyAdapter(socketUrl: string): RealtimeAdapter {
+  return {
+    name: "my-source",
+    subscribe(
+      config: SubscriptionConfig,
+      handler: (changes: ChangeSet) => void,
+    ): UnsubscribeFn {
+      const socket = new WebSocket(socketUrl);
+      socket.onmessage = (event) => {
+        const change = JSON.parse(String(event.data)) as ChangeSet["changes"][number];
+        handler({ changes: [change] });
+      };
+      return () => socket.close();
+    },
+  };
+}
+```
+
+The binding packages never open sockets themselves — every realtime source in
+the ecosystem flows through this one manager, so batching policy is
+consistent across React, Svelte, Solid, Alpine, and HTMX.

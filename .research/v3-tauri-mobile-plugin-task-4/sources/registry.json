@@ -1,0 +1,60 @@
+{
+  "sources": [
+    {
+      "id": "tauri-capabilities",
+      "title": "Tauri v2 Capabilities",
+      "url": "https://v2.tauri.app/security/capabilities/",
+      "kind": "official-documentation",
+      "credibility": 98,
+      "supports": ["capabilities-bind-permissions-to-windows", "platform-specific-capabilities", "merged-capabilities-expand-authority"]
+    },
+    {
+      "id": "tauri-permissions",
+      "title": "Tauri v2 Permissions",
+      "url": "https://v2.tauri.app/security/permissions/",
+      "kind": "official-documentation",
+      "credibility": 98,
+      "supports": ["plugin-default-permission-convention", "individual-command-permissions", "plugin-permission-payload"]
+    },
+    {
+      "id": "tauri-mobile-plugin",
+      "title": "Tauri v2 Mobile Plugin Development",
+      "url": "https://v2.tauri.app/develop/plugins/develop-mobile/",
+      "kind": "official-documentation",
+      "credibility": 98,
+      "supports": ["android-kotlin-plugin", "ios-swift-plugin", "mobile-command-bridge", "plugin-events-need-capability"]
+    },
+    {
+      "id": "tauri-test",
+      "title": "tauri::test MockRuntime",
+      "url": "https://docs.rs/tauri/latest/tauri/test/",
+      "kind": "official-api-documentation",
+      "credibility": 96,
+      "supports": ["mock-runtime-executes-ipc", "mock-runtime-is-not-device-runtime"]
+    },
+    {
+      "id": "tauri-specta-v2",
+      "title": "specta-rs/tauri-specta v2 branch",
+      "url": "https://github.com/specta-rs/tauri-specta",
+      "kind": "upstream-primary-source",
+      "credibility": 95,
+      "supports": ["specta-v2-required-for-tauri-v2", "v2-generates-command-and-event-types"]
+    },
+    {
+      "id": "local-plugin-source",
+      "title": "Entity graph Tauri plugin source",
+      "path": "packages/entity-graph-tauri",
+      "kind": "local-authoritative-source",
+      "credibility": 100,
+      "supports": ["current-public-surface", "read-only-default", "in-memory-snapshot-state", "generated-binding-source"]
+    },
+    {
+      "id": "local-release-contract",
+      "title": "Full 3.0 release plan Tauri change",
+      "path": ".kbd-orchestrator/phases/full-3.0-release/plan.md",
+      "kind": "local-authoritative-policy",
+      "credibility": 100,
+      "supports": ["acceptance-boundary", "required-mobile-lane", "skills-sync"]
+    }
+  ]
+}

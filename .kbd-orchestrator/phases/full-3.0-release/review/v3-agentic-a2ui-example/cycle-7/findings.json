@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/official/runtime.ts",
+      "line": 103,
+      "claim": "The atomic preflight can diverge from the live processor because it stores the caller-supplied catalog array by reference while the live processor was initialized from a snapshot.",
+      "evidence": "The constructor assigns `this.catalogs = catalogs;` but initializes the live processor with `new OfficialMessageProcessor([...catalogs], ...)`; `preflight()` later builds its shadow processor from `[...this.catalogs]`. This contradicts the new package README claim that `processMessages()` preflights the complete batch so later errors cannot partially commit earlier messages.",
+      "suggested_fix": "Create one immutable catalog snapshot in the constructor, use that same snapshot for both `this.catalogs` and the live `OfficialMessageProcessor`, and do not retain the caller-owned array reference."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

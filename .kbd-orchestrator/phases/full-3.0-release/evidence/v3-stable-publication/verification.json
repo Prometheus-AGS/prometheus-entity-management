@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "1.0.0",
+  "mode": "pre",
+  "result": "pass",
+  "checkedAt": "2026-08-23T16:35:33.263Z",
+  "sourceSha": "0000000000000000000000000000000000000000",
+  "targetVersion": "3.0.0",
+  "packages": [
+    "@prometheus-ags/entity-graph-core",
+    "@prometheus-ags/prometheus-entity-management",
+    "@prometheus-ags/entity-graph-sdl",
+    "@prometheus-ags/entity-graph-sync",
+    "@prometheus-ags/entity-graph-svelte",
+    "@prometheus-ags/entity-graph-solid",
+    "@prometheus-ags/entity-graph-web-components",
+    "@prometheus-ags/entity-graph-alpine",
+    "@prometheus-ags/entity-graph-htmx",
+    "@prometheus-ags/entity-graph-a2a",
+    "@prometheus-ags/a2ui-react",
+    "@prometheus-ags/entity-graph-tauri"
+  ],
+  "checks": [
+    {
+      "id": "policy-stable-promotion",
+      "status": "pass"
+    },
+    {
+      "id": "contract-version-set",
+      "status": "pass"
+    },
+    {
+      "id": "version-assertion-stable-branch",
+      "status": "pass"
+    },
+    {
+      "id": "workflow-stable-guards",
+      "status": "pass"
+    },
+    {
+      "id": "authority-boundary-stable",
+      "status": "pass"
+    },
+    {
+      "id": "tag-promotion-guard",
+      "status": "pass"
+    },
+    {
+      "id": "certification-bundle-sealed",
+      "status": "pass"
+    },
+    {
+      "id": "release-disposition-blocked-pre-publish",
+      "status": "pass"
+    },
+    {
+      "id": "recovery-and-exclusions-documented",
+      "status": "pass"
+    }
+  ],
+  "excludedRegistries": [
+    {
+      "id": "dart-flutter",
+      "ecosystem": "dart",
+      "registryDecision": "deferred"
+    },
+    {
+      "id": "rust-cli",
+      "ecosystem": "rust",
+      "registryDecision": "deferred"
+    },
+    {
+      "id": "rust-mcp",
+      "ecosystem": "rust",
+      "registryDecision": "deferred"
+    },
+    {
+      "id": "rust-tauri",
+      "ecosystem": "rust",
+      "registryDecision": "embedded"
+    }
+  ]
+}

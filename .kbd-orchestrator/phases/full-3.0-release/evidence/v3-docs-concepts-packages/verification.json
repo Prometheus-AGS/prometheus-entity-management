@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-docs-concepts-packages",
+  "generatedAt": "2026-08-23T12:48:23.685Z",
+  "evidenceBoundary": {
+    "kind": "packed-consumer",
+    "countsAsPackedPackageEvidence": true,
+    "note": "Snippet-compile runs against the 12 packed npm packages in a temp consumer project; static-build proves all guide routes build deterministically under the GitHub Pages base path."
+  },
+  "commands": [
+    {
+      "label": "snippet-compile",
+      "command": "node scripts/verify-skills-snippets.mjs --root site/docs --ext .md,.mdx --skip site/docs/api/npm/|site/docs/api/index\\.mdx|site/docs/packages/(?!overview) --all-packages --report .kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-concepts-packages/snippets.json",
+      "exitCode": 0
+    },
+    {
+      "label": "release-gate",
+      "command": "node --test tests/release/v3-docs-concepts-packages.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "label": "static-build",
+      "command": "pnpm --filter @prometheus-ags/entity-graph-docs-site build",
+      "exitCode": 0
+    }
+  ],
+  "lanes": {
+    "snippetCompile": "pass",
+    "releaseGate": "pass",
+    "staticBuild": "pass",
+    "guideRoutes": "pass"
+  },
+  "failures": [],
+  "result": "pass"
+}

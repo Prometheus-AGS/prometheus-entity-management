@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "examples/tauri-universal/src-tauri/gen/apple/prometheus-tauri-universal-example.xcodeproj/project.pbxproj",
+      "line": 259,
+      "claim": "The checked-in generated iOS Xcode build phase still inherits registry credentials because its shell script does not unset them.",
+      "evidence": "The remediation criterion says \"The iOS Xcode script unsets the same variables before invoking Tauri/Cargo\" and the `trust-boundaries-fail-closed` constraint requires credential boundaries to fail closed, but the generated `PBXShellScriptBuildPhase` has `shellScript = \"RUSTUP_TOOLCHAIN=stable pnpm tauri ios xcode-script ...\";` with no `unset CARGO_REGISTRY_TOKEN NPM_TOKEN NODE_AUTH_TOKEN`; only `gen/apple/project.yml` contains the unset.",
+      "suggested_fix": "Regenerate or patch the checked-in `.xcodeproj/project.pbxproj` so the actual Xcode build phase begins with `unset CARGO_REGISTRY_TOKEN NPM_TOKEN NODE_AUTH_TOKEN` before invoking `pnpm tauri ios xcode-script`, and make the verifier inspect the generated pbxproj as well as `project.yml`."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

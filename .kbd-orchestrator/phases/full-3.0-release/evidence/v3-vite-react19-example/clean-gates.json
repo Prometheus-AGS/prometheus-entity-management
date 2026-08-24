@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-vite-react19-example",
+  "task": 5,
+  "recordedAt": "2026-08-03T07:32:19Z",
+  "status": "pass",
+  "scope": "React 19/Vite 8 showcase and its required JavaScript package boundaries",
+  "source": {
+    "baseCommit": "eb3c9802da5ff10ad6db135fed761bd23ea80b3f",
+    "workingTreeOverlay": true,
+    "workingTreeEntries": 350,
+    "immutableReleaseSource": false,
+    "cleanRoom": "/tmp/prometheus-react-exact-clean.lAeqzC",
+    "cleanRoomMethod": "local git clone plus deletion-aware source overlay; dependency, build, environment, and TypeScript build-info outputs excluded",
+    "pnpmLockSha256": "c2f9a0b395b1b9174074c026c4b301a66bd80af1376fefbfcfd13ec26292e537",
+    "node": "v24.16.0",
+    "pnpm": "10.33.0",
+    "platform": "Darwin arm64 25.6.0"
+  },
+  "cleanInstall": {
+    "command": "pnpm install --frozen-lockfile",
+    "status": "pass",
+    "workspaceProjects": 15,
+    "resolved": 799,
+    "reused": 788,
+    "downloaded": 0
+  },
+  "gates": {
+    "releaseContract": "pass",
+    "exampleCoverage": {
+      "status": "pass",
+      "scenarios": 13,
+      "scenariosPassed": 13,
+      "implementedShowcases": 1,
+      "plannedShowcases": 4,
+      "releaseCertified": false
+    },
+    "lint": "pass",
+    "typecheck": "pass",
+    "productionBuilds": "pass",
+    "javascriptPackageTests": {
+      "status": "pass",
+      "react": 53,
+      "core": {
+        "passed": 175,
+        "skipped": 1,
+        "todo": 1
+      },
+      "sync": 28
+    },
+    "releaseContractTests": "15/15 pass",
+    "ciBaselineTests": "17/17 pass",
+    "packageContractTests": "9/9 pass",
+    "frameworkNeutralCoreTests": "4/4 pass",
+    "bindingSingletonTests": "5/5 pass",
+    "exampleCoverageTests": "14/14 pass",
+    "syncPersistence": "pass",
+    "flutterSourceProvenance": "12/12 pass",
+    "tauriPluginContract": "11/11 pass",
+    "releasePipelineTests": "24/24 pass",
+    "packedPackageContracts": {
+      "status": "pass",
+      "packages": 12,
+      "consumers": ["Node ESM", "Node CommonJS", "TypeScript NodeNext", "TypeScript Node16", "TypeScript Bundler"],
+      "report": "clean-package-contract-report.json",
+      "sha256": "34b97614af67cbe47f4163a9accae8f6a469fdca614d7c5811c46c6b18acf08e"
+    },
+    "bindingSingletons": {
+      "status": "pass",
+      "compatibleCoreInstallations": 1,
+      "bindings": 6,
+      "report": "clean-binding-singletons-report.json",
+      "sha256": "264cc706a96ab4afb000246c812fc5072eb81cfa3f804713ef2eb649c59b5971"
+    },
+    "reactBrowser": {
+      "status": "pass",
+      "targetedTests": 14,
+      "playwrightTests": 3,
+      "seriousAccessibilityViolations": 0,
+      "criticalAccessibilityViolations": 0,
+      "report": "clean-vite-verification.json",
+      "sha256": "0b9214624b0db2fdd57388231186f9671e61463d23f59a15dfcb7848560251c1",
+      "artifactHashesMatch": true
+    },
+    "skills": {
+      "status": "pass",
+      "reactRuntimeExports": 201,
+      "syncRuntimeExports": 16
+    },
+    "securityAudit": {
+      "status": "pass",
+      "productionDependencies": 331,
+      "low": 2,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "blockingAdvisories": 0
+    },
+    "openSpecStrict": "pass",
+    "changesetStatus": "pass",
+    "gitDiffCheck": "pass"
+  },
+  "applicability": {
+    "dartMelos": "not owned by this React showcase task; Flutter source provenance passed, but aggregate Flutter runtime BDD remains broader-phase work",
+    "cargoNative": "not owned by this React showcase task; Tauri contract tests passed, but cold aggregate Tauri compilation remains broader-phase work",
+    "docusaurus": "not yet present and owned by later documentation changes",
+    "platformBundles": "not applicable to the browser showcase"
+  },
+  "aggregateCi": {
+    "status": "failed-outside-react-scope",
+    "reason": "the 600000ms root test gate timed out during full BDD after Flutter verifier failures and a cold Tauri build",
+    "reactOwnedGatesBeforeTimeout": "pass",
+    "waived": false,
+    "disposition": "retained as an explicit full-3.0 blocker; it does not certify or block this narrower React implementation task"
+  },
+  "observedWarnings": [
+    "PGlite 0.5.4 contains direct eval sites reported by the Vite/Rolldown build",
+    "the Vite example main chunk is larger than 500 kB after minification",
+    "the optional live Flint SDK test was skipped because @prometheusags/frf-sdk was not resolvable"
+  ],
+  "publication": {
+    "authorized": false,
+    "reason": "the source is not an immutable commit and the current release policy requires an authorized fixed-group RC staging workflow"
+  }
+}

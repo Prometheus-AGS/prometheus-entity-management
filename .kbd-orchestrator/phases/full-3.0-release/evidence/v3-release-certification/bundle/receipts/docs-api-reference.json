@@ -1,0 +1,13 @@
+{
+  "lane": "docs-api-reference",
+  "category": "docs",
+  "mandatory": true,
+  "command": "pnpm run verify:docs-api-reference",
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:34:58.194Z",
+  "durationMs": 56273,
+  "exitCode": 0,
+  "logFile": "logs/docs-api-reference.log",
+  "logSha256": "94024c92e0a0ccabcf2756884d099e7da6eecf5a149e4f00db382d7542e4afd9",
+  "logBytes": 1367
+}

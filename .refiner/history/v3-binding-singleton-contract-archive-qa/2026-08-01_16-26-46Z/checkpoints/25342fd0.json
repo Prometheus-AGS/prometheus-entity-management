@@ -1,0 +1,81 @@
+{
+  "refinement_id": "b877d2cf-b362-4526-adde-176a146e46f8",
+  "artifact_name": "v3-binding-singleton-contract-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-01T16:19:11Z",
+  "updated_at": "2026-08-01T16:26:14Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Challenge binding singleton archive evidence against every phase-plan acceptance criterion.",
+    "Prevent six-binding archive readiness from being presented as complete 3.0 release or publication readiness."
+  ],
+  "constraints": [
+    {
+      "id": "acceptance-traceability",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "evidence-integrity",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "release-boundary",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "visual-honesty",
+      "severity": "high",
+      "status": "satisfied"
+    },
+    {
+      "id": "architecture-preservation",
+      "severity": "high",
+      "status": "satisfied"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "running",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 5,
+      "constraints_total": 5,
+      "decision": "terminate",
+      "timestamp": "2026-08-01T16:26:14Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "feae2856",
+      "phase": "specify",
+      "iteration": 1,
+      "timestamp": "2026-08-01T16:20:01Z"
+    },
+    {
+      "checkpoint_id": "1f8c4100",
+      "phase": "plan",
+      "iteration": 1,
+      "timestamp": "2026-08-01T16:20:20Z"
+    }
+  ],
+  "prior_cycle_id": null
+}

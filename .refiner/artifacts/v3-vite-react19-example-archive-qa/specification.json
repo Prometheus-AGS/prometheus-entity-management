@@ -1,0 +1,48 @@
+{
+  "specification": {
+    "artifact_name": "v3-vite-react19-example-archive-qa",
+    "artifact_type": "content",
+    "clarified_intent": {
+      "description": "Independently validate that the completed React 19/Vite 8 change satisfies its bounded plan acceptance criteria and can proceed to adversarial review without implying npm publication authority.",
+      "domain": "React release-candidate implementation evidence"
+    },
+    "constraint_source": "KBD generic constraint template plus task-specific constraints because .kbd-orchestrator/constraints.md is absent",
+    "constraints": [
+      "acceptance-direct-evidence",
+      "clean-and-packed-boundaries-distinct",
+      "scenario-surface-complete",
+      "visual-and-hash-integrity",
+      "ledgers-and-evidence-synchronized",
+      "limits-and-broader-blockers-explicit",
+      "no-publication-overclaim"
+    ],
+    "target_state": {
+      "description": "A reproducible QA bundle with zero blocking violations, explicit evidence limits, and no registry mutation claim.",
+      "success_criteria": [
+        "Every React plan acceptance criterion maps to direct current evidence.",
+        "Source-workspace browser evidence is never substituted for packed-package evidence.",
+        "All nine owned scenarios and DevTools diagnostics are represented.",
+        "Both browser receipts retain separate hash-matched artifacts.",
+        "Coverage, docs, Changesets, and evidence paths agree.",
+        "Broader full-release blockers remain visible.",
+        "Publication remains unauthorized until immutable rehearsal and protected staging."
+      ],
+      "measurable_outcomes": [
+        {"metric": "blocking violations", "threshold": "0"},
+        {"metric": "owned scenarios", "threshold": "9/9"},
+        {"metric": "shared semantic scenarios", "threshold": "13/13"},
+        {"metric": "browser artifacts", "threshold": "12/12 hashes match"},
+        {"metric": "serious or critical accessibility violations", "threshold": "0"},
+        {"metric": "packed npm candidates", "threshold": "12/12 across five consumer modes"}
+      ]
+    },
+    "content_type": "direct:content",
+    "unknowns": [
+      "External npm trusted-publisher and protected-environment authority cannot be proven by repository artifacts.",
+      "The current working source is not an immutable candidate SHA.",
+      "Firefox, WebKit, mobile-browser, live remote services, and broader Flutter/Tauri gates remain outside this change."
+    ],
+    "requires_code_execution": true,
+    "likely_tools": ["JSON parser/schema validator", "coverage verifier", "OpenSpec validator", "SHA-256 calculator", "file integrity checks"]
+  }
+}

@@ -8,7 +8,7 @@ import React, { useMemo } from "react";
 import type { StoreApi } from "zustand";
 import type { SelectionStoreState } from "../table/selection-store";
 import { useSelectionStore } from "../table/selection-store";
-import type { BatchActionDef } from "@prometheus-ags/entity-graph-core";
+import type { BatchActionDef } from "../table/react-types";
 import { cn } from "./utils";
 
 interface MultiSelectBarProps {

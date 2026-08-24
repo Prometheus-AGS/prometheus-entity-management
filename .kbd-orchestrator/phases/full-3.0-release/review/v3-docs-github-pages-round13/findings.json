@@ -1,0 +1,32 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "codex-gpt-5",
+  "isolation_mode": "harness-native:fresh-context",
+  "producer_model": "gpt-5",
+  "cross_model_check": "unverified-same-harness-family",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/generate-evidence.mjs",
+      "line": 52,
+      "claim": "The published evidence manifest can claim an arbitrary source commit without proving that commit contains the allowlisted source bytes.",
+      "evidence": "The generator trusts asset.sourceSha verbatim and checks only current filesystem bytes against sourceSha256; flint-realtime-contract.svg uses that override.",
+      "suggested_fix": "Resolve the claimed commit and source path with Git, hash that blob, require it to equal sourceSha256, and reject source SHAs that do not contain the exact source bytes."
+    },
+    {
+      "severity": "WARNING",
+      "file": "tests/browser/v3-docs-pages.playwright.config.ts",
+      "line": 21,
+      "claim": "Local browser certification can silently run against a stale documentation server instead of the build under review.",
+      "evidence": "reuseExistingServer is true, so a process already answering on port 4177 can bypass the configured built-site server.",
+      "suggested_fix": "Disable server reuse for certification runs or require a build-specific fingerprint."
+    }
+  ],
+  "checked_classes": [],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

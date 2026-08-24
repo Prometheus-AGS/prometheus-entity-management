@@ -1,7 +1,7 @@
 /**
  * createEntityStore — Svelte 5 runes binding for a single entity.
  *
- * Subscribes to `useGraphStore` from `@prometheus-ags/entity-graph-core`
+ * Subscribes to `graphStore` from `@prometheus-ags/entity-graph-core`
  * and exposes reactive `$state`-backed properties. Svelte 5 runes mode
  * allows reactive state outside components via plain objects with `$state`
  * fields; we use the imperative API (`$state.raw` snapshot + assignment)
@@ -15,7 +15,7 @@
  */
 
 import {
-  useGraphStore,
+  graphStore,
   fetchEntity,
   getEngineOptions,
   registerSubscriber,
@@ -152,7 +152,7 @@ export function createEntityStore<TRaw, TEntity extends object>(
       state.error = null;
       return;
     }
-    const graphState = useGraphStore.getState();
+    const graphState = graphStore.getState();
     const entityKey = `${type}:${id}`;
     const entityStateSlice = graphState.entityStates[entityKey] ?? EMPTY_ENTITY_STATE;
 
@@ -162,7 +162,7 @@ export function createEntityStore<TRaw, TEntity extends object>(
   }
 
   // ── Subscribe to graph changes ─────────────────────────────────────────
-  const unsubscribe = useGraphStore.subscribe(
+  const unsubscribe = graphStore.subscribe(
     (graphState) => ({
       entity: id ? graphState.entities[type]?.[id] : null,
       patch: id ? graphState.patches[type]?.[id] : null,
@@ -179,7 +179,7 @@ export function createEntityStore<TRaw, TEntity extends object>(
   function doFetch() {
     if (!id || !enabled || !fetchFn) return;
 
-    const graphState = useGraphStore.getState();
+    const graphState = graphStore.getState();
     const entityKey = `${type}:${id}`;
     const entityStateSlice = graphState.entityStates[entityKey];
     const lastFetched = entityStateSlice?.lastFetched ?? 0;
@@ -208,7 +208,7 @@ export function createEntityStore<TRaw, TEntity extends object>(
 
   function refetch() {
     if (!id || !fetchFn) return;
-    useGraphStore.getState().setEntityStale(type, id, true);
+    graphStore.getState().setEntityStale(type, id, true);
     fetchEntity<TRaw, TEntity>(
       {
         type,

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0.0",
+  "assessedOn": "2026-08-01",
+  "packageManager": "pnpm@10.33.0",
+  "intentionalHolds": [
+    {
+      "package": "@types/node",
+      "selected": "22.20.1",
+      "registryLatest": "26.1.2",
+      "rationale": "Compile against the minimum supported Node LTS declaration surface so accidental Node 24/26-only API usage is caught while CI executes Node 22, 24, and 26.",
+      "revisitChange": "v3-release-certification"
+    },
+    {
+      "package": "react-day-picker",
+      "selected": "9.14.0",
+      "registryLatest": "10.0.1",
+      "rationale": "The checked-in generated calendar components implement the version 9 API. A version 10 migration requires dedicated interaction and visual certification and is outside the CI baseline.",
+      "revisitChange": "v3-vite-react19-example"
+    },
+    {
+      "package": "typescript",
+      "selected": "6.0.2",
+      "registryLatest": "7.0.2",
+      "rationale": "TypeScript 6 is the promoted v3 compiler contract. TypeScript 7 is a separate compiler and declaration-output migration.",
+      "revisitChange": "v3-release-certification"
+    }
+  ]
+}

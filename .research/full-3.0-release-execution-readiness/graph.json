@@ -1,0 +1,35 @@
+{
+  "topics": [
+    {"id":"release","name":"Release integrity","claims":["claim-001","claim-002","claim-003","claim-004"]},
+    {"id":"web","name":"React/Vite/Next compatibility","claims":["claim-005","claim-006","claim-007","claim-008"]},
+    {"id":"agents","name":"A2UI and A2A","claims":["claim-009","claim-010"]},
+    {"id":"mobile","name":"Flutter and Tauri","claims":["claim-011","claim-012","claim-013"]},
+    {"id":"proof","name":"Documentation and proof","claims":["claim-014","claim-015","claim-016"]}
+  ],
+  "claims": [
+    {"id":"claim-001","text":"npm trusted publishing requires compatible GitHub-hosted OIDC infrastructure and supplies provenance for qualifying public packages.","confidence":0.98,"sources":["npm-trusted","npm-provenance"],"contradicts":[]},
+    {"id":"claim-002","text":"A release rehearsal must verify the packed/published artifact and attestation without moving the stable latest tag.","confidence":0.92,"sources":["npm-view-provenance","npm-publish"],"contradicts":[]},
+    {"id":"claim-003","text":"Conditional exports must map ESM and CommonJS consumers to loader-compatible files and matching declarations.","confidence":0.98,"sources":["node-packages"],"contradicts":[]},
+    {"id":"claim-004","text":"Changesets fixed and linked groups have materially different publication behavior and require an explicit policy.","confidence":0.96,"sources":["changesets-config","changesets-pre"],"contradicts":[]},
+    {"id":"claim-005","text":"React hydration still requires deterministic server/client inputs even with improved diagnostics.","confidence":0.94,"sources":["react19"],"contradicts":[]},
+    {"id":"claim-006","text":"Vite 8 uses Rolldown/Oxc and requires configuration migration rather than a version-only bump.","confidence":0.97,"sources":["vite8-migration","vite8-release"],"contradicts":[]},
+    {"id":"claim-007","text":"Next App Router defaults to Server Components and needs explicit serializable client boundaries for Zustand state.","confidence":0.97,"sources":["next-components","next-client"],"contradicts":[]},
+    {"id":"claim-008","text":"Async Server Component behavior is most reliably certified with E2E tests.","confidence":0.94,"sources":["next-testing"],"contradicts":[]},
+    {"id":"claim-009","text":"A2UI v0.9.1 is the current stable baseline; v1 is not the stable release contract.","confidence":0.98,"sources":["a2ui-spec","a2ui-renderers"],"contradicts":[]},
+    {"id":"claim-010","text":"Official rendering does not replace transport authentication or application action authorization.","confidence":0.95,"sources":["a2ui-client","a2a-spec"],"contradicts":[]},
+    {"id":"claim-011","text":"Flutter genui can demonstrate A2UI v0.9 but must remain explicitly experimental.","confidence":0.96,"sources":["genui"],"contradicts":[]},
+    {"id":"claim-012","text":"Riverpod 3 retry/pause behavior and Flutter package quality requirements need explicit policies and tests.","confidence":0.95,"sources":["riverpod3","flutter-packages"],"contradicts":[]},
+    {"id":"claim-013","text":"Tauri 2 supports shared desktop/mobile code, but distribution certification is distinct from signing/store authority.","confidence":0.97,"sources":["tauri-mobile","tauri-distribute"],"contradicts":[]},
+    {"id":"claim-014","text":"Docusaurus can be deployed as a GitHub Pages artifact through a least-privilege custom workflow.","confidence":0.98,"sources":["docusaurus-pages","github-pages"],"contradicts":[]},
+    {"id":"claim-015","text":"Visual baselines require a pinned rendering environment.","confidence":0.97,"sources":["playwright-visual"],"contradicts":[]},
+    {"id":"claim-016","text":"Playwright traces are preferred CI diagnostics while video and screenshots provide review receipts.","confidence":0.96,"sources":["playwright-trace"],"contradicts":[]}
+  ],
+  "relations": [
+    {"from":"claim-003","to":"claim-002","type":"enables"},
+    {"from":"claim-007","to":"claim-008","type":"requires-proof"},
+    {"from":"claim-009","to":"claim-011","type":"constrains"},
+    {"from":"claim-010","to":"claim-009","type":"secures"},
+    {"from":"claim-015","to":"claim-016","type":"complements"},
+    {"from":"claim-014","to":"claim-016","type":"publishes-evidence"}
+  ]
+}

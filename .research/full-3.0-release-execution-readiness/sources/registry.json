@@ -1,0 +1,31 @@
+{
+  "sources": [
+    {"id":"npm-trusted","title":"Trusted publishing for npm packages","url":"https://docs.npmjs.com/trusted-publishers/","publisher":"npm","kind":"official-docs","credibility_score":98,"claims":["claim-001"]},
+    {"id":"npm-provenance","title":"Generating provenance statements","url":"https://docs.npmjs.com/generating-provenance-statements/","publisher":"npm","kind":"official-docs","credibility_score":98,"claims":["claim-001"]},
+    {"id":"npm-view-provenance","title":"Viewing package provenance","url":"https://docs.npmjs.com/viewing-package-provenance/","publisher":"npm","kind":"official-docs","credibility_score":98,"claims":["claim-002"]},
+    {"id":"npm-publish","title":"npm publish","url":"https://docs.npmjs.com/cli/v11/commands/npm-publish/","publisher":"npm","kind":"official-docs","credibility_score":98,"claims":["claim-002"]},
+    {"id":"node-packages","title":"Node.js packages and conditional exports","url":"https://nodejs.org/api/packages.html","publisher":"Node.js","kind":"official-docs","credibility_score":98,"claims":["claim-003"]},
+    {"id":"changesets-config","title":"Changesets config file options","url":"https://github.com/changesets/changesets/blob/main/docs/config-file-options.md","publisher":"Changesets","kind":"upstream-docs","credibility_score":94,"claims":["claim-004"]},
+    {"id":"changesets-pre","title":"Changesets prereleases","url":"https://github.com/changesets/changesets/blob/main/docs/prereleases.md","publisher":"Changesets","kind":"upstream-docs","credibility_score":94,"claims":["claim-004"]},
+    {"id":"react19","title":"React 19","url":"https://react.dev/blog/2024/12/05/react-19","publisher":"React","kind":"official-docs","credibility_score":97,"claims":["claim-005"]},
+    {"id":"vite8-migration","title":"Migration from Vite 7","url":"https://vite.dev/guide/migration.html","publisher":"Vite","kind":"official-docs","credibility_score":97,"claims":["claim-006"]},
+    {"id":"vite8-release","title":"Announcing Vite 8","url":"https://vite.dev/blog/announcing-vite8","publisher":"Vite","kind":"official-docs","credibility_score":97,"claims":["claim-006"]},
+    {"id":"next-components","title":"Server and Client Components","url":"https://nextjs.org/docs/app/getting-started/server-and-client-components","publisher":"Next.js","kind":"official-docs","credibility_score":97,"claims":["claim-007"]},
+    {"id":"next-client","title":"use client directive","url":"https://nextjs.org/docs/app/api-reference/directives/use-client","publisher":"Next.js","kind":"official-docs","credibility_score":97,"claims":["claim-007"]},
+    {"id":"next-testing","title":"Testing Next.js","url":"https://nextjs.org/docs/app/guides/testing","publisher":"Next.js","kind":"official-docs","credibility_score":97,"claims":["claim-008"]},
+    {"id":"a2ui-spec","title":"A2UI v0.9 specification","url":"https://a2ui.org/specification/v0.9-a2ui/","publisher":"A2UI","kind":"official-spec","credibility_score":98,"claims":["claim-009"]},
+    {"id":"a2ui-renderers","title":"A2UI renderers","url":"https://a2ui.org/renderers/","publisher":"A2UI","kind":"official-docs","credibility_score":97,"claims":["claim-009"]},
+    {"id":"a2ui-client","title":"A2UI client setup","url":"https://a2ui.org/guides/client-setup/","publisher":"A2UI","kind":"official-docs","credibility_score":97,"claims":["claim-010"]},
+    {"id":"a2a-spec","title":"A2A protocol specification","url":"https://a2a-protocol.org/dev/specification/","publisher":"A2A","kind":"official-spec","credibility_score":97,"claims":["claim-010"]},
+    {"id":"genui","title":"Flutter genui repository","url":"https://github.com/flutter/genui","publisher":"Flutter","kind":"upstream-repository","credibility_score":94,"claims":["claim-011"]},
+    {"id":"riverpod3","title":"Riverpod 3 migration","url":"https://riverpod.dev/docs/3.0_migration","publisher":"Riverpod","kind":"official-docs","credibility_score":95,"claims":["claim-012"]},
+    {"id":"flutter-packages","title":"Developing Flutter packages and plugins","url":"https://docs.flutter.dev/packages-and-plugins/developing-packages","publisher":"Flutter","kind":"official-docs","credibility_score":97,"claims":["claim-012"]},
+    {"id":"tauri-mobile","title":"Upgrade from Tauri 1 and prepare for mobile","url":"https://v2.tauri.app/start/migrate/from-tauri-1/","publisher":"Tauri","kind":"official-docs","credibility_score":97,"claims":["claim-013"]},
+    {"id":"tauri-distribute","title":"Tauri distribution","url":"https://v2.tauri.app/distribute/","publisher":"Tauri","kind":"official-docs","credibility_score":97,"claims":["claim-013"]},
+    {"id":"docusaurus-pages","title":"Deploying Docusaurus to GitHub Pages","url":"https://docusaurus.io/docs/next/deployment/github-pages","publisher":"Docusaurus","kind":"official-docs","credibility_score":96,"claims":["claim-014"]},
+    {"id":"github-pages","title":"Using custom workflows with GitHub Pages","url":"https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages","publisher":"GitHub","kind":"official-docs","credibility_score":98,"claims":["claim-014"]},
+    {"id":"playwright-visual","title":"Playwright visual comparisons","url":"https://playwright.dev/docs/test-snapshots","publisher":"Playwright","kind":"official-docs","credibility_score":97,"claims":["claim-015"]},
+    {"id":"playwright-trace","title":"Playwright best practices","url":"https://playwright.dev/docs/best-practices","publisher":"Playwright","kind":"official-docs","credibility_score":97,"claims":["claim-016"]}
+  ],
+  "retrieval_notes": "The background research worker stalled twice before source discovery. URLs were retrieved individually through the configured web research interface and checked against current official content on 2026-08-01."
+}

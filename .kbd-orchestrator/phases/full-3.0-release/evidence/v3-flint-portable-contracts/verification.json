@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-flint-portable-contracts",
+  "generatedAt": "2026-08-23T12:51:57.675Z",
+  "evidenceBoundary": {
+    "kind": "source-workspace",
+    "countsAsPackedPackageEvidence": false
+  },
+  "commands": [
+    {
+      "label": "core-flint-contract",
+      "command": "pnpm --filter @prometheus-ags/entity-graph-core exec vitest run src/adapters/flint.test.ts src/adapters/flint-live.test.ts src/adapters/flint-security.test.ts",
+      "exitCode": 0
+    },
+    {
+      "label": "release-gate",
+      "command": "node --test tests/release/v3-flint-portable-contracts.test.mjs",
+      "exitCode": 0
+    },
+    {
+      "label": "live-lane-fail-closed-probe",
+      "command": "pnpm --filter @prometheus-ags/entity-graph-core exec vitest run src/adapters/flint-live.test.ts",
+      "exitCode": 1
+    },
+    {
+      "label": "core-typecheck",
+      "command": "pnpm --filter @prometheus-ags/entity-graph-core typecheck",
+      "exitCode": 0
+    }
+  ],
+  "lanes": {
+    "coreFlintContract": "pass",
+    "releaseGate": "pass",
+    "liveLaneFailClosed": "pass",
+    "coreTypecheck": "pass"
+  },
+  "limits": {
+    "liveInterop": "Default lane is fixture-backed. Live SDK interop requires explicit opt-in via FLINT_EM_MODULE/FLINT_SDK_MODULE and the sibling flint-realtime-fabric workspace with dependencies installed; it was verified fail-closed (non-zero exit) when unavailable.",
+    "authVerification": "Issuer/kid/JWKS/role enforcement is owned by flint-gate/flint-forge; this repo pins the contract via tests/fixtures/flint-auth/claims-contract.json and docs, and does not verify tokens itself."
+  },
+  "result": "pass"
+}

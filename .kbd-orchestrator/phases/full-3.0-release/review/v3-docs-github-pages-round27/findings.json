@@ -1,0 +1,30 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "gpt-5.6-sol",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "tests/browser/v3-docs-pages.spec.ts",
+      "line": 50,
+      "claim": "The mobile visual-regression tolerance is relaxed from 0.08 to 0.18 (allowing up to 18% of pixels to differ) simultaneously with a snapshot replacement, which can mask a genuine mobile layout regression rather than fix flakiness.",
+      "evidence": "Hunk in tests/browser/v3-docs-pages.spec.ts changes `maxDiffPixelRatio: 0.08` \u2192 `0.18` in the test named 'mobile navigation is operable and content does not overflow', while the companion hunk replaces the binary baseline `tests/browser/v3-docs-pages.spec.ts-snapshots/homepage-mobile.png` (cbc37d8 \u2192 6960317). A more-than-doubled diff budget plus a new baseline, with no justification recorded, is indistinguishable from silencing a failing assertion \u2014 a silent-failure pattern. The acceptance criteria for v3-docs-github-pages require the change be implemented 'without weakening its explicit exclusions' and require 'Record verification evidence' before archive; no such evidence accompanies this weakening.",
+      "suggested_fix": "Revert maxDiffPixelRatio to 0.08 and investigate why the old snapshot failed. If the new rendering is intentional, regenerate the baseline at the original tolerance; if it is flaky, stabilize via deterministic fonts/viewport/networkidle waits or mask only the unstable region (e.g., `mask` option) instead of raising the global pixel budget."
+    },
+    {
+      "severity": "WARNING",
+      "file": "tests/browser/v3-docs-pages.spec.ts",
+      "claim": "The diff provides no evidence that any of the v3-docs-github-pages acceptance criteria (GitHub Pages deployment gates, clean-state gate runs, coverage.json/doc updates, verification evidence recording) were satisfied \u2014 the only change is a test-tolerance tweak.",
+      "evidence": "Acceptance criteria list tasks including 'Implement the full scope in the v3-docs-github-pages plan section', 'Update examples/coverage.json, public API ledgers, skills, and documentation whenever this change affects their declared surface', 'Run the relevant pnpm ... gates from a clean state', and 'Record verification evidence ... before archive'. The diff touches only tests/browser/v3-docs-pages.spec.ts and one snapshot PNG; no deployment config, no coverage.json update, no evidence artifact appears in the change.",
+      "suggested_fix": "Either scope this diff correctly as a test-stabilization change separate from v3-docs-github-pages, or include the actual deployment implementation and recorded gate evidence required by the plan section."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

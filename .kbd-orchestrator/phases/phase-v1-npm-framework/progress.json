@@ -1,13 +1,45 @@
 {
+  "changes": [],
+  "changes_completed": 0,
+  "changes_total": 0,
+  "children": {},
+  "completion": {
+    "certification": {
+      "blockers": [],
+      "status": "PENDING",
+      "summary": null
+    },
+    "evidence": {
+      "blockers": [],
+      "status": "PENDING",
+      "summary": null
+    },
+    "implementation": {
+      "completed": 0,
+      "status": "PENDING",
+      "total": 0
+    },
+    "primaryCounter": "implementation",
+    "publication": {
+      "blockers": [],
+      "status": "PENDING",
+      "summary": null
+    }
+  },
+  "conflictCount": 0,
+  "derivedRevision": 28,
+  "frontier": {
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 28
+  },
+  "generatedBy": "kbd-runtime",
+  "implementation_completed": 0,
+  "implementation_total": 0,
+  "last_updated": "2026-08-03T08:14:05.069372Z",
+  "last_updated_by": "kbd-runtime",
+  "migrationStatus": "legacy-read-only",
+  "parentPhase": null,
   "phase": "phase-v1-npm-framework",
-  "assessment_complete": true,
-  "plan_complete": true,
-  "execution_complete": true,
-  "reflection_complete": true,
-  "npm_publish_complete": true,
-  "kbd_process_status": "closed",
-  "phase_closed_at": "2026-04-04T23:59:00.000Z",
-  "last_updated": "2026-04-04T23:59:00.000Z",
-  "last_updated_by": "maintainer+cursor-agent",
-  "notes": "Live publish: @prometheus-ags/prometheus-entity-management@1.0.0 to npm registry (2026-04-04). prepublishOnly (typecheck, build, test, verify:skills) passed. OpenSpec umbrella archived: openspec/changes/archive/2026-04-04-prometheus-v1-0-release. KBD cycle formally closed. Optional follow-up: confirm git tag v1.0.0 pushed to origin."
+  "phaseId": "phase-v1-npm-framework",
+  "schemaVersion": "2",
+  "sourceRevision": 28
 }

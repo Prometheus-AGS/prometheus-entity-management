@@ -1,10 +1,10 @@
 POSITION REMINDER — read this as your FIRST tool call every turn
-Phase: unknown
-Step: 11 of 14
-Stage: unknown
-Next command: Resume v4-pem-sync-transport tasks 9-10 (now unblocked, and the docker-compose stack's pes-gateway redelivery bug is fixed), or /kbd-apply v4-dart-sdk to continue the critical path — see resume_hints below.
+Phase: full-3.0-release
+Step: 27 of 28
+Stage: running — final change is human-gated; do not start it autonomously
+Next command: /kbd-apply v3-stable-publication (HUMAN GATE — operator authorization required)
 
 Required signal format (emit BEFORE any tool call):
-  Starting <kbd-skill> — unknown (step 11 of 14)
+  Starting <kbd-skill> — full-3.0-release (step 27 of 28)
   [do work]
-  Completed <kbd-skill> — unknown (step 11 of 14)
+  Completed <kbd-skill> — full-3.0-release (step 27 of 28)

@@ -11,6 +11,7 @@ Integrate **push-based** updates into the **@prometheus-ags/prometheus-entity-ma
 1. Consuming repo **`AGENTS.md`** / **`CLAUDE.md`** (pnpm, Components → Hooks → Stores).
 2. Skill **`CLAUDE.md`** (adapter boundary, coalescing, no graph writes from adapters).
 3. **`references/adapter-catalog.md`** and **`references/coalescing-guide.md`**.
+4. For Flint, **`../_shared/references/flint-portable-contracts.md`**.
 
 ## Operating principles
 
@@ -24,7 +25,7 @@ Integrate **push-based** updates into the **@prometheus-ags/prometheus-entity-ma
 
 | File | When |
 |------|------|
-| **`agents/adapter-selector.md`** | Choosing WS vs Supabase vs Convex vs GraphQL-WS vs Electric |
+| **`agents/adapter-selector.md`** | Choosing WS vs Supabase vs Convex vs GraphQL-WS vs Flint vs Electric |
 | **`agents/channel-configurator.md`** | `ChannelConfig`, filters, `normalize` on `register`, `affectedListKeys` |
 
 ## Sub-skill routing (slash commands)

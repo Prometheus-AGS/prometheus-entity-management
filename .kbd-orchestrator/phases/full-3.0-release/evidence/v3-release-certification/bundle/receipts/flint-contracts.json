@@ -1,0 +1,13 @@
+{
+  "lane": "flint-contracts",
+  "category": "portable-contracts",
+  "mandatory": true,
+  "command": "pnpm run verify:flint-contracts",
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:31:50.823Z",
+  "durationMs": 3329,
+  "exitCode": 0,
+  "logFile": "logs/flint-contracts.log",
+  "logSha256": "b7eadc15b02c03cd7a45b24a5de8148240098c85a20672aa2da6b7d932677dfd",
+  "logBytes": 1780
+}

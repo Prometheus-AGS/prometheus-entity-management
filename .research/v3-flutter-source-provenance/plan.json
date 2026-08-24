@@ -1,0 +1,25 @@
+{
+  "job_id": "v3-flutter-source-provenance-20260801",
+  "query": "How can reusable KnowMe Flutter packages be moved into the Prometheus entity-management monorepo with legal authority, retained provenance, current dependencies, and no product-specific or generated contamination?",
+  "depth": "deep",
+  "sub_questions": [
+    "Which source repositories contain reusable runtime code rather than templates or applications?",
+    "What copyright and license evidence exists before any file is copied?",
+    "Which committed paths and commits carry the reusable package history?",
+    "How should filtered history be rewritten and merged without touching dirty source worktrees?",
+    "Which files are canonical source versus generated, locked, product-specific, or FFI-coupled output?",
+    "What dependency/toolchain changes are required for Riverpod 3 and current Flutter/Dart?",
+    "What deterministic evidence proves provenance, attribution, and duplicate-implementation disposition?"
+  ],
+  "search_strategy": {
+    "primary_sources": ["local git objects", "official GitHub/Git documentation", "REUSE specification", "Dart/Flutter documentation", "Riverpod documentation", "pub.dev metadata"],
+    "adversarial_questions": [
+      "What would make the requested copy legally ambiguous?",
+      "What history or author data is necessarily rewritten?",
+      "What apparently reusable source is actually coupled to KnowMe or generated output?",
+      "Why would blindly selecting the numerically latest dependency be unsafe?"
+    ]
+  },
+  "confidence_threshold": 0.7,
+  "stages": ["planner", "search", "retrieve", "collect", "verify", "resolve", "graph", "cite", "report", "export"]
+}

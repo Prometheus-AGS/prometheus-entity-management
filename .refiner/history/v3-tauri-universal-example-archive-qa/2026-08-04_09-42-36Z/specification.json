@@ -1,0 +1,57 @@
+{
+  "specification": {
+    "artifact_name": "v3-tauri-universal-example-archive-qa",
+    "clarified_intent": {
+      "description": "Independently validate the complete universal Tauri example and its archive evidence without inflating simulator/emulator coverage, moving the frozen React RC, or authorizing publication.",
+      "domain": "tauri-universal-example-and-release-evidence"
+    },
+    "constraints": [
+      "Map every acceptance criterion to direct evidence.",
+      "Preserve one normalized graph: hooks read its store, platform intents use the platform store, and only that store calls the service boundary.",
+      "Hash-bind and correctly classify every retained runtime artifact.",
+      "Prove actual IPC, deep-link, and persisted-input trust boundaries fail closed.",
+      "Prove both withheld destructive IPC commands are denied with exact native error shapes.",
+      "Require exact denial-message equality and reject unknown persisted task IDs before graph hydration.",
+      "Inspect responsive/native visuals and retain accessibility scope.",
+      "Keep coverage, ledgers, skills, docs, Changesets, and release contract synchronized.",
+      "Preserve the independently frozen React rc.1 lane.",
+      "Keep unexecuted platforms, credential rotation, and publication limits explicit."
+    ],
+    "target_state": {
+      "description": "A reproducible archive disposition with every bounded Tauri criterion proven, all scope limits named, and zero unsupported release or publication claims.",
+      "success_criteria": [
+        "All eight blocking constraints pass",
+        "Both initialization and manual restore validate the persisted queue before graph hydration",
+        "The current-source receipt matches the reviewed runtime and mobile-generator bundle hash",
+        "The current-source binding covers the tracked Android wrapper, iOS storyboard and complete asset catalog, while a clean-directory build proves Tauri recreates the generated iOS web-assets directory",
+        "Ten application units and twenty-one rejection-aware source contracts pass",
+        "The current Android runtime receipt preserves exact clear and removal denial strings",
+        "All 23 retained runtime artifacts match their receipt hashes",
+        "Current focused application, coverage, release, skill, OpenSpec, and Changesets gates pass",
+        "Signed KBD reports 6/6 tasks and change complete at revision 122",
+        "Remote main remains the immutable React rc.1 source and npm next remains absent",
+        "Fresh isolated review is the remaining archive gate"
+      ],
+      "measurable_outcomes": [
+        { "metric": "blocking constraints passed", "threshold": "8/8" },
+        { "metric": "retained artifact hashes matched", "threshold": "23/23" },
+        { "metric": "unsupported native/publication claims", "threshold": "0" }
+      ]
+    },
+    "content_type": "direct:content",
+    "unknowns": [],
+    "requires_code_execution": true,
+    "likely_tools": [
+      "vitest",
+      "node-test",
+      "tauri-source-verifier",
+      "coverage-verifier",
+      "skills-ledger-verifier",
+      "openspec",
+      "changesets",
+      "sha256",
+      "image-inspection",
+      "signed-kbd-status"
+    ]
+  }
+}

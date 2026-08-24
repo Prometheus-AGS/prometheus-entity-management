@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-binding-singleton-contract",
+  "verifiedAt": "2026-08-01",
+  "source": {
+    "branch": "main",
+    "localHead": "dd5d70c9954381d3af4519ccedeb5cb565d6027e",
+    "worktreeDirty": true,
+    "immutableCommitCertification": false,
+    "lockfileSha256": "5f09387a332476c5d055c83f6e68b337c0f1bb3ca809fb98a7032a7d73b38836"
+  },
+  "cleanRoom": {
+    "pathClass": "new temporary source-only copy",
+    "platform": "Darwin 25.6.0 arm64",
+    "node": "26.5.0",
+    "pnpm": "10.33.0",
+    "freshSourceCopy": true,
+    "excludedFromCopy": [
+      ".git",
+      "node_modules",
+      "dist",
+      ".next",
+      ".turbo",
+      "coverage",
+      "target",
+      ".dart_tool",
+      "build",
+      "*.tgz"
+    ],
+    "installedPackages": 774,
+    "frozenInstall": "passed",
+    "completeCi": "passed"
+  },
+  "iterations": [
+    {
+      "attempt": 1,
+      "status": "failed",
+      "cause": "two stale cross-feature BDD assertions after adding the singleton coverage gate",
+      "correction": "framework-neutral BDD now distinguishes its own scope from the implemented six-binding gate; release coverage validation now fail-closes on singleton gate drift without hard-coding evidence filenames"
+    },
+    {
+      "attempt": 2,
+      "status": "passed",
+      "freshSourceCopy": true
+    }
+  ],
+  "javascript": {
+    "typecheckTasks": 17,
+    "buildTasks": 14,
+    "testTasks": 15,
+    "packageTestsPassed": 365,
+    "packageTestsSkipped": 1,
+    "packageTestsTodo": 1,
+    "releaseContractTests": 13,
+    "ciBaselineTests": 17,
+    "packageContractTests": 8,
+    "frameworkNeutralGuardTests": 4,
+    "bindingSingletonGuardTests": 5,
+    "bddScenarios": 24,
+    "bddSteps": 127,
+    "runtimeExports": 201
+  },
+  "bindingSingleton": {
+    "command": "pnpm run verify:binding-singletons",
+    "status": "passed independently after complete CI",
+    "installSource": "packed-tarball-only",
+    "bindings": 6,
+    "compatibleCoreInstallations": 1,
+    "resolvedAlias": "core-instance-1",
+    "react": "passed",
+    "svelte": "passed",
+    "solid": "passed",
+    "webComponents": "passed",
+    "alpine": "passed",
+    "htmx": "passed",
+    "incompatibleCoreVersion": "4.0.0",
+    "incompatiblePeerFailure": "passed with package and peer context",
+    "report": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-binding-singleton-contract/clean-binding-singletons-report.json"
+  },
+  "packaging": {
+    "status": "passed independently after complete CI",
+    "publicPackages": 12,
+    "publintChecks": 12,
+    "areTheTypesWrongChecks": 12,
+    "nodeEsm": "passed",
+    "nodeCommonJs": "passed",
+    "typescriptNodeNext": "passed",
+    "typescriptNode16": "passed",
+    "typescriptBundler": "passed",
+    "candidateSet": "tarballs-only"
+  },
+  "changesets": {
+    "fixedReleasePackages": 12,
+    "candidateVersion": "3.0.0",
+    "examples": "none",
+    "status": "passed using a throwaway local main commit because the source-only copy intentionally excluded Git history"
+  },
+  "openspec": {
+    "change": "passed strict validation",
+    "frameworkNeutralCoreSpec": "passed strict validation",
+    "packageModuleContractsSpec": "passed strict validation"
+  },
+  "documentation": {
+    "coverageLedger": "validated by release validation and complete BDD",
+    "skillsLedger": "passed with 201 runtime exports",
+    "bindingReadmes": "validated by singleton BDD",
+    "docusaurusBuild": "not applicable; the planned website does not exist in this change"
+  },
+  "security": {
+    "productionDependencies": 309,
+    "info": 0,
+    "low": 1,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "blockingAdvisories": 0,
+    "acceptedBlockingAdvisories": 0
+  },
+  "knownNonBlockingOutput": [
+    "The external Flint live integration is explicitly skipped and owned by v3-flint-portable-contracts.",
+    "One core benchmark remains todo.",
+    "Next.js emits existing deprecated-hook migration guidance owned by the example changes.",
+    "Vite reports the existing example chunk-size warning.",
+    "Turbo reports missing declared outputs for existing build/test tasks.",
+    "Selected Vitest package runs report the existing native config-loader warning."
+  ],
+  "notApplicable": {
+    "dartMelos": "No Dart or Flutter source, manifest, generated file, lockfile, or package boundary is owned by this six-JavaScript-binding change.",
+    "cargo": "No Rust source, Cargo manifest, capability file, or Rust package boundary is owned by this six-JavaScript-binding change.",
+    "deviceRunners": "No native platform behavior changed; Flutter and Tauri certification belongs to their dedicated plan changes.",
+    "docusaurus": "No website source exists yet; its build and Pages deployment belong to later documentation changes.",
+    "visualEvidence": "No rendered interface changed. Physical package resolution, packed behavior, strict peer failure, and BDD are the truthful evidence medium; screenshots remain mandatory for later rendered examples and docs."
+  },
+  "integrity": {
+    "gitDiffCheck": "passed",
+    "changedJsonParse": "passed",
+    "releaseCoverageFailClosed": "passed"
+  },
+  "releaseImpact": {
+    "sixBindingSingleton": "passed",
+    "nativeSingletons": "not certified by this change",
+    "fullV3Release": "blocked by remaining planned changes",
+    "stablePublicationAuthorized": false
+  }
+}

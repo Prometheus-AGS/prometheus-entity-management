@@ -1,0 +1,49 @@
+{
+  "refinement_id": "310be921-1270-4759-a078-a6033dc85681",
+  "artifact_name": "v3-dart-graph-riverpod-archive",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-02T02:18:44Z",
+  "updated_at": "2026-08-02T02:21:16Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Prove the bounded Dart/Riverpod archive without overclaiming the full Flutter application, registry publication, or wider 3.0 release."
+  ],
+  "constraints": [
+    "c1",
+    "c2",
+    "c3",
+    "c4",
+    "c5",
+    "c6"
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "blocking_satisfied": 6,
+      "blocking_violated": 0,
+      "decision": "terminate",
+      "timestamp": "2026-08-02T02:18:44Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "e1640926",
+      "phase": "persist",
+      "iteration": 1,
+      "timestamp": "2026-08-02T02:21:15Z"
+    }
+  ],
+  "prior_cycle_id": null,
+  "finalized_at": "2026-08-02T02:21:16Z"
+}

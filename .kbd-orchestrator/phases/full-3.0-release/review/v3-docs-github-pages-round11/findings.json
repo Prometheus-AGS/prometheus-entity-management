@@ -1,0 +1,40 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "codex-gpt-5",
+  "isolation_mode": "harness-native:fresh-context",
+  "producer_model": "gpt-5",
+  "cross_model_check": "unverified-same-harness-family",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "release/docs-pages-bootstrap.md",
+      "line": 1,
+      "claim": "The change does not record actual verification outcomes for the documentation release.",
+      "evidence": "The review packet did not contain a dated receipt recording commands, results, or failures for this change.",
+      "suggested_fix": "Add a dated verification receipt listing relevant commands, outcomes, tested source and environment, unresolved limits, and release impact."
+    },
+    {
+      "severity": "WARNING",
+      "file": "website/src/components/EvidenceFigure.tsx",
+      "line": 17,
+      "claim": "The evidence-gallery link claims to download the original image but normally navigates to it instead.",
+      "evidence": "The anchor has no download attribute even though the gallery and accessible label promise a download.",
+      "suggested_fix": "Add a same-origin download filename or change the copy and accessible label."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".github/workflows/docs-pages.yml",
+      "line": 107,
+      "claim": "The local Lighthouse gate races the background documentation server startup.",
+      "evidence": "The workflow starts the server in the background and immediately invokes Lighthouse without waiting for the port to accept requests.",
+      "suggested_fix": "Poll the expected base URL with a bounded retry loop before invoking Lighthouse."
+    }
+  ],
+  "checked_classes": [],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    {
+      "id": "acceptance-traceability",
+      "description": "Every framework-neutral-core acceptance criterion has direct executable evidence.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Run the packed verifier and inspect acceptance-to-evidence mapping."
+      }
+    },
+    {
+      "id": "archive-release-boundary",
+      "description": "The report must not confuse OpenSpec archive readiness with full 3.0 release or publication readiness.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Require explicit blocked, singleton, visual, immutable-evidence, and publication boundary language."
+      }
+    },
+    {
+      "id": "evidence-integrity",
+      "description": "All coverage evidence exists, machine reports parse, and no task remains unchecked.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Parse coverage and reports, stat evidence files, and scan tasks."
+      }
+    },
+    {
+      "id": "visual-honesty",
+      "description": "Visual evidence is marked non-applicable for this headless boundary while remaining mandatory for later rendered examples and documentation.",
+      "severity": "high",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Review verification limits and downstream routing."
+      }
+    }
+  ],
+  "global_rules": [
+    "Preserve the normalized graph and ID-only list invariants.",
+    "Do not authorize or perform registry publication.",
+    "Do not use screenshots as decorative proof for a headless package boundary."
+  ],
+  "termination_conditions": [
+    "All blocking constraints are satisfied.",
+    "The packed verifier passes from the current worktree.",
+    "No unsupported full-release claim remains."
+  ]
+}
+

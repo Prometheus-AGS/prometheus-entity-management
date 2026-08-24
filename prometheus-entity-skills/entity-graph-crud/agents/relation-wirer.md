@@ -13,10 +13,14 @@
 1. **Per entity, draft `EntitySchema`**
 
    ```ts
+   import { registerSchema } from "@prometheus-ags/prometheus-entity-management";
+
    registerSchema({
      type: "Task",
-     relations: { /* ... */ },
-     globalListKeys: optional,
+     relations: {
+     // belongsTo / hasMany / manyToMany entries per steps 2–4 below
+     },
+     globalListKeys: ["tasks"], // serialized listQueryKey prefixes to refresh on any Task write
    });
    ```
 

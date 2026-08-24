@@ -1,0 +1,37 @@
+{
+  "specification": {
+    "artifact_name": "v3-dart-graph-riverpod-archive",
+    "clarified_intent": {
+      "description": "Independently audit the Dart/Riverpod library implementation and archive evidence without promoting the full Flutter application or wider 3.0 release.",
+      "domain": "dart-library-and-release-evidence"
+    },
+    "constraints": [
+      "Every phase-plan acceptance claim must have direct deterministic evidence.",
+      "The official Flutter stable floor and zero-warning clean package candidate must remain reproducible.",
+      "BDD must fail before and pass after the final archive manifest exists.",
+      "Visual evidence must stay limited to the inspected host widget harness.",
+      "Public ledgers, coverage, docs, skills, research, and downstream limits must agree.",
+      "Archive readiness must not authorize Pub.dev publication or full-release certification."
+    ],
+    "target_state": {
+      "description": "A reproducible bounded library archive with zero unsupported application, device, registry, or full-release claims.",
+      "success_criteria": [
+        "Stable Dart/Melos and package-candidate gates pass",
+        "Permanent Node, Flutter, and BDD proof passes",
+        "Every public and evidence ledger is synchronized",
+        "Original-resolution visual receipts remain hash-bound and scoped",
+        "Every unresolved lane has a downstream owner",
+        "Publication remains unauthorized and fullReleaseCertified remains false"
+      ],
+      "measurable_outcomes": [
+        { "metric": "blocking validation failures", "threshold": "0" },
+        { "metric": "task-owned skipped or todo tests", "threshold": "0" },
+        { "metric": "unsupported publication or full-release claims", "threshold": "0" }
+      ]
+    },
+    "content_type": "direct:content",
+    "unknowns": [],
+    "requires_code_execution": true,
+    "likely_tools": ["flutter", "melos", "pnpm-ci", "node-test", "cucumber", "openspec", "json-schema", "image-inspection"]
+  }
+}

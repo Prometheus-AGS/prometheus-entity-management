@@ -1,0 +1,104 @@
+name: Flint live contract
+
+on:
+  workflow_dispatch:
+    inputs:
+      flint_ref:
+        description: Immutable flint-realtime-fabric commit SHA to verify
+        required: true
+        default: cfc1bb2bfc5db3b152967e0383aeaaf5207a4b89
+        type: string
+      gate_ref:
+        description: Immutable flint-gate commit SHA to verify
+        required: true
+        default: 2438892dfc7177c568bf57f3339a206d728f4ff2
+        type: string
+      forge_ref:
+        description: Immutable flint-forge commit SHA to verify
+        required: true
+        default: 0135946cec589c1059a9f82ac373c7cb6c12e387
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  real-sdk-round-trip:
+    name: Real Flint SDK → normalized graph
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out entity-management candidate
+        uses: actions/checkout@v6
+        with:
+          path: entity-management
+
+      - name: Check out immutable Flint SDK source
+        uses: actions/checkout@v6
+        with:
+          repository: Prometheus-AGS/flint-realtime-fabric
+          ref: ${{ inputs.flint_ref }}
+          path: flint-realtime-fabric
+
+      - name: Check out immutable Flint Gate source
+        uses: actions/checkout@v6
+        with:
+          repository: Prometheus-AGS/flint-gate
+          ref: ${{ inputs.gate_ref }}
+          path: flint-gate
+
+      - name: Check out immutable Flint Forge source
+        uses: actions/checkout@v6
+        with:
+          repository: Prometheus-AGS/flint-forge
+          ref: ${{ inputs.forge_ref }}
+          path: flint-forge
+
+      - name: Reject mutable or mismatched Flint refs
+        env:
+          FLINT_REF: ${{ inputs.flint_ref }}
+          GATE_REF: ${{ inputs.gate_ref }}
+          FORGE_REF: ${{ inputs.forge_ref }}
+        run: |
+          [[ "$FLINT_REF" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$GATE_REF" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$FORGE_REF" =~ ^[0-9a-f]{40}$ ]]
+          test "$(git -C flint-realtime-fabric rev-parse HEAD)" = "$FLINT_REF"
+          test "$(git -C flint-gate rev-parse HEAD)" = "$GATE_REF"
+          test "$(git -C flint-forge rev-parse HEAD)" = "$FORGE_REF"
+
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: entity-management/package.json
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: pnpm
+          cache-dependency-path: |
+            entity-management/pnpm-lock.yaml
+            flint-realtime-fabric/pnpm-lock.yaml
+
+      - name: Install frozen workspaces
+        run: |
+          pnpm --dir entity-management install --frozen-lockfile
+          pnpm --dir flint-realtime-fabric install --frozen-lockfile
+
+      - name: Build the pinned Flint SDK packages
+        run: |
+          pnpm --dir flint-realtime-fabric \
+            --filter @prometheusags/frf-sdk \
+            --filter @prometheusags/frf-entity-management \
+            build
+
+      - name: Verify hash-bound realtime, Gate, and Forge contracts
+        run: |
+          pnpm --dir entity-management verify:flint-contracts -- \
+            --external-realtime-root "${{ github.workspace }}/flint-realtime-fabric" \
+            --external-gate-root "${{ github.workspace }}/flint-gate" \
+            --external-forge-root "${{ github.workspace }}/flint-forge"
+
+      - name: Run the fail-closed real-SDK contract
+        env:
+          FLINT_REALTIME_FABRIC_ROOT: ${{ github.workspace }}/flint-realtime-fabric
+        run: pnpm --dir entity-management test:flint-live

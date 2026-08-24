@@ -1,0 +1,13 @@
+{
+  "lane": "sync-persistence",
+  "category": "persistence",
+  "mandatory": true,
+  "command": "pnpm run verify:sync-persistence",
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:32:21.907Z",
+  "durationMs": 5704,
+  "exitCode": 0,
+  "logFile": "logs/sync-persistence.log",
+  "logSha256": "54f207461f1df0f17db43231bdd721a82254f3055944e593433336f45892bf10",
+  "logBytes": 2212
+}

@@ -1,0 +1,46 @@
+{
+  "topics": [
+    {
+      "id": "reproducibility",
+      "name": "Clean-state reproducibility",
+      "claims": ["claim-frozen-install", "claim-fresh-cargo-target"]
+    },
+    {
+      "id": "platform-proof",
+      "name": "Native platform proof",
+      "claims": ["claim-mock-boundary", "claim-device-runtime"]
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim-frozen-install",
+      "text": "A frozen pnpm install proves lockfile/manifest agreement without rewriting resolution.",
+      "confidence": 0.97,
+      "sources": ["pnpm-install"]
+    },
+    {
+      "id": "claim-fresh-cargo-target",
+      "text": "A fresh Cargo target directory plus --locked prevents prior compiled products and dependency drift from satisfying a Rust gate.",
+      "confidence": 0.97,
+      "sources": ["cargo-clean", "cargo-test"]
+    },
+    {
+      "id": "claim-mock-boundary",
+      "text": "Tauri mock-runtime evidence does not execute native webview libraries.",
+      "confidence": 0.99,
+      "sources": ["tauri-tests"]
+    },
+    {
+      "id": "claim-device-runtime",
+      "text": "Android/iOS certification requires the real native plugin command and permission denial to be observed on a target runtime.",
+      "confidence": 0.98,
+      "sources": ["tauri-mobile-plugin", "tauri-prerequisites", "local-release-plan"]
+    }
+  ],
+  "relations": [
+    {"from": "claim-frozen-install", "to": "pnpm-install", "type": "cites"},
+    {"from": "claim-fresh-cargo-target", "to": "cargo-test", "type": "cites"},
+    {"from": "claim-mock-boundary", "to": "tauri-tests", "type": "cites"},
+    {"from": "claim-device-runtime", "to": "tauri-mobile-plugin", "type": "cites"}
+  ]
+}

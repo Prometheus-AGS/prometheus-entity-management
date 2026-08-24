@@ -13,7 +13,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
-  useGraphStore,
+  graphStore as sharedGraphStore,
   __resetEntityTransports,
 } from "@prometheus-ags/entity-graph-core";
 import { createEntityStore } from "./create-entity-store.js";
@@ -23,7 +23,7 @@ import { createEntityStore } from "./create-entity-store.js";
 type TestEntity = { id: string; name: string; score: number };
 
 function resetGraph() {
-  const store = useGraphStore.getState();
+  const store = sharedGraphStore.getState();
   // Remove all test entities to start fresh.
   const entities = store.entities["TestEntity"];
   if (entities) {
@@ -85,7 +85,7 @@ describe("createEntityStore", () => {
 
   it("reflects graph state immediately when entity already exists", () => {
     // Pre-populate graph before creating the store.
-    const graphStore = useGraphStore.getState();
+    const graphStore = sharedGraphStore.getState();
     graphStore.upsertEntity("TestEntity", "e3", { id: "e3", name: "Carol", score: 99 });
     graphStore.setEntityFetched("TestEntity", "e3");
 
@@ -108,7 +108,7 @@ describe("createEntityStore", () => {
   });
 
   it("updates entity when graph is mutated externally", async () => {
-    const graphStore = useGraphStore.getState();
+    const graphStore = sharedGraphStore.getState();
     graphStore.upsertEntity("TestEntity", "e4", { id: "e4", name: "Dave", score: 1 });
     graphStore.setEntityFetched("TestEntity", "e4");
 
@@ -133,7 +133,7 @@ describe("createEntityStore", () => {
   });
 
   it("isReady is true when entity is loaded and not fetching", () => {
-    const graphStore = useGraphStore.getState();
+    const graphStore = sharedGraphStore.getState();
     graphStore.upsertEntity("TestEntity", "e5", { id: "e5", name: "Eve", score: 7 });
     graphStore.setEntityFetched("TestEntity", "e5");
 
@@ -151,7 +151,7 @@ describe("createEntityStore", () => {
   });
 
   it("destroy prevents further reactive updates", () => {
-    const graphStore = useGraphStore.getState();
+    const graphStore = sharedGraphStore.getState();
     graphStore.upsertEntity("TestEntity", "e6", { id: "e6", name: "Frank", score: 0 });
     graphStore.setEntityFetched("TestEntity", "e6");
 
@@ -177,7 +177,7 @@ describe("createEntityStore", () => {
   });
 
   it("error is set when fetch fails (via direct graph write)", () => {
-    const graphStore = useGraphStore.getState();
+    const graphStore = sharedGraphStore.getState();
     graphStore.setEntityError("TestEntity", "e7", "Not found");
 
     const fetchFn = vi.fn(async () => ({ id: "e7", name: "X", score: 0 }));

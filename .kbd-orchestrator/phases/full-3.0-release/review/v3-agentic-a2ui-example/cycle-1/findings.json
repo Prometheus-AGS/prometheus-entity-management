@@ -1,0 +1,39 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "examples/agentic-a2ui-app/src/features/agentic/agent-server.ts",
+      "line": 13,
+      "claim": "The external A2A endpoint path accepts any configured URL without enforcing the documented HTTPS-or-loopback boundary.",
+      "evidence": "release/agentic-a2ui-example.md states `VITE_EXTERNAL_A2A_URL` accepts `HTTPS endpoints and loopback HTTP development`; agent-server.ts reads `import.meta.env.VITE_EXTERNAL_A2A_URL?.trim()` and passes it directly to `createExternalA2AExecutor({ baseUrl: configuredExternalEndpoint, ... })` with no URL scheme or hostname validation.",
+      "suggested_fix": "Parse `configuredExternalEndpoint` with `new URL()`, allow `https:` universally, allow `http:` only for loopback hosts such as localhost/127.0.0.1/[::1], and fail closed for all other schemes/hosts."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "examples/coverage.json",
+      "line": 815,
+      "claim": "The coverage ledger marks visual evidence as implemented using screenshots and traces that are not present in the diff.",
+      "evidence": "The new `visualEvidence.paths` list includes `.kbd-orchestrator/.../browser-happy-policy-approval.png`, `.png` screenshots, and three `playwright-artifacts/.../trace.zip` files, and task-5-verification.json hash-binds the same artifacts; the diff only adds JSON/Markdown/source files under that evidence directory and does not add the referenced PNG or trace.zip artifacts.",
+      "suggested_fix": "Commit the referenced screenshots and trace archives, or do not mark visual evidence implemented until the retained artifact files are actually present in the repository/evidence packet."
+    },
+    {
+      "severity": "WARNING",
+      "file": "tests/browser/v3-agentic-a2ui-example.spec.ts",
+      "line": 105,
+      "claim": "The browser evidence reports a global accessibility pass even though axe is only run in the happy-policy test, leaving malformed and cancelled rendered states unchecked.",
+      "evidence": "The only `axe.run()` call is inside `renders the streamed surface and enforces every action boundary`; `rejects a malformed agent component before render` and `cancels a working task before artifact delivery` record receipts and screenshots without running axe, while browser-evidence.json records a single top-level `accessibility: { status: \"pass\", serious: 0, critical: 0 }`.",
+      "suggested_fix": "Run the same serious/critical axe check in each browser flow before writing its receipt, and aggregate the per-flow counts into browser-evidence.json."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

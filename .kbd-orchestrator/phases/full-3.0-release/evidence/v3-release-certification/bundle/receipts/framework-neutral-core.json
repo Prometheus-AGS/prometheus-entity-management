@@ -1,0 +1,13 @@
+{
+  "lane": "framework-neutral-core",
+  "category": "packed-consumers",
+  "mandatory": true,
+  "command": "pnpm run verify:framework-neutral-core",
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:31:38.983Z",
+  "durationMs": 4424,
+  "exitCode": 0,
+  "logFile": "logs/framework-neutral-core.log",
+  "logSha256": "22f300f778f2c6bb747b551c2d57b49f7ccecdfd620ff49ab221bedfc4bc191a",
+  "logBytes": 1256
+}

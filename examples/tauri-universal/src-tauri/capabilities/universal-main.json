@@ -1,0 +1,16 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "universal-main",
+  "description": "Least-privilege graph, persistence, deep-link, and lifecycle access for the shared main webview.",
+  "windows": ["main"],
+  "permissions": [
+    "core:event:default",
+    "core:window:default",
+    "deep-link:default",
+    "sql:default",
+    "sql:allow-execute",
+    "entity-graph-tauri:default",
+    "entity-graph-tauri:allow-graph-upsert-entity",
+    "entity-graph-tauri:allow-graph-set-list"
+  ]
+}

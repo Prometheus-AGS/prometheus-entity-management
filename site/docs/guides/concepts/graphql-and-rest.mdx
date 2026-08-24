@@ -1,0 +1,105 @@
+---
+title: GraphQL and REST
+description: One normalization model over any transport — GraphQL hooks with descriptors and side descriptors, REST fetchers, and why the graph never sees the difference.
+---
+
+# GraphQL and REST
+
+The graph is transport-agnostic. Whether data arrives over REST, GraphQL, or
+a WebSocket, it lands in the same normalized store — so a detail panel
+hydrated by REST and a list fed by GraphQL stay consistent with each other.
+
+## GraphQL: descriptors, not containers
+
+GraphQL responses contain nested entities. A **descriptor** tells the hook
+where each entity type lives in the response and how to normalize it —
+including related entities nested inside the payload:
+
+```tsx
+import {
+  createGQLClient,
+  useGQLEntity,
+  type EntityDescriptor,
+} from "@prometheus-ags/prometheus-entity-management";
+
+interface InvoiceNode {
+  id: string;
+  total: number;
+  customer: { id: string; name: string };
+}
+
+interface InvoiceData {
+  invoice: InvoiceNode;
+}
+
+const client = createGQLClient({ url: "https://api.example.com/graphql" });
+
+const invoiceDescriptor: EntityDescriptor<unknown, InvoiceNode> = {
+  type: "invoice",
+  path: "invoice",
+  normalize: (node) => node as InvoiceNode,
+  // Side descriptors normalize nested entities into their own graph slots —
+  // the customer is stored exactly once, not copied into every invoice.
+  relations: [
+    {
+      type: "customer",
+      path: "invoice.customer",
+      normalize: (node) => node as Record<string, unknown>,
+    },
+  ],
+};
+
+declare const invoiceQuery: string;
+
+function useInvoice(id: string) {
+  return useGQLEntity<InvoiceData, InvoiceNode>({
+    client,
+    document: invoiceQuery,
+    variables: { id },
+    type: "invoice",
+    id,
+    descriptor: invoiceDescriptor,
+  });
+}
+```
+
+`useGQLList`, `useGQLMutation`, and `useGQLSubscription` follow the same
+descriptor pattern.
+
+## REST: plain fetchers
+
+REST endpoints plug in through `fetch` / `normalize` on `useEntity` and
+`useEntityList` — no descriptor needed because the response shape is already
+flat:
+
+```tsx
+import { useEntityList } from "@prometheus-ags/prometheus-entity-management";
+import type {
+  ListFetchParams,
+  ListResponse,
+} from "@prometheus-ags/prometheus-entity-management";
+
+interface Invoice {
+  id: string;
+  total: number;
+}
+
+declare function listInvoices(params: ListFetchParams): Promise<ListResponse<Invoice>>;
+
+function useInvoices(companyId: string) {
+  return useEntityList<Invoice, Invoice>({
+    type: "invoice",
+    queryKey: ["invoices", companyId],
+    fetch: listInvoices,
+    normalize: (raw) => ({ id: raw.id, data: raw }),
+  });
+}
+```
+
+## Mixing transports safely
+
+One rule keeps mixed-transport apps consistent: **one entity type, one
+normalization contract**. The `invoice` normalized from a REST response and
+the `invoice` normalized from a GraphQL node must produce the same shape and
+the same ID — otherwise the graph overwrites one with the other. Put the
+shared `normalize` in your services layer and import it from both hooks.

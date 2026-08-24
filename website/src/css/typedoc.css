@@ -1,0 +1,22 @@
+:root {
+  --color-accent: #e04e28;
+  --color-link: #b83818;
+  --color-focus-outline: #e04e28;
+  --font-family: "Inter", system-ui, sans-serif;
+  --font-family-code: "JetBrains Mono", ui-monospace, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-accent: #ff6a3d;
+    --color-link: #ff8b69;
+    --color-focus-outline: #ff6a3d;
+  }
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--color-focus-outline);
+  outline-offset: 3px;
+}

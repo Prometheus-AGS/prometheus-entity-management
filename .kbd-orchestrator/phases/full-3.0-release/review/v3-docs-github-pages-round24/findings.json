@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "gpt-5.6-sol",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/check-generated-artifacts.mjs",
+      "line": 42,
+      "claim": "The packed API artifact checker does not reject extra package entries in packed-inventory.json, so stale or unpublic package references can remain certified.",
+      "evidence": "The new checker builds expectedPackages from PUBLIC_PACKAGES and only iterates `for (const [index, expected] of expectedPackages.entries())` comparing fields at those indexes; there is no assertion that `apiInventory.packages.length === expectedPackages.length` before or after the loop, while RELEASING.md claims Pages validates packed artifact inventories and tracked public-package inputs through `docs:artifacts:check`.",
+      "suggested_fix": "Assert the inventory length equals PUBLIC_PACKAGES length and preferably compare package names as a set/order contract before hashing the fingerprint."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

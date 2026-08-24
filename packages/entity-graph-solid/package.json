@@ -1,22 +1,30 @@
 {
   "name": "@prometheus-ags/entity-graph-solid",
-  "version": "3.0.0-alpha.0",
+  "version": "3.0.3",
   "description": "SolidJS bindings for @prometheus-ags/entity-graph-core — fine-grained reactive entity and list primitives over the normalized entity graph.",
+  "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     }
   },
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
   ],
   "publishConfig": {
     "access": "public"
@@ -24,12 +32,12 @@
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
-  },
-  "dependencies": {
-    "@prometheus-ags/entity-graph-core": "workspace:*"
+    "test": "vitest run",
+    "refresh:exports": "pnpm run build && node ../../scripts/refresh-exports-ledger.mjs --pkg solid",
+    "verify:skills": "node ../../scripts/verify-skills-exports.mjs --pkg solid"
   },
   "peerDependencies": {
+    "@prometheus-ags/entity-graph-core": "workspace:^",
     "solid-js": ">=1.8.0"
   },
   "peerDependenciesMeta": {
@@ -38,10 +46,11 @@
     }
   },
   "devDependencies": {
-    "solid-js": "^1.9.7",
-    "tsup": ">=8",
-    "typescript": ">=6",
-    "vitest": ">=4"
+    "@prometheus-ags/entity-graph-core": "workspace:*",
+    "solid-js": "^1.9.14",
+    "tsup": "8.5.1",
+    "typescript": "6.0.2",
+    "vitest": "4.1.10"
   },
   "keywords": [
     "solid",
@@ -51,5 +60,17 @@
     "state-management",
     "reactive",
     "fine-grained-reactivity"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Prometheus-AGS/prometheus-entity-management",
+    "directory": "packages/entity-graph-solid"
+  },
+  "homepage": "https://github.com/prometheus-ags/prometheus-entity-management/tree/main/packages/entity-graph-solid#readme",
+  "bugs": {
+    "url": "https://github.com/prometheus-ags/prometheus-entity-management/issues"
+  },
+  "engines": {
+    "node": "^22.14.0 || ^24.0.0 || >=26.0.0"
+  }
 }

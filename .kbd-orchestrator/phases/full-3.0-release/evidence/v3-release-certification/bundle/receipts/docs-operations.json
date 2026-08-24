@@ -1,0 +1,13 @@
+{
+  "lane": "docs-operations",
+  "category": "docs",
+  "mandatory": true,
+  "command": "pnpm run verify:docs-operations",
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:37:40.536Z",
+  "durationMs": 45115,
+  "exitCode": 0,
+  "logFile": "logs/docs-operations.log",
+  "logSha256": "6df0cd506fbe0b11c202c3aa9f66c691e9247240651a7d4a1177515e747d99e7",
+  "logBytes": 2448
+}

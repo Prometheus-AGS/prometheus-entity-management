@@ -1,0 +1,69 @@
+---
+title: "Integration: Flint"
+description: The Flint Realtime Fabric adapter — watch/mutate wire contract, tenant identity, offset checkpoints, and the flint-gate auth boundary.
+---
+
+# Integration: Flint
+
+`createFlintAdapter` (core) orchestrates a stream from the Flint Realtime
+Fabric. The consumer owns the Flint client (from `@prometheusags/frf-sdk`);
+the adapter only maps the wire contract into entity changes.
+
+## Setup
+
+```bash
+pnpm add @prometheus-ags/entity-graph-core
+```
+
+```ts
+import {
+  RealtimeManager,
+  createFlintAdapter,
+  type FlintClientLike,
+} from "@prometheus-ags/entity-graph-core";
+
+// Structural surface of the frf-entity-management client — you own its
+// construction; the adapter only orchestrates the stream.
+declare const flintClient: FlintClientLike;
+
+const adapter = createFlintAdapter({
+  client: flintClient,
+  channelId: "tenant-1",
+  consumerId: "web-1",
+  entityType: "task",
+});
+
+const manager = new RealtimeManager();
+manager.register(adapter, [{ type: "task" }]);
+```
+
+## The certified contract
+
+The portable-contracts evidence pins, against a checked fixture in default
+CI:
+
+- `ENTITY_CHANGE` decode with malformed-payload skip (fail closed)
+- entityType filtering and channel-envelope tenant identity
+- per-channel + per-consumer offset checkpoint separation
+
+## Deterministic demo mode vs. live credentials
+
+- **Demo (default CI):** the wire contract runs against a checked fixture —
+  no machine-specific paths, no silent skips.
+- **Live (opt-in):** the live lane is env-gated (`FLINT_EM_MODULE` /
+  `FLINT_SDK_MODULE`) and verified fail-closed: it must exit non-zero when
+  the SDK is unavailable.
+- **Auth boundary:** token verification belongs to **flint-gate**, not this
+  repo. The contract (issuer/audience validation, strict kid/JWKS rules, anon
+  vs authenticated vs service_role key separation, service-role-only
+  provisioning) is pinned as a checked claims fixture plus docs in
+  `docs/flint-integration.md`. Never place service-role keys in client code.
+
+## Troubleshooting
+
+- **Events skipped:** malformed payloads skip by design — check the adapter's
+  status listener before assuming a stream outage.
+- **Checkpoint collisions:** checkpoint keys are per channel + consumer;
+  reusing a `consumerId` across tenants cross-contaminates offsets.
+
+Gate: `pnpm run verify:flint-contracts`.

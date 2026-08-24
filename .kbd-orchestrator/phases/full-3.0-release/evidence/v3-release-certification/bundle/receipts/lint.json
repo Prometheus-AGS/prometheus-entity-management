@@ -1,0 +1,13 @@
+{
+  "lane": "lint",
+  "category": "format-lint",
+  "mandatory": true,
+  "command": "pnpm run ci:lint",
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:30:22.594Z",
+  "durationMs": 7144,
+  "exitCode": 0,
+  "logFile": "logs/lint.log",
+  "logSha256": "96c2194a055d860692fca30515952a3821f58232d26361d5f95037d33e5979ea",
+  "logBytes": 500
+}

@@ -1,0 +1,68 @@
+{
+  "style": "inline-link",
+  "citations": [
+    {
+      "id": "cite-tauri-tests",
+      "url": "https://v2.tauri.app/develop/tests/",
+      "credibility_score": 96,
+      "confidence": 0.99,
+      "supports": "The mock runtime does not execute native webview libraries."
+    },
+    {
+      "id": "cite-tauri-mobile",
+      "url": "https://v2.tauri.app/develop/plugins/develop-mobile/",
+      "credibility_score": 96,
+      "confidence": 0.99,
+      "supports": "Mobile commands cross distinct Kotlin and Swift plugin boundaries."
+    },
+    {
+      "id": "cite-tauri-ios-template",
+      "url": "https://github.com/tauri-apps/tauri/blob/dev/crates/tauri-cli/templates/plugin/ios-spm/Sources/ExamplePlugin.swift",
+      "credibility_score": 98,
+      "confidence": 0.99,
+      "supports": "The Swift plugin exports the exact init_plugin_<name> symbol consumed by Rust registration."
+    },
+    {
+      "id": "cite-local-plan",
+      "url": ".kbd-orchestrator/phases/full-3.0-release/plan.md",
+      "credibility_score": 100,
+      "confidence": 1.0,
+      "supports": "The accepted change requires desktop plus Android/iOS CI or a documented device lane invoking real plugin commands."
+    },
+    {
+      "id": "cite-local-device-lane",
+      "url": "release/tauri-mobile-device-lane.md",
+      "credibility_score": 100,
+      "confidence": 1.0,
+      "supports": "Stable release remains blocked until target-host command and denial receipts exist."
+    },
+    {
+      "id": "cite-task3",
+      "url": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-3-verification.json",
+      "credibility_score": 100,
+      "confidence": 0.99,
+      "supports": "Bindings, desktop IPC, desktop denial, and packed consumption passed."
+    },
+    {
+      "id": "cite-task5",
+      "url": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-mobile-plugin/task-5-clean-gates.json",
+      "credibility_score": 100,
+      "confidence": 0.99,
+      "supports": "The current clean Rust/BDD attempt was host-blocked and mobile receipts remain open."
+    },
+    {
+      "id": "cite-coverage",
+      "url": "examples/coverage.json",
+      "credibility_score": 100,
+      "confidence": 1.0,
+      "supports": "The Tauri quality gate is partial and mobile evidence is planned."
+    },
+    {
+      "id": "cite-openspec",
+      "url": "openspec/changes/v3-tauri-mobile-plugin/specs/v3-tauri-mobile-plugin/spec.md",
+      "credibility_score": 100,
+      "confidence": 1.0,
+      "supports": "Archive readiness requires evidence for every acceptance criterion and no silently skipped platform lane."
+    }
+  ]
+}

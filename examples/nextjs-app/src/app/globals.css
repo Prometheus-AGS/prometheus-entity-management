@@ -10,7 +10,6 @@
 
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -42,9 +41,9 @@
   --muted-foreground: 75 85 99;
   --border: 216 222 230;
   --input: 216 222 230;
-  --ring: 224 78 40;
+  --ring: 180 57 8;
 
-  --primary: 224 78 40;
+  --primary: 180 57 8;
   --primary-foreground: 255 255 255;
   --secondary: 17 24 39;
   --secondary-foreground: 255 255 255;
@@ -60,7 +59,7 @@
   --info: 37 99 235;
   --info-foreground: 255 255 255;
 
-  --chart-1: 224 78 40;
+  --chart-1: 180 57 8;
   --chart-2: 17 24 39;
   --chart-3: 37 99 235;
   --chart-4: 22 163 74;
@@ -68,12 +67,12 @@
 
   --sidebar: 255 255 255;
   --sidebar-foreground: 11 15 20;
-  --sidebar-primary: 224 78 40;
+  --sidebar-primary: 180 57 8;
   --sidebar-primary-foreground: 255 255 255;
   --sidebar-accent: 242 214 207;
   --sidebar-accent-foreground: 59 20 16;
   --sidebar-border: 216 222 230;
-  --sidebar-ring: 224 78 40;
+  --sidebar-ring: 180 57 8;
 
   --radius: 0.625rem;
 

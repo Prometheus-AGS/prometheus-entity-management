@@ -1,0 +1,41 @@
+{
+  "specification": {
+    "artifact_name": "v3-nextjs-app-router-example-archive-qa",
+    "artifact_type": "content",
+    "clarified_intent": {
+      "description": "Revalidate the complete Next.js App Router change after the cycle-2 review blocked the advertised verifier path and exposed missing scoped listener/GC teardown.",
+      "domain": "Next.js release-candidate implementation evidence"
+    },
+    "constraint_source": "KBD plan and task-specific constraints because .kbd-orchestrator/constraints.md is absent",
+    "constraints": ["acceptance-direct-evidence", "packed-consumer-boundary", "ssr-hydration-runtime", "visual-accessibility-integrity", "ledgers-synchronized", "limits-and-release-lanes-explicit", "security-boundary-fail-closed", "no-publication-overclaim"],
+    "target_state": {
+      "description": "A reproducible QA bundle with the BLOCK and lifecycle warning corrected, zero blocking violations, explicit limits, intact React-first staging, and no registry mutation claim.",
+      "success_criteria": [
+        "The package's exact no-argument verifier command writes task-5 evidence and passes.",
+        "The default path and task metadata are locked by a structural regression.",
+        "Scoped graph listeners and GC are reference-counted and released after the final React hook unmounts.",
+        "The corrected core and React tarballs pass the external Next.js production/browser boundary.",
+        "Coverage, exports, skills, docs, Changesets, OpenSpec, and evidence hashes agree.",
+        "React rc.1 remains independent of this later prerelease."
+      ],
+      "measurable_outcomes": [
+        {"metric": "cycle-2 findings corrected", "threshold": "2/2"},
+        {"metric": "blocking violations", "threshold": "0"},
+        {"metric": "verifier commands", "threshold": "10/10"},
+        {"metric": "focused units", "threshold": "15/15"},
+        {"metric": "structural tests", "threshold": "6/6"},
+        {"metric": "isolated request graphs", "threshold": "12/12"},
+        {"metric": "browser tests", "threshold": "2/2"},
+        {"metric": "serious or critical accessibility violations", "threshold": "0"}
+      ]
+    },
+    "content_type": "direct:content",
+    "unknowns": [
+      "External npm trusted-publisher and protected-environment authority cannot be proven by repository artifacts.",
+      "Firefox, WebKit, mobile browser, static/ISR rendering, and live hosted services are outside this change.",
+      "The stable release SHA and remaining showcase/docs work do not yet exist."
+    ],
+    "requires_code_execution": true,
+    "likely_tools": ["exact package verifier", "focused lifecycle tests", "JSON/schema validator", "OpenSpec validator", "SHA-256 calculator", "coverage/export verifiers"]
+  }
+}

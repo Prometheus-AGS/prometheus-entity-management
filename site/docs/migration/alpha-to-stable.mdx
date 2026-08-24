@@ -1,0 +1,130 @@
+---
+title: Migrate from 3.0 alpha/RC to stable
+description: Package-boundary and protocol changes between the 3.0 alphas/release candidates and stable 3.0, including the A2UI and A2A migration maps.
+---
+
+# Migrate from 3.0 alpha/RC to stable
+
+## Who this affects
+
+This guide applies to applications that adopted a 3.0 **alpha** or a numbered
+**release candidate** (`3.0.0-rc.N`) and are moving to stable 3.0. It builds on
+the [2.x to 3.0 migration](v2-to-v3.mdx); complete that first if you skipped it.
+
+## Breaking changes
+
+| # | Alpha / RC | Stable 3.0 | Recipe |
+| - | --- | --- | --- |
+| 1 | AG-UI chat/state APIs at the `@prometheus-ags/a2ui-react` root | AG-UI chat/state APIs at `@prometheus-ags/a2ui-react/ag-ui` | [A2UI package boundary](#a2ui-package-boundary) |
+| 2 | `/.well-known/agent.json` discovery | `/.well-known/agent-card.json` discovery | [A2A protocol surface](#a2a-protocol-surface) |
+| 3 | `tasks/send` | `SendMessage` | [A2A protocol surface](#a2a-protocol-surface) |
+| 4 | `tasks/sendSubscribe` | `SendStreamingMessage` over SSE | [A2A protocol surface](#a2a-protocol-surface) |
+| 5 | `tasks/get` | `GetTask` | [A2A protocol surface](#a2a-protocol-surface) |
+| 6 | `tasks/cancel` | `CancelTask` | [A2A protocol surface](#a2a-protocol-surface) |
+| 7 | custom `GraphMutationPart` | official data Part + `PROMETHEUS_GRAPH_EXTENSION_URI` | [A2A protocol surface](#a2a-protocol-surface) |
+| 8 | root compatibility symbols | explicit `./legacy` import | [A2A protocol surface](#a2a-protocol-surface) |
+| 9 | unversioned or alpha prerelease tags | numbered `3.0.0-rc.N` candidates, then stable `3.0.0` | [Release candidate versions](#release-candidate-versions) |
+
+## A2UI package boundary
+
+In the alphas, `@prometheus-ags/a2ui-react` mixed AG-UI chat/state APIs into
+the package root. In stable 3.0 the root is reserved for **official A2UI
+v0.9.1 rendering**. The pre-3.0 AG-UI chat/state APIs live at the explicit
+`./ag-ui` subpath.
+
+**Before (alpha):**
+
+```text
+import { EntityChat, useChatSession } from "@prometheus-ags/a2ui-react";
+```
+
+**After (stable 3.0):**
+
+```ts
+import {
+  EntityApproval,
+  EntityChat,
+  useChatSession,
+} from "@prometheus-ags/a2ui-react/ag-ui";
+
+export { EntityApproval, EntityChat, useChatSession };
+```
+
+Never import `EntityChat` from the package root in 3.0 code. AG-UI events may
+still project state into the graph, but that transport behavior is not
+represented as official A2UI conformance.
+
+## A2A protocol surface
+
+The alpha A2A server exposed pre-1.0 discovery and slash methods. Stable 3.0
+implements the official A2A v1 JSON-RPC lifecycle. Replace old discovery and
+slash methods with the official equivalents:
+
+```ts
+import {
+  AGENT_CARD_PATH,
+  buildAgentCard,
+  createA2AServer,
+  createEntityGraphA2APolicy,
+} from "@prometheus-ags/entity-graph-a2a";
+
+export const agentCardPath = AGENT_CARD_PATH;
+
+const policy = createEntityGraphA2APolicy({
+  entities: {
+    Task: {
+      actions: ["upsert", "replace", "remove", "query"],
+      fields: ["id", "title", "status", "projectId"],
+    },
+  },
+  authorize: ({ caller }) => caller.isAuthenticated,
+  requestApproval: ({ operation }) => ({
+    allowed: operation !== "replace" && operation !== "remove",
+  }),
+});
+
+export const a2aServer = createA2AServer({
+  card: buildAgentCard({ url: "https://api.example.com/a2a" }),
+  policy,
+});
+```
+
+If an incremental migration is unavoidable, wrap the existing server with
+`createLegacyA2AAdapter` from `@prometheus-ags/entity-graph-a2a/legacy`. The
+adapter provides bounded send/get/cancel translation and intentionally rejects
+legacy streaming. Treat the subpath as a compatibility seam, not a second
+protocol — migrate off it promptly, and never scaffold new code against it.
+
+## Binding peer policy
+
+Alpha builds tolerated duplicate core instances across framework bindings.
+Stable 3.0 enforces the binding singleton contract: each non-React binding
+(Svelte, Solid, Alpine, HTMX, Web Components, Tauri) declares
+`@prometheus-ags/entity-graph-core` as a **required peer**, and all bindings in
+one application must resolve exactly one core instance. Non-React bindings use
+the imperative `graphStore`; core's deprecated `useGraphStore` export remains a
+StoreApi-shaped migration alias, not a hook.
+
+If your alpha app pinned its own copy of core inside a binding's dependency
+tree, hoist it: install core explicitly at the application root and let the
+package manager dedupe to a single instance.
+
+## Release candidate versions
+
+All twelve fixed-group npm packages move through numbered `3.0.0-rc.N`
+candidates owned by Changesets prerelease mode, then promote together to stable
+`3.0.0`. Alpha versions, unnumbered `-rc` tags, and mixed fixed-group versions
+are rejected by the release pipeline before a candidate manifest is emitted.
+RCs publish to the npm `next` tag only; `latest` stays on 2.x until the stable
+publication change completes.
+
+## Upgrade validation fixtures
+
+| Fixture | Proves |
+| --- | --- |
+| `tests/release/fixtures/upgrade/a2ui-ag-ui-subpath.ts` | AG-UI chat/state APIs import from the `./ag-ui` subpath |
+| `tests/release/fixtures/upgrade/a2a-official-v1.ts` | Official v1 agent-card path, policy, and server composition |
+
+These fixtures compile against the packed 3.0 packages under
+`pnpm run verify:docs-operations`, alongside the
+[v2-to-v3 fixtures](v2-to-v3.mdx#upgrade-validation-fixtures).

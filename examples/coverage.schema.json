@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prometheus-ags.dev/schemas/entity-example-coverage-v1.json",
+  "title": "Prometheus Entity Management example coverage ledger",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "release",
+    "contract",
+    "status",
+    "semanticContract",
+    "contractChecks",
+    "qualityGates",
+    "capabilities",
+    "showcases",
+    "documentationSite"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "release": { "const": "3.0.0" },
+    "contract": { "const": "release/v3-release-contract.json" },
+    "status": { "enum": ["in-progress", "complete"] },
+    "semanticContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version", "status", "path", "schema", "command", "report"],
+      "properties": {
+        "id": { "const": "prometheus.entity-management.shared-example" },
+        "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "status": { "const": "implemented" },
+        "path": { "const": "examples/shared/scenario-contract.json" },
+        "schema": { "const": "examples/shared/scenario-contract.schema.json" },
+        "command": { "const": "pnpm run verify:example-coverage" },
+        "report": { "type": "string", "minLength": 1 }
+      }
+    },
+    "contractChecks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/gate" }
+    },
+    "qualityGates": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/gate" }
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 16,
+      "items": { "$ref": "#/$defs/capability" }
+    },
+    "showcases": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": { "$ref": "#/$defs/showcase" }
+    },
+    "documentationSite": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "change", "path"],
+      "properties": {
+        "status": { "enum": ["planned", "implemented"] },
+        "change": { "const": "v3-docs-github-pages" },
+        "path": { "const": "website" }
+      }
+    }
+  },
+  "$defs": {
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "feature", "tags", "evidence"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["implemented", "partial", "planned"] },
+        "change": { "type": "string" },
+        "feature": { "type": "string" },
+        "tags": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "command": { "type": "string" },
+        "policies": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "evidence": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "status", "ownerChange", "applicability"],
+      "properties": {
+        "kind": {
+          "enum": [
+            "semantic",
+            "unit",
+            "integration",
+            "packed-consumer",
+            "browser",
+            "desktop",
+            "mobile",
+            "protocol",
+            "documentation",
+            "visual",
+            "security",
+            "platform"
+          ]
+        },
+        "status": { "enum": ["implemented", "partial", "planned", "not-applicable"] },
+        "ownerChange": { "type": "string", "pattern": "^v3-" },
+        "command": { "type": "string", "minLength": 1 },
+        "paths": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "applicability": { "type": "string", "minLength": 8 },
+        "reason": { "type": "string", "minLength": 8 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "implemented" } } },
+          "then": { "required": ["command", "paths"] }
+        },
+        {
+          "if": { "properties": { "status": { "const": "not-applicable" } } },
+          "then": { "required": ["reason"] }
+        }
+      ]
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "stability",
+        "artifactIds",
+        "scenarioIds",
+        "runnableEvidence",
+        "releaseEvidence"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+(?:\\.[a-z0-9-]+)+$" },
+        "title": { "type": "string", "minLength": 8 },
+        "stability": { "const": "stable" },
+        "artifactIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "scenarioIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^example\\." },
+          "uniqueItems": true
+        },
+        "runnableEvidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/evidence" }
+        },
+        "releaseEvidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/evidence" }
+        }
+      }
+    },
+    "showcase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "change", "path", "scenarioIds", "runtimeEvidence", "visualEvidence"],
+      "properties": {
+        "id": {
+          "enum": ["react-19-vite-8", "nextjs", "agentic-a2ui", "flutter-riverpod", "tauri-desktop-mobile"]
+        },
+        "status": { "enum": ["planned", "partial", "implemented"] },
+        "change": { "type": "string", "pattern": "^v3-" },
+        "path": { "type": "string", "pattern": "^examples/" },
+        "scenarioIds": {
+          "type": "array",
+          "minItems": 3,
+          "items": { "type": "string", "pattern": "^example\\." },
+          "uniqueItems": true
+        },
+        "runtimeEvidence": { "$ref": "#/$defs/evidence" },
+        "visualEvidence": { "$ref": "#/$defs/evidence" }
+      }
+    }
+  }
+}

@@ -4,7 +4,7 @@
  * Architecture:
  *   createEntityList  (this file, Layer 2)
  *     └─ core engine fetchList  (Layer 1 / transport)
- *          └─ useGraphStore  (Layer 0 / Zustand graph)
+ *          └─ graphStore  (Layer 0 / Zustand graph)
  *
  * A Zustand `subscribe` bridges the graph's `lists[key]` slot + entity rows
  * into a SolidJS `createStore`, giving SolidJS fine-grained per-row reactivity.
@@ -16,7 +16,7 @@ import { createEffect, onCleanup } from "solid-js";
 import { createStore } from "solid-js/store";
 
 import {
-  useGraphStore,
+  graphStore,
   fetchList,
   serializeKey,
   getEngineOptions,
@@ -44,7 +44,7 @@ function listSliceEqual(
 /**
  * Creates a fine-grained SolidJS reactive primitive for an entity list.
  *
- * - Subscribes to `useGraphStore` to mirror list state (ids + pagination)
+ * - Subscribes to `graphStore` to mirror list state (ids + pagination)
  *   and resolves the entity rows by joining ids → graph entities on each read.
  * - Changing `queryKey()` triggers a new fetch and subscribes to the new list
  *   slot; the previous subscription is cleaned up automatically.
@@ -89,7 +89,7 @@ export function createEntityList<TRaw, TEntity extends object>(
 
   // ── Helper: resolve items from current graph state for a given key ───────────
   function resolveItems(key: string): TEntity[] {
-    const s = useGraphStore.getState();
+    const s = graphStore.getState();
     const list = s.lists[key];
     if (!list) return [];
     return list.ids
@@ -101,7 +101,7 @@ export function createEntityList<TRaw, TEntity extends object>(
   // Declared before createEffect so it is always defined when the effect runs
   // (the effect mock executes the callback synchronously in tests).
   async function doInitialFetch(key: string): Promise<void> {
-    const s = useGraphStore.getState();
+    const s = graphStore.getState();
     const listState = s.lists[key];
     const effectiveStaleTime = staleTime ?? getEngineOptions().defaultStaleTime;
     const age = Date.now() - (listState?.lastFetched ?? 0);
@@ -131,7 +131,7 @@ export function createEntityList<TRaw, TEntity extends object>(
 
     // Sync snapshot immediately with whatever is already in the graph.
     const syncFromGraph = () => {
-      const s = useGraphStore.getState();
+      const s = graphStore.getState();
       const listState = s.lists[key] ?? EMPTY_LIST_STATE;
       const items = resolveItems(key);
       setSlice("listState", (prev) => ({ ...prev, ...listState }));
@@ -142,7 +142,7 @@ export function createEntityList<TRaw, TEntity extends object>(
 
     // Subscribe to any graph change that could affect this list.
     // Solid's fine-grained update system means only changed fields propagate.
-    const unsub = useGraphStore.subscribe(
+    const unsub = graphStore.subscribe(
       (s) => {
         const listState = s.lists[key] ?? EMPTY_LIST_STATE;
         const entityBucket = s.entities[type];
@@ -169,7 +169,7 @@ export function createEntityList<TRaw, TEntity extends object>(
   // ── fetchNextPage ─────────────────────────────────────────────────────────────
   async function fetchNextPage(): Promise<void> {
     const key = serializeKey(queryKeyAccessor());
-    const s = useGraphStore.getState();
+    const s = graphStore.getState();
     const listState = s.lists[key] ?? EMPTY_LIST_STATE;
     if (!listState.hasNextPage || listState.isFetchingMore) return;
 
@@ -192,7 +192,7 @@ export function createEntityList<TRaw, TEntity extends object>(
   // ── Imperative refetch ────────────────────────────────────────────────────────
   async function refetch(): Promise<void> {
     const key = serializeKey(queryKeyAccessor());
-    useGraphStore.getState().setListStale(key, true);
+    graphStore.getState().setListStale(key, true);
     await fetchList(
       {
         type,

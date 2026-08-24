@@ -1,0 +1,19 @@
+[package]
+name = "prometheus-tauri-universal"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lib]
+name = "prometheus_tauri_universal_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[dependencies]
+entity-graph-tauri = { path = "../../../packages/entity-graph-tauri/rust-plugin" }
+tauri = { version = "2.11.5", features = ["test"] }
+tauri-plugin-deep-link = "2"
+tauri-plugin-sql = { version = "2", features = ["sqlite"] }
+serde_json = "1"
+
+[build-dependencies]
+tauri-build = { version = "2.6.3", features = [] }

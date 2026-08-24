@@ -1,0 +1,14 @@
+"$schema" = "schemas/schema.json"
+
+[default]
+description = """
+Read-only access to the entity-graph mirror.
+
+Mutation and snapshot commands require explicit command permissions so an
+application cannot silently grant write or persistence access to every webview.
+"""
+permissions = [
+  "allow-graph-get-entity",
+  "allow-graph-get-list",
+  "allow-graph-platform-ping",
+]

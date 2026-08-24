@@ -1,33 +1,43 @@
 {
   "name": "@prometheus-ags/entity-graph-web-components",
-  "version": "3.0.0-alpha.0",
+  "version": "3.0.3",
   "description": "Lit 3 custom elements (<entity-list>, <entity-detail>, <entity-form>) using ReactiveController to subscribe to the core entity graph. Framework-agnostic.",
+  "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     }
   },
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
   ],
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "node ../../scripts/build-web-components-package.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "refresh:exports": "pnpm run build && node ../../scripts/refresh-exports-ledger.mjs --pkg web-components",
+    "verify:skills": "node ../../scripts/verify-skills-exports.mjs --pkg web-components"
   },
   "peerDependencies": {
-    "@prometheus-ags/entity-graph-core": "workspace:*",
+    "@prometheus-ags/entity-graph-core": "workspace:^",
     "lit": ">=3.0.0"
   },
   "peerDependenciesMeta": {
@@ -36,13 +46,13 @@
     }
   },
   "dependencies": {
-    "@prometheus-ags/entity-graph-core": "workspace:*",
-    "lit": "^3.0.0"
+    "lit": "^3.3.3"
   },
   "devDependencies": {
-    "tsup": ">=8",
-    "typescript": ">=6",
-    "vitest": ">=4"
+    "@prometheus-ags/entity-graph-core": "workspace:*",
+    "tsup": "8.5.1",
+    "typescript": "6.0.2",
+    "vitest": "4.1.10"
   },
   "keywords": [
     "web-components",
@@ -57,6 +67,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/prometheus-ags/prometheus-entity-management"
+    "url": "https://github.com/Prometheus-AGS/prometheus-entity-management",
+    "directory": "packages/entity-graph-web-components"
+  },
+  "homepage": "https://github.com/prometheus-ags/prometheus-entity-management/tree/main/packages/entity-graph-web-components#readme",
+  "bugs": {
+    "url": "https://github.com/prometheus-ags/prometheus-entity-management/issues"
+  },
+  "engines": {
+    "node": "^22.14.0 || ^24.0.0 || >=26.0.0"
   }
 }

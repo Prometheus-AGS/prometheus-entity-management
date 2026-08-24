@@ -1,0 +1,12 @@
+{
+  "style": "none",
+  "citations": [
+    {"id":"cite-a2a-spec","url":"https://a2a-protocol.org/latest/specification/","formatted":"A2A Protocol Working Group — Agent2Agent Protocol Specification","credibility_score":99,"confidence":0.99},
+    {"id":"cite-a2a-v1","url":"https://a2a-protocol.org/latest/whats-new-v1/","formatted":"A2A Protocol Working Group — What's New in v1.0","credibility_score":98,"confidence":0.99},
+    {"id":"cite-a2a-discovery","url":"https://a2a-protocol.org/latest/topics/agent-discovery/","formatted":"A2A Protocol Working Group — Agent Discovery","credibility_score":98,"confidence":0.99},
+    {"id":"cite-a2a-js","url":"https://github.com/a2aproject/a2a-js/releases","formatted":"A2A Protocol Working Group — JavaScript SDK releases","credibility_score":97,"confidence":0.98},
+    {"id":"cite-a2a-tck","url":"https://github.com/a2aproject/a2a-tck","formatted":"A2A Protocol Working Group — Technology Compatibility Kit","credibility_score":97,"confidence":0.98},
+    {"id":"cite-a2ui-v091","url":"https://a2ui.org/specification/v0.9-a2ui/","formatted":"A2UI — v0.9 stable protocol family","credibility_score":98,"confidence":0.98},
+    {"id":"cite-a2ui-a2a","url":"https://a2ui.org/specification/v0.8-a2a-extension/","formatted":"A2UI — A2A extension v0.8 legacy contract","credibility_score":98,"confidence":0.98}
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "plan": {
+    "stages": [
+      {"id": "s1", "description": "Map the review BLOCK and lifecycle warning to source, tests, documentation, and evidence corrections.", "requires_execution": false},
+      {"id": "s2", "description": "Run focused lint/type/lifecycle tests and the exact no-argument tarball-only Next.js verifier.", "requires_execution": true, "tool": "focused repository commands"},
+      {"id": "s3", "description": "Recompute retained hashes and validate coverage, exports, OpenSpec, Changesets, release contract, frozen install, security, and diff hygiene.", "requires_execution": true, "tool": "focused repository commands"},
+      {"id": "s4", "description": "Evaluate unresolved limits and the React-first/future-Next release separation.", "requires_execution": false},
+      {"id": "s5", "description": "Persist, validate, checkpoint, and finalize artifact-refiner cycle 3.", "requires_execution": true, "tool": "artifact-refiner scripts"}
+    ],
+    "tool_invocations": [
+      {"stage_id": "s2", "tool": "focused repository commands", "purpose": "Prove both review findings are fixed on the exact advertised path."},
+      {"stage_id": "s3", "tool": "focused repository commands", "purpose": "Prove ledgers, hashes, and release boundaries remain synchronized."},
+      {"stage_id": "s5", "tool": "artifact-refiner scripts", "purpose": "Validate schemas, file references, state consistency, and durable history."}
+    ],
+    "state_updates": {
+      "files_to_create": [],
+      "files_to_update": ["specification.json", "plan.json", "constraints.json", "artifact_manifest.json", "reflection.json", "refinement_log.md", "decisions.md", "dist/archive-qa-report.md", "dist/validation.json", "state.json", ".refiner/registry.json"],
+      "directories_required": ["dist"]
+    },
+    "validation_plan": [
+      {"constraint_id": "acceptance-direct-evidence", "validation_method": "blocked finding and acceptance matrix predicates", "execution_required": true},
+      {"constraint_id": "packed-consumer-boundary", "validation_method": "exact no-argument tarball-only verifier", "execution_required": true},
+      {"constraint_id": "ssr-hydration-runtime", "validation_method": "GC isolation and final-owner cleanup regressions plus browser assertions", "execution_required": true},
+      {"constraint_id": "visual-accessibility-integrity", "validation_method": "fresh hash and axe assertions", "execution_required": true},
+      {"constraint_id": "ledgers-synchronized", "validation_method": "default report, task metadata, coverage/export/OpenSpec/Changesets/docs checks", "execution_required": true},
+      {"constraint_id": "limits-and-release-lanes-explicit", "validation_method": "scope and release-impact review", "execution_required": false},
+      {"constraint_id": "security-boundary-fail-closed", "validation_method": "source/test/audit review", "execution_required": true},
+      {"constraint_id": "no-publication-overclaim", "validation_method": "coverage/release/registry assertions", "execution_required": true}
+    ]
+  }
+}

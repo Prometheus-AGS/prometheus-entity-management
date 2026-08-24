@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "1.0.0",
+  "assessedOn": "2026-08-01",
+  "threshold": ["critical", "high"],
+  "acceptedAdvisories": [
+    {
+      "id": 1123911,
+      "package": "js-yaml",
+      "owner": "Travis James",
+      "expiresOn": "2026-11-21",
+      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (postcss-loader > cosmiconfig); not shipped in any published package runtime tree. Reassess at next Docusaurus upgrade."
+    },
+    {
+      "id": 1138115,
+      "package": "js-yaml",
+      "owner": "Travis James",
+      "expiresOn": "2026-11-21",
+      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (postcss-loader > cosmiconfig); not shipped in any published package runtime tree. Reassess at next Docusaurus upgrade."
+    },
+    {
+      "id": 1124064,
+      "package": "fast-uri",
+      "owner": "Travis James",
+      "expiresOn": "2026-11-21",
+      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (babel-loader > schema-utils > ajv); not shipped in any published package runtime tree. Reassess at next Docusaurus upgrade."
+    },
+    {
+      "id": 1130720,
+      "package": "fast-uri",
+      "owner": "Travis James",
+      "expiresOn": "2026-11-21",
+      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (babel-loader > schema-utils > ajv); not shipped in any published package runtime tree. Reassess at next Docusaurus upgrade."
+    },
+    {
+      "id": 1145559,
+      "package": "fast-uri",
+      "owner": "Travis James",
+      "expiresOn": "2026-11-21",
+      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (babel-loader > schema-utils > ajv); not shipped in any published package runtime tree. Reassess at next Docusaurus upgrade."
+    },
+    {
+      "id": 1145561,
+      "package": "fast-uri",
+      "owner": "Travis James",
+      "expiresOn": "2026-11-21",
+      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (babel-loader > schema-utils > ajv); not shipped in any published package runtime tree. Reassess at next Docusaurus upgrade."
+    },
+    {
+      "id": 1145636,
+      "package": "fast-uri",
+      "owner": "Travis James",
+      "expiresOn": "2026-11-21",
+      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (babel-loader > schema-utils > ajv); not shipped in any published package runtime tree. Reassess at next Docusaurus upgrade."
+    },
+    {
+      "id": 1138808,
+      "package": "image-size",
+      "owner": "Travis James",
+      "expiresOn": "2026-11-21",
+      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (@docusaurus/mdx-loader); processes only first-party docs images at build time. Not shipped in any published package runtime tree."
+    },
+    {
+      "id": 1138809,
+      "package": "image-size",
+      "owner": "Travis James",
+      "expiresOn": "2026-11-21",
+      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (@docusaurus/mdx-loader); processes only first-party docs images at build time. Not shipped in any published package runtime tree."
+    },
+    {
+      "id": 1139427,
+      "package": "nanoid",
+      "owner": "Travis James",
+      "expiresOn": "2026-11-21",
+      "rationale": "Build-time-only transitive dependency of the Next.js example app (next > postcss); bundler internals, not shipped in any published package runtime tree. Reassess at next Next.js example upgrade."
+    }
+  ],
+  "resolvedAdvisories": [
+    {
+      "ids": [1116375, 1117930, 1118938, 1118949, 1118953, 1118955, 1118959, 1118961, 1124170, 1124171, 1124184, 1124192, 1124066, 1124252, 1124288],
+      "packages": ["next", "sharp", "postcss"],
+      "action": "Upgrade Next.js to 16.2.12 and use root pnpm overrides for PostCSS 8.5.25 and Sharp 0.35.0 because Next 16.2.12 still declares vulnerable exact/ranged transitive releases."
+    },
+    {
+      "ids": [1124299],
+      "packages": ["seroval"],
+      "action": "Upgrade @tanstack/react-router to 1.170.18 so router-core resolves patched seroval."
+    },
+    {
+      "ids": [1117870, 1117884, 1123898, 1123911, 1123999, 1124064, 1130178, 1130591],
+      "packages": ["fast-uri", "brace-expansion", "js-yaml", "hono"],
+      "action": "Remove the shadcn scaffolding CLI from application production dependencies; generated components do not import the CLI at runtime."
+    }
+  ],
+  "policy": "Every active critical/high production advisory must be remediated or have a time-bounded acceptance with an owner and rationale. Lower severities remain visible and are not described as zero risk."
+}

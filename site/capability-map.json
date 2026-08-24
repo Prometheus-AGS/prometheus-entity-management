@@ -1,0 +1,169 @@
+{
+  "$schema": "https://prometheus-ags.dev/schemas/capability-map.json",
+  "version": 1,
+  "description": "Stable capability → docs route map. The release test asserts every route exists and every guides page is referenced by at least one capability (no orphans).",
+  "capabilities": [
+    {
+      "capability": "quickstart-react",
+      "concept": "/docs/guides/quickstart-react",
+      "api": "/docs/api/npm/prometheus-entity-management",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "normalized-entities",
+      "concept": "/docs/guides/concepts/normalized-entities",
+      "api": "/docs/api/npm/entity-graph-core",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "id-only-lists",
+      "concept": "/docs/guides/concepts/id-only-lists",
+      "api": "/docs/api/npm/entity-graph-core",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "queries-as-instructions",
+      "concept": "/docs/guides/concepts/queries-as-instructions",
+      "api": "/docs/api/npm/prometheus-entity-management",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "layers-and-dataflow",
+      "concept": "/docs/guides/concepts/layers-and-dataflow",
+      "api": "/docs/api/npm/entity-graph-core",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "graph-patches-lists",
+      "concept": "/docs/guides/concepts/graph-patches-lists",
+      "api": "/docs/api/npm/entity-graph-core",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "engine-swr-gc-suspense",
+      "concept": "/docs/guides/concepts/engine-swr-gc-suspense",
+      "api": "/docs/api/npm/entity-graph-core",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "views-and-filtering",
+      "concept": "/docs/guides/concepts/views-and-filtering",
+      "api": "/docs/api/npm/entity-graph-core",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "crud-and-relations",
+      "concept": "/docs/guides/concepts/crud-and-relations",
+      "api": "/docs/api/npm/prometheus-entity-management",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "realtime-batching",
+      "concept": "/docs/guides/concepts/realtime-batching",
+      "api": "/docs/api/npm/entity-graph-core",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "graphql-and-rest",
+      "concept": "/docs/guides/concepts/graphql-and-rest",
+      "api": "/docs/api/npm/prometheus-entity-management",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "sync-and-persistence",
+      "concept": "/docs/guides/concepts/sync-and-persistence",
+      "api": "/docs/api/npm/entity-graph-sync",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "sdl-and-codegen",
+      "concept": "/docs/guides/concepts/sdl-and-codegen",
+      "api": "/docs/api/npm/entity-graph-sdl",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "devtools",
+      "concept": "/docs/guides/concepts/devtools",
+      "api": "/docs/api/npm/entity-graph-core",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "binding-react",
+      "concept": "/docs/guides/bindings/react",
+      "api": "/docs/api/npm/prometheus-entity-management",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "binding-svelte",
+      "concept": "/docs/guides/bindings/svelte",
+      "api": "/docs/api/npm/entity-graph-svelte",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "binding-solid",
+      "concept": "/docs/guides/bindings/solid",
+      "api": "/docs/api/npm/entity-graph-solid",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "binding-alpine",
+      "concept": "/docs/guides/bindings/alpine",
+      "api": "/docs/api/npm/entity-graph-alpine",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "binding-htmx",
+      "concept": "/docs/guides/bindings/htmx",
+      "api": "/docs/api/npm/entity-graph-htmx",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "binding-web-components",
+      "concept": "/docs/guides/bindings/web-components",
+      "api": "/docs/api/npm/entity-graph-web-components",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "binding-flutter",
+      "concept": "/docs/guides/bindings/flutter",
+      "api": "/docs/api/dart",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "binding-tauri",
+      "concept": "/docs/guides/bindings/tauri",
+      "api": "/docs/api/npm/entity-graph-tauri",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "recipes",
+      "concept": "/docs/guides/practices/recipes",
+      "api": "/docs/api/npm/prometheus-entity-management",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "failure-modes",
+      "concept": "/docs/guides/practices/failure-modes",
+      "api": "/docs/api/npm/entity-graph-core",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "performance",
+      "concept": "/docs/guides/practices/performance",
+      "api": "/docs/api/npm/entity-graph-core",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "security",
+      "concept": "/docs/guides/practices/security",
+      "api": "/docs/api/npm/entity-graph-core",
+      "example": "/docs/examples/overview"
+    },
+    {
+      "capability": "package-selection",
+      "concept": "/docs/guides/practices/package-selection",
+      "api": "/docs/packages/overview",
+      "example": "/docs/examples/overview"
+    }
+  ]
+}

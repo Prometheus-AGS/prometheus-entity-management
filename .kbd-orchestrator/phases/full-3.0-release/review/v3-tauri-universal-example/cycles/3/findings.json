@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "examples/tauri-universal/src/features/platform/hooks.ts",
+      "line": 2,
+      "claim": "The hooks layer bypasses the required hook-to-store-to-service boundary by importing and reading the graph store directly.",
+      "evidence": "Constraint `one-graph-layered-adapter-boundary` requires \"strict component-to-hook-to-store-to-service flow\", and task-2 evidence claims `components -> hooks -> platform store -> platform service -> graph/native`, but `hooks.ts` imports `useGraphStore`/`useGraphSyncStatus` from `@prometheus-ags/prometheus-entity-management` and `useTaskBoard` reads graph entities/lists/patches directly.",
+      "suggested_fix": "Move graph-derived selectors/state into the platform store or a store-layer selector API, have hooks consume only that store layer, and add a verifier rejection for direct graph-store imports in hooks."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "examples/tauri-universal/src/features/platform/services/platform-service.ts",
+      "line": 387,
+      "claim": "The native capability-denial proof treats any `clearGraph` error as an authorization denial, so unrelated IPC/runtime failures can be falsely recorded as a passed trust-boundary test.",
+      "evidence": "Acceptance requires denied permissions to be tested and constraint `trust-boundaries-fail-closed` requires withheld destructive IPC permissions to fail closed; `proveDestructiveCommandDenied()` catches every error from `this.plugin.commands.clearGraph()` and returns `Denied as configured: ${formatError(error)}` without checking that the error is an authorization/capability denial.",
+      "suggested_fix": "Only return a denial proof when the error matches the expected Tauri permission-denied/not-allowed shape; otherwise rethrow or report an error so non-authorization failures cannot satisfy the denial criterion."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

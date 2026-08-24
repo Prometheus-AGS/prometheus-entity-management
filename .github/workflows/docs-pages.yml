@@ -1,0 +1,176 @@
+name: Documentation site
+
+on:
+  pull_request:
+    paths:
+      - "website/**"
+      - "README.md"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "packages/**"
+      - "examples/flutter-riverpod/test/goldens/**"
+      - ".kbd-orchestrator/phases/full-3.0-release/evidence/**"
+      - "examples/coverage.json"
+      - "release/**"
+      - "scripts/**"
+      - "tests/browser/v3-docs-pages*"
+      - "tests/browser/v3-docs-pages.spec.ts-snapshots/**"
+      - "tests/release/npm-trusted-publishing.test.mjs"
+      - "turbo.json"
+      - ".github/workflows/docs-pages.yml"
+      - ".github/workflows/publish.yml"
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: documentation-pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Check out the exact source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Install the pinned pnpm runtime
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+
+      - name: Install Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "24"
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+          package-manager-cache: false
+
+      - name: Install the frozen workspace
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate documentation and README contracts
+        run: |
+          pnpm run docs:check
+          pnpm run docs:test
+          pnpm run docs:native-api:check
+          pnpm run verify:readme-parity
+          pnpm run test:npm-trust
+
+      - name: Build npm artifacts needed by snippets and artifact checks
+        run: pnpm run build:packages
+
+      - name: Verify snippets and the deterministic search artifact
+        run: |
+          pnpm run docs:artifacts:check
+          pnpm run docs:snippets
+          pnpm run docs:search
+          git diff --exit-code -- website/static/search-index.json
+          if [ -n "$(git status --porcelain --untracked-files=all -- website/static/search-index.json)" ]; then
+            git status --short --untracked-files=all -- website/static/search-index.json
+            exit 1
+          fi
+
+      - name: Build and inspect the production site
+        run: |
+          pnpm run docs:build
+          pnpm --filter @prometheus-ags/entity-management-docs check:build
+
+      - name: Certify browser navigation, search, accessibility, and visual baselines
+        id: browser-certification
+        run: |
+          pnpm exec playwright install --with-deps chromium
+          pnpm run docs:test:browser
+
+      - name: Upload browser failure evidence
+        if: failure() && steps.browser-certification.outcome == 'failure'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: docs-browser-failure-${{ github.run_id }}
+          path: test-results
+          if-no-files-found: error
+          retention-days: 3
+
+      - name: Enforce built-artifact mobile Lighthouse budgets
+        run: |
+          node website/scripts/serve-built-site.mjs &
+          docs_server_pid=$!
+          trap 'kill "$docs_server_pid" 2>/dev/null || true' EXIT
+          for readiness_attempt in {1..30}; do
+            if curl --fail --silent --output /dev/null http://127.0.0.1:4177/prometheus-entity-management/; then
+              break
+            fi
+            if [ "$readiness_attempt" -eq 30 ]; then
+              exit 1
+            fi
+            sleep 1
+          done
+          DOCS_BASE_URL=http://127.0.0.1:4177/prometheus-entity-management/ \
+            pnpm --filter @prometheus-ags/entity-management-docs audit:deployed
+
+      - name: Upload the Pages artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
+        with:
+          path: website/build
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+
+      - name: Deploy the immutable Pages artifact
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
+
+  certify-deployment:
+    needs: deploy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Check out the deployed source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Install the pinned pnpm runtime
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+
+      - name: Install Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "24"
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+          package-manager-cache: false
+
+      - name: Install the frozen workspace and Chromium
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm exec playwright install --with-deps chromium
+
+      - name: Probe the deployed routes, search, accessibility, and visuals
+        env:
+          DOCS_BASE_URL: ${{ needs.deploy.outputs.page_url }}
+        run: pnpm run docs:test:browser
+
+      - name: Enforce deployed mobile Lighthouse budgets
+        env:
+          DOCS_BASE_URL: ${{ needs.deploy.outputs.page_url }}
+        run: pnpm --filter @prometheus-ags/entity-management-docs audit:deployed

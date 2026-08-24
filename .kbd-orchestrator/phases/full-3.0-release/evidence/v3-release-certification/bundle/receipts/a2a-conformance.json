@@ -1,0 +1,13 @@
+{
+  "lane": "a2a-conformance",
+  "category": "protocol-bridges",
+  "mandatory": true,
+  "command": "pnpm run verify:a2a-conformance",
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:32:48.782Z",
+  "durationMs": 8255,
+  "exitCode": 0,
+  "logFile": "logs/a2a-conformance.log",
+  "logSha256": "c8b2a18b832f839efe3fd6608678d8e9e34beb82dc284ceae302ee91580bd6db",
+  "logBytes": 3076
+}

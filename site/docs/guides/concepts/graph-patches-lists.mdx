@@ -1,0 +1,60 @@
+---
+title: Graph, patches, and lists
+description: The three graph structures — entities, UI-only patches merged at read time, and ID-only lists — and when to use each.
+---
+
+# Graph, patches, and lists
+
+The graph store holds three structures. Knowing which one you need prevents
+the two classic mistakes: storing UI state on the server record, and storing
+entity data in a list.
+
+## 1. `entities` — canonical server data
+
+Server-confirmed records, written by `upsertEntity` / `replaceEntity` /
+`removeEntity` from stores, adapters, and engine fetchers. This is the only
+data that may be persisted or sent back to a server.
+
+## 2. `patches` — local UI-only augmentation
+
+Selection, expansion, pending spinners — state that is true **only on this
+device, right now**. Patches merge at read time:
+
+```text
+readEntity(type, id) = { ...entities[type][id], ...patches[type][id] }
+```
+
+Patches are never sent to the server and never overwrite canonical data —
+clearing a patch reveals the untouched entity underneath. Because patches live
+in the graph, a patch is visible to **every** subscriber of that entity: select
+a row in a table and a detail sheet showing the same entity can react.
+
+```tsx
+import { useEntityAugment } from "@prometheus-ags/prometheus-entity-management";
+
+function useTaskSelection(taskId: string | null) {
+  const { patch, augment, unaugment } = useEntityAugment<{ _selected?: boolean }>(
+    "task",
+    taskId,
+  );
+  return {
+    isSelected: patch?._selected === true,
+    select: () => augment({ _selected: true }),
+    deselect: () => unaugment(["_selected"]),
+  };
+}
+```
+
+## 3. `lists` — ordered IDs + fetch state
+
+Covered in [ID-only lists](/docs/guides/concepts/id-only-lists). Order,
+membership, pagination, and `isFetching` — never data.
+
+## Decision rule
+
+| If the state… | Put it in |
+| ------------- | --------- |
+| came from / goes to a server | `entities` |
+| is UI-local but shared across views | `patches` |
+| is UI-local to one component | component state (e.g. the CRUD edit buffer) |
+| is about order/membership/pagination | `lists` |

@@ -1,18 +1,23 @@
 {
   "name": "@prometheus-ags/prometheus-entity-management",
-  "version": "3.0.0-alpha.0",
+  "version": "3.0.3",
   "description": "Normalized, globally-reactive entity graph store for React — the React bindings over @prometheus-ags/entity-graph-core. Re-exports the full core surface plus React hooks, CRUD, UI, and devtools.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     }
   },
   "publishConfig": {
@@ -36,18 +41,15 @@
     "prepublishOnly": "pnpm run typecheck && pnpm run build && pnpm run test && pnpm run verify:skills"
   },
   "peerDependencies": {
+    "@prometheus-ags/entity-graph-core": "workspace:^",
     "@ag-ui/core": ">=0.0.30",
-    "@tanstack/react-table": ">=8.0.0",
     "@tauri-apps/plugin-sql": ">=2.0.0",
     "loro-crdt": ">=1.0.0",
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+    "react": ">=19.0.0 <20.0.0",
+    "react-dom": ">=19.0.0 <20.0.0"
   },
   "peerDependenciesMeta": {
     "@ag-ui/core": {
-      "optional": true
-    },
-    "@tanstack/react-table": {
       "optional": true
     },
     "@tauri-apps/plugin-sql": {
@@ -58,13 +60,18 @@
     }
   },
   "dependencies": {
-    "@prometheus-ags/entity-graph-core": "workspace:*",
-    "@tanstack/react-virtual": "^3.13.26",
+    "@tanstack/react-table": "^8.21.3",
+    "@tanstack/react-virtual": "^3.14.9",
     "clsx": ">=2",
-    "immer": ">=11",
-    "lucide-react": ">=1",
-    "tailwind-merge": ">=3",
-    "zustand": ">=5"
+    "immer": "^11.1.15",
+    "lucide-react": "^1.28.0",
+    "tailwind-merge": "^3.6.0",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@prometheus-ags/entity-graph-core": "workspace:*",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
   },
   "keywords": [
     "react",
@@ -82,10 +89,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/prometheus-ags/prometheus-entity-management"
+    "url": "https://github.com/Prometheus-AGS/prometheus-entity-management",
+    "directory": "packages/entity-graph-react"
   },
   "bugs": {
     "url": "https://github.com/prometheus-ags/prometheus-entity-management/issues"
   },
-  "homepage": "https://github.com/prometheus-ags/prometheus-entity-management#readme"
+  "homepage": "https://github.com/prometheus-ags/prometheus-entity-management/tree/main/packages/entity-graph-react#readme",
+  "engines": {
+    "node": "^22.14.0 || ^24.0.0 || >=26.0.0"
+  }
 }

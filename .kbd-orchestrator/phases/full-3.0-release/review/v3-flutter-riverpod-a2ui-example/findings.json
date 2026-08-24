@@ -1,0 +1,22 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [],
+  "checked_classes": [
+    "Spec violations \u2014 checked acceptance criteria against the diff; the diff updates task status, coverage/docs/skills, platform workflow invocation, tests, and verification evidence while preserving explicit exclusions for durable persistence, physical devices, native assistive technology, publication, and full release certification.",
+    "Correctness \u2014 checked changed workflow commands, verification scripts, coverage status transitions, and A2UI clone logic in the included prior commit; no concrete broken condition or command defect is provable from the packet.",
+    "Regressions \u2014 checked for removed evidence boundaries and dependent test updates; partial durable-persistence evidence remains partial while only Flutter showcase/runtime/visual/platform evidence is promoted.",
+    "Security \u2014 checked untrusted A2UI boundary language and runtime clone changes; no new injection, path traversal, secret exposure, unsafe deserialization, or authorization bypass is evidenced in the diff.",
+    "Constraint breaches \u2014 constraints are null in the packet; no project-level blocking rule is available to apply.",
+    "Silent failure \u2014 checked for swallowed errors, skipped gates, and fallback paths in the changed workflow/tests/docs; no concrete silent skip is evidenced."
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

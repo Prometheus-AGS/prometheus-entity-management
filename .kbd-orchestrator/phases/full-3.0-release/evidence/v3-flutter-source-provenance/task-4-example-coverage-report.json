@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-08-01T23:43:17.779Z",
+  "contract": {
+    "id": "prometheus.entity-management.shared-example",
+    "version": "1.0.0",
+    "fixedClock": "2030-01-15T12:00:00.000Z",
+    "entityTypes": [
+      "User",
+      "Project",
+      "Task",
+      "Comment",
+      "Activity"
+    ],
+    "transports": [
+      "transport.rest",
+      "transport.graphql",
+      "transport.realtime",
+      "transport.offline",
+      "transport.a2a",
+      "transport.a2ui",
+      "transport.ssr",
+      "transport.platform"
+    ]
+  },
+  "summary": {
+    "scenarios": 13,
+    "scenariosPassed": 13,
+    "capabilities": 16,
+    "stableArtifacts": 16,
+    "showcases": 5,
+    "overallCoverageStatus": "in-progress",
+    "releaseCertified": false
+  },
+  "scenarioResults": {
+    "example.graph.normalized-cross-view": {
+      "status": "pass",
+      "actual": {
+        "canonicalCopies": 1,
+        "listEntriesAreIds": true,
+        "detailName": "Atlas 3.0",
+        "listName": "Atlas 3.0"
+      }
+    },
+    "example.crud.optimistic-confirm": {
+      "status": "pass",
+      "actual": {
+        "duringPatch": "done",
+        "canonicalDuringPatch": "in-progress",
+        "afterConfirm": "done",
+        "patchCleared": true
+      }
+    },
+    "example.crud.optimistic-rollback": {
+      "status": "pass",
+      "actual": {
+        "duringPatch": "done",
+        "afterRollback": "todo",
+        "canonicalVersion": 1,
+        "patchCleared": true
+      }
+    },
+    "example.relationship.cascade-invalidation": {
+      "status": "pass",
+      "actual": {
+        "projectId": "project-hermes",
+        "invalidated": [
+          "project:project-atlas",
+          "project:project-hermes",
+          "tasks:project-atlas",
+          "tasks:project-hermes"
+        ]
+      }
+    },
+    "example.view.local-remote-hybrid": {
+      "status": "pass",
+      "actual": {
+        "localIds": [
+          "task-docs",
+          "task-sync"
+        ],
+        "remoteField": "status",
+        "remoteValue": "todo",
+        "hybridImmediateIds": [
+          "task-docs",
+          "task-sync"
+        ],
+        "hybridFinalIds": [
+          "task-docs",
+          "task-sync"
+        ]
+      }
+    },
+    "example.transport.rest-graphql-equivalence": {
+      "status": "pass",
+      "actual": {
+        "restIds": [
+          "task-schema",
+          "task-sync"
+        ],
+        "graphqlIds": [
+          "task-schema",
+          "task-sync"
+        ],
+        "sameCanonicalEntities": true
+      }
+    },
+    "example.realtime.coalesced-cross-view": {
+      "status": "pass",
+      "actual": {
+        "queuedEvents": 3,
+        "coalescedEntities": 2,
+        "taskVersion": 3,
+        "graphWrites": 1,
+        "listStatus": "in-progress"
+      }
+    },
+    "example.offline.persistence-convergence": {
+      "status": "pass",
+      "actual": {
+        "title": "Prove deterministic convergence",
+        "priority": "high",
+        "convergedClients": 2,
+        "reloadMatches": true,
+        "conflicts": 0
+      }
+    },
+    "example.protocol.a2a-a2ui-policy": {
+      "status": "pass",
+      "actual": {
+        "a2aFinalState": "completed",
+        "surfaceId": "surface-task-sync",
+        "approvedMutation": "task.update",
+        "deniedMutation": "task.delete",
+        "malformedRejected": true,
+        "modelKeyRequired": false
+      }
+    },
+    "example.runtime.ssr-isolation-hydration": {
+      "status": "pass",
+      "actual": {
+        "requestAtlasIds": [
+          "project-atlas"
+        ],
+        "requestHermesIds": [
+          "project-hermes"
+        ],
+        "crossRequestLeakage": false,
+        "serializable": true,
+        "duplicateFetches": 0
+      }
+    },
+    "example.platform.adapter-boundary": {
+      "status": "pass",
+      "actual": {
+        "hosts": [
+          "browser",
+          "desktop",
+          "mobile"
+        ],
+        "canonicalGraphOwner": "application",
+        "allowedCommands": [
+          "loadGraph",
+          "saveGraph"
+        ],
+        "deniedCommand": "deleteAll",
+        "flutterGenuiStability": "experimental"
+      }
+    },
+    "example.schema.roundtrip": {
+      "status": "pass",
+      "actual": {
+        "entityTypes": [
+          "Activity",
+          "Comment",
+          "Project",
+          "Task",
+          "User"
+        ],
+        "idField": "id",
+        "relationshipCount": 7,
+        "roundTripStable": true
+      }
+    },
+    "example.runtime.lifecycle-security": {
+      "status": "pass",
+      "actual": {
+        "lifecycle": [
+          "stale",
+          "fetching",
+          "success",
+          "terminal-error"
+        ],
+        "tenantMismatchRejected": true,
+        "destructiveRequiresApproval": true,
+        "secretFindings": 0,
+        "diagnosticEvents": 4
+      }
+    }
+  },
+  "errors": []
+}

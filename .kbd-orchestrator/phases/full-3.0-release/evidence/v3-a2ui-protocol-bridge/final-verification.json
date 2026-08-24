@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-a2ui-protocol-bridge",
+  "recordedAt": "2026-08-01T20:25:00Z",
+  "verdict": "pass-to-archive",
+  "acceptance": {
+    "officialV091MessagesUseOfficialEngine": "pass",
+    "officialSurfaceAndDataModelRender": "pass",
+    "prometheusDoesNotReimplementProtocolParserOrSurfaceModel": "pass",
+    "catalogComponentsAndFunctionsAreAllowlisted": "pass",
+    "unknownComponentsAndUnsupportedVersionsFailClosed": "pass",
+    "graphActionsCrossExplicitPolicyBoundary": "pass",
+    "tenantEntityActionAndFieldAuthorization": "pass",
+    "destructiveActionsRequireOutOfBandApproval": "pass",
+    "rendererLayerHasNoGraphOrTransportIo": "pass",
+    "agUiCompatibilityMigrationPath": "pass",
+    "packedEsmCommonJsNodeNextNode16AndSsrConsumers": "pass",
+    "mandatorySkipOrTodoPaths": 0,
+    "publicApiCoverageSkillsAndDocsSynchronized": "pass",
+    "realBrowserAccessibilityAndVisualEvidence": "pass"
+  },
+  "finalCleanRoom": {
+    "sourceOnly": true,
+    "frozenInstall": "pass",
+    "packagesInstalled": 790,
+    "packagesReused": 779,
+    "downloads": 0,
+    "completeCi": "pass",
+    "typecheckTasks": 17,
+    "buildTasks": 14,
+    "bddScenarios": 40,
+    "bddSteps": 219,
+    "productionDependenciesAudited": 322,
+    "blockingAdvisories": 0
+  },
+  "focused": {
+    "a2uiRuntimePolicyAndReactTests": {
+      "status": "pass",
+      "tests": 13
+    },
+    "a2uiReleaseGuards": {
+      "status": "pass",
+      "tests": 6
+    },
+    "a2uiBdd": {
+      "status": "pass",
+      "scenarios": 6,
+      "steps": 34,
+      "hooks": 4
+    },
+    "a2uiPackedConsumers": {
+      "status": "pass",
+      "modes": [
+        "esm",
+        "commonjs",
+        "typescript-nodenext",
+        "typescript-node16",
+        "server-render"
+      ]
+    },
+    "allPackageTarballs": {
+      "status": "pass",
+      "packages": 12,
+      "candidateSet": "tarballs-only"
+    },
+    "runtimeExportLedgers": {
+      "react": 201,
+      "sync": 16,
+      "a2uiRoot": 18,
+      "agUiCompatibility": 9
+    },
+    "visualEvidence": {
+      "status": "pass",
+      "browser": "Headless Chrome 150.0.0.0",
+      "artifactSha256": "24ad752b2e48555badbe30c7b9406231745dcee00beee194270d10f9b5a58ee6",
+      "screenshots": 3,
+      "keyboardTrace": "pass",
+      "video": "pass",
+      "axeCritical": 0,
+      "axeSerious": 0,
+      "consoleErrors": 0
+    },
+    "semanticScenarios": {
+      "status": "pass",
+      "passed": 13,
+      "total": 13,
+      "releaseCertified": false
+    },
+    "strictOpenSpec": "pass",
+    "changesetStatus": "pass",
+    "gitDiffCheck": "pass"
+  },
+  "unresolvedLimits": [
+    "Only A2UI v0.9.1 is stable; v1.0 candidate messages are rejected and require a governed adapter change.",
+    "The library processes decoded official message objects; agent transport, streaming, cancellation, and A2A conformance remain downstream work.",
+    "The browser fixture certifies the bridge and policy boundary, not the full keyless agentic showcase or production backend integration.",
+    "Responsive Chrome viewports are not native Flutter, Tauri, iOS, or Android device certification.",
+    "The complete branded Docusaurus site and GitHub Pages deployment remain planned.",
+    "Immutable-SHA release certification, registry authority, npm publication, and movement of latest remain unauthorized."
+  ],
+  "publicationAuthorized": false
+}

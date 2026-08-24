@@ -1,0 +1,82 @@
+---
+title: Engine, SWR, GC, and Suspense
+description: How the engine dedupes fetches, keeps data fresh with stale-while-revalidate, garbage-collects unsubscribed entities, and integrates with React Suspense.
+---
+
+# Engine, SWR, GC, and Suspense
+
+The engine sits between a hook requesting data and data landing in the graph.
+It owns four jobs: deduplication, freshness, eviction, and revalidation.
+
+## Deduplication
+
+Concurrent identical fetches collapse into one request through a
+process-global in-flight map. Ten components asking for `invoice:42` at the
+same moment produce a single network call; all ten read the result from the
+graph.
+
+## Stale-while-revalidate
+
+Entities younger than `staleTime` render from the graph with zero network.
+Past that age the engine serves the cached entity immediately and refetches
+in the background — the UI never blocks on data it already has. Defaults are
+configured once at bootstrap:
+
+```ts
+import { configureEngine } from "@prometheus-ags/entity-graph-core";
+
+configureEngine({
+  defaultStaleTime: 30_000, // background refetch after 30 s
+  defaultGcTime: 300_000, // evict unsubscribed entities after 5 min
+  revalidateOnFocus: true, // refetch subscribed entities on window focus
+  revalidateOnReconnect: true, // and when the network comes back
+});
+```
+
+Per-query `staleTime` on `useEntity` / `useEntityList` overrides the default.
+
+## Subscriber-aware garbage collection
+
+The engine ref-counts subscribers: every mounted hook registers a token, and
+entities with zero subscribers stop background revalidation and become
+eligible for eviction. Start the collector once at app bootstrap:
+
+```ts
+import { startGarbageCollector } from "@prometheus-ags/entity-graph-core";
+
+const stopGc = startGarbageCollector(); // returns a cleanup function
+```
+
+Lists keep the entities they reference alive — an ID in a subscribed list
+protects that entity from eviction.
+
+## Suspense variants
+
+When a route should not render until its data is in the graph, use the
+Suspense variants instead of loading flags:
+
+```tsx
+import { useSuspenseEntity } from "@prometheus-ags/prometheus-entity-management";
+
+interface Invoice {
+  id: string;
+  total: number;
+}
+
+declare function getInvoice(id: string): Promise<Invoice>;
+
+function InvoiceTotal({ id }: { id: string }) {
+  // Throws a promise while fetching; the nearest <Suspense> boundary shows
+  // the fallback. On resolution, data is already in the graph.
+  const { data } = useSuspenseEntity<Invoice, Invoice>({
+    type: "invoice",
+    id,
+    fetch: getInvoice,
+    normalize: (raw) => raw,
+  });
+  return <span>{data.total}</span>;
+}
+```
+
+Use the loading-flag variants (`useEntity`, `useEntityList`) for lists and
+secondary panels; reserve Suspense for primary route content.

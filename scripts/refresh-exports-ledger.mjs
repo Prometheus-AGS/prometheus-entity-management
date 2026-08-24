@@ -1,26 +1,38 @@
 #!/usr/bin/env node
 /**
- * Regenerates prometheus-entity-skills/_shared/references/library-exports.json from dist/index.mjs
- * runtime exports. Run after `pnpm run build` when adding/removing value exports.
+ * Regenerates a package-specific skill runtime-export ledger. Pass
+ * `--pkg <id>` (see scripts/skills-package-registry.mjs for ids); the legacy
+ * flags `--sync`, `--a2ui`, `--a2a` and the React default remain for backwards
+ * compatibility.
  */
 import fs from "fs";
 import path from "path";
 import { pathToFileURL } from "url";
 
+import { resolveLedgerPackage } from "./skills-package-registry.mjs";
+
 const root = path.resolve(import.meta.dirname, "..");
-const dist = path.join(root, "packages", "entity-graph-react", "dist", "index.mjs");
-if (!fs.existsSync(dist)) {
-  console.error("Run `pnpm run build` first.");
-  process.exit(1);
+const selected = resolveLedgerPackage(process.argv);
+
+const exportsByEntryPoint = {};
+for (const [key, file] of selected.entryPoints) {
+  const dist = path.join(root, "packages", selected.directory, "dist", file);
+  if (!fs.existsSync(dist)) {
+    console.error(`Missing ${selected.directory}/dist/${file} — run the package build first.`);
+    process.exit(1);
+  }
+  const mod = await import(pathToFileURL(dist).href);
+  exportsByEntryPoint[key] = Object.keys(mod).sort();
 }
-const mod = await import(pathToFileURL(dist).href);
-const keys = Object.keys(mod).sort();
+const multiEntry = selected.entryPoints.length > 1;
+const value = multiEntry ? exportsByEntryPoint : exportsByEntryPoint["."];
 const out = path.join(
   root,
   "prometheus-entity-skills",
   "_shared",
   "references",
-  "library-exports.json"
+  selected.ledger,
 );
-fs.writeFileSync(out, JSON.stringify(keys, null, 2) + "\n");
-console.log(`Wrote ${keys.length} export names to ${path.relative(root, out)}`);
+fs.writeFileSync(out, JSON.stringify(value, null, 2) + "\n");
+const count = Object.values(exportsByEntryPoint).reduce((total, entries) => total + entries.length, 0);
+console.log(`Wrote ${count} export names to ${path.relative(root, out)}`);

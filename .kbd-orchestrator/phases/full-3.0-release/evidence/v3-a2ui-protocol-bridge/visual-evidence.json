@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-08-01T19:23:54Z",
+  "protocol": "v0.9.1",
+  "route": "http://127.0.0.1:4177/",
+  "browser": {
+    "name": "Headless Chrome 150.0.0.0",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/150.0.0.0 Safari/537.36"
+  },
+  "artifact": {
+    "entry": "packages/a2ui-react/dist/index.mjs",
+    "sha256": "1d524a58dcf87de6d97831fc1570728c133a6c4339efefc7825411c71cc8e8fe"
+  },
+  "screenshots": [
+    {
+      "id": "desktop-initial",
+      "path": "browser/desktop-initial.png",
+      "width": 1440,
+      "height": 1416,
+      "sha256": "76db60377c9c994bb78bc2e65f570ca932e81dd6e83ea57554caf5806abb8d25"
+    },
+    {
+      "id": "desktop-policy-outcomes",
+      "path": "browser/desktop-policy-outcomes.png",
+      "width": 1280,
+      "height": 1395,
+      "sha256": "494d3d5f49e23ad4af38ca194d898204de076bf3f1fcc356b0124421a5a50a08"
+    },
+    {
+      "id": "mobile-policy-outcomes",
+      "path": "browser/mobile-policy-outcomes.png",
+      "width": 390,
+      "height": 2099,
+      "sha256": "f504daf95301d007ae73b674b0d93c90f33ac5ada5ce36d5ff5b80d30c81c208"
+    }
+  ],
+  "keyboard": {
+    "keys": ["Tab", "Tab", "Enter", "Tab", "Enter", "Tab", "Enter"],
+    "pointerClicks": 0,
+    "focusOrder": [
+      "Prometheus A2UI certification home",
+      "Save allowlisted order",
+      "Attempt restricted field",
+      "Request destructive delete"
+    ],
+    "outcomes": ["executed", "unauthorized-field", "approval-denied"],
+    "finalFocus": {
+      "name": "Request destructive delete",
+      "outline": "3px solid rgb(255, 179, 159)"
+    },
+    "trace": {
+      "path": "browser/keyboard-policy-trace.zip",
+      "sha256": "35830391dbdb98a499f96c2c1352667a991fb876dbefbbe2e5de9c1ceea61878"
+    },
+    "video": {
+      "path": "browser/keyboard-policy.webm",
+      "durationSeconds": 85.68,
+      "sha256": "705aa93251cb356d008e7a96e1aa6774bc23349407cef05d652a4887151d5ed3"
+    }
+  },
+  "accessibility": {
+    "axe": {
+      "version": "4.12.1",
+      "critical": 0,
+      "serious": 0,
+      "incompleteCriticalOrSerious": 0,
+      "violations": [],
+      "incomplete": []
+    },
+    "consoleErrors": 0,
+    "horizontalOverflowAt390px": false,
+    "contrast": [
+      { "pair": "body", "ratio": 18.14 },
+      { "pair": "lede", "ratio": 12.84 },
+      { "pair": "protocol-chip", "ratio": 14.11 },
+      { "pair": "primary-button", "ratio": 11.61 },
+      { "pair": "destructive-button", "ratio": 10.04 },
+      { "pair": "graph-status", "ratio": 13.85 },
+      { "pair": "assurance-note", "ratio": 10.86 }
+    ],
+    "targets": [
+      { "name": "Save allowlisted order", "width": 601, "height": 85 },
+      { "name": "Attempt restricted field", "width": 601, "height": 85 },
+      { "name": "Request destructive delete", "width": 601, "height": 85 }
+    ],
+    "manualChecklist": {
+      "accessibleNames": "pass",
+      "keyboardAndFocus": "pass",
+      "contrast": "pass",
+      "targetSize": "pass",
+      "reducedMotion": "pass",
+      "statusNotColorOnly": "pass",
+      "mediaAlternatives": "pass",
+      "liveRegions": "pass"
+    },
+    "manualNotes": {
+      "accessibleNames": "All link and button names were exposed in the accessibility tree.",
+      "keyboardAndFocus": "Tab and Enter reached and activated every official action; the final focus ring is 3px solid.",
+      "contrast": "Seven representative foreground/background pairs exceed 4.5:1; axe returned no incomplete contrast checks.",
+      "targetSize": "All three official action buttons measured 601x85 CSS pixels on desktop.",
+      "reducedMotion": "The rendered stylesheet includes a prefers-reduced-motion rule that limits animation and transition duration to 0.01ms.",
+      "statusNotColorOnly": "Executed and Denied labels communicate all decision states in text.",
+      "mediaAlternatives": "The fixture contains no time-based or informative image media requiring alternatives.",
+      "liveRegions": "The canonical graph result is exposed through an aria-live polite status region."
+    }
+  }
+}

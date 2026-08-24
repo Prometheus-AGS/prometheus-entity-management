@@ -1,0 +1,60 @@
+{
+  "sources": [
+    {
+      "id":"src-provenance-evidence","kind":"local-primary","ref":".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-source-provenance/final-verification.json","credibility_score":100,
+      "claims":["The change passed archive verification.","The imported tree is non-buildable and non-public.","entity_graph_flutter remains the one canonical graph owner."]
+    },
+    {
+      "id":"src-package-evidence","kind":"local-primary","ref":".kbd-orchestrator/phases/full-3.0-release/evidence/v3-package-module-contracts/clean-gates.json","credibility_score":100,
+      "claims":["The npm package-contract change passed and was archived.","Its Dart/Melos gate was explicitly not applicable."]
+    },
+    {
+      "id":"src-canonical-package","kind":"local-primary","ref":"packages/entity_graph_flutter","credibility_score":100,
+      "claims":["The package has a hand-written normalized graph, patches, ID-only lists, SDL, transports, providers, and 54 tests.","Its manifest claims Riverpod 3 and Freezed while resolving Riverpod 2.6.1.","No Freezed, JSON, Riverpod annotations, or generated part declarations are used in canonical source."]
+    },
+    {
+      "id":"src-imported-provenance","kind":"local-primary","ref":"provenance/imports/knowme-flutter/prometheus_entity_management","credibility_score":98,
+      "claims":["The imported reference demonstrates Riverpod 3 families and terminal no-retry behavior.","Its canonical state path is FFI-coupled and therefore cannot replace the Dart-native owner unchanged."]
+    },
+    {
+      "id":"src-plan","kind":"local-primary","ref":".kbd-orchestrator/phases/full-3.0-release/plan.md","credibility_score":100,
+      "claims":["The tested Dart graph is canonical.","Rust/FFI is optional transport.","The acceptance requires cross-view normalization, optimistic CRUD, view invalidation, and bounded retry behavior."]
+    },
+    {
+      "id":"src-riverpod-migration","kind":"web-primary","url":"https://riverpod.dev/docs/3.0_migration","observed_at":"2026-08-02","credibility_score":96,
+      "claims":["Riverpod 3 retries failed providers by default.","Retry can return null to stop.","Notifier and Ref APIs changed, providers can pause out of view, and updates use equality filtering."]
+    },
+    {
+      "id":"src-dart-guidance","kind":"web-primary","url":"https://dart.dev/tools/pub/cmd/pub-outdated","observed_at":"2026-08-02","credibility_score":96,
+      "claims":["Current, upgradable, resolvable, and latest versions have distinct meanings.","A practical update target is a resolvable version validated by tests rather than numeric latest alone."]
+    },
+    {
+      "id":"src-flutter-guidance","kind":"web-primary","url":"https://docs.flutter.dev/install/upgrade","observed_at":"2026-08-02","credibility_score":95,
+      "claims":["Flutter recommends stable channel releases for production use."]
+    },
+    {
+      "id":"src-riverpod-registry","kind":"registry-primary","url":"https://pub.dev/api/packages/riverpod_generator","observed_at":"2026-08-02","credibility_score":95,
+      "claims":["riverpod_generator 4.0.8 requires Dart 3.12 and analyzer ^13.0.0.","flutter_riverpod 3.4.2 and riverpod_annotation 4.0.6 are the current stable releases observed."]
+    },
+    {
+      "id":"src-freezed-registry","kind":"registry-primary","url":"https://pub.dev/api/packages/freezed","observed_at":"2026-08-02","credibility_score":95,
+      "claims":["freezed 3.2.5 constrains analyzer below 11.","The resolver proposed Freezed 4.0.0-dev.3 only when asked for unconstrained major upgrades."]
+    },
+    {
+      "id":"src-resolver-probe","kind":"local-disposable-execution","ref":"/tmp/prometheus-dart-readiness.hHZX2V/entity_graph_flutter","observed_at":"2026-08-02","credibility_score":94,
+      "claims":["A Riverpod-only candidate resolved on the installed Flutter 3.47 beta, not on the declared Flutter 3.44 stable floor.","Analyze and tests then failed at the removed AutoDisposeAsyncNotifier APIs, providing the expected RED migration boundary.","The repository source was not modified by this probe."]
+    },
+    {
+      "id":"src-implementation-and-ledger","kind":"local-primary","ref":".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-dart-report.json","observed_at":"2026-08-02","credibility_score":100,
+      "claims":["The automatically discovered Flutter suite passes 70 tests.","The release verifier certifies normalization, views, CRUD rollback, bounded retry, realtime invalidation, pluggable transport, optional FFI, and two scoped golden hashes.","The source-derived public ledger contains 81 Dart declarations including generated providers.","Coverage keeps complete app, device, accessibility, persistence, batching, registry, and promotion claims open."]
+    },
+    {
+      "id":"src-flutter-archive-3448","kind":"web-primary","url":"https://docs.flutter.dev/install/archive","observed_at":"2026-08-02","credibility_score":98,
+      "claims":["Flutter stable is the production-recommended channel.","Flutter 3.44 is the current documented stable release line for the declared floor."]
+    },
+    {
+      "id":"src-stable-floor-probe","kind":"local-disposable-execution","ref":"/tmp/prometheus-dart-clean.qZKfyU","observed_at":"2026-08-02","credibility_score":100,
+      "claims":["The official Flutter 3.44.8 arm64 archive matched its published SHA-256.","Riverpod 3.4.2/generator 4.0.8 does not resolve on Flutter 3.44.8 stable.","Riverpod 3.3.2, annotations 4.0.3, generator 4.0.4, and build_runner 2.15.1 resolve on Flutter 3.44.8 stable."]
+    }
+  ]
+}

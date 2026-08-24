@@ -5,7 +5,7 @@
  * both "no data" and "no results match filters" states.
  */
 import React from "react";
-import type { EmptyStateConfig } from "@prometheus-ags/entity-graph-core";
+import type { EmptyStateConfig } from "../table/react-types";
 import { cn } from "./utils";
 
 interface EmptyStateProps {

@@ -285,18 +285,18 @@ EntityGraphIR parseSdl(Object? doc) {
         primaryKey = fname;
       }
 
-      fields.add(IrField(
-        name: fname,
-        type: scalarType,
-        primary: isPrimary,
-        required: (value['required'] as bool?) ?? false,
-        unique: (value['unique'] as bool?) ?? false,
-        auto: (value['auto'] as bool?) ?? false,
-        defaultValue: value['default'],
-        values: isEnum
-            ? (value['values'] as List).cast<String>()
-            : null,
-      ));
+      fields.add(
+        IrField(
+          name: fname,
+          type: scalarType,
+          primary: isPrimary,
+          required: (value['required'] as bool?) ?? false,
+          unique: (value['unique'] as bool?) ?? false,
+          auto: (value['auto'] as bool?) ?? false,
+          defaultValue: value['default'],
+          values: isEnum ? (value['values'] as List).cast<String>() : null,
+        ),
+      );
     }
 
     if (primaryKey == null) {
@@ -323,23 +323,27 @@ EntityGraphIR parseSdl(Object? doc) {
         if (target is! String) {
           throw SdlValidationError('relation needs a `target`', rpath);
         }
-        relations.add(IrRelation(
-          name: rname,
-          type: _parseRelationKind(rawKind, rpath),
-          target: target,
-          foreignKey: value['foreignKey'] as String?,
-          through: value['through'] as String?,
-        ));
+        relations.add(
+          IrRelation(
+            name: rname,
+            type: _parseRelationKind(rawKind, rpath),
+            target: target,
+            foreignKey: value['foreignKey'] as String?,
+            through: value['through'] as String?,
+          ),
+        );
       }
     }
 
-    entities.add(IrEntity(
-      name: name,
-      table: (value['table'] as String?) ?? name,
-      primaryKey: primaryKey,
-      fields: fields,
-      relations: relations,
-    ));
+    entities.add(
+      IrEntity(
+        name: name,
+        table: (value['table'] as String?) ?? name,
+        primaryKey: primaryKey,
+        fields: fields,
+        relations: relations,
+      ),
+    );
   }
 
   // Cross-reference relation targets.
@@ -384,10 +388,7 @@ SdlConfig _parseConfig(Object? raw) {
           )
         : null,
     ai: ai is Map
-        ? SdlAiConfig(
-            mcp: ai['mcp'] as bool?,
-            a2a: ai['a2a'] as bool?,
-          )
+        ? SdlAiConfig(mcp: ai['mcp'] as bool?, a2a: ai['a2a'] as bool?)
         : null,
   );
 }

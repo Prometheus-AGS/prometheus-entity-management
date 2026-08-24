@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "examples/agentic-a2ui-app/src/features/agentic/hooks.ts",
+      "line": 35,
+      "claim": "The UI enables cancellation during the submitted state even though the client cannot cancel until an A2A task id has been observed, creating a race that turns an early cancel into a failed session.",
+      "evidence": "`useAgentSession` sets `canCancel: lifecycle === \"submitted\" || lifecycle === \"working\"`, while `A2AClientService.cancel()` returns `false` when `this.activeTaskId` is still null and `agentSessionStore.cancel()` converts that into `lifecycle: \"failed\"` with \"No active A2A task was available to cancel.\"; the acceptance evidence claims cancellation before artifact delivery is supported.",
+      "suggested_fix": "Only enable cancellation once `taskId`/`activeTaskId` is known, or queue a requested cancellation during `submitted` and execute it as soon as the first task id arrives."
+    },
+    {
+      "severity": "WARNING",
+      "file": "examples/agentic-a2ui-app/src/features/agentic/agent-session-store.ts",
+      "line": 52,
+      "claim": "Malformed-scenario transport or parsing failures are always reported as validation failures, masking non-validation defects.",
+      "evidence": "The catch block sets `lifecycle: scenario === \"malformed\" ? \"validation-failed\" : \"failed\"` for every thrown error, regardless of whether the error came from A2UI validation, SSE parsing, HTTP failure, or JSON-RPC failure.",
+      "suggested_fix": "Throw and detect a specific validation error type/code from `processAgentSurface`; set `validation-failed` only for catalog/protocol validation errors and use `failed` for transport, parsing, and server errors."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

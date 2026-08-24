@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "examples/tauri-universal/src/features/platform/services/platform-service.ts",
+      "line": 104,
+      "claim": "Persisted queue validation still accepts forged well-shaped mutations for any known seed task and applies them during startup/restore.",
+      "evidence": "The trust-boundaries-fail-closed constraint requires \"persisted queue validation ... fail closed before graph mutation\" and \"known-task queue validation\"; `isQueuedTaskMutation` only checks that `id`, `taskId`, and `enqueuedAt` are strings, `taskId` is in `KNOWN_TASK_IDS`, and `status` is in `TASK_STATUSES`, after which `initialize()`/`restore()` can call `flushQueue()` and `commitTaskStatus()` for those entries.",
+      "suggested_fix": "Validate the full queue contract before hydration/flush, including `id === task-status:${taskId}`, a valid timestamp, no duplicate/conflicting entries, and a proof that the entry was produced by this application queue rather than arbitrary localStorage JSON."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-tauri-universal-example/verification.md",
+      "line": 35,
+      "claim": "The verification report cites a mandatory clean-gate receipt that is not present in the supplied diff content, so the clean-state gate evidence is not directly reproducible from this review packet.",
+      "evidence": "`verification.md` lists `task-5-clean-gates.md` with SHA-256 `532034414899ef89f3612e6a6a1b8838e6eebb633ab2ed96e2a90f945d74764d`, while the diff adds no `task-5-clean-gates.md` hunk even though acceptance requires \"direct, reproducible evidence\" and tasks require running the relevant gates from a clean state.",
+      "suggested_fix": "Include the clean-gate receipt content in the reviewed change or remove the claim and keep the task incomplete until that direct evidence is added."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

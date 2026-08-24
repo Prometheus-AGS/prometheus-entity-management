@@ -1,0 +1,48 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "codex-gpt-5",
+  "isolation_mode": "harness-native:fresh-context",
+  "producer_model": "codex-gpt-5",
+  "cross_model_check": "unverified-same-harness-family",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".github/workflows/docs-pages.yml",
+      "line": 11,
+      "claim": "The Pages path filter omits package-build inputs, so packed API documentation can become stale without the deployment workflow running.",
+      "evidence": "Both filters omit shared package build scripts consumed by build:packages and docs:api.",
+      "suggested_fix": "Include every shared package-build input in both path filters."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/generate-evidence.mjs",
+      "line": 41,
+      "claim": "The evidence publisher copies original PNGs verbatim without the secret or internal-path scanning promised by the public security documentation.",
+      "evidence": "PNG sources are copied verbatim while the text scanner does not inspect pixels or image metadata.",
+      "suggested_fix": "Re-encode originals, hash-pin manual visual review, enforce nonblank/dimension checks, and narrow the public automation claim."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/generate-evidence.mjs",
+      "line": 34,
+      "claim": "A successful receipt is not bound to the image it purportedly verifies, allowing an unrelated passing receipt to certify an arbitrary allowlisted screenshot.",
+      "evidence": "The generator hashes receipt and source independently but does not compare them to an approved binding.",
+      "suggested_fix": "Require exact source and receipt hashes in the allowlist and compare both before publication."
+    },
+    {
+      "severity": "WARNING",
+      "file": "website/scripts/check-build.mjs",
+      "line": 34,
+      "claim": "The local-search asset check is ineffective because the generated search page itself satisfies the filename test even when search-index.json is missing.",
+      "evidence": "Any basename matching search sets searchAsset true, including search/index.html.",
+      "suggested_fix": "Require build/search-index.json directly and remove the basename heuristic."
+    }
+  ],
+  "checked_classes": [],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

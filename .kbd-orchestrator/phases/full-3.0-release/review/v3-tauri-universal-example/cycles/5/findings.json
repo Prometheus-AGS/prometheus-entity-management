@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "examples/tauri-universal/src/features/platform/services/platform-service.ts",
+      "line": 379,
+      "claim": "The manual restore path hydrates the graph before validating the persisted queue, so malformed durable input can mutate graph state before failing closed.",
+      "evidence": "The `restore()` method runs `await this.runtime?.hydrate();` before `this.queue = parseQueue(await this.requireStorage().get(QUEUE_STORAGE_KEY));`, while the blocking constraint `trust-boundaries-fail-closed` requires persisted queue validation to fail closed before graph mutation.",
+      "suggested_fix": "Parse and validate `QUEUE_STORAGE_KEY` before calling `hydrate()` in `restore()`, mirroring the initialization order, and add a regression that corrupts the queue before restore and asserts entities/lists are not hydrated."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

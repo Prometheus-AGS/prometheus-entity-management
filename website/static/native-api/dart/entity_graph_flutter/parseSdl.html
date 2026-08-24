@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the parseSdl function from the entity_graph_flutter library, for the Dart programming language.">
+  <title>parseSdl function - entity_graph_flutter library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">entity_graph_flutter</a></li>
+    <li><a href="../entity_graph_flutter/">entity_graph_flutter.dart</a></li>
+    <li class="self-crumb">parseSdl function</li>
+  </ol>
+  <div class="self-name">parseSdl</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="entity_graph_flutter&#47;entity_graph_flutter-library-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-function">parseSdl</span> function 
+ 
+</h1></div>
+
+    <section class="multi-line-signature">
+        
+<span class="returntype"><a href="../entity_graph_flutter/EntityGraphIR-class.html">EntityGraphIR</a></span>
+<span class="name ">parseSdl</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="parseSdl-param-doc"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a>?</span> <span class="parameter-name">doc</span></span></li>
+</ol>)
+
+        
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Parse + validate a Map SDL document (already decoded from JSON/TOML) into
+a validated <a href="../entity_graph_flutter/EntityGraphIR-class.html">EntityGraphIR</a>.</p>
+<p>Throws <a href="../entity_graph_flutter/SdlValidationError-class.html">SdlValidationError</a> with a precise JSON-path on the first problem.</p>
+<pre class="language-dart"><code class="language-dart">final ir = parseSdl(jsonDecode(rawJson));
+</code></pre>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">EntityGraphIR parseSdl(Object? doc) {
+  if (doc is! Map) {
+    throw const SdlValidationError(&#39;SDL root must be an object&#39;, r&#39;$&#39;);
+  }
+
+  final version = (doc[&#39;version&#39;] as String?) ?? &#39;1.0&#39;;
+
+  final entitiesRaw = doc[&#39;entities&#39;];
+  if (entitiesRaw is! Map) {
+    throw const SdlValidationError(
+      &#39;`entities` must be an object&#39;,
+      r&#39;$.entities&#39;,
+    );
+  }
+
+  final entities = &lt;IrEntity&gt;[];
+
+  for (final MapEntry(:key, :value) in entitiesRaw.entries) {
+    final name = key as String;
+    final path = r&#39;$.entities.&#39; + name;
+
+    if (value is! Map) {
+      throw SdlValidationError(&#39;entity must be an object&#39;, path);
+    }
+    final fieldsRaw = value[&#39;fields&#39;];
+    if (fieldsRaw is! Map) {
+      throw SdlValidationError(&#39;entity must have a `fields` object&#39;, path);
+    }
+
+    final fields = &lt;IrField&gt;[];
+    String? primaryKey;
+
+    for (final MapEntry(:key, :value) in fieldsRaw.entries) {
+      final fname = key as String;
+      final fpath = &#39;$path.fields.$fname&#39;;
+
+      if (value is! Map) {
+        throw SdlValidationError(&#39;field must be an object&#39;, fpath);
+      }
+      final rawType = value[&#39;type&#39;];
+      if (rawType is! String) {
+        throw SdlValidationError(&#39;field must have a `type` string&#39;, fpath);
+      }
+      final scalarType = _parseScalar(rawType, fpath);
+
+      final isEnum = scalarType == SdlScalarType.enumType;
+      if (isEnum) {
+        final vals = value[&#39;values&#39;];
+        if (vals is! List || (vals).isEmpty) {
+          throw SdlValidationError(
+            &#39;enum field requires non-empty `values`&#39;,
+            fpath,
+          );
+        }
+      }
+
+      final isPrimary = (value[&#39;primary&#39;] as bool?) ?? false;
+      if (isPrimary) {
+        if (primaryKey != null) {
+          throw SdlValidationError(
+            &#39;multiple primary keys not supported&#39;,
+            fpath,
+          );
+        }
+        primaryKey = fname;
+      }
+
+      fields.add(
+        IrField(
+          name: fname,
+          type: scalarType,
+          primary: isPrimary,
+          required: (value[&#39;required&#39;] as bool?) ?? false,
+          unique: (value[&#39;unique&#39;] as bool?) ?? false,
+          auto: (value[&#39;auto&#39;] as bool?) ?? false,
+          defaultValue: value[&#39;default&#39;],
+          values: isEnum ? (value[&#39;values&#39;] as List).cast&lt;String&gt;() : null,
+        ),
+      );
+    }
+
+    if (primaryKey == null) {
+      throw SdlValidationError(
+        &#39;entity needs exactly one `primary: true` field&#39;,
+        path,
+      );
+    }
+
+    final relations = &lt;IrRelation&gt;[];
+    final relationsRaw = value[&#39;relations&#39;];
+    if (relationsRaw is Map) {
+      for (final MapEntry(:key, :value) in relationsRaw.entries) {
+        final rname = key as String;
+        final rpath = &#39;$path.relations.$rname&#39;;
+        if (value is! Map) {
+          throw SdlValidationError(&#39;relation must be an object&#39;, rpath);
+        }
+        final rawKind = value[&#39;type&#39;];
+        if (rawKind is! String) {
+          throw SdlValidationError(&#39;relation must have a `type`&#39;, rpath);
+        }
+        final target = value[&#39;target&#39;];
+        if (target is! String) {
+          throw SdlValidationError(&#39;relation needs a `target`&#39;, rpath);
+        }
+        relations.add(
+          IrRelation(
+            name: rname,
+            type: _parseRelationKind(rawKind, rpath),
+            target: target,
+            foreignKey: value[&#39;foreignKey&#39;] as String?,
+            through: value[&#39;through&#39;] as String?,
+          ),
+        );
+      }
+    }
+
+    entities.add(
+      IrEntity(
+        name: name,
+        table: (value[&#39;table&#39;] as String?) ?? name,
+        primaryKey: primaryKey,
+        fields: fields,
+        relations: relations,
+      ),
+    );
+  }
+
+  &#47;&#47; Cross-reference relation targets.
+  final names = entities.map((e) =&gt; e.name).toSet();
+  for (final entity in entities) {
+    for (final relation in entity.relations) {
+      if (!names.contains(relation.target)) {
+        throw SdlValidationError(
+          &#39;relation target &quot;${relation.target}&quot; is not a defined entity&#39;,
+          &#39;\$.entities.${entity.name}.relations.${relation.name}&#39;,
+        );
+      }
+    }
+  }
+
+  final configRaw = doc[&#39;config&#39;];
+  final config = _parseConfig(configRaw);
+
+  return EntityGraphIR(version: version, entities: entities, config: config);
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">entity_graph_flutter</a></li>
+    <li><a href="../entity_graph_flutter/">entity_graph_flutter</a></li>
+    <li class="self-crumb">parseSdl function</li>
+</ol>
+
+    <h5>entity_graph_flutter library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    entity_graph_flutter
+      3.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-flint-portable-contracts.mjs",
+      "line": 355,
+      "claim": "The machine-specific path verifier still misses Windows UNC absolute Flint roots.",
+      "evidence": "The acceptance evidence claims cross-platform absolute Flint-root rejection, but `findMachineSpecificPath` only checks Unix home/root paths, Windows drive-letter user profiles, Windows drive-letter Flint roots, and Unix-style absolute Flint roots; none of the patterns match an absolute UNC path such as `\\\\server\\share\\flint-gate\\src\\index.ts`.",
+      "suggested_fix": "Add a UNC Flint-root pattern such as `/\\\\\\\\[^\\\\\\s\"'`]+\\\\[^\\\\\\s\"'`]+(?:\\\\[^\\\\\\s\"'`]+)*\\\\(?:flint-realtime-fabric|flint-gate|flint-forge)(?:\\\\|$)/i` and cover it with a regression."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

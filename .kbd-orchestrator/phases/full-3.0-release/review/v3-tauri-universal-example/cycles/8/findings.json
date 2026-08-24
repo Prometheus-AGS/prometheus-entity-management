@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "kbd-judge",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-tauri-universal-example.mjs",
+      "line": 287,
+      "claim": "`verify:tauri-universal` requires retained PNG and trace artifacts that are explicitly absent from the tracked/reviewed tree, so the claimed clean-checkout verifier cannot reproduce.",
+      "evidence": "The verifier loops over `receipt.retainedArtifacts` and `currentReceipt.retainedArtifacts` with `requireValue(exists(artifact.path), ...)` and then hashes each path; `task-5-platform-evidence.json` lists PNG screenshots and Playwright `trace.zip` files, and `task-6-current-mobile-evidence.json` lists PNG screenshots, while the packet file_tree says these are deliberately excluded: `binary runtime screenshots and Playwright trace archives (their SHA-256 metadata and XML/JSON receipts are included)`.",
+      "suggested_fix": "Either track/include every artifact path required by the verifier, or change the verifier and constraints so excluded binary artifacts are not required for a clean-checkout pass and are fetched from a documented artifact store before hashing."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

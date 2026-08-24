@@ -1,0 +1,46 @@
+{
+  "specification": {
+    "artifact_name": "v3-tauri-mobile-plugin",
+    "clarified_intent": {
+      "description": "Independently audit the completed bounded Tauri plugin implementation and its release disposition without promoting missing mobile receipts to execution proof.",
+      "domain": "tauri-plugin-and-release-evidence"
+    },
+    "constraints": [
+      "Every phase-plan criterion must have direct evidence or an explicit blocker.",
+      "Documented device instructions must not be described as executed mobile commands.",
+      "Completion dimensions must remain independent and fail closed.",
+      "Visual evidence must communicate release state without implying platform execution.",
+      "Tests, ledgers, coverage, docs, skills, research, and final evidence must agree.",
+      "OpenSpec archive and stable publication must remain blocked while mobile receipts are absent."
+    ],
+    "target_state": {
+      "description": "A complete and reproducible disposition for the bounded implementation, with zero unsupported mobile, archive, certification, or publication claims.",
+      "success_criteria": [
+        "Every implemented boundary and missing receipt is mapped",
+        "The BDD false-positive wording is corrected",
+        "Deterministic non-Rust gates pass under current host constraints",
+        "The release-state visual passes accessibility and original-resolution inspection",
+        "Every unresolved lane has an owner and exact next evidence",
+        "OpenSpec archive and publication remain blocked"
+      ],
+      "measurable_outcomes": [
+        { "metric": "evidence-disposition blocking failures", "threshold": "0" },
+        { "metric": "unsupported mobile execution claims", "threshold": "0" },
+        { "metric": "unsupported archive, certification, or publication claims", "threshold": "0" }
+      ]
+    },
+    "content_type": "direct:content",
+    "unknowns": [],
+    "requires_code_execution": true,
+    "likely_tools": [
+      "node-test",
+      "eslint",
+      "coverage-verifier",
+      "skills-ledger-verifier",
+      "openspec",
+      "json-schema",
+      "svg-validation",
+      "image-inspection"
+    ]
+  }
+}

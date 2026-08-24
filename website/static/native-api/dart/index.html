@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="entity_graph_flutter API docs, for the Dart programming language.">
+  <title>entity_graph_flutter - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="https://github.com/Prometheus-AGS/prometheus-entity-management">entity_graph_flutter package</a></li>
+  </ol>
+  <div class="self-name">entity_graph_flutter</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="entity_graph_flutter">entity_graph_flutter</h1>
+<p>Flutter/Dart mirror of the <a href="https://github.com/Prometheus-AGS/prometheus-entity-management">Prometheus entity-graph ecosystem</a>.</p>
+<p>Provides a <strong>normalized, reactive entity graph store</strong> for Flutter with:</p>
+<ul>
+<li><strong>Dart-native entity graph</strong> — single source of truth, mirrors <code>entity-graph-core</code>'s <code>GraphState</code></li>
+<li><strong>Generated Riverpod 3 families</strong> — lists, entities, realtime bridges, per-record CRUD, and collection mutations all select or write through the graph</li>
+<li><strong>Local / remote / hybrid views</strong> — one <code>ListQuery</code> contract for graph evaluation and transport execution</li>
+<li><strong>Optimistic CRUD with exact rollback</strong> — graph-owned receipts restore patches, sync metadata, entities, and ID-only list positions</li>
+<li><strong>Bounded failure behavior</strong> — terminal errors never retry; transient provider fetches make at most two retry attempts</li>
+<li><strong>Transport registry</strong> — register one <code>EntityTransport&lt;T&gt;</code> per entity type at app boot; providers look it up automatically</li>
+<li><strong>Optional native bridge</strong> — <code>FfiEntityTransportAdapter</code> accepts a host callback bridge without requiring Rust, <code>dart:ffi</code>, or <code>flutter_rust_bridge</code></li>
+<li><strong>SDL parser</strong> — parse <code>entity-graph-sdl</code> JSON schema documents into a validated <code>EntityGraphIR</code>; same IR consumed by the Rust CLI and TS generators</li>
+<li><strong>Typed errors</strong> — <code>TerminalError</code> (4xx / permanent) and <code>TransientError</code> (5xx / retryable), mirroring <code>entity-graph-core</code>'s <code>errors.ts</code></li>
+</ul>
+<h2 id="canonical-ownership-and-imported-history">Canonical ownership and imported history</h2>
+<p>This directory is the sole canonical Dart graph package in the 3.0 release inventory. Reusable KnowMe source history is retained separately under <code>provenance/imports/knowme-flutter</code> as a non-buildable, non-workspace, non-public review boundary; it is not another package and must never be compiled or published.</p>
+<p>See <a href="https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/flutter-source-provenance.md"><code>release/flutter-source-provenance.md</code></a> for source revisions, license and attribution, commit mappings, and path dispositions. Runtime and Riverpod evidence is documented separately in <a href="https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/dart-graph-riverpod.md"><code>release/dart-graph-riverpod.md</code></a>. Neither gate authorizes pub.dev publication or certifies the complete Flutter/A2UI application on Android or iOS.</p>
+<p>The complete application composition is demonstrated in
+<a href="https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/examples/flutter-riverpod"><code>examples/flutter-riverpod</code></a> and
+documented in the
+<a href="https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/flutter-riverpod-a2ui-example.md"><code>Flutter/Riverpod/A2UI release guide</code></a>.
+Its host tests and goldens are partial evidence until the stable-SDK and
+Android/iOS lanes pass.</p>
+<h2 id="architecture">Architecture</h2>
+<pre class="language-dart"><code>Widget (watches generated provider)
+  ↓
+entityListProvider&lt;T&gt;          ← selection + orchestration
+  ↓
+EntityGraph                    ← canonical rows, patches, sync metadata, ID lists
+  ↓
+EntityTransportRegistry        ← external list/get/create/update/delete/change I/O
+  ↓
+REST / GraphQL / local / optional FFI host
+</code></pre>
+<p>This mirrors the <code>Component → Hook → Store</code> layering from entity-graph-core.
+Widgets read providers and invoke provider controllers. Providers orchestrate;
+the graph owns state; transports own I/O. Widgets do not maintain copied entity
+caches or call transport APIs directly.</p>
+<h2 id="setup">Setup</h2>
+<h3 id="1-add-to-pubspecyaml">1. Add to <code>pubspec.yaml</code></h3>
+<pre class="language-yaml"><code class="language-yaml">dependencies:
+  entity_graph_flutter:
+    path: ../packages/entity_graph_flutter
+  flutter_riverpod: ^3.3.2
+</code></pre>
+<h3 id="2-wrap-your-app-with-providerscope">2. Wrap your app with <code>ProviderScope</code></h3>
+<pre class="language-dart"><code class="language-dart">void main() {
+  runApp(const ProviderScope(child: MyApp()));
+}
+</code></pre>
+<h3 id="3-register-transports-at-boot">3. Register transports at boot</h3>
+<pre class="language-dart"><code class="language-dart">// lib/bootstrap.dart
+import 'package:entity_graph_flutter/entity_graph_flutter.dart';
+
+void registerTransports() {
+  EntityTransportRegistry.instance.register(
+    'Invoice',
+    MyInvoiceTransport(),
+  );
+}
+</code></pre>
+<h3 id="4-implement-entitytransportt">4. Implement <code>EntityTransport&lt;T&gt;</code></h3>
+<pre class="language-dart"><code class="language-dart">class MyInvoiceTransport extends EntityTransport&lt;Invoice&gt; {
+  @override
+  String identify(Invoice row) =&gt; row.id;
+
+  @override
+  Map&lt;String, Object?&gt; toGraph(Invoice row) =&gt; row.toJson();
+
+  @override
+  bool get authoritative =&gt; false;
+
+  @override
+  Duration? get staleTime =&gt; const Duration(seconds: 30);
+
+  @override
+  Future&lt;ListResult&lt;Invoice&gt;&gt; list(ListQuery query) async {
+    final response = await http.get(Uri.parse('/api/invoices'));
+    final List&lt;dynamic&gt; body = jsonDecode(response.body);
+    return ListResult(
+      rows: body.map(Invoice.fromJson).toList(),
+      total: body.length,
+    );
+  }
+
+  @override
+  Future&lt;Invoice?&gt; get(String id) async {
+    final response = await http.get(Uri.parse('/api/invoices/$id'));
+    if (response.statusCode == 404) return null;
+    return Invoice.fromJson(jsonDecode(response.body));
+  }
+
+  @override
+  Future&lt;Invoice&gt; create(Map&lt;String, Object?&gt; data) async {
+    // POST and return the server-confirmed row.
+    throw UnimplementedError();
+  }
+
+  @override
+  Future&lt;Invoice&gt; update(String id, Map&lt;String, Object?&gt; patch) async {
+    // PATCH and return the server-confirmed row.
+    throw UnimplementedError();
+  }
+
+  @override
+  Future&lt;void&gt; delete(String id) async {
+    // DELETE the row.
+  }
+}
+</code></pre>
+<h3 id="5-watch-in-widgets">5. Watch in widgets</h3>
+<pre class="language-dart"><code class="language-dart">// Declare provider (typically in a providers file)
+final activeInvoicesProvider = entityListProvider&lt;Invoice&gt;(
+  type: 'Invoice',
+  queryKey: 'invoices:active',
+  fromGraph: Invoice.fromGraph,
+  query: ListQuery(
+    filter: [FilterClause(field: 'status', op: FilterOperator.eq, value: 'active')],
+  ),
+);
+
+// In a widget
+class InvoiceListPage extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final snap = ref.watch(activeInvoicesProvider);
+    return snap.when(
+      loading: () =&gt; const CircularProgressIndicator(),
+      error: (e, _) =&gt; Text('Error: $e'),
+      data: (snapshot) =&gt; ListView.builder(
+        itemCount: snapshot.items.length,
+        itemBuilder: (_, i) =&gt; InvoiceTile(invoice: snapshot.items[i]),
+      ),
+    );
+  }
+}
+</code></pre>
+<h2 id="views-and-pagination">Views and pagination</h2>
+<p><code>ViewCompleteness.local</code> evaluates filters, search, multi-sort, and limit
+against the canonical graph without transport I/O. <code>remote</code> stores the returned
+rows once and retains only their IDs under <code>queryKey</code>. <code>hybrid</code> renders the
+local result immediately and replaces membership after background revalidation.</p>
+<pre class="language-dart"><code class="language-dart">final sortedAdminsProvider = entityListProvider&lt;Invoice&gt;(
+  type: 'Invoice',
+  queryKey: 'invoices:admins',
+  fromGraph: Invoice.fromGraph,
+  completeness: ViewCompleteness.hybrid,
+  query: const ListQuery(
+    filter: [
+      FilterClause(field: 'role', op: FilterOperator.eq, value: 'admin'),
+    ],
+    sort: [
+      SortClause(field: 'createdAt', direction: SortDirection.desc),
+    ],
+    limit: 50,
+  ),
+);
+
+await ref.read(sortedAdminsProvider.notifier).fetchNextPage();
+</code></pre>
+<h2 id="optimistic-crud">Optimistic CRUD</h2>
+<p>The edit buffer belongs to the generated CRUD controller, not to the entity
+graph. <code>applyOptimistic()</code> publishes only dirty fields through the graph patch
+layer so every joined view sees the overlay. <code>save()</code> replaces it with the
+server-confirmed row. Failure restores the exact prior patch and sync metadata.</p>
+<pre class="language-dart"><code class="language-dart">final invoiceCrud = entityCrudProvider&lt;Invoice&gt;(
+  type: 'Invoice',
+  id: invoiceId,
+);
+
+final controller = ref.read(invoiceCrud.notifier);
+controller.edit('status', 'paid');
+controller.applyOptimistic();
+
+try {
+  await controller.save();
+} on TerminalError catch (error) {
+  // The graph has already restored its previous optimistic state.
+  showValidationError(error.message);
+}
+</code></pre>
+<p>Collection creates use <code>entityMutationsProvider&lt;T&gt;</code>. An optional temporary ID
+can appear in an ID-only list while the request is pending; success swaps it for
+the confirmed ID and failure removes it. Deletes remove optimistically and use a
+graph-owned receipt to restore entity data and every former list index.</p>
+<h2 id="realtime-and-retry-boundary">Realtime and retry boundary</h2>
+<p>When <code>subscribe</code> is enabled, <code>entityChangeBridgeProvider&lt;T&gt;</code> mounts the
+registered transport's optional change feed. Inserts and updates normalize into
+the graph and invalidate typed lists; deletes remove canonical state and list
+membership. This library proves normalization and invalidation, not a batched or
+durable mobile sync engine.</p>
+<p>Generated fetch providers use <code>entityProviderRetry</code>:</p>
+<ul>
+<li><code>TerminalError</code>: zero retries;</li>
+<li><code>TransientError</code>: at most two retries after the first attempt;</li>
+<li>create/update/delete side effects: never automatically retried.</li>
+</ul>
+<h2 id="optional-ffi-transport">Optional FFI transport</h2>
+<p>Implement <code>FfiEntityBridge&lt;T&gt;</code> in an application or a separate native package,
+then wrap it with <code>FfiEntityTransportAdapter&lt;T&gt;</code>. The canonical package imports
+no generated FFI library and has no native runtime dependency. FFI is a delivery
+mechanism; it never becomes a second entity store.</p>
+<h2 id="sdl-schema-contract">SDL Schema Contract</h2>
+<p>The SDL format is the shared contract between the TypeScript ecosystem and Flutter:</p>
+<pre class="language-dart"><code class="language-dart">import 'dart:convert';
+import 'package:entity_graph_flutter/entity_graph_flutter.dart';
+
+final ir = parseSdl(jsonDecode(schemaJson));
+for (final entity in ir.entities) {
+  print('Entity: ${entity.name}, PK: ${entity.primaryKey}');
+  for (final field in entity.fields) {
+    print('  ${field.name}: ${field.type.name}');
+  }
+}
+</code></pre>
+<h2 id="development">Development</h2>
+<pre class="language-bash"><code class="language-bash"># From the repository root (pnpm remains the monorepo entry point)
+pnpm run dart:bootstrap:frozen
+pnpm run dart:generate
+pnpm run dart:format
+pnpm run dart:analyze
+pnpm run dart:test
+pnpm run verify:dart-graph-riverpod
+pnpm run verify:dart-exports
+</code></pre>
+<p>The package uses Riverpod generation. It does not use or require Freezed or
+JSON model generation. <code>providers.g.dart</code> is generated source and must never be
+edited by hand.</p>
+<h2 id="cross-view-reactivity">Cross-view reactivity</h2>
+<p>The graph emits a <code>Stream&lt;GraphChange&gt;</code> on every write. The Riverpod notifiers
+subscribe to this stream and automatically rebuild widgets when their
+entity type or list query key is affected — <strong>without any additional plumbing</strong>.</p>
+<p>When an <code>Invoice</code> is updated anywhere (realtime, mutation, optimistic patch),
+every widget watching <code>Invoice</code> entities rebuilds in the same frame.</p>
+<h2 id="what-the-current-gate-does-not-prove">What the current gate does not prove</h2>
+<ul>
+<li>pub.dev ownership or authorization to publish;</li>
+<li>the immutable full-release SHA or cross-ecosystem certification bundle (the
+clean Flutter 3.44.8 stable library candidate is certified separately);</li>
+<li>Flutter/A2UI application navigation, Android/iOS device behavior, offline
+persistence, accessibility, or complete phone/tablet visuals;</li>
+<li>realtime coalescing or durable peer convergence.</li>
+</ul>
+<p>Those claims remain owned by the later Flutter showcase, registry,
+release-certification, and stable-publication changes. See the release contract
+instead of inferring full-release readiness from this package version.</p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="entity_graph_flutter">
+  <span class="name"><a href="entity_graph_flutter/">entity_graph_flutter</a></span> 
+
+</dt>
+<dd>entity_graph_flutter
+</dd>
+
+        </dl>
+      </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="https://github.com/Prometheus-AGS/prometheus-entity-management">entity_graph_flutter package</a></li>
+</ol>
+
+    <h5 class="hidden-xs"><span class="package-name">entity_graph_flutter</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="entity_graph_flutter/">entity_graph_flutter</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+</main>
+<footer>
+  <span class="no-break">
+    entity_graph_flutter
+      3.0.0
+  </span>
+  
+</footer>
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

@@ -11,18 +11,22 @@ import {
   Flame,
   ChevronRight,
   Radio,
+  Rocket,
   Settings,
   LayoutGrid,
   Link2,
+  ServerCog,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/next-runtime", label: "Next runtime", icon: ServerCog },
   { href: "/projects", label: "Projects", icon: FolderKanban },
   { href: "/tasks", label: "Tasks", icon: CheckSquare },
   { href: "/team", label: "Team", icon: Users },
   { href: "/realtime", label: "Realtime", icon: Radio },
+  { href: "/release-showcase", label: "SSR Showcase", icon: Rocket },
   { href: "/settings", label: "Settings", icon: Settings },
   { href: "/ui-demo", label: "UI Demo", icon: LayoutGrid },
   { href: "/pure-demo", label: "Pure Demo", icon: LayoutGrid },

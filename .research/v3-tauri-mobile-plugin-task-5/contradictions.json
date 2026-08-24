@@ -1,0 +1,24 @@
+{
+  "contradictions": [
+    {
+      "id": "clean-means-delete-worktree",
+      "topic": "clean-state meaning",
+      "claim_a": "A clean verification requires deleting or resetting the entire dirty worktree.",
+      "claim_b": "Reproducibility can be proved without discarding source changes by using frozen lockfiles, generated-output rebuilds, packed candidates, and fresh temporary Cargo target directories.",
+      "resolved": true,
+      "resolution": "claim_b",
+      "confidence": 0.96,
+      "audit_trail": "The package managers expose isolated/frozen mechanisms; deleting user-owned source changes is neither required nor safe."
+    },
+    {
+      "id": "compiled-mobile-equals-executed-mobile",
+      "topic": "mobile evidence",
+      "claim_a": "Desktop tests plus packaged Kotlin and Swift sources certify mobile execution.",
+      "claim_b": "Only a target host invocation that returns through the Kotlin/Swift bridge certifies native mobile execution.",
+      "resolved": true,
+      "resolution": "claim_b",
+      "confidence": 0.99,
+      "audit_trail": "Tauri explicitly states mock runtime does not execute native webview libraries and documents separate Kotlin/Swift plugin command paths."
+    }
+  ]
+}

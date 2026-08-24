@@ -7,9 +7,9 @@
 ///   Layer 2  →  Riverpod providers      (entityProvider, entityListProvider)
 ///   Transport →  [EntityTransport] + [EntityTransportRegistry]
 ///
-/// The SDL shared contract is modelled by [SdlDocument] / [EntityGraphIR].
+/// The SDL shared contract is modelled by [EntityGraphIR].
 /// Use [parseSdl] to parse a JSON/Map SDL document into the validated IR.
-library entity_graph_flutter;
+library;
 
 // Core graph store
 export 'src/graph.dart';
@@ -19,6 +19,12 @@ export 'src/errors.dart';
 
 // Transport registry
 export 'src/transport.dart';
+
+// Optional callback-backed Rust/FFI transport (no native dependency required)
+export 'src/ffi-transport.dart';
+
+// Local/remote/hybrid view evaluation
+export 'src/view.dart';
 
 // SDL parser + IR
 export 'src/sdl.dart';

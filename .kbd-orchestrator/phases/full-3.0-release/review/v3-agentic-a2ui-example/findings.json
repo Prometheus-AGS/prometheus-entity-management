@@ -1,0 +1,22 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "kbd-critic",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:8181/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [],
+  "checked_classes": [
+    "Spec violations \u2014 checked the updated task checklist, coverage ledger, README/release/skills synchronization, workspace/script additions, and stated evidence boundaries against the acceptance criteria; no concrete contradiction is visible in the packet.",
+    "Correctness \u2014 checked the A2UI atomic preflight path, live processor/catalog sharing, component allowlist replay, runtime disposal, and external A2A endpoint scheme/credential guard changes; no source-backed defect found.",
+    "Regressions \u2014 checked changed package scripts, workspace inclusion, coverage path updates, and documentation boundary changes for removed or inconsistent behavior; no concrete regression is supported by the diff.",
+    "Security \u2014 checked external endpoint credential rejection, HTTPS/loopback policy, A2UI component allowlisting, and action-boundary documentation; no exploitable gap is evidenced in the packet.",
+    "Constraint breaches \u2014 constraints are null, and no project-level blocking rule outside the acceptance criteria is supplied to evaluate.",
+    "Silent failure \u2014 checked for swallowed verifier errors, downgraded evidence claims, and fallback paths in the changed runtime/executor code; no silent failure is evidenced by the diff."
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

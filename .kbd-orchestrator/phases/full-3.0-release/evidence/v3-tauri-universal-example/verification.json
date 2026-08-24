@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1",
+  "change": "v3-tauri-universal-example",
+  "recordedAt": "2026-08-23T12:54:58.887Z",
+  "result": "pass",
+  "evidenceBoundary": {
+    "kind": "source-workspace",
+    "countsAsPackedPackageEvidence": false,
+    "note": "Evidence certifies the workspace source example; packed-package certification remains owned by v3-package-module-contracts."
+  },
+  "commands": [
+    {
+      "label": "typecheck",
+      "command": "pnpm --filter prometheus-entity-management-tauri run typecheck",
+      "startedAt": "2026-08-23T12:54:50.894Z",
+      "completedAt": "2026-08-23T12:54:51.704Z",
+      "exitCode": 0
+    },
+    {
+      "label": "bridge-contract-tests",
+      "command": "pnpm --filter prometheus-entity-management-tauri run test",
+      "startedAt": "2026-08-23T12:54:51.704Z",
+      "completedAt": "2026-08-23T12:54:52.068Z",
+      "exitCode": 0
+    },
+    {
+      "label": "vite-production-build",
+      "command": "pnpm --filter prometheus-entity-management-tauri run build",
+      "startedAt": "2026-08-23T12:54:52.068Z",
+      "completedAt": "2026-08-23T12:54:53.296Z",
+      "exitCode": 0
+    },
+    {
+      "label": "rust-command-e2e",
+      "command": "cargo test --lib",
+      "startedAt": "2026-08-23T12:54:53.296Z",
+      "completedAt": "2026-08-23T12:54:53.978Z",
+      "exitCode": 0
+    },
+    {
+      "label": "browser-viewport-scenarios",
+      "command": "npx playwright test --config tests/browser/v3-tauri-universal-example.playwright.config.ts",
+      "startedAt": "2026-08-23T12:54:53.978Z",
+      "completedAt": "2026-08-23T12:54:58.716Z",
+      "exitCode": 0
+    }
+  ],
+  "lanes": {
+    "typecheck": "pass",
+    "bridgeContractTests": "pass",
+    "viteProductionBuild": "pass",
+    "rustCommandE2e": "pass",
+    "browserViewportScenarios": {
+      "chromium-desktop": {
+        "status": "pass",
+        "scenarios": 7
+      },
+      "chromium-mobile": {
+        "status": "pass",
+        "scenarios": 7
+      }
+    },
+    "platformArtifacts": {
+      "desktopBinary": {
+        "status": "present",
+        "path": "examples/tauri-app/src-tauri/target/debug/prometheus-tauri-universal",
+        "sha256": "1f11913045213d562d53fd893542688f6816de7d04823a9e578494d52e71e47f"
+      },
+      "androidApk": {
+        "status": "present",
+        "path": "examples/tauri-app/src-tauri/gen/android/app/build/outputs/apk/universal/debug/app-universal-debug.apk",
+        "sha256": "c69ea510213f66455963a19ef340573e7ab46def82a50406156bfdf67efa2621"
+      },
+      "iosSimulatorAppBinary": {
+        "status": "present",
+        "path": "examples/tauri-app/src-tauri/gen/apple/build/arm64-sim/Prometheus Tasks.app/Prometheus Tasks",
+        "sha256": "e300b8f6e3860132f75b380f7e48c8adbea7c9e1e8f2bc2c8413487260f1c78f"
+      }
+    }
+  },
+  "platformLimits": {
+    "desktopRuntime": "Desktop evidence is a debug binary plus MockRuntime command E2E; no headed GUI session was driven.",
+    "iosRuntime": "iOS evidence is an unsigned aarch64-sim simulator app bundle; device-signed IPA requires an Apple development team absent on this runner.",
+    "androidRuntime": "Android evidence is a debug APK compile; no booted emulator runtime pass was driven.",
+    "browserEvidence": "Chromium screenshots evidence the shared frontend render at desktop/mobile viewports, not native shells."
+  }
+}

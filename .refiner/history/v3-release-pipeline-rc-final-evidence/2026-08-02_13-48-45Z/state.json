@@ -1,0 +1,161 @@
+{
+  "refinement_id": "9a14dd68-d7da-4699-81ca-bcdfd6409fd7",
+  "artifact_name": "v3-release-pipeline-rc-final-evidence",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-02T12:37:35Z",
+  "updated_at": "2026-08-02T13:48:45Z",
+  "current_iteration": 5,
+  "max_iterations": 5,
+  "goals": [
+    "Certify the bounded RC-pipeline evidence without claiming full 3.0 publication readiness.",
+    "Persist reproducible machine-readable, written, and visual release-state evidence."
+  ],
+  "constraints": [
+    {
+      "id": "release-state-dimensions-independent",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "no-publication-overclaim",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "acceptance-has-direct-evidence",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "visual-accessible-and-legible",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "ledgers-synchronized",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "deterministic-integrity",
+      "severity": "blocking",
+      "status": "satisfied"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 6,
+      "constraints_total": 6,
+      "decision": "terminate",
+      "timestamp": "2026-08-02T12:50:45Z"
+    },
+    {
+      "iteration": 2,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 6,
+      "constraints_total": 6,
+      "decision": "terminate",
+      "timestamp": "2026-08-02T13:05:00Z"
+    },
+    {
+      "iteration": 3,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 6,
+      "constraints_total": 6,
+      "decision": "terminate",
+      "timestamp": "2026-08-02T13:33:00Z"
+    },
+    {
+      "iteration": 4,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 6,
+      "constraints_total": 6,
+      "decision": "terminate",
+      "timestamp": "2026-08-02T13:42:14Z"
+    },
+    {
+      "iteration": 5,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 6,
+      "constraints_total": 6,
+      "decision": "terminate",
+      "timestamp": "2026-08-02T13:47:25Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "3926d17c",
+      "phase": "persist",
+      "iteration": 1,
+      "timestamp": "2026-08-02T12:54:55Z"
+    },
+    {
+      "checkpoint_id": "8dd280f2",
+      "phase": "persist",
+      "iteration": 2,
+      "timestamp": "2026-08-02T13:05:02Z"
+    },
+    {
+      "checkpoint_id": "b4326c1f",
+      "phase": "persist",
+      "iteration": 3,
+      "timestamp": "2026-08-02T13:35:03Z"
+    },
+    {
+      "checkpoint_id": "dd1dee2e",
+      "phase": "persist",
+      "iteration": 4,
+      "timestamp": "2026-08-02T13:43:17Z"
+    },
+    {
+      "checkpoint_id": "22213c21",
+      "phase": "persist",
+      "iteration": 5,
+      "timestamp": "2026-08-02T13:48:30Z"
+    }
+  ],
+  "prior_cycle_id": null,
+  "finalized_at": "2026-08-02T13:48:45Z"
+}

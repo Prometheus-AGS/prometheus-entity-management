@@ -2,34 +2,28 @@
 //!
 //! Every `#[tauri::command]` exposed by the entity-graph plugin.
 //!
-//! Commands that do NOT take `AppHandle<R>` are annotated with
-//! `#[specta::specta]` and registered in the tauri-specta collection so
-//! TypeScript bindings can be auto-generated.
-//!
-//! Commands that DO take a generic `AppHandle<R>` parameter are registered
-//! directly with the Tauri invoke handler (they still work as typed IPC) but
-//! are excluded from the specta collection because specta's inner-function
-//! expansion cannot capture outer generic parameters.  Their TS call
-//! signatures are hand-authored in `generated-bindings.ts`.
+//! Every command is annotated with `#[specta::specta]` and registered in the
+//! tauri-specta collection so TypeScript bindings are generated from Rust.
 //!
 //! Naming convention: Tauri surfaces these as
-//!   `plugin:entity_graph|<fn_name>`
+//!   `plugin:entity-graph-tauri|<fn_name>`
 //! matching the plugin name registered in `lib.rs`.
 
 use tauri::{AppHandle, Emitter, Runtime, State};
 
 use crate::state::GraphPluginState;
 use crate::types::{
-    GetEntityResult, GetListResult, PatchEntityPayload, PersistSnapshotPayload,
+    GetEntityResult, GetListResult, PatchEntityPayload, PersistSnapshotPayload, PlatformPing,
     RemoveEntityPayload, RestoreSnapshotPayload, RestoreSnapshotResult, SetListPayload,
     SnapshotPersistedEvent, SnapshotRestoredEvent, UpsertEntityPayload,
 };
+use crate::EntityGraphExt;
 
 // ── Commands registered with specta (no generic AppHandle) ───────────────────
 
 /// Upsert an entity into the plugin's in-memory mirror.
 #[tauri::command]
-#[specta::specta]
+#[cfg_attr(feature = "generate-bindings", specta::specta)]
 pub async fn graph_upsert_entity(
     state: State<'_, GraphPluginState>,
     payload: UpsertEntityPayload,
@@ -42,7 +36,7 @@ pub async fn graph_upsert_entity(
 
 /// Remove an entity from the plugin's in-memory mirror.
 #[tauri::command]
-#[specta::specta]
+#[cfg_attr(feature = "generate-bindings", specta::specta)]
 pub async fn graph_remove_entity(
     state: State<'_, GraphPluginState>,
     payload: RemoveEntityPayload,
@@ -55,7 +49,7 @@ pub async fn graph_remove_entity(
 
 /// Record a UI-only patch overlay (acknowledged but not mirrored on Rust side).
 #[tauri::command]
-#[specta::specta]
+#[cfg_attr(feature = "generate-bindings", specta::specta)]
 pub async fn graph_patch_entity(
     _state: State<'_, GraphPluginState>,
     _payload: PatchEntityPayload,
@@ -65,7 +59,7 @@ pub async fn graph_patch_entity(
 
 /// Set the ordered ID array for a list query key.
 #[tauri::command]
-#[specta::specta]
+#[cfg_attr(feature = "generate-bindings", specta::specta)]
 pub async fn graph_set_list(
     state: State<'_, GraphPluginState>,
     payload: SetListPayload,
@@ -78,7 +72,7 @@ pub async fn graph_set_list(
 
 /// Read a single entity from the in-memory mirror.
 #[tauri::command]
-#[specta::specta]
+#[cfg_attr(feature = "generate-bindings", specta::specta)]
 pub async fn graph_get_entity(
     state: State<'_, GraphPluginState>,
     entity_type: String,
@@ -90,7 +84,7 @@ pub async fn graph_get_entity(
 
 /// Read a list from the in-memory mirror.
 #[tauri::command]
-#[specta::specta]
+#[cfg_attr(feature = "generate-bindings", specta::specta)]
 pub async fn graph_get_list(
     state: State<'_, GraphPluginState>,
     query_key: String,
@@ -107,24 +101,29 @@ pub async fn graph_get_list(
     }
 }
 
+/// Invoke the registered desktop, Android, or iOS native bridge.
+#[tauri::command]
+#[cfg_attr(feature = "generate-bindings", specta::specta)]
+pub fn graph_platform_ping<R: Runtime>(app: AppHandle<R>) -> Result<PlatformPing, String> {
+    app.entity_graph().ping().map_err(|error| error.to_string())
+}
+
 /// Clear all entities and lists from the in-memory mirror.
 #[tauri::command]
-#[specta::specta]
+#[cfg_attr(feature = "generate-bindings", specta::specta)]
 pub async fn graph_clear(state: State<'_, GraphPluginState>) -> Result<(), String> {
     state.clear_entities().await;
     state.clear_lists().await;
     Ok(())
 }
 
-// ── Commands registered directly (generic AppHandle<R> — excluded from specta) ──
+// ── Snapshot commands (generic over the host runtime) ────────────────────────
 
 /// Persist a JSON-serialised graph snapshot to the in-memory store and emit
 /// a `SnapshotPersistedEvent`.
 ///
-/// NOTE: This command is NOT in the specta `collect_commands!` list because
-/// the specta macro cannot capture the outer generic `R` parameter.  Its TS
-/// signature is hand-authored in `generated-bindings.ts`.
 #[tauri::command]
+#[cfg_attr(feature = "generate-bindings", specta::specta)]
 pub async fn graph_persist_snapshot<R: Runtime>(
     app: AppHandle<R>,
     state: State<'_, GraphPluginState>,
@@ -139,7 +138,7 @@ pub async fn graph_persist_snapshot<R: Runtime>(
 
     let now = monotonic_ts();
     let _ = app.emit(
-        "entity-graph://snapshot-persisted",
+        "plugin:entity-graph-tauri:snapshot-persisted",
         SnapshotPersistedEvent {
             storage_key: key,
             persisted_at: now,
@@ -153,9 +152,8 @@ pub async fn graph_persist_snapshot<R: Runtime>(
 /// Return a previously persisted snapshot string and emit a
 /// `SnapshotRestoredEvent`.
 ///
-/// NOTE: excluded from specta `collect_commands!` for the same reason as
-/// `graph_persist_snapshot`.
 #[tauri::command]
+#[cfg_attr(feature = "generate-bindings", specta::specta)]
 pub async fn graph_restore_snapshot<R: Runtime>(
     app: AppHandle<R>,
     state: State<'_, GraphPluginState>,
@@ -170,7 +168,7 @@ pub async fn graph_restore_snapshot<R: Runtime>(
     if snapshot.is_some() {
         let now = monotonic_ts();
         let _ = app.emit(
-            "entity-graph://snapshot-restored",
+            "plugin:entity-graph-tauri:snapshot-restored",
             SnapshotRestoredEvent {
                 storage_key: key,
                 restored_at: now,

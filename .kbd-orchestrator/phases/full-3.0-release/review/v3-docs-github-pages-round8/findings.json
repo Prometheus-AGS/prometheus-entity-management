@@ -1,0 +1,32 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "codex-gpt-5",
+  "isolation_mode": "harness-native:fresh-context",
+  "producer_model": "gpt-5",
+  "cross_model_check": "unverified-same-harness-family",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "website/scripts/generate-native-api.mjs",
+      "line": 64,
+      "claim": "Native API verification is not reproducible because rustdoc is generated with the moving +stable toolchain.",
+      "evidence": "The generator invokes cargo +stable doc, while the workflow installs only an exact Flutter version and no exact Rust toolchain; any stable Rust update can change the 798 hashed rustdoc artifacts and make docs:native-api:verify fail without a source change, contradicting the acceptance criterion requiring deterministic verification.",
+      "suggested_fix": "Pin an exact Rust toolchain from the release authority, install that version in the workflow, and invoke Cargo with the exact pin when generating and verifying rustdoc."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".github/workflows/docs-pages.yml",
+      "line": 16,
+      "claim": "Pull requests that change only documentation visual snapshots do not trigger the documentation workflow.",
+      "evidence": "The path filter is tests/browser/v3-docs-pages*; GitHub path-filter * does not cross /, so files under tests/browser/v3-docs-pages.spec.ts-snapshots/ are excluded even though the diff adds the desktop and mobile baselines there.",
+      "suggested_fix": "Use tests/browser/v3-docs-pages** or add tests/browser/v3-docs-pages.spec.ts-snapshots/** explicitly."
+    }
+  ],
+  "checked_classes": [],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

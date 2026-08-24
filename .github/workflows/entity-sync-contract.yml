@@ -1,0 +1,65 @@
+name: External entity-sync contract
+
+on:
+  workflow_dispatch:
+    inputs:
+      entity_sync_ref:
+        description: prometheus-entity-sync git ref to verify
+        required: true
+        default: main
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  packed-core-contract:
+    name: Packed core → prometheus-entity-sync
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout entity-management candidate
+        uses: actions/checkout@v5
+        with:
+          path: entity-management
+
+      - name: Checkout external sync consumer
+        uses: actions/checkout@v5
+        with:
+          repository: Prometheus-AGS/prometheus-entity-sync
+          ref: ${{ inputs.entity_sync_ref }}
+          path: entity-sync
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: |
+            entity-management/pnpm-lock.yaml
+            entity-sync/pnpm-lock.yaml
+
+      - name: Install entity-management candidate
+        run: pnpm --dir entity-management install --frozen-lockfile
+
+      - name: Build and pack current core candidate
+        run: |
+          pnpm --dir entity-management --filter @prometheus-ags/entity-graph-core build
+          mkdir -p "$GITHUB_WORKSPACE/candidate"
+          pnpm --dir entity-management --filter @prometheus-ags/entity-graph-core pack --pack-destination "$GITHUB_WORKSPACE/candidate"
+          CORE_TARBALL="$(find "$GITHUB_WORKSPACE/candidate" -maxdepth 1 -type f -name 'prometheus-ags-entity-graph-core-*.tgz' -print -quit)"
+          test -n "$CORE_TARBALL"
+          echo "CORE_TARBALL=$CORE_TARBALL" >> "$GITHUB_ENV"
+
+      - name: Install external consumer from its frozen lockfile
+        run: pnpm --dir entity-sync install --frozen-lockfile
+
+      - name: Replace the registry alpha with the packed current core
+        run: pnpm --dir entity-sync --filter @prometheus-ags/entity-sync-pglite add --save-dev "$CORE_TARBALL"
+
+      - name: Verify sibling TypeScript contracts
+        run: pnpm --dir entity-sync run typecheck
+
+      - name: Verify sibling protocol unit tests
+        run: pnpm --dir entity-sync --filter @prometheus-ags/entity-sync-core test

@@ -1,0 +1,69 @@
+---
+title: Compatibility policy
+description: Semantic versioning, deprecation and removal commitments, peer dependency policy, and release channels for the 3.0 ecosystem.
+---
+
+# Compatibility policy
+
+This page states the compatibility commitments for the 3.0 ecosystem: twelve
+npm packages, one Dart package, and two Rust crates.
+
+## Semantic versioning
+
+All twelve npm packages are versioned as one **fixed group**: they share a
+version number and are published together. A breaking change in any package
+moves the whole group to the next major.
+
+- **Major** (`3.0.0` → `4.0.0`): breaking API changes — removed exports,
+  changed call signatures, moved type homes, or protocol boundary changes like
+  the ones in the [2.x to 3.0 migration](v2-to-v3.mdx).
+- **Minor** (`3.0.0` → `3.1.0`): additive, backward-compatible surface — new
+  exports, new optional parameters, new adapters.
+- **Patch** (`3.0.0` → `3.0.1`): bug fixes with no API surface change.
+
+## Deprecation and removal
+
+Deprecated exports follow a **current-plus-next-major** removal policy: an
+export deprecated in 3.x remains available — with a deprecation notice — for
+the whole of 3.x and is removed no earlier than 4.0.0.
+
+The standing example is core's `useGraphStore` export: a StoreApi-shaped
+migration alias for `graphStore` that exists to make imperative 2.x → 3.0
+migrations incremental. It is not a React hook and new code should not use it.
+
+Compatibility seams that are *not* covered by this policy are documented at
+their boundary. The A2A `./legacy` subpath is a migration seam, not a stable
+protocol surface: it provides bounded send/get/cancel translation and
+intentionally rejects legacy streaming.
+
+## Peer dependency policy
+
+Framework bindings declare `@prometheus-ags/entity-graph-core` as a **required
+peer dependency**. One application must resolve exactly one core instance; the
+package manager dedupes when core is installed at the application root. The
+six-binding singleton gate (`pnpm run verify:binding-singleton`) certifies this
+against packed artifacts.
+
+Optional integrations (Loro, PGlite, AG-UI transport, Tauri SQL) ship as
+optional peer dependencies; the core bundle stays minimal and unused
+integrations never install.
+
+## Module and type support
+
+Each npm package ships ESM and CommonJS entry points with TypeScript
+declarations verified under NodeNext, Node16, and Bundler resolution. The
+packed module/type/payload gate (`release/package-contracts.md`) certifies the
+twelve tarballs; consumer-facing module claims require packed-candidate
+evidence, not source aliases.
+
+## Release channels
+
+| Channel | npm dist-tag | Purpose |
+| --- | --- | --- |
+| Stable | `latest` | Certified stable releases (3.0.0 and later patches/minors) |
+| Release candidate | `next` | Numbered `3.0.0-rc.N` candidates staged through the OIDC pipeline |
+
+Release candidates are rehearsed and staged with the fail-closed pipeline
+described in the [release runbook](../operations/release-runbook.mdx). Registry
+versions are immutable: a bad publish is recovered with a new corrective
+version, never by overwriting a published one.

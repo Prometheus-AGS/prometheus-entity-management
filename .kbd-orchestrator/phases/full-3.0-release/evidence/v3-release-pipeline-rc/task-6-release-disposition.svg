@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="960" viewBox="0 0 1400 960" role="img" aria-labelledby="title description">
+  <title id="title">Prometheus release-candidate pipeline disposition</title>
+  <desc id="description">The RC pipeline and change evidence are complete and OpenSpec archive is ready. Full 3.0 certification is pending, stable publication is blocked, and no public state mutation is authorized.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#090b18"/>
+      <stop offset="1" stop-color="#1c1230"/>
+    </linearGradient>
+    <style>
+      .eyebrow { fill: #ff9d2e; font: 700 21px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 2px; }
+      .title { fill: #ffffff; font: 800 48px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .subtitle { fill: #c2bdd2; font: 400 21px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .state { fill: #ffffff; font: 800 25px ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .detail { fill: #c9c4d8; font: 500 17px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .side-title { fill: #ffb24f; font: 700 22px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .side { fill: #e4dfed; font: 500 17px Inter, ui-sans-serif, system-ui, sans-serif; }
+      .stamp { fill: #0a2119; stroke: #52d99a; stroke-width: 2; }
+      .stamp-text { fill: #75edb6; font: 800 22px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 1px; }
+    </style>
+  </defs>
+  <rect width="1400" height="960" fill="url(#background)"/>
+  <circle cx="1270" cy="80" r="240" fill="#ff6b2c" opacity="0.08"/>
+
+  <text x="80" y="76" class="eyebrow">PROMETHEUS · INDEPENDENT RELEASE STATES</text>
+  <text x="80" y="139" class="title">RC pipeline archive disposition</text>
+  <text x="80" y="181" class="subtitle">A completed mechanism does not create external publication authority.</text>
+
+  <g transform="translate(80 235)" aria-label="RC pipeline complete">
+    <rect width="780" height="102" rx="18" fill="#102b22" stroke="#3fbf89"/>
+    <circle cx="48" cy="51" r="19" fill="#52d99a"/>
+    <path d="M39 51l7 7 13-16" fill="none" stroke="#092019" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="88" y="46" class="state">RC PIPELINE  COMPLETE</text>
+    <text x="88" y="76" class="detail">16 artifacts · 12 packed npm candidates · restartable recovery</text>
+  </g>
+
+  <g transform="translate(80 355)" aria-label="Change evidence complete">
+    <rect width="780" height="102" rx="18" fill="#102b22" stroke="#3fbf89"/>
+    <circle cx="48" cy="51" r="19" fill="#52d99a"/>
+    <path d="M39 51l7 7 13-16" fill="none" stroke="#092019" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="88" y="46" class="state">CHANGE EVIDENCE  COMPLETE</text>
+    <text x="88" y="76" class="detail">CI · BDD · package · Flutter · Tauri/Rust · security · visual</text>
+  </g>
+
+  <g transform="translate(80 475)" aria-label="OpenSpec archive ready">
+    <rect width="780" height="102" rx="18" fill="#102b22" stroke="#3fbf89"/>
+    <circle cx="48" cy="51" r="19" fill="#52d99a"/>
+    <path d="M39 51l7 7 13-16" fill="none" stroke="#092019" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="88" y="46" class="state">OPENSPEC ARCHIVE  READY</text>
+    <text x="88" y="76" class="detail">Scoped task and evidence transition only; no publish permission</text>
+  </g>
+
+  <g transform="translate(80 595)" aria-label="Full 3.0 certification pending">
+    <rect width="780" height="102" rx="18" fill="#30240f" stroke="#e3a52d"/>
+    <circle cx="48" cy="51" r="19" fill="#f5b942"/>
+    <path d="M48 39v15M48 64v1" stroke="#2c210d" stroke-width="5" stroke-linecap="round"/>
+    <text x="88" y="46" class="state">FULL 3.0 CERTIFICATION  PENDING</text>
+    <text x="88" y="76" class="detail">Examples · docs · skills · Pages · immutable evidence bundle</text>
+  </g>
+
+  <g transform="translate(80 715)" aria-label="Stable publication blocked">
+    <rect width="780" height="102" rx="18" fill="#32161c" stroke="#e25a71"/>
+    <circle cx="48" cy="51" r="19" fill="#ef6d82"/>
+    <path d="M40 43l16 16M56 43L40 59" stroke="#32161c" stroke-width="5" stroke-linecap="round"/>
+    <text x="88" y="46" class="state">STABLE PUBLICATION  BLOCKED</text>
+    <text x="88" y="76" class="detail">External authority + certification + explicit approval required</text>
+  </g>
+
+  <g transform="translate(905 235)">
+    <rect width="415" height="582" rx="22" fill="#18182a" stroke="#3b3851"/>
+    <text x="34" y="52" class="side-title">Unproven external authority</text>
+    <text x="34" y="102" class="side">npm trusted publisher</text>
+    <text x="34" y="139" class="side">GitHub npm-rc reviewers</text>
+    <text x="34" y="176" class="side">emitted GitHub attestation</text>
+    <text x="34" y="213" class="side">Pub.dev publisher + tag rule</text>
+    <text x="34" y="250" class="side">crates.io ownership / credential</text>
+
+    <line x1="34" x2="381" y1="287" y2="287" stroke="#3b3851"/>
+    <text x="34" y="335" class="side-title">Downstream owners</text>
+    <text x="34" y="383" class="side">5 executable showcases</text>
+    <text x="34" y="420" class="side">Flint + complete skills</text>
+    <text x="34" y="457" class="side">Docusaurus + GitHub Pages</text>
+    <text x="34" y="494" class="side">v3-release-certification</text>
+    <text x="34" y="531" class="side">v3-stable-publication</text>
+  </g>
+
+  <g transform="translate(80 856)">
+    <rect width="1240" height="64" rx="14" class="stamp"/>
+    <text x="36" y="41" class="stamp-text">NO PUBLIC STATE MUTATION</text>
+    <text x="465" y="41" class="detail">archive ≠ upload · tag · dist-tag · release · provenance emission</text>
+  </g>
+</svg>

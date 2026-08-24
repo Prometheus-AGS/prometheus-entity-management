@@ -1,0 +1,38 @@
+{
+  "conceptId": "tauri-clean-state-platform-certification",
+  "audience": "skeptic",
+  "coreIdea": "A Tauri release gate is a chain of independent evidence locks; passing a dependency, binding, desktop, or packaging lock cannot certify native mobile execution.",
+  "grade": {
+    "gradeId": "grade-tauri-clean-state-platform-certification-1785651000",
+    "overallScore": 0.963,
+    "scores": {
+      "completeness": 0.93,
+      "accuracy": 0.98,
+      "clarity": 0.94,
+      "misconceptionsAbsent": 1.0
+    },
+    "passed": true,
+    "remainingGap": "A final immutable candidate must compare regenerated outputs to committed state. During this active dirty change, check:bindings instead compares the checked-in candidate file to fresh generator output; final commit cleanliness belongs to release certification.",
+    "gradePath": "/Users/gqadonis/.prometheus/learn/goals/v3-tauri-mobile-plugin-task-5/grades/grade-tauri-clean-state-platform-certification-1785651000.json"
+  },
+  "transferProblems": [
+    {
+      "problem": "A packed candidate contains the expected Swift source and desktop tests pass, but no iOS host command receipt exists. Classify every proven and unproven boundary.",
+      "answer": "Distribution and desktop boundaries pass; iOS native registration, command return, and capability denial remain unproven and block stable mobile certification.",
+      "score": 1.0
+    },
+    {
+      "problem": "A fresh Cargo target build passes but generated-bindings.ts differs after regeneration. Decide whether the release gate can pass and identify the corrective evidence.",
+      "answer": "No. The source-to-binding drift gate fails. Regenerate the binding, review and retain the candidate output, then rerun the generator in check mode until it reports no drift.",
+      "score": 1.0
+    }
+  ],
+  "learnerModelUpdate": {
+    "attempted": true,
+    "recorded": false,
+    "reason": "learner model did not contain a pre-created learner for this execution-scoped concept"
+  },
+  "formalMasteryClaimed": false,
+  "retentionScheduled": false,
+  "reasonFormalMasteryOpen": "The external grade and transfer solutions pass, but a 24-hour retention check is outside this execution task."
+}

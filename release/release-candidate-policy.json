@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "1.0.0",
+  "candidate": {
+    "channel": "rc",
+    "npmAction": "stage-rc",
+    "requireExistingNpmPackage": true,
+    "publicationAuthorized": false,
+    "latestMutationAllowed": false
+  },
+  "trustedPublishing": {
+    "provider": "github-actions-oidc",
+    "workflow": "publish.yml",
+    "environment": "npm-rc",
+    "runner": "github-hosted",
+    "minimumNode": "22.14.0",
+    "minimumNpm": "11.15.0",
+    "allowedAction": "npm stage publish",
+    "longLivedWriteTokenAllowed": false,
+    "provenance": "automatic-for-public-packages-in-public-repositories"
+  },
+  "rehearsal": {
+    "npm": "npm-publish-dry-run",
+    "dart": "dart-pub-publish-dry-run",
+    "rust": "cargo-publish-dry-run",
+    "registryMutationAllowed": false,
+    "protectedTagSnapshotRequired": true
+  },
+  "native": {
+    "dart-flutter": "dry-run-only",
+    "rust-cli": "dry-run-only",
+    "rust-mcp": "dry-run-only",
+    "rust-tauri": "embedded-in-npm"
+  },
+  "recovery": {
+    "states": [
+      "declared",
+      "packed",
+      "verified",
+      "classified",
+      "submitted",
+      "registry-verified",
+      "complete"
+    ],
+    "registryClassifications": ["absent", "matching", "conflicting"],
+    "matchingVersionAction": "skip-and-record",
+    "absentVersionAction": "continue-in-dependency-order",
+    "conflictingVersionAction": "block",
+    "publishedArtifactRollback": "publish-corrective-version"
+  },
+  "stablePromotion": {
+    "change": "v3-stable-publication",
+    "requiresExplicitHumanAuthority": true,
+    "implementedByThisChange": true,
+    "channel": "stable",
+    "npmAction": "publish-stable",
+    "environment": "npm-stable",
+    "tag": "latest",
+    "allowedAction": "npm publish",
+    "longLivedWriteTokenAllowed": false,
+    "requiresOidc": true,
+    "requiresExactSourceSha": true,
+    "requiresArtifactIntegrity": true,
+    "resultContract": "published-package-without-stage-id"
+  }
+}

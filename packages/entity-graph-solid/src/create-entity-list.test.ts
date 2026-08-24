@@ -50,21 +50,21 @@ vi.mock("solid-js/store", () => {
 });
 
 import {
-  useGraphStore,
+  graphStore,
   __resetEntityTransports,
   serializeKey,
 } from "@prometheus-ags/entity-graph-core";
 import { createEntityList } from "./create-entity-list";
 
 beforeEach(() => {
-  const s = useGraphStore.getState();
+  const s = graphStore.getState();
   for (const type of Object.keys(s.entities)) {
     for (const id of Object.keys(s.entities[type])) {
       s.removeEntity(type, id);
     }
   }
-  for (const key of Object.keys(useGraphStore.getState().lists)) {
-    useGraphStore.getState().setListStale(key, false);
+  for (const key of Object.keys(graphStore.getState().lists)) {
+    graphStore.getState().setListStale(key, false);
   }
   __resetEntityTransports();
 });
@@ -93,13 +93,13 @@ describe("createEntityList", () => {
 
   it("resolves items from a pre-populated graph", () => {
     // Seed the graph.
-    useGraphStore.getState().upsertEntity("Invoice", "inv-a", { id: "inv-a", amount: 50 });
-    useGraphStore.getState().upsertEntity("Invoice", "inv-b", { id: "inv-b", amount: 75 });
-    useGraphStore.getState().setEntityFetched("Invoice", "inv-a");
-    useGraphStore.getState().setEntityFetched("Invoice", "inv-b");
+    graphStore.getState().upsertEntity("Invoice", "inv-a", { id: "inv-a", amount: 50 });
+    graphStore.getState().upsertEntity("Invoice", "inv-b", { id: "inv-b", amount: 75 });
+    graphStore.getState().setEntityFetched("Invoice", "inv-a");
+    graphStore.getState().setEntityFetched("Invoice", "inv-b");
 
     const key = serializeKey(["invoices", "pre-populated"]);
-    useGraphStore.getState().setListResult(key, ["inv-a", "inv-b"], {
+    graphStore.getState().setListResult(key, ["inv-a", "inv-b"], {
       total: 2,
       hasNextPage: false,
       hasPrevPage: false,
@@ -117,7 +117,7 @@ describe("createEntityList", () => {
 
     // The store mock captures the initial state; read from graph directly.
     const graphItems = ["inv-a", "inv-b"].map(
-      (id) => useGraphStore.getState().readEntity("Invoice", id),
+      (id) => graphStore.getState().readEntity("Invoice", id),
     );
     expect(graphItems[0]).toEqual({ id: "inv-a", amount: 50 });
     expect(graphItems[1]).toEqual({ id: "inv-b", amount: 75 });
@@ -155,19 +155,19 @@ describe("createEntityList", () => {
     );
 
     const key = serializeKey(["invoices", "fetchlist-test"]);
-    const listState = useGraphStore.getState().lists[key];
+    const listState = graphStore.getState().lists[key];
     expect(listState).toBeDefined();
     expect(listState.ids).toContain("inv-c");
     expect(listState.ids).toContain("inv-d");
     expect(listState.total).toBe(2);
 
-    const invC = useGraphStore.getState().readEntity("Invoice", "inv-c");
+    const invC = graphStore.getState().readEntity("Invoice", "inv-c");
     expect(invC).toEqual({ id: "inv-c", amount: 200 });
   });
 
   it("fetchNextPage is a no-op when hasNextPage is false", async () => {
     const key = serializeKey(["invoices", "no-next"]);
-    useGraphStore.getState().setListResult(key, ["inv-x"], {
+    graphStore.getState().setListResult(key, ["inv-x"], {
       total: 1,
       hasNextPage: false,
       nextCursor: null,

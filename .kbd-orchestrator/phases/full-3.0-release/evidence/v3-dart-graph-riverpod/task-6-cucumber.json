@@ -1,0 +1,520 @@
+[
+  {
+    "description": "  As a 3.0 release reviewer\n  I need permanent behavioral and visual proof for the Flutter library layer\n  So that a version bump cannot disguise duplicated state, unbounded retries, or incomplete optimistic rollback",
+    "elements": [
+      {
+        "description": "",
+        "id": "stable-dart-graph-and-generated-riverpod-3-integration;stable-tooling-produces-public-generated-providers",
+        "keyword": "Scenario",
+        "line": 10,
+        "name": "Stable tooling produces public generated providers",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 4617272708
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "the Dart graph Riverpod verification suite has run",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:51"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 113833
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "the Dart and Flutter constraints form one coherent stable matrix",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:55"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 39832
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 12,
+            "name": "all generated provider families are present through the public package",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:60"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@v3-dart-graph-riverpod",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "stable-dart-graph-and-generated-riverpod-3-integration;lists-and-details-join-against-one-normalized-graph",
+        "keyword": "Scenario",
+        "line": 14,
+        "name": "Lists and details join against one normalized graph",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 26708
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "the Dart graph Riverpod verification suite has run",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:51"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 70874
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 15,
+            "name": "remote membership stores entity ids and both views reflect one graph update",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:64"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 33833
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 16,
+            "name": "local mode avoids transport while hybrid mode revalidates remote membership",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:69"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@v3-dart-graph-riverpod",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "stable-dart-graph-and-generated-riverpod-3-integration;optimistic-lifecycle-is-global-and-exactly-reversible",
+        "keyword": "Scenario",
+        "line": 18,
+        "name": "Optimistic lifecycle is global and exactly reversible",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 50124
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "the Dart graph Riverpod verification suite has run",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:51"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 55375
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 19,
+            "name": "optimistic updates are visible globally and confirmation clears the patch",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:73"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 42167
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 20,
+            "name": "failed updates, deletes, and creates restore their exact prior graph state",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:77"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@v3-dart-graph-riverpod",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "stable-dart-graph-and-generated-riverpod-3-integration;failure-and-realtime-behavior-terminate-truthfully",
+        "keyword": "Scenario",
+        "line": 22,
+        "name": "Failure and realtime behavior terminate truthfully",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 23041
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "the Dart graph Riverpod verification suite has run",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:51"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 24957
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 23,
+            "name": "terminal failures make one attempt and transient failures make at most three",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:81"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 25290
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 24,
+            "name": "realtime updates and deletes mutate and invalidate the canonical graph",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:85"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@v3-dart-graph-riverpod",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "stable-dart-graph-and-generated-riverpod-3-integration;native-integration-remains-optional",
+        "keyword": "Scenario",
+        "line": 26,
+        "name": "Native integration remains optional",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 11750
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "the Dart graph Riverpod verification suite has run",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:51"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 23124
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 27,
+            "name": "the pluggable FFI adapter delegates every transport operation",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:89"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 18124
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 28,
+            "name": "the Flutter package requires no native FFI runtime",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:94"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@v3-dart-graph-riverpod",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "stable-dart-graph-and-generated-riverpod-3-integration;rendered-proof-stays-within-its-certified-boundary",
+        "keyword": "Scenario",
+        "line": 30,
+        "name": "Rendered proof stays within its certified boundary",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 7542
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "the Dart graph Riverpod verification suite has run",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:51"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 102374
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 31,
+            "name": "initial and optimistic cross-view goldens have inspected immutable receipts",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:98"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 42750
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 32,
+            "name": "the visual receipt disclaims full app, device, and accessibility certification",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:106"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@v3-dart-graph-riverpod",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "stable-dart-graph-and-generated-riverpod-3-integration;public-declarations-and-agent-guidance-cannot-drift-from-source",
+        "keyword": "Scenario",
+        "line": 34,
+        "name": "Public declarations and agent guidance cannot drift from source",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 7999
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "the Dart graph Riverpod verification suite has run",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:51"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 20916
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 35,
+            "name": "the Dart barrel and generated provider part match the public declaration ledger",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:113"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1024250
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 36,
+            "name": "coverage implements only the certified Dart platform and widget harness boundary",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:121"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 679082
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 37,
+            "name": "package, release, and skill guides describe the same layering and exclusions",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:138"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@v3-dart-graph-riverpod",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "stable-dart-graph-and-generated-riverpod-3-integration;archive-evidence-stays-complete-without-promoting-the-wider-release",
+        "keyword": "Scenario",
+        "line": 39,
+        "name": "Archive evidence stays complete without promoting the wider release",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 27125
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "the Dart graph Riverpod verification suite has run",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:51"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 429124
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 40,
+            "name": "the final Dart archive manifest proves every library acceptance criterion",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:154"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 125457
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 41,
+            "name": "the final Dart archive manifest assigns every unresolved lane downstream",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:165"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 63040
+            },
+            "arguments": [],
+            "keyword": "And ",
+            "line": 42,
+            "name": "the final Dart archive manifest keeps registry publication unauthorized",
+            "match": {
+              "location": "tests/steps/v3-dart-graph-riverpod.steps.ts:183"
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@release",
+            "line": 1
+          },
+          {
+            "name": "@v3-dart-graph-riverpod",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "stable-dart-graph-and-generated-riverpod-3-integration",
+    "line": 2,
+    "keyword": "Feature",
+    "name": "Stable Dart graph and generated Riverpod 3 integration",
+    "tags": [
+      {
+        "name": "@release",
+        "line": 1
+      },
+      {
+        "name": "@v3-dart-graph-riverpod",
+        "line": 1
+      }
+    ],
+    "uri": "tests/features/release/v3-dart-graph-riverpod.feature"
+  }
+]

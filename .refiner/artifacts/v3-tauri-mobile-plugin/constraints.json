@@ -1,0 +1,76 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    {
+      "id": "c1",
+      "description": "Every Tauri phase-plan criterion is mapped to direct evidence or an explicit blocker.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "acceptance matrix, task receipts, source inspection, and final manifest"
+      }
+    },
+    {
+      "id": "c2",
+      "description": "Mobile execution is represented only by exact target-host responses, permission denials, environment metadata, visual receipts, and recomputed artifact hashes.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "device-evidence manifest, tagged BDD, response matching, and SHA-256 recomputation"
+      }
+    },
+    {
+      "id": "c3",
+      "description": "Implementation, plugin certification, OpenSpec archive, full-release certification, and publication states remain independent and fail closed.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "final-verification dimensions, implemented plugin gate, alpha package version, and separate publication authority"
+      }
+    },
+    {
+      "id": "c4",
+      "description": "Android and iOS success/denial visuals are legible, Prometheus-branded, inspected at original resolution, and hash-bound.",
+      "severity": "blocking",
+      "type": "visual",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "original-resolution screenshot inspection, Android UI XML, exact rendered text, and SHA-256"
+      }
+    },
+    {
+      "id": "c5",
+      "description": "Public ledgers, coverage, docs, skills, research, tests, and final evidence remain synchronized.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "release tests, ESLint, coverage, skills, JSON/XML, OpenSpec, and diff hygiene"
+      }
+    },
+    {
+      "id": "c6",
+      "description": "OpenSpec archive may proceed only after real Android/iOS receipts and the clean Rust/BDD lane pass; stable publication remains separately unauthorized.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "device receipt presence and hashes, clean verifier/BDD receipts, archiveReady=true, and publicationAuthorized=false"
+      }
+    }
+  ],
+  "global_rules": [
+    "pnpm remains the JavaScript monorepo entry point.",
+    "Tauri MockRuntime and packaged native source cannot certify Android or iOS execution.",
+    "The default Tauri capability remains read-only and native snapshots remain in-memory.",
+    "Completing this bounded change may authorize its OpenSpec archive only; it cannot authorize npm latest, GitHub Release, Pages deployment, or full 3.0 certification."
+  ],
+  "termination_conditions": [
+    "Terminate only when evidence-disposition validation failures are zero.",
+    "Terminate with archiveReady=true only when every mobile receipt and clean gate is verified.",
+    "Keep publicationAuthorized=false and fullReleaseCertified=false because those are owned by later release changes."
+  ]
+}

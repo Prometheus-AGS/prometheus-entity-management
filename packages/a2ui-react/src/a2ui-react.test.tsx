@@ -31,7 +31,7 @@ import {
   useEntityDiff,
   EntityStream,
   EntityApproval,
-} from "./index.js";
+} from "./ag-ui/index.js";
 import type {
   StreamEvent,
   EntityToolProvider,

@@ -69,6 +69,15 @@ supabase/.temp/
 # ── Misc ───────────────────────────────────────────────────────────────────────
 .turbo/
 *.local
+website/.docusaurus/
+website/build/
+.typedoc-packed-*/
+.native-docs-*/
+test-results/
+playwright-report/
+website/lighthouse-results/
+website/.lighthouseci/
+.native-docs-cache/
 
 # Rust build artifacts (never commit)
 target/
@@ -86,3 +95,14 @@ build/
 **/build/
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# ── Docusaurus ─────────────────────────────────────────────────────────────
+.docusaurus/
+
+# ── Generated API reference (v3-docs-api-reference) ─────────────────────────
+site/docs/api/npm/
+site/docs/api/index.mdx
+site/docs/packages/*.mdx
+!site/docs/packages/overview.md
+site/api-sidebar.generated.json
+site/static/api/

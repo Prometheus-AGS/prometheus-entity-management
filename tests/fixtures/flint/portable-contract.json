@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "externalSources": {
+    "realtime": {
+      "repository": "Prometheus-AGS/flint-realtime-fabric",
+      "revision": "cfc1bb2bfc5db3b152967e0383aeaaf5207a4b89",
+      "files": {
+        "sdks/entity-management/src/types.ts": "1140ab00872efef9f160babf64aba306508209744fd9597552eb378a4b695506",
+        "sdks/entity-management/src/adapter.ts": "1b69d0a0585fb1afa46cb095836be9691bf725203bac30d0ea58d4ca47aecbbc",
+        "crates/frf-gateway/src/config/mod.rs": "3c4f87352f1af4b7e3fd7d067c812267a7374a6223469de9e8f43acaea4fdbd8",
+        "crates/frf-identity-ory/src/claims.rs": "b08faa4431d6db44d461a8ba9fd3b547ac53536d18ae6540159b26e7b0e17d5b",
+        "crates/frf-app/src/publish.rs": "48c4af304030f1c440d6dcbb17ceed80b23e58aab81b4a843c38a11a28a281cf",
+        "crates/frf-app/src/subscribe.rs": "93ec80871908408c8fa6bcf137eac3e6f122928b69b3a69828131e2c14ce0c84"
+      }
+    },
+    "gate": {
+      "repository": "Prometheus-AGS/flint-gate",
+      "revision": "2438892dfc7177c568bf57f3339a206d728f4ff2",
+      "files": {
+        "crates/flint-gate-core/src/auth/jwt_mint.rs": "3f74ae8eac5de932884e10e7fa773972e5fbc0155bc385f7069ac6e3767887ef",
+        "crates/flint-gate-core/src/auth/jwks_publish.rs": "1cc6e96d6903f05e204531cc5cf31d7e114454ef3b21f97e640b662096afa7dd",
+        "crates/flint-gate-core/src/auth/jwks.rs": "99385de85fc52a28aae5a6f88bbf8cf6ac0f1d6fe367a7fd2f9d245116f34bc3",
+        "docs/FLINT-KEYS.md": "57b7102353d1b2ad66059b36d9b73a944ae9a0b83ae7ffb402aa05b1f1cbc375"
+      }
+    },
+    "forge": {
+      "repository": "Prometheus-AGS/flint-forge",
+      "revision": "0135946cec589c1059a9f82ac373c7cb6c12e387",
+      "files": {
+        "docs/api/schema-provisioning.md": "da71a207997ca7dde7a72b7f7490bc6d8403b0509261ca7edc1df928000e3107",
+        "crates/fdb-app/src/provision/ddl.rs": "18a0bfe8382a2ee079886bca8de5fe3b4c89d33309f8c3271bb76bd0b3a0d41c",
+        "crates/fdb-gateway/src/schema_api/apply.rs": "5ccbd6d0fabc9b555d86cbbc295e7d57b71df6d5261ea770852aa2320fa5ea8a",
+        "crates/fdb-postgres/src/provisioner.rs": "fdebb0fd5527240265dde69f6f4da2777823a88130b034a988e8dcab22c8b83b"
+      }
+    }
+  },
+  "realtime": {
+    "clientMethods": ["watchEntities", "mutateEntity"],
+    "queryFields": ["channelId", "consumerId", "entityType", "fromOffset"],
+    "recordFields": ["entityType", "entityId", "tenantId", "channelId", "data", "correlationId"],
+    "eventFields": ["entityType", "entityId", "tenantId", "channelId", "data", "offset", "correlationId"],
+    "entityChangeKind": 1
+  },
+  "security": {
+    "issuer": {
+      "claim": "iss",
+      "productionRequired": true
+    },
+    "tenant": {
+      "claim": "tenant_id",
+      "requiredUuid": true,
+      "publishMustMatchChannel": true,
+      "subscribeDropsForeignTenant": true
+    },
+    "tokenHeader": {
+      "asymmetricKidRequired": true,
+      "field": "kid"
+    },
+    "jwks": {
+      "path": "/.well-known/jwks.json",
+      "rsaStandardMembers": ["n", "e"],
+      "pemCompatibilityExtension": true,
+      "rsaStrictConsumerCompatible": true,
+      "ecStrictConsumerCompatible": false,
+      "ecMissingStandardMembers": ["crv", "x", "y"],
+      "symmetricKeysPublished": false,
+      "unknownKidRefresh": true,
+      "ttlSeconds": 300
+    },
+    "roles": {
+      "forwardedRoleHeader": "X-Flint-Role",
+      "forwardedTenantHeader": "X-Flint-Tenant-Id",
+      "browserRole": "anon",
+      "serverRole": "service_role"
+    },
+    "keySeparation": {
+      "publishableKeyEnvironment": "FLINT_ANON_KEY",
+      "serverKeyEnvironment": "FLINT_SERVICE_ROLE_KEY",
+      "serverKeyPrefix": "flint_sk_",
+      "serviceRoleServerOnly": true,
+      "browserLikeClientsRejectServerKeys": true
+    }
+  },
+  "provisioning": {
+    "basePath": "/schema/v1",
+    "routes": ["plan", "apply", "status", "ddl"],
+    "enabledByDefault": false,
+    "typedJsonOnly": true,
+    "rawSqlAccepted": false,
+    "planHashRequired": true,
+    "namespaceAllowlistRequired": true,
+    "serviceRoleOnly": true,
+    "singleTransaction": true,
+    "enableRls": true,
+    "forceRls": true,
+    "perVerbTenantPolicies": true,
+    "auditLedger": true,
+    "restartRequiredForNewRestRoutes": true,
+    "prometheusForgeAdapterImplemented": false
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "plan": {
+    "template": ".codex/skills/artifact-refiner/assets/templates/content-report.template.html",
+    "stages": [
+      {"id": "s1", "description": "Reconcile the plan and OpenSpec acceptance criteria against current React evidence.", "requires_execution": false},
+      {"id": "s2", "description": "Validate coverage, JSON, evidence paths, artifact hashes, Changesets state, and diff hygiene.", "requires_execution": true, "tool": "focused repository commands"},
+      {"id": "s3", "description": "Evaluate unresolved limits and publication claims against the fixed-group RC policy.", "requires_execution": false},
+      {"id": "s4", "description": "Persist the QA report, structured validation, constraints, reflection, and decision.", "requires_execution": true, "tool": "filesystem"},
+      {"id": "s5", "description": "Validate and finalize the named artifact-refiner state.", "requires_execution": true, "tool": "artifact-refiner scripts"}
+    ],
+    "tool_invocations": [
+      {"stage_id": "s2", "tool": "focused repository commands", "purpose": "Verify direct evidence without rerunning an unchanged expensive browser lane."},
+      {"stage_id": "s5", "tool": "artifact-refiner scripts", "purpose": "Validate schemas/file references and finalize durable state."}
+    ],
+    "state_updates": {
+      "files_to_create": ["specification.json", "plan.json", "constraints.json", "artifact_manifest.json", "reflection.json", "refinement_log.md", "decisions.md", "dist/archive-qa-report.md", "dist/validation.json"],
+      "files_to_update": ["state.json", ".refiner/registry.json"],
+      "directories_required": ["dist"]
+    },
+    "validation_plan": [
+      {"constraint_id": "acceptance-direct-evidence", "validation_method": "acceptance matrix and evidence path checks", "execution_required": true},
+      {"constraint_id": "clean-and-packed-boundaries-distinct", "validation_method": "receipt fields and packed-package report", "execution_required": true},
+      {"constraint_id": "scenario-surface-complete", "validation_method": "coverage verifier and receipt assertions", "execution_required": true},
+      {"constraint_id": "visual-and-hash-integrity", "validation_method": "SHA-256 recomputation and accessibility receipt assertions", "execution_required": true},
+      {"constraint_id": "ledgers-and-evidence-synchronized", "validation_method": "coverage/OpenSpec/Changesets validators", "execution_required": true},
+      {"constraint_id": "limits-and-broader-blockers-explicit", "validation_method": "cross-file scope disposition review", "execution_required": false},
+      {"constraint_id": "no-publication-overclaim", "validation_method": "publication fields, fixed-group policy, and registry-mutation assertions", "execution_required": true}
+    ]
+  }
+}

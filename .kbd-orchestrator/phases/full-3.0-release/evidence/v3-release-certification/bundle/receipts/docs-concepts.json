@@ -1,0 +1,13 @@
+{
+  "lane": "docs-concepts",
+  "category": "docs",
+  "mandatory": true,
+  "command": "pnpm run verify:docs-concepts",
+  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
+  "startedAt": "2026-08-23T12:36:22.893Z",
+  "durationMs": 38479,
+  "exitCode": 0,
+  "logFile": "logs/docs-concepts.log",
+  "logSha256": "e41eddb0d38d0b50d8f03bc257e7c202178b4a0793a76ebbf9c3e7c166471b91",
+  "logBytes": 2099
+}

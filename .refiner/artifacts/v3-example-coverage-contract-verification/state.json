@@ -1,0 +1,105 @@
+{
+  "refinement_id": "9ca882b1-6885-47d9-9d68-40ff3c976201",
+  "artifact_name": "v3-example-coverage-contract-verification",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-01T17:17:13Z",
+  "updated_at": "2026-08-01T17:25:05Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Challenge every v3-example-coverage-contract acceptance claim against direct deterministic evidence.",
+    "Prevent semantic coverage readiness from being presented as showcase, visual, native, certification, or publication readiness."
+  ],
+  "constraints": [
+    {
+      "id": "acceptance-traceability",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "evidence-integrity",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "fail-closed-validator",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "release-boundary",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "visual-honesty",
+      "severity": "high",
+      "status": "satisfied"
+    },
+    {
+      "id": "architecture-preservation",
+      "severity": "high",
+      "status": "satisfied"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 6,
+      "constraints_total": 6,
+      "decision": "terminate",
+      "timestamp": "2026-08-01T17:24:51Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "ea75f4a0",
+      "phase": "specify",
+      "iteration": 0,
+      "timestamp": "2026-08-01T17:19:04Z"
+    },
+    {
+      "checkpoint_id": "cd19ea7c",
+      "phase": "plan",
+      "iteration": 0,
+      "timestamp": "2026-08-01T17:19:06Z"
+    },
+    {
+      "checkpoint_id": "7df475f9",
+      "phase": "execute",
+      "iteration": 0,
+      "timestamp": "2026-08-01T17:22:50Z"
+    },
+    {
+      "checkpoint_id": "8ce92779",
+      "phase": "reflect",
+      "iteration": 1,
+      "timestamp": "2026-08-01T17:24:50Z"
+    },
+    {
+      "checkpoint_id": "4324004b",
+      "phase": "persist",
+      "iteration": 1,
+      "timestamp": "2026-08-01T17:25:04Z"
+    }
+  ],
+  "prior_cycle_id": null,
+  "finalized_at": "2026-08-01T17:25:05Z"
+}

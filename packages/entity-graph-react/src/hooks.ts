@@ -1,13 +1,11 @@
 import { useEffect, useRef, useCallback, useMemo, useState } from "react";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
-import { useGraphStore, EMPTY_ENTITY_STATE, EMPTY_LIST_STATE, EMPTY_IDS } from "@prometheus-ags/entity-graph-core";
-import { fetchEntity, fetchList, serializeKey, registerSubscriber, unregisterSubscriber, getEngineOptions, attachGlobalListeners } from "@prometheus-ags/entity-graph-core";
-import type { EntityType, EntityId, EntityState, ListState } from "@prometheus-ags/entity-graph-core";
+import { EMPTY_ENTITY_STATE, EMPTY_LIST_STATE, EMPTY_IDS } from "@prometheus-ags/entity-graph-core";
+import { fetchEntity, fetchList, serializeKey, registerSubscriber, unregisterSubscriber, getEngineOptions } from "@prometheus-ags/entity-graph-core";
+import type { EntityType, EntityId, EntityState, ListState, GraphState, GraphStore } from "@prometheus-ags/entity-graph-core";
 import type { EntityQueryOptions, ListQueryOptions, ListFetchParams, ListResponse } from "@prometheus-ags/entity-graph-core";
-
-let listenersAttached = false;
-function ensureListeners() { if (!listenersAttached) { attachGlobalListeners(); listenersAttached = true; } }
+import { useGraphStoreApi } from "./graph-store";
 
 /**
  * View-model for one entity row: merged canonical + patch data plus fetch lifecycle flags.
@@ -36,31 +34,31 @@ export interface UseEntityResult<T> {
  */
 export function useEntity<TRaw, TEntity extends object>(opts: EntityQueryOptions<TRaw, TEntity>): UseEntityResult<TEntity> {
   const { type, id, staleTime = getEngineOptions().defaultStaleTime, enabled = true } = opts;
-  ensureListeners();
+  const storeApi = useGraphStoreApi();
   const fetchRef = useRef(opts.fetch); fetchRef.current = opts.fetch;
   const normalizeRef = useRef(opts.normalize); normalizeRef.current = opts.normalize;
-  const dataSelector = useCallback((state: ReturnType<typeof useGraphStore.getState>) => {
+  const dataSelector = useCallback((state: GraphState) => {
     if (!id) return null;
     return state.readEntitySnapshot<TEntity>(type, id) as TEntity | null;
   }, [id, type]);
-  const data = useStore(useGraphStore, useShallow(dataSelector));
-  const entityState = useStore(useGraphStore, useCallback((state): EntityState =>
+  const data = useStore(storeApi, useShallow(dataSelector));
+  const entityState = useStore(storeApi, useCallback((state): EntityState =>
     state.entityStates[`${type}:${id}`] ?? EMPTY_ENTITY_STATE,
   [type, id]));
   const doFetch = useCallback(() => {
     if (!id || !enabled) return;
-    fetchEntity({ type, id, fetch: fetchRef.current, normalize: normalizeRef.current }, getEngineOptions());
-  }, [id, enabled, type]);
+    fetchEntity({ type, id, fetch: fetchRef.current, normalize: normalizeRef.current }, getEngineOptions(), storeApi);
+  }, [id, enabled, type, storeApi]);
   useEffect(() => {
     if (!id || !enabled) return;
-    const token = registerSubscriber(`${type}:${id}`);
-    const state = useGraphStore.getState();
+    const token = registerSubscriber(`${type}:${id}`, storeApi);
+    const state = storeApi.getState();
     const existingState = state.entityStates[`${type}:${id}`];
     const hasData = !!state.entities[type]?.[id];
     const isStale = !existingState?.lastFetched || existingState.stale || Date.now() - (existingState.lastFetched ?? 0) > staleTime;
     if (!hasData || isStale) doFetch();
-    return () => unregisterSubscriber(`${type}:${id}`, token);
-  }, [id, type, enabled, staleTime, doFetch]);
+    return () => unregisterSubscriber(`${type}:${id}`, token, storeApi);
+  }, [id, type, enabled, staleTime, doFetch, storeApi]);
   useEffect(() => { if (entityState.stale && id && enabled && !entityState.isFetching) doFetch(); }, [entityState.stale, id, enabled, entityState.isFetching, doFetch]);
   return { data, isLoading: !data && entityState.isFetching, isFetching: entityState.isFetching, error: entityState.error, isStale: entityState.stale, refetch: doFetch };
 }
@@ -118,32 +116,32 @@ export function useEntityList<TRaw, TEntity extends object>(opts: ListQueryOptio
     );
   }
   const { type, queryKey, staleTime = getEngineOptions().defaultStaleTime, enabled = true, mode = "replace" } = opts;
-  ensureListeners();
+  const storeApi = useGraphStoreApi();
   const key = useMemo(() => serializeKey(queryKey), [queryKey]);
   const fetchRef = useRef(opts.fetch); fetchRef.current = opts.fetch;
   const normalizeRef = useRef(opts.normalize); normalizeRef.current = opts.normalize;
-  const listState = useStore(useGraphStore, useCallback((state): ListState => state.lists[key] ?? EMPTY_LIST_STATE, [key]));
-  const itemsSelector = useCallback((state: ReturnType<typeof useGraphStore.getState>) => {
+  const listState = useStore(storeApi, useCallback((state): ListState => state.lists[key] ?? EMPTY_LIST_STATE, [key]));
+  const itemsSelector = useCallback((state: GraphState) => {
     const ids = state.lists[key]?.ids ?? EMPTY_IDS;
     return ids
       .map((id) => state.readEntitySnapshot<TEntity>(type, id))
       .filter((x) => x !== null) as TEntity[];
   }, [key, type]);
-  const items = useStore(useGraphStore, useShallow(itemsSelector));
+  const items = useStore(storeApi, useShallow(itemsSelector));
   const doFetch = useCallback((params: ListFetchParams = {}) => {
     if (!enabled) return;
-    fetchList({ type, queryKey, mode, fetch: fetchRef.current, normalize: normalizeRef.current }, params, getEngineOptions(), false);
-  }, [enabled, type, queryKey, mode]);
+    fetchList({ type, queryKey, mode, fetch: fetchRef.current, normalize: normalizeRef.current }, params, getEngineOptions(), false, storeApi);
+  }, [enabled, type, queryKey, mode, storeApi]);
   const fetchNextPage = useCallback(() => {
     if (!listState.hasNextPage || listState.isFetchingMore || !enabled) return;
-    fetchList({ type, queryKey, mode, fetch: fetchRef.current, normalize: normalizeRef.current }, { cursor: listState.nextCursor ?? undefined, page: (listState.currentPage ?? 0) + 1, pageSize: listState.pageSize ?? undefined }, getEngineOptions(), true);
-  }, [listState.hasNextPage, listState.isFetchingMore, listState.nextCursor, listState.currentPage, listState.pageSize, enabled, type, queryKey, mode]);
+    fetchList({ type, queryKey, mode, fetch: fetchRef.current, normalize: normalizeRef.current }, { cursor: listState.nextCursor ?? undefined, page: (listState.currentPage ?? 0) + 1, pageSize: listState.pageSize ?? undefined }, getEngineOptions(), true, storeApi);
+  }, [listState.hasNextPage, listState.isFetchingMore, listState.nextCursor, listState.currentPage, listState.pageSize, enabled, type, queryKey, mode, storeApi]);
   useEffect(() => {
     if (!enabled) return;
-    const state = useGraphStore.getState(); const existing = state.lists[key];
+    const state = storeApi.getState(); const existing = state.lists[key];
     const isStale = !existing?.lastFetched || existing.stale || Date.now() - (existing.lastFetched ?? 0) > staleTime;
     if (!existing || isStale) doFetch({ page: 1, pageSize: listState.pageSize ?? undefined });
-  }, [key, enabled, staleTime, doFetch, listState.pageSize]);
+  }, [key, enabled, staleTime, doFetch, listState.pageSize, storeApi]);
   useEffect(() => { if (listState.stale && enabled && !listState.isFetching) doFetch(); }, [listState.stale, enabled, listState.isFetching, doFetch]);
   // Stabilize the returned object identity. React 19's
   // `useSyncExternalStore` (which Zustand's `useStore` reads above)
@@ -209,6 +207,7 @@ export interface UseMutationResult<TInput, TRaw> {
  * ```
  */
 export function useEntityMutation<TInput, TRaw, TEntity extends object>(opts: MutationOptions<TInput, TRaw, TEntity>): UseMutationResult<TInput, TRaw> {
+  const storeApi = useGraphStoreApi();
   const [state, setState] = useState({ isPending: false, isSuccess: false, isError: false, error: null as string | null });
   const optsRef = useRef(opts); optsRef.current = opts;
   const mutate = useCallback(async (input: TInput): Promise<TRaw | null> => {
@@ -218,13 +217,13 @@ export function useEntityMutation<TInput, TRaw, TEntity extends object>(opts: Mu
     if (optimistic) {
       const opt = optimistic(input);
       if (opt) {
-        const { id, patch } = opt; const store = useGraphStore.getState();
+        const { id, patch } = opt; const store = storeApi.getState();
         const previous = { ...store.patches[type]?.[id] };
         const previousSync = store.syncMetadata[`${type}:${id}`];
         store.patchEntity(type, id, patch as Record<string, unknown>);
         store.setEntitySyncMetadata(type, id, { synced: false, origin: "optimistic", updatedAt: Date.now() });
         rollback = () => {
-          const currentStore = useGraphStore.getState();
+          const currentStore = storeApi.getState();
           if (Object.keys(previous).length > 0) currentStore.patchEntity(type, id, previous);
           else currentStore.clearPatch(type, id);
           if (previousSync) currentStore.setEntitySyncMetadata(type, id, previousSync);
@@ -236,13 +235,13 @@ export function useEntityMutation<TInput, TRaw, TEntity extends object>(opts: Mu
       const result = await apiFn(input);
       if (normalize) {
         const { id, data } = normalize(result, input);
-        const store = useGraphStore.getState();
+        const store = storeApi.getState();
         store.upsertEntity(type, id, data as Record<string, unknown>);
         store.setEntitySyncMetadata(type, id, { synced: true, origin: "server", updatedAt: Date.now() });
         if (optimistic) { const opt = optimistic(input); if (opt) store.clearPatch(type, opt.id); }
       }
-      if (invalidateLists) for (const k of invalidateLists) useGraphStore.getState().invalidateLists(k);
-      if (invalidateEntities) for (const { type: t, id } of invalidateEntities) useGraphStore.getState().invalidateEntity(t, id);
+      if (invalidateLists) for (const k of invalidateLists) storeApi.getState().invalidateLists(k);
+      if (invalidateEntities) for (const { type: t, id } of invalidateEntities) storeApi.getState().invalidateEntity(t, id);
       setState({ isPending: false, isSuccess: true, isError: false, error: null });
       onSuccess?.(result, input); return result;
     } catch (err) {
@@ -251,7 +250,7 @@ export function useEntityMutation<TInput, TRaw, TEntity extends object>(opts: Mu
       setState({ isPending: false, isSuccess: false, isError: true, error: error.message });
       onError?.(error, input); return null;
     }
-  }, []);
+  }, [storeApi]);
   const trigger = useCallback((input: TInput) => { void mutate(input); }, [mutate]);
   const reset = useCallback(() => setState({ isPending: false, isSuccess: false, isError: false, error: null }), []);
   return { mutate, trigger, reset, state };
@@ -266,22 +265,41 @@ export function useEntityMutation<TInput, TRaw, TEntity extends object>(opts: Mu
  * @returns Current patch slice and helpers `augment` / `unaugment` / `clear`
  */
 export function useEntityAugment<TEntity extends object>(type: EntityType, id: EntityId | null | undefined) {
-  const patch = useStore(useGraphStore, useCallback((state) => id ? ((state.patches[type]?.[id] as Partial<TEntity>) ?? null) : null, [type, id]));
-  const augment = useCallback((fields: Partial<TEntity>) => { if (!id) return; useGraphStore.getState().patchEntity(type, id, fields as Record<string, unknown>); }, [type, id]);
-  const unaugment = useCallback((keys: (keyof TEntity)[]) => { if (!id) return; useGraphStore.getState().unpatchEntity(type, id, keys as string[]); }, [type, id]);
-  const clear = useCallback(() => { if (!id) return; useGraphStore.getState().clearPatch(type, id); }, [type, id]);
+  const storeApi = useGraphStoreApi();
+  const patch = useStore(storeApi, useCallback((state) => id ? ((state.patches[type]?.[id] as Partial<TEntity>) ?? null) : null, [type, id]));
+  const augment = useCallback((fields: Partial<TEntity>) => { if (!id) return; storeApi.getState().patchEntity(type, id, fields as Record<string, unknown>); }, [type, id, storeApi]);
+  const unaugment = useCallback((keys: (keyof TEntity)[]) => { if (!id) return; storeApi.getState().unpatchEntity(type, id, keys as string[]); }, [type, id, storeApi]);
+  const clear = useCallback(() => { if (!id) return; storeApi.getState().clearPatch(type, id); }, [type, id, storeApi]);
   return { patch, augment, unaugment, clear };
 }
 
 /** In-flight Suspense waiters keyed like the entity engine (`${type}:${id}`). */
-const suspenseEntityPromises = new Map<string, Promise<void>>();
+const suspenseEntityPromises = new WeakMap<GraphStore, Map<string, Promise<void>>>();
 
 /** In-flight Suspense waiters keyed by `serializeKey(queryKey)`. */
-const suspenseListPromises = new Map<string, Promise<void>>();
+const suspenseListPromises = new WeakMap<GraphStore, Map<string, Promise<void>>>();
 
-function getEntitySuspensePromise(type: EntityType, id: EntityId): Promise<void> {
+function suspensePromisesFor(
+  registry: WeakMap<GraphStore, Map<string, Promise<void>>>,
+  store: GraphStore,
+) {
+  let promises = registry.get(store);
+  if (!promises) {
+    promises = new Map();
+    registry.set(store, promises);
+  }
+  return promises;
+}
+
+function getEntitySuspensePromise(
+  storeApi: GraphStore,
+  type: EntityType,
+  id: EntityId,
+  start?: () => Promise<void>,
+): Promise<void> {
   const key = `${type}:${id}`;
-  const existing = suspenseEntityPromises.get(key);
+  const promises = suspensePromisesFor(suspenseEntityPromises, storeApi);
+  const existing = promises.get(key);
   if (existing) return existing;
 
   let unsub: (() => void) | null = null;
@@ -296,7 +314,7 @@ function getEntitySuspensePromise(type: EntityType, id: EntityId): Promise<void>
       fn();
     };
 
-    const inspect = (state: ReturnType<typeof useGraphStore.getState>) => {
+    const inspect = (state: GraphState) => {
       if (settled) return;
       const hasData = !!state.entities[type]?.[id];
       const es = state.entityStates[key];
@@ -307,17 +325,19 @@ function getEntitySuspensePromise(type: EntityType, id: EntityId): Promise<void>
       }
     };
 
-    inspect(useGraphStore.getState());
-    if (!settled) unsub = useGraphStore.subscribe((state) => inspect(state));
+    inspect(storeApi.getState());
+    if (!settled) unsub = storeApi.subscribe((state) => inspect(state));
   });
 
-  const tracked = promise.finally(() => { suspenseEntityPromises.delete(key); });
-  suspenseEntityPromises.set(key, tracked);
+  const tracked = promise.finally(() => { promises.delete(key); });
+  promises.set(key, tracked);
+  if (start) void start();
   return tracked;
 }
 
-function getListSuspensePromise(listKey: string): Promise<void> {
-  const existing = suspenseListPromises.get(listKey);
+function getListSuspensePromise(storeApi: GraphStore, listKey: string): Promise<void> {
+  const promises = suspensePromisesFor(suspenseListPromises, storeApi);
+  const existing = promises.get(listKey);
   if (existing) return existing;
 
   let unsub: (() => void) | null = null;
@@ -332,7 +352,7 @@ function getListSuspensePromise(listKey: string): Promise<void> {
       fn();
     };
 
-    const inspect = (state: ReturnType<typeof useGraphStore.getState>) => {
+    const inspect = (state: GraphState) => {
       if (settled) return;
       const list = state.lists[listKey] ?? EMPTY_LIST_STATE;
       if (list.ids.length > 0) settle(() => resolve());
@@ -343,12 +363,12 @@ function getListSuspensePromise(listKey: string): Promise<void> {
       else if (list.ids.length === 0 && !list.isFetching && list.lastFetched != null) settle(() => resolve());
     };
 
-    inspect(useGraphStore.getState());
-    if (!settled) unsub = useGraphStore.subscribe((state) => inspect(state));
+    inspect(storeApi.getState());
+    if (!settled) unsub = storeApi.subscribe((state) => inspect(state));
   });
 
-  const tracked = promise.finally(() => { suspenseListPromises.delete(listKey); });
-  suspenseListPromises.set(listKey, tracked);
+  const tracked = promise.finally(() => { promises.delete(listKey); });
+  promises.set(listKey, tracked);
   return tracked;
 }
 
@@ -366,11 +386,18 @@ export function useSuspenseEntity<TRaw, TEntity extends object>(
   opts: EntityQueryOptions<TRaw, TEntity>
 ): { data: TEntity; isFetching: boolean; isStale: boolean; refetch: () => void } {
   const result = useEntity(opts);
+  const storeApi = useGraphStoreApi();
   const { type, id } = opts;
 
-  if (result.isLoading) {
-    if (!id) throw new Error("useSuspenseEntity requires a non-null entity id");
-    throw getEntitySuspensePromise(type, id);
+  if (
+    result.data == null &&
+    result.error == null &&
+    id &&
+    opts.enabled !== false
+  ) {
+    throw getEntitySuspensePromise(storeApi, type, id, () =>
+      fetchEntity(opts, getEngineOptions(), storeApi),
+    );
   }
 
   if (result.error != null && result.data == null) {
@@ -402,9 +429,10 @@ export function useSuspenseEntityList<TRaw, TEntity extends object>(
   opts: ListQueryOptions<TRaw, TEntity>
 ): Omit<UseEntityListResult<TEntity>, "isLoading"> {
   const key = useMemo(() => serializeKey(opts.queryKey), [opts.queryKey]);
+  const storeApi = useGraphStoreApi();
   const result = useEntityList(opts);
 
-  if (result.isLoading) throw getListSuspensePromise(key);
+  if (result.isLoading) throw getListSuspensePromise(storeApi, key);
 
   if (result.error != null && result.items.length === 0) {
     throw new Error(result.error);

@@ -1,0 +1,52 @@
+---
+title: Queries as instructions
+description: useEntity and useEntityList describe what to fetch and how to normalize — the graph owns the resulting data, not the query.
+---
+
+# Queries as instructions
+
+A Prometheus query is a **description**, not a container. `useEntity` and
+`useEntityList` declare:
+
+1. **What** to fetch (`type`, `id`, `queryKey`),
+2. **How** to fetch it (`fetch` — supplied by your services layer),
+3. **How** to normalize it (`normalize` — raw row → graph entity).
+
+The results belong to the graph. Two components issuing the same query share
+one in-flight request (the engine deduplicates by key) and read the same
+normalized entity afterward.
+
+```tsx
+import { useEntity } from "@prometheus-ags/prometheus-entity-management";
+
+interface Task extends Record<string, unknown> {
+  id: string;
+  title: string;
+}
+
+declare function fetchTask(id: string): Promise<Task>;
+
+function useTask(taskId: string) {
+  // Instruction: ensure task/<id> is fresh in the graph, then read it.
+  return useEntity<Task, Task>({
+    type: "task",
+    id: taskId,
+    fetch: fetchTask,
+    normalize: (raw) => raw,
+  });
+}
+```
+
+## Consequences
+
+- **Unmounting never loses data.** The graph outlives any component.
+- **Refetch is a graph refresh, not a state reset.** Stale-while-revalidate
+  keeps the current entity visible while the engine re-fetches.
+- **Testing is plain.** Seed the graph with `upsertEntity` and assert on
+  renders — no fetch mocking required for read paths.
+
+## Read-only mode
+
+Omitting `fetch` makes a hook a pure graph subscription: no network, just the
+ID→entity join. This is how Tier-A local-first entities (PGlite/ElectricSQL
+hydration) render. See [Sync & persistence](/docs/guides/concepts/sync-and-persistence).

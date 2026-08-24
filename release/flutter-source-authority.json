@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-08-01T22:58:31Z",
+  "decision": "approved-for-history-preserving-adaptation",
+  "decisionBasis": [
+    "The user explicitly directed this release plan to move the reusable Flutter libraries from /Users/gqadonis/Projects/know-me/know-me-system into this monorepo.",
+    "The destination release contract already fixes the project and the canonical Dart artifact to MIT.",
+    "The inspected source commits are authored by Travis James and the destination README attributes MIT copyright to Prometheus AGS / KnowMe LLC."
+  ],
+  "legalQualification": "This records project-owner direction and engineering provenance; it is not a general legal opinion.",
+  "destination": {
+    "repository": "prometheus-entity-management",
+    "license": "MIT",
+    "canonicalPackage": "packages/entity_graph_flutter",
+    "copyrightAttribution": "2026 Travis James / Prometheus AGS / KnowMe LLC"
+  },
+  "sources": [
+    {
+      "repository": "Know-Me-Tools/know-me-system",
+      "path": "/Users/gqadonis/Projects/know-me/know-me-system",
+      "revision": "68f7ab83b72c8bed37d1e7d19a5371a45b4f8f52",
+      "licenseEvidence": "No root or candidate-package LICENSE/COPYING/NOTICE file is tracked.",
+      "decision": "adapt-approved-generic-committed-history",
+      "approvedPaths": [
+        "flutter_packages/prometheus_entity_management",
+        "flutter_packages/gen_ui_widgets/lib/src/a2ui_surface_view.dart",
+        "flutter_packages/gen_ui_widgets/README.md",
+        "flutter_packages/gen_ui_widgets/pubspec.yaml"
+      ],
+      "exclusions": [
+        "dirty working-tree content",
+        "mobile and desktop applications",
+        "KnowMe product models and product-specific UI",
+        "direct gen_ui_core FFI implementation",
+        "secrets and local configuration",
+        ".dart_tool and build output",
+        "lockfiles as canonical package source",
+        "generated Dart output as canonical maintained source",
+        "flutter_packages/gen_ui_flutter placeholder package"
+      ]
+    },
+    {
+      "repository": "Know-Me-Tools/hybrid-mobile-architecture-skill",
+      "path": "/Users/gqadonis/Projects/hybrid-mobile-architecture-src",
+      "revision": "e641c25d5c99ac04c3c872626099583c29ac568c",
+      "licenseEvidence": "Tracked MIT LICENSE.txt",
+      "decision": "reference-only-no-runtime-import",
+      "reason": "The repository declares itself a scaffolding/template skill with no runnable application or canonical Flutter runtime library."
+    }
+  ],
+  "historyPolicy": {
+    "sourceCheckoutMutationAllowed": false,
+    "dirtyTreeImportAllowed": false,
+    "freshDisposableCloneRequired": true,
+    "filteredCommitMapRequired": true,
+    "originalRevisionRequired": true,
+    "retain": ["authors", "author dates", "committer dates", "messages", "file evolution", "old-to-new commit map"],
+    "identicalCommitHashesClaimed": false
+  },
+  "publicationAuthorized": false,
+  "registryAuthorityRequiredLater": true
+}

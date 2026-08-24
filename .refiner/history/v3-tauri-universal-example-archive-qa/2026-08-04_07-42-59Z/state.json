@@ -1,0 +1,74 @@
+{
+  "refinement_id": "faebf77f-2fba-4037-89b7-57e2407783d7",
+  "artifact_name": "v3-tauri-universal-example-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-04T07:29:53Z",
+  "updated_at": "2026-08-04T07:42:59Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Close the isolated-review manual-restore trust-boundary finding and rebind every current native receipt without changing the frozen React RC lane."
+  ],
+  "constraints": [
+    {
+      "id": "acceptance-direct-evidence"
+    },
+    {
+      "id": "one-graph-layered-adapter-boundary"
+    },
+    {
+      "id": "platform-evidence-integrity"
+    },
+    {
+      "id": "trust-boundaries-fail-closed"
+    },
+    {
+      "id": "visual-accessibility-integrity"
+    },
+    {
+      "id": "ledgers-and-release-contract-synchronized"
+    },
+    {
+      "id": "react-rc-lane-preserved"
+    },
+    {
+      "id": "limits-and-publication-truthful"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 8,
+      "constraints_total": 8,
+      "decision": "terminate",
+      "timestamp": "2026-08-04T07:30:19Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "faebf77f-restore-remediation",
+      "phase": "persist",
+      "iteration": 1,
+      "timestamp": "2026-08-04T07:30:19Z"
+    }
+  ],
+  "prior_cycle_id": "7d89bc27-2055-4337-a07d-3f365ad9a592",
+  "finalized_at": "2026-08-04T07:42:59Z"
+}

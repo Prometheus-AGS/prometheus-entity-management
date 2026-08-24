@@ -1,0 +1,50 @@
+{
+  "name": "@prometheus-ags/entity-graph-docs-site",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Private Docusaurus documentation site for the Prometheus entity-management 3.0 release. Never published; dependencies must not leak into publishable packages.",
+  "scripts": {
+    "start": "docusaurus start",
+    "build": "docusaurus build && node ../scripts/strip-build-paths.mjs",
+    "generate:api": "node ../scripts/generate-api-reference.mjs",
+    "prebuild": "node ../scripts/generate-api-reference.mjs",
+    "prestart": "node ../scripts/generate-api-reference.mjs --skip-artifacts",
+    "swizzle": "docusaurus swizzle",
+    "clear": "docusaurus clear",
+    "serve": "docusaurus serve",
+    "write-translations": "docusaurus write-translations",
+    "write-heading-ids": "docusaurus write-heading-ids"
+  },
+  "dependencies": {
+    "@docusaurus/core": "3.10.2",
+    "@docusaurus/preset-classic": "3.10.2",
+    "@docusaurus/theme-mermaid": "3.10.2",
+    "@easyops-cn/docusaurus-search-local": "0.55.2",
+    "@mdx-js/react": "3.0.0",
+    "clsx": "2.0.0",
+    "prism-react-renderer": "2.3.0",
+    "react": "18.0.0",
+    "react-dom": "18.0.0"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "3.10.2",
+    "@docusaurus/types": "3.10.2",
+    "mermaid": "11.16.0",
+    "typedoc": "0.28.20"
+  },
+  "engines": {
+    "node": ">=20.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 3 chrome version",
+      "last 3 firefox version",
+      "last 5 safari version"
+    ]
+  }
+}

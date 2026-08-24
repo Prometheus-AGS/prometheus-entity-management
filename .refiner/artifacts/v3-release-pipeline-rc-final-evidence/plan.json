@@ -1,0 +1,30 @@
+{
+  "plan": {
+    "template": ".codex/skills/artifact-refiner/assets/templates/content-report.template.html",
+    "stages": [
+      {"id": "s1", "description": "Reconcile final evidence against the OpenSpec requirement and plan criteria.", "requires_execution": false},
+      {"id": "s2", "description": "Validate BDD, unit, ledger, JSON, XML, dimensions, contrast, and integrity claims.", "requires_execution": true, "tool": "local deterministic commands"},
+      {"id": "s3", "description": "Inspect the release-state visual at original resolution.", "requires_execution": true, "tool": "image viewer"},
+      {"id": "s4", "description": "Persist authoritative evidence variants and QA decisions.", "requires_execution": true, "tool": "filesystem"},
+      {"id": "s5", "description": "Validate manifests and finalize named artifact state.", "requires_execution": true, "tool": "artifact-refiner scripts"}
+    ],
+    "tool_invocations": [
+      {"stage_id": "s2", "tool": "local deterministic commands", "purpose": "Prove constraint status without subjective substitution."},
+      {"stage_id": "s3", "tool": "image viewer", "purpose": "Verify layout, clipping, hierarchy, and legibility at 1400x960."},
+      {"stage_id": "s5", "tool": "artifact-refiner scripts", "purpose": "Checkpoint and finalize filesystem-backed named state."}
+    ],
+    "state_updates": {
+      "files_to_create": ["specification.json", "plan.json", "constraints.json", "artifact_manifest.json", "refinement_log.md", "decisions.md"],
+      "files_to_update": ["state.json"],
+      "directories_required": ["dist"]
+    },
+    "validation_plan": [
+      {"constraint_id": "release-state-dimensions-independent", "validation_method": "BDD and final JSON field assertions", "execution_required": true},
+      {"constraint_id": "no-publication-overclaim", "validation_method": "negative-claim search and final JSON assertions", "execution_required": true},
+      {"constraint_id": "acceptance-has-direct-evidence", "validation_method": "acceptance matrix and evidence existence check", "execution_required": true},
+      {"constraint_id": "visual-accessible-and-legible", "validation_method": "XML, dimensions, contrast, ARIA, and original-resolution inspection", "execution_required": true},
+      {"constraint_id": "ledgers-synchronized", "validation_method": "coverage validator and evidence path checks", "execution_required": true},
+      {"constraint_id": "deterministic-integrity", "validation_method": "schema validation, tests, and SHA-256", "execution_required": true}
+    ]
+  }
+}

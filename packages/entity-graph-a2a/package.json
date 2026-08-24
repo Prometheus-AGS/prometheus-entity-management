@@ -1,42 +1,74 @@
 {
   "name": "@prometheus-ags/entity-graph-a2a",
-  "version": "3.0.0-alpha.0",
-  "description": "A2A (Agent2Agent) v1.0 server for the Prometheus entity graph — AgentCard, Task routing, graph-mutation handlers, and Artifact results.",
+  "version": "3.0.3",
+  "description": "Policy-gated A2A v1 JSON-RPC and streaming SSE for the Prometheus entity graph, with deterministic A2UI artifacts.",
+  "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./legacy": {
+      "import": {
+        "types": "./dist/legacy.d.ts",
+        "default": "./dist/legacy.mjs"
+      },
+      "require": {
+        "types": "./dist/legacy.d.cts",
+        "default": "./dist/legacy.cjs"
+      }
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "legacy": [
+        "dist/legacy.d.ts"
+      ]
     }
   },
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
   ],
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && node ../../scripts/fix-a2a-cjs-declarations.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "refresh:exports": "node ../../scripts/refresh-exports-ledger.mjs --a2a",
+    "verify:skills": "node ../../scripts/verify-skills-exports.mjs --a2a"
   },
   "dependencies": {
+    "@a2a-js/sdk": "1.0.1",
     "@prometheus-ags/entity-graph-core": "workspace:*"
   },
   "devDependencies": {
-    "tsup": ">=8",
-    "typescript": ">=6",
-    "vitest": ">=4"
+    "tsup": "8.5.1",
+    "typescript": "6.0.2",
+    "vitest": "4.1.10"
   },
   "keywords": [
     "a2a",
     "agent2agent",
+    "json-rpc",
+    "server-sent-events",
+    "a2ui",
+    "authorization-policy",
     "entity-graph",
     "normalized-cache",
     "state-management",
@@ -45,6 +77,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/prometheus-ags/prometheus-entity-management"
+    "url": "https://github.com/Prometheus-AGS/prometheus-entity-management",
+    "directory": "packages/entity-graph-a2a"
+  },
+  "homepage": "https://github.com/prometheus-ags/prometheus-entity-management/tree/main/packages/entity-graph-a2a#readme",
+  "bugs": {
+    "url": "https://github.com/prometheus-ags/prometheus-entity-management/issues"
+  },
+  "engines": {
+    "node": "^22.14.0 || ^24.0.0 || >=26.0.0"
   }
 }

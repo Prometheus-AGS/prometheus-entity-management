@@ -20,13 +20,14 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useStore } from "zustand";
-import { useGraphStore, EMPTY_LIST_STATE } from "@prometheus-ags/entity-graph-core";
+import { EMPTY_LIST_STATE } from "@prometheus-ags/entity-graph-core";
 import { serializeKey, getEngineOptions } from "@prometheus-ags/entity-graph-core";
 import { getEntityTransport } from "@prometheus-ags/entity-graph-core";
 import { TerminalError, TransientError, toEntityError } from "@prometheus-ags/entity-graph-core";
 import type { EntityType } from "@prometheus-ags/entity-graph-core";
 import type { ListQuery } from "@prometheus-ags/entity-graph-core";
 import type { FilterSpec, SortSpec } from "@prometheus-ags/entity-graph-core";
+import { useGraphStoreApi } from "../graph-store";
 
 /** Subset of `ListQuery` that callers may pass alongside `enabled`. */
 export interface UseEntitiesOptions {
@@ -63,6 +64,7 @@ export function useEntities<T extends object>(
   type: EntityType,
   options: UseEntitiesOptions = {},
 ): UseEntitiesResult<T> {
+  const storeApi = useGraphStoreApi();
   const {
     filter,
     sort,
@@ -90,23 +92,23 @@ export function useEntities<T extends object>(
 
   // --- read list state from graph ------------------------------------------
   const listState = useStore(
-    useGraphStore,
+    storeApi,
     useCallback((s) => s.lists[queryKey] ?? EMPTY_LIST_STATE, [queryKey]),
   );
 
   // --- resolve entity rows from graph in render ----------------------------
   const items = useMemo((): T[] => {
-    const state = useGraphStore.getState();
+    const state = storeApi.getState();
     return listState.ids
       .map((id) => state.readEntity<T>(type, id))
       .filter((item): item is T => item !== null);
-  }, [listState.ids, type]);
+  }, [listState.ids, storeApi, type]);
 
   // --- main fetch effect ---------------------------------------------------
   useEffect(() => {
     if (!enabled) return;
 
-    const store = useGraphStore.getState();
+    const store = storeApi.getState();
     const existing = store.lists[queryKey];
     const engineOpts = getEngineOptions();
 
@@ -161,19 +163,20 @@ export function useEntities<T extends object>(
         if (controller.signal.aborted) return;
 
         // Upsert rows into graph
-        const graphStore = useGraphStore.getState();
+        const graphStore = storeApi.getState();
         const entries = result.rows.map((row) => ({
           id: transport.identify(row),
           data: row as Record<string, unknown>,
         }));
-        graphStore.upsertEntities(type, entries);
-        for (const { id } of entries) graphStore.setEntityFetched(type, id);
-
-        const ids = entries.map(({ id }) => id);
-        graphStore.setListResult(queryKey, ids, {
-          total: result.total,
-          nextCursor: typeof result.nextCursor === "string" ? result.nextCursor : null,
-          hasNextPage: result.nextCursor !== null && result.nextCursor !== undefined,
+        graphStore.ingestFetchedList(type, entries, {
+          lists: [{
+            key: queryKey,
+            meta: {
+              total: result.total,
+              nextCursor: typeof result.nextCursor === "string" ? result.nextCursor : null,
+              hasNextPage: result.nextCursor !== null && result.nextCursor !== undefined,
+            },
+          }],
         });
       } catch (err) {
         if (thisCount !== fetchCountRef.current) return;
@@ -188,7 +191,7 @@ export function useEntities<T extends object>(
           return attempt(retries + 1);
         }
 
-        useGraphStore.getState().setListError(queryKey, typed.message, typed);
+        storeApi.getState().setListError(queryKey, typed.message, typed);
       }
     };
 
@@ -199,7 +202,7 @@ export function useEntities<T extends object>(
     };
     // fetchTick is intentionally included to trigger refetch() calls
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryKey, enabled, fetchTick]);
+  }, [queryKey, enabled, fetchTick, storeApi]);
 
   // --- subscribe to realtime changes (optional transport capability) --------
   useEffect(() => {
@@ -208,7 +211,7 @@ export function useEntities<T extends object>(
     if (!transport.subscribe || !enabled) return;
 
     const unsub = transport.subscribe((ev) => {
-      const store = useGraphStore.getState();
+      const store = storeApi.getState();
       if (ev.op === "delete") {
         store.removeIdFromAllLists(type, ev.id);
         store.removeEntity(type, ev.id);
@@ -219,15 +222,15 @@ export function useEntities<T extends object>(
     });
 
     return () => unsub();
-  }, [type, enabled]);
+  }, [type, enabled, storeApi]);
 
   // --- refetch (bumps tick, aborts current in-flight) ----------------------
   const refetch = useCallback(() => {
     abortRef.current?.abort();
     // Invalidate the list so the effect re-runs even within staleTime
-    useGraphStore.getState().setListStale(queryKey, true);
+    storeApi.getState().setListStale(queryKey, true);
     setFetchTick((n) => n + 1);
-  }, [queryKey]);
+  }, [queryKey, storeApi]);
 
   // --- compute final booleans ----------------------------------------------
   const typedError = (listState.lastError as TerminalError | TransientError | null) ?? null;

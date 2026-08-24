@@ -1,0 +1,50 @@
+{
+  "concept_id": "a2a-v1-prometheus-boundary",
+  "sources": [
+    {
+      "source_ref": "protocol-v1",
+      "content_summary": "A2A is a public interoperability contract: discovery, supported interface declarations, standard operations, task lifecycle, errors, and streaming must agree on one protocol model.",
+      "key_points": [
+        "Discovery is /.well-known/agent-card.json.",
+        "Each supported interface owns its protocolVersion and binding declaration.",
+        "JSON-RPC v1 methods use PascalCase and streaming uses SSE.",
+        "Messages and artifacts use the official v1 Part model."
+      ],
+      "misconceptions": [
+        "Naming a package A2A makes a bespoke RPC API conformant.",
+        "tasks/send is the A2A v1 SendMessage operation.",
+        "A Promise that eventually returns an artifact proves streaming."
+      ]
+    },
+    {
+      "source_ref": "security-policy",
+      "content_summary": "A2A declares and transports identity; Prometheus application policy decides whether that identity may read tasks or mutate the graph.",
+      "key_points": [
+        "Credentials travel in HTTP security mechanisms, not plaintext AgentCard fields.",
+        "Authentication and authorization execute before graph mutation.",
+        "Task lookup must not leak the existence of inaccessible resources.",
+        "Agent-provided metadata cannot self-authorize a destructive graph operation."
+      ],
+      "misconceptions": [
+        "A valid bearer token authorizes every graph action.",
+        "A2A protocol validation replaces tenant, entity, field, and action policy.",
+        "Returning forbidden for an inaccessible task is always harmless."
+      ]
+    },
+    {
+      "source_ref": "extension-and-proof",
+      "content_summary": "A2UI artifacts, deterministic agents, and the TCK prove different layers and must retain exact version and scope labels.",
+      "key_points": [
+        "A2UI v0.9.1 is the renderer baseline but the published dedicated A2A extension contract is v0.8 legacy.",
+        "A deterministic agent proves protocol and policy paths without an external model key.",
+        "The official SDK should own wire types and transport machinery.",
+        "The pinned TCK report must state binding, level, skips, and exclusions."
+      ],
+      "misconceptions": [
+        "A structured data part automatically proves the current official A2UI-for-A2A extension.",
+        "An LLM API is required to test an agent protocol.",
+        "A JSON-RPC TCK pass also certifies REST and gRPC."
+      ]
+    }
+  ]
+}

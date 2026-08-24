@@ -2,7 +2,7 @@
 name: entity-graph-realtime
 description: >
   Add realtime synchronization to an existing @prometheus-ags/prometheus-entity-management setup: detect the push source
-  (WebSocket, Supabase Realtime, Convex, GraphQL subscriptions, ElectricSQL+PGlite), configure RealtimeManager,
+  (WebSocket, Supabase Realtime, Convex, GraphQL subscriptions, Flint Realtime Fabric, ElectricSQL+PGlite), configure RealtimeManager,
   normalize inbound traffic to ChangeSet/EntityChange, tune the 16ms coalescing window or flushInterval 0,
   and wire channel subscriptions with correct cleanup and list invalidation.
 license: MIT
@@ -54,13 +54,14 @@ bash prometheus-entity-skills/entity-graph-realtime/scripts/detect-orchestrators
 |------|---------|
 | Manager | `RealtimeManager`, `getRealtimeManager`, `resetRealtimeManager`, `ManagerOptions`, `forceFlush` |
 | Types | `RealtimeAdapter`, `SyncAdapter`, `ChangeSet`, `EntityChange`, `ChangeOperation`, `ChannelConfig`, `SubscriptionConfig`, `AdapterStatus` |
-| Network adapters | `createWebSocketAdapter`, `createSupabaseRealtimeAdapter`, `createConvexAdapter`, `createGraphQLSubscriptionAdapter` |
+| Network adapters | `createWebSocketAdapter`, `createSupabaseRealtimeAdapter`, `createConvexAdapter`, `createGraphQLSubscriptionAdapter`, `createFlintAdapter`, `publishFlintMutation` |
 | Local-first | `createElectricAdapter`, `useLocalFirst`, `usePGliteQuery`, `ElectricAdapterOptions`, `ElectricTableConfig` |
 
 ## References
 
 - **`references/adapter-catalog.md`** — Factory options and registration pattern
 - **`references/coalescing-guide.md`** — 16ms window, merge rules, `flushInterval: 0`, `forceFlush`
+- **`../_shared/references/flint-portable-contracts.md`** — Flint auth, tenant, key, JWKS, live-source, and Forge boundaries
 - **`CLAUDE.md`**, **`AGENTS.md`**
 
 ## Architectural note

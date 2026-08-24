@@ -1,174 +1,233 @@
 {
-  "phase": "phase-v3-universal-platform-evolution",
-  "status": "implementation_complete",
-  "previousPhase": "phase-v2-realtime-fabric-parity",
-  "label": "Universal Platform Evolution — multi-framework, Flutter, Rust CLI, A2UI, local-first, peer sync",
-  "last_updated": "2026-06-22T01:30:00.000Z",
-  "last_updated_by": "claude-code",
-  "assessment_complete": true,
-  "plan_complete": true,
-  "execution_dispatched": true,
-  "implementation_complete": true,
-  "reflection_complete": false,
-  "release_version": null,
-  "released_at": null,
-  "umbrella_change": "v3-0-universal-platform-evolution",
-  "backend": "openspec",
-  "changes_total": 17,
-  "changes_completed": 17,
-  "next_pending_change": "v3-monorepo-and-tooling",
-  "first_change_to_apply": "v3-monorepo-and-tooling",
-  "plan_path": ".kbd-orchestrator/phases/phase-v3-universal-platform-evolution/plan.md",
-  "execution_path": ".kbd-orchestrator/phases/phase-v3-universal-platform-evolution/execution.md",
-  "exact_next_command": "Cut feat/v3-universal-platform-evolution, then /kbd-apply v3-monorepo-and-tooling.",
-  "created_at": "2026-06-22T00:00:00.000Z",
-  "updated_at": "2026-06-22T05:00:00.000Z",
-  "changes": {
-    "v3-monorepo-and-tooling": {
+  "changes": [
+    {
+      "blockers": [],
+      "id": "v3-monorepo-and-tooling",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": null,
+      "next_task_pending": null,
       "status": "DONE",
-      "model_class": "frontier",
-      "wave": 1,
-      "depends_on": []
+      "tasks_done": 0,
+      "tasks_total": 0,
+      "title": "v3-monorepo-and-tooling"
     },
-    "v3-core-extraction": {
+    {
+      "blockers": [],
+      "id": "v3-core-extraction",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": null,
+      "next_task_pending": null,
       "status": "DONE",
-      "model_class": "frontier",
-      "wave": 1,
-      "depends_on": [
-        "v3-monorepo-and-tooling"
-      ],
-      "note": "entity-graph-core extracted+verified (89 tests, builds); remaining: rewire ~40 root imports → core, create entity-graph-react, root re-export shim (see reflection-wave1.md)"
+      "tasks_done": 0,
+      "tasks_total": 0,
+      "title": "v3-core-extraction"
     },
-    "v3-sdl-spec": {
+    {
+      "blockers": [],
+      "id": "v3-sdl-spec",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": null,
+      "next_task_pending": null,
       "status": "DONE",
-      "model_class": "frontier",
-      "wave": 1,
-      "depends_on": [
-        "v3-monorepo-and-tooling"
-      ]
+      "tasks_done": 0,
+      "tasks_total": 0,
+      "title": "v3-sdl-spec"
     },
-    "v3-electricsql-react-extract": {
+    {
+      "blockers": [],
+      "id": "v3-electricsql-react-extract",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": null,
+      "next_task_pending": null,
       "status": "DONE",
-      "model_class": "small",
-      "wave": 1,
-      "depends_on": [
-        "v3-core-extraction"
-      ]
+      "tasks_done": 0,
+      "tasks_total": 0,
+      "title": "v3-electricsql-react-extract"
     },
-    "v3-react-parity": {
+    {
+      "blockers": [],
+      "id": "v3-react-parity",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": null,
+      "next_task_pending": null,
       "status": "DONE",
-      "model_class": "frontier",
-      "wave": 2,
-      "depends_on": [
-        "v3-core-extraction"
-      ]
+      "tasks_done": 0,
+      "tasks_total": 0,
+      "title": "v3-react-parity"
     },
-    "v3-svelte-bindings": {
+    {
+      "blockers": [],
+      "id": "v3-svelte-bindings",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": null,
+      "next_task_pending": null,
       "status": "DONE",
-      "model_class": "frontier",
-      "wave": 2,
-      "depends_on": [
-        "v3-core-extraction"
-      ],
-      "note": "canary for the framework-agnostic core surface"
+      "tasks_done": 0,
+      "tasks_total": 0,
+      "title": "v3-svelte-bindings"
     },
-    "v3-solid-bindings": {
+    {
+      "blockers": [],
+      "id": "v3-solid-bindings",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": null,
+      "next_task_pending": null,
       "status": "DONE",
-      "model_class": "medium",
-      "wave": 2,
-      "depends_on": [
-        "v3-core-extraction"
-      ]
+      "tasks_done": 0,
+      "tasks_total": 0,
+      "title": "v3-solid-bindings"
     },
-    "v3-sync-providers": {
+    {
+      "blockers": [],
+      "id": "v3-sync-providers",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": null,
+      "next_task_pending": null,
       "status": "DONE",
-      "model_class": "frontier",
-      "wave": 2,
-      "depends_on": [
-        "v3-core-extraction"
-      ],
-      "note": "Yjs default + Loro (reuse 2.2.0 merge seam)"
+      "tasks_done": 0,
+      "tasks_total": 0,
+      "title": "v3-sync-providers"
     },
-    "v3-lit-webcomponents": {
+    {
+      "blockers": [],
+      "id": "v3-lit-webcomponents",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": null,
+      "next_task_pending": null,
       "status": "DONE",
-      "model_class": "medium",
-      "wave": 3,
-      "depends_on": [
-        "v3-svelte-bindings",
-        "v3-core-extraction"
-      ]
+      "tasks_done": 0,
+      "tasks_total": 0,
+      "title": "v3-lit-webcomponents"
     },
-    "v3-alpine-plugin": {
+    {
+      "blockers": [],
+      "id": "v3-alpine-plugin",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": null,
+      "next_task_pending": null,
       "status": "DONE",
-      "model_class": "small",
-      "wave": 3,
-      "depends_on": [
-        "v3-core-extraction"
-      ]
+      "tasks_done": 0,
+      "tasks_total": 0,
+      "title": "v3-alpine-plugin"
     },
-    "v3-htmx-server-adapter": {
+    {
+      "blockers": [],
+      "id": "v3-htmx-server-adapter",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": null,
+      "next_task_pending": null,
       "status": "DONE",
-      "model_class": "medium",
-      "wave": 3,
-      "depends_on": [
-        "v3-sdl-spec"
-      ]
+      "tasks_done": 0,
+      "tasks_total": 0,
+      "title": "v3-htmx-server-adapter"
     },
-    "v3-rust-cli": {
+    {
+      "blockers": [],
+      "id": "v3-rust-cli",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": null,
+      "next_task_pending": null,
       "status": "DONE",
-      "model_class": "frontier",
-      "wave": 3,
-      "depends_on": [
-        "v3-sdl-spec"
-      ],
-      "gate": "needs cargo toolchain"
+      "tasks_done": 0,
+      "tasks_total": 0,
+      "title": "v3-rust-cli"
     },
-    "v3-mcp-server": {
+    {
+      "blockers": [],
+      "id": "v3-mcp-server",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": null,
+      "next_task_pending": null,
       "status": "DONE",
-      "model_class": "frontier",
-      "wave": 4,
-      "depends_on": [
-        "v3-rust-cli"
-      ],
-      "gate": "needs cargo toolchain; rmcp 0.16"
+      "tasks_done": 0,
+      "tasks_total": 0,
+      "title": "v3-mcp-server"
     },
-    "v3-a2a-server": {
+    {
+      "blockers": [],
+      "id": "v3-a2a-server",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": null,
+      "next_task_pending": null,
       "status": "DONE",
-      "model_class": "frontier",
-      "wave": 4,
-      "depends_on": [
-        "v3-rust-cli"
-      ]
+      "tasks_done": 0,
+      "tasks_total": 0,
+      "title": "v3-a2a-server"
     },
-    "v3-tauri-plugin": {
+    {
+      "blockers": [],
+      "id": "v3-tauri-plugin",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": null,
+      "next_task_pending": null,
       "status": "DONE",
-      "model_class": "frontier",
-      "wave": 4,
-      "depends_on": [
-        "v3-core-extraction",
-        "v3-rust-cli"
-      ],
-      "gate": "needs cargo + tauri toolchain; tauri-specta v2"
+      "tasks_done": 0,
+      "tasks_total": 0,
+      "title": "v3-tauri-plugin"
     },
-    "v3-flutter-package": {
+    {
+      "blockers": [],
+      "id": "v3-flutter-package",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": null,
+      "next_task_pending": null,
       "status": "DONE",
-      "model_class": "frontier",
-      "wave": 4,
-      "depends_on": [
-        "v3-core-extraction",
-        "v3-sdl-spec"
-      ],
-      "gate": "needs dart/flutter toolchain; Riverpod 3 + Freezed"
+      "tasks_done": 0,
+      "tasks_total": 0,
+      "title": "v3-flutter-package"
     },
-    "v3-a2ui-react": {
+    {
+      "blockers": [],
+      "id": "v3-a2ui-react",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": null,
+      "next_task_pending": null,
       "status": "DONE",
-      "model_class": "frontier",
-      "wave": 5,
-      "depends_on": [
-        "v3-react-parity",
-        "v3-mcp-server"
-      ],
-      "note": "client-first; MCP progressive enhancement; reuses AG-UI bridge + time-travel"
+      "tasks_done": 0,
+      "tasks_total": 0,
+      "title": "v3-a2ui-react"
     }
-  }
+  ],
+  "changes_completed": 17,
+  "changes_total": 17,
+  "children": {},
+  "completion": {
+    "certification": {
+      "blockers": [],
+      "status": "PENDING",
+      "summary": null
+    },
+    "evidence": {
+      "blockers": [],
+      "status": "PENDING",
+      "summary": null
+    },
+    "implementation": {
+      "completed": 17,
+      "status": "COMPLETE",
+      "total": 17
+    },
+    "primaryCounter": "implementation",
+    "publication": {
+      "blockers": [],
+      "status": "PENDING",
+      "summary": null
+    }
+  },
+  "conflictCount": 0,
+  "derivedRevision": 28,
+  "frontier": {
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 28
+  },
+  "generatedBy": "kbd-runtime",
+  "implementation_completed": 17,
+  "implementation_total": 17,
+  "last_updated": "2026-08-03T08:14:05.069372Z",
+  "last_updated_by": "kbd-runtime",
+  "migrationStatus": null,
+  "parentPhase": null,
+  "phase": "phase-v3-universal-platform-evolution",
+  "phaseId": "phase-v3-universal-platform-evolution",
+  "schemaVersion": "2",
+  "sourceRevision": 28
 }

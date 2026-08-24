@@ -1,0 +1,37 @@
+{
+  "format": "research-package",
+  "formatVersion": "1.0.0",
+  "okfType": "research-session",
+  "jobId": "v3-tauri-mobile-plugin-task-1",
+  "query": "What prerequisite, dependency, plugin architecture, capability, generated-binding, and desktop/mobile evidence is required before implementing v3-tauri-mobile-plugin?",
+  "depth": "deep",
+  "createdAt": "2026-08-02T02:34:32Z",
+  "completedAt": "2026-08-02T02:34:32Z",
+  "stagesCompleted": 10,
+  "sourcesCount": 12,
+  "claimsCount": 7,
+  "confidence": 0.96,
+  "verificationStatus": "verified",
+  "feynmanGrade": null,
+  "feynmanGateUsed": true,
+  "misconceptionsAbsent": null,
+  "contradictionsResolved": 4,
+  "contradictionsUnresolved": 0,
+  "surrealMemoryUsed": false,
+  "sycophancyCorrectionUsed": true,
+  "citationStyle": "APA",
+  "toolAvailability": {
+    "prometheusResearchJob": "job-1785638058-9e63d822",
+    "prometheusResearchJobStatus": "cancelled-after-stalling-at-initializing",
+    "firecrawl": false,
+    "learnGrade": false,
+    "sycophancyCorrection": true
+  },
+  "sycophancyScore": 0.01785714365541935,
+  "modelRouting": {
+    "planner": "session-frontier",
+    "search": "prometheus-research/direct-official-web",
+    "verify": "session-frontier",
+    "report": "session-frontier"
+  }
+}

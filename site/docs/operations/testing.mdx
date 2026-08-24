@@ -1,0 +1,54 @@
+---
+title: Testing
+description: Testing strategies for applications on the entity graph — isolated stores, deterministic fixtures, and the repository's own gate tiers.
+---
+
+# Testing
+
+## Application tests
+
+The graph's framework-neutral core makes unit tests cheap: create an isolated
+store per test instead of mocking the module-level singleton.
+
+```ts
+import { createGraphStore } from "@prometheus-ags/entity-graph-core";
+
+const graph = createGraphStore();
+graph.getState().upsertEntity("Project", "p1", { name: "Test project" });
+
+const project = graph.getState().readEntity<{ name: string }>("Project", "p1");
+export { project };
+```
+
+Guidelines:
+
+- **One store per test** — `createGraphStore()` gives full isolation; no
+  cross-test leakage and no reset helpers to maintain.
+- **Seed by upserting** — tests write entities with `upsertEntity` exactly as
+  production fetch paths do. There is no separate "test double" format.
+- **Hook tests** — React hook tests render against a fresh store and assert on
+  hook output, not on store internals.
+- **Realtime** — drive adapters with recorded `ChangeSet` sequences; keep the
+  16 ms coalescing window in mind (await a flush, or use `flushInterval: 0` in
+  the test harness).
+
+## This repository's gate tiers
+
+Contributors run bounded gates; the full battery runs at phase boundaries:
+
+| Tier | Command | Scope |
+| --- | --- | --- |
+| Main CI baseline | `pnpm run ci` | Workspace tests, release-contract tests, CI-policy tests, BDD |
+| Example coverage | `pnpm run verify:example-coverage` | Shared scenario fixtures and capability mappings |
+| Snippet truth | `pnpm run verify:skills-snippets` | Every public snippet compiles against packed packages |
+| Docs gates | `pnpm run verify:docs-operations` (and siblings) | Docs content contracts, snippet compile, static build |
+
+The individual `ci:*` commands and their timeout behavior are documented in
+`release/ci-baseline.md`.
+
+## What the gates do not prove
+
+A green gate proves its declared evidence boundary and nothing more: an
+implemented showcase does not certify visual behavior on every device, and no
+local gate authorizes registry publication. Each certified surface names its
+receipts; consult `examples/coverage.json` for per-showcase evidence status.

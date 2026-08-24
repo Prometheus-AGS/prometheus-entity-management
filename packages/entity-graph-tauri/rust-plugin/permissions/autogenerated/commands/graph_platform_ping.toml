@@ -1,0 +1,13 @@
+# Automatically generated - DO NOT EDIT!
+
+"$schema" = "../../schemas/schema.json"
+
+[[permission]]
+identifier = "allow-graph-platform-ping"
+description = "Enables the graph_platform_ping command without any pre-configured scope."
+commands.allow = ["graph_platform_ping"]
+
+[[permission]]
+identifier = "deny-graph-platform-ping"
+description = "Denies the graph_platform_ping command without any pre-configured scope."
+commands.deny = ["graph_platform_ping"]

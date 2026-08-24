@@ -1,0 +1,39 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "k3",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": "RELEASING.md",
+      "line": 128,
+      "claim": "The documented certification command `git diff --exit-code -- website/static/native-api` is a dead check: `docs:native-api:verify` regenerates into an owned temporary directory and never writes to `website/static/native-api`, so the git diff can only flag pre-existing working-tree dirt and provides no evidence about the verification that just ran.",
+      "evidence": "RELEASING.md hunk instructs running `pnpm run docs:native-api:verify` then `git diff --exit-code -- website/static/native-api`; the packet's `generatorManifestWritePolicy` states verify 'rejects --write and regenerates into an owned temporary directory' and 'cannot rewrite the manifest', meaning the diffed path is untouched by the gate.",
+      "suggested_fix": "Either drop the git diff step (verify already does a byte-for-byte comparison), or document the intended sequence as `pnpm run docs:native-api && git diff --exit-code -- website/static/native-api` so the diff actually measures regeneration drift against committed artifacts."
+    },
+    {
+      "severity": "WARNING",
+      "file": "website/scripts/check-native-api.mjs",
+      "line": 1,
+      "claim": "The new Pages gate only proves self-consistency of committed sources, artifacts, and manifest \u2014 it provides no toolchain provenance, so dartdoc/rustdoc generated with unpinned Flutter/dartdoc/Rust versions will pass the Pages deployment gate as long as the manifest was regenerated and committed alongside.",
+      "evidence": "`check-native-api.mjs` calls only `verifyNativeApiManifest()` (hash comparison of committed bytes); the workflow diff removes the pinned Flutter 3.44.8 and Rust 1.88.0 installs and `docs:native-api:verify`, and `site-contract.test.mjs` now enforces this with `assert.doesNotMatch(workflow, /subosito\\/flutter-action/)` and `assert.doesNotMatch(workflow, /rustup toolchain install/)`. Pages deploys on every protected-main push, while the stronger reproducibility gate is deferred to release certification documented only in RELEASING.md.",
+      "suggested_fix": "If continuous main-branch Pages deploys must publish only pinned-toolchain output, record the generating toolchain versions inside the manifest and have the check validate them, or restrict native-api artifact updates to the release-certification lane (e.g., CI job that regenerates with pinned toolchains and fails on drift rather than trusting committed bytes)."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "website/scripts/native-api-manifest.mjs",
+      "line": 0,
+      "claim": "The drift error message (`run pnpm docs:native-api`) is now ambiguous given two remediation paths exist (regenerate vs. stale checkout), and the new check gives no hint that `docs:native-api:verify` is the authoritative release gate.",
+      "evidence": "`verifyNativeApiManifest()` throws 'native API sources or committed artifacts drifted; run pnpm docs:native-api' \u2014 the same message now surfaces in the Pages check context added by this diff, where regenerating locally may be exactly the wrong action if the committer simply forgot to commit regenerated artifacts.",
+      "suggested_fix": "Differentiate the failure output in check mode (e.g., report which of source-aggregate vs. artifact-aggregate vs. file inventory drifted) and mention `docs:native-api:verify` for toolchain-provenance failures."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

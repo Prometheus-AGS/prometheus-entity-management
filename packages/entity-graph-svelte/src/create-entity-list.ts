@@ -11,7 +11,7 @@
  */
 
 import {
-  useGraphStore,
+  graphStore,
   fetchList,
   getEngineOptions,
   serializeKey,
@@ -30,7 +30,7 @@ function resolveItems<TEntity extends object>(
   type: EntityType,
   ids: EntityId[]
 ): TEntity[] {
-  const graphState = useGraphStore.getState();
+  const graphState = graphStore.getState();
   const bucket = graphState.entities[type] ?? {};
   const patchBucket = graphState.patches[type] ?? {};
   const items: TEntity[] = [];
@@ -113,7 +113,7 @@ export function createEntityList<TRaw, TEntity extends object>(
 
   // ── Sync from graph ────────────────────────────────────────────────────
   function syncFromGraph() {
-    const graphState = useGraphStore.getState();
+    const graphState = graphStore.getState();
     const listState = graphState.lists[listKey] ?? EMPTY_LIST_STATE;
 
     state.items = resolveItems<TEntity>(type, listState.ids);
@@ -126,7 +126,7 @@ export function createEntityList<TRaw, TEntity extends object>(
   }
 
   // ── Subscribe to graph changes ─────────────────────────────────────────
-  const unsubscribe = useGraphStore.subscribe(
+  const unsubscribe = graphStore.subscribe(
     (graphState) => ({
       listSlice: graphState.lists[listKey] ?? EMPTY_LIST_STATE,
       entities: graphState.entities[type],
@@ -140,7 +140,7 @@ export function createEntityList<TRaw, TEntity extends object>(
   // ── Fetch helpers ──────────────────────────────────────────────────────
   function doFetch(params: ListFetchParams = {}) {
     if (!enabled || !fetchFn || !normalize) return;
-    const graphState = useGraphStore.getState();
+    const graphState = graphStore.getState();
     const listState = graphState.lists[listKey];
     const lastFetched = listState?.lastFetched ?? 0;
     const isStale = Date.now() - lastFetched > effectiveStaleTime;
@@ -161,7 +161,7 @@ export function createEntityList<TRaw, TEntity extends object>(
 
   function refetch() {
     if (!fetchFn || !normalize) return;
-    useGraphStore.getState().invalidateLists(listKey);
+    graphStore.getState().invalidateLists(listKey);
     fetchList<TRaw, TEntity>(
       { type, queryKey, fetch: fetchFn, normalize, mode: "replace", sideEffects, onSuccess, onError },
       {},
@@ -174,7 +174,7 @@ export function createEntityList<TRaw, TEntity extends object>(
 
   function loadMore() {
     if (!fetchFn || !normalize) return;
-    const graphState = useGraphStore.getState();
+    const graphState = graphStore.getState();
     const listState = graphState.lists[listKey] ?? EMPTY_LIST_STATE;
     if (!listState.hasNextPage) return;
     if (listState.isFetchingMore || listState.isFetching) return;
