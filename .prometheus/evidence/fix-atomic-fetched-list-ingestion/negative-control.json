@@ -1,0 +1,11 @@
+{
+  "sourceRelease": "3.0.2",
+  "sourceTag": "v3.0.2",
+  "sourceSha": "f29a701649799df3ff64f5f986e3c016246d34b6",
+  "rows": 7248,
+  "successPublications": 7250,
+  "expectedNPlus2": 7250,
+  "command": "git worktree add --detach /Users/gqadonis/.claude/worktrees/entity-management-302-negative-control 'v3.0.2^{commit}'; (cd /Users/gqadonis/.claude/worktrees/entity-management-302-negative-control && pnpm install --frozen-lockfile); pnpm exec tsx .prometheus/evidence/fix-atomic-fetched-list-ingestion/reproduce-3.0.2-negative-control.ts /Users/gqadonis/.claude/worktrees/entity-management-302-negative-control/packages/entity-graph-core/src/graph.ts f29a701649799df3ff64f5f986e3c016246d34b6",
+  "observedOutput": "{\"sourceRelease\":\"3.0.2\",\"sourceSha\":\"f29a701649799df3ff64f5f986e3c016246d34b6\",\"rows\":7248,\"successPublications\":7250,\"expectedNPlus2\":7250}",
+  "mismatchControl": "source mismatch: HEAD=f29a701649799df3ff64f5f986e3c016246d34b6 v3.0.2=f29a701649799df3ff64f5f986e3c016246d34b6 expected=e25210010a8eb4e575f7e4fc6e04be598a8c8213"
+}

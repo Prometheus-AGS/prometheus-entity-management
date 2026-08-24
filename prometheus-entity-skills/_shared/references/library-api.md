@@ -29,11 +29,16 @@ Generated from `src/index.ts`. Use this when scaffolding imports or explaining c
 | `useGraphStore` | React hook/store | React-package hook over the nearest scoped graph, with the default singleton's StoreApi methods attached for compatibility. Core's same-named export is only a deprecated StoreApi alias; never call it as a hook. |
 | `GraphStoreProviderProps` | type | Provider input containing the application-owned `store` and React `children`. |
 | `GraphStore` | type | Vanilla StoreApi returned by `createGraphStore()`. |
-| `GraphState` | type | Full store shape: canonical entities, UI patches, per-entity fetch state, list slots keyed by query key. |
+| `GraphState` | type | Full store shape: canonical entities, UI patches, per-entity fetch state, list slots keyed by query key, and the atomic `ingestFetchedList` action. |
 | `EntityState` | type | Per-entity cache metadata: `isFetching`, `lastFetched`, `error`, `stale`. |
 | `EntitySyncMetadata` | type | Optional sync/provenance metadata stored beside canonical rows (`synced`, `origin`, `updatedAt`). |
 | `EntitySnapshot` | type | Sync-aware entity view returned by snapshot reads and graph query helpers (`$synced`, `$origin`, `$updatedAt`). |
 | `ListState` | type | List slot: ordered **`ids`** only (not row copies), pagination cursors, `total`, fetch flags, page metadata. |
+| `ListResultMeta` | type | Successful-list pagination and lifecycle metadata accepted by atomic list targets. |
+| `FetchedListTarget` | type | Replace/append list target applied with a fetched response; may carry transport-derived IDs and metadata. |
+| `FetchedEntityBatch` | type | Side-descriptor entity rows that commit or roll back with the primary fetched list. |
+| `FetchedListProjection` | type | Existing view-backed list updated with matching fetched IDs inside the same graph publication. |
+| `IngestFetchedListOptions` | type | Atomic ingestion options for list targets, side batches, view projections, and fetch completion. |
 | `EntityType` | type | String key partitioning the graph (e.g. `"Post"`). |
 | `EntityId` | type | Primary key string for an entity within its `EntityType`. |
 | `QueryKey` | type | Stable string key used for list slots. |

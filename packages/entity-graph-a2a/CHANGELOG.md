@@ -1,5 +1,12 @@
 # @prometheus-ags/entity-graph-a2a
 
+## 3.0.3
+
+### Patch Changes
+
+- Updated dependencies
+  - @prometheus-ags/entity-graph-core@3.0.3
+
 ## 3.0.0
 
 ### Patch Changes

@@ -1,9 +1,4 @@
-# v3-framework-neutral-core Specification
-
-## Purpose
-TBD - created by archiving change v3-framework-neutral-core. Update Purpose after archive.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Framework-neutral core package
 

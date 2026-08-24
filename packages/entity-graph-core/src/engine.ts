@@ -377,12 +377,12 @@ export async function fetchList<TRaw, TEntity extends object>(
     try {
       const response = await fetch(params);
       const normalized = response.items.map(normalize);
-      storeApi.getState().upsertEntities(type, normalized.map(({ id, data }) => ({ id, data: data as Record<string, unknown> })));
-      for (const { id } of normalized) storeApi.getState().setEntityFetched(type, id);
-      const ids = normalized.map(({ id }) => id);
       const meta = { total: response.total ?? null, nextCursor: response.nextCursor ?? null, prevCursor: response.prevCursor ?? null, hasNextPage: response.hasNextPage ?? !!response.nextCursor, hasPrevPage: response.hasPrevPage ?? !!response.prevCursor, currentPage: response.page ?? null, pageSize: response.pageSize ?? null };
-      if (mode === "append" && isLoadMore) storeApi.getState().appendListResult(key, ids, meta);
-      else storeApi.getState().setListResult(key, ids, meta);
+      storeApi.getState().ingestFetchedList(
+        type,
+        normalized.map(({ id, data }) => ({ id, data: data as Record<string, unknown> })),
+        { lists: [{ key, mode: mode === "append" && isLoadMore ? "append" : "replace", meta }] },
+      );
       if (sideEffects) sideEffects(response.items, storeApi);
       opts.onSuccess?.(response);
     } catch (err) {

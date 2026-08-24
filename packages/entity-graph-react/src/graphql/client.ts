@@ -7,7 +7,7 @@
  * a GQL mutation to Post:123 updates REST-subscribed components instantly.
  */
 import { dedupe, graphStore } from "@prometheus-ags/entity-graph-core";
-import type { EntityType, EntityId, GraphStore } from "@prometheus-ags/entity-graph-core";
+import type { EntityType, EntityId, FetchedListTarget, GraphStore } from "@prometheus-ags/entity-graph-core";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -35,6 +35,18 @@ export interface EntityDescriptor<TNode, TEntity extends object> {
   relations?: EntityDescriptor<unknown, Record<string, unknown>>[];
 }
 
+export interface GQLListIngestion<TData, TEntity extends object> {
+  descriptor: EntityDescriptor<unknown, TEntity>;
+  getTargets: (data: TData) => FetchedListTarget[];
+}
+
+interface GQLNormalizationOptions {
+  listIngestion?: {
+    descriptor: EntityDescriptor<unknown, Record<string, unknown>>;
+    targets: FetchedListTarget[];
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Raw executor
 // ---------------------------------------------------------------------------
@@ -54,9 +66,14 @@ export function normalizeGQLResponse<T>(
   data: T,
   descriptors: EntityDescriptor<unknown, Record<string, unknown>>[],
   storeApi: GraphStore = graphStore,
+  options: GQLNormalizationOptions = {},
 ): Array<{ type: EntityType; id: EntityId }> {
   const store = storeApi.getState();
   const written: Array<{ type: EntityType; id: EntityId }> = [];
+  const batches = new Map<
+    EntityDescriptor<unknown, Record<string, unknown>>,
+    Array<{ id: EntityId; data: Record<string, unknown> }>
+  >();
 
   function resolvePath(obj: Record<string, unknown>, path: string): unknown {
     return path.split(".").reduce<unknown>((acc, key) => acc && typeof acc === "object" && !Array.isArray(acc) ? (acc as Record<string, unknown>)[key] : undefined, obj);
@@ -68,7 +85,9 @@ export function normalizeGQLResponse<T>(
     const process = (node: unknown) => {
       if (!node || typeof node !== "object") return;
       const id = extractId(node as Record<string, unknown>); const normalized = normalize(node);
-      store.upsertEntity(type, id, normalized); store.setEntityFetched(type, id);
+      const batch = batches.get(desc) ?? [];
+      batch.push({ id, data: normalized });
+      batches.set(desc, batch);
       written.push({ type, id });
       if (relations) for (const rel of relations) walk(resolvePath(node as Record<string, unknown>, rel.path), rel);
     };
@@ -77,8 +96,25 @@ export function normalizeGQLResponse<T>(
   }
 
   for (const desc of descriptors) {
+    if (!batches.has(desc)) batches.set(desc, []);
     const subtree = desc.path === "." ? data : (data && typeof data === "object" ? resolvePath(data as Record<string, unknown>, desc.path) : undefined);
     walk(subtree, desc);
+  }
+
+  const grouped = Array.from(batches.entries());
+  const primary = options.listIngestion
+    ? grouped.find(([descriptor]) => descriptor === options.listIngestion?.descriptor)
+    : grouped.find(([, entries]) => entries.length > 0);
+  if (primary) {
+    const [primaryDescriptor, primaryEntries] = primary;
+    store.ingestFetchedList(primaryDescriptor.type, primaryEntries, {
+      lists: options.listIngestion?.descriptor === primaryDescriptor
+        ? options.listIngestion.targets
+        : undefined,
+      sideBatches: grouped
+        .filter(([descriptor, entries]) => descriptor !== primaryDescriptor && entries.length > 0)
+        .map(([descriptor, entries]) => ({ type: descriptor.type, entries })),
+    });
   }
   return written;
 }
@@ -94,11 +130,26 @@ export class GQLClient {
     descriptors: EntityDescriptor<unknown, TEntity>[];
     cacheKey?: string;
     store?: GraphStore;
+    listIngestion?: GQLListIngestion<TData, TEntity>;
   }): Promise<GQLResponse<TData>> {
     const key = opts.cacheKey ?? `gql:${opts.document.slice(0, 60)}:${JSON.stringify(opts.variables ?? {})}`;
     return dedupe(key, async () => {
       const r = await executeGQL<TData>(this.cfg, opts.document, opts.variables);
-      if (r.data) normalizeGQLResponse(r.data, opts.descriptors as EntityDescriptor<unknown, Record<string, unknown>>[], opts.store);
+      if (r.data) {
+        normalizeGQLResponse(
+          r.data,
+          opts.descriptors as EntityDescriptor<unknown, Record<string, unknown>>[],
+          opts.store,
+          opts.listIngestion
+            ? {
+                listIngestion: {
+                  descriptor: opts.listIngestion.descriptor as EntityDescriptor<unknown, Record<string, unknown>>,
+                  targets: opts.listIngestion.getTargets(r.data),
+                },
+              }
+            : undefined,
+        );
+      }
       return r;
     }, opts.store);
   }

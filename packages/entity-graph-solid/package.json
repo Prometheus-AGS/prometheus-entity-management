@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/entity-graph-solid",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "SolidJS bindings for @prometheus-ags/entity-graph-core — fine-grained reactive entity and list primitives over the normalized entity graph.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",

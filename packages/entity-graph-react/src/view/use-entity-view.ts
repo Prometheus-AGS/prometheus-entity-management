@@ -160,13 +160,25 @@ export function useEntityView<TEntity extends object>(opts: UseEntityViewOptions
     try {
       const response = await rf(params);
       const normalized = norm ? response.items.map(norm) : response.items.map((item) => ({ id: String((item as Record<string, unknown>).id), data: item }));
-      store.upsertEntities(type, normalized.map(({ id, data }) => ({ id, data: data as Record<string, unknown> }))); for (const { id } of normalized) store.setEntityFetched(type, id);
-      store.setListResult(rKey, normalized.map(({ id }) => id), { total: response.total ?? null, nextCursor: response.nextCursor ?? null, hasNextPage: response.hasNextPage ?? !!response.nextCursor });
+      store.ingestFetchedList(
+        type,
+        normalized.map(({ id, data }) => ({ id, data: data as Record<string, unknown> })),
+        {
+          lists: [{
+            key: rKey,
+            meta: {
+              total: response.total ?? null,
+              nextCursor: response.nextCursor ?? null,
+              hasNextPage: response.hasNextPage ?? !!response.nextCursor,
+            },
+          }],
+          projections: [{ key: baseKeyStr, view, completeFetch: true }],
+        },
+      );
       // Mark the base key as freshly fetched (even if its ids list is
       // empty / unchanged). This stops the staleness re-trigger in the
       // mount effect below — a successful remote fetch counts as a base
       // refresh even when no ids land in the base list.
-      store.setListFetching(baseKeyStr, false);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       setRemoteError(msg);

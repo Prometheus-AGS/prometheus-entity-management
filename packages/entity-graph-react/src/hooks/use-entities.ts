@@ -168,14 +168,15 @@ export function useEntities<T extends object>(
           id: transport.identify(row),
           data: row as Record<string, unknown>,
         }));
-        graphStore.upsertEntities(type, entries);
-        for (const { id } of entries) graphStore.setEntityFetched(type, id);
-
-        const ids = entries.map(({ id }) => id);
-        graphStore.setListResult(queryKey, ids, {
-          total: result.total,
-          nextCursor: typeof result.nextCursor === "string" ? result.nextCursor : null,
-          hasNextPage: result.nextCursor !== null && result.nextCursor !== undefined,
+        graphStore.ingestFetchedList(type, entries, {
+          lists: [{
+            key: queryKey,
+            meta: {
+              total: result.total,
+              nextCursor: typeof result.nextCursor === "string" ? result.nextCursor : null,
+              hasNextPage: result.nextCursor !== null && result.nextCursor !== undefined,
+            },
+          }],
         });
       } catch (err) {
         if (thisCount !== fetchCountRef.current) return;
