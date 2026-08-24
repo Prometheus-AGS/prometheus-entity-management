@@ -61,10 +61,17 @@ supabase/.temp/
 
 # ── AI tool workspaces (transient, user-local) ────────────────────────────────
 .agent/
-.agents/
+.agents/*
 .opencode/
 .roo/
 .windsurf/
+
+# Agent Skills live at the cross-agent discovery path .agents/skills/ (read by
+# Zed, Codex CLI, opencode, Kimi Code, and MiniMax). Git cannot re-include a
+# file beneath an excluded directory, so each level is unwound explicitly.
+!.agents/skills/
+.agents/skills/*
+!.agents/skills/npm-release-and-cleanup/
 
 # ── Misc ───────────────────────────────────────────────────────────────────────
 .turbo/
