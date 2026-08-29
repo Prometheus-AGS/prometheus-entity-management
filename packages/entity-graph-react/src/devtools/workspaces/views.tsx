@@ -1,8 +1,10 @@
 import type {
   GraphDevtoolsEntityRecord,
+  GraphDevtoolsEvent,
   GraphDevtoolsViewRecord,
 } from "@prometheus-ags/entity-graph-core/devtools";
 import { InspectorVirtualList } from "../components/virtual-list";
+import { eventTitle, formatEventTime } from "../event-format";
 
 export interface ViewsWorkspaceProps {
   views: readonly GraphDevtoolsViewRecord[];
@@ -12,6 +14,8 @@ export interface ViewsWorkspaceProps {
   onSelectIdentity(type: string, id: string): void;
   narrowDetailOpen: boolean;
   onCloseNarrowDetail(): void;
+  lastChangingEvent: GraphDevtoolsEvent | null;
+  causalViewIds: ReadonlySet<string>;
 }
 
 export function ViewsWorkspace({
@@ -22,6 +26,8 @@ export function ViewsWorkspace({
   onSelectIdentity,
   narrowDetailOpen,
   onCloseNarrowDetail,
+  lastChangingEvent,
+  causalViewIds,
 }: ViewsWorkspaceProps) {
   const entityByIdentity = new Map(entities.map((entity) => [`${entity.type}\u0000${entity.id}`, entity]));
 
@@ -36,6 +42,7 @@ export function ViewsWorkspace({
           <p className="pem-eyebrow">Registered now</p>
           <h2 id="pem-views-title">Views</h2>
         </div>
+        <p className="pem-coverage-note">Only registered views are observable; unregistered renderers remain unknown.</p>
         {views.length === 0 ? (
           <p className="pem-empty">Mounted view hooks will register here.</p>
         ) : (
@@ -49,6 +56,7 @@ export function ViewsWorkspace({
                 type="button"
                 className="pem-view-row"
                 data-selected={view.viewId === selected?.viewId}
+                data-causal={causalViewIds.has(view.viewId)}
                 onClick={() => onSelect(view)}
               >
                 <span><strong>{view.label}</strong><code translate="no">{view.viewId}</code></span>
@@ -76,10 +84,29 @@ export function ViewsWorkspace({
 
             <div className="pem-metric-grid pem-view-metrics">
               <Readout label="Membership" value={selected.membership.length} />
+              <Readout label="Rendered subscribers" value={selected.subscriberCount} />
               <Readout label="Render updates" value={selected.renderCount} />
               <Readout label="Entity type" value={selected.entityType} />
               <Readout label="Query key" value={selected.queryKey ?? "not applicable"} mono />
+              <Readout
+                label="Last rendered"
+                value={selected.lastRenderedAt ? formatTimestamp(selected.lastRenderedAt) : "not recorded"}
+              />
             </div>
+
+            <section className="pem-card pem-last-change" aria-labelledby="pem-last-change-title">
+              <div className="pem-card-heading">
+                <h3 id="pem-last-change-title">Last changing event</h3>
+                <span>{lastChangingEvent ? `#${lastChangingEvent.sequence}` : "none retained"}</span>
+              </div>
+              {lastChangingEvent ? (
+                <div className="pem-last-change-readout">
+                  <strong>{eventTitle(lastChangingEvent)}</strong>
+                  <time dateTime={lastChangingEvent.observedAt}>{formatEventTime(lastChangingEvent)}</time>
+                  <code translate="no">{lastChangingEvent.correlationId}</code>
+                </div>
+              ) : <p className="pem-empty">No retained event is attributed to this registered view.</p>}
+            </section>
 
             {selected.list && (
               <section className="pem-card pem-list-health" aria-labelledby="pem-list-health-title">
@@ -88,8 +115,8 @@ export function ViewsWorkspace({
                   <span>{selected.list.stale ? "stale" : "current"}</span>
                 </div>
                 <dl className="pem-readout-list">
-                  <div><dt>Registered membership</dt><dd>{selected.list.visibleCount}</dd></div>
-                  <div><dt>Graph list IDs</dt><dd>{selected.list.graphCount}</dd></div>
+                  <div><dt>Currently rendered membership</dt><dd>{selected.list.visibleCount}</dd></div>
+                  <div><dt>Normalized graph list IDs</dt><dd>{selected.list.graphCount}</dd></div>
                   <div><dt>Server total</dt><dd>{selected.list.total ?? "unknown"}</dd></div>
                   <div><dt>Fetching</dt><dd>{selected.list.isFetching || selected.list.isFetchingMore ? "yes" : "no"}</dd></div>
                   <div><dt>Pagination</dt><dd>{selected.list.hasPreviousPage ? "← " : ""}{selected.list.hasNextPage ? "→" : "complete"}</dd></div>
@@ -117,8 +144,10 @@ export function ViewsWorkspace({
                       <button
                         type="button"
                         className="pem-membership-row"
+                        data-causal={causalViewIds.has(selected.viewId)}
                         onClick={() => onSelectIdentity(member.type, member.id)}
                       >
+                        <span className="pem-membership-position">{selected.membership.indexOf(member) + 1}</span>
                         <code translate="no">{member.type}/{member.id}</code>
                         <span className="pem-row-signals">
                           {entity?.dirty && <span aria-label="Dirty">◆</span>}
@@ -135,6 +164,13 @@ export function ViewsWorkspace({
       </div>
     </section>
   );
+}
+
+function formatTimestamp(value: string): string {
+  return new Intl.DateTimeFormat(undefined, {
+    dateStyle: "short",
+    timeStyle: "medium",
+  }).format(new Date(value));
 }
 
 function Readout({

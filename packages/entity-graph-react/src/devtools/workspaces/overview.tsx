@@ -33,6 +33,13 @@ export function OverviewWorkspace({
   const recent = [...model.events].slice(-8).reverse();
   const history = model.snapshot.history;
   const snapshots = model.snapshot.snapshots;
+  const capturedAt = Date.parse(model.capturedAt);
+  const rateWindowMs = 5_000;
+  const rateCount = model.events.filter((event) => (
+    Number.isFinite(capturedAt) && Date.parse(event.observedAt) >= capturedAt - rateWindowMs
+  )).length;
+  const eventRate = `${(rateCount / (rateWindowMs / 1_000)).toFixed(1)}/s`;
+  const subscribers = model.views.reduce((total, view) => total + view.subscriberCount, 0);
 
   return (
     <section className="pem-workspace pem-overview" aria-labelledby="pem-overview-title">
@@ -66,6 +73,8 @@ export function OverviewWorkspace({
         <Metric label="Errors" value={errors} tone={errors ? "attention" : undefined} />
         <Metric label="Fetching" value={fetching} />
         <Metric label="Registered views" value={model.views.length} />
+        <Metric label="Rendered subscribers" value={subscribers} />
+        <Metric label="Event rate (5 s)" value={eventRate} />
         <Metric label="Retained events" value={history.retainedEvents} />
       </div>
 
@@ -118,13 +127,13 @@ function Metric({
   tone,
 }: {
   label: string;
-  value: number;
+  value: number | string;
   tone?: "attention";
 }) {
   return (
     <div className="pem-metric" data-tone={tone}>
       <span>{label}</span>
-      <strong>{new Intl.NumberFormat().format(value)}</strong>
+      <strong>{typeof value === "number" ? new Intl.NumberFormat().format(value) : value}</strong>
     </div>
   );
 }

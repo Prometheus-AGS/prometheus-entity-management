@@ -33,6 +33,16 @@ import {
   type EntityGraphDevtoolsValuePolicyMode,
 } from "./provider";
 import { useEntityGraphInspectorModel } from "./use-model";
+import {
+  normalizeEntityGraphInspectorState,
+  type EntityGraphInspectorState,
+  type EntityGraphInspectorStateAdapter,
+} from "./state";
+import {
+  affectedEntitiesForEvent,
+  affectedViewIdsForEvent,
+  causalEntityKey,
+} from "./causality";
 
 export type InspectorWorkspace = "overview" | "entities" | "views" | "activity";
 export type EntityValueTab = "original" | "patch" | "live" | "diff";
@@ -53,9 +63,13 @@ export interface InspectorActivePreview {
 }
 
 function eventTouchesEntity(event: GraphDevtoolsEvent, entity: GraphDevtoolsEntityRecord): boolean {
-  return event.type === "mutation" && event.payload.changes.some((change) =>
-    change.id === entity.id &&
-    (change.key === entity.type || change.key === entity.key),
+  return event.type === "mutation" && (
+    affectedEntitiesForEvent(event).some((affected) => (
+      affected.type === entity.type && affected.id === entity.id
+    )) || event.payload.changes.some((change) =>
+      change.id === entity.id &&
+      (change.key === entity.type || change.key === entity.key),
+    )
   );
 }
 
@@ -92,6 +106,12 @@ export interface EntityGraphInspectorViewModel {
   valuePolicyMode: EntityGraphDevtoolsValuePolicyMode;
   workspace: InspectorWorkspace;
   setWorkspace(workspace: InspectorWorkspace): void;
+  navigatorCollapsed: boolean;
+  toggleNavigatorCollapsed(): void;
+  causalRailCollapsed: boolean;
+  toggleCausalRailCollapsed(): void;
+  pulseCollapsed: boolean;
+  togglePulseCollapsed(): void;
   narrowDetailOpen: boolean;
   closeNarrowDetail(): void;
   search: string;
@@ -120,6 +140,7 @@ export interface EntityGraphInspectorViewModel {
   canCopyEntityValue: boolean;
   views: readonly GraphDevtoolsViewRecord[];
   selectedView: GraphDevtoolsViewRecord | null;
+  selectedViewLastEvent: GraphDevtoolsEvent | null;
   selectView(view: GraphDevtoolsViewRecord): void;
   activityFilter: ActivityTypeFilter;
   setActivityFilter(filter: ActivityTypeFilter): void;
@@ -129,6 +150,9 @@ export interface EntityGraphInspectorViewModel {
   selectedEvent: GraphDevtoolsEvent | null;
   selectedEventExpired: boolean;
   selectEvent(event: GraphDevtoolsEvent): void;
+  highlightEvent(event: GraphDevtoolsEvent): void;
+  causalEntityKeys: ReadonlySet<string>;
+  causalViewIds: ReadonlySet<string>;
   snapshotReferences: readonly Extract<GraphDevtoolsSnapshotReference, { status: "retained" }>[];
   rewindCursor: number | null;
   setRewindCursor(cursor: number): void;
@@ -140,19 +164,41 @@ export interface EntityGraphInspectorViewModel {
   clearCommandFeedback(): void;
 }
 
-export function useEntityGraphInspectorViewModel(): EntityGraphInspectorViewModel {
+function readAdapterState(
+  adapter: EntityGraphInspectorStateAdapter | undefined,
+): Partial<EntityGraphInspectorState> | null {
+  if (!adapter) return null;
+  try {
+    return normalizeEntityGraphInspectorState(adapter.read());
+  } catch {
+    return null;
+  }
+}
+
+export function useEntityGraphInspectorViewModel(
+  stateAdapter?: EntityGraphInspectorStateAdapter,
+): EntityGraphInspectorViewModel {
   const runtime = useEntityGraphDevtools();
+  const selectRuntimeStore = runtime.selectStore;
   const model = useEntityGraphInspectorModel();
-  const [workspace, setWorkspace] = useState<InspectorWorkspace>("overview");
+  const [initialState] = useState(() => readAdapterState(stateAdapter));
+  const [workspace, setWorkspace] = useState<InspectorWorkspace>(initialState?.workspace ?? "overview");
   const [narrowDetailOpen, setNarrowDetailOpen] = useState(false);
-  const [search, setSearch] = useState("");
+  const [navigatorCollapsed, setNavigatorCollapsed] = useState(false);
+  const [causalRailCollapsed, setCausalRailCollapsed] = useState(false);
+  const [pulseCollapsed, setPulseCollapsed] = useState(false);
+  const [search, setSearch] = useState(initialState?.search ?? "");
   const deferredSearch = useDeferredValue(search.trim().toLocaleLowerCase());
-  const [entityFilter, setEntityFilter] = useState<EntityStatusFilter>("all");
-  const [selectedEntityKey, setSelectedEntityKey] = useState<string | null>(null);
-  const [selectedViewId, setSelectedViewId] = useState<string | null>(null);
-  const [selectedSequence, setSelectedSequence] = useState<number | null>(null);
-  const [valueTab, setValueTab] = useState<EntityValueTab>("original");
-  const [activityFilter, setActivityFilter] = useState<ActivityTypeFilter>("all");
+  const [entityFilter, setEntityFilter] = useState<EntityStatusFilter>(initialState?.entityFilter ?? "all");
+  const [selectedEntityKey, setSelectedEntityKey] = useState<string | null>(() => (
+    initialState?.entityType && initialState.entityId
+      ? JSON.stringify([initialState.entityType, initialState.entityId])
+      : null
+  ));
+  const [selectedViewId, setSelectedViewId] = useState<string | null>(initialState?.viewId ?? null);
+  const [selectedSequence, setSelectedSequence] = useState<number | null>(initialState?.eventSequence ?? null);
+  const [valueTab, setValueTab] = useState<EntityValueTab>(initialState?.valueTab ?? "original");
+  const [activityFilter, setActivityFilter] = useState<ActivityTypeFilter>(initialState?.activityFilter ?? "all");
   const [paused, setPaused] = useState(false);
   const [pausedEvents, setPausedEvents] = useState<readonly GraphDevtoolsEvent[]>([]);
   const [previewDraft, setPreviewDraft] = useState("");
@@ -179,11 +225,18 @@ export function useEntityGraphInspectorViewModel(): EntityGraphInspectorViewMode
     return all.find((entity) => inspectorEntityIdentity(entity) === selectedEntityKey) ?? entities[0] ?? null;
   }, [entities, model?.entities, selectedEntityKey]);
 
-  const views = model?.views ?? [];
+  const views = useMemo(() => model?.views ?? [], [model?.views]);
   const selectedView = useMemo(
     () => views.find((view) => view.viewId === selectedViewId) ?? views[0] ?? null,
     [selectedViewId, views],
   );
+  const selectedViewLastEvent = useMemo(() => {
+    if (!selectedView) return null;
+    return [...(model?.events ?? [])].reverse().find((event) => (
+      (event.type === "view" && event.payload.viewId === selectedView.viewId) ||
+      affectedViewIdsForEvent(event).includes(selectedView.viewId)
+    )) ?? null;
+  }, [model?.events, selectedView]);
 
   const entityDiff = useMemo(
     () => selectedEntity ? diffEntityValues(selectedEntity.canonical, selectedEntity.merged) : [],
@@ -229,7 +282,7 @@ export function useEntityGraphInspectorViewModel(): EntityGraphInspectorViewMode
     ? previewReceipts[previewKey(runtime.storeId, selectedEntity)] ?? null
     : null;
 
-  const liveEvents = model?.events ?? [];
+  const liveEvents = useMemo(() => model?.events ?? [], [model?.events]);
   const visibleEvents = paused ? pausedEvents : liveEvents;
   const events = useMemo(
     () => [...visibleEvents]
@@ -243,6 +296,12 @@ export function useEntityGraphInspectorViewModel(): EntityGraphInspectorViewMode
   );
   const selectedEventExpired = selectedSequence !== null &&
     !visibleEvents.some((event) => event.sequence === selectedSequence);
+  const causalEntityKeys = useMemo(() => new Set(
+    selectedEvent ? affectedEntitiesForEvent(selectedEvent).map(causalEntityKey) : [],
+  ), [selectedEvent]);
+  const causalViewIds = useMemo(() => new Set(
+    selectedEvent ? affectedViewIdsForEvent(selectedEvent) : [],
+  ), [selectedEvent]);
   const snapshotReferences = model?.snapshotReferences ?? [];
   const rewindCursor = selectedRewindCursor !== null &&
     snapshotReferences.some((reference) => reference.cursor === selectedRewindCursor)
@@ -283,16 +342,31 @@ export function useEntityGraphInspectorViewModel(): EntityGraphInspectorViewMode
     setWorkspace("views");
     setNarrowDetailOpen(true);
   }, []);
-  const selectEvent = useCallback((event: GraphDevtoolsEvent) => {
+  const highlightEvent = useCallback((event: GraphDevtoolsEvent) => {
     setSelectedSequence(event.sequence);
+    const affectedEntity = affectedEntitiesForEvent(event)[0];
+    if (affectedEntity) {
+      const entity = model?.entities.find((candidate) => (
+        candidate.type === affectedEntity.type && candidate.id === affectedEntity.id
+      ));
+      if (entity) setSelectedEntityKey(inspectorEntityIdentity(entity));
+    }
+    const affectedViewId = affectedViewIdsForEvent(event)[0];
+    if (affectedViewId) setSelectedViewId(affectedViewId);
+  }, [model?.entities]);
+  const selectEvent = useCallback((event: GraphDevtoolsEvent) => {
+    highlightEvent(event);
     setWorkspace("activity");
     setNarrowDetailOpen(true);
-  }, []);
+  }, [highlightEvent]);
   const selectWorkspace = useCallback((nextWorkspace: InspectorWorkspace) => {
     setWorkspace(nextWorkspace);
     setNarrowDetailOpen(false);
   }, []);
   const closeNarrowDetail = useCallback(() => setNarrowDetailOpen(false), []);
+  const toggleNavigatorCollapsed = useCallback(() => setNavigatorCollapsed((current) => !current), []);
+  const toggleCausalRailCollapsed = useCallback(() => setCausalRailCollapsed((current) => !current), []);
+  const togglePulseCollapsed = useCallback(() => setPulseCollapsed((current) => !current), []);
   const togglePaused = useCallback(() => {
     if (!paused) setPausedEvents(liveEvents);
     setPaused((current) => !current);
@@ -403,14 +477,88 @@ export function useEntityGraphInspectorViewModel(): EntityGraphInspectorViewMode
     setCommand((current) => ({ ...current, notice: null, error: null }));
   }, []);
 
+  const applyAdapterState = useCallback((candidate: unknown) => {
+    const state = normalizeEntityGraphInspectorState(candidate);
+    if (!state) return;
+    if (state.workspace) setWorkspace(state.workspace);
+    if (state.storeId) selectRuntimeStore(state.storeId);
+    if (state.entityType && state.entityId) {
+      setSelectedEntityKey(JSON.stringify([state.entityType, state.entityId]));
+    } else if (state.entityType === null && state.entityId === null) {
+      setSelectedEntityKey(null);
+    }
+    if (state.viewId !== undefined) setSelectedViewId(state.viewId);
+    if (state.eventSequence !== undefined) setSelectedSequence(state.eventSequence);
+    if (state.search !== undefined) setSearch(state.search);
+    if (state.entityFilter) setEntityFilter(state.entityFilter);
+    if (state.activityFilter) setActivityFilter(state.activityFilter);
+    if (state.valueTab) setValueTab(state.valueTab);
+  }, [selectRuntimeStore]);
+
+  useEffect(() => {
+    if (!initialState?.storeId) return;
+    selectRuntimeStore(initialState.storeId);
+  }, [initialState?.storeId, selectRuntimeStore]);
+
+  useEffect(() => {
+    if (!stateAdapter?.subscribe) return;
+    return stateAdapter.subscribe(() => {
+      try {
+        applyAdapterState(stateAdapter.read());
+      } catch {
+        // Host adapters are isolated from the live inspector state.
+      }
+    });
+  }, [applyAdapterState, stateAdapter]);
+
+  useEffect(() => {
+    if (!stateAdapter) return;
+    const state: EntityGraphInspectorState = {
+      version: 1,
+      workspace,
+      storeId: runtime.storeId,
+      entityType: selectedEntity?.type ?? null,
+      entityId: selectedEntity?.id ?? null,
+      viewId: selectedViewId,
+      eventSequence: selectedSequence,
+      search,
+      entityFilter,
+      activityFilter,
+      valueTab,
+    };
+    try {
+      stateAdapter.write(state);
+    } catch {
+      // Host URL/state synchronization cannot interrupt graph inspection.
+    }
+  }, [
+    activityFilter,
+    entityFilter,
+    runtime.storeId,
+    search,
+    selectedEntity?.id,
+    selectedEntity?.type,
+    selectedSequence,
+    selectedViewId,
+    stateAdapter,
+    valueTab,
+    workspace,
+  ]);
+
   return {
     model,
     stores: runtime.stores,
     selectedStoreId: runtime.storeId,
-    selectStore: runtime.selectStore,
+    selectStore: selectRuntimeStore,
     valuePolicyMode: runtime.valuePolicyMode,
     workspace,
     setWorkspace: selectWorkspace,
+    navigatorCollapsed,
+    toggleNavigatorCollapsed,
+    causalRailCollapsed,
+    toggleCausalRailCollapsed,
+    pulseCollapsed,
+    togglePulseCollapsed,
     narrowDetailOpen,
     closeNarrowDetail,
     search,
@@ -439,6 +587,7 @@ export function useEntityGraphInspectorViewModel(): EntityGraphInspectorViewMode
     canCopyEntityValue,
     views,
     selectedView,
+    selectedViewLastEvent,
     selectView,
     activityFilter,
     setActivityFilter,
@@ -448,6 +597,9 @@ export function useEntityGraphInspectorViewModel(): EntityGraphInspectorViewMode
     selectedEvent,
     selectedEventExpired,
     selectEvent,
+    highlightEvent,
+    causalEntityKeys,
+    causalViewIds,
     snapshotReferences,
     rewindCursor,
     setRewindCursor: setSelectedRewindCursor,

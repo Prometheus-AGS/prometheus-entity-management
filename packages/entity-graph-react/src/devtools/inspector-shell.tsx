@@ -1,10 +1,32 @@
-import { useRef, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import * as React from "react";
 import type { InspectorWorkspace } from "./view-model";
 import { useEntityGraphInspectorViewModel } from "./view-model";
 import { OverviewWorkspace } from "./workspaces/overview";
 import { EntitiesWorkspace } from "./workspaces/entities";
 import { ViewsWorkspace } from "./workspaces/views";
 import { ActivityWorkspace } from "./workspaces/activity";
+import { GraphPulse } from "./components/graph-pulse";
+import type { EntityGraphInspectorStateAdapter } from "./state";
+
+type ActivityBoundaryProps = {
+  mode: "visible" | "hidden";
+  children: React.ReactNode;
+};
+
+const ReactActivity = (React as typeof React & {
+  Activity?: React.ComponentType<ActivityBoundaryProps>;
+}).Activity;
+
+function WorkspacePresence({
+  active,
+  children,
+}: {
+  active: boolean;
+  children: React.ReactNode;
+}) {
+  if (!ReactActivity) return active ? <>{children}</> : null;
+  return <ReactActivity mode={active ? "visible" : "hidden"}>{children}</ReactActivity>;
+}
 
 const workspaces: readonly { id: InspectorWorkspace; label: string }[] = [
   { id: "overview", label: "Overview" },
@@ -13,12 +35,16 @@ const workspaces: readonly { id: InspectorWorkspace; label: string }[] = [
   { id: "activity", label: "Activity" },
 ];
 
-export function EntityGraphInspectorShell() {
-  const viewModel = useEntityGraphInspectorViewModel();
+export function EntityGraphInspectorShell({
+  stateAdapter,
+}: {
+  stateAdapter?: EntityGraphInspectorStateAdapter;
+}) {
+  const viewModel = useEntityGraphInspectorViewModel(stateAdapter);
   const model = viewModel.model;
-  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const tabRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
 
-  const onWorkspaceKeyDown = (event: ReactKeyboardEvent<HTMLButtonElement>, index: number) => {
+  const onWorkspaceKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
     const nextIndex = event.key === "ArrowRight"
       ? (index + 1) % workspaces.length
       : event.key === "ArrowLeft"
@@ -103,7 +129,7 @@ export function EntityGraphInspectorShell() {
         role="tabpanel"
         aria-label={`${viewModel.workspace} workspace`}
       >
-        {viewModel.workspace === "overview" && (
+        <WorkspacePresence active={viewModel.workspace === "overview"}>
           <OverviewWorkspace
             model={model}
             stores={viewModel.stores}
@@ -114,8 +140,8 @@ export function EntityGraphInspectorShell() {
             exportPending={viewModel.command.pending === "export"}
             onSelectEvent={viewModel.selectEvent}
           />
-        )}
-        {viewModel.workspace === "entities" && (
+        </WorkspacePresence>
+        <WorkspacePresence active={viewModel.workspace === "entities"}>
           <EntitiesWorkspace
             search={viewModel.search}
             onSearch={viewModel.setSearch}
@@ -147,9 +173,16 @@ export function EntityGraphInspectorShell() {
             onSelectEvent={viewModel.selectEvent}
             narrowDetailOpen={viewModel.narrowDetailOpen}
             onCloseNarrowDetail={viewModel.closeNarrowDetail}
+            navigatorCollapsed={viewModel.navigatorCollapsed}
+            onToggleNavigatorCollapsed={viewModel.toggleNavigatorCollapsed}
+            causalRailCollapsed={viewModel.causalRailCollapsed}
+            onToggleCausalRailCollapsed={viewModel.toggleCausalRailCollapsed}
+            causalEvent={viewModel.selectedEvent}
+            causalEntityKeys={viewModel.causalEntityKeys}
+            causalViewIds={viewModel.causalViewIds}
           />
-        )}
-        {viewModel.workspace === "views" && (
+        </WorkspacePresence>
+        <WorkspacePresence active={viewModel.workspace === "views"}>
           <ViewsWorkspace
             views={viewModel.views}
             entities={model.entities}
@@ -158,9 +191,11 @@ export function EntityGraphInspectorShell() {
             onSelectIdentity={viewModel.selectEntityIdentity}
             narrowDetailOpen={viewModel.narrowDetailOpen}
             onCloseNarrowDetail={viewModel.closeNarrowDetail}
+            lastChangingEvent={viewModel.selectedViewLastEvent}
+            causalViewIds={viewModel.causalViewIds}
           />
-        )}
-        {viewModel.workspace === "activity" && (
+        </WorkspacePresence>
+        <WorkspacePresence active={viewModel.workspace === "activity"}>
           <ActivityWorkspace
             events={viewModel.events}
             selected={viewModel.selectedEvent}
@@ -181,11 +216,19 @@ export function EntityGraphInspectorShell() {
             narrowDetailOpen={viewModel.narrowDetailOpen}
             onCloseNarrowDetail={viewModel.closeNarrowDetail}
           />
-        )}
+        </WorkspacePresence>
       </main>
 
+      <GraphPulse
+        events={model.events}
+        selected={viewModel.selectedEvent}
+        collapsed={viewModel.pulseCollapsed}
+        onToggleCollapsed={viewModel.togglePulseCollapsed}
+        onSelect={viewModel.highlightEvent}
+      />
+
       <div className="pem-announcer pem-sr-only" aria-live="polite">
-        {model.snapshot.storeId} · {model.snapshot.counts.entities} entities · {dirty} dirty · {errors} errors
+        {model.snapshot.storeId} · {model.snapshot.snapshots.mode === "live" ? "Live graph" : "Graph rewound"}
       </div>
     </section>
   );

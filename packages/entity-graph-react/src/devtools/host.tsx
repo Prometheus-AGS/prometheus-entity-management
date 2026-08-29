@@ -15,6 +15,7 @@ import type { GraphStore } from "@prometheus-ags/entity-graph-core";
 import type { AttachGraphDevtoolsOptions } from "@prometheus-ags/entity-graph-core/devtools";
 import {
   EntityGraphDevtoolsProvider,
+  useEntityGraphDevtoolsSnapshot,
   type EntityGraphDevtoolsStoreDefinition,
 } from "./provider";
 import { isEntityGraphDevtoolsEnabled, type EntityGraphDevtoolsMode } from "./mode";
@@ -31,6 +32,7 @@ import {
   type EntityGraphDevtoolsShortcut,
 } from "./preferences";
 import { ENTITY_GRAPH_DEVTOOLS_STYLES } from "./styles";
+import type { EntityGraphInspectorStateAdapter } from "./state";
 
 let inspectorEntry: ReturnType<typeof importInspector> | null = null;
 
@@ -58,6 +60,7 @@ export interface EntityGraphDevtoolsProps {
   fallback?: ReactNode;
   preferenceKey?: string;
   shortcut?: EntityGraphDevtoolsShortcut | false;
+  stateAdapter?: EntityGraphInspectorStateAdapter;
 }
 
 /** SSR-safe explicit host that isolates the opt-in launcher and lazy inspector in one Shadow Root. */
@@ -69,6 +72,7 @@ export function EntityGraphDevtools({
   fallback = <div className="pem-devtools-loading" role="status">Loading Graph DevTools…</div>,
   preferenceKey = ENTITY_GRAPH_DEVTOOLS_PREFERENCE_KEY,
   shortcut = DEFAULT_ENTITY_GRAPH_DEVTOOLS_SHORTCUT,
+  stateAdapter,
 }: EntityGraphDevtoolsProps) {
   const enabled = isEntityGraphDevtoolsEnabled(mode);
   const hostRef = useRef<HTMLDivElement | null>(null);
@@ -93,7 +97,12 @@ export function EntityGraphDevtools({
     { ref: hostRef, "data-pem-devtools-host": "" },
     shadowRoot && createPortal(
       <EntityGraphDevtoolsProvider store={store} stores={stores} options={options}>
-        <EntityGraphDevtoolsSurface fallback={fallback} preferenceKey={preferenceKey} shortcut={shortcut} />
+        <EntityGraphDevtoolsSurface
+          fallback={fallback}
+          preferenceKey={preferenceKey}
+          shortcut={shortcut}
+          stateAdapter={stateAdapter}
+        />
       </EntityGraphDevtoolsProvider>,
       shadowRoot,
     ),
@@ -104,9 +113,16 @@ interface EntityGraphDevtoolsSurfaceProps {
   fallback: ReactNode;
   preferenceKey: string;
   shortcut: EntityGraphDevtoolsShortcut | false;
+  stateAdapter?: EntityGraphInspectorStateAdapter;
 }
 
-function EntityGraphDevtoolsSurface({ fallback, preferenceKey, shortcut }: EntityGraphDevtoolsSurfaceProps) {
+function EntityGraphDevtoolsSurface({
+  fallback,
+  preferenceKey,
+  shortcut,
+  stateAdapter,
+}: EntityGraphDevtoolsSurfaceProps) {
+  const snapshot = useEntityGraphDevtoolsSnapshot();
   const launcherRef = useRef<HTMLButtonElement | null>(null);
   const settingsTriggerRef = useRef<HTMLButtonElement | null>(null);
   const panelRef = useRef<HTMLElement | null>(null);
@@ -130,6 +146,7 @@ function EntityGraphDevtoolsSurface({ fallback, preferenceKey, shortcut }: Entit
     ? entityGraphDevtoolsAriaShortcut(resolvedShortcut)
     : undefined;
   const visible = preferencesReady && !hiddenUntilReload && !preferences.hiddenForBrowser;
+  const attentionCount = (snapshot?.counts.patchedEntities ?? 0) + (snapshot?.counts.errors ?? 0);
 
   useEffect(() => {
     setPreferences(readEntityGraphDevtoolsPreferences(preferenceKey));
@@ -213,7 +230,7 @@ function EntityGraphDevtoolsSurface({ fallback, preferenceKey, shortcut }: Entit
             ref={launcherRef}
             type="button"
             className="pem-launcher"
-            aria-label={panelOpen ? "Close Prometheus Graph DevTools" : "Open Prometheus Graph DevTools"}
+            aria-label={`${panelOpen ? "Close" : "Open"} Prometheus Graph DevTools${attentionCount > 0 ? `, ${attentionCount} dirty entities or errors` : ""}`}
             aria-keyshortcuts={shortcutLabel}
             aria-expanded={panelOpen}
             aria-controls="pem-devtools-panel"
@@ -223,6 +240,11 @@ function EntityGraphDevtoolsSurface({ fallback, preferenceKey, shortcut }: Entit
           >
             <span className="pem-launcher-mark" aria-hidden="true">P</span>
             <span className="pem-launcher-label">Graph</span>
+            {attentionCount > 0 && (
+              <span className="pem-launcher-badge" aria-hidden="true">
+                {new Intl.NumberFormat().format(attentionCount)}
+              </span>
+            )}
           </button>
           {!panelOpen && (
             <button
@@ -289,7 +311,7 @@ function EntityGraphDevtoolsSurface({ fallback, preferenceKey, shortcut }: Entit
           )}
           <div className="pem-panel-content">
             <Suspense fallback={fallback}>
-              <LazyInspector />
+              <LazyInspector stateAdapter={stateAdapter} />
             </Suspense>
           </div>
         </section>

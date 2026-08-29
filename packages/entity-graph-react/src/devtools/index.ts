@@ -24,6 +24,16 @@ export {
   readEntityGraphDevtoolsPreferences,
   writeEntityGraphDevtoolsPreferences,
 } from "./preferences";
+export {
+  createEntityGraphInspectorUrlStateAdapter,
+  normalizeEntityGraphInspectorState,
+  parseEntityGraphInspectorState,
+  serializeEntityGraphInspectorState,
+} from "./state";
+export type {
+  EntityGraphInspectorState,
+  EntityGraphInspectorStateAdapter,
+} from "./state";
 export type {
   EntityGraphDevtoolsLauncherForm,
   EntityGraphDevtoolsLauncherPosition,

@@ -13,6 +13,11 @@ import type { EntityGraphDevtoolsValuePolicyMode } from "../provider";
 import { InspectorVirtualList } from "../components/virtual-list";
 import { InspectorDiff, InspectorValue } from "../components/value-inspector";
 import { inspectorEntityIdentity } from "../entity-identity";
+import {
+  affectedEntitiesForEvent,
+  affectedViewIdsForEvent,
+  graphPulseImpact,
+} from "../causality";
 
 export interface EntitiesWorkspaceProps {
   search: string;
@@ -45,6 +50,13 @@ export interface EntitiesWorkspaceProps {
   onSelectEvent(event: GraphDevtoolsEvent): void;
   narrowDetailOpen: boolean;
   onCloseNarrowDetail(): void;
+  navigatorCollapsed: boolean;
+  onToggleNavigatorCollapsed(): void;
+  causalRailCollapsed: boolean;
+  onToggleCausalRailCollapsed(): void;
+  causalEvent: GraphDevtoolsEvent | null;
+  causalEntityKeys: ReadonlySet<string>;
+  causalViewIds: ReadonlySet<string>;
 }
 
 const valueTabs: readonly EntityValueTab[] = ["original", "patch", "live", "diff"];
@@ -54,12 +66,27 @@ export function EntitiesWorkspace(props: EntitiesWorkspaceProps) {
     <section
       className="pem-workspace pem-entity-workspace"
       data-narrow-detail={props.narrowDetailOpen}
+      data-navigator-collapsed={props.navigatorCollapsed}
+      data-causal-rail-collapsed={props.causalRailCollapsed}
       aria-labelledby="pem-entities-title"
     >
-      <aside className="pem-navigator" aria-label="Entity navigator">
+      <aside className="pem-navigator" aria-label="Entity navigator" data-collapsed={props.navigatorCollapsed}>
+        {props.navigatorCollapsed ? (
+          <button
+            type="button"
+            className="pem-rail-restore"
+            aria-label="Expand entity navigator"
+            onClick={props.onToggleNavigatorCollapsed}
+          >→</button>
+        ) : <>
         <div className="pem-navigator-heading">
-          <p className="pem-eyebrow">Find</p>
-          <h2 id="pem-entities-title">Entities</h2>
+          <div><p className="pem-eyebrow">Find</p><h2 id="pem-entities-title">Entities</h2></div>
+          <button
+            type="button"
+            className="pem-rail-collapse"
+            aria-label="Collapse entity navigator"
+            onClick={props.onToggleNavigatorCollapsed}
+          >←</button>
         </div>
         <label className="pem-search">
           <span className="pem-sr-only">Search entities</span>
@@ -85,7 +112,7 @@ export function EntitiesWorkspace(props: EntitiesWorkspaceProps) {
         {props.entities.length === 0 ? (
           <p className="pem-empty">No entities match these filters.</p>
         ) : (
-          <InspectorVirtualList
+          <InspectorVirtualList<GraphDevtoolsEntityRecord>
             items={props.entities}
             getKey={inspectorEntityIdentity}
             estimateSize={38}
@@ -95,6 +122,7 @@ export function EntitiesWorkspace(props: EntitiesWorkspaceProps) {
                 type="button"
                 className="pem-entity-row"
                 data-selected={entity.type === props.selected?.type && entity.id === props.selected?.id}
+                data-causal={props.causalEntityKeys.has(inspectorEntityIdentity(entity))}
                 onClick={() => props.onSelect(entity)}
                 title={`${entity.type} / ${entity.id}`}
               >
@@ -111,6 +139,7 @@ export function EntitiesWorkspace(props: EntitiesWorkspaceProps) {
             )}
           />
         )}
+        </>}
       </aside>
 
       <div className="pem-entity-detail">
@@ -119,6 +148,8 @@ export function EntitiesWorkspace(props: EntitiesWorkspaceProps) {
           <p className="pem-empty pem-empty-large">Select an entity to inspect its graph state.</p>
         )}
       </div>
+
+      <CausalTraceRail {...props} />
     </section>
   );
 }
@@ -159,6 +190,19 @@ function EntityDetail(props: EntitiesWorkspaceProps & { selected: GraphDevtoolsE
           </div>
         </div>
       </header>
+
+      <dl className="pem-readout-list pem-entity-confirmation">
+        <div>
+          <dt>Original last confirmed</dt>
+          <dd>{entity.entityState.lastFetchedAt ? (
+            <time dateTime={entity.entityState.lastFetchedAt}>
+              {new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "medium" }).format(
+                new Date(entity.entityState.lastFetchedAt),
+              )}
+            </time>
+          ) : "Not recorded"}</dd>
+        </div>
+      </dl>
 
       {entity.entityState.error && (
         <div className="pem-error" role="alert">
@@ -267,11 +311,15 @@ function EntityDetail(props: EntitiesWorkspaceProps & { selected: GraphDevtoolsE
           {props.views.length === 0 ? <p className="pem-empty">No registered view currently contains this entity.</p> : (
             <ul className="pem-compact-list">
               {props.views.map((view) => (
-                <li key={view.viewId}>
+                <li key={view.viewId} data-causal={props.causalViewIds.has(view.viewId)}>
                   <button type="button" onClick={() => props.onSelectView(view)}>
                     <span>{view.label}</span>
                     <code translate="no">{view.viewId}</code>
-                    <small>{view.kind}</small>
+                    <small>
+                      position {view.membership.findIndex((member) => (
+                        member.type === entity.type && member.id === entity.id
+                      )) + 1} · {view.subscriberCount} rendered subscriber{view.subscriberCount === 1 ? "" : "s"}
+                    </small>
                   </button>
                 </li>
               ))}
@@ -295,6 +343,69 @@ function EntityDetail(props: EntitiesWorkspaceProps & { selected: GraphDevtoolsE
         </DetailSection>
       </div>
     </article>
+  );
+}
+
+function CausalTraceRail(props: EntitiesWorkspaceProps) {
+  if (props.causalRailCollapsed) {
+    return (
+      <aside className="pem-causal-rail" data-collapsed="true" aria-label="Causal trace">
+        <button
+          type="button"
+          className="pem-rail-restore"
+          aria-label="Expand causal trace"
+          onClick={props.onToggleCausalRailCollapsed}
+        >←</button>
+      </aside>
+    );
+  }
+
+  const event = props.causalEvent;
+  const affectedEntities = event ? affectedEntitiesForEvent(event) : [];
+  const affectedViews = event ? affectedViewIdsForEvent(event) : [];
+  return (
+    <aside className="pem-causal-rail" aria-labelledby="pem-causal-title">
+      <header className="pem-causal-heading">
+        <div><p className="pem-eyebrow">Selected publication</p><h2 id="pem-causal-title">Causal trace</h2></div>
+        <button
+          type="button"
+          className="pem-rail-collapse"
+          aria-label="Collapse causal trace"
+          onClick={props.onToggleCausalRailCollapsed}
+        >→</button>
+      </header>
+      {!event ? <p className="pem-empty">Select a Graph Pulse segment to trace its real graph impact.</p> : (
+        <ol className="pem-causal-path">
+          <li>
+            <span>Event</span>
+            <button type="button" onClick={() => props.onSelectEvent(event)}>
+              <strong>{eventTitle(event)}</strong>
+              <small>{formatEventTime(event)} · {graphPulseImpact(event)}</small>
+            </button>
+          </li>
+          <li>
+            <span>Entities</span>
+            {affectedEntities.length === 0 ? <small>None attributed</small> : affectedEntities.map((entity) => (
+              <button key={`${entity.type}\u0000${entity.id}`} type="button" onClick={() => props.onSelectIdentity(entity.type, entity.id)}>
+                <code translate="no">{entity.type}/{entity.id}</code>
+              </button>
+            ))}
+          </li>
+          <li>
+            <span>Dirty fields</span>
+            {props.selected && props.causalEntityKeys.has(inspectorEntityIdentity(props.selected)) && props.diff.length > 0
+              ? props.diff.map((field) => <code key={field.path} translate="no">{field.path}</code>)
+              : <small>No affected dirty fields retained</small>}
+          </li>
+          <li>
+            <span>Registered views</span>
+            {affectedViews.length === 0 ? <small>None attributed</small> : affectedViews.map((viewId) => (
+              <code key={viewId} translate="no">{viewId}</code>
+            ))}
+          </li>
+        </ol>
+      )}
+    </aside>
   );
 }
 

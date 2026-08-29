@@ -1,5 +1,22 @@
 # Session log
 
+## 2026-08-29 — React DevTools accepted UI specification implementation
+
+- Completed task 10 of `v3-devtools-react-inspector` at canonical revision 377
+  and restored the parent change to in-progress at revision 378.
+- Added controller-owned affected entity/view attribution, ordered registered
+  view membership, rendered subscriber counts, Graph Pulse, cross-workspace
+  causal selection, collapsible navigator/trace rails, original/patch/live/diff
+  inspection, entity history, view last-change truth, Activity correlation and
+  retention details, Overview event rate, a serializable URL state adapter, and
+  the accepted responsive forensic visual system.
+- Core typecheck, scoped task-file ESLint, source-contract assertions, and diff
+  hygiene passed. React's package typecheck remained intentionally unclaimed
+  because the unbuilt core declarations do not yet contain the new protocol
+  fields; the dependency-ordered packed gate remains task 11.
+- No unit, component, isolated, mock-backed, snapshot, partial integration,
+  full integration, or build gate ran. Sovereign sync was not changed.
+
 ## 2026-08-03 — Full 3.0 release execution resumed
 
 - Restored the signed KBD authority after compaction and confirmed that the live

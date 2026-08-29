@@ -39,8 +39,8 @@ interface ViewEntry {
   registrations: Map<symbol, ViewRegistrationState>;
 }
 
-function sortedUnique(values: readonly string[]): string[] {
-  return [...new Set(values)].sort();
+function orderedUnique(values: readonly string[]): string[] {
+  return [...new Set(values)];
 }
 
 function sameValues(left: readonly string[], right: readonly string[]): boolean {
@@ -52,9 +52,7 @@ function membershipFor(entry: ViewEntry): GraphDevtoolsViewMembership[] {
   for (const registration of entry.registrations.values()) {
     for (const id of registration.entityIds) entityIds.add(id);
   }
-  return [...entityIds]
-    .sort()
-    .map((id) => ({ type: entry.definition.entityType, id }));
+  return [...entityIds].map((id) => ({ type: entry.definition.entityType, id }));
 }
 
 function viewRecord(entry: ViewEntry, state: GraphState): GraphDevtoolsViewRecord {
@@ -74,6 +72,7 @@ function viewRecord(entry: ViewEntry, state: GraphState): GraphDevtoolsViewRecor
     registeredAt: entry.registeredAt,
     lastRenderedAt,
     renderCount: registrations.reduce((total, registration) => total + registration.renderCount, 0),
+    subscriberCount: registrations.length,
     membership,
     list: entry.definition.kind === "list"
       ? {
@@ -172,7 +171,7 @@ export function createGraphDevtoolsViewRegistry(
           const registration = currentEntry?.registrations.get(token);
           if (!currentEntry || !registration) return;
           const before = membershipFor(currentEntry);
-          registration.entityIds = sortedUnique(entityIds);
+          registration.entityIds = orderedUnique(entityIds);
           registration.renderCount += 1;
           registration.lastRenderedAt = new Date().toISOString();
           const after = membershipFor(currentEntry);

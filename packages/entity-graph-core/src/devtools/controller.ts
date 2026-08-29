@@ -5,6 +5,7 @@ import {
 } from "../devtools-compatibility-bridge";
 import {
   advanceGraphDevtoolsEntityRevisions,
+  graphDevtoolsEntityIdentitiesForStateKey,
   graphDevtoolsEntityIdentityKey,
   projectGraphDevtoolsEntityRecords,
 } from "./inspection";
@@ -41,6 +42,7 @@ import {
   type GraphDevtoolsValuePolicy,
   type GraphDevtoolsViewDefinition,
   type GraphDevtoolsViewEvent,
+  type GraphDevtoolsViewMembership,
   type GraphDevtoolsViewsSnapshot,
 } from "./protocol";
 import { createGraphDevtoolsSnapshotHistory } from "./time-travel";
@@ -443,6 +445,63 @@ function createController(
     publish(event);
   });
 
+  const affectedProjection = (
+    changes: GraphDevtoolsMutationEvent["payload"]["changes"],
+    previous: GraphState,
+    current: GraphState,
+  ): { affectedEntities: GraphDevtoolsViewMembership[]; affectedViewIds: string[] } => {
+    const identities = new Map<string, GraphDevtoolsViewMembership>();
+    const changedListKeys = new Set<string>();
+    for (const change of changes) {
+      if ((change.category === "entity" || change.category === "patch") && change.id !== undefined) {
+        identities.set(graphDevtoolsEntityIdentityKey(change.key, change.id), {
+          type: change.key,
+          id: change.id,
+        });
+      } else if (change.category === "entity-state" || change.category === "sync") {
+        const stateIdentities = [
+          ...graphDevtoolsEntityIdentitiesForStateKey(previous, change.key),
+          ...graphDevtoolsEntityIdentitiesForStateKey(current, change.key),
+        ];
+        for (const identity of stateIdentities) {
+          identities.set(graphDevtoolsEntityIdentityKey(identity.type, identity.id), identity);
+        }
+      } else if (change.category === "list") {
+        changedListKeys.add(change.key);
+      }
+    }
+
+    const views = viewRegistry.getSnapshot().views;
+    const affectedViewIds = new Set<string>();
+    for (const view of views) {
+      if (view.queryKey !== null && changedListKeys.has(view.queryKey)) {
+        affectedViewIds.add(view.viewId);
+        const previousIds = previous.lists[view.queryKey]?.ids ?? [];
+        const currentIds = current.lists[view.queryKey]?.ids ?? [];
+        const previousPositions = new Map(previousIds.map((id, index) => [id, index]));
+        const currentPositions = new Map(currentIds.map((id, index) => [id, index]));
+        const ids = new Set([...previousIds, ...currentIds]);
+        for (const id of ids) {
+          if (previousPositions.get(id) === currentPositions.get(id)) continue;
+          identities.set(graphDevtoolsEntityIdentityKey(view.entityType, id), {
+            type: view.entityType,
+            id,
+          });
+        }
+      }
+      if (view.membership.some((member) => (
+        identities.has(graphDevtoolsEntityIdentityKey(member.type, member.id))
+      ))) {
+        affectedViewIds.add(view.viewId);
+      }
+    }
+
+    return {
+      affectedEntities: [...identities.values()],
+      affectedViewIds: [...affectedViewIds].sort(),
+    };
+  };
+
   const unsubscribeStore = store.subscribe((current: GraphState, previous: GraphState) => {
     if (disposed || internalReplayDepth > 0) return;
     const startedAt = nowDuration();
@@ -471,6 +530,7 @@ function createController(
     if (changes.length === 0) return;
     leaveRewindForMutation();
     advanceGraphDevtoolsEntityRevisions(changes, entityRevisions, current, entityValueRevisions);
+    const affected = affectedProjection(changes, previous, current);
     const base = nextBase();
     const event: GraphDevtoolsMutationEvent = {
       ...base,
@@ -480,6 +540,7 @@ function createController(
         valuesTruncated: false,
         changesOmitted: 0,
         changes,
+        ...affected,
         before: collectGraphDevtoolsCounts(previous),
         after: collectGraphDevtoolsCounts(current),
         projectionDurationMs: Math.max(0, nowDuration() - startedAt),

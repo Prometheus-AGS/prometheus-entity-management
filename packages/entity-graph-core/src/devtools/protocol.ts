@@ -132,6 +132,10 @@ export interface GraphDevtoolsMutationEvent extends GraphDevtoolsEventBase {
     /** Capture outcome at this publication; later eviction does not rewrite the event. */
     snapshot: GraphDevtoolsSnapshotReference;
     changes: GraphDevtoolsChange[];
+    /** Entity identities touched by this exact publication. */
+    affectedEntities?: GraphDevtoolsViewMembership[];
+    /** Registered views affected at this publication boundary. */
+    affectedViewIds?: string[];
     before: GraphDevtoolsCounts;
     after: GraphDevtoolsCounts;
     /** Time spent projecting the already-completed store publication. */
@@ -285,6 +289,8 @@ export interface GraphDevtoolsViewRecord extends GraphDevtoolsViewDefinition {
   registeredAt: string;
   lastRenderedAt: string | null;
   renderCount: number;
+  /** Active rendered registrations contributing to this view record. */
+  subscriberCount: number;
   membership: GraphDevtoolsViewMembership[];
   list: GraphDevtoolsViewListStats | null;
 }

@@ -5,6 +5,7 @@ import type {
 } from "@prometheus-ags/entity-graph-core/devtools";
 import { InspectorVirtualList } from "../components/virtual-list";
 import { eventDetail, eventTitle, formatEventTime } from "../event-format";
+import { affectedEntitiesForEvent, affectedViewIdsForEvent } from "../causality";
 import type { ActivityTypeFilter } from "../view-model";
 
 export interface ActivityWorkspaceProps {
@@ -112,6 +113,7 @@ export function ActivityWorkspace(props: ActivityWorkspaceProps) {
               >
                 <span className="pem-event-sequence">#{event.sequence}</span>
                 <span className="pem-event-copy"><strong>{eventTitle(event)}</strong><small>{eventDetail(event)}</small></span>
+                <code className="pem-correlation" translate="no">{event.correlationId.slice(0, 8)}</code>
                 <time dateTime={event.observedAt}>{formatEventTime(event)}</time>
               </button>
             )}
@@ -160,9 +162,37 @@ function EventDetail({ event }: { event: GraphDevtoolsEvent }) {
 }
 
 function MutationDetail({ event }: { event: Extract<GraphDevtoolsEvent, { type: "mutation" }> }) {
+  const affectedEntities = affectedEntitiesForEvent(event);
+  const affectedViews = affectedViewIdsForEvent(event);
   return (
-    <section className="pem-detail-section">
+    <section className="pem-detail-section pem-mutation-detail">
       <div className="pem-card-heading"><h3>Publication changes</h3><span>{event.payload.changes.length}</span></div>
+      {(event.payload.valuesTruncated || event.payload.changesOmitted > 0) && (
+        <p className="pem-retention-warning" role="status">
+          Retention limit applied: {event.payload.valuesTruncated ? "some values were omitted" : "values retained"}
+          {event.payload.changesOmitted > 0 ? `; ${event.payload.changesOmitted} semantic changes were omitted` : ""}.
+        </p>
+      )}
+      <dl className="pem-readout-list pem-impact-readouts">
+        <div><dt>Affected entities</dt><dd>{affectedEntities.length}</dd></div>
+        <div><dt>Affected registered views</dt><dd>{affectedViews.length}</dd></div>
+        <div><dt>Projection time</dt><dd>{event.payload.projectionDurationMs.toFixed(2)} ms</dd></div>
+        <div><dt>Entity count</dt><dd>{event.payload.before.entities} → {event.payload.after.entities}</dd></div>
+      </dl>
+      {affectedEntities.length > 0 && (
+        <div className="pem-impact-identities">
+          <strong>Entities</strong>
+          {affectedEntities.map((entity) => (
+            <code key={`${entity.type}\u0000${entity.id}`} translate="no">{entity.type}/{entity.id}</code>
+          ))}
+        </div>
+      )}
+      {affectedViews.length > 0 && (
+        <div className="pem-impact-identities">
+          <strong>Views</strong>
+          {affectedViews.map((viewId) => <code key={viewId} translate="no">{viewId}</code>)}
+        </div>
+      )}
       <ul className="pem-change-list">
         {event.payload.changes.map((change, index) => (
           <li key={`${change.category}:${change.key}:${change.id ?? ""}:${index}`}>

@@ -82,9 +82,9 @@
     {
       "id": "10",
       "title": "Implement the accepted ui-spec end to end: automatic development-mode lazy bootstrap and visible FAB; host mode plus keyboard and persisted hide/restore controls; dock/floating responsive inspector; Overview, Entities, Views, and Activity workspaces; Graph Pulse causality; original/patch/live dirty diffs; rendered-view membership; entity history; accessible keyboard and screen-reader workflows.",
-      "done": false,
-      "doneAt": null,
-      "doneBy": null,
+      "done": true,
+      "doneAt": "2026-08-29T22:52:51Z",
+      "doneBy": "codex",
       "files": [
         "packages/entity-graph-react/src/devtools",
         ".kbd-orchestrator/phases/v3-devtools-parity/ui-spec.md"
