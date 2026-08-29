@@ -1498,3 +1498,35 @@
 - Phase remains 2/9 changes complete. Change 3 is 1/7 executable tasks complete;
   next task replaces global snapshot/cursor ownership with controller-owned
   histories whose mutation events reference captured snapshots.
+
+## 2026-08-29 — DevTools time travel task 2/7
+
+- Added a controller-local snapshot-history implementation under the optional
+  `./devtools` production path. Each controller captures an initial baseline
+  and the complete five-field graph data slice after every semantic graph
+  publication; stores never share cursors, payloads, or lifecycle.
+- Snapshot references are monotonic and typed as `retained` or `unavailable`
+  (`retention-disabled`, `capture-failed`, or `oversize`). Retention enforces
+  both the configured count and byte ceilings by evicting whole oldest
+  snapshots, and reads deep-clone retained data to prevent aliasing.
+- Mutation events now reference their post-publication snapshot capture.
+  Projection-failure diagnostics also retain a capture reference so an
+  unprojectable graph publication is not silently absent from time history.
+- Added truthful capability/status metadata for snapshot count, bytes,
+  baseline, oldest/newest/latest cursors, and the last unavailable capture.
+  Controllers with either snapshot ceiling set to zero do not advertise the
+  `snapshot-history` feature.
+- Security boundary: complete graph values remain inside controller-local
+  snapshot memory; event and transport envelopes contain only cursor/status/
+  size metadata. No new serialized path can bypass the existing host-owned
+  value policy.
+- Disposal clears retained snapshot payloads. Event history clearing remains
+  independent, matching the frozen policy that semantic events and rewind
+  payloads have separate retention.
+- No unit, isolated, component, mock-backed, snapshot, partial integration,
+  typecheck, or build ran. Signed task completion and both after-hooks passed;
+  the known incomplete-change projection reset was restored through a signed
+  transition.
+- Phase remains 2/9 changes complete. Change 3 is 2/7 executable tasks complete;
+  next task implements rewind, exact return-to-live, replay markers, and
+  mutation-while-rewound ordering.

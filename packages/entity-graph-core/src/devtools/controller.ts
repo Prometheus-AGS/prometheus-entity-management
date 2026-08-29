@@ -21,12 +21,14 @@ import {
   type GraphDevtoolsRestoreEntityPreviewPayload,
   type GraphDevtoolsResult,
   type GraphDevtoolsSnapshot,
+  type GraphDevtoolsSnapshotHistoryStatus,
   type GraphDevtoolsTransport,
   type GraphDevtoolsValuePolicy,
   type GraphDevtoolsViewDefinition,
   type GraphDevtoolsViewEvent,
   type GraphDevtoolsViewsSnapshot,
 } from "./protocol";
+import { createGraphDevtoolsSnapshotHistory } from "./time-travel";
 import {
   createGraphDevtoolsViewRegistry,
   type GraphDevtoolsViewRegistration,
@@ -44,6 +46,8 @@ export interface AttachGraphDevtoolsOptions {
   historyLimit?: number;
   historyBytesLimit?: number;
   eventBytesLimit?: number;
+  snapshotLimit?: number;
+  snapshotBytesLimit?: number;
   values?: GraphDevtoolsValuePolicy;
 }
 
@@ -53,6 +57,7 @@ export interface GraphDevtoolsController {
   getSnapshot(): GraphDevtoolsSnapshot;
   getHistory(): ReadonlyArray<GraphDevtoolsEvent>;
   getHistoryStatus(): GraphDevtoolsHistoryStatus;
+  getSnapshotHistoryStatus(): GraphDevtoolsSnapshotHistoryStatus;
   getEntityRecords(): GraphDevtoolsEntityRecordsSnapshot;
   getViews(): GraphDevtoolsViewsSnapshot;
   getRelationships(): GraphDevtoolsRelationshipsSnapshot;
@@ -158,13 +163,34 @@ function createController(
   const historyLimit = boundedLimit(options.historyLimit, 500);
   const historyBytesLimit = boundedLimit(options.historyBytesLimit, 5 * 1024 * 1024);
   const eventBytesLimit = boundedLimit(options.eventBytesLimit, 256 * 1024, 1024);
+  const snapshotLimit = boundedLimit(options.snapshotLimit, 50);
+  const snapshotBytesLimit = boundedLimit(options.snapshotBytesLimit, 10 * 1024 * 1024);
   const valuePolicy = options.values ?? { mode: "metadata-only" };
   const capabilities: GraphDevtoolsCapabilities = {
     protocolVersion: GRAPH_DEVTOOLS_PROTOCOL_VERSION,
     metadataOnlyByDefault: true,
     commands: ["get-capabilities", "get-snapshot", "get-history", "get-history-status", "get-entity-records", "get-views", "get-relationships", "preview-entity-patch", "restore-entity-preview", "clear-history"],
-    features: ["semantic-events", "diagnostic-events", "bounded-history", "multi-client", "multi-store", "entity-inspection", "view-inspection", "relationship-inspection", "local-preview"],
-    limits: { historyEvents: historyLimit, historyBytes: historyBytesLimit, eventBytes: eventBytesLimit },
+    features: [
+      "semantic-events",
+      "diagnostic-events",
+      "bounded-history",
+      "multi-client",
+      "multi-store",
+      "entity-inspection",
+      "view-inspection",
+      "relationship-inspection",
+      "local-preview",
+      ...(snapshotLimit > 0 && snapshotBytesLimit > 0
+        ? ["snapshot-history" as const]
+        : []),
+    ],
+    limits: {
+      historyEvents: historyLimit,
+      historyBytes: historyBytesLimit,
+      eventBytes: eventBytesLimit,
+      snapshots: snapshotLimit,
+      snapshotBytes: snapshotBytesLimit,
+    },
   };
   const listeners = new Set<(event: GraphDevtoolsEvent) => void>();
   const history: GraphDevtoolsEvent[] = [];
@@ -177,6 +203,11 @@ function createController(
   let nextClientNumber = 1;
   let disposed = false;
   let projectionFailureRevision = 0;
+  const snapshotHistory = createGraphDevtoolsSnapshotHistory({
+    snapshotLimit,
+    snapshotBytesLimit,
+  });
+  snapshotHistory.capture(store.getState(), null);
 
   const nextBase = () => {
     const current = ++sequence;
@@ -299,12 +330,14 @@ function createController(
       // controller-wide epoch so every active preview refuses a possibly
       // destructive restore rather than treating an unknown publication as safe.
       projectionFailureRevision += 1;
+      const base = nextBase();
       const event: GraphDevtoolsDiagnosticEvent = {
-        ...nextBase(),
+        ...base,
         type: "diagnostic",
         payload: {
           code: "projection-failed",
           message: "A graph publication could not be projected for DevTools.",
+          snapshot: snapshotHistory.capture(current, base.sequence),
         },
       };
       publish(event);
@@ -312,10 +345,12 @@ function createController(
     }
     if (changes.length === 0) return;
     advanceGraphDevtoolsEntityRevisions(changes, entityRevisions, current, entityValueRevisions);
+    const base = nextBase();
     const event: GraphDevtoolsMutationEvent = {
-      ...nextBase(),
+      ...base,
       type: "mutation",
       payload: {
+        snapshot: snapshotHistory.capture(current, base.sequence),
         valuesTruncated: false,
         changesOmitted: 0,
         changes,
@@ -348,6 +383,7 @@ function createController(
         capturedAt: new Date().toISOString(),
         counts: collectGraphDevtoolsCounts(store.getState()),
         history: controller.getHistoryStatus(),
+        snapshots: controller.getSnapshotHistoryStatus(),
       };
     },
     getHistory() {
@@ -362,6 +398,9 @@ function createController(
         oldestSequence: history[0]?.sequence ?? null,
         newestSequence: history.length > 0 ? history[history.length - 1]!.sequence : null,
       };
+    },
+    getSnapshotHistoryStatus() {
+      return snapshotHistory.getStatus();
     },
     getEntityRecords() {
       return projectGraphDevtoolsEntityRecords(
@@ -507,6 +546,7 @@ function createController(
     entityValueRevisions.clear();
     viewRegistry.dispose();
     previewController.dispose();
+    snapshotHistory.dispose();
   };
 
   publishLifecycle("attached");

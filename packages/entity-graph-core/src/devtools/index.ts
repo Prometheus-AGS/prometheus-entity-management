@@ -30,6 +30,8 @@ export type {
   GraphDevtoolsRelationshipsSnapshot,
   GraphDevtoolsResult,
   GraphDevtoolsSnapshot,
+  GraphDevtoolsSnapshotHistoryStatus,
+  GraphDevtoolsSnapshotReference,
   GraphDevtoolsTransport,
   GraphDevtoolsValueContext,
   GraphDevtoolsValuePolicy,

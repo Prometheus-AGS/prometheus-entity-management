@@ -18,9 +18,9 @@
     {
       "id": "2",
       "title": "Replace global snapshot/cursor state with controller-owned histories whose events reference captured snapshots.",
-      "done": false,
-      "doneAt": null,
-      "doneBy": null,
+      "done": true,
+      "doneAt": "2026-08-29T19:22:44Z",
+      "doneBy": "claude-code",
       "files": [
         "packages/entity-graph-core/src/devtools"
       ],

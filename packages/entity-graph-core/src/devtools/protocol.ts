@@ -62,12 +62,45 @@ export interface GraphDevtoolsCapabilities {
     | "view-inspection"
     | "relationship-inspection"
     | "local-preview"
+    | "snapshot-history"
   >;
   limits: {
     historyEvents: number;
     historyBytes: number;
     eventBytes: number;
+    snapshots: number;
+    snapshotBytes: number;
   };
+}
+
+export type GraphDevtoolsSnapshotReference =
+  | {
+      cursor: number;
+      capturedAt: string;
+      eventSequence: number | null;
+      status: "retained";
+      bytes: number;
+    }
+  | {
+      cursor: number;
+      capturedAt: string;
+      eventSequence: number | null;
+      status: "unavailable";
+      reason: "retention-disabled" | "capture-failed" | "oversize";
+    };
+
+export interface GraphDevtoolsSnapshotHistoryStatus {
+  mode: "live" | "rewound";
+  cursor: number | null;
+  retainedSnapshots: number;
+  retainedBytes: number;
+  snapshotLimit: number;
+  byteLimit: number;
+  baselineCursor: number | null;
+  oldestCursor: number | null;
+  newestCursor: number | null;
+  latestCursor: number | null;
+  lastUnavailable: Extract<GraphDevtoolsSnapshotReference, { status: "unavailable" }> | null;
 }
 
 export interface GraphDevtoolsEventBase {
@@ -84,6 +117,8 @@ export interface GraphDevtoolsEventBase {
 export interface GraphDevtoolsMutationEvent extends GraphDevtoolsEventBase {
   type: "mutation";
   payload: {
+    /** Capture outcome at this publication; later eviction does not rewrite the event. */
+    snapshot: GraphDevtoolsSnapshotReference;
     changes: GraphDevtoolsChange[];
     before: GraphDevtoolsCounts;
     after: GraphDevtoolsCounts;
@@ -109,6 +144,8 @@ export interface GraphDevtoolsDiagnosticEvent extends GraphDevtoolsEventBase {
   payload: {
     code: "projection-failed";
     message: string;
+    /** The graph publication is still captured even when semantic projection fails. */
+    snapshot: GraphDevtoolsSnapshotReference;
   };
 }
 
@@ -134,6 +171,7 @@ export interface GraphDevtoolsSnapshot {
   capturedAt: string;
   counts: GraphDevtoolsCounts;
   history: GraphDevtoolsHistoryStatus;
+  snapshots: GraphDevtoolsSnapshotHistoryStatus;
 }
 
 export interface GraphDevtoolsHistoryStatus {

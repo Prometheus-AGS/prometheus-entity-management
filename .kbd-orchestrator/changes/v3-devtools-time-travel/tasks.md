@@ -3,7 +3,7 @@
 # Tasks — v3-devtools-time-travel
 
 - [x] 1 Confirm core controller contracts are complete and document the single retention policy.
-- [ ] 2 Replace global snapshot/cursor state with controller-owned histories whose events reference captured snapshots.
+- [x] 2 Replace global snapshot/cursor state with controller-owned histories whose events reference captured snapshots.
 - [ ] 3 Implement rewind, exact return-to-live, internal replay markers, and mutation-while-rewound ordering.
 - [ ] 4 Implement visible expired-history results and bounded import inspection/confirmed-restore validation.
 - [ ] 5 Delegate deprecated root time-travel functions to the default-store controller.
