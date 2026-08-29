@@ -25,7 +25,11 @@ test("the root pnpm lockfile is the only workspace lock and has no external link
   assert.deepEqual(locks, ["pnpm-lock.yaml"]);
   const lock = readFileSync(new URL("pnpm-lock.yaml", root), "utf8");
   assert.doesNotMatch(lock, /specifier:\s+(?:link|file):/);
-  assert.match(lock, /overrides:\n\s+postcss: 8\.5\.25\n\s+sharp: 0\.35\.0/);
+  // Assert the pinned overrides are present, not that they are adjacent: the
+  // overrides block is alphabetically ordered and grows, so an adjacency regex
+  // breaks whenever an unrelated pin lands between two it names.
+  assert.match(lock, /^\s+postcss: 8\.5\.25$/m);
+  assert.match(lock, /^\s+sharp: 0\.35\.0$/m);
 });
 
 test("workspace manifests contain no external link or file dependency", () => {
@@ -66,38 +70,47 @@ test("workflows that verify source provenance check out the complete Git history
   }
 });
 
-test("aggregate CI and release rehearsal install every external certification runtime", () => {
-  for (const path of [".github/workflows/ci.yml", ".github/workflows/publish.yml"]) {
-    const workflow = readFileSync(new URL(path, root), "utf8");
-    assert.match(
-      workflow,
-      /astral-sh\/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9\.0\.0/,
-      `${path} must pin the reviewed setup-uv action`,
-    );
-    assert.match(workflow, /version: "0\.12\.1"/);
-    assert.match(workflow, /pnpm exec playwright install --with-deps chromium/);
-    assert.match(
-      workflow,
-      /cargo \+stable fetch --locked[\s\S]*packages\/entity-graph-tauri\/rust-plugin\/Cargo\.toml/,
-    );
-    assert.match(
-      workflow,
-      /cargo \+1\.88\.0 fetch --locked[\s\S]*tests\/fixtures\/tauri-plugin-host\/Cargo\.toml/,
-    );
-    for (const dependency of [
-      "libwebkit2gtk-4.1-dev",
-      "build-essential",
-      "curl",
-      "wget",
-      "file",
-      "libxdo-dev",
-      "libssl-dev",
-      "libayatana-appindicator3-dev",
-      "librsvg2-dev",
-    ]) {
-      assert.match(workflow, new RegExp(`\\b${dependency.replaceAll(".", "\\.")}\\b`));
-    }
+test("aggregate CI installs every external certification runtime", () => {
+  const workflow = readFileSync(new URL(".github/workflows/ci.yml", root), "utf8");
+  assert.match(
+    workflow,
+    /astral-sh\/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9\.0\.0/,
+    ".github/workflows/ci.yml must pin the reviewed setup-uv action",
+  );
+  assert.match(workflow, /version: "0\.12\.1"/);
+  assert.match(workflow, /pnpm exec playwright install --with-deps chromium/);
+  assert.match(
+    workflow,
+    /cargo \+stable fetch --locked[\s\S]*packages\/entity-graph-tauri\/rust-plugin\/Cargo\.toml/,
+  );
+  assert.match(
+    workflow,
+    /cargo \+1\.88\.0 fetch --locked[\s\S]*tests\/fixtures\/tauri-plugin-host\/Cargo\.toml/,
+  );
+  for (const dependency of [
+    "libwebkit2gtk-4.1-dev",
+    "build-essential",
+    "curl",
+    "wget",
+    "file",
+    "libxdo-dev",
+    "libssl-dev",
+    "libayatana-appindicator3-dev",
+    "librsvg2-dev",
+  ]) {
+    assert.match(workflow, new RegExp(`\\b${dependency.replaceAll(".", "\\.")}\\b`));
   }
+});
+
+test("release publication reuses certified immutable assets without rebuilding", () => {
+  const workflow = readFileSync(new URL(".github/workflows/publish.yml", root), "utf8");
+  assert.match(workflow, /gh release download "\$\{\{ inputs\.release_tag \}\}"/);
+  assert.match(workflow, /--pattern 'SHA256SUMS' --pattern '\*\.tgz'/);
+  assert.match(
+    workflow,
+    /verify-deployment-assets\.sh \.release-assets "\$\{\{ inputs\.candidate_sha \}\}"/,
+  );
+  assert.doesNotMatch(workflow, /pnpm (?:install|run build)|flutter (?:build|test)|cargo (?:build|test)/);
 });
 
 test("intentional dependency holds are explicit and assigned a revisit change", () => {

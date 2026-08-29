@@ -4,53 +4,11 @@
   "threshold": ["critical", "high"],
   "acceptedAdvisories": [
     {
-      "id": 1123911,
-      "package": "js-yaml",
-      "owner": "Travis James",
-      "expiresOn": "2026-11-21",
-      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (postcss-loader > cosmiconfig); not shipped in any published package runtime tree. Reassess at next Docusaurus upgrade."
-    },
-    {
       "id": 1138115,
       "package": "js-yaml",
       "owner": "Travis James",
       "expiresOn": "2026-11-21",
       "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (postcss-loader > cosmiconfig); not shipped in any published package runtime tree. Reassess at next Docusaurus upgrade."
-    },
-    {
-      "id": 1124064,
-      "package": "fast-uri",
-      "owner": "Travis James",
-      "expiresOn": "2026-11-21",
-      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (babel-loader > schema-utils > ajv); not shipped in any published package runtime tree. Reassess at next Docusaurus upgrade."
-    },
-    {
-      "id": 1130720,
-      "package": "fast-uri",
-      "owner": "Travis James",
-      "expiresOn": "2026-11-21",
-      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (babel-loader > schema-utils > ajv); not shipped in any published package runtime tree. Reassess at next Docusaurus upgrade."
-    },
-    {
-      "id": 1145559,
-      "package": "fast-uri",
-      "owner": "Travis James",
-      "expiresOn": "2026-11-21",
-      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (babel-loader > schema-utils > ajv); not shipped in any published package runtime tree. Reassess at next Docusaurus upgrade."
-    },
-    {
-      "id": 1145561,
-      "package": "fast-uri",
-      "owner": "Travis James",
-      "expiresOn": "2026-11-21",
-      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (babel-loader > schema-utils > ajv); not shipped in any published package runtime tree. Reassess at next Docusaurus upgrade."
-    },
-    {
-      "id": 1145636,
-      "package": "fast-uri",
-      "owner": "Travis James",
-      "expiresOn": "2026-11-21",
-      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (babel-loader > schema-utils > ajv); not shipped in any published package runtime tree. Reassess at next Docusaurus upgrade."
     },
     {
       "id": 1138808,
