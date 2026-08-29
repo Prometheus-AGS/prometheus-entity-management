@@ -1473,3 +1473,28 @@
   `.kbd-orchestrator/changes/archive/2026-08-29-v3-devtools-entity-inspection`.
 - Phase `v3-devtools-parity` is now 2/9 changes complete. Next change:
   `v3-devtools-time-travel`.
+
+## 2026-08-29 — DevTools time travel task 1/7
+
+- Confirmed the archived per-store controller contract at commit `dd574d24`:
+  one reference-counted controller per `GraphStore`, one semantic event per
+  completed Zustand publication, monotonic event identity, independent bounded
+  event history, host-owned value policy, and deterministic teardown.
+- Documented the replacement for the legacy time-travel registry in
+  `.kbd-orchestrator/changes/v3-devtools-time-travel/spec.md`. The controller
+  owns one snapshot ring per store, separate from event history, retaining at
+  most 50 whole snapshots and at most 10 MiB; whichever ceiling is reached
+  first drives oldest-whole-snapshot eviction.
+- Frozen stable cursor expiry, initial baseline, protected live-head, internal
+  replay marker, mutation-while-rewound branch ordering, exact return-to-live,
+  inert import inspection, and explicit confirmed restore invariants for
+  downstream TypeScript, React, Dart, and Flutter implementations.
+- Cancelled legacy unit/targeted-test tasks 6–8 and registered tasks 9–10 so
+  production tasks 1–5 are followed by one assembled integration gate and one
+  documentation/refiner/adversarial-review/archive gate.
+- No production code, test, typecheck, or build ran. Signed task completion and
+  both after-hooks passed; the known task projection reset was restored to
+  `in-progress` through a signed change transition.
+- Phase remains 2/9 changes complete. Change 3 is 1/7 executable tasks complete;
+  next task replaces global snapshot/cursor ownership with controller-owned
+  histories whose mutation events reference captured snapshots.

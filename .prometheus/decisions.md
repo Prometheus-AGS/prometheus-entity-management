@@ -83,3 +83,17 @@ publication boundary observes all of them without changing graph ownership or
 duplicating events. Each store owns its reference-counted controller and
 bounded history; values remain metadata-only unless the host explicitly opts
 into a redaction policy.
+
+## 2026-08-29 — Keep one controller-owned time-travel snapshot policy
+
+Each attached DevTools controller owns one snapshot ring for its `GraphStore`,
+separate from event history but governed by one simultaneous count-and-byte
+policy. The defaults retain at most 50 whole snapshots and at most 10 MiB,
+evicting the oldest complete snapshots until both ceilings hold. Stable cursor
+IDs are never reused, and evicted cursors remain visibly expired.
+
+Rationale: event values may be metadata-only, redacted, or independently
+evicted, so event retention cannot safely double as rewind storage. A single
+controller-owned snapshot policy removes the legacy second owner, preserves
+store isolation and deterministic teardown, and gives React and Flutter one
+portable meaning for retention, expiry, rewind, and exact return-to-live.

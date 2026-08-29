@@ -25,12 +25,12 @@
     {
       "blockers": [],
       "id": "v3-devtools-time-travel",
-      "implementation_status": "PENDING",
-      "last_task_completed": null,
-      "next_task_pending": "Confirm core controller contracts are complete and document the single retention policy.",
-      "status": "PENDING",
-      "tasks_done": 0,
-      "tasks_total": 8,
+      "implementation_status": "IN_PROGRESS",
+      "last_task_completed": "Confirm core controller contracts are complete and document the single retention policy.",
+      "next_task_pending": "Replace global snapshot/cursor state with controller-owned histories whose events reference captured snapshots.",
+      "status": "IN_PROGRESS",
+      "tasks_done": 1,
+      "tasks_total": 10,
       "title": "v3-devtools-time-travel — Correct per-store rewind and return-to-live"
     },
     {
@@ -127,19 +127,19 @@
     }
   },
   "conflictCount": 0,
-  "derivedRevision": 312,
+  "derivedRevision": 321,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 312
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 321
   },
   "generatedBy": "kbd-runtime",
   "implementation_completed": 2,
   "implementation_total": 9,
-  "last_updated": "2026-08-29T19:11:06.901188Z",
+  "last_updated": "2026-08-29T19:17:55.882950Z",
   "last_updated_by": "kbd-runtime",
   "migrationStatus": null,
   "parentPhase": null,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
   "schemaVersion": "2",
-  "sourceRevision": 312
+  "sourceRevision": 321
 }

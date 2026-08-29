@@ -1,0 +1,95 @@
+{
+  "changeId": "v3-devtools-time-travel",
+  "schemaVersion": "1",
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Confirm core controller contracts are complete and document the single retention policy.",
+      "done": true,
+      "doneAt": "2026-08-29T19:17:40Z",
+      "doneBy": "claude-code",
+      "files": [
+        ".kbd-orchestrator/changes/v3-devtools-time-travel/spec.md",
+        ".prometheus/decisions.md"
+      ],
+      "verify": null,
+      "notes": "Architecture and retention contract only; do not run tests or builds."
+    },
+    {
+      "id": "2",
+      "title": "Replace global snapshot/cursor state with controller-owned histories whose events reference captured snapshots.",
+      "done": false,
+      "doneAt": null,
+      "doneBy": null,
+      "files": [
+        "packages/entity-graph-core/src/devtools"
+      ],
+      "verify": null,
+      "notes": "Production implementation first."
+    },
+    {
+      "id": "3",
+      "title": "Implement rewind, exact return-to-live, internal replay markers, and mutation-while-rewound ordering.",
+      "done": false,
+      "doneAt": null,
+      "doneBy": null,
+      "files": [
+        "packages/entity-graph-core/src/devtools"
+      ],
+      "verify": null,
+      "notes": "Production implementation first."
+    },
+    {
+      "id": "4",
+      "title": "Implement visible expired-history results and bounded import inspection/confirmed-restore validation.",
+      "done": false,
+      "doneAt": null,
+      "doneBy": null,
+      "files": [
+        "packages/entity-graph-core/src/devtools"
+      ],
+      "verify": null,
+      "notes": "Production implementation first."
+    },
+    {
+      "id": "5",
+      "title": "Delegate deprecated root time-travel functions to the default-store controller.",
+      "done": false,
+      "doneAt": null,
+      "doneBy": null,
+      "files": [
+        "packages/entity-graph-core/src/devtools-time-travel.ts",
+        "packages/entity-graph-core/src/index.ts"
+      ],
+      "verify": null,
+      "notes": "Preserve compatibility without process-global time-travel ownership."
+    },
+    {
+      "id": "9",
+      "title": "After production tasks 1-5 are complete and wired, run one assembled multi-store core/packed-consumer time-travel integration gate covering retention, expired cursors, rewind/live, mutation ordering, import validation, store isolation, and root compatibility; do not add or run unit, isolated, mock-backed, snapshot, or partial tests.",
+      "done": false,
+      "doneAt": null,
+      "doneBy": null,
+      "files": [
+        "scripts",
+        "packages/entity-graph-core"
+      ],
+      "verify": null,
+      "notes": "Only the complete assembled integration gate counts."
+    },
+    {
+      "id": "10",
+      "title": "Synchronize public API and skills ledgers, history documentation, fixtures, security/evidence receipts, artifact-refiner, and artifact-only adversarial review; verify and archive only after both gates pass.",
+      "done": false,
+      "doneAt": null,
+      "doneBy": null,
+      "files": [
+        "packages/entity-graph-core/README.md",
+        "prometheus-entity-skills",
+        ".kbd-orchestrator/phases/v3-devtools-parity/evidence"
+      ],
+      "verify": null,
+      "notes": "Post-integration truth and archive gate."
+    }
+  ]
+}
