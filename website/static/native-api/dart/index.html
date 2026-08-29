@@ -59,13 +59,13 @@
 </ul>
 <h2 id="canonical-ownership-and-imported-history">Canonical ownership and imported history</h2>
 <p>This directory is the sole canonical Dart graph package in the 3.0 release inventory. Reusable KnowMe source history is retained separately under <code>provenance/imports/knowme-flutter</code> as a non-buildable, non-workspace, non-public review boundary; it is not another package and must never be compiled or published.</p>
-<p>See <a href="https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/flutter-source-provenance.md"><code>release/flutter-source-provenance.md</code></a> for source revisions, license and attribution, commit mappings, and path dispositions. Runtime and Riverpod evidence is documented separately in <a href="https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/dart-graph-riverpod.md"><code>release/dart-graph-riverpod.md</code></a>. Neither gate authorizes pub.dev publication or certifies the complete Flutter/A2UI application on Android or iOS.</p>
+<p>See <a href="https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/flutter-source-provenance.md"><code>release/flutter-source-provenance.md</code></a> for source revisions, license and attribution, commit mappings, and path dispositions. Runtime and Riverpod evidence is documented separately in <a href="https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/dart-graph-riverpod.md"><code>release/dart-graph-riverpod.md</code></a>. Subsequent release work added Android emulator and iOS simulator smoke evidence plus strict A2UI 1.0-RC input compatibility over the published GenUI 0.10.2 renderer boundary.</p>
 <p>The complete application composition is demonstrated in
 <a href="https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/examples/flutter-riverpod"><code>examples/flutter-riverpod</code></a> and
 documented in the
 <a href="https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/flutter-riverpod-a2ui-example.md"><code>Flutter/Riverpod/A2UI release guide</code></a>.
-Its host tests and goldens are partial evidence until the stable-SDK and
-Android/iOS lanes pass.</p>
+Its Flutter 3.44.8 host tests, three deterministic goldens, Android API 35
+emulator lane, and iOS 26.5 simulator lane now pass at their recorded boundary.</p>
 <h2 id="architecture">Architecture</h2>
 <pre class="language-dart"><code>Widget (watches generated provider)
   ↓
@@ -84,9 +84,11 @@ caches or call transport APIs directly.</p>
 <h2 id="setup">Setup</h2>
 <h3 id="1-add-to-pubspecyaml">1. Add to <code>pubspec.yaml</code></h3>
 <pre class="language-yaml"><code class="language-yaml">dependencies:
-  entity_graph_flutter:
-    path: ../packages/entity_graph_flutter
+  entity_graph_flutter: ^3.0.1
   flutter_riverpod: ^3.3.2
+</code></pre>
+<p>Or add it from the command line:</p>
+<pre class="language-bash"><code class="language-bash">flutter pub add entity_graph_flutter:^3.0.1
 </code></pre>
 <h3 id="2-wrap-your-app-with-providerscope">2. Wrap your app with <code>ProviderScope</code></h3>
 <pre class="language-dart"><code class="language-dart">void main() {
@@ -277,18 +279,23 @@ subscribe to this stream and automatically rebuild widgets when their
 entity type or list query key is affected — <strong>without any additional plumbing</strong>.</p>
 <p>When an <code>Invoice</code> is updated anywhere (realtime, mutation, optimistic patch),
 every widget watching <code>Invoice</code> entities rebuilds in the same frame.</p>
-<h2 id="what-the-current-gate-does-not-prove">What the current gate does not prove</h2>
+<h2 id="current-publication-and-evidence-boundary">Current publication and evidence boundary</h2>
 <ul>
-<li>pub.dev ownership or authorization to publish;</li>
-<li>the immutable full-release SHA or cross-ecosystem certification bundle (the
-clean Flutter 3.44.8 stable library candidate is certified separately);</li>
-<li>Flutter/A2UI application navigation, Android/iOS device behavior, offline
-persistence, accessibility, or complete phone/tablet visuals;</li>
+<li>The live pub.dev version and archive hash are recorded in
+<code>release/pubdev-registry-status.json</code>, and a clean consumer import/analyzer
+check is required after every publication.</li>
+<li>Flutter 3.44.8 generation, analysis, package/showcase tests, three goldens,
+Android emulator, and iOS simulator smoke lanes are recorded in
+<code>examples/coverage.json</code>.</li>
+<li>The Flutter showcase accepts strict A2UI 1.0-RC surfaces and normalizes them
+to the published GenUI 0.10.2 renderer only after catalog, component,
+function, action, tenant, and entity validation.</li>
+<li>Physical devices, store submission, signing, and a cross-ecosystem stable
+release bundle are not claimed.</li>
 <li>realtime coalescing or durable peer convergence.</li>
 </ul>
-<p>Those claims remain owned by the later Flutter showcase, registry,
-release-certification, and stable-publication changes. See the release contract
-instead of inferring full-release readiness from this package version.</p>
+<p>See the release contract and coverage ledger instead of inferring app-store or
+full npm 3.0 readiness from this Dart package version.</p>
 </section>
 
 
@@ -329,7 +336,7 @@ instead of inferring full-release readiness from this package version.</p>
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.0
+      3.0.1
   </span>
   
 </footer>
