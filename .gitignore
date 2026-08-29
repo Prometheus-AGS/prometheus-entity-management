@@ -13,6 +13,7 @@ out/
 
 # ── TypeScript cache ───────────────────────────────────────────────────────────
 tsconfig.tsbuildinfo
+**/.cache/typescript/
 
 # ── Vite ───────────────────────────────────────────────────────────────────────
 .vite/
@@ -89,6 +90,7 @@ website/.lighthouseci/
 # Rust build artifacts (never commit)
 target/
 **/target/
+.cargo-target/
 Cargo.lock.bak
 # Explicit package-level Rust targets (also covered by **/target/ above)
 packages/entity-graph-cli/target/

@@ -10,6 +10,7 @@
     "moduleDetection": "force",
     "noEmit": true,
     "composite": true,
+    "tsBuildInfoFile": ".cache/typescript/node.tsbuildinfo",
     "strict": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,

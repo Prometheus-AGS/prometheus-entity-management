@@ -2,7 +2,9 @@
   "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
     "ignoreDeprecations": "6.0",
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "incremental": true,
+    "tsBuildInfoFile": ".cache/typescript/website.tsbuildinfo"
   },
   "include": ["src", "docusaurus.config.ts", "sidebars.ts"]
 }

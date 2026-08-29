@@ -7,7 +7,8 @@
       "outputs": ["dist/**"]
     },
     "typecheck": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "outputs": [".cache/typescript/**"]
     },
     "test": {
       "dependsOn": ["^build"],

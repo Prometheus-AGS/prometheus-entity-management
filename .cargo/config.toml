@@ -1,0 +1,19 @@
+# One target tree per worktree maximizes dependency reuse without allowing
+# multiple repository checkouts to contend for the same Cargo lock.
+[build]
+target-dir = ".cargo-target"
+incremental = true
+
+# Keep the standard dev/test artifact directory. Full DWARF is unnecessary for
+# ordinary phase work; line tables preserve useful file/line backtraces at a
+# materially lower link-time and disk cost.
+[profile.dev]
+opt-level = 0
+debug = "line-tables-only"
+incremental = true
+codegen-units = 256
+
+[profile.dev.build-override]
+opt-level = 0
+debug = false
+codegen-units = 256

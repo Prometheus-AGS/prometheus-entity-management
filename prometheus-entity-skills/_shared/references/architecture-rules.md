@@ -2,6 +2,20 @@
 
 Non-negotiable constraints distilled from `CLAUDE.md` / `AGENTS.md`. Violating these breaks cross-view reactivity and the purpose of the normalized graph.
 
+## Development execution and evidence
+
+- Implement the complete phase specification and wire the production call graph before
+  running tests or full builds.
+- Only a full integration / acceptance flow across every affected production boundary is
+  test evidence. Do not create, expand, run, or cite unit, isolated component, snapshot,
+  mock-backed, or partial integration tests as development or completion gates.
+- Scoped formatting, lint, type, or compiler checks may answer a concrete implementation
+  uncertainty after the affected path is complete; they are checks, not tests.
+- Serialize Cargo work. Reuse the worktree-local `.cargo-target` and its lightweight dev
+  profile; do not switch profiles or run release/cross-platform builds during implementation.
+- In TypeScript workspaces, prefer package-local incremental build info plus affected-only,
+  concurrency-capped Turborepo commands. Full workspace builds belong at release gates.
+
 ## Three-layer model
 
 Data flows **up** into the graph; UI reads **down** through hooks.

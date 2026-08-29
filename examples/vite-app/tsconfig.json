@@ -12,6 +12,8 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "noEmit": true,
+    "incremental": true,
+    "tsBuildInfoFile": ".cache/typescript/app.tsbuildinfo",
     "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {

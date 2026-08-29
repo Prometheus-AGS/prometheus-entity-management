@@ -1,4 +1,4 @@
-# Prometheus Base Rules Set — v3
+# Prometheus Base Rules Set — v4
 
 Canonical base rules for Claude Code, Codex, OpenAI agents, Gemini CLI, Roo, Cline,
 Kilo Code, Librefang/BossFang, and all Prometheus/UAR-compatible development agents.
@@ -10,7 +10,7 @@ rule count rises. So:
 - **§A The Constitution** is inviolable and governs every turn. If context is compacted,
   THIS is what you re-read first. Keep it resident.
 - **§B–§G** are operational rules. Follow them; they need not stay resident every turn.
-- **Appendices** are load-on-demand reference (per-technology tier ladders, sycophancy
+- **Appendices** are load-on-demand reference (per-technology gates, sycophancy
   table, `.prometheus` schema). Consult the relevant one when a matching task is active.
 
 ---
@@ -64,9 +64,9 @@ existing conventions. Mention unrelated issues; do not fix them unasked.
 Distinguish facts from assumptions and observations from conclusions. State uncertainty
 plainly. Do not invent APIs, files, packages, commands, or behavior. If unknown, say so.
 
-**A-6 · Verified vs. self-reported.** Report what was actually run and at which tier
-(§C). An unverified claim reported as verified is worse than no test. If you could not
-verify, say which claims are therefore unverified and why.
+**A-6 · Verified vs. self-reported.** Report what was actually run and at which gate
+(§C). An unverified claim reported as verified is worse than no verification. If you
+could not verify, say which claims are therefore unverified and why.
 
 **A-7 · Preserve intent; preserve behavior.** Optimize for the operator's actual goal.
 Do not silently expand or reduce scope. Do not break existing behavior unless the task
@@ -77,18 +77,25 @@ call out the breaking change.
 data flow, interface contracts, persistence/UI/security/runtime impact, and the testing
 strategy. Do not start coding until the architecture is understood.
 
-**A-9 · Test at phase completion, not continuously; respect the tiers.** During
-implementation run only cheap feedback (type/compiler check, linter, the just-written
-unit's test). Run the full battery at phase completion, before reflection. Each cost tier
-is admissible only at its designated point. **Running a higher tier earlier than its
-designated point is a rule violation, not diligence.** Never test code not yet wired into
-the call graph. Per-technology ladders are in Appendix A.
+**A-9 · Implementation first; only full integration tests count.** Complete the entire
+phase specification, wire its production call graph, and make the code operational before
+running tests. During implementation, do not write or run unit, component, isolated,
+snapshot, mock-backed, or partial integration tests, and do not use a full build as an
+incremental feedback loop. A narrowly scoped parser, formatter, linter, type check, or
+compiler check is allowed only to resolve a concrete implementation uncertainty; it is
+not test evidence. After implementation is complete, run the phase's full integration /
+acceptance suite against the real assembled system. Existing unit suites are legacy
+artifacts: do not expand them, do not run them as development gates, and never cite them
+as completion evidence. **This implementation-first, integration-only doctrine is
+immutable and overrides every later testing example or tool default.** Per-technology
+gates are in Appendix A.
 
 **A-10 · Single-writer build discipline.** Within one shared build/target directory, only
-one writer builds at a time — serialize. Across worktrees with separate target dirs, see
-Appendix A (parallel compilation is permitted; only dependency-mutating commands
-serialize). Never launch an expensive verification while implementation on the same
-surface is still in flight.
+one writer builds at a time — serialize. Rust compilation is host-serialized by default
+because competing Cargo processes consume the same CPU, disk, linker, and cache resources;
+parallel Rust builds require isolated target directories and an explicit operator reason.
+Never launch an expensive verification while implementation on the same surface is still
+in flight.
 
 **A-11 · Minimize irreversible actions.** Before destructive/hard-to-reverse actions,
 confirm intent, explain consequences, prefer reversible paths, create rollback where
@@ -104,8 +111,8 @@ promotion.
 Before declaring completion: (a) Did I add unrequested code? Remove it or list and ask.
 (b) Does every guard/check/handler trace to an observed problem (A-2) or a real boundary
 (A-3)? If not, remove it. (c) Did I touch files outside scope? Justify or revert. (d) Did
-I run any tier above its point (A-9)? Note it so the pattern is corrected. Then summarize
-what changed, how it was verified and at which tier, any security hardening added under
+I run any gate above its point (A-9)? Note it so the pattern is corrected. Then summarize
+what changed, how it was verified and at which gate, any security hardening added under
 A-3, and remaining risks.
 
 **A-14 · No hidden state; artifacts structured.** Business state lives in explicit,
@@ -164,18 +171,25 @@ intentional non-determinism.
 
 ---
 
-## §C. Verification & Tier Discipline
+## §C. Verification & Gate Discipline
 
-**C-1 · The tier philosophy.** Cheap checks are the edit's own feedback and run
-continuously; expensive verification is gated to phase/milestone boundaries. Testing code
-not yet certified to provide value is waste — a half-built phase will change, so every
-expensive run against it is paid twice. See Appendix A for the per-technology ladders
-(Rust, TypeScript/React/Vite/Bun, Go, Flutter/Dart, WASM, Tauri, Python).
+**C-1 · Working, complete code is the primary artifact.** Move through implementation as
+one coherent phase. Passing checks against a partial specification does not demonstrate
+progress and must not interrupt delivery of the complete production path. Compiler and
+static-analysis tools answer concrete implementation questions; they are not tests.
 
-**C-2 · If you cannot run a tier, say so** and state which claims are therefore unverified
+**C-2 · Full integration is the only test evidence.** A test counts only when it exercises
+the completed production call graph across every affected boundary with production-like
+contracts and assembled services. Unit tests, isolated component tests, mocked adapters,
+snapshots, and partial integration tests prove neither phase completion nor release
+readiness and are not to be created or run. Run the full integration gate only after the
+phase implementation is complete; after a failure, fix the implementation and rerun the
+affected full integration gate.
+
+**C-3 · If you cannot run a gate, say so** and state which claims are therefore unverified
 (A-6). Do not silently skip and imply success.
 
-**C-3 · Small, reviewable changes.** Focused commits, small diffs, mechanical changes
+**C-4 · Small, reviewable changes.** Focused commits, small diffs, mechanical changes
 separated from behavioral ones, explained what and why.
 
 ---
@@ -279,85 +293,90 @@ tool calls, inputs, outputs, files changed, external effects, errors, human appr
 Agentic execution without auditability is not acceptable.
 
 **G-4 · Multi-agent coordination.** When multiple agents work one repo, use per-agent git
-worktrees with separate `CARGO_TARGET_DIR` (Rust) / separate build dirs. Build access to a
-shared directory is single-writer (A-10). Note per-worktree runtime isolation gaps
-(shared DBs, ports, caches) and coordinate them explicitly.
+worktrees. Each worktree gets its own build directory, while dependency caches remain
+shared. Build access to any one directory is single-writer (A-10), and Rust builds across
+the host remain serialized unless isolated parallel compilation is explicitly justified.
+Note per-worktree runtime isolation gaps (shared DBs, ports, caches) and coordinate them.
 
 ---
 
-## APPENDIX A — Per-technology tier ladders
+## APPENDIX A — Implementation and full-integration gates
 
-Tier 0 = every edit (seconds). Tier 1 = unit complete. Tier 2 = phase completion.
-Tier 3 = milestone/release/delivery gates ONLY. Running a higher tier early is a
-violation (A-9). Never test code not wired into the call graph.
+Gate I = implement the complete phase with no tests and no full builds. Gate II = one
+scoped compile/static confirmation after implementation, only when needed. Gate III = the
+phase's full integration/acceptance suite. Gate IV = milestone/release builds and device
+certification. Unit, component, snapshot, mock-backed, and partial integration tests are
+forbidden at every gate. Gate II tools are checks, not test evidence.
 
-**Rust (multi-crate workspace)**
-- T0: `cargo check -p <touched-crate>`; `cargo clippy -p <crate> --no-deps`. Scope to the
-  touched crate; never workspace-wide on every edit.
-- T1: `cargo test -p <crate> <module_or_test>` — the just-written unit only.
-- T2: `cargo test --workspace`; `cargo build` (dev profile); doc tests if public API
-  changed.
-- T3: `cargo build --release`; cross-compiles (iOS/Android via flutter_rust_bridge, Tauri
-  bundles, WASM); vendored native builds (llama-cpp-2); feature-flag matrix; device
-  certification; e2e.
-- Hard rules: never `--release` during implementation (it invalidates incremental
-  artifacts and pays full optimization for code that will change); never cross-compile or
-  vendored-native-build before T2 passes; one build profile per session (profile switching
-  thrashes the incremental cache); feature-matrix is T3 — do not iterate combinations
-  mid-phase.
-- **Build concurrency (stable Cargo, mid-2026):** Cargo holds only a `Shared` lock during
-  compile, which allows multiple cargo processes to build concurrently; the real
-  contention is the per-`target/` `.cargo-lock`. So: **within one target dir,
-  single-writer (A-10). Across worktrees with separate `CARGO_TARGET_DIR` and a shared
-  `CARGO_HOME`, run check/build/test/clippy in parallel; serialize only
-  dependency-mutating commands** (`cargo fetch`/`update`/`add`). Do not give each agent a
-  separate `CARGO_HOME` (breaks registry sharing, forces recompiles — the fingerprint
-  includes the `CARGO_HOME` path). `sccache` helps avoid recompiling shared deps N times;
-  it does not touch the locks.
+**Rust (multi-crate repositories)**
+- Gate I: edit and wire the entire Rust path before invoking Cargo. `cargo fmt` is allowed
+  because it neither compiles nor tests. Never use `cargo build`, `cargo test`, Clippy, or
+  a feature matrix as an incremental coding loop.
+- Gate II: after implementation is complete, use at most one serialized, manifest-scoped
+  `cargo check --manifest-path <path>` (and scoped Clippy only when required by delivery).
+  Do not check the whole repository when one manifest answers the question.
+- Gate III: run only the repository's complete cross-crate / host / service integration
+  target against the assembled production path. Do not run `cargo test --lib`, doctests,
+  or filtered module tests as evidence.
+- Gate IV: run `cargo build --release`, cross-compiles, Tauri bundles, vendored native
+  builds, feature matrices, and device certification once the integration gate passes.
+- **Profiles and disk:** keep one profile during development. This repository's
+  `.cargo/config.toml` reuses one `.cargo-target` per worktree, keeps incremental
+  compilation, uses 256 codegen units, and reduces dev/test debug artifacts to line tables.
+  Do not switch profiles mid-phase. Inspect disk use before cleaning; at a phase boundary,
+  prefer a scoped `cargo clean --profile <profile>` over deleting every target artifact.
+- **Locks and concurrency:** one Cargo process owns a worktree's `.cargo-target` at a time.
+  Serialize Rust compilation across the host by default. Only explicitly justified
+  parallel work may set a distinct `CARGO_TARGET_DIR`; keep one shared `CARGO_HOME` so
+  registry downloads are not duplicated. `sccache` is optional and measurement-gated:
+  its Rust cache cannot cache incrementally compiled crates, so never enable it alongside
+  incremental compilation by assumption. If selected, cap its disk cache explicitly.
 
-**TypeScript / React 19 / Vite 8 / Next.js 16 / Bun**
-- T0: `tsc --noEmit` (Bun/esbuild strip types but DO NOT type-check — `tsc --noEmit` is
-  the real gate); Biome/ESLint. Cache `.tsbuildinfo` (cuts incremental typecheck 60–80%).
-- T1: targeted `vitest run <file>` (or `bun test <file>`). Vitest watch mode is the inner
-  loop, not a gate.
-- T2: full `vitest run`; `vite build` (or `next build`).
-- T3: Playwright e2e; visual-regression. Keep e2e to the ~20–30 flows where failure costs
-  money.
+**TypeScript / React / Vite / Next.js / Bun**
+- Gate I: implement the entire workspace path without Vitest, Jest, Node test, browser
+  tests, or production builds. Bun/esbuild stripping types is not verification.
+- Gate II: after implementation is complete, use `pnpm run typecheck:affected` and a
+  scoped lint only if a compiler/static confirmation is needed. The repository stores
+  package-local `.tsbuildinfo` data and caps affected-task concurrency.
+- Gate III: run the phase's complete BDD, packed-consumer, browser, and real-adapter
+  integration flows. Do not run isolated Vitest/component/snapshot suites.
+- Gate IV: run the full `pnpm run build` and release certification once. When a built
+  artifact is required earlier by an integration fixture, use `pnpm run build:affected`.
+- Turborepo tasks must declare deterministic outputs so cached artifacts can be restored.
+  Prefer `--affected` or precise `--filter` selection; cap concurrency rather than flooding
+  the box, and never use deprecated graph-bypassing parallel execution.
 
 **Go**
-- T0: `go vet ./...`; `go build ./...`.
-- T1: `go test -run <name> ./pkg`.
-- T2: `go test ./...`.
-- T3: `go test -race ./...` (race detection costs 5–10× memory and 2–20× execution time,
-  and only finds races on exercised paths — milestone gate, not continuous); integration
-  (`-tags=integration`).
+- Gate I: implement first; do not run `go test` or repository-wide builds while coding.
+- Gate II: after implementation, use the narrowest applicable `go vet` / `go build` check.
+- Gate III: run only the full real-service integration suite (for example the repository's
+  integration-tagged acceptance command), including race detection when required.
+- Gate IV: produce release binaries and platform matrices.
 
 **Flutter / Dart (Riverpod)**
-- T0: `dart analyze`.
-- T1: targeted `flutter test test/<file>`.
-- T2: full `flutter test`.
-- T3: `flutter build ios` / `flutter build apk` / device certification. Platform builds are
-  the expensive tier (a single heavy plugin can add minutes to a cold Xcode build). Use
-  `flutter build ios --config-only` when only project config changed. Never platform-build
-  mid-phase.
+- Gate I: implement the complete provider-to-device path before analysis, tests, or builds.
+- Gate II: run `dart analyze` once after implementation when static confirmation is needed.
+- Gate III: run the complete `integration_test` / host-device acceptance suite with real
+  provider, transport, and rendering boundaries. Widget, golden, and provider unit tests
+  are not completion evidence and must not be added or run.
+- Gate IV: run iOS/Android builds and device certification; never platform-build mid-phase.
 
 **WASM (Component Model)**
-- T0: `cargo check --target wasm32-*` (faster than build; catches most type/interface
-  errors).
-- T1: `wasm-pack test --node`.
-- T2: `wasm-pack build` / `cargo component build`; WIT validation (`wasm-tools` /
-  `wash inspect`). Pin `wasm-bindgen` to the CLI version exactly.
-- T3: `wasm-pack test --headless` (browser e2e).
+- Gate I: complete Rust and WIT implementation without compiling each edit.
+- Gate II: one scoped `cargo check --target wasm32-*` plus WIT validation after completion.
+- Gate III: run the complete browser/host component integration flow.
+- Gate IV: run `wasm-pack build` / `cargo component build` and release packaging. Pin
+  `wasm-bindgen` to the CLI version exactly.
 
 **Tauri 2**
-- Frontend tiers (TypeScript above) + Rust tiers during implementation.
-- **Bundle builds are always T3** (they cross-compile and invalidate incremental caches).
+- Follow the TypeScript and Rust gates above. Gate III is the complete real host-command,
+  event, persistence, and UI integration flow. Bundle builds and device builds are Gate IV.
 
 **Python**
-- T0: `ruff` + `mypy`.
-- T1: `pytest path::test_name`.
-- T2: `pytest`.
-- T3: slow/integration-marked suites.
+- Gate I: implement first without pytest.
+- Gate II: run scoped Ruff and mypy once after implementation when needed.
+- Gate III: run only the complete integration-marked suite against real boundaries.
+- Gate IV: build and certify distributable artifacts.
 
 ---
 
@@ -396,7 +415,28 @@ Memory-server writes fall back to these files on timeout (D-4).
 
 ---
 
-*v3 supersedes v2. Nothing that worked in v2 was removed; the document was tiered so the
-rules that matter most survive long sessions and compaction. The cargo build-concurrency
-guidance is dated to stable Cargo, mid-2026, and should be revisited when
-`-Zfine-grain-locking` stabilizes.*
+## APPENDIX D — Build-performance source authority (August 2026)
+
+- Cargo profiles and debug/incremental/codegen settings:
+  <https://doc.rust-lang.org/cargo/reference/profiles.html>
+- Cargo target directories, incremental artifacts, and compiler wrappers:
+  <https://doc.rust-lang.org/cargo/reference/build-cache.html>
+- Cargo configuration and global-cache cleanup scope:
+  <https://doc.rust-lang.org/cargo/reference/config.html>
+- TypeScript project references and build mode:
+  <https://www.typescriptlang.org/docs/handbook/project-references.html>
+- TypeScript incremental build information:
+  <https://www.typescriptlang.org/tsconfig/incremental.html>
+- Turborepo caching, affected selection, filtering, and concurrency:
+  <https://turborepo.com/docs/crafting-your-repository/caching> and
+  <https://turborepo.com/docs/reference/run>
+- `sccache` Rust caveats and local cache limits:
+  <https://github.com/mozilla/sccache#known-caveats> and
+  <https://github.com/mozilla/sccache/blob/main/docs/Local.md>
+
+---
+
+*v4 supersedes v3. The immutable implementation-first, integration-only doctrine replaces
+the former unit-test and continuous-check tiers. Build guidance is based on stable Cargo,
+TypeScript, and Turborepo documentation current to August 2026 and must be re-measured when
+toolchain behavior changes.*
