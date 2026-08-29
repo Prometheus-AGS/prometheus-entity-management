@@ -24,6 +24,14 @@ export {
 export type {
   EntityTransport, ListQuery, ListResult, ChangeEvent, ChangeOp,
 } from "./transport/types";
+// Active-graph resolution for imperative (non-hook) access — see active-store.ts.
+export {
+  setActiveGraphStore,
+  runWithGraphStore,
+  prepareGraphStoreScope,
+  resolveActiveGraphStore,
+  __resetActiveGraphStore,
+} from "./active-store";
 export { makeRestTransport } from "./transport/rest";
 export type {
   MakeRestTransportOptions, SupabaseLike, SupabaseQueryBuilderLike,

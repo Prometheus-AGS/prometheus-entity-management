@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/entity-graph-sync",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "description": "Pluggable peer-sync providers for the entity graph — ships Yjs (WebSocket + WebRTC) and Loro CRDT providers that bridge the core entity graph with collaborative editing engines.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",

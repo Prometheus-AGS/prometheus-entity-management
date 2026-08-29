@@ -44,7 +44,13 @@ describe("React bindings over the vanilla core store", () => {
     expect(result.current).toEqual({ name: "Prometheus" });
   });
 
-  it("keeps singleton compatibility delegates functional and warns once per method", () => {
+  it("routes the imperative StoreApi to the singleton when nothing else is active", () => {
+    // Superseded the 3.0.4 "warns once per method" test. Those delegates always
+    // targeted the singleton even under a provider (issue #42); the imperative
+    // surface now resolves the ACTIVE graph. With no provider and no request
+    // scope the active graph IS the singleton, so this is the compatibility
+    // guarantee: existing imperative callers behave exactly as before, and no
+    // deprecation warning fires.
     const warning = vi.spyOn(console, "warn").mockImplementation(() => undefined);
 
     try {
@@ -54,15 +60,7 @@ describe("React bindings over the vanilla core store", () => {
       unsubscribe();
       useGraphStore.setState({ patches: {} });
 
-      useGraphStore.getState();
-      useGraphStore.getInitialState();
-      useGraphStore.subscribe(() => undefined)();
-      useGraphStore.setState({ patches: {} });
-
-      expect(warning).toHaveBeenCalledTimes(4);
-      for (const method of ["getState", "getInitialState", "subscribe", "setState"]) {
-        expect(warning).toHaveBeenCalledWith(expect.stringContaining(`.${method}()`));
-      }
+      expect(warning).not.toHaveBeenCalled();
     } finally {
       warning.mockRestore();
     }

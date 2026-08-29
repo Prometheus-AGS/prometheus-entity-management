@@ -1,6 +1,12 @@
 import type { A2uiMessage } from "@a2ui/web_core/v0_9" with { "resolution-mode": "import" };
 import { z } from "zod";
 
+/**
+ * A2UI protocol version this build speaks on the wire.
+ *
+ * Surface messages are validated against this literal, so a peer announcing a
+ * different version is rejected rather than partially parsed.
+ */
 export const PROMETHEUS_A2UI_RC_PROTOCOL_VERSION = "v1.0" as const;
 
 const componentSchema = z

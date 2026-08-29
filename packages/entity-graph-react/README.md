@@ -240,11 +240,37 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | `startGarbageCollector(storeApi?)` / `stopGarbageCollector(storeApi?)` | Periodic eviction of unsubscribed, stale entities in the selected graph; omitting the store targets the compatibility singleton. |
 | `attachGlobalListeners(storeApi?)` | Reference-count focus/reconnect listeners and GC for one graph; call the returned disposer to release the attachment. React hooks manage this automatically. |
 
-Capture `useGraphStoreApi()` during React render before using imperative graph
-access in an effect or callback. Non-React modules and external-store actions
-must receive a `GraphStore` explicitly. React context does not scope Server
-Components or module-level functions; server code creates one vanilla graph per
-request and serializes its state across the RSC boundary.
+`useGraphStore`'s imperative surface (`getState` / `setState` / `subscribe` /
+`getInitialState`) resolves the **active** graph on every call, so store actions,
+module-level helpers, and mutation callbacks honour a mounted
+`GraphStoreProvider` without being rewritten as hooks. Resolution order is:
+
+1. the request scope opened by `runWithGraphStore(store, fn)`,
+2. the module-level store published by a mounted `GraphStoreProvider`,
+3. the package singleton.
+
+With no provider and no request scope this is exactly the pre-3.0.4 behaviour,
+so existing imperative callers are unaffected.
+
+**Server code must open a request scope.** `GraphStoreProvider` is React context
+and cannot scope Server Components or module-level functions, and a
+module-level store would leak across concurrent requests. Wrap each request:
+
+```ts
+import { createGraphStore, runWithGraphStore, prepareGraphStoreScope } from "@prometheus-ags/entity-graph-core";
+
+// Once at startup — REQUIRED under pure ESM, where there is no synchronous
+// `require` to load node:async_hooks. Without it request scoping degrades to
+// the module-level store and warns.
+await prepareGraphStoreScope();
+
+// Per request
+runWithGraphStore(createGraphStore(), () => renderThisRequest());
+```
+
+Capturing `useGraphStoreApi()` during render is still the most explicit option
+inside React, and injecting a `GraphStore` parameter remains available for code
+that wants no ambient resolution at all.
 
 ### Graph runtime
 

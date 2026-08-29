@@ -1,10 +1,12 @@
-import { createContext, createElement, useContext, useEffect, type ReactNode } from "react";
+import { createContext, createElement, useContext, useEffect, useRef, type ReactNode } from "react";
 import { useStore } from "zustand";
 import {
   createGraphStore,
   graphStore,
   graphSyncStatusStore,
   attachGlobalListeners,
+  resolveActiveGraphStore,
+  setActiveGraphStore,
 } from "@prometheus-ags/entity-graph-core";
 import type {
   GraphState,
@@ -15,41 +17,32 @@ import type {
 type BoundGraphStore = {
   (): GraphState;
   <T>(selector: (state: GraphState) => T): T;
-  /** @deprecated Always reads the default singleton. Use `useGraphStoreApi()` in React. */
+  /** Reads the active graph: request scope, else provider-mounted store, else singleton. */
   getState: GraphStore["getState"];
-  /** @deprecated Always writes the default singleton. Use `useGraphStoreApi()` in React. */
+  /** Writes the active graph: request scope, else provider-mounted store, else singleton. */
   setState: GraphStore["setState"];
-  /** @deprecated Always subscribes to the default singleton. Inject a `GraphStore` outside React. */
+  /** Subscribes to the active graph. */
   subscribe: GraphStore["subscribe"];
-  /** @deprecated Always reads the default singleton. Inject a `GraphStore` outside React. */
+  /** Reads the active graph's initial state. */
   getInitialState: GraphStore["getInitialState"];
 };
 
-type SingletonMethod = "getState" | "setState" | "subscribe" | "getInitialState";
-
-declare const process: { env: { NODE_ENV?: string } } | undefined;
-
-const warnedSingletonMethods = new Set<SingletonMethod>();
-
-function warnSingletonMethod(method: SingletonMethod): void {
-  if (
-    (typeof process === "undefined" || process.env.NODE_ENV !== "production") &&
-    !warnedSingletonMethods.has(method)
-  ) {
-    warnedSingletonMethods.add(method);
-    console.warn(
-      `[prometheus-entity-management] useGraphStore.${method}() always targets the default singleton, even below GraphStoreProvider. Capture useGraphStoreApi() in React callbacks or inject an explicit GraphStore outside React.`,
-    );
-  }
-}
-
-function singletonDelegate<K extends SingletonMethod>(method: K): GraphStore[K] {
-  const target = graphStore[method] as (...args: never[]) => unknown;
-  const delegate = (...args: unknown[]) => {
-    warnSingletonMethod(method);
-    return Reflect.apply(target, graphStore, args);
-  };
-  return delegate as unknown as GraphStore[K];
+/**
+ * The imperative surface resolves the ACTIVE graph on every call.
+ *
+ * Previously these were copied off the singleton with `Object.assign`, so a
+ * mounted `GraphStoreProvider` could not redirect them and imperative callers
+ * silently wrote to process-global state (issue #42). 3.0.4 replaced the copies
+ * with delegates that warned but still targeted the singleton; this resolves
+ * per call instead, so store actions, module helpers and mutation callbacks
+ * honour the provider without being rewritten as hooks.
+ *
+ * Resolution order is owned by core: request scope (`runWithGraphStore`) →
+ * module-level active store (set by the provider) → package singleton. With no
+ * provider and no request scope this is exactly the old behaviour.
+ */
+function activeStore(): GraphStore {
+  return resolveActiveGraphStore(graphStore);
 }
 
 const identity = (state: GraphState) => state;
@@ -69,6 +62,26 @@ export interface GraphStoreProviderProps {
  * one browser-owned graph for the mounted application tree.
  */
 export function GraphStoreProvider({ store, children }: GraphStoreProviderProps) {
+  // Publish the store for IMPERATIVE callers too (Zustand actions, module
+  // helpers, mutation callbacks) — they have no context to read. Set during
+  // render rather than in an effect so imperative writes fired by children on
+  // their first commit already resolve to this store; the effect only handles
+  // restoration on unmount.
+  //
+  // On the server this is per-module, not per-request: an SSR host must wrap
+  // each request in `runWithGraphStore(store, …)`, which takes precedence.
+  const restoreRef = useRef<(() => void) | null>(null);
+  if (restoreRef.current === null) {
+    restoreRef.current = setActiveGraphStore(store);
+  }
+  useEffect(() => {
+    const restore = restoreRef.current ?? setActiveGraphStore(store);
+    restoreRef.current = null;
+    return () => {
+      restore();
+    };
+  }, [store]);
+
   return createElement(GraphStoreContext.Provider, { value: store }, children);
 }
 
@@ -91,15 +104,19 @@ const useBoundGraphStore = <T = GraphState>(
   selector: (state: GraphState) => T = identity as (state: GraphState) => T,
 ) => useStore(useGraphStoreApi(), selector);
 
-export const useGraphStore = Object.assign(
-  useBoundGraphStore,
-  {
-    getState: singletonDelegate("getState"),
-    setState: singletonDelegate("setState"),
-    subscribe: singletonDelegate("subscribe"),
-    getInitialState: singletonDelegate("getInitialState"),
+export const useGraphStore = new Proxy(useBoundGraphStore, {
+  get(target, prop, receiver) {
+    // Function's own properties (name, length, call, apply…) stay on the hook.
+    if (Reflect.has(target, prop)) return Reflect.get(target, prop, receiver);
+    const store = activeStore();
+    const value = (store as unknown as Record<PropertyKey, unknown>)[prop];
+    // Bind so `this` is the resolved store, not the Proxy.
+    return typeof value === "function" ? value.bind(store) : value;
   },
-) as BoundGraphStore;
+  has(target, prop) {
+    return Reflect.has(target, prop) || prop in activeStore();
+  },
+}) as unknown as BoundGraphStore;
 
 /** React subscription hook for the framework-neutral sync status store. */
 export function useGraphSyncStatus(): GraphSyncStatus {

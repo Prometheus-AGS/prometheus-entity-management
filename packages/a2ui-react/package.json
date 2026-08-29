@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/a2ui-react",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "description": "A2UI v1.0-RC compatibility for React over the official renderer, with policy-gated entity graph actions and AG-UI 0.0.59 activity support.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
