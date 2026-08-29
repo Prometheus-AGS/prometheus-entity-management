@@ -172,13 +172,15 @@ and an optional FFI transport.
 ### Flint Realtime Fabric
 
 `createFlintAdapter` translates `watchEntities` events into `ChangeSet` values,
-then `RealtimeManager` coalesces graph writes. Tenant, channel, consumer,
+then `RealtimeManager` coalesces graph writes. `publishFlintMutation` delegates
+caller-owned mutations to `mutateEntity`. Tenant, channel, consumer,
 checkpoint, offset, issuer, `kid`, JWKS, role, and key-separation boundaries are
-explicit. `mutateEntity` publishes caller-owned mutations. Reconnect resumes
-from an acknowledged checkpoint; service-role/Forge credentials never enter
+explicit. Reconnect resumes from an acknowledged checkpoint;
+service-role/Forge credentials never enter
 client examples. The portable deterministic contract and live sibling-source
 evidence are separate and fail closed. Read the
-[Flint guide](website/docs/integrations/flint-guide.md).
+[Flint guide](website/docs/integrations/flint-guide.md) and the
+[portable release contract](release/flint-portable-contracts.md).
 
 ## Example applications
 
