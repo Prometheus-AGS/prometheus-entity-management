@@ -1,5 +1,7 @@
 # @prometheus-ags/entity-graph-sdl
 
+## 3.0.4
+
 ## 3.0.3
 
 ## 3.0.0

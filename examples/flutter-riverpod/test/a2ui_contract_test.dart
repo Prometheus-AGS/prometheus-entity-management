@@ -81,6 +81,31 @@ void main() {
       );
     });
 
+    test('normalizes the v1.0-RC surface for the published GenUI engine', () {
+      final normalized = validator.normalizeForGenUi(sharedTaskReviewFixture);
+      final messages = const LineSplitter()
+          .convert(normalized)
+          .map((line) => jsonDecode(line) as Map<String, Object?>)
+          .toList();
+
+      expect(messages, hasLength(3));
+      expect(
+        messages.map((message) => message['version']),
+        everyElement(prometheusFlutterGenUiWireVersion),
+      );
+      final create = messages.first['createSurface'] as Map;
+      expect(create.containsKey('components'), isFalse);
+      expect(create.containsKey('dataModel'), isFalse);
+      final components =
+          (messages[1]['updateComponents'] as Map)['components'] as List;
+      final updateButton = components.cast<Map>().singleWhere(
+        (component) => component['id'] == 'update-button',
+      );
+      final event = ((updateButton['action'] as Map)['event'] as Map);
+      expect(event.containsKey('wantResponse'), isFalse);
+      expect(event.containsKey('responsePath'), isFalse);
+    });
+
     test('rejects every unsafe protocol boundary before rendering', () {
       final invalid = <String, String>{
         'wire version': _fixture(version: '0.9.1'),

@@ -1,16 +1,17 @@
 # @prometheus-ags/a2ui-react
 
-Official A2UI v0.9.1 React rendering with a default-deny Prometheus entity-graph
-action bridge.
+Strict A2UI v1.0 release-candidate compatibility for React over the maintained
+official v0.9.1 renderer, with a default-deny Prometheus entity-graph action
+bridge and AG-UI 0.0.59 A2UI activity transport.
 
-> Release status: published on npm at stable `3.0.3` with the `latest` tag. The
-> bridge is implemented and verified.
+> Version `3.0.4` adds this 1.0-RC compatibility boundary. It does not claim an
+> unpublished native upstream v1 renderer.
 
 ## Two protocol surfaces
 
 | Import | Contract |
 | --- | --- |
-| `@prometheus-ags/a2ui-react` | Official A2UI v0.9.1 messages, catalogs, surfaces, React rendering, and action policy |
+| `@prometheus-ags/a2ui-react` | A2UI v1.0-RC and v0.9.1 messages, catalogs, surfaces, React rendering, action policy, and AG-UI A2UI activities |
 | `@prometheus-ags/a2ui-react/ag-ui` | Compatibility APIs for the pre-3.0 AG-UI chat/state-event surface |
 
 A2UI and AG-UI solve different problems. A2UI describes and renders a
@@ -22,15 +23,20 @@ official A2UI.
 
 These numbers are related but are not interchangeable:
 
-| Axis | Stable target |
+| Axis | Selected target |
 | --- | --- |
-| A2UI wire protocol | `v0.9.1` |
+| Public A2UI input | `v1.0` RC and `v0.9.1` |
+| Official renderer engine | `v0.9.1` compatibility boundary |
 | `@a2ui/react` distribution | `0.10.2` |
 | `@a2ui/web_core` distribution | `0.10.5` |
 | `@a2ui/markdown-it` distribution | `0.1.0` |
+| AG-UI activity transport | `@ag-ui/core` `0.0.59` |
 
-The bridge imports the official `/v0_9` entry points. It does not implement a
-second JSONL parser, schema validator, data model, or surface store.
+The published A2UI packages do not expose the documented v1 renderer entry
+points yet. The bridge therefore validates the v1.0-RC envelope, decomposes its
+embedded surface into the official `/v0_9` processor, and retains v1-only
+action/function metadata at the runtime boundary. It does not implement a
+second renderer, data model, or surface store.
 
 ## Install
 
@@ -84,20 +90,15 @@ export const a2uiRuntime = createPrometheusA2uiRuntime({
 
 a2uiRuntime.processMessages([
   {
-    version: "v0.9.1",
+    version: "v1.0",
     createSurface: {
       surfaceId: "order-review",
       catalogId: "urn:prometheus-ags:a2ui:catalog:v3",
-    },
-  },
-  {
-    version: "v0.9.1",
-    updateComponents: {
-      surfaceId: "order-review",
       components: [
         { id: "root", component: "Column", children: ["title"] },
         { id: "title", component: "Text", text: "Review order" },
       ],
+      dataModel: { status: "ready" },
     },
   },
 ]);
@@ -116,6 +117,11 @@ export function OrderAgentSurface() {
 
 Call `a2uiRuntime.dispose()` when the application-owned runtime is no longer
 needed.
+
+`processAgUiEvent(event)` consumes the AG-UI 0.0.59 A2UI activity convention:
+`ACTIVITY_SNAPSHOT`, activity type `a2ui-surface`, and
+`content.a2ui_operations`. Transport acceptance never bypasses the same
+schema, catalog, action-policy, or approval gates used by direct messages.
 
 `processMessages()` treats each supplied message list as one transaction. It
 preflights the complete batch against a shadow official processor seeded from

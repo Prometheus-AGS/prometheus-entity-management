@@ -44,10 +44,45 @@ describe("React bindings over the vanilla core store", () => {
     expect(result.current).toEqual({ name: "Prometheus" });
   });
 
-  it("preserves imperative StoreApi methods on the React compatibility hook", () => {
-    expect(useGraphStore.getState).toBe(graphStore.getState);
-    expect(useGraphStore.setState).toBe(graphStore.setState);
-    expect(useGraphStore.subscribe).toBe(graphStore.subscribe);
+  it("keeps singleton compatibility delegates functional and warns once per method", () => {
+    const warning = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
+    try {
+      expect(useGraphStore.getState()).toBe(graphStore.getState());
+      expect(useGraphStore.getInitialState()).toBe(graphStore.getInitialState());
+      const unsubscribe = useGraphStore.subscribe(() => undefined);
+      unsubscribe();
+      useGraphStore.setState({ patches: {} });
+
+      useGraphStore.getState();
+      useGraphStore.getInitialState();
+      useGraphStore.subscribe(() => undefined)();
+      useGraphStore.setState({ patches: {} });
+
+      expect(warning).toHaveBeenCalledTimes(4);
+      for (const method of ["getState", "getInitialState", "subscribe", "setState"]) {
+        expect(warning).toHaveBeenCalledWith(expect.stringContaining(`.${method}()`));
+      }
+    } finally {
+      warning.mockRestore();
+    }
+  });
+
+  it("writes through a provider-captured API without touching the singleton", () => {
+    const request = createGraphStore();
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <GraphStoreProvider store={request}>{children}</GraphStoreProvider>
+    );
+    const { result } = renderHook(() => useGraphStoreApi(), { wrapper });
+
+    act(() => {
+      result.current.getState().upsertEntity("Request", "current", { requestId: "scoped" });
+    });
+
+    expect(request.getState().readEntity("Request", "current")).toEqual({
+      requestId: "scoped",
+    });
+    expect(graphStore.getState().readEntity("Request", "current")).toBeNull();
   });
 
   it("isolates provider-owned graphs from the default singleton and sibling providers", () => {

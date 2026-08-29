@@ -5,6 +5,7 @@
     "ENTITY_GRAPH_A2UI_ACTIONS",
     "PROMETHEUS_A2UI_CATALOG_ID",
     "PROMETHEUS_A2UI_PROTOCOL_VERSION",
+    "PROMETHEUS_A2UI_RC_PROTOCOL_VERSION",
     "PrometheusA2uiError",
     "PrometheusA2uiProvider",
     "PrometheusA2uiRuntime",

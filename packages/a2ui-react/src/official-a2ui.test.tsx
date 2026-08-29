@@ -10,14 +10,17 @@ import {
 } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createGraphStore } from "@prometheus-ags/entity-graph-core";
+import { z } from "zod";
 import {
   DEFAULT_PROMETHEUS_A2UI_FUNCTIONS,
   ENTITY_GRAPH_A2UI_ACTIONS,
   PROMETHEUS_A2UI_CATALOG_ID,
+  PROMETHEUS_A2UI_RC_PROTOCOL_VERSION,
   PrometheusA2uiError,
   PrometheusA2uiProvider,
   PrometheusA2uiSurface,
   PrometheusA2uiSurfaces,
+  createA2uiActionPolicy,
   createEntityGraphA2uiActionPolicy,
   createPrometheusA2uiCatalog,
   createPrometheusA2uiRuntime,
@@ -154,7 +157,7 @@ describe("official A2UI v0.9.1 runtime", () => {
       { version: "v0.9", deleteSurface: { surfaceId: "main" } },
     ])).toThrowError(expect.objectContaining({ code: "unsupported-protocol-version" }));
     expect(() => runtime.processMessages([
-      { version: "v1.0", deleteSurface: { surfaceId: "main" } },
+      { version: "v2.0", deleteSurface: { surfaceId: "main" } },
     ])).toThrowError(expect.objectContaining({ code: "invalid-message" }));
     expect(() => runtime.processMessages([
       {
@@ -218,6 +221,158 @@ describe("official A2UI v0.9.1 runtime", () => {
     expect(DEFAULT_PROMETHEUS_A2UI_FUNCTIONS).not.toContain("openUrl");
     expect(catalog.functions.has("openUrl")).toBe(false);
     expect(createPrometheusA2uiCatalog({ functions: ["openUrl"] }).functions.has("openUrl")).toBe(true);
+  });
+});
+
+describe("A2UI v1.0 RC and AG-UI 0.0.59 compatibility", () => {
+  const v1Surface = {
+    version: PROMETHEUS_A2UI_RC_PROTOCOL_VERSION,
+    createSurface: {
+      surfaceId: "rc-main",
+      catalogId: PROMETHEUS_A2UI_CATALOG_ID,
+      components: [
+        { id: "root", component: "Column", children: ["heading", "action-button"] },
+        { id: "heading", component: "Text", text: { path: "/heading" } },
+        {
+          id: "action-button",
+          component: "Button",
+          child: "action-label",
+          action: {
+            event: {
+              name: "test.confirm",
+              context: { value: "approved" },
+              wantResponse: true,
+              responsePath: "/result",
+            },
+          },
+        },
+        { id: "action-label", component: "Text", text: "Confirm" },
+      ],
+      dataModel: { heading: "RC surface", result: "pending" },
+    },
+  } as const;
+
+  it("renders a v1.0 RC single-message surface through the official renderer", () => {
+    const runtime = createPrometheusA2uiRuntime();
+    runtime.processMessages([v1Surface]);
+
+    expect(runtime.getSurface("rc-main")?.dataModel.get("/heading")).toBe("RC surface");
+    expect(runtime.getSurface("rc-main")?.componentsModel.get("heading")?.type).toBe("Text");
+    runtime.dispose();
+  });
+
+  it("round-trips response-aware v1.0 actions into the surface data model", async () => {
+    const rendererMessages: unknown[] = [];
+    const runtime = createPrometheusA2uiRuntime({
+      actionPolicy: createA2uiActionPolicy({
+        rules: [{
+          name: "test.confirm",
+          contextSchema: z.object({ value: z.string() }),
+          authorize: () => true,
+          execute: () => "confirmed",
+        }],
+      }),
+      onRendererMessage: (message) => rendererMessages.push(message),
+    });
+    runtime.processMessages([v1Surface]);
+    await runtime.getSurface("rc-main")!.dispatchAction(
+      { event: { name: "test.confirm", context: { value: "approved" } } },
+      "action-button",
+    );
+
+    expect(rendererMessages).toHaveLength(1);
+    const emitted = rendererMessages[0] as {
+      action: { actionId: string; wantResponse: boolean };
+    };
+    expect(emitted.action.wantResponse).toBe(true);
+    runtime.processMessages([{
+      version: PROMETHEUS_A2UI_RC_PROTOCOL_VERSION,
+      actionId: emitted.action.actionId,
+      actionResponse: { value: "complete" },
+    }]);
+    expect(runtime.getSurface("rc-main")?.dataModel.get("/result")).toBe("complete");
+    runtime.dispose();
+  });
+
+  it("routes v1.0 function calls to application authority and emits a response", async () => {
+    const rendererMessages: unknown[] = [];
+    const runtime = createPrometheusA2uiRuntime({
+      onFunctionCall: (message) => ({ echoed: message.callFunction.args?.value }),
+      onRendererMessage: (message) => rendererMessages.push(message),
+    });
+    runtime.processMessages([{
+      version: PROMETHEUS_A2UI_RC_PROTOCOL_VERSION,
+      functionCallId: "function-1",
+      callFunction: { call: "app.echo", args: { value: "hello" } },
+    }]);
+
+    await vi.waitFor(() => expect(rendererMessages).toEqual([{
+      version: PROMETHEUS_A2UI_RC_PROTOCOL_VERSION,
+      functionResponse: {
+        functionCallId: "function-1",
+        call: "app.echo",
+        value: { echoed: "hello" },
+      },
+    }]));
+    runtime.dispose();
+  });
+
+  it("consumes AG-UI A2UI activity snapshots and honors replacement", () => {
+    const runtime = createPrometheusA2uiRuntime();
+    expect(runtime.processAgUiEvent({ type: "TEXT_MESSAGE_CONTENT", content: "ignored" })).toBe(false);
+    expect(runtime.processAgUiEvent({
+      type: "ACTIVITY_SNAPSHOT",
+      activityType: "a2ui-surface",
+      messageId: "activity-1",
+      replace: true,
+      content: {
+        a2ui_operations: [
+          {
+            version: "v0.9",
+            createSurface: {
+              surfaceId: "ag-ui-main",
+              catalogId: PROMETHEUS_A2UI_CATALOG_ID,
+            },
+          },
+          {
+            version: "v0.9",
+            updateComponents: {
+              surfaceId: "ag-ui-main",
+              components: [{ id: "root", component: "Text", text: "First" }],
+            },
+          },
+        ],
+      },
+    })).toBe(true);
+    expect(runtime.getSurface("ag-ui-main")?.componentsModel.get("root")?.properties.text).toBe("First");
+
+    runtime.processAgUiEvent({
+      type: "ACTIVITY_SNAPSHOT",
+      activityType: "a2ui-surface",
+      messageId: "activity-1",
+      replace: true,
+      content: {
+        a2ui_operations: [
+          {
+            version: "v0.9",
+            createSurface: {
+              surfaceId: "ag-ui-replacement",
+              catalogId: PROMETHEUS_A2UI_CATALOG_ID,
+            },
+          },
+          {
+            version: "v0.9",
+            updateComponents: {
+              surfaceId: "ag-ui-replacement",
+              components: [{ id: "root", component: "Text", text: "Replacement" }],
+            },
+          },
+        ],
+      },
+    });
+    expect(runtime.getSurface("ag-ui-main")).toBeUndefined();
+    expect(runtime.getSurface("ag-ui-replacement")).toBeDefined();
+    runtime.dispose();
   });
 });
 

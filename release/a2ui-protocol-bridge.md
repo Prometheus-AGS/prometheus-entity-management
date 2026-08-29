@@ -6,8 +6,8 @@ progress.
 `v3-a2ui-protocol-bridge` corrects the alpha package boundary and makes the
 security model testable:
 
-- the package root renders official A2UI v0.9.1 surfaces through the maintained
-  official engine;
+- the package root accepts strict A2UI v1.0-RC and v0.9.1 surfaces through the
+  maintained official v0.9.1 engine and an explicit compatibility adapter;
 - the pre-3.0 AG-UI chat/state-event APIs live at the explicit `./ag-ui`
   compatibility subpath;
 - graph mutations cross an application-owned, default-deny policy; and
@@ -35,33 +35,39 @@ unauthorized work.
 
 | Concern | Owner |
 | --- | --- |
-| Message schemas and validation | Official `@a2ui/web_core/v0_9` |
+| v0.9.1 message schemas and validation | Official `@a2ui/web_core/v0_9` |
+| v1.0-RC envelope and renderer adaptation | Prometheus compatibility boundary |
 | Surface and data-model state | Official `MessageProcessor` |
 | React component implementations and rendering | Official `@a2ui/react/v0_9` |
 | Stable protocol pin | Prometheus runtime wrapper |
 | Catalog/component/function allowlist | Prometheus catalog adapter |
 | Tenant/entity/action/field authority | Application callback through Prometheus policy |
 | Normalized graph write | Prometheus entity-graph policy |
+| AG-UI 0.0.59 A2UI activity transport | Prometheus runtime wrapper |
 | AG-UI chat/state compatibility | `@prometheus-ags/a2ui-react/ag-ui` |
 | A2A transport and conformance | Separate `v3-a2a-conformance-agent` change |
 
-The wrapper does not parse JSONL, define a second A2UI schema, or maintain an
-alternate surface/data model.
+The wrapper defines only the unpublished RC compatibility envelope. It does not
+implement another renderer or maintain an alternate surface/data model.
 
 ## Version contract
 
 | Axis | Selected value | Why |
 | --- | --- | --- |
-| Wire protocol | A2UI `v0.9.1` | Current production patch in the stable v0.9 family |
+| Public wire input | A2UI `v1.0` RC and `v0.9.1` | RC compatibility without claiming an unpublished v1 renderer |
+| Renderer engine | A2UI `v0.9.1` | Maintained entry point exported by the published packages |
 | Official React package | `@a2ui/react@0.10.2` | Distribution containing the selected renderer entry point |
 | Official core package | `@a2ui/web_core@0.10.5` | Distribution containing protocol processing and schemas |
 | Markdown integration | `@a2ui/markdown-it@0.1.0` | Renderer context used for official Text markdown |
+| AG-UI transport | `@ag-ui/core@0.0.59` | Activity snapshot shape used for A2UI operations |
 | Validation dependency | `zod@3.25.76` | Exact compatible schema runtime |
 
 The `0.10.x` package numbers are distribution versions, not A2UI wire
-versions. Root sources import explicit `/v0_9` entry points; v1.0 remains a
-candidate and is excluded from the stable bridge until a governed adapter
-change selects it.
+versions. Root sources import explicit `/v0_9` entry points because the
+published packages do not export the documented v1 renderer entry points. The
+runtime validates v1.0-RC envelopes, decomposes embedded surface state for the
+official processor, and keeps response-aware action/function metadata at the
+adapter boundary.
 
 ## Package boundary
 
@@ -110,11 +116,12 @@ application opt-in.
 
 The runtime:
 
-1. validates message arrays with the official schemas;
-2. enforces exact `v0.9.1` message versions;
+1. validates v0.9.1 messages with official schemas and v1.0-RC envelopes with a
+   strict compatibility schema;
+2. normalizes RC embedded surface state to the official v0.9.1 processor;
 3. checks components against the selected surface catalog;
 4. delegates message processing to the official `MessageProcessor`; and
-5. exposes a stable React subscription snapshot.
+5. exposes a stable React subscription snapshot and typed RC response channel.
 
 React wrappers provide the official Markdown renderer and a deterministic SSR
 fallback. They do not directly access the graph.

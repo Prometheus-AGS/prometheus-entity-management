@@ -52,15 +52,18 @@ IDs remain graph-owned; transports own external I/O. The optional
 
 ## A2UI trust boundary
 
-The shared semantic contract names A2UI 0.9.1. `genui` 0.10.1 consumes the
-official `v0.9` wire identifier, so the app adapts only that version label at
-one named boundary. It preserves the shared tenant, surface, entity IDs, and
-action outcomes without claiming byte-identical React/Flutter protocol output.
+The current showcase accepts A2UI `v1.0` release-candidate surface envelopes.
+Because published `genui` 0.10.2 still consumes the official `v0.9` wire, the
+app validates the RC envelope and decomposes embedded components/data into the
+equivalent GenUI sequence at one named boundary. It preserves the shared
+tenant, surface, entity IDs, and action outcomes without claiming native v1
+renderer conformance or byte-identical React/Flutter protocol output.
 
 Before GenUI receives any frame, the complete JSONL batch is checked for:
 
 - the expected version, catalog, and `surface-task-sync` identity;
-- exactly one message per envelope and one complete surface;
+- exactly one message per envelope and one complete surface, including RC
+  single-message `createSurface` input;
 - unique component IDs and a root component;
 - the allowlisted Card, Column, Row, Text, Button, and Divider catalog;
 - event-only actions from `task.update`, `task.archive`, and `task.delete`;

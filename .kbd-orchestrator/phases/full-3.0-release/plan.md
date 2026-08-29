@@ -387,6 +387,18 @@ Stable publication is deliberately the final, manual-authority change. A release
 - **Details:** Review the immutable certification bundle, verify registry identities/permissions and the exact version set, publish in dependency order, confirm provenance and consumer installation, create the signed GitHub release, deploy/freeze the 3.0 docs line, and only then move npm `latest`. Exercise the documented recovery path on any partial failure and never overwrite an immutable registry version.
 - **Acceptance:** Every declared stable artifact resolves from its public registry at 3.0.0 and passes post-publish smoke tests; npm `latest` points to the verified release; release notes/docs/migration URLs are live; publication evidence and any excluded registries are recorded.
 
+### 29. `fix-scoped-imperative-store-access`: Resolve issue #42 and publish 3.0.4
+
+- **Scope:** React binding | Zustand StoreApi compatibility | Next.js hydration | React/Flutter A2UI 1.0-RC | AG-UI 0.0.59 | npm patch release
+- **Depends on:** published 3.0.3 baseline; `v3-binding-singleton-contract`; `v3-nextjs-app-router-example`; `v3-a2ui-protocol-bridge`; `v3-flutter-riverpod-a2ui-example`
+- **Recommended agent:** Codex
+- **Est. complexity:** L
+- **Complexity score:** High
+- **Model class:** frontier
+- **Customer value:** HIGH
+- **Details:** Preserve the provider-scoped hook and 3.x default singleton while deprecating and diagnosing the callable hook's singleton-only imperative methods. Require React callbacks to capture `useGraphStoreApi()`, require non-React code to receive an explicit graph, correct the Next.js hydration boundary, and document that React context does not scope Server Components or module-level functions. Add strict A2UI 1.0-RC compatibility in React and Flutter over the maintained published v0.9 renderer engines, plus AG-UI 0.0.59 A2UI activity snapshots, without claiming unpublished native v1 renderer conformance.
+- **Acceptance:** Focused React and Next.js regressions prove provider writes do not reach the singleton; compatibility delegates remain functional and emit bounded development diagnostics; React and Flutter render valid A2UI 1.0-RC surfaces while rejecting unsafe input atomically; AG-UI 0.0.59 activity replacement is deterministic and crosses the same policy gates; strict OpenSpec, package, packed-consumer, documentation, and release gates pass; the verified package set is published atomically as 3.0.4 and registry state is confirmed.
+
 ## EXECUTION ROUND ORDER
 
 - **Round 1 (parallel):** `v3-release-contract`, `v3-main-ci-baseline`
@@ -399,6 +411,7 @@ Stable publication is deliberately the final, manual-authority change. A release
 - **Round 8:** `v3-docs-github-pages`
 - **Round 9:** `v3-release-certification`
 - **Round 10 (manual authority):** `v3-stable-publication`
+- **Round 11 (authorized patch release):** `fix-scoped-imperative-store-access`
 
 Parallel labels indicate dependency-safe work, not permission to merge conflicting edits without coordination. Changes sharing package manifests, lockfiles, coverage manifests, or documentation navigation should use isolated worktrees and merge in the listed order.
 
@@ -433,6 +446,7 @@ Parallel labels indicate dependency-safe work, not permission to merge conflicti
 /opsx:new v3-docs-github-pages
 /opsx:new v3-release-certification
 /opsx:new v3-stable-publication
+/opsx:new fix-scoped-imperative-store-access
 ```
 
 ## Sycophancy self-check

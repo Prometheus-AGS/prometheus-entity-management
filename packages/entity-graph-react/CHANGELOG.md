@@ -1,5 +1,14 @@
 # @prometheus-ags/prometheus-entity-management
 
+## 3.0.4
+
+### Patch Changes
+
+- Make provider-scoped imperative graph access explicit, correct Next.js
+  hydration writes, add A2UI 1.0-RC compatibility for React and Flutter, and
+  accept AG-UI 0.0.59 A2UI activity snapshots.
+  - @prometheus-ags/entity-graph-core@3.0.4
+
 ## 3.0.3
 
 ### Patch Changes

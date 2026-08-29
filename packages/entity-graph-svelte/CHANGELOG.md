@@ -1,5 +1,11 @@
 # @prometheus-ags/entity-graph-svelte
 
+## 3.0.4
+
+### Patch Changes
+
+- @prometheus-ags/entity-graph-core@3.0.4
+
 ## 3.0.3
 
 ### Patch Changes

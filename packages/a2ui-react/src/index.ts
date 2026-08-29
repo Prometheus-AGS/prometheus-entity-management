@@ -1,5 +1,6 @@
 /**
- * Official A2UI v0.9.1 React rendering and Prometheus entity-graph policy bridge.
+ * A2UI v1.0-RC compatibility over the official v0.9.1 React renderer and
+ * Prometheus entity-graph policy bridge.
  *
  * AG-UI chat/state compatibility APIs intentionally live at
  * `@prometheus-ags/a2ui-react/ag-ui`; AG-UI transport and A2UI rendering are
@@ -29,7 +30,15 @@ export type {
   CreatePrometheusA2uiRuntimeOptions,
   PrometheusA2uiErrorCode,
   PrometheusA2uiMessageInput,
+  PrometheusA2uiRendererMessage,
 } from "./official/runtime.js";
+export { PROMETHEUS_A2UI_RC_PROTOCOL_VERSION } from "./official/v1-compat.js";
+export type {
+  PrometheusA2uiV1ActionMetadata,
+  PrometheusA2uiV1ActionResponse,
+  PrometheusA2uiV1FunctionCall,
+  PrometheusA2uiV1Message,
+} from "./official/v1-compat.js";
 
 export {
   createA2uiActionPolicy,

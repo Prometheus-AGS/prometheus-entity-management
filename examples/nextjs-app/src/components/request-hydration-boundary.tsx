@@ -23,12 +23,12 @@
 
 import { useEffect, useRef, useState } from "react";
 /**
- * Infrastructure component — direct useGraphStore access is intentional here.
+ * Infrastructure component — direct graph API access is intentional here.
  * This boundary bridges RSC-prefetched data into the client-side entity graph.
  * It is NOT a UI component and does not violate the "Components never touch
  * stores directly" rule from CLAUDE.md.
  */
-import { useGraphStore } from "@prometheus-ags/prometheus-entity-management";
+import { useGraphStoreApi } from "@prometheus-ags/prometheus-entity-management";
 import type { HydrationPayload } from "@/lib/hydration-payload";
 
 interface RequestHydrationBoundaryProps {
@@ -44,11 +44,12 @@ export function RequestHydrationBoundary({
 }: RequestHydrationBoundaryProps) {
   const [hydrated, setHydrated] = useState(false);
   const writtenRef = useRef(false);
+  const graph = useGraphStoreApi();
 
   useEffect(() => {
     if (writtenRef.current) return;
     writtenRef.current = true;
-    const store = useGraphStore.getState();
+    const store = graph.getState();
     for (const { type, id, data } of payload.entities) {
       store.upsertEntity(type, id, data);
       store.setEntityFetched(type, id);
@@ -57,7 +58,7 @@ export function RequestHydrationBoundary({
       store.setListResult(list.key, list.ids, { total: list.total });
     }
     setHydrated(true);
-  }, [payload]);
+  }, [graph, payload]);
 
   return hydrated ? <>{children}</> : <>{fallback}</>;
 }

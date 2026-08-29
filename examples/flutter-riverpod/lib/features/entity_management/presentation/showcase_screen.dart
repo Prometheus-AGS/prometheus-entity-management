@@ -546,7 +546,8 @@ final class _AgentWorkspace extends ConsumerWidget {
         ),
         const SizedBox(height: 6),
         const Text(
-          'Official GenUI parses and renders the v0.9 wire stream. An atomic '
+          'The app validates A2UI 1.0-RC surfaces, then adapts them to the '
+          'published GenUI v0.9 renderer boundary. An atomic '
           'preflight restricts widgets and declared actions; application policy '
           'then validates tenant, payload, approval, and mutation intent.',
         ),

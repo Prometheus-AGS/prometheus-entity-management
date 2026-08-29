@@ -51,7 +51,9 @@ final class _SafeA2uiSurfaceState extends State<SafeA2uiSurface> {
 
   void _start() {
     try {
-      const A2uiEnvelopeValidator().validate(widget.source);
+      final rendererSource = const A2uiEnvelopeValidator().normalizeForGenUi(
+        widget.source,
+      );
       final catalog = Catalog([
         BasicCatalogItems.card,
         BasicCatalogItems.column,
@@ -76,7 +78,7 @@ final class _SafeA2uiSurfaceState extends State<SafeA2uiSurface> {
         _forwardInteraction,
         onError: _showError,
       );
-      transport.addChunk('${widget.source.trim()}\n');
+      transport.addChunk('${rendererSource.trim()}\n');
     } on Object catch (error, stackTrace) {
       _showError(error, stackTrace);
     }
@@ -216,9 +218,14 @@ final class A2uiEnvelopeValidator {
     'task.delete',
   };
 
-  void validate(String source) {
+  void validate(String source) => normalizeForGenUi(source);
+
+  /// Validates the public A2UI 1.0-RC contract, then adapts it to the v0.9
+  /// wire consumed by the currently published GenUI renderer.
+  String normalizeForGenUi(String source) {
     var createCount = 0;
     var componentCount = 0;
+    final normalized = <Map<String, Object?>>[];
     for (final line in const LineSplitter().convert(source)) {
       if (line.trim().isEmpty) continue;
       final decoded = jsonDecode(line);
@@ -230,43 +237,88 @@ final class A2uiEnvelopeValidator {
         throw const FormatException('Unsupported A2UI version');
       }
       final present = _messageKeys.where(envelope.containsKey).toList();
-      if (present.length != 1) {
+      if (present.length != 1 || envelope.length != 2) {
         throw const FormatException('A2UI frames need exactly one message');
       }
       switch (present.single) {
         case 'createSurface':
           createCount += 1;
-          _validateCreate(envelope['createSurface']);
+          final create = _validateCreate(envelope['createSurface']);
+          final components = create.remove('components');
+          final dataModel = create.remove('dataModel');
+          normalized.add({
+            'version': prometheusFlutterGenUiWireVersion,
+            'createSurface': create,
+          });
+          if (components != null) {
+            componentCount += 1;
+            normalized.add({
+              'version': prometheusFlutterGenUiWireVersion,
+              'updateComponents': _validateComponents({
+                'surfaceId': create['surfaceId'],
+                'components': components,
+              }),
+            });
+          }
+          if (dataModel != null) {
+            if (dataModel is! Map) {
+              throw const FormatException('A2UI data model must be an object');
+            }
+            normalized.add({
+              'version': prometheusFlutterGenUiWireVersion,
+              'updateDataModel': {
+                'surfaceId': create['surfaceId'],
+                'path': '/',
+                'value': dataModel,
+              },
+            });
+          }
         case 'updateComponents':
           componentCount += 1;
-          _validateComponents(envelope['updateComponents']);
+          normalized.add({
+            'version': prometheusFlutterGenUiWireVersion,
+            'updateComponents': _validateComponents(
+              envelope['updateComponents'],
+            ),
+          });
         case 'updateDataModel':
-          _validateSurfaceMessage(envelope['updateDataModel']);
+          normalized.add({
+            'version': prometheusFlutterGenUiWireVersion,
+            'updateDataModel': _validateSurfaceMessage(
+              envelope['updateDataModel'],
+            ),
+          });
         case 'deleteSurface':
-          _validateSurfaceMessage(envelope['deleteSurface']);
+          normalized.add({
+            'version': prometheusFlutterGenUiWireVersion,
+            'deleteSurface': _validateSurfaceMessage(envelope['deleteSurface']),
+          });
       }
     }
     if (createCount != 1 || componentCount == 0) {
       throw const FormatException('A complete A2UI surface is required');
     }
+    return normalized.map(jsonEncode).join('\n');
   }
 
-  void _validateCreate(Object? raw) {
+  Map<String, Object?> _validateCreate(Object? raw) {
     final value = _map(raw);
     if (value['surfaceId'] != 'surface-task-sync' ||
         value['catalogId'] != prometheusFlutterCatalogId) {
       throw const FormatException('Unregistered A2UI surface or catalog');
     }
+    return value;
   }
 
-  void _validateSurfaceMessage(Object? raw) {
+  Map<String, Object?> _validateSurfaceMessage(Object? raw) {
     final value = _map(raw);
     if (value['surfaceId'] != 'surface-task-sync') {
       throw const FormatException('Unregistered A2UI surface');
     }
+    return value;
   }
 
-  void _validateComponents(Object? raw) {
+  Map<String, Object?> _validateComponents(Object? raw) {
     final value = _map(raw);
     _validateSurfaceMessage(value);
     final components = value['components'];
@@ -284,14 +336,27 @@ final class A2uiEnvelopeValidator {
       if (type is! String || !_componentTypes.contains(type)) {
         throw const FormatException('Component is not in the safe catalog');
       }
-      if (type == 'Button') _validateAction(component['action']);
+      final componentCatalog = component.remove('catalogId');
+      if (componentCatalog != null &&
+          componentCatalog != prometheusFlutterCatalogId) {
+        throw const FormatException('Component requested an unknown catalog');
+      }
+      if (type == 'Button') {
+        component['action'] = _validateAction(component['action']);
+      }
+      if (rawComponent is Map) {
+        rawComponent
+          ..clear()
+          ..addAll(component);
+      }
     }
     if (!ids.contains('root')) {
       throw const FormatException('A2UI surface needs a root component');
     }
+    return value;
   }
 
-  void _validateAction(Object? raw) {
+  Map<String, Object?> _validateAction(Object? raw) {
     final action = _map(raw);
     if (action.containsKey('functionCall')) {
       throw const FormatException('Client functions are not permitted');
@@ -300,6 +365,16 @@ final class A2uiEnvelopeValidator {
     if (!_declaredActions.contains(event['name']) || event['context'] is! Map) {
       throw const FormatException('Action is not in the declared catalog');
     }
+    if (event['wantResponse'] != null && event['wantResponse'] is! bool) {
+      throw const FormatException('wantResponse must be a boolean');
+    }
+    if (event['responsePath'] != null && event['responsePath'] is! String) {
+      throw const FormatException('responsePath must be a string');
+    }
+    event.remove('wantResponse');
+    event.remove('responsePath');
+    action['event'] = event;
+    return action;
   }
 
   Map<String, Object?> _map(Object? value) {

@@ -6,7 +6,7 @@ Update a post in one screen and every list row, detail panel, and badge that rea
 
 ## 3.0 React release
 
-This package is published at stable `3.0.3` and its React 19/Vite 8
+The `3.0.4` package line and its React 19/Vite 8
 source-workspace showcase is implemented. The production-browser gate covers
 normalized cross-view updates, optimistic confirm/rollback, relationships,
 view completeness modes, REST/GraphQL seams, realtime coalescing, PGlite/Loro,
@@ -230,7 +230,7 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | `createGraphStore` / `graphStore` | Create an isolated vanilla graph or access the default core singleton. |
 | `GraphStoreProvider` | Scope all descendant React hooks to an application-owned `GraphStore`; use one request graph per SSR render and one hydrated graph per mounted browser tree. |
 | `useGraphStoreApi` | Resolve the nearest provider-owned graph, falling back to the public singleton. React-hook ownership reference-counts focus/reconnect listeners and GC, releasing them after the final hook unmounts. |
-| `useGraphStore` | React hook subscribed to the nearest scoped graph; compatibility `getState`, `setState`, and `subscribe` methods remain attached to the default singleton. Prefer domain hooks in components. |
+| `useGraphStore` | React hook subscribed to the nearest scoped graph. Deprecated compatibility `getState`, `setState`, `getInitialState`, and `subscribe` delegates remain singleton-only throughout 3.x and emit one development diagnostic per method. Prefer domain hooks in components. |
 | `configureEngine` | App-wide defaults: stale time, retries, GC interval, GC time, etc. |
 | `getEngineOptions` | Read merged engine options. |
 | `serializeKey` | Stable string key for list `queryKey` serialization. |
@@ -239,6 +239,12 @@ Compare against peers only when measurement methodology matches (minified vs unm
 | `dedupe` | Process-global in-flight promise deduplication helper. |
 | `startGarbageCollector(storeApi?)` / `stopGarbageCollector(storeApi?)` | Periodic eviction of unsubscribed, stale entities in the selected graph; omitting the store targets the compatibility singleton. |
 | `attachGlobalListeners(storeApi?)` | Reference-count focus/reconnect listeners and GC for one graph; call the returned disposer to release the attachment. React hooks manage this automatically. |
+
+Capture `useGraphStoreApi()` during React render before using imperative graph
+access in an effect or callback. Non-React modules and external-store actions
+must receive a `GraphStore` explicitly. React context does not scope Server
+Components or module-level functions; server code creates one vanilla graph per
+request and serializes its state across the RSC boundary.
 
 ### Graph runtime
 

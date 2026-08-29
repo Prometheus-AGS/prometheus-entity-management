@@ -15,7 +15,42 @@ import type {
 type BoundGraphStore = {
   (): GraphState;
   <T>(selector: (state: GraphState) => T): T;
-} & GraphStore;
+  /** @deprecated Always reads the default singleton. Use `useGraphStoreApi()` in React. */
+  getState: GraphStore["getState"];
+  /** @deprecated Always writes the default singleton. Use `useGraphStoreApi()` in React. */
+  setState: GraphStore["setState"];
+  /** @deprecated Always subscribes to the default singleton. Inject a `GraphStore` outside React. */
+  subscribe: GraphStore["subscribe"];
+  /** @deprecated Always reads the default singleton. Inject a `GraphStore` outside React. */
+  getInitialState: GraphStore["getInitialState"];
+};
+
+type SingletonMethod = "getState" | "setState" | "subscribe" | "getInitialState";
+
+declare const process: { env: { NODE_ENV?: string } } | undefined;
+
+const warnedSingletonMethods = new Set<SingletonMethod>();
+
+function warnSingletonMethod(method: SingletonMethod): void {
+  if (
+    (typeof process === "undefined" || process.env.NODE_ENV !== "production") &&
+    !warnedSingletonMethods.has(method)
+  ) {
+    warnedSingletonMethods.add(method);
+    console.warn(
+      `[prometheus-entity-management] useGraphStore.${method}() always targets the default singleton, even below GraphStoreProvider. Capture useGraphStoreApi() in React callbacks or inject an explicit GraphStore outside React.`,
+    );
+  }
+}
+
+function singletonDelegate<K extends SingletonMethod>(method: K): GraphStore[K] {
+  const target = graphStore[method] as (...args: never[]) => unknown;
+  const delegate = (...args: unknown[]) => {
+    warnSingletonMethod(method);
+    return Reflect.apply(target, graphStore, args);
+  };
+  return delegate as unknown as GraphStore[K];
+}
 
 const identity = (state: GraphState) => state;
 
@@ -48,8 +83,9 @@ export function useGraphStoreApi(): GraphStore {
  * React binding for the default vanilla graph store.
  *
  * Components should normally use the domain hooks exported by this package.
- * The attached StoreApi methods preserve the established imperative API for
- * adapters, tests, and migration code.
+ * The deprecated attached StoreApi methods preserve the 3.x imperative API,
+ * but always target the default singleton. Capture `useGraphStoreApi()` in a
+ * React component before using imperative methods in effects or callbacks.
  */
 const useBoundGraphStore = <T = GraphState>(
   selector: (state: GraphState) => T = identity as (state: GraphState) => T,
@@ -57,7 +93,12 @@ const useBoundGraphStore = <T = GraphState>(
 
 export const useGraphStore = Object.assign(
   useBoundGraphStore,
-  graphStore,
+  {
+    getState: singletonDelegate("getState"),
+    setState: singletonDelegate("setState"),
+    subscribe: singletonDelegate("subscribe"),
+    getInitialState: singletonDelegate("getInitialState"),
+  },
 ) as BoundGraphStore;
 
 /** React subscription hook for the framework-neutral sync status store. */

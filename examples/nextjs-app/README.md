@@ -23,6 +23,10 @@ The server never writes request data to the process-wide `graphStore`.
 client route transitions keep the same graph while a document reload receives
 a new request graph. React hooks resolve the nearest store through
 `useGraphStoreApi()` and retain the package singleton as the non-SSR fallback.
+Client effects and callbacks capture that returned store during render; they do
+not call the singleton-only methods attached to `useGraphStore`. Server
+Components and module-level helpers cannot read React client context and must
+receive or create an explicit vanilla `GraphStore`.
 
 The root layout exports `dynamic = "force-dynamic"` because the example is
 specifically proving request isolation. A production application may choose a
