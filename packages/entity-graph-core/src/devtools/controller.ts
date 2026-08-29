@@ -14,12 +14,17 @@ import {
   type GraphDevtoolsDiagnosticEvent,
   type GraphDevtoolsEvent,
   type GraphDevtoolsEntityRecordsSnapshot,
+  type GraphDevtoolsGraphData,
+  type GraphDevtoolsHistoryImportInspectionResult,
+  type GraphDevtoolsHistoryImportRestoreReceipt,
+  type GraphDevtoolsHistoryImportRestoreResult,
   type GraphDevtoolsHistoryStatus,
+  type GraphDevtoolsInspectHistoryImportPayload,
   type GraphDevtoolsLifecycleEvent,
   type GraphDevtoolsMutationEvent,
   type GraphDevtoolsPreviewEntityPatchPayload,
   type GraphDevtoolsRewindPayload,
-  type GraphDevtoolsRewindReceipt,
+  type GraphDevtoolsRewindResult,
   type GraphDevtoolsRelationshipsSnapshot,
   type GraphDevtoolsRestoreEntityPreviewPayload,
   type GraphDevtoolsReturnToLiveReceipt,
@@ -33,10 +38,7 @@ import {
   type GraphDevtoolsViewEvent,
   type GraphDevtoolsViewsSnapshot,
 } from "./protocol";
-import {
-  createGraphDevtoolsSnapshotHistory,
-  type GraphDevtoolsGraphData,
-} from "./time-travel";
+import { createGraphDevtoolsSnapshotHistory } from "./time-travel";
 import {
   createGraphDevtoolsViewRegistry,
   type GraphDevtoolsViewRegistration,
@@ -70,8 +72,10 @@ export interface GraphDevtoolsController {
   getViews(): GraphDevtoolsViewsSnapshot;
   getRelationships(): GraphDevtoolsRelationshipsSnapshot;
   registerView(definition: GraphDevtoolsViewDefinition): GraphDevtoolsViewRegistration;
-  rewind(cursor: number): GraphDevtoolsRewindReceipt | null;
+  rewind(cursor: number): GraphDevtoolsRewindResult | null;
   returnToLive(): GraphDevtoolsReturnToLiveReceipt | null;
+  inspectHistoryImport(candidate: unknown): GraphDevtoolsHistoryImportInspectionResult;
+  confirmHistoryImport(candidateId: string, cursor: number): GraphDevtoolsHistoryImportRestoreResult;
   clearHistory(): void;
   subscribe(listener: (event: GraphDevtoolsEvent) => void, replay?: boolean): () => void;
   connect(clientId?: string): GraphDevtoolsTransport;
@@ -173,6 +177,33 @@ function parseRewindPayload(payload: unknown): GraphDevtoolsRewindPayload | null
     : null;
 }
 
+function parseInspectHistoryImportPayload(
+  payload: unknown,
+): GraphDevtoolsInspectHistoryImportPayload | null {
+  if (typeof payload !== "object" || payload === null || Array.isArray(payload)) return null;
+  if (!Object.prototype.hasOwnProperty.call(payload, "candidate")) return null;
+  return { candidate: (payload as GraphDevtoolsInspectHistoryImportPayload).candidate };
+}
+
+interface ParsedConfirmHistoryImportPayload {
+  candidateId: string;
+  cursor: number;
+  confirm: boolean;
+}
+
+function parseConfirmHistoryImportPayload(
+  payload: unknown,
+): ParsedConfirmHistoryImportPayload | null {
+  if (typeof payload !== "object" || payload === null || Array.isArray(payload)) return null;
+  const candidate = payload as Partial<ParsedConfirmHistoryImportPayload>;
+  if (
+    typeof candidate.candidateId !== "string" || candidate.candidateId.length === 0 ||
+    typeof candidate.cursor !== "number" || !Number.isSafeInteger(candidate.cursor) || candidate.cursor <= 0 ||
+    typeof candidate.confirm !== "boolean"
+  ) return null;
+  return candidate as ParsedConfirmHistoryImportPayload;
+}
+
 function createController(
   store: GraphStore,
   options: AttachGraphDevtoolsOptions,
@@ -185,10 +216,16 @@ function createController(
   const snapshotBytesLimit = boundedLimit(options.snapshotBytesLimit, 10 * 1024 * 1024);
   const timeTravelEnabled = snapshotLimit > 0 && snapshotBytesLimit > 0;
   const timeTravelCommands: GraphDevtoolsCommandName[] = timeTravelEnabled
-    ? ["get-time-travel-status", "rewind", "return-to-live"]
+    ? [
+        "get-time-travel-status",
+        "rewind",
+        "return-to-live",
+        "inspect-history-import",
+        "confirm-history-import",
+      ]
     : [];
   const timeTravelFeatures: Array<GraphDevtoolsCapabilities["features"][number]> = timeTravelEnabled
-    ? ["snapshot-history", "time-travel"]
+    ? ["snapshot-history", "time-travel", "history-import"]
     : [];
   const valuePolicy = options.values ?? { mode: "metadata-only" };
   const capabilities: GraphDevtoolsCapabilities = {
@@ -354,12 +391,14 @@ function createController(
     state: GraphDevtoolsTimeTravelEvent["payload"]["state"],
     cursor: number | null,
     previousCursor: number | null,
+    source: GraphDevtoolsTimeTravelEvent["payload"]["source"],
+    previousSource: GraphDevtoolsTimeTravelEvent["payload"]["previousSource"],
     reason: GraphDevtoolsTimeTravelEvent["payload"]["reason"],
   ): GraphDevtoolsTimeTravelEvent => {
     const event: GraphDevtoolsTimeTravelEvent = {
       ...nextBase(),
       type: "time-travel",
-      payload: { state, cursor, previousCursor, reason },
+      payload: { state, cursor, previousCursor, source, previousSource, reason },
     };
     publish(event);
     return event;
@@ -375,10 +414,17 @@ function createController(
   };
 
   const leaveRewindForMutation = () => {
-    const previousCursor = snapshotHistory.leaveRewindForMutation();
-    if (previousCursor === null) return;
+    const previous = snapshotHistory.leaveRewindForMutation();
+    if (previous === null) return;
     projectionFailureRevision += 1;
-    publishTimeTravel("live", null, previousCursor, "mutation");
+    publishTimeTravel(
+      "live",
+      null,
+      previous.previousCursor,
+      null,
+      previous.previousSource,
+      "mutation",
+    );
   };
 
   const viewRegistry = createGraphDevtoolsViewRegistry(storeId, () => store.getState(), (payload) => {
@@ -491,35 +537,124 @@ function createController(
     },
     rewind(cursor) {
       if (!timeTravelEnabled) return null;
-      const previousCursor = snapshotHistory.getStatus().cursor;
-      if (!snapshotHistory.rewind(cursor, store.getState(), restoreGraphData)) return null;
+      const attempt = snapshotHistory.rewind(cursor, store.getState(), restoreGraphData);
+      if (attempt === null || attempt.status === "expired-history") return attempt;
       projectionFailureRevision += 1;
-      const event = publishTimeTravel("rewound", cursor, previousCursor, "command");
+      const event = publishTimeTravel(
+        "rewound",
+        cursor,
+        attempt.previousCursor,
+        "retained",
+        attempt.previousSource,
+        "command",
+      );
       return {
         status: "rewound",
         cursor,
-        previousCursor,
+        source: "retained",
+        previousCursor: attempt.previousCursor,
+        previousSource: attempt.previousSource,
         changedAt: event.observedAt,
       };
     },
     returnToLive() {
       if (!timeTravelEnabled) return null;
-      const previousCursor = snapshotHistory.returnToLive(restoreGraphData);
-      if (previousCursor === null) return null;
+      const previous = snapshotHistory.returnToLive(restoreGraphData);
+      if (previous === null) return null;
       projectionFailureRevision += 1;
-      const event = publishTimeTravel("live", null, previousCursor, "command");
+      const event = publishTimeTravel(
+        "live",
+        null,
+        previous.previousCursor,
+        null,
+        previous.previousSource,
+        "command",
+      );
       return {
         status: "live",
         cursor: null,
-        previousCursor,
+        previousCursor: previous.previousCursor,
+        previousSource: previous.previousSource,
         reason: "command",
         changedAt: event.observedAt,
       };
+    },
+    inspectHistoryImport(candidate) {
+      if (disposed) {
+        return { status: "rejected", reason: "disposed", message: "DevTools controller is disposed" };
+      }
+      if (!timeTravelEnabled) {
+        return {
+          status: "rejected",
+          reason: "time-travel-unavailable",
+          message: "Time travel is disabled for this controller",
+        };
+      }
+      return snapshotHistory.inspectImport(candidate, storeId);
+    },
+    confirmHistoryImport(candidateId, cursor) {
+      if (disposed) {
+        return { status: "rejected", reason: "disposed", message: "DevTools controller is disposed" };
+      }
+      if (!timeTravelEnabled) {
+        return {
+          status: "rejected",
+          reason: "time-travel-unavailable",
+          message: "Time travel is disabled for this controller",
+        };
+      }
+      const attempt = snapshotHistory.restoreImport(
+        candidateId,
+        cursor,
+        store.getState(),
+        restoreGraphData,
+      );
+      if (attempt.status === "candidate-not-found") {
+        return {
+          status: "rejected",
+          reason: "candidate-not-found",
+          message: `Import candidate ${candidateId} is no longer awaiting confirmation`,
+        };
+      }
+      if (attempt.status === "snapshot-not-found") {
+        return {
+          status: "rejected",
+          reason: "snapshot-not-found",
+          message: `Import candidate ${candidateId} does not contain cursor ${cursor}`,
+        };
+      }
+      if (attempt.status === "restore-failed") {
+        return {
+          status: "rejected",
+          reason: "restore-failed",
+          message: `Import candidate ${candidateId} could not be restored through the graph boundary`,
+        };
+      }
+      projectionFailureRevision += 1;
+      const event = publishTimeTravel(
+        "rewound",
+        cursor,
+        attempt.previousCursor,
+        "import",
+        attempt.previousSource,
+        "import",
+      );
+      const receipt: GraphDevtoolsHistoryImportRestoreReceipt = {
+        status: "rewound",
+        source: "import",
+        candidateId,
+        cursor,
+        previousCursor: attempt.previousCursor,
+        previousSource: attempt.previousSource,
+        changedAt: event.observedAt,
+      };
+      return receipt;
     },
     clearHistory() {
       history.length = 0;
       historySizes.length = 0;
       retainedBytes = 0;
+      snapshotHistory.clear();
     },
     subscribe(listener, replay = false) {
       if (disposed) return () => {};
@@ -613,6 +748,21 @@ function createController(
           const receipt = controller.returnToLive();
           if (!receipt) return resultError(storeId, parsed.requestId, "not-rewound", "The graph is already live");
           result = receipt;
+          break;
+        }
+        case "inspect-history-import": {
+          if (!timeTravelEnabled) return resultError(storeId, parsed.requestId, "time-travel-unavailable", "Time travel is disabled for this controller");
+          const payload = parseInspectHistoryImportPayload(parsed.payload);
+          if (!payload) return resultError(storeId, parsed.requestId, "invalid-payload", "Invalid history import inspection payload");
+          result = controller.inspectHistoryImport(payload.candidate);
+          break;
+        }
+        case "confirm-history-import": {
+          if (!timeTravelEnabled) return resultError(storeId, parsed.requestId, "time-travel-unavailable", "Time travel is disabled for this controller");
+          const payload = parseConfirmHistoryImportPayload(parsed.payload);
+          if (!payload) return resultError(storeId, parsed.requestId, "invalid-payload", "Invalid history import confirmation payload");
+          if (!payload.confirm) return resultError(storeId, parsed.requestId, "confirmation-required", "History import restore requires confirm: true");
+          result = controller.confirmHistoryImport(payload.candidateId, payload.cursor);
           break;
         }
         case "preview-entity-patch": {

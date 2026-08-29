@@ -1562,3 +1562,36 @@
 - Phase remains 2/9 changes complete. Change 3 is 3/7 executable tasks complete;
   next task adds visible expired-history results and bounded inert import
   inspection with explicit confirmed restore.
+
+## 2026-08-29 — DevTools time travel task 4/7
+
+- Rewind now distinguishes future/unknown cursors from typed
+  `expired-history` results. Expired receipts identify evicted, cleared, or
+  unavailable captures and include the current oldest/newest/latest retained
+  cursor range without publishing to or mutating the graph.
+- Added versioned `inspect-history-import` and `confirm-history-import`
+  commands, direct controller methods, protocol types, capability discovery,
+  source-aware status, and source-aware time-travel audit events.
+- Import inspection accepts JSON-only data, validates protocol version and the
+  exact target store, stable ordered cursors, timestamps, and all five graph
+  data structures. Rejections are typed and do not call the graph boundary.
+- One inert candidate is retained inside the owning controller. Imported data
+  and local snapshots share the configured count/byte ceiling; whole oldest
+  local snapshots expire when necessary, and live graph activity, clearing,
+  replacement inspection, successful restore, or disposal releases the
+  candidate.
+- Restore requires `confirm: true`, the exact one-shot candidate ID, and a
+  cursor from that candidate. Successful restore uses the same replay-marked
+  Zustand boundary, protects exact return-to-live state, invalidates preview
+  receipts, and emits an ordered event with `source: import`.
+- Security boundary: imported graph values are untrusted command input. They
+  are rejected unless finite, acyclic, plain JSON and structurally compatible;
+  no values enter inspection receipts or audit events, and no inspection alone
+  can mutate application state.
+- No unit, component, isolated, mock-backed, snapshot, partial integration,
+  typecheck, or build ran. Signed task completion and both after-hooks passed
+  with zero failures; the known projection reset was restored through signed
+  KBD revision 330.
+- Phase remains 2/9 changes complete. Change 3 is 4/7 executable tasks complete;
+  next task delegates deprecated root time-travel functions to the default
+  store controller before the single assembled integration gate.

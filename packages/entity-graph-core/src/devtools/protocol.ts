@@ -1,3 +1,5 @@
+import type { GraphState } from "../graph";
+
 /** Stable wire protocol identifier for every DevTools envelope. */
 export const GRAPH_DEVTOOLS_PROTOCOL = "prometheus.entity-graph.devtools" as const;
 
@@ -64,6 +66,7 @@ export interface GraphDevtoolsCapabilities {
     | "local-preview"
     | "snapshot-history"
     | "time-travel"
+    | "history-import"
   >;
   limits: {
     historyEvents: number;
@@ -93,6 +96,7 @@ export type GraphDevtoolsSnapshotReference =
 export interface GraphDevtoolsSnapshotHistoryStatus {
   mode: "live" | "rewound";
   cursor: number | null;
+  source: "retained" | "import" | null;
   retainedSnapshots: number;
   retainedBytes: number;
   snapshotLimit: number;
@@ -102,6 +106,11 @@ export interface GraphDevtoolsSnapshotHistoryStatus {
   newestCursor: number | null;
   latestCursor: number | null;
   lastUnavailable: Extract<GraphDevtoolsSnapshotReference, { status: "unavailable" }> | null;
+  importCandidate: {
+    candidateId: string;
+    snapshots: number;
+    bytes: number;
+  } | null;
 }
 
 export interface GraphDevtoolsEventBase {
@@ -165,7 +174,9 @@ export interface GraphDevtoolsTimeTravelEvent extends GraphDevtoolsEventBase {
     state: "rewound" | "live";
     cursor: number | null;
     previousCursor: number | null;
-    reason: "command" | "mutation";
+    source: "retained" | "import" | null;
+    previousSource: "retained" | "import" | null;
+    reason: "command" | "import" | "mutation";
   };
 }
 
@@ -329,17 +340,121 @@ export interface GraphDevtoolsRewindPayload {
 export interface GraphDevtoolsRewindReceipt {
   status: "rewound";
   cursor: number;
+  source: "retained";
   previousCursor: number | null;
+  previousSource: "retained" | "import" | null;
   changedAt: string;
 }
+
+export interface GraphDevtoolsExpiredHistoryReceipt {
+  status: "expired-history";
+  cursor: number;
+  reason: "evicted" | "cleared" | "unavailable";
+  unavailableReason?: Extract<GraphDevtoolsSnapshotReference, { status: "unavailable" }>["reason"];
+  oldestCursor: number | null;
+  newestCursor: number | null;
+  latestCursor: number | null;
+}
+
+export type GraphDevtoolsRewindResult =
+  | GraphDevtoolsRewindReceipt
+  | GraphDevtoolsExpiredHistoryReceipt;
 
 export interface GraphDevtoolsReturnToLiveReceipt {
   status: "live";
   cursor: null;
   previousCursor: number;
+  previousSource: "retained" | "import";
   reason: "command";
   changedAt: string;
 }
+
+export type GraphDevtoolsGraphData = Pick<
+  GraphState,
+  "entities" | "patches" | "entityStates" | "syncMetadata" | "lists"
+>;
+
+export interface GraphDevtoolsHistoryImportSnapshot {
+  cursor: number;
+  capturedAt: string;
+  eventSequence: number | null;
+  data: GraphDevtoolsGraphData;
+}
+
+export interface GraphDevtoolsHistoryImportEnvelope {
+  protocol: typeof GRAPH_DEVTOOLS_PROTOCOL;
+  version: typeof GRAPH_DEVTOOLS_PROTOCOL_VERSION;
+  storeId: string;
+  exportedAt: string;
+  snapshots: ReadonlyArray<GraphDevtoolsHistoryImportSnapshot>;
+}
+
+export interface GraphDevtoolsInspectHistoryImportPayload {
+  candidate: unknown;
+}
+
+export interface GraphDevtoolsHistoryImportInspectionReceipt {
+  status: "awaiting-confirmation";
+  candidateId: string;
+  storeId: string;
+  protocolVersion: typeof GRAPH_DEVTOOLS_PROTOCOL_VERSION;
+  inspectedAt: string;
+  bytes: number;
+  snapshots: ReadonlyArray<{
+    cursor: number;
+    capturedAt: string;
+    eventSequence: number | null;
+    bytes: number;
+  }>;
+}
+
+export interface GraphDevtoolsHistoryImportRejectedReceipt {
+  status: "rejected";
+  reason:
+    | "invalid-envelope"
+    | "wrong-store"
+    | "unsupported-version"
+    | "snapshot-limit-exceeded"
+    | "byte-limit-exceeded"
+    | "time-travel-unavailable"
+    | "disposed";
+  message: string;
+}
+
+export type GraphDevtoolsHistoryImportInspectionResult =
+  | GraphDevtoolsHistoryImportInspectionReceipt
+  | GraphDevtoolsHistoryImportRejectedReceipt;
+
+export interface GraphDevtoolsConfirmHistoryImportPayload {
+  candidateId: string;
+  cursor: number;
+  confirm: true;
+}
+
+export interface GraphDevtoolsHistoryImportRestoreReceipt {
+  status: "rewound";
+  source: "import";
+  candidateId: string;
+  cursor: number;
+  previousCursor: number | null;
+  previousSource: "retained" | "import" | null;
+  changedAt: string;
+}
+
+export interface GraphDevtoolsHistoryImportRestoreRejectedReceipt {
+  status: "rejected";
+  reason:
+    | "candidate-not-found"
+    | "snapshot-not-found"
+    | "restore-failed"
+    | "time-travel-unavailable"
+    | "disposed";
+  message: string;
+}
+
+export type GraphDevtoolsHistoryImportRestoreResult =
+  | GraphDevtoolsHistoryImportRestoreReceipt
+  | GraphDevtoolsHistoryImportRestoreRejectedReceipt;
 
 export interface GraphDevtoolsPreviewAppliedReceipt {
   previewId: string;
@@ -387,6 +502,8 @@ export type GraphDevtoolsCommandName =
   | "get-time-travel-status"
   | "rewind"
   | "return-to-live"
+  | "inspect-history-import"
+  | "confirm-history-import"
   | "clear-history";
 
 export interface GraphDevtoolsCommand {
@@ -408,8 +525,10 @@ export type GraphDevtoolsResultPayload =
   | GraphDevtoolsPreviewAppliedReceipt
   | GraphDevtoolsPreviewRestoreReceipt
   | GraphDevtoolsSnapshotHistoryStatus
-  | GraphDevtoolsRewindReceipt
+  | GraphDevtoolsRewindResult
   | GraphDevtoolsReturnToLiveReceipt
+  | GraphDevtoolsHistoryImportInspectionResult
+  | GraphDevtoolsHistoryImportRestoreResult
   | ReadonlyArray<GraphDevtoolsEvent>
   | { cleared: true };
 
@@ -440,6 +559,7 @@ export type GraphDevtoolsResult =
           | "snapshot-not-found"
           | "time-travel-unavailable"
           | "not-rewound"
+          | "confirmation-required"
           | "disposed";
         message: string;
       };

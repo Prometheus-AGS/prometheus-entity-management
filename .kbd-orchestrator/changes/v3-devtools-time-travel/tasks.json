@@ -42,9 +42,9 @@
     {
       "id": "4",
       "title": "Implement visible expired-history results and bounded import inspection/confirmed-restore validation.",
-      "done": false,
-      "doneAt": null,
-      "doneBy": null,
+      "done": true,
+      "doneAt": "2026-08-29T19:43:50Z",
+      "doneBy": "claude-code",
       "files": [
         "packages/entity-graph-core/src/devtools"
       ],
