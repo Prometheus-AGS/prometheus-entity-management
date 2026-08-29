@@ -1,8 +1,11 @@
 import { useCallback, useMemo, useSyncExternalStore } from "react";
 import { useStore } from "zustand";
 import type { GraphState } from "@prometheus-ags/entity-graph-core";
-import { getActiveSubscriberCount, subscribeSubscriberStats } from "@prometheus-ags/entity-graph-core";
-import { useGraphStoreApi } from "./graph-store";
+import {
+  getActiveSubscriberCount,
+  subscribeSubscriberStats,
+} from "@prometheus-ags/entity-graph-core";
+import { useGraphStoreApi } from "../graph-store";
 
 function collectGraphDevStats(
   entities: GraphState["entities"],
@@ -15,51 +18,46 @@ function collectGraphDevStats(
   for (const type of Object.keys(entities)) {
     const bucket = entities[type];
     if (!bucket) continue;
-    const n = Object.keys(bucket).length;
-    if (n > 0) entityCounts[type] = n;
-    totalEntities += n;
+    const count = Object.keys(bucket).length;
+    if (count > 0) entityCounts[type] = count;
+    totalEntities += count;
   }
 
   const listKeys = Object.keys(listsState);
-  const listCount = listKeys.length;
-
   const patchedEntities: Array<{ type: string; id: string }> = [];
   for (const type of Object.keys(patches)) {
     const bucket = patches[type];
     if (!bucket) continue;
     for (const id of Object.keys(bucket)) {
-      const p = bucket[id];
-      if (p && Object.keys(p).length > 0) patchedEntities.push({ type, id });
+      const patch = bucket[id];
+      if (patch && Object.keys(patch).length > 0) patchedEntities.push({ type, id });
     }
   }
 
   const staleEntities: Array<{ type: string; id: string }> = [];
   const fetchingEntities: Array<{ type: string; id: string }> = [];
   for (const key of Object.keys(entityStates)) {
-    const colon = key.indexOf(":");
-    if (colon === -1) continue;
-    const type = key.slice(0, colon);
-    const id = key.slice(colon + 1);
-    const es = entityStates[key];
-    if (es.stale) staleEntities.push({ type, id });
-    if (es.isFetching) fetchingEntities.push({ type, id });
+    const separator = key.indexOf(":");
+    if (separator === -1) continue;
+    const entity = { type: key.slice(0, separator), id: key.slice(separator + 1) };
+    const state = entityStates[key];
+    if (state.stale) staleEntities.push(entity);
+    if (state.isFetching) fetchingEntities.push(entity);
   }
-
-  const lists = listKeys.map((key) => ({
-    key,
-    idCount: listsState[key]?.ids.length ?? 0,
-    isFetching: Boolean(listsState[key]?.isFetching || listsState[key]?.isFetchingMore),
-    isStale: Boolean(listsState[key]?.stale),
-  }));
 
   return {
     entityCounts,
     totalEntities,
-    listCount,
+    listCount: listKeys.length,
     patchedEntities,
     staleEntities,
     fetchingEntities,
-    lists,
+    lists: listKeys.map((key) => ({
+      key,
+      idCount: listsState[key]?.ids.length ?? 0,
+      isFetching: Boolean(listsState[key]?.isFetching || listsState[key]?.isFetchingMore),
+      isStale: Boolean(listsState[key]?.stale),
+    })),
   };
 }
 
@@ -67,21 +65,17 @@ function subscriberCountServerSnapshot() {
   return 0;
 }
 
-/**
- * Debug-time snapshot of entity graph health: counts, list queries, patches, staleness,
- * in-flight fetches, and engine subscriber ref-counts.
- *
- * Mount inside a DevTools panel or debug route; subscriber totals update via
- * `useSyncExternalStore` when hooks register/unregister interest, and graph fields
- * update through the Zustand store.
- */
+/** Lightweight compatibility hook retained on the normal package root. */
 export function useGraphDevTools() {
   const storeApi = useGraphStoreApi();
   const subscribe = useCallback(
     (onChange: () => void) => subscribeSubscriberStats(onChange, storeApi),
     [storeApi],
   );
-  const getSubscriberCount = useCallback(() => getActiveSubscriberCount(storeApi), [storeApi]);
+  const getSubscriberCount = useCallback(
+    () => getActiveSubscriberCount(storeApi),
+    [storeApi],
+  );
   const subscriberCount = useSyncExternalStore(
     subscribe,
     getSubscriberCount,

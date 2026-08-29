@@ -153,7 +153,7 @@ export type {
 } from "@prometheus-ags/entity-graph-core";
 
 // ── DevTools ─────────────────────────────────────────────────────────────
-export { useGraphDevTools } from "./devtools";
+export { useGraphDevTools } from "./devtools/legacy-stats";
 export { subscribeDevtoolsEvent } from "@prometheus-ags/entity-graph-core";
 export type { DevtoolsEvent } from "@prometheus-ags/entity-graph-core";
 export { createDevtoolsEventBus, registerStore, getRegisteredStores } from "@prometheus-ags/entity-graph-core";

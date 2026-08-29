@@ -19,9 +19,9 @@
     {
       "id": "2",
       "title": "Add the React `./devtools` export, client provider/hook, lazy entry, and isolated CSS contract.",
-      "done": false,
-      "doneAt": null,
-      "doneBy": null,
+      "done": true,
+      "doneAt": "2026-08-29T21:43:29Z",
+      "doneBy": "codex",
       "files": [
         "packages/entity-graph-react/package.json",
         "packages/entity-graph-react/tsup.config.ts",

@@ -8,6 +8,16 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "devtools": [
+        "dist/devtools.d.ts"
+      ],
+      "devtools/auto": [
+        "dist/devtools/auto.d.ts"
+      ]
+    }
+  },
   "exports": {
     ".": {
       "import": {
@@ -17,6 +27,26 @@
       "require": {
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
+      }
+    },
+    "./devtools": {
+      "import": {
+        "types": "./dist/devtools.d.ts",
+        "default": "./dist/devtools.mjs"
+      },
+      "require": {
+        "types": "./dist/devtools.d.cts",
+        "default": "./dist/devtools.cjs"
+      }
+    },
+    "./devtools/auto": {
+      "import": {
+        "types": "./dist/devtools/auto.d.ts",
+        "default": "./dist/devtools/auto.mjs"
+      },
+      "require": {
+        "types": "./dist/devtools/auto.d.cts",
+        "default": "./dist/devtools/auto.cjs"
       }
     }
   },
@@ -28,7 +58,10 @@
     "README.md",
     "CHANGELOG.md"
   ],
-  "sideEffects": false,
+  "sideEffects": [
+    "./dist/devtools/auto.mjs",
+    "./dist/devtools/auto.cjs"
+  ],
   "scripts": {
     "build": "tsup",
     "build:watch": "tsup --watch",

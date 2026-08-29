@@ -1,5 +1,14 @@
 # Gotchas
 
+## 2026-08-29 — Quote Markdown backticks safely in shell task titles
+
+Passing a Markdown-formatted KBD task title inside shell double quotes executes
+backtick content as command substitution. The React inspector task 2 start
+signal therefore lost the literal `./devtools` text and emitted a harmless
+`No such file or directory` message. Use shell single quotes for static task
+titles containing backticks; the completed signed task summary was corrected
+with safe quoting.
+
 ## KBD authority after legacy migration
 
 - Treat `prometheus kbd status --json` and its signed Loro revision as canonical.

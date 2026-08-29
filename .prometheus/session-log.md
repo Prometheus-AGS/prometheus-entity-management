@@ -1714,3 +1714,26 @@
 - Canonical task 1 completed at signed revision 347. The known task-after
   parent reset recurred and was corrected through signed revision 348. Change
   4 remains in progress at 1/9 executable tasks; task 2 is next.
+
+## 2026-08-29 — React inspector task 2/9
+
+- Added the side-effect-free React `./devtools` entry and the sole
+  side-effectful `./devtools/auto` entry with paired ESM, CommonJS, declaration,
+  and `typesVersions` targets. The normal root continues to export only the
+  lightweight compatibility hook and does not reach the lazy inspector.
+- Added the store-scoped provider, reference-counted core attachment, local
+  protocol client, cached external-store snapshot adapter, SSR null snapshot,
+  and cleanup path. React 19.2.7 documentation confirms the Shadow Root
+  container and `useSyncExternalStore` contracts used here.
+- Added build/host mode detection before dynamic import, an explicit DOM-ready
+  auto mount with deterministic unmount, and a lazily loaded inspector entry.
+  Disabled or production auto mode does not load the inspector or mutate DOM.
+- Added one open Shadow Root and self-contained `--pem-devtools-*` CSS
+  fallbacks with no remote assets or host-global selectors. Full workspace
+  styling remains task 10 work.
+- Manifest/source invariants, TypeScript syntax parsing, and diff whitespace
+  checks passed. No typecheck, test, or build ran; task 11 remains the one full
+  assembled browser acceptance gate.
+- Canonical task 2 completed at signed revision 350. The known task-after
+  parent reset was corrected through signed revision 351. Change 4 is now 2/9
+  executable tasks complete; task 3 is next.
