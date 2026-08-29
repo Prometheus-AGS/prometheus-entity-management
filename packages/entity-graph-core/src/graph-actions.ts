@@ -1,11 +1,7 @@
 import { graphStore } from "./graph";
 import type { EntityId, EntitySyncMetadata, EntityType, GraphStore, QueryKey, SyncOrigin } from "./graph";
-import { notifyDevtools } from "./engine";
+import { emitLegacyDevtoolsEvent } from "./legacy-devtools";
 
-// Local type declaration so we can reference `process.env.NODE_ENV` without
-// pulling in @types/node (the package targets browser bundles too). Consumer
-// bundlers (Vite/Webpack/esbuild) replace this literal at build time so the
-// devtools notify call-sites tree-shake out of production builds.
 declare const process: { env: { NODE_ENV?: string } } | undefined;
 
 interface GraphDataSnapshot {
@@ -61,8 +57,10 @@ export function createGraphTransaction(storeApi: GraphStore = graphStore): Graph
   const tx: GraphTransaction = {
     upsertEntity(type, id, data) {
       storeApi.getState().upsertEntity(type, id, data);
-      if (typeof process === "undefined" || process.env.NODE_ENV !== "production") {
-        notifyDevtools({ kind: "upsert", type, id, data, at: new Date().toISOString() });
+      if (
+        typeof process === "undefined" || process.env.NODE_ENV !== "production"
+      ) {
+        emitLegacyDevtoolsEvent({ kind: "upsert", type, id, data, at: new Date().toISOString() });
       }
       return tx;
     },
@@ -76,15 +74,19 @@ export function createGraphTransaction(storeApi: GraphStore = graphStore): Graph
     },
     patchEntity(type, id, patch) {
       storeApi.getState().patchEntity(type, id, patch);
-      if (typeof process === "undefined" || process.env.NODE_ENV !== "production") {
-        notifyDevtools({ kind: "patch", type, id, patch, at: new Date().toISOString() });
+      if (
+        typeof process === "undefined" || process.env.NODE_ENV !== "production"
+      ) {
+        emitLegacyDevtoolsEvent({ kind: "patch", type, id, patch, at: new Date().toISOString() });
       }
       return tx;
     },
     clearPatch(type, id) {
       storeApi.getState().clearPatch(type, id);
-      if (typeof process === "undefined" || process.env.NODE_ENV !== "production") {
-        notifyDevtools({ kind: "clearPatch", type, id, at: new Date().toISOString() });
+      if (
+        typeof process === "undefined" || process.env.NODE_ENV !== "production"
+      ) {
+        emitLegacyDevtoolsEvent({ kind: "clearPatch", type, id, at: new Date().toISOString() });
       }
       return tx;
     },

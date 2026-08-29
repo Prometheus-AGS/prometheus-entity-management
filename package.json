@@ -158,6 +158,7 @@
     "verify:docs-pages": "node scripts/verify-docs-pages.mjs --report .kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-github-pages/verification.json",
     "verify:docs-pages-quality": "node scripts/verify-docs-pages-quality.mjs --report .kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-github-pages/quality.json",
     "verify:docs-snippets": "node scripts/verify-skills-snippets.mjs --root site/docs --ext .md,.mdx --skip \"site/docs/api/npm/|site/docs/api/index\\.mdx|site/docs/packages/(?!overview)\" --all-packages --report .kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-concepts-packages/snippets.json",
+    "verify:devtools-core-observability": "pnpm --filter @prometheus-ags/entity-graph-core build && pnpm --filter @prometheus-ags/prometheus-entity-management build && node scripts/verify-devtools-core-observability.mjs --report .kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-core-observability/task-10-packed-acceptance.json",
     "verify:example-coverage": "node scripts/verify-example-coverage.mjs",
     "verify:flint-contracts": "node scripts/verify-flint-portable-contracts.mjs",
     "verify:flutter-riverpod-a2ui": "node scripts/verify-flutter-riverpod-a2ui-example.mjs --report .kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-riverpod-a2ui-example/verification.json",

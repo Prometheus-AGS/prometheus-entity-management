@@ -46,7 +46,10 @@ export const SKILL_LEDGER_PACKAGES = Object.freeze([
     id: "core",
     directory: "entity-graph-core",
     ledger: "core-library-exports.json",
-    entryPoints: [[".", "index.mjs"]],
+    entryPoints: [
+      [".", "index.mjs"],
+      ["./devtools", "devtools.mjs"],
+    ],
   },
   {
     id: "svelte",

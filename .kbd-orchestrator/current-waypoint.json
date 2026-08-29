@@ -1,31 +1,31 @@
 {
-  "schemaVersion": "5",
-  "generatedBy": "kbd-runtime",
-  "sourceRevision": 261,
-  "derivedRevision": 261,
-  "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 261
-  },
+  "activePhaseId": "v3-devtools-parity",
+  "change": null,
+  "childPointer": null,
+  "completionMetric": "implementation",
   "conflictCount": 0,
-  "projectId": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
-  "runId": "full-3.0-release-20260801T113424Z",
+  "currentTask": null,
+  "derivedRevision": 284,
+  "exactNextCommand": "/kbd-apply v3-devtools-core-observability",
+  "frontier": {
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 284
+  },
+  "generatedBy": "kbd-runtime",
+  "implementationCompleted": 33,
+  "implementationTotal": 63,
   "path": [
     "v3-devtools-parity"
   ],
+  "phase": "v3-devtools-parity",
   "phaseIds": [
     "v3-devtools-parity"
   ],
-  "activePhaseId": "v3-devtools-parity",
-  "phase": "v3-devtools-parity",
-  "childPointer": null,
-  "change": null,
-  "currentTask": null,
+  "planRevision": 6,
+  "projectId": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
+  "revision": 284,
+  "runId": "full-3.0-release-20260801T113424Z",
+  "schemaVersion": "5",
+  "sourceRevision": 284,
   "status": "running",
-  "completionMetric": "implementation",
-  "implementationCompleted": 32,
-  "implementationTotal": 63,
-  "planRevision": 4,
-  "revision": 261,
-  "exactNextCommand": "/kbd-apply v3-devtools-core-observability",
-  "updatedAt": "2026-08-29T10:36:34.538255Z"
+  "updatedAt": "2026-08-29T15:57:11.452798Z"
 }

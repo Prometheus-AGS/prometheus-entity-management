@@ -1,0 +1,71 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "unknown",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/entity-graph-core/src/engine.ts",
+      "line": 205,
+      "claim": "The deprecated root event API is documented as delegating to the default-store v1 controller, but it is actually an independent parallel store observer in legacy-devtools.ts, so the shipped security/architecture evidence contradicts the implementation.",
+      "evidence": "engine.ts hunk comment: \"The deprecated event shape delegates to the default store's v1 controller, whose store subscription observes every Zustand publication.\" But src/legacy-devtools.ts subscribes to graphStore directly (ensureDefaultStoreObserver \u2192 graphStore.subscribe(publishDefaultStoreChanges)) and re-implements its own entity/patch/list diffing with no controller dependency \u2014 confirmed by round-1-resolutions.md item 1 (\"has no dependency on the versioned protocol, controller, client, or projection\") and by security-boundary.md (\"not attached by the core package unless a host or a deprecated compatibility consumer requests it\"). The acceptance criteria require that \"security-boundary notes... must match the shipped surface\" and that deprecated root event APIs are preserved \"as delegates to the default-store controller where compatibility requires them\"; neither the comment, the security note, nor the criterion matches the shipped code, and the two divergent diff implementations can now drift independently.",
+      "suggested_fix": "Correct the engine.ts comment and security-boundary.md to state that the deprecated stream is an independent default-store observer kept free of the controller payload (or actually delegate through the controller if the root-payload exclusion can be preserved), and reconcile this with the acceptance-criteria delegation language."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/legacy-devtools.ts",
+      "line": 58,
+      "claim": "The deprecated compatibility stream silently changes event payload semantics: 'patch' events now carry the cumulative merged patch bucket instead of the incremental patch argument, and no-op upserts no longer emit events.",
+      "evidence": "Old graph-actions.ts op sites emitted notifyDevtools({ kind: \"patch\", type, id, patch }) with the incremental patch argument on every patchEntity call; the new publishDefaultStoreChanges publishes { kind: \"patch\", type, id, patch: after } where `after` is the whole accumulated patches[type][id] bucket, and only when the diff detects a reference change (previous === current \u2192 skipped). Compatibility consumers of subscribeDevtoolsEvent observe different payloads and miss emissions they previously received.",
+      "suggested_fix": "Either preserve the incremental-patch payload for transaction-originated events on the default store (e.g., keep the op-site emission for the default store too and de-duplicate against the observer), or document the payload/semantics change explicitly in the README deprecation notes."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/controller.ts",
+      "line": 335,
+      "claim": "Closing a transport after the controller has been disposed republishes a 'client-disconnected' lifecycle event into the already-cleared history, resurrecting retained events/bytes after the documented final-detach teardown.",
+      "evidence": "dispose() clears history, historySizes, and retainedBytes, but publish() has no `disposed` guard; a transport whose close() runs after dispose (closed flag still false) executes publishLifecycle(\"client-disconnected\", clientId), which pushes a new event into history and increments retainedBytes. This contradicts security-boundary.md: \"The final detach ... clears retained history.\"",
+      "suggested_fix": "Add an early return in publish() (or in the transport close path) when disposed is true."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/controller.ts",
+      "line": 119,
+      "claim": "Non-finite limit options silently bypass the documented history bounds: Math.max(0, Math.floor(NaN)) yields NaN and Infinity passes through, making the retention guards always false.",
+      "evidence": "`const historyLimit = Math.max(0, Math.floor(options.historyLimit ?? 500));` (and the same pattern for historyBytesLimit/eventBytesLimit). With historyLimit = NaN, `history.length > historyLimit` and `retainedBytes > historyBytesLimit` are always false, so history grows unbounded while capabilities.limits advertises NaN \u2014 a silent failure of the bounded-history guarantee the acceptance criteria require.",
+      "suggested_fix": "Validate with Number.isFinite and fall back to the defaults (or throw) for NaN/Infinity/negative inputs."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-react/src/devtools.ts",
+      "line": 81,
+      "claim": "useGraphDevTools now passes a new inline subscribe closure to useSyncExternalStore on every render, forcing an unsubscribe/resubscribe cycle on each render where the previous code passed a stable function reference.",
+      "evidence": "Hunk changes `subscribeSubscriberStats` (stable module-level reference) to `(onChange) => subscribeSubscriberStats(onChange, storeApi)` (new identity per render). React re-subscribes whenever the subscribe function identity changes.",
+      "suggested_fix": "Memoize the subscribe function with useCallback keyed on storeApi, or make subscribeSubscriberStats return a bound stable reference per store."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "packages/entity-graph-core/src/devtools/controller.ts",
+      "line": 150,
+      "claim": "Event truncation overwrites the 'redaction-error' valueState with 'truncated', erasing the redaction-failure signal from oversized events.",
+      "evidence": "boundEvent maps changes with `valueState: change.valueState === \"hidden-by-policy\" ? change.valueState : \"truncated\"`, so a change that reported a redactor failure (valueState: \"redaction-error\") loses that state \u2014 and the { $type: \"redaction-error\" } markers are stripped by the before/after destructure \u2014 contradicting the documented \"the change reports valueState: 'redaction-error'\" contract for that change.",
+      "suggested_fix": "Preserve \"redaction-error\" alongside truncation (e.g., keep the original valueState in a separate field or skip overwriting that state)."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "scripts/verify-devtools-core-observability.mjs",
+      "line": 84,
+      "claim": "The packed-consumer acceptance gate installs with --strict-peer-dependencies=false, which can mask peer-dependency defects in exactly the packed artifacts the gate exists to validate.",
+      "evidence": "`await run(\"pnpm\", [\"install\", \"--ignore-scripts\", \"--strict-peer-dependencies=false\"], ...)` \u2014 a missing or mis-versioned peer declaration in the packed core/React manifests would not fail the gate.",
+      "suggested_fix": "Drop the flag, or replace it with an explicit, enumerated peer-dependency allowance so unexpected peer issues still fail."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

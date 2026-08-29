@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-29T15:55:05.225Z",
+  "boundary": "assembled-packed-consumer",
+  "packages": {
+    "@prometheus-ags/entity-graph-core": {
+      "payload": "pass",
+      "manifest": "pass",
+      "files": 19
+    },
+    "@prometheus-ags/prometheus-entity-management": {
+      "payload": "pass",
+      "manifest": "pass",
+      "files": 9
+    }
+  },
+  "consumers": {
+    "esm": "pass",
+    "commonjs": "pass",
+    "typescriptNodeNext": "pass"
+  },
+  "scenarios": {
+    "semanticEventCompleteness": "pass",
+    "batchAndCoalescing": "pass",
+    "multiStoreIsolation": "pass",
+    "multipleClients": "pass",
+    "disabledMode": "pass",
+    "compatibilityDelegates": "pass",
+    "boundedHistory": "pass",
+    "eventByteLimit": "pass",
+    "teardown": "pass",
+    "valuePolicyBoundary": "pass",
+    "rootPayloadExclusion": "pass",
+    "skillsLedger": "pass"
+  }
+}

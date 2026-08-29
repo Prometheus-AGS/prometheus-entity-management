@@ -1,0 +1,64 @@
+{
+  "mode": "decision",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "unknown",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "Decision / Signature interaction: Graph Pulse",
+      "claim": "The entire causal-trace organizing principle silently assumes the Prometheus graph controller emits correlation/publication metadata (which event changed which entity, which event last changed each view, atomic batch publication boundaries), and this load-bearing assumption appears nowhere in Assumptions and is never falsified.",
+      "evidence": "The Decision promises 'event -> entity -> patch/original -> views' highlighting and the view contract requires 'last-changing event' per view; Graph Pulse claims 'Batch ingestion appears as one segment with a count, preserving the graph's atomic publication semantics.' Yet the Assumptions list contains nothing about the graph actually recording event\u2192entity\u2192view causality or correlation grouping, and no falsifier tests correlation correctness (the usability test only requires diagnosing 'a seeded dirty entity'). If the underlying store does not retain per-event causal linkage, the signature interaction and the spec's 'single job' collapse.",
+      "suggested_fix": "Add an explicit assumption (verified against the current controller API before committing) that the graph emits correlated publication events with entity/view attribution, and add a falsifier line testing correlation correctness on a seeded batch ingest."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "Entity & dirty-state contract vs Chrome panel / Flutter surfaces",
+      "claim": "The spec promises a uniform inspector across embedded, Chrome, and Flutter surfaces, but on the two remote surfaces the core deliverable \u2014 original/patch/live values and field diffs \u2014 is metadata-only by default, gated behind a 'host value/redaction policy' that is never defined, shaped, or given its own falsifier.",
+      "evidence": "Decision: 'The embedded surface uses the same inspector view models and components as the Chrome panel' and the Entities workspace shows 'canonical/original value, local patch, merged live value, field diff.' But 'Chrome/Flutter/other remote transports remain metadata-only until the host explicitly enables a value/redaction policy.' No packet content defines what such a policy is, who writes it, or what 'redaction' means mechanically. The Chrome falsifier requires the panel to pass 'dirty metadata' and 'redaction-policy flows' \u2014 i.e., it can pass while never showing a single value, which is the stated single job ('what changed'). Flutter's falsifier requires only 'original/patch/live policy states,' not values.",
+      "suggested_fix": "Define the value/redaction policy contract in this spec (or cite the change that defines it) and add falsifier lines proving Chrome and Flutter surfaces can actually render field-level diffs under an enabled policy, not merely metadata."
+    },
+    {
+      "severity": "WARNING",
+      "file": "Activation & escape hatch",
+      "claim": "Next.js is a named target but the auto-rendering launcher has no stated SSR/hydration behavior; a launcher that renders on the server or before hydration will mismatch or flash in every Next.js dev app, the most common integration failure mode for injected overlays.",
+      "evidence": "Audience: 'application developers debugging normalized graph behavior in Vite, Next.js, Chrome DevTools, and Flutter.' Activation: 'The launcher renders only when the consumer build reports development mode' \u2014 no mention of client-only mounting, `useEffect` gating, or hydration suppression. The falsifier's 'Packed Vite/Next embedded' line tests bundling and visibility but never SSR/hydration correctness.",
+      "suggested_fix": "State that the launcher mounts client-side only (post-hydration) and add a falsifier line for a Next.js dev page with SSR content."
+    },
+    {
+      "severity": "WARNING",
+      "file": "Falsifier \u2014 Usability / Load",
+      "claim": "Every numeric threshold (10 s median, 4/5 of n=5, 100 ms p95, 150 ms p95, 50 ms long task, 500 events/s) is asserted with no stated source, and the usability gate as written is statistically incapable of supporting the 'world-class' claim it guards: a median of five trials with a 4-of-5 bar passes at 80% failure rates the study cannot distinguish from 95%.",
+      "evidence": "'at least 5 developers... median completion is under 10 seconds and at least 4 of 5 complete without assistance. If this study is unavailable, \"world class\" remains unverified.' No rationale is given for any number, and with n=5 the falsifier can pass while the design is merely adequate; conversely one slow outlier among five moves the median only one step.",
+      "suggested_fix": "Cite a basis for each threshold (comparable DevTools benchmarks, frame-budget math for 150 ms) and either raise n or downgrade the claim the study is asked to support."
+    },
+    {
+      "severity": "WARNING",
+      "file": "Original intent vs Activation & escape hatch",
+      "claim": "The intent requires the DevTools to 'detect development mode and automatically show a floating action button'; the decision inserts a mandatory manual step (an explicit `./devtools/auto` import or component mount) before anything automatic happens, so out of the box nothing detects or shows anything \u2014 this deviation from the stated intent is never acknowledged in the document.",
+      "evidence": "Intent: 'The DevTools must detect development mode and automatically show a floating action button.' Decision/Assumptions: 'Consumers opt in once with the explicit `./devtools/auto` import or `<EntityGraphDevtools />`; no normal root import mutates the host DOM' and 'React consumers opt in once by mounting the debug bootstrap.' The opt-in is defensible (it serves the 'production path stays clean' requirement), but the spec presents 'automatic' as unqualified when it is automatic only after a manual bootstrap \u2014 a reader of the intent alone would expect zero-setup behavior.",
+      "suggested_fix": "State explicitly that automatic visibility is post-opt-in by design, and reconcile with the intent author whether a one-line manual bootstrap satisfies 'automatically show.'"
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "Activation & escape hatch",
+      "claim": "'Host mode always wins' contradicts the 'Hide for this browser' persistent preference under mode=\"on\": if the host explicitly enables the surface and host mode always wins, the user's persisted hide preference can never take effect in exactly the staging/controlled-debug scenario mode=\"on\" exists for.",
+      "evidence": "'mode=\"on\" explicitly enables the surface for staging or a controlled debug build' ... 'The latter is a small versioned local preference; host `mode` always wins.' The precedence order between a persisted local hide and an explicit host mode=\"on\" is unresolvable from the text.",
+      "suggested_fix": "Specify the precedence table (auto/on/off \u00d7 hide preference) explicitly, e.g., local hide wins over auto but not over explicit on, or vice versa."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "Information architecture / Activity workspace",
+      "claim": "History retention is a user-visible contract surface ('history retention' is displayed in Overview and rewind depends on it) yet no retention bound, memory cap, or eviction policy is stated or falsified, which is precisely the resource that the 500 events/second load test will stress.",
+      "evidence": "Overview shows 'history retention'; Activity offers 'rewind state'; the load falsifier sustains 500 events/second for 10 s (5,000 retained events minimum) with no stated retention limit and no measurement of memory growth.",
+      "suggested_fix": "State a retention bound (count or bytes) and its eviction semantics, and extend the load falsifier to assert bounded memory."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

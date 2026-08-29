@@ -104,6 +104,13 @@
       "content_type": "direct:content",
       "updated_at": "2026-08-06T08:40:26Z",
       "finalized_at": "2026-08-06T08:40:26Z"
+    },
+    "v3-devtools-core-observability-archive-qa": {
+      "path": ".refiner/artifacts/v3-devtools-core-observability-archive-qa",
+      "artifact_type": "content",
+      "content_type": "direct:content",
+      "updated_at": "2026-08-29T15:15:19Z",
+      "finalized_at": "2026-08-29T15:15:19Z"
     }
   }
 }

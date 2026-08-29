@@ -43,14 +43,33 @@ export interface TimeTravelState {
   capacity: number;
 }
 
-let capacity = 50;
-let ring: TimeTravelSnapshot[] = [];
-let seqCounter = 0;
-let cursor: number | null = null;
-const listeners = new Set<() => void>();
+interface StoreTimeTravelState {
+  capacity: number;
+  ring: TimeTravelSnapshot[];
+  seqCounter: number;
+  cursor: number | null;
+  listeners: Set<() => void>;
+}
 
-function notify(): void {
-  for (const l of listeners) l();
+let storeStates = new WeakMap<GraphStore, StoreTimeTravelState>();
+
+function getStoreState(storeApi: GraphStore): StoreTimeTravelState {
+  let state = storeStates.get(storeApi);
+  if (!state) {
+    state = {
+      capacity: 50,
+      ring: [],
+      seqCounter: 0,
+      cursor: null,
+      listeners: new Set(),
+    };
+    storeStates.set(storeApi, state);
+  }
+  return state;
+}
+
+function notify(state: StoreTimeTravelState): void {
+  for (const listener of state.listeners) listener();
 }
 
 function cloneSlice(s: GraphSlice): GraphSlice {
@@ -64,26 +83,31 @@ function cloneSlice(s: GraphSlice): GraphSlice {
 }
 
 /** Configure ring capacity (number of retained snapshots). */
-export function configureTimeTravel(opts: { capacity?: number }): void {
-  if (opts.capacity && opts.capacity > 0) capacity = opts.capacity;
-  if (ring.length > capacity) ring = ring.slice(-capacity);
-  notify();
+export function configureTimeTravel(
+  opts: { capacity?: number },
+  storeApi: GraphStore = graphStore,
+): void {
+  const state = getStoreState(storeApi);
+  if (opts.capacity && opts.capacity > 0) state.capacity = opts.capacity;
+  if (state.ring.length > state.capacity) state.ring = state.ring.slice(-state.capacity);
+  notify(state);
 }
 
 /** Capture the current live graph state into the ring. Returns the snapshot seq. */
 export function recordGraphSnapshot(label?: string, storeApi: GraphStore = graphStore): number {
+  const state = getStoreState(storeApi);
   const s = storeApi.getState();
   const snap: TimeTravelSnapshot = {
-    seq: seqCounter++,
+    seq: state.seqCounter++,
     at: Date.now(),
     ...(label !== undefined ? { label } : {}),
     data: cloneSlice(s),
   };
-  ring.push(snap);
-  if (ring.length > capacity) ring = ring.slice(-capacity);
+  state.ring.push(snap);
+  if (state.ring.length > state.capacity) state.ring = state.ring.slice(-state.capacity);
   // Recording new state means we're at the live head again.
-  cursor = null;
-  notify();
+  state.cursor = null;
+  notify(state);
   return snap.seq;
 }
 
@@ -94,47 +118,56 @@ export function recordGraphSnapshot(label?: string, storeApi: GraphStore = graph
  * Returns true if restored.
  */
 export function restoreGraphSnapshot(index: number, storeApi: GraphStore = graphStore): boolean {
-  const snap = ring[index];
+  const state = getStoreState(storeApi);
+  const snap = state.ring[index];
   if (!snap) return false;
   const clone = cloneSlice(snap.data);
   storeApi.setState(clone as Partial<ReturnType<typeof graphStore.getState>>);
-  cursor = index;
-  notify();
+  state.cursor = index;
+  notify(state);
   return true;
 }
 
 /** Restore by capture seq (stable across ring eviction within capacity). */
 export function restoreGraphSnapshotBySeq(seq: number, storeApi: GraphStore = graphStore): boolean {
-  const index = ring.findIndex((s) => s.seq === seq);
+  const state = getStoreState(storeApi);
+  const index = state.ring.findIndex((snapshot) => snapshot.seq === seq);
   return index === -1 ? false : restoreGraphSnapshot(index, storeApi);
 }
 
 /** Step the cursor by `delta` (negative = back in time) and restore. */
 export function stepTimeTravel(delta: number, storeApi: GraphStore = graphStore): boolean {
-  const base = cursor ?? ring.length - 1;
-  const target = Math.max(0, Math.min(ring.length - 1, base + delta));
+  const state = getStoreState(storeApi);
+  const base = state.cursor ?? state.ring.length - 1;
+  const target = Math.max(0, Math.min(state.ring.length - 1, base + delta));
   return restoreGraphSnapshot(target, storeApi);
 }
 
 /** Snapshot metadata + cursor for the devtools UI (no heavy data payloads). */
-export function getTimeTravelState(): TimeTravelState {
+export function getTimeTravelState(storeApi: GraphStore = graphStore): TimeTravelState {
+  const state = getStoreState(storeApi);
   return {
-    snapshots: ring.map(({ data: _data, ...meta }) => meta),
-    cursor,
-    capacity,
+    snapshots: state.ring.map(({ data: _data, ...meta }) => meta),
+    cursor: state.cursor,
+    capacity: state.capacity,
   };
 }
 
 /** Subscribe to ring/cursor changes (for useSyncExternalStore in the UI). */
-export function subscribeTimeTravel(cb: () => void): () => void {
-  listeners.add(cb);
-  return () => listeners.delete(cb);
+export function subscribeTimeTravel(
+  cb: () => void,
+  storeApi: GraphStore = graphStore,
+): () => void {
+  const state = getStoreState(storeApi);
+  state.listeners.add(cb);
+  return () => state.listeners.delete(cb);
 }
 
 /** @internal Test-only reset. */
-export function __resetTimeTravel(): void {
-  ring = [];
-  seqCounter = 0;
-  cursor = null;
-  capacity = 50;
+export function __resetTimeTravel(storeApi?: GraphStore): void {
+  if (storeApi) {
+    storeStates.delete(storeApi);
+    return;
+  }
+  storeStates = new WeakMap<GraphStore, StoreTimeTravelState>();
 }

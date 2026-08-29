@@ -57,11 +57,11 @@ interface RegistryEntry {
   bus: DevtoolsEventBus;
   unsubscribeSrc: () => void;
 }
-const registry = new Map<string, RegistryEntry>();
+const registries = new Map<DevtoolsEventBus, Map<string, RegistryEntry>>();
 
 /** Test-only helper: clears the devtools store registry between test runs. */
 export function __resetStoreRegistry(): void {
-  registry.clear();
+  registries.clear();
 }
 
 // ── Factory ────────────────────────────────────────────────────────────────────
@@ -199,13 +199,17 @@ export function createDevtoolsEventBus(opts?: DevtoolsEventBusOptions): Devtools
       pendingBurst = [];
       dispatchedCount = 0;
       flushScheduled = false;
-      // Cascade to registry
-      for (const entry of registry.values()) {
-        if (entry.bus === bus && entry.active) {
+      // Cascade only to sources registered for this bus.
+      const registry = registries.get(bus);
+      if (registry) {
+        for (const entry of registry.values()) {
+          if (!entry.active) continue;
           entry.active = false;
           try { entry.unsubscribeSrc(); } catch { /* ignore */ }
         }
       }
+      registries.delete(bus);
+      _busInjectMap.delete(bus);
     },
   };
 
@@ -227,6 +231,11 @@ export function registerStore(
   source: DevtoolsSourceFn,
   name: string,
 ): () => void {
+  let registry = registries.get(bus);
+  if (!registry) {
+    registry = new Map();
+    registries.set(bus, registry);
+  }
   if (registry.get(name)?.active === true) {
     throw new Error(
       `[devtools-store-registry] Store name "${name}" is already registered and active`,
@@ -251,7 +260,10 @@ export function registerStore(
   };
 }
 
-/** Returns a snapshot of all registered stores (active + inactive) in registration order. */
-export function getRegisteredStores(): ReadonlyArray<RegisteredStore> {
-  return Array.from(registry.values()).map((e) => ({ name: e.name, active: e.active }));
+/** Returns registered stores for one bus, or every bus for legacy callers. */
+export function getRegisteredStores(bus?: DevtoolsEventBus): ReadonlyArray<RegisteredStore> {
+  const entries = bus
+    ? [...(registries.get(bus)?.values() ?? [])]
+    : [...registries.values()].flatMap((registry) => [...registry.values()]);
+  return entries.map((entry) => ({ name: entry.name, active: entry.active }));
 }

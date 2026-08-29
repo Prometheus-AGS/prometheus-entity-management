@@ -98,6 +98,96 @@ registerMergeStrategy("Document", strategy);
 The public `LoroModuleLoader` type describes this callback. Supplying it does
 not make Loro part of the mandatory core bundle.
 
+## Optional DevTools controller
+
+The versioned DevTools runtime is isolated behind the
+`@prometheus-ags/entity-graph-core/devtools` export. Normal application imports
+do not expose the controller API.
+
+```ts
+import { createGraphStore } from "@prometheus-ags/entity-graph-core";
+import {
+  attachGraphDevtools,
+  createGraphDevtoolsClient,
+} from "@prometheus-ags/entity-graph-core/devtools";
+
+const store = createGraphStore();
+const attachment = attachGraphDevtools(store, {
+  storeId: "admin-graph",
+  historyLimit: 500,
+});
+
+if (attachment.controller) {
+  const client = createGraphDevtoolsClient(
+    attachment.controller.storeId,
+    attachment.controller.connect("local-inspector"),
+  );
+
+  const snapshot = await client.request("get-snapshot");
+  client.disconnect();
+}
+
+attachment.detach();
+```
+
+Each store owns one reference-counted controller. Attachments to the same store
+share its event sequence and bounded history; separate stores never share
+events, commands, clients, or teardown. The first active attachment determines
+that controller's identifier, limits, and value policy until its final
+attachment detaches.
+
+Set `enabled: false` when a host should skip creating a particular attachment.
+This is an attachment-level no-op, not a global kill switch: it never tears
+down a controller still referenced by another attachment. Detach every active
+attachment to stop observation for that store.
+
+The controller observes the Zustand publication boundary, so transactions,
+adapter writes, hydration, rollback, and direct `store.setState` changes use the
+same semantic event stream. Events carry protocol version, store and event IDs,
+sequence/correlation data, before/after graph counts, and categorized changes.
+
+The deprecated root `subscribeDevtoolsEvent` API remains the original
+history-free graph-transaction op-site stream. It does not attach this
+controller and does not observe arbitrary direct `store.setState` writes. New
+inspection tools should use this versioned subpath; the separate root shim
+exists only for compatibility and keeps its incremental patch payloads.
+
+### DevTools data boundary
+
+Entity and patch values are omitted by default. Events contain metadata and
+counts unless the host explicitly opts into values and supplies any required
+redaction policy:
+
+```ts
+const attachment = attachGraphDevtools(store, {
+  values: {
+    mode: "include",
+    redact(value, context) {
+      if (context.category !== "entity" || !value || typeof value !== "object") {
+        return value;
+      }
+      const { accessToken: _secret, ...safe } = value as Record<string, unknown>;
+      return safe;
+    },
+  },
+});
+```
+
+The current v1 redactor receives each whole changed value, represented by an
+empty `context.fieldPath`. Nested field paths are reserved for later
+field-level inspection. A throwing redactor marks that change with
+`valueState: "redaction-error"` and exposes neither the exception nor the
+original value.
+
+History is bounded by both event count and encoded bytes. Oversized included
+values are removed before an event is retained or delivered; if metadata alone
+still exceeds the per-event limit, `changesOmitted` records the explicit loss.
+Redactor and
+observer failures are isolated from graph writes, disconnected clients cannot
+continue issuing commands, and the controller stops observing the store after
+the final detach. A transport adapter is responsible for preserving the same
+store/client boundary when messages leave the process.
+
 ## Major capabilities
 
 - request deduplication, stale-while-revalidate, subscriber tracking, and garbage collection
@@ -116,6 +206,8 @@ The package publishes loader-specific artifacts and declarations:
 
 - Node ESM and modern bundlers use `dist/index.mjs` with `dist/index.d.ts`.
 - Node CommonJS uses `dist/index.cjs` with `dist/index.d.cts`.
+- DevTools ESM uses `dist/devtools.mjs` with `dist/devtools.d.ts`.
+- DevTools CommonJS uses `dist/devtools.cjs` with `dist/devtools.d.cts`.
 
 Both paths are selected through conditional package exports.
 

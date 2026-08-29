@@ -1,0 +1,78 @@
+{
+  "mode": "decision",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "unknown",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "Falsifier vs. Entity & dirty-state contract / Assumptions",
+      "claim": "The falsifier's core 10-second task (identify the original/current difference for a dirty entity) is impossible under the spec's own stated default, because value inspection is gated behind an explicit host policy while the falsifier never requires that policy to be enabled in the study hosts.",
+      "evidence": "Assumptions: 'metadata-only remains the protocol default and value inspection requires explicit host policy.' Falsifier: 'a developer can identify the original/current difference and every affected rendered view for a dirty entity in under 10 seconds.' Under the default protocol there is no original/current value difference to inspect \u2014 the study either fails trivially or passes only by silently running hosts in a non-default configuration, which the falsifier does not state.",
+      "suggested_fix": "State in the falsifier whether the packed-consumer study enables value inspection, and if the 10-second task is expected to work under the metadata-only default, specify what field-level diff information is available in that mode."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "Decision / Falsifier",
+      "claim": "The decision commits to Chrome-panel component parity and a Flutter implementation with the same information architecture and protocol semantics, but the falsifier tests only the embedded React surface in Vite and Next, leaving roughly half the decided scope completely unfalsified.",
+      "evidence": "Decision: 'The embedded surface uses the same inspector view models and components as the Chrome panel. Flutter implements the same information architecture and protocol semantics.' Falsifier: 'a clean Vite and Next packed-consumer study' \u2014 no Chrome extension build, no Flutter target, and no other section of the document specifies Flutter beyond that one sentence.",
+      "suggested_fix": "Either remove Flutter/Chrome-panel commitments from this decision and defer them to their own falsifiable decisions, or add falsifier clauses covering the Chrome panel build and the Flutter surface."
+    },
+    {
+      "severity": "WARNING",
+      "file": "Activation & escape hatch",
+      "claim": "The global hotkeys Alt+Shift+E and Alt+Shift+D are chosen without checking that Alt+Shift is the default Windows input-language/IME switching chord, so every Alt+Shift+key press risks colliding with OS-level layout switching for a large share of the target developer audience.",
+      "evidence": "'Alt+Shift+E toggles the panel; Alt+Shift+D hides or restores the entire DevTools surface.' No assumption or constraint addresses OS, browser, or host-application shortcut conflicts; this is checkable now at zero cost and was not checked.",
+      "suggested_fix": "Verify the chord against Windows IME switching and common browser reserved shortcuts, or make the modifier configurable with a conflict-safe default."
+    },
+    {
+      "severity": "WARNING",
+      "file": "Falsifier",
+      "claim": "Key falsifier thresholds are unmeasurable or unsourced: 'visibly lag' has no frame budget, device, or event rate; '500-event traffic' has no time window; 'under 10 seconds' names no source, participant, or familiarity level.",
+      "evidence": "'500-event traffic does not make search or navigation visibly lag' \u2014 500 events per second and 500 events total are wildly different loads; 'visibly' is undefined. 'identify... in under 10 seconds' \u2014 no rationale for 10 seconds, and a developer already familiar with the tool will pass where a first-time user fails.",
+      "suggested_fix": "Define event rate (e.g., 500 events/sec sustained for 60s), a hardware baseline, an interaction latency budget (e.g., search keystroke-to-result < 100ms), and specify participant familiarity and trial count for the 10-second task."
+    },
+    {
+      "severity": "WARNING",
+      "file": "View membership contract / Assumptions",
+      "claim": "The falsifier promises 'every affected rendered view,' but the spec only claims rendered-visibility accuracy when subscribers register, and no assumption states that registration is automatic or universal \u2014 unregistered host subscribers silently make the 'every affected rendered view' claim false.",
+      "evidence": "Assumptions: '\"Currently displayed\" requires view/subscriber registration, not inference from list membership.' Nothing states whether the library's own hooks register automatically or whether host code must opt in; the falsifier clause 'every affected rendered view' does not scope itself to registered subscribers.",
+      "suggested_fix": "State whether registration is automatic via the library's view/query hooks, and scope the falsifier to 'every registered rendered view' or add automatic registration as a design requirement."
+    },
+    {
+      "severity": "WARNING",
+      "file": "Decision (alternatives)",
+      "claim": "No alternative to the decided architecture is named or engaged: replacing six tabs with four causal workspaces, building an embedded dock versus extension-only, and sharing components with the Chrome panel are all decided without a single considered alternative.",
+      "evidence": "The document's only self-critique section ('Uniqueness critique & revision') addresses visual interchangeability ('dark developer tool with orange accent'), not structural alternatives; there is no comparison against extension-only delivery, keeping the existing tab model, or reusing an established DevTools shell pattern.",
+      "suggested_fix": "Add a short alternatives section naming at least the status quo (six tabs), extension-only, and embedded-only options with the reason each was rejected."
+    },
+    {
+      "severity": "WARNING",
+      "file": "Decision / Activation & escape hatch vs. original_intent",
+      "claim": "The intent requires the tool to 'detect development mode and automatically show a floating action button,' but the spec requires a one-line React bootstrap, and the falsifier's wording ('without manual state wiring') is loose enough to pass a design that never satisfies the intent's zero-configuration purpose.",
+      "evidence": "Intent: 'must detect development mode and automatically show a floating action button.' Spec: 'A one-line React bootstrap is required.' Falsifier: 'development shows the launcher without manual state wiring' \u2014 'state wiring' is narrower than 'wiring'; a required manual bootstrap can pass the falsifier while missing the intent's automatic-show purpose.",
+      "suggested_fix": "Either commit to a true auto-bootstrap subpath that requires no host code change (assumption 1 already permits this) and tighten the falsifier to 'without any host code change,' or explicitly amend the intent to accept a one-line bootstrap."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "Narrow & mobile layout",
+      "claim": "The narrow layout labels the fourth workspace 'Log' while the information architecture names it 'Activity,' and the falsifier's keyboard/screen-reader clause depends on consistent naming for navigation.",
+      "evidence": "IA: '4. **Activity** \u2014 virtualized event/history stream...' Narrow layout ASCII: 'Overview Entities Views Log.' Two names for the same workspace within one contract document.",
+      "suggested_fix": "Use one workspace name ('Activity') in all layouts, ARIA labels, and the deep-link state adapter."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "Whole document vs. original_intent",
+      "claim": "The intent requires the design to be grounded in named external guidance (Anthropic frontend design guidance, Vercel React performance guidance, Vercel web-interface rules), but the document contains no references or traceable mapping to any of them, so the grounding requirement is asserted only by implication.",
+      "evidence": "Intent: 'The design must be grounded by the available Anthropic-origin frontend design guidance, Vercel React performance guidance, and current Vercel web-interface rules.' The spec includes compliant-sounding rules (useDeferredValue, transform/opacity only, virtualization) but cites no source for any of them.",
+      "suggested_fix": "Add a short mapping section tying each constraint block to the specific guidance it derives from, or state explicitly which guidance documents were consulted."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

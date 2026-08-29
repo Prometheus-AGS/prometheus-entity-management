@@ -1,5 +1,10 @@
 import { graphStore } from "./graph";
 import type { EntityType, EntityId, GraphStore } from "./graph";
+import {
+  emitLegacyDevtoolsEvent,
+  subscribeLegacyDevtoolsEvent,
+  type LegacyDevtoolsEvent,
+} from "./legacy-devtools";
 
 /**
  * Process-wide defaults for stale times, retries, and background revalidation.
@@ -114,9 +119,21 @@ export function dedupe<T>(key: string, fn: () => Promise<T>, store: GraphStore =
   inflight.set(key, p); return p;
 }
 
-const subscriberStatsListeners = new Set<() => void>();
-function emitSubscriberStatsChange() {
-  for (const cb of subscriberStatsListeners) cb();
+const globalSubscriberStatsListeners = new Set<() => void>();
+const subscriberStatsListenersByStore = new WeakMap<GraphStore, Set<() => void>>();
+function subscriberStatsListenersFor(store: GraphStore) {
+  let listeners = subscriberStatsListenersByStore.get(store);
+  if (!listeners) {
+    listeners = new Set();
+    subscriberStatsListenersByStore.set(store, listeners);
+  }
+  return listeners;
+}
+function emitSubscriberStatsChange(store: GraphStore) {
+  for (const cb of new Set([
+    ...globalSubscriberStatsListeners,
+    ...subscriberStatsListenersFor(store),
+  ])) cb();
 }
 
 const subscribersByStore = new WeakMap<GraphStore, Map<string, Set<symbol>>>();
@@ -138,7 +155,7 @@ export function registerSubscriber(key: string, store: GraphStore = graphStore):
   const token = Symbol(key);
   if (!subscribers.has(key)) subscribers.set(key, new Set());
   subscribers.get(key)!.add(token);
-  emitSubscriberStatsChange();
+  emitSubscriberStatsChange(store);
   return token;
 }
 /** Pair with `registerSubscriber` on unmount so idle entities stop refetching. */
@@ -148,7 +165,7 @@ export function unregisterSubscriber(key: string, token: symbol, store: GraphSto
   if (!set) return;
   set.delete(token);
   if (set.size === 0) subscribers.delete(key);
-  emitSubscriberStatsChange();
+  emitSubscriberStatsChange(store);
 }
 /** Used by the engine to avoid background work for keys nothing in the tree is observing. */
 export function hasSubscribers(key: string, store: GraphStore = graphStore) {
@@ -170,9 +187,10 @@ let engineOptions: Required<EngineOptions> = { ...DEFAULT_OPTIONS };
  * Subscribe to ref-count changes for `registerSubscriber` / `unregisterSubscriber`.
  * Used by `useGraphDevTools` so subscriber totals update without graph mutations.
  */
-export function subscribeSubscriberStats(onChange: () => void) {
-  subscriberStatsListeners.add(onChange);
-  return () => subscriberStatsListeners.delete(onChange);
+export function subscribeSubscriberStats(onChange: () => void, store?: GraphStore) {
+  const listeners = store ? subscriberStatsListenersFor(store) : globalSubscriberStatsListeners;
+  listeners.add(onChange);
+  return () => listeners.delete(onChange);
 }
 
 /** Total active entity subscriber tokens across all keys (sum of ref-counts). */
@@ -188,29 +206,18 @@ export function getActiveSubscriberCount(store: GraphStore = graphStore): number
 // Entity Explorer (W5+) subscribes here for its Events tab and to keep the
 // Tree tab live without polling.
 //
-// Hot-path is a no-op when no subscribers are registered. Op-site calls in
-// graph-actions.ts are wrapped in `process.env.NODE_ENV !== "production"`
-// so esbuild DCE elides them from prod bundles.
+// This deprecated stream preserves the original graph-transaction op-site
+// contract without loading the optional v1 controller into the root bundle.
+// It retains no independent history or cursor.
 
 /**
  * Discriminated union of devtools events.
  *
- * - `upsert`, `patch`, `clearPatch` are emitted from `graph-actions.ts` ops.
- * - `unpatch` and `list` are forward-compatible kinds reserved for future
- *   instrumentation (W5+ event bus / W6+ panel). Consumers MUST handle them
- *   in exhaustive `switch`/`if` chains today, even though no op-site emits
- *   them in this change.
+ * New inspection surfaces should use the versioned `./devtools` subpath.
  */
-export type DevtoolsEvent =
-  | { kind: "upsert"; type: EntityType; id: EntityId; data: Record<string, unknown>; at: string }
-  | { kind: "patch"; type: EntityType; id: EntityId; patch: Record<string, unknown>; at: string }
-  | { kind: "unpatch"; type: EntityType; id: EntityId; keys: string[]; at: string }
-  | { kind: "clearPatch"; type: EntityType; id: EntityId; at: string }
-  | { kind: "list"; key: string; idCount: number; at: string };
+export type DevtoolsEvent = LegacyDevtoolsEvent;
 
 type DevtoolsListener = (event: DevtoolsEvent) => void;
-
-const devtoolsSubscribers = new Set<DevtoolsListener>();
 
 /**
  * Subscribe to the devtools event stream.
@@ -224,33 +231,17 @@ const devtoolsSubscribers = new Set<DevtoolsListener>();
  *   affect future events only, not the in-flight one.
  */
 export function subscribeDevtoolsEvent(cb: DevtoolsListener): () => void {
-  devtoolsSubscribers.add(cb);
-  return () => {
-    devtoolsSubscribers.delete(cb);
-  };
+  return subscribeLegacyDevtoolsEvent(cb);
 }
 
 /**
- * Internal — called from `graph-actions.ts` at every mutating op site.
- *
- * Hot-path no-op when no subscribers registered. Snapshot iteration for
- * re-entrancy safety. Per-subscriber `try/catch` so a throwing listener
- * doesn't break delivery to siblings.
+ * Internal deprecated synthetic-injection seam retained for compatibility.
  *
  * NOT re-exported from `src/index.ts` — the public surface is
  * `subscribeDevtoolsEvent` only.
  */
 export function notifyDevtools(event: DevtoolsEvent): void {
-  if (devtoolsSubscribers.size === 0) return;
-  const listeners = [...devtoolsSubscribers];
-  for (const cb of listeners) {
-    try {
-      cb(event);
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.warn("[engine] devtools subscriber threw:", err);
-    }
-  }
+  emitLegacyDevtoolsEvent(event);
 }
 
 const gcIntervalsByStore = new Map<GraphStore, ReturnType<typeof setInterval>>();

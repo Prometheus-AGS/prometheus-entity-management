@@ -1,0 +1,71 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "k3",
+  "producer_model": "unknown",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/controller.ts",
+      "line": 380,
+      "claim": "The internal dispose() method is an own property of the same object handed out as the public GraphDevtoolsController, so any runtime holder (attachment.controller, getGraphDevtoolsController) can call controller.dispose() and bypass reference counting, killing shared observation for other live attachments and clients.",
+      "evidence": "The controller object literal includes `dispose() { ... }` and that same object is returned via `attachment.controller` and `getGraphDevtoolsController(store)`; the spec requires \"one reference-counted controller per graph store\" whose teardown is driven by detach refcount, yet `attachGraphDevtools` even anticipates this hole with `entry.controller.isDisposed()` re-creation, silently orphaning old attachments whose detach() then early-returns on controller mismatch.",
+      "suggested_fix": "Expose only the GraphDevtoolsController surface to consumers (e.g., return a facade without dispose, or keep dispose on a separate internal handle stored in ControllerEntry) so teardown can only occur via the refcounted detach path."
+    },
+    {
+      "severity": "WARNING",
+      "file": "scripts/verify-devtools-core-observability.mjs",
+      "line": 482,
+      "claim": "verifyRootPayloadExclusion only follows relative imports in .mjs files and never traverses CJS shared chunks, so the 'rootPayloadExclusion: pass' scenario can pass even if dist/index.cjs pulls DevTools implementation code in via require(\"./chunk-*.cjs\").",
+      "evidence": "`if (!relativeFile.endsWith(\".mjs\")) return;` precedes the import-following loop, and the regex only matches `.mjs` specifiers; with `entry: { index, devtools }` in tsup.config.ts, esbuild code-splitting can emit shared chunks, and the CJS closure is never inspected despite the criterion requiring \"ESM, CommonJS, and declaration contracts while keeping normal root imports free of the new implementation payload.\"",
+      "suggested_fix": "Also scan require(\"./...cjs\") specifiers and recursively inspect referenced .cjs chunk files for the forbidden markers."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/legacy-devtools.ts",
+      "line": 17,
+      "claim": "The legacy event shim drops the zero-subscriber fast path and the per-listener throw diagnostics that the deprecated API previously had, changing hot-path cost and observable behavior of an API the spec says must be preserved.",
+      "evidence": "The removed engine.ts code had `if (devtoolsSubscribers.size === 0) return;` and `console.warn(\"[engine] devtools subscriber threw:\", err)`; the new `publish` unconditionally allocates `[...listeners]` on every op-site event and silently swallows listener exceptions, while the spec mandates \"Preserve deprecated root event/time-travel API behavior.\"",
+      "suggested_fix": "Restore `if (listeners.size === 0) return;` before publishing and log (or otherwise surface) listener exceptions as the prior implementation did."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/engine.ts",
+      "line": 186,
+      "claim": "subscribeSubscriberStats narrowed from a process-global listener set to a per-store WeakMap keyed registry with a default of graphStore, so existing single-argument consumers watching custom stores silently stop receiving subscriber-stats notifications.",
+      "evidence": "Old code: `const subscriberStatsListeners = new Set<() => void>()` with global `emitSubscriberStatsChange()`; new code: `subscriberStatsListenersByStore = new WeakMap<GraphStore, Set<() => void>>()` and `emitSubscriberStatsChange(store)` only notifies listeners registered for that exact store, while `subscribeSubscriberStats(onChange)` defaults to `graphStore`. The file tree shows other consumers (e.g., extension/panel.tsx, entity-graph-react) whose call sites are not updated in this diff and cannot be verified.",
+      "suggested_fix": "Either keep a global notification fan-out (per-store counts, global listeners) or audit/update every existing subscribeSubscriberStats caller to pass its store explicitly."
+    },
+    {
+      "severity": "WARNING",
+      "file": "prometheus-entity-skills/_shared/references/core-library-exports.json",
+      "line": 1,
+      "claim": "The core ledger format changed from a flat array to a keyed entry-point object with no accompanying parser change visible in the diff, and the packed acceptance gate never executes the ledger consumers, so any consumer still expecting an array breaks undetected.",
+      "evidence": "core-library-exports.json is converted from `[ ... ]` to `{ \".\": [...], \"./devtools\": [...] }`; the only in-diff consumer changes are an added entry in generate-api-reference.mjs's `entries` list and entryPoints in skills-package-registry.mjs \u2014 neither shows ledger-parsing logic handling the new shape. round-1-resolutions.md claims an audit (\"already support the keyed entry-point shape\") but the packet contains no code substantiating it, and scripts/verify-devtools-core-observability.mjs runs neither generate-api-reference.mjs nor verify-skills-exports.mjs.",
+      "suggested_fix": "Include the ledger-shape handling diff (or run verify-skills-exports / generate-api-reference in the acceptance gate) so the claimed compatibility is evidenced."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "packages/entity-graph-core/src/devtools/controller.ts",
+      "line": 145,
+      "claim": "correlationId is always identical to eventId, so the envelope carries no actual correlation: multi-operation transactions produce N events with N distinct correlationIds and nothing groups them.",
+      "evidence": "In `nextBase()`: `const eventId = \\`${storeId}:${current}\\`; ... correlationId: eventId` \u2014 every publication gets a fresh sequence, and ops within one createGraphTransaction commit emit independent events with unrelated correlationIds, despite the spec requiring \"sequence/correlation data.\"",
+      "suggested_fix": "Propagate a shared correlation id for events originating from one transaction/publication batch, or document that v1 correlationId is a placeholder equal to eventId."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "packages/entity-graph-core/src/devtools/controller.ts",
+      "line": 165,
+      "claim": "boundEvent sets payload.valuesTruncated: true even for events that never carried values (default metadata-only policy) when metadata alone exceeds the byte limit, misreporting that values were removed.",
+      "evidence": "`withoutValues` unconditionally sets `valuesTruncated: true` before the metadata-only binary search drops changes; under the default policy changes already have `valueState: \"hidden-by-policy\"` with no before/after fields, so nothing was truncated yet the flag asserts otherwise (protocol.ts documents valuesTruncated as reporting removed values).",
+      "suggested_fix": "Set valuesTruncated: true only when at least one change actually had a before/after value removed; leave it false when only metadata/changes were omitted (changesOmitted already reports that loss)."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

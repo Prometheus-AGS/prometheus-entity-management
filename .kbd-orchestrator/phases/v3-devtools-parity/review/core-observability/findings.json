@@ -1,0 +1,79 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "unknown",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/entity-graph-core/src/engine.ts",
+      "line": 4,
+      "claim": "The root entry statically imports the entire v1 DevTools implementation (controller, projection, protocol), so normal root imports are no longer free of the new implementation payload as the acceptance criteria require.",
+      "evidence": "Criterion: 'Export the new public surface through @prometheus-ags/entity-graph-core/devtools ... while keeping normal root imports free of the new implementation payload.' The engine.ts hunk adds `import { emitLegacyDevtoolsEvent, subscribeLegacyDevtoolsEvent, type LegacyDevtoolsEvent } from \"./devtools/compat\";`, and compat.ts statically imports `attachGraphDevtools` from `./controller`, which imports `./projection` and `./protocol`. engine.ts is part of the root entry (src/index.ts), so `require(\"@prometheus-ags/entity-graph-core\")` (CJS) and any non-tree-shaking ESM consumer now load the full DevTools runtime at module evaluation; the packed-consumer test only asserts the API key is absent (`\"attachGraphDevtools\" in coreRoot === false`), not that the payload is excluded.",
+      "suggested_fix": "Make the compatibility delegate lazy (e.g., dynamic `import(\"./devtools/compat\")` inside `subscribeDevtoolsEvent`/`notifyDevtools`, or an injection seam where the devtools entry registers the delegate) so the controller/projection/protocol modules are only in the `./devtools` entry's module graph."
+    },
+    {
+      "severity": "WARNING",
+      "file": "prometheus-entity-skills/_shared/references/core-library-exports.json",
+      "line": 1,
+      "claim": "The core exports ledger changed shape from a flat array to an object keyed by entry point, but the diff only updates scripts/skills-package-registry.mjs and one table row in scripts/generate-api-reference.mjs; other ledger consumers in the tree were not updated and may still expect the array shape.",
+      "evidence": "The diff rewrites core-library-exports.json from `[...]` to `{ \".\": [...], \"./devtools\": [...] }`, while scripts/refresh-exports-ledger.mjs, scripts/verify-skills-exports.mjs, scripts/verify-skills-snippets.mjs, and scripts/readme-parity.mjs exist in the file tree and are untouched by the diff. The generate-api-reference.mjs hunk changes only the `entries` array of the NPM_PACKAGES table, not any ledger read/write logic. All other package ledgers (e.g., library-exports.json) presumably remain arrays, so a shared parser must now special-case core.",
+      "suggested_fix": "Audit every reader/writer of core-library-exports.json (refresh-exports-ledger, verify-skills-exports, verify-skills-snippets, readme-parity, generate-api-reference) and update or normalize them to the keyed-by-entry-point format, or keep the ledger as an array and record subpath exports in a parallel structure."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/compat.ts",
+      "line": 52,
+      "claim": "The deprecated subscribeDevtoolsEvent API silently narrows scope: it previously delivered op-site events from transactions on any store, and now only observes publications on the default graphStore.",
+      "evidence": "Pre-diff graph-actions.ts called `notifyDevtools({ kind: \"upsert\", ... })` unconditionally inside transaction ops parameterized by `storeApi`, so events from non-default stores reached all subscribers. The new engine.ts `subscribeDevtoolsEvent` delegates to `subscribeLegacyDevtoolsEvent(cb)` whose signature defaults `store: GraphStore = graphStore`, and engine never passes a store, so only default-store publications are projected into legacy events. Neither the README hunk nor the security-boundary note documents this narrowed multi-store behavior of the deprecated API.",
+      "suggested_fix": "Document the scope reduction in the README/changelog, or have the legacy delegate attach to each store that previously emitted (e.g., per-store attachment cache) so non-default-store mutations still surface."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/controller.ts",
+      "line": 406,
+      "claim": "attachGraphDevtools with enabled:false on a store that already has a live controller returns controller:null while leaving the existing controller attached, observing, and retaining history.",
+      "evidence": "The hunk shows `if (options.enabled === false) { return { enabled: false, controller: null, detach() {} }; }` placed before the `controllers.get(store)` lookup, so an existing entry is neither detached nor disposed. A host calling `attachGraphDevtools(store, { enabled: false })` to disable inspection gets an apparently-disabled attachment while events/history/clients on the prior controller keep running, contradicting the security-boundary claim that the controller 'is not attached ... unless a host requests it.'",
+      "suggested_fix": "Either consult/tear down the existing entry when enabled:false is passed, or document that enabled:false only affects new attachments and has no effect on live controllers."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/engine.ts",
+      "line": 2,
+      "claim": "The diff removes the only visible uses of the EntityType and EntityId type imports (the old DevtoolsEvent union) while leaving `import type { EntityType, EntityId, GraphStore } from \"./graph\";` unchanged, risking unused-import lint/TS failures if they are not used elsewhere in the file.",
+      "evidence": "The engine.ts hunk replaces `export type DevtoolsEvent = | { kind: \"upsert\"; type: EntityType; id: EntityId; ... } ...` with `export type DevtoolsEvent = LegacyDevtoolsEvent;` (LegacyDevtoolsEvent uses plain string), and the import line is untouched context. No other EntityType/EntityId usage appears in the hunks for engine.ts.",
+      "suggested_fix": "Verify remaining usages of EntityType/EntityId in engine.ts; if none, drop them from the import to satisfy noUnusedLocals/lint."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "packages/entity-graph-core/src/devtools/controller.ts",
+      "line": 283,
+      "claim": "The replay path of subscribe() invokes the listener without the try/catch isolation used for live events, so a throwing listener during replay propagates out of subscribe while identical listener code is swallowed during publish.",
+      "evidence": "`subscribe(listener, replay = false) { ... if (replay) { for (const event of [...history]) listener(event); } ... }` versus `publish`, which wraps each listener call in `try { listener(event); } catch { /* isolated */ }` per the security note 'Listener and projection failures are isolated from production graph writes.'",
+      "suggested_fix": "Wrap replayed deliveries in the same per-call try/catch used in publish()."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "packages/entity-graph-core/src/devtools/projection.ts",
+      "line": 88,
+      "claim": "When a redactor throws, the change is still labeled valueState:\"redacted\" while the value is the {$type:\"redaction-error\"} marker, and the advertised fieldPath context is always an empty array.",
+      "evidence": "In withValues, `valueState: policy.redact ? \"redacted\" : \"included\"` is set unconditionally even when `projectValue` catches and returns `{ $type: \"redaction-error\" }`, and `fieldPath: []` is hardcoded in baseContext despite GraphDevtoolsValueContext (protocol.ts) documenting fieldPath as part of the redaction context contract.",
+      "suggested_fix": "Track projection failure per side and surface a distinct marker state (or document that 'redacted' covers redaction errors), and populate fieldPath when diffing nested fields or remove it from the context contract."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "packages/entity-graph-core/src/devtools/projection.ts",
+      "line": 104,
+      "claim": "toTransportValue marks any repeated (non-circular) object reference as {$type:\"circular\"} because the shared WeakSet is never cleaned after recursion unwinds.",
+      "evidence": "`if (seen.has(value)) return { $type: \"circular\" }; seen.add(value);` with the same `seen` WeakSet passed through all sibling branches; a value referenced twice in a DAG (e.g., the same sub-object in two fields) is mislabeled circular on its second occurrence even though it is not part of a cycle, which conflicts with the security doc's claim that only circular references are normalized this way.",
+      "suggested_fix": "Delete from `seen` after processing each object (or use a recursion-path set) so only true cycles produce the circular marker."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

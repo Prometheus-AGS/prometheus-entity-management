@@ -1,0 +1,55 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    {
+      "id": "api-truth",
+      "description": "The package guide and export ledger distinguish the root compatibility surface from the optional versioned ./devtools controller surface.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Parse the core export ledger and compare its ./devtools runtime names with the built subpath."
+      }
+    },
+    {
+      "id": "security-truth",
+      "description": "The content accurately states metadata-only defaults, explicit inclusion/redaction, bounded retention, store/client isolation, and transport ownership.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Compare documentation clauses with protocol.ts, projection.ts, and controller.ts."
+      }
+    },
+    {
+      "id": "evidence-integrity",
+      "description": "All package-consumer and behavioral acceptance statuses are retained and equal pass.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Parse task-10-packed-acceptance.json and reject pending or failed values."
+      }
+    },
+    {
+      "id": "scope-honesty",
+      "description": "Core observability readiness is not presented as completion of the later inspector, extension, entity-inspection, or controller-owned time-travel changes.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Review the packet for downstream completion claims and state the exact remaining phase frontier."
+      }
+    }
+  ],
+  "global_rules": [
+    "Refinement may clarify documentation but may not broaden production scope.",
+    "Only the assembled packed-consumer gate counts as behavioral evidence.",
+    "Do not imply registry publication or full DevTools product certification."
+  ],
+  "termination_conditions": [
+    "All four blocking constraints are satisfied.",
+    "The deterministic ledger/evidence validator passes.",
+    "No further content delta improves truthfulness or traceability."
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "mode": "decision",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "unknown",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "Assumptions / Signature interaction: Graph Pulse",
+      "claim": "The decision's organizing principle (the causal trace) rests on a controller protocol guarantee that is assumed, unchecked, and unscheduled, and the stated fallback ('remove Graph Pulse') is incoherent because the same guarantee underpins the entire information architecture, not just the ribbon.",
+      "evidence": "Assumption 5: 'The controller and inspection projection changes deliver the correlation/event-to-view guarantees required by Graph Pulse before the React UI starts; if those contracts are unavailable, the signature interaction is removed rather than simulated.' But the Decision states 'The experience centers on an entity-aware causal trace... `event -> entity -> patch/original -> views`', the desktop layout dedicates a full column to 'CAUSAL TRACE', and the Views workspace promises 'the event that last changed it'. All of these depend on the identical per-publication correlation/event-to-view contract ('This depends on a protocol guarantee, not UI inference'). If the guarantee is unavailable, removing one ribbon does not save the design \u2014 the causal column, view-to-event attribution, and the 'single job' all collapse, requiring redesign and re-review, which the contingency does not trigger. The packet's file tree contains only planning artifacts; nothing evidences that the controller work exists, is scheduled, or has an owner, and this assumption was checkable now.",
+      "suggested_fix": "Gate this spec on a verified, landed (or at least contract-frozen) controller/projection API; name the owning change and its status. Replace the fallback with: 'if the correlation contract is unavailable, this design returns for re-review' rather than 'the signature interaction is removed'."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "Falsifier \u2014 Usability",
+      "claim": "The only falsifier tied to the intent's central demand ('world-class UI/UX') contains an escape hatch that lets the decision ship without ever being tested: the study may simply be 'unavailable', with no definition of unavailability, no owner of that determination, and no substitute test.",
+      "evidence": "'This is a release usability criterion... if the study is unavailable, that phrase remains unverified.' A criterion that is simultaneously a release gate and waivable-by-unavailability is a falsifier that exists to look rigorous: whoever controls the study budget controls whether the falsifier can ever fire. The original intent explicitly demands world-class UX, so the one measurable proxy for it must not be optional.",
+      "suggested_fix": "Define 'unavailable' objectively (e.g., a named, time-boxed recruitment attempt that failed), state who certifies it, and specify a mandatory fallback evaluation (e.g., moderated heuristic walkthrough against named benchmarks) if the study cannot run."
+    },
+    {
+      "severity": "WARNING",
+      "file": "Activation & escape hatch",
+      "claim": "The shortcut adapter's promise to 'check host registrations before installing' describes a capability browsers do not provide; there is no API to enumerate a host application's keydown handlers, so the conflict-avoidance guarantee is unimplementable as written.",
+      "evidence": "'The shortcut adapter checks host registrations before installing and can be disabled or remapped.' The document already demonstrates awareness of real shortcut conflicts ('It does not use Alt+Shift, which collides with Windows input-language switching'), yet asserts a runtime registration check that has no specified mechanism.",
+      "suggested_fix": "Specify the actual mechanism (e.g., documented known-conflict list plus capture-phase probe plus first-run conflict warning), or downgrade the claim to remappability and host-configurable disable only."
+    },
+    {
+      "severity": "WARNING",
+      "file": "Falsifier \u2014 Usability and Load thresholds",
+      "claim": "The usability thresholds (10 of 12 completions, median under 10 seconds) and the load generator figure (500 semantic events/second) have no stated source, unlike the latency budgets which are explicitly derived from RAIL/INP.",
+      "evidence": "The Load falsifier justifies itself: 'These budgets derive from the RAIL 100 ms response/50 ms input-work guidance and remain stricter than the 200 ms \"good\" INP boundary.' The Usability falsifier gives no derivation for 10 seconds or 10/12, and no baseline or traffic model justifies 500 events/second as the certification load. Per the review-round-2 disposition, 'threshold rationale' was already warned about; only the load latency numbers received rationale.",
+      "suggested_fix": "State the provenance of each number (pilot data, benchmark against incumbent tools, or explicit arbitrary-but-revisable marker), and justify 500 events/sec against observed worst-case host traffic."
+    },
+    {
+      "severity": "WARNING",
+      "file": "Decision vs Information architecture",
+      "claim": "The headline claim that the inspector works 'without copying graph state into UI-owned business state' is contradicted by the design's own retained-history and snapshot machinery, which do copy graph projections into inspector-owned storage.",
+      "evidence": "Decision: 'without copying graph state into UI-owned business state.' Information architecture: 'Event history defaults to the lower of 500 events or 5 MB of serialized retained payload' and 'Entity inspection snapshots reverse registered-view membership at that event boundary.' Retained serialized payloads and per-event snapshots are inspector-owned copies of graph-derived state; the distinction between 'business state' and 'retained history' is asserted nowhere in the document.",
+      "suggested_fix": "Either define the term precisely ('no mutable UI-owned duplicate of the live graph; bounded read-only event retention is permitted') or drop the claim."
+    },
+    {
+      "severity": "WARNING",
+      "file": "Decision vs original_intent",
+      "claim": "The intent requires the DevTools to 'detect development mode and automatically show a floating action button'; the decision redefines 'automatic' as automatic-only-after-an-explicit-opt-in-import, satisfying a purpose it inferred rather than the letter of the requirement, without evidence the intent's author accepted the redefinition.",
+      "evidence": "Intent: 'The DevTools must detect development mode and automatically show a floating action button.' Decision: '\"Automatic\" therefore means automatic detection and visibility after this one explicit debug-entry opt-in. Zero-import DOM injection is rejected.' The Review disposition says round 2's warning about 'automatic-after-opt-in wording' was 'corrected here', yet the wording and the semantic gap remain. The rejection of zero-import injection is well-argued on production-safety grounds, but it is a revision of the stated requirement being ratified by the spec itself.",
+      "suggested_fix": "Record an explicit amendment to the intent ('auto-visibility requires one opt-in import/mount; zero-import injection rejected') as a separate acknowledged decision, rather than absorbing it silently into this spec."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "Information architecture / Activity workspace",
+      "claim": "The Activity workspace ships rewind/time-travel UI whose snapshot state policy is explicitly deferred and undefined in this spec, leaving a promised feature without a behavioral or memory-bounds contract.",
+      "evidence": "Activity includes 'rewind state, and return-to-live controls' and the dirty-state contract requires rewind to 'always expose \"Return to live\"', yet 'Time-travel snapshots have their own bounded policy and are not implied by event retention' and Assumption 2 defers server-version history to 'the time-travel change'. The falsifiers contain no time-travel boundary.",
+      "suggested_fix": "Either add the snapshot retention/behavior contract and a rewind falsifier here, or explicitly scope rewind out of this phase's UI."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "Decision, second paragraph / Falsifier \u2014 Flutter",
+      "claim": "The decision statement asserts Flutter parity, but this document decides nothing about Flutter \u2014 by its own admission the Flutter contract is 'implemented and certified by the dedicated Flutter controller/extension changes' \u2014 so the decision bundles a surface whose design content is entirely elsewhere.",
+      "evidence": "'Flutter uses the same four workspaces, state vocabulary, projection fixtures, and protocol semantics with native interaction patterns; its widget/layout contract is implemented and certified by the dedicated Flutter controller/extension changes rather than inferred from the React surface.' No Flutter interaction, layout, or platform-detail content follows; the Flutter falsifier certifies artifacts this spec does not define.",
+      "suggested_fix": "Scope the decision statement to what this document actually decides (React embedded + Chrome surfaces and shared contracts), and reference the Flutter change as an external dependency with its own review."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "React implementation constraints / Activation",
+      "claim": "Two mechanisms the spec depends on are unspecified: the pinned React version gating the 'activity/show-hide mechanism', and the cross-bundler development-mode detection signal, which the falsifiers only certify for Vite and Next.",
+      "evidence": "'Use React's current activity/show-hide mechanism only where supported by the pinned React version' \u2014 no pinned version appears in the packet. 'The launcher renders only when the consumer build reports development mode' \u2014 the detection mechanism per bundler is unnamed, and the audience lists Vite, Next.js, Chrome DevTools, and Flutter while the packed falsifier covers only 'Vite/Next embedded'.",
+      "suggested_fix": "Name the pinned React version (or version range and feature-detection strategy) and enumerate the dev-mode detection contract per supported bundler, or narrow the claimed audience to what is certified."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

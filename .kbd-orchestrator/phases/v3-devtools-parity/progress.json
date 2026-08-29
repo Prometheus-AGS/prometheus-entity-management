@@ -1,0 +1,145 @@
+{
+  "changes": [
+    {
+      "blockers": [],
+      "id": "v3-devtools-core-observability",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": "Update API and skills ledgers, package documentation, evidence and security-boundary notes; run artifact-refiner and isolated adversarial review, then archive the change when both gates pass.",
+      "next_task_pending": "Add targeted event-completeness, batch/coalescing, multi-store, multi-client, disabled-mode, and teardown tests.",
+      "status": "DONE",
+      "tasks_done": 8,
+      "tasks_total": 11,
+      "title": "v3-devtools-core-observability — Per-store semantic controller and protocol"
+    },
+    {
+      "blockers": [],
+      "id": "v3-devtools-entity-inspection",
+      "implementation_status": "PENDING",
+      "last_task_completed": null,
+      "next_task_pending": "Confirm `v3-devtools-core-observability` is complete and freeze shared projection fixtures for downstream React/Flutter consumers.",
+      "status": "PENDING",
+      "tasks_done": 0,
+      "tasks_total": 8,
+      "title": "v3-devtools-entity-inspection — Entity, view, relationship, and preview workflows"
+    },
+    {
+      "blockers": [],
+      "id": "v3-devtools-time-travel",
+      "implementation_status": "PENDING",
+      "last_task_completed": null,
+      "next_task_pending": "Confirm core controller contracts are complete and document the single retention policy.",
+      "status": "PENDING",
+      "tasks_done": 0,
+      "tasks_total": 8,
+      "title": "v3-devtools-time-travel — Correct per-store rewind and return-to-live"
+    },
+    {
+      "blockers": [],
+      "id": "v3-devtools-react-inspector",
+      "implementation_status": "PENDING",
+      "last_task_completed": null,
+      "next_task_pending": "Confirm inspection and time-travel dependencies and existing React export/build conventions.",
+      "status": "PENDING",
+      "tasks_done": 0,
+      "tasks_total": 12,
+      "title": "v3-devtools-react-inspector — Shared inspector and debug-only FAB"
+    },
+    {
+      "blockers": [],
+      "id": "v3-devtools-flutter-controller",
+      "implementation_status": "PENDING",
+      "last_task_completed": null,
+      "next_task_pending": "Confirm core, inspection, and time-travel changes are complete and import their stable cross-language fixtures.",
+      "status": "PENDING",
+      "tasks_done": 0,
+      "tasks_total": 9,
+      "title": "v3-devtools-flutter-controller — Dart parity and VM service bridge"
+    },
+    {
+      "blockers": [],
+      "id": "v3-devtools-chrome-extension",
+      "implementation_status": "PENDING",
+      "last_task_completed": null,
+      "next_task_pending": "Confirm the React inspector is complete and inventory the existing extension scaffold from a clean `origin/main` worktree.",
+      "status": "PENDING",
+      "tasks_done": 0,
+      "tasks_total": 9,
+      "title": "v3-devtools-chrome-extension — Secure tab-isolated MV3 extension"
+    },
+    {
+      "blockers": [],
+      "id": "v3-devtools-flutter-extension",
+      "implementation_status": "PENDING",
+      "last_task_completed": null,
+      "next_task_pending": "Confirm the Flutter controller/VM-service contract and official package-extension layout.",
+      "status": "PENDING",
+      "tasks_done": 0,
+      "tasks_total": 8,
+      "title": "v3-devtools-flutter-extension — Official Flutter DevTools companion"
+    },
+    {
+      "blockers": [],
+      "id": "v3-devtools-docs-examples",
+      "implementation_status": "PENDING",
+      "last_task_completed": null,
+      "next_task_pending": "Start from a clean `origin/main` worktree and verify the existing Docusaurus/Pages baseline named in the assessment.",
+      "status": "PENDING",
+      "tasks_done": 0,
+      "tasks_total": 9,
+      "title": "v3-devtools-docs-examples — Guides, scenarios, README parity, and evidence"
+    },
+    {
+      "blockers": [],
+      "id": "v3-devtools-release-certification",
+      "implementation_status": "PENDING",
+      "last_task_completed": null,
+      "next_task_pending": "Confirm every dependency is archived with clean T2 evidence and identify the immutable certification SHA.",
+      "status": "PENDING",
+      "tasks_done": 0,
+      "tasks_total": 10,
+      "title": "v3-devtools-release-certification — Packed, secure, truthful 3.0 certification"
+    }
+  ],
+  "changes_completed": 1,
+  "changes_total": 9,
+  "children": {},
+  "completion": {
+    "certification": {
+      "blockers": [],
+      "status": "PENDING",
+      "summary": null
+    },
+    "evidence": {
+      "blockers": [],
+      "status": "PENDING",
+      "summary": null
+    },
+    "implementation": {
+      "completed": 1,
+      "status": "IN_PROGRESS",
+      "total": 9
+    },
+    "primaryCounter": "implementation",
+    "publication": {
+      "blockers": [],
+      "status": "PENDING",
+      "summary": null
+    }
+  },
+  "conflictCount": 0,
+  "derivedRevision": 284,
+  "frontier": {
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 284
+  },
+  "generatedBy": "kbd-runtime",
+  "implementation_completed": 1,
+  "implementation_total": 9,
+  "last_updated": "2026-08-29T15:57:11.452798Z",
+  "last_updated_by": "kbd-runtime",
+  "migrationStatus": null,
+  "parentPhase": null,
+  "phase": "v3-devtools-parity",
+  "phaseId": "v3-devtools-parity",
+  "schemaVersion": "2",
+  "sourceRevision": 284
+}

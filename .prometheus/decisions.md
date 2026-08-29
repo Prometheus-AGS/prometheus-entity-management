@@ -69,3 +69,17 @@ README and documentation parity checks.
 Rationale: publishing Flutter after its original deferred gate does not rewrite
 what that gate authorized. Separate live snapshots preserve history while
 preventing source, staged, published, and stable states from being conflated.
+
+## 2026-08-29 — Observe DevTools at the store publication boundary
+
+The v1 core DevTools controller subscribes once to each attached `GraphStore`
+and projects semantic entity, patch, fetch-state, sync, and list changes from
+the completed Zustand publication. Action call sites are not a second event
+source.
+
+Rationale: hydration, rollback, restore, adapter writes, and public direct
+`store.setState` calls can bypass individual graph action methods. The store
+publication boundary observes all of them without changing graph ownership or
+duplicating events. Each store owns its reference-counted controller and
+bounded history; values remain metadata-only unless the host explicitly opts
+into a redaction policy.

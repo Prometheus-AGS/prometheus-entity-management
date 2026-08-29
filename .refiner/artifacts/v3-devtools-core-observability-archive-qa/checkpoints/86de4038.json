@@ -1,0 +1,88 @@
+{
+  "refinement_id": "60a3762c-aa54-4fea-9018-bb924ec224a2",
+  "artifact_name": "v3-devtools-core-observability-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-29T15:09:56Z",
+  "updated_at": "2026-08-29T15:15:11Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Refine core DevTools documentation and evidence against the shipped public contracts.",
+    "Prevent core observability readiness from being presented as downstream UI or release readiness."
+  ],
+  "constraints": [
+    {
+      "id": "api-truth",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "security-truth",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "evidence-integrity",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "scope-honesty",
+      "severity": "blocking",
+      "status": "satisfied"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "running",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 4,
+      "constraints_total": 4,
+      "decision": "terminate",
+      "timestamp": "2026-08-29T15:09:52Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "93825996",
+      "phase": "specify",
+      "iteration": 0,
+      "timestamp": "2026-08-29T15:10:51Z"
+    },
+    {
+      "checkpoint_id": "e1d7b699",
+      "phase": "plan",
+      "iteration": 0,
+      "timestamp": "2026-08-29T15:10:51Z"
+    },
+    {
+      "checkpoint_id": "29003341",
+      "phase": "execute",
+      "iteration": 1,
+      "timestamp": "2026-08-29T15:15:07Z"
+    },
+    {
+      "checkpoint_id": "c03bf591",
+      "phase": "reflect",
+      "iteration": 1,
+      "timestamp": "2026-08-29T15:15:11Z"
+    }
+  ],
+  "prior_cycle_id": null
+}

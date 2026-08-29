@@ -53,7 +53,7 @@ const reportPath = reportFlag >= 0 ? args[reportFlag + 1] : null;
 
 /** The 12 publishable npm packages: slug, directory, ledger, entry points. */
 const NPM_PACKAGES = [
-  { slug: "entity-graph-core", name: "@prometheus-ags/entity-graph-core", directory: "entity-graph-core", ledger: "core-library-exports.json", entries: ["src/index.ts"] },
+  { slug: "entity-graph-core", name: "@prometheus-ags/entity-graph-core", directory: "entity-graph-core", ledger: "core-library-exports.json", entries: ["src/index.ts", "src/devtools/index.ts"] },
   { slug: "prometheus-entity-management", name: "@prometheus-ags/prometheus-entity-management", directory: "entity-graph-react", ledger: "library-exports.json", entries: ["src/index.ts"] },
   { slug: "entity-graph-sync", name: "@prometheus-ags/entity-graph-sync", directory: "entity-graph-sync", ledger: "sync-library-exports.json", entries: ["src/index.ts"] },
   { slug: "entity-graph-svelte", name: "@prometheus-ags/entity-graph-svelte", directory: "entity-graph-svelte", ledger: "svelte-library-exports.json", entries: ["src/index.ts"] },

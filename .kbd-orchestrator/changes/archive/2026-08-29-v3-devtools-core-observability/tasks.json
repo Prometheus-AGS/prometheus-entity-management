@@ -1,0 +1,50 @@
+{
+  "changeId": "v3-devtools-core-observability",
+  "schemaVersion": "1",
+  "tasks": [
+    {
+      "id": "9",
+      "title": "Re-audit the current branch against unsupported completion claims, then implement and wire the complete v1 per-store DevTools protocol, controller, semantic instrumentation boundary, default-store compatibility delegates, lifecycle, bounded history, and transport-independent client.",
+      "done": true,
+      "doneAt": "2026-08-29T15:56:33Z",
+      "doneBy": "claude-code",
+      "files": [
+        "packages/entity-graph-core/src",
+        "packages/entity-graph-core/package.json",
+        "packages/entity-graph-core/tsup.config.ts"
+      ],
+      "verify": null,
+      "notes": "Implementation first. Historical signed tasks 2-5 are unsupported by current source and are not evidence."
+    },
+    {
+      "id": "10",
+      "title": "After implementation is complete, run the full assembled core/React/packed-consumer DevTools integration and acceptance gate once; fix production defects and rerun that full gate without unit, isolated, mock-backed, or partial test evidence.",
+      "done": true,
+      "doneAt": "2026-08-29T15:56:33Z",
+      "doneBy": "claude-code",
+      "files": [
+        "tests",
+        "scripts",
+        "packages/entity-graph-core",
+        "packages/entity-graph-react"
+      ],
+      "verify": null,
+      "notes": "Only the complete assembled acceptance gate counts as test evidence."
+    },
+    {
+      "id": "11",
+      "title": "Update API and skills ledgers, package documentation, evidence and security-boundary notes; run artifact-refiner and isolated adversarial review, then archive the change when both gates pass.",
+      "done": true,
+      "doneAt": "2026-08-29T15:56:33Z",
+      "doneBy": "claude-code",
+      "files": [
+        "packages/entity-graph-core/README.md",
+        "docs",
+        "skills",
+        "release"
+      ],
+      "verify": null,
+      "notes": "Archive only after documentation truth, refinement, and isolated review gates pass."
+    }
+  ]
+}

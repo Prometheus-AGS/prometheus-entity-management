@@ -1,0 +1,35 @@
+{
+  "specification": {
+    "artifact_name": "v3-devtools-core-observability-archive-qa",
+    "clarified_intent": {
+      "description": "Refine the core DevTools README, security-boundary note, public export ledger, and packed acceptance report into a truthful archive-readiness packet.",
+      "domain": "content"
+    },
+    "constraints": [
+      "Public root and ./devtools entry points must be distinguished exactly.",
+      "Metadata-only defaults, explicit value inclusion, redaction failure, limits, and transport ownership must match production code.",
+      "Every acceptance claim must trace to the retained assembled packed-consumer report.",
+      "The packet must not claim that the React inspector, Chrome extension, Flutter tooling, entity inspection, or controller-owned time travel is complete."
+    ],
+    "target_state": {
+      "description": "A concise package guide and evidence packet that can survive artifact-only review without unsupported DevTools product claims.",
+      "success_criteria": [
+        "README examples use only exported symbols and the documented package subpath.",
+        "Security notes identify concrete data, client, store, lifecycle, and transport boundaries.",
+        "The export ledger contains separate root and ./devtools entries.",
+        "The acceptance report records pass status for both package consumers and every required scenario."
+      ],
+      "measurable_outcomes": [
+        { "metric": "blocking constraint violations", "threshold": "0" },
+        { "metric": "pending acceptance scenarios", "threshold": "0" },
+        { "metric": "unsupported downstream completion claims", "threshold": "0" }
+      ]
+    },
+    "content_type": "direct:content",
+    "unknowns": [
+      "The later entity-inspection and time-travel changes may revise the protocol; this packet certifies only the current core observability change."
+    ],
+    "requires_code_execution": true,
+    "likely_tools": ["file_system", "node"]
+  }
+}

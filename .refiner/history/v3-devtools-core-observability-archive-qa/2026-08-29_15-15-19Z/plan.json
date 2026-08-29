@@ -1,0 +1,65 @@
+{
+  "plan": {
+    "stages": [
+      {
+        "id": "inspect",
+        "description": "Compare documentation and security claims with the public source contracts and packed report.",
+        "requires_execution": false
+      },
+      {
+        "id": "refine",
+        "description": "Apply only clarity or truthfulness deltas required by the comparison.",
+        "requires_execution": false
+      },
+      {
+        "id": "validate",
+        "description": "Parse the ledger and evidence report and verify required entry points and pass states.",
+        "requires_execution": true,
+        "tool": "node"
+      },
+      {
+        "id": "persist",
+        "description": "Persist the refinement report, manifest, reflection, log, and decision.",
+        "requires_execution": false
+      }
+    ],
+    "tool_invocations": [
+      {
+        "stage_id": "validate",
+        "tool": "node",
+        "purpose": "Deterministically parse the export ledger and packed acceptance evidence and reject missing or pending contracts."
+      }
+    ],
+    "state_updates": {
+      "files_to_create": [
+        ".refiner/artifacts/v3-devtools-core-observability-archive-qa/dist/archive-qa-report.md",
+        ".refiner/artifacts/v3-devtools-core-observability-archive-qa/artifact_manifest.json",
+        ".refiner/artifacts/v3-devtools-core-observability-archive-qa/reflection.json",
+        ".refiner/artifacts/v3-devtools-core-observability-archive-qa/refinement_log.md",
+        ".refiner/artifacts/v3-devtools-core-observability-archive-qa/decisions.md"
+      ],
+      "files_to_update": [],
+      "directories_required": [
+        ".refiner/artifacts/v3-devtools-core-observability-archive-qa/dist"
+      ]
+    },
+    "validation_plan": [
+      {
+        "constraint_id": "api-truth",
+        "validation_method": "Require separate . and ./devtools ledger keys and the five expected runtime exports.",
+        "execution_required": true
+      },
+      {
+        "constraint_id": "evidence-integrity",
+        "validation_method": "Require every consumer and scenario in task-10-packed-acceptance.json to equal pass.",
+        "execution_required": true
+      },
+      {
+        "constraint_id": "scope-honesty",
+        "validation_method": "Inspect the README and security note for downstream UI/extension/time-travel completion claims.",
+        "execution_required": false
+      }
+    ],
+    "template": ".codex/skills/artifact-refiner/assets/templates/content-report.template.html"
+  }
+}

@@ -1,4 +1,4 @@
-import { useMemo, useSyncExternalStore } from "react";
+import { useCallback, useMemo, useSyncExternalStore } from "react";
 import { useStore } from "zustand";
 import type { GraphState } from "@prometheus-ags/entity-graph-core";
 import { getActiveSubscriberCount, subscribeSubscriberStats } from "@prometheus-ags/entity-graph-core";
@@ -77,10 +77,15 @@ function subscriberCountServerSnapshot() {
  */
 export function useGraphDevTools() {
   const storeApi = useGraphStoreApi();
+  const subscribe = useCallback(
+    (onChange: () => void) => subscribeSubscriberStats(onChange, storeApi),
+    [storeApi],
+  );
+  const getSubscriberCount = useCallback(() => getActiveSubscriberCount(storeApi), [storeApi]);
   const subscriberCount = useSyncExternalStore(
-    subscribeSubscriberStats,
-    () => getActiveSubscriberCount(storeApi),
-    subscriberCountServerSnapshot
+    subscribe,
+    getSubscriberCount,
+    subscriberCountServerSnapshot,
   );
 
   const entities = useStore(storeApi, (state) => state.entities);
