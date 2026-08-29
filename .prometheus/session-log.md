@@ -1631,3 +1631,34 @@
 - Phase remains 2/9 changes complete. Change 3 is 5/7 executable tasks complete;
   next task runs the one assembled multi-store core/packed-consumer integration
   gate across the complete production path.
+
+## 2026-08-29 — DevTools time travel task 6/7
+
+- Added `pnpm run verify:devtools-time-travel`, one assembled acceptance gate
+  that builds and packs the real core package, validates its tarball and
+  manifest, installs it into a temporary external consumer, and exercises the
+  production exports through ESM, CommonJS, root-only ESM, and strict NodeNext
+  TypeScript lanes.
+- The packed ESM runtime proved count and byte eviction, oversize capture,
+  stable and visibly expired cursors, rewind and exact return-to-live, explicit
+  live-transition/mutation ordering when writing while rewound, bounded import
+  validation and one-shot confirmed restoration, per-store isolation, and
+  disposal cleanup.
+- The deprecated root compatibility facade passed through both packed ESM and
+  independently bundled CommonJS root/`./devtools` entries. A root-only
+  consumer returned the documented unavailable state and the root payload scan
+  confirmed that the optional controller, protocol, and snapshot-history
+  implementation were not pulled into normal root imports.
+- The gate passed on its first run. All 3 package checks, 4 consumer lanes, and
+  12 named runtime scenarios are `pass` in
+  `.kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-time-travel/task-9-packed-acceptance.json`.
+- No unit, component, isolated, mock-backed, snapshot, or partial integration
+  test ran. The package build was the required packed-consumer acceptance
+  boundary, not an incremental implementation loop.
+- Signed task completion and both before/after hook pairs passed with zero
+  failures. The known incomplete-change projection reset was restored through
+  signed KBD revision 336.
+- Phase remains 2/9 changes complete. Change 3 is 6/7 executable tasks complete;
+  the final task synchronizes public records and evidence, runs artifact
+  refinement and isolated adversarial review, verifies, and archives the
+  change.

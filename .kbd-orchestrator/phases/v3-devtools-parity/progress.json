@@ -26,10 +26,10 @@
       "blockers": [],
       "id": "v3-devtools-time-travel",
       "implementation_status": "IN_PROGRESS",
-      "last_task_completed": "Delegate deprecated root time-travel functions to the default-store controller.",
+      "last_task_completed": "After production tasks 1-5 are complete and wired, run one assembled multi-store core/packed-consumer time-travel integration gate covering retention, expired cursors, rewind/live, mutation ordering, import validation, store isolation, and root compatibility; do not add or run unit, isolated, mock-backed, snapshot, or partial tests.",
       "next_task_pending": "Add targeted multi-store, retention, stale cursor, rewind/live, mutation ordering, import, and compatibility tests.",
       "status": "IN_PROGRESS",
-      "tasks_done": 5,
+      "tasks_done": 6,
       "tasks_total": 10,
       "title": "v3-devtools-time-travel — Correct per-store rewind and return-to-live"
     },
@@ -127,19 +127,19 @@
     }
   },
   "conflictCount": 0,
-  "derivedRevision": 333,
+  "derivedRevision": 336,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 333
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 336
   },
   "generatedBy": "kbd-runtime",
   "implementation_completed": 2,
   "implementation_total": 9,
-  "last_updated": "2026-08-29T20:01:24.850486Z",
+  "last_updated": "2026-08-29T20:07:28.873313Z",
   "last_updated_by": "kbd-runtime",
   "migrationStatus": null,
   "parentPhase": null,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
   "schemaVersion": "2",
-  "sourceRevision": 333
+  "sourceRevision": 336
 }

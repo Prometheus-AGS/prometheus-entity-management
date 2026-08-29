@@ -67,9 +67,9 @@
     {
       "id": "9",
       "title": "After production tasks 1-5 are complete and wired, run one assembled multi-store core/packed-consumer time-travel integration gate covering retention, expired cursors, rewind/live, mutation ordering, import validation, store isolation, and root compatibility; do not add or run unit, isolated, mock-backed, snapshot, or partial tests.",
-      "done": false,
-      "doneAt": null,
-      "doneBy": null,
+      "done": true,
+      "doneAt": "2026-08-29T20:07:11Z",
+      "doneBy": "claude-code",
       "files": [
         "scripts",
         "packages/entity-graph-core"
