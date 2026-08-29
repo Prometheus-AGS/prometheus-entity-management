@@ -8,6 +8,11 @@ export function isEntityGraphDevtoolsEnabled(mode: EntityGraphDevtoolsMode = "au
   if (typeof window === "undefined" || typeof document === "undefined") return false;
   if (mode === "on") return true;
 
+  const viteDevelopment = (
+    import.meta as ImportMeta & { readonly env?: { readonly DEV?: boolean } }
+  ).env?.DEV;
+  if (viteDevelopment === true) return true;
+
   const nodeEnvironment = typeof process !== "undefined" ? process.env?.NODE_ENV : undefined;
   return typeof nodeEnvironment === "string" && nodeEnvironment !== "production";
 }

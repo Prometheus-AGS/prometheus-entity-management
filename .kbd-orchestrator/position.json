@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 378,
-  "derivedRevision": 378,
+  "sourceRevision": 383,
+  "derivedRevision": 383,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 378
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 383
   },
   "conflictCount": 0,
-  "updatedAt": "2026-08-29T22:53:08.456247Z",
+  "updatedAt": "2026-08-29T23:23:06.278853Z",
   "cursor": [
     "v3-devtools-parity"
   ],
@@ -623,7 +623,7 @@
             "id": "v3-devtools-react-inspector",
             "status": "IN_PROGRESS",
             "progress": {
-              "done": 7,
+              "done": 8,
               "total": 12
             }
           },

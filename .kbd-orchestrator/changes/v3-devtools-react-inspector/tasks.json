@@ -95,9 +95,9 @@
     {
       "id": "11",
       "title": "After the complete UI is wired, run one packed Vite/Next/browser acceptance gate proving production exclusion, automatic development activation, hide/restore, dirty/original/view/history workflows, responsive layouts, keyboard and screen-reader accessibility, and responsive 500-event interaction without unit, isolated, mock-backed, snapshot, or partial test evidence.",
-      "done": false,
-      "doneAt": null,
-      "doneBy": null,
+      "done": true,
+      "doneAt": "2026-08-29T23:22:51Z",
+      "doneBy": "codex",
       "files": [
         "scripts",
         "tests/browser",

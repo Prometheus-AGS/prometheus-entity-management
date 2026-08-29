@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-29T23:21:06.410Z",
+  "boundary": "packed-vite-next-browser-acceptance",
+  "source": {
+    "commit": "3b1d7173b7d51766d820828c4b694e341124fdf0",
+    "dirtyTaskFiles": true
+  },
+  "packages": {
+    "core": {
+      "build": "pass",
+      "pack": "pass",
+      "sha256": "174a66221bafc4dd6162982f9783f85b4832a182b0a637afb9c7ab8a3c7c02d8"
+    },
+    "react": {
+      "build": "pass",
+      "pack": "pass",
+      "sha256": "c284b7352a1e11217d02e39d8da2d269c2881dcb5754f910695fdfba192ffad0"
+    }
+  },
+  "consumers": {
+    "install": "pass",
+    "viteTypecheck": "pass",
+    "nextTypecheck": "pass",
+    "viteProductionBuild": "pass",
+    "nextProductionBuild": "pass",
+    "productionExclusion": "pass"
+  },
+  "browser": {
+    "status": "pass",
+    "receipt": {
+      "schemaVersion": 1,
+      "change": "v3-devtools-react-inspector",
+      "recordedAt": "2026-08-29T23:21:46.446Z",
+      "status": "pass",
+      "evidenceKind": "packed-vite-next-development-production-browser",
+      "countsAsPackedPackageEvidence": true,
+      "scenarios": {
+        "production-exclusion": {
+          "status": "pass",
+          "proof": {
+            "viteServerMarkup": "no-devtools",
+            "viteHydratedDom": "no-devtools",
+            "nextServerMarkup": "no-devtools",
+            "nextHydratedDom": "no-devtools"
+          }
+        },
+        "development-activation-next-hydration": {
+          "status": "pass",
+          "proof": {
+            "viteAutoEntryVisible": true,
+            "nextPostHydrationHostVisible": true,
+            "nextHydrationErrors": 0
+          }
+        },
+        "hide-restore-layout-accessibility": {
+          "status": "pass",
+          "proof": {
+            "temporaryHideRestoredByShortcut": true,
+            "persistedHideSurvivedReload": true,
+            "persistedHideRestoredByShortcut": true,
+            "layouts": [
+              "dock-right",
+              "dock-bottom",
+              "floating"
+            ],
+            "rovingTabs": [
+              "ArrowRight",
+              "End",
+              "Home"
+            ],
+            "seriousAccessibilityViolations": 0,
+            "criticalAccessibilityViolations": 0
+          }
+        },
+        "dirty-original-view-history-causality": {
+          "status": "pass",
+          "proof": {
+            "atomicBatch": {
+              "affectedEntities": 12,
+              "affectedViews": 3,
+              "graphPulseSegments": 1
+            },
+            "dirtyPatch": {
+              "affectedEntities": 1,
+              "affectedViews": 3
+            },
+            "projections": [
+              "original",
+              "patch",
+              "live",
+              "diff"
+            ],
+            "registeredViews": 3,
+            "entityHistoryVisible": true,
+            "correlationVisible": true
+          }
+        },
+        "responsive-500-event-interaction": {
+          "status": "pass",
+          "proof": {
+            "viewport": {
+              "width": 390,
+              "height": 844,
+              "safeAreaPanel": true,
+              "drillBack": true
+            },
+            "hardwareBaseline": {
+              "cores": 10,
+              "memoryGiB": 32
+            },
+            "emittedEvents": 5000,
+            "durationMs": 10015.10000000149,
+            "achievedEventsPerSecond": 499.2461383310457,
+            "searchLatencyP95Ms": 18.5,
+            "preloadedPanelOpenP95Ms": 13.400000002235174,
+            "inspectorLongTasksOver50Ms": 0,
+            "retainedEvents": 500
+          }
+        }
+      },
+      "artifacts": {
+        "screenshots": [
+          "task-11-causal-inspector.png",
+          "task-11-responsive-500-events.png"
+        ],
+        "tracePolicy": "on",
+        "playwrightReport": "task-11-playwright-report.json",
+        "playwrightOutput": "task-11-playwright-artifacts"
+      }
+    }
+  }
+}

@@ -431,12 +431,21 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .pem-readout-list dt, .pem-readout-list dd, .pem-empty { color: var(--pem-muted); }
 .pem-trace-list { display: grid; gap: 5px; }
 .pem-trace-list li {
-  display: grid;
-  grid-template-columns: 78px minmax(0, 1fr) auto;
-  gap: 10px;
-  align-items: baseline;
   border-top: 1px solid #252e32;
   padding: 8px 0 3px;
+}
+.pem-trace-list button {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr) auto;
+  width: 100%;
+  align-items: baseline;
+  gap: 10px;
+  border: 0;
+  padding: 0;
+  background: var(--pem-panel);
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
 }
 .pem-trace-type {
   color: var(--pem-accent);
@@ -524,7 +533,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   width: 100%;
   border: 0;
   border-radius: 4px;
-  background: transparent;
+  background: #0f1315;
   text-align: left;
   cursor: pointer;
 }
@@ -794,7 +803,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   place-items: center;
   border: 0;
   border-bottom: 2px solid #526069;
-  background: transparent;
+  background: #0f1315;
   color: var(--pem-muted);
   cursor: pointer;
   animation: pem-pulse-arrival 150ms ease-out both;

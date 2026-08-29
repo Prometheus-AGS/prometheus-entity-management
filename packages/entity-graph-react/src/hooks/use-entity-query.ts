@@ -25,6 +25,7 @@ import type { EntityType, EntityId } from "@prometheus-ags/entity-graph-core";
 import type { ViewDescriptor, FilterSpec, SortSpec, CompletenessMode } from "@prometheus-ags/entity-graph-core";
 import type { ListQuery } from "@prometheus-ags/entity-graph-core";
 import { useGraphStoreApi } from "../graph-store";
+import { useRenderedGraphViewRegistration } from "../view/view-registration";
 
 export interface UseEntityQueryOptions {
   /** Initial view descriptor (filter/sort/search). */
@@ -450,6 +451,14 @@ export function useEntityQuery<T extends object>(
   const remoteError = remoteListState?.lastError ?? null;
   const typedError =
     ((remoteError ?? baseError) as TerminalError | TransientError | null) ?? null;
+
+  useRenderedGraphViewRegistration(storeApi, {
+    viewId: `list:${type}:${baseKey}`,
+    label: `${type} query`,
+    kind: "list",
+    entityType: type,
+    queryKey: baseKey,
+  }, localViewIds, enabled);
 
   return {
     items,

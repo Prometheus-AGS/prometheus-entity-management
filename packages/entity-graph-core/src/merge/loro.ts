@@ -35,6 +35,7 @@ interface LoroModuleLike {
 export type LoroModuleLoader = () => Promise<{ LoroDoc: unknown }>;
 
 const ROOT_MAP = "entity";
+const LORO_MODULE_SPECIFIER = "loro-crdt";
 
 /** Per-(type:id) Loro document cache so repeated writes converge on one CRDT. */
 const docs = new Map<string, LoroDocLike>();
@@ -66,7 +67,7 @@ export async function createLoroMergeStrategy(
     // @ts-ignore optional peer dependency, resolved at runtime
     const loaded = loadLoro
       ? await loadLoro()
-      : await import(/* @vite-ignore */ "loro-crdt");
+      : await import(/* @vite-ignore */ LORO_MODULE_SPECIFIER);
     if (typeof loaded.LoroDoc !== "function") {
       throw new TypeError("loro-crdt did not export a LoroDoc constructor");
     }

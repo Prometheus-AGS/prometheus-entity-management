@@ -9,6 +9,7 @@ import type { ViewDescriptor, FilterSpec, SortSpec, CompletenessMode } from "@pr
 import type { EntityType, EntityId } from "@prometheus-ags/entity-graph-core";
 import type { ListResponse } from "@prometheus-ags/entity-graph-core";
 import { useGraphStoreApi } from "../graph-store";
+import { useRenderedGraphViewRegistration } from "./view-registration";
 
 /**
  * Precompiled transport payloads for one view snapshot — pass to REST, GraphQL, or SQL backends without re-deriving from `ViewDescriptor`.
@@ -241,6 +242,13 @@ export function useEntityView<TEntity extends object>(opts: UseEntityViewOptions
   // `isFetching: false`). `isRemoteFetching` still gates the spinner
   // during the actual round-trip.
   const error: string | null = remoteError ?? listState?.error ?? null;
+  useRenderedGraphViewRegistration(storeApi, {
+    viewId: `list:${type}:${baseKey}`,
+    label: `${type} view`,
+    kind: "list",
+    entityType: type,
+    queryKey: baseKey,
+  }, localViewIds, enabled);
   return {
     items,
     viewIds: localViewIds,

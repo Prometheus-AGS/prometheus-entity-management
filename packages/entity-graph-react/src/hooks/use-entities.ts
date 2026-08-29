@@ -28,6 +28,7 @@ import type { EntityType } from "@prometheus-ags/entity-graph-core";
 import type { ListQuery } from "@prometheus-ags/entity-graph-core";
 import type { FilterSpec, SortSpec } from "@prometheus-ags/entity-graph-core";
 import { useGraphStoreApi } from "../graph-store";
+import { useRenderedGraphViewRegistration } from "../view/view-registration";
 
 /** Subset of `ListQuery` that callers may pass alongside `enabled`. */
 export interface UseEntitiesOptions {
@@ -234,6 +235,14 @@ export function useEntities<T extends object>(
 
   // --- compute final booleans ----------------------------------------------
   const typedError = (listState.lastError as TerminalError | TransientError | null) ?? null;
+
+  useRenderedGraphViewRegistration(storeApi, {
+    viewId: `list:${type}:${queryKey}`,
+    label: `${type} list`,
+    kind: "list",
+    entityType: type,
+    queryKey,
+  }, listState.ids, enabled);
 
   return {
     items,

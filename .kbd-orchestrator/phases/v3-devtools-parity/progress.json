@@ -1,16 +1,16 @@
 {
   "schemaVersion": "2",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 378,
-  "derivedRevision": 378,
+  "sourceRevision": 383,
+  "derivedRevision": 383,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 378
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 383
   },
   "conflictCount": 0,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
   "parentPhase": null,
-  "last_updated": "2026-08-29T22:53:08.456247Z",
+  "last_updated": "2026-08-29T23:23:06.278853Z",
   "last_updated_by": "kbd-runtime",
   "changes_total": 9,
   "changes_completed": 3,
@@ -79,8 +79,8 @@
       "status": "IN_PROGRESS",
       "implementation_status": "IN_PROGRESS",
       "tasks_total": 12,
-      "tasks_done": 7,
-      "last_task_completed": "Implement the accepted ui-spec end to end: automatic development-mode lazy bootstrap and visible FAB; host mode plus keyboard and persisted hide/restore controls; dock/floating responsive inspector; Overview, Entities, Views, and Activity workspaces; Graph Pulse causality; original/patch/live dirty diffs; rendered-view membership; entity history; accessible keyboard and screen-reader workflows.",
+      "tasks_done": 8,
+      "last_task_completed": "After the complete UI is wired, run one packed Vite/Next/browser acceptance gate proving production exclusion, automatic development activation, hide/restore, dirty/original/view/history workflows, responsive layouts, keyboard and screen-reader accessibility, and responsive 500-event interaction without unit, isolated, mock-backed, snapshot, or partial test evidence.",
       "next_task_pending": "Add static layering, SSR/disabled, store-isolation, keyboard, responsive, axe, and packed-root-exclusion tests.",
       "blockers": []
     },

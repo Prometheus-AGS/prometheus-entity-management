@@ -6,6 +6,7 @@ import { fetchEntity, fetchList, serializeKey, registerSubscriber, unregisterSub
 import type { EntityType, EntityId, EntityState, ListState, GraphState, GraphStore } from "@prometheus-ags/entity-graph-core";
 import type { EntityQueryOptions, ListQueryOptions, ListFetchParams, ListResponse } from "@prometheus-ags/entity-graph-core";
 import { useGraphStoreApi } from "./graph-store";
+import { useRenderedGraphViewRegistration } from "./view/view-registration";
 
 /**
  * View-model for one entity row: merged canonical + patch data plus fetch lifecycle flags.
@@ -60,6 +61,13 @@ export function useEntity<TRaw, TEntity extends object>(opts: EntityQueryOptions
     return () => unregisterSubscriber(`${type}:${id}`, token, storeApi);
   }, [id, type, enabled, staleTime, doFetch, storeApi]);
   useEffect(() => { if (entityState.stale && id && enabled && !entityState.isFetching) doFetch(); }, [entityState.stale, id, enabled, entityState.isFetching, doFetch]);
+  const renderedEntityIds = useMemo(() => id && data ? [id] : [], [data, id]);
+  useRenderedGraphViewRegistration(storeApi, {
+    viewId: `entity:${type}:${id ?? "missing"}`,
+    label: `${type} detail`,
+    kind: "entity",
+    entityType: type,
+  }, renderedEntityIds, enabled && Boolean(id));
   return { data, isLoading: !data && entityState.isFetching, isFetching: entityState.isFetching, error: entityState.error, isStale: entityState.stale, refetch: doFetch };
 }
 
@@ -143,6 +151,13 @@ export function useEntityList<TRaw, TEntity extends object>(opts: ListQueryOptio
     if (!existing || isStale) doFetch({ page: 1, pageSize: listState.pageSize ?? undefined });
   }, [key, enabled, staleTime, doFetch, listState.pageSize, storeApi]);
   useEffect(() => { if (listState.stale && enabled && !listState.isFetching) doFetch(); }, [listState.stale, enabled, listState.isFetching, doFetch]);
+  useRenderedGraphViewRegistration(storeApi, {
+    viewId: `list:${type}:${key}`,
+    label: `${type} list`,
+    kind: "list",
+    entityType: type,
+    queryKey: key,
+  }, listState.ids, enabled);
   // Stabilize the returned object identity. React 19's
   // `useSyncExternalStore` (which Zustand's `useStore` reads above)
   // warns "The result of getSnapshot should be cached to avoid an

@@ -1850,3 +1850,26 @@
   without changing sovereign sync. The known parent reset was restored at
   revision 373. Change 4 is now 6/9 executable tasks complete (6/12 canonical,
   including three cancelled tasks); task 10 is next.
+
+## 2026-08-29 — React inspector task 11/12 (executable 8/9)
+
+- Added a store-scoped rendered-view registration bridge and wired public
+  entity, list, query, and view hooks so the attached core DevTools controller
+  automatically observes rendered subscriber lifetimes and ordered membership.
+- Added one packed Vite/Next/Chromium acceptance gate covering production
+  exclusion, development activation, Next hydration, hide/restore, all panel
+  layouts, keyboard navigation, axe, original/patch/live/diff, view membership,
+  history, Activity correlation, Graph Pulse causality, narrow responsive
+  navigation, and sustained 500-events/second interaction.
+- The assembled gate observed and corrected two product defects: Vite resolved
+  the optional literal `loro-crdt` import from the packed core root, and auto
+  mode lacked Vite's `import.meta.env.DEV` signal. It also exposed native button
+  backgrounds that failed color contrast; scoped dark surfaces corrected them.
+- Final `pnpm run verify:devtools-react-inspector` passed 5/5 real browser
+  scenarios. Packed consumers installed and typechecked, Vite and Next
+  production builds passed and excluded DevTools, axe found zero serious or
+  critical violations, 5,000 events completed in 10.015 seconds, search p95 was
+  18.5 ms, preloaded open p95 was 13.4 ms, no task over 50 ms was observed, and
+  retention remained bounded at 500 events.
+- No unit, component, isolated, mock-backed, snapshot, or partial test was
+  created or run. Sovereign sync was not touched.

@@ -18,6 +18,7 @@ import {
   type GraphDevtoolsSnapshot,
 } from "@prometheus-ags/entity-graph-core/devtools";
 import { useGraphStoreApi } from "../graph-store";
+import { observeRenderedGraphViews } from "../view/view-registration";
 
 type ProviderStatus = "connecting" | "ready" | "disabled";
 export type EntityGraphDevtoolsValuePolicyMode = "metadata-only" | "include";
@@ -132,12 +133,29 @@ function attachRuntime(definition: PreparedStoreDefinition): AttachedRuntime | n
   }
   const client = createGraphDevtoolsClient(controller.storeId, controller.connect());
   const snapshots = createSnapshotStore(controller);
+  const renderedViewRegistrations = new Map<symbol, ReturnType<typeof controller.registerView>>();
+  const stopObservingRenderedViews = observeRenderedGraphViews(definition.store, (event) => {
+    if (event.state === "removed") {
+      renderedViewRegistrations.get(event.token)?.unregister();
+      renderedViewRegistrations.delete(event.token);
+      return;
+    }
+    let registration = renderedViewRegistrations.get(event.snapshot.token);
+    if (!registration) {
+      registration = controller.registerView(event.snapshot.definition);
+      renderedViewRegistrations.set(event.snapshot.token, registration);
+    }
+    registration.updateMembership(event.snapshot.entityIds);
+  });
   return {
     ...definition,
     controller,
     client,
     snapshots,
     dispose() {
+      stopObservingRenderedViews();
+      for (const registration of renderedViewRegistrations.values()) registration.unregister();
+      renderedViewRegistrations.clear();
       snapshots.dispose();
       client.disconnect();
       attachment.detach();
@@ -163,16 +181,7 @@ export function EntityGraphDevtoolsProvider({
 }: EntityGraphDevtoolsProviderProps) {
   const inheritedStore = useGraphStoreApi();
   const fallbackStore = store ?? inheritedStore;
-  const baseOptions = useMemo(() => prepareOptions(options, undefined), [
-    options?.storeId,
-    options?.historyLimit,
-    options?.historyBytesLimit,
-    options?.eventBytesLimit,
-    options?.snapshotLimit,
-    options?.snapshotBytesLimit,
-    options?.values?.mode,
-    options?.values?.mode === "include" ? options.values.redact : undefined,
-  ]);
+  const baseOptions = useMemo(() => prepareOptions(options, undefined), [options]);
   const definitions = useMemo<readonly PreparedStoreDefinition[]>(() => {
     const supplied: readonly EntityGraphDevtoolsStoreDefinition[] = stores && stores.length > 0
       ? stores
