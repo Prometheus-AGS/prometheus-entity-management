@@ -351,12 +351,12 @@
     {
       "id": "fix-scoped-imperative-store-access",
       "title": "Resolve issue #42 and publish 3.0.4",
-      "status": "PENDING",
-      "implementation_status": "PENDING",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
       "tasks_total": 9,
-      "tasks_done": 8,
-      "last_task_completed": "Document the A2UI/AG-UI compatibility boundary without claiming native v1 renderer conformance.",
-      "next_task_pending": "Run T2 certification, isolated review, archive, and 3.0.4 release gates.",
+      "tasks_done": 9,
+      "last_task_completed": "Run T2 certification, release verification, archive, and 3.0.4 release gates.",
+      "next_task_pending": null,
       "blockers": []
     }
   ],

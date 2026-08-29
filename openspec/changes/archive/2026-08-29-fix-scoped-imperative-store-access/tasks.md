@@ -23,4 +23,5 @@
 
 ## 6. Completion gates
 
-- [ ] 6.1 Run scoped T0 checks, targeted T1 tests, relevant package/packed-consumer T2 gates, strict OpenSpec validation, and an isolated artifact review; record evidence before archive and 3.0.4 publication.
+- [x] 6.1 Run scoped T0 checks, targeted T1 tests, relevant package/packed-consumer T2 gates, strict OpenSpec validation, and release verification; record evidence before archive and 3.0.4 publication.
+  - The configured harness prohibited subagent delegation, so the final artifact review was performed locally and is not represented as an isolated-agent review.

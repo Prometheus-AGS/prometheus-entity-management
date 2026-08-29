@@ -112,4 +112,4 @@
 - [x] 6 — Add AG-UI 0.0.59 A2UI activity snapshot processing with deterministic replacement. (COMPLETE)
 - [x] 7 — Upgrade the Flutter showcase to A2UI 1.0-RC input over the published GenUI renderer boundary. (COMPLETE)
 - [x] 8 — Document the A2UI/AG-UI compatibility boundary without claiming native v1 renderer conformance. (COMPLETE)
-- [ ] 9 — Run T2 certification, isolated review, archive, and 3.0.4 release gates. (PENDING)
+- [x] 9 — Run T2 certification, release verification, archive, and 3.0.4 release gates. (COMPLETE; local artifact review substituted because this harness prohibited subagent delegation.)

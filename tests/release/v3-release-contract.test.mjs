@@ -32,6 +32,29 @@ test("the checked-in release contract passes schema and workspace validation", (
   assert.equal(result.summary.implementedShowcases, 5);
 });
 
+test("the A2UI RC compatibility tuple is pinned across React, AG-UI, and Flutter", () => {
+  const drifts = [
+    ["a2ui", "version", "0.9.1", /A2UI protocol version must be 1\.0-rc/],
+    ["a2ui", "stability", "stable", /A2UI stability must be release-candidate-compatibility/],
+    ["a2ui", "renderer", "native-v1", /A2UI renderer must be official-v0\.9-engine-adapter/],
+    ["agui", "version", "0.0.58", /AG-UI transport version must be 0\.0\.59/],
+    ["flutterGenui", "version", "0.10.1", /Flutter genui version must be 0\.10\.2/],
+    [
+      "flutterGenui",
+      "protocol",
+      "A2UI v0.9",
+      /Flutter genui protocol must be A2UI 1\.0-RC compatibility over v0\.9 renderer/,
+    ],
+  ];
+
+  for (const [protocol, field, value, expectedError] of drifts) {
+    const candidate = structuredClone(baseline);
+    candidate.protocols[protocol][field] = value;
+    const result = validateReleaseContract(candidate);
+    assert.match(result.errors.join("\n"), expectedError);
+  }
+});
+
 test("coverage links the contract and keeps unfinished showcases honest", () => {
   const coverage = readReleaseCoverage();
   assert.deepEqual(validateReleaseCoverage(baseline, coverage), []);

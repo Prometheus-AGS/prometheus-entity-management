@@ -53,8 +53,9 @@ test("A2UI docs, skills, coverage, and both runtime entry points stay synchroniz
   const ledger = JSON.parse(
     await read("prometheus-entity-skills/_shared/references/a2ui-library-exports.json"),
   );
-  assert.equal(ledger["."].length, 18);
+  assert.equal(ledger["."].length, 19);
   assert.equal(ledger["./ag-ui"].length, 9);
+  assert.ok(ledger["."].includes("PROMETHEUS_A2UI_RC_PROTOCOL_VERSION"));
   assert.ok(ledger["."].includes("PrometheusA2uiSurface"));
   assert.ok(ledger["."].includes("createEntityGraphA2uiActionPolicy"));
   assert.ok(ledger["./ag-ui"].includes("EntityChat"));

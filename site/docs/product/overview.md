@@ -27,7 +27,7 @@ reads that entity.
 | React 19 | `@prometheus-ags/prometheus-entity-management` | Hooks, CRUD, UI, GraphQL |
 | Local-first sync | `@prometheus-ags/entity-graph-sync` | Loro CRDT + PGlite |
 | Svelte / Solid / Alpine / HTMX / Web Components | 5 binding packages | Stores, signals, plugins, SSE, elements |
-| Agentic surfaces | `@prometheus-ags/a2ui-react`, `@prometheus-ags/entity-graph-a2a` | A2UI v0.9.1, A2A v1 |
+| Agentic surfaces | `@prometheus-ags/a2ui-react`, `@prometheus-ags/entity-graph-a2a` | A2UI v1.0-RC compatibility, AG-UI 0.0.59, A2A v1 |
 | Desktop / mobile | `@prometheus-ags/entity-graph-tauri` | Tauri 2 plugin |
 | Flutter | `entity_graph_flutter` | Dart graph + Riverpod |
 | Tooling | `entity-graph-cli`, `entity-graph-mcp` | Rust crates |

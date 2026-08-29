@@ -2,12 +2,13 @@
 
 ## 3.0 status: stable published
 
-**Update 2026-08-24: 3.0.3 stable is published.** All twelve
-`@prometheus-ags/*` npm packages are public at `3.0.3` with both `latest` and
-`next` pointing at it (tag `v3.0.3`). `3.0.0` shipped with an unresolved pnpm
+**Update 2026-08-29: 3.0.4 stable is published.** All twelve
+`@prometheus-ags/*` npm packages are public at `3.0.4` with both `latest` and
+`next` pointing at it (tag `v3.0.4`). `3.0.0` shipped with an unresolved pnpm
 `workspace:` protocol in ten of twelve manifests and is deprecated; `3.0.1` and
-`3.0.2` were the corrective republications, and `3.0.3` makes fetched list
-ingestion atomic. These publications ran directly with a granular npm token at
+`3.0.2` were corrective republications, `3.0.3` made fetched list ingestion
+atomic, and `3.0.4` fixes provider-scoped imperative access and adds A2UI
+1.0-RC compatibility. These publications ran directly with a granular npm token at
 operator direction, so they carry no npm provenance attestation; the governed
 OIDC path below remains for future releases. `entity_graph_flutter@3.0.0` is
 public on pub.dev. Do not run `changeset publish`, publish an individual

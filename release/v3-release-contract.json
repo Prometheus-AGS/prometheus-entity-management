@@ -3,7 +3,7 @@
   "schemaVersion": "1.0.0",
   "release": {
     "name": "Prometheus Entity Management",
-    "version": "3.0.3",
+    "version": "3.0.4",
     "channel": "stable",
     "owner": "Prometheus AGS",
     "repository": "https://github.com/Prometheus-AGS/prometheus-entity-management",
@@ -18,7 +18,7 @@
   "versionPolicy": {
     "npm": {
       "strategy": "fixed",
-      "version": "3.0.3",
+      "version": "3.0.4",
       "prereleaseTag": "next",
       "stableTag": "latest",
       "packages": [
@@ -45,7 +45,7 @@
   "registryScope": {
     "requiredForStable": ["npm", "github-releases", "github-pages"],
     "deferred": ["pub.dev", "crates.io", "apple-app-store", "google-play", "microsoft-store"],
-    "deferredPolicy": "A deferred registry does not block the npm 3.0.3 release, but documentation must not claim the artifact is installable from that registry until post-publish smoke evidence exists."
+    "deferredPolicy": "A deferred registry does not block the npm 3.0.4 release, but documentation must not claim the artifact is installable from that registry until post-publish smoke evidence exists."
   },
   "artifacts": [
     {"id":"npm-core","ecosystem":"npm","packageName":"@prometheus-ags/entity-graph-core","path":"packages/entity-graph-core","owner":"Prometheus AGS Entity Graph Team","registry":"npm","registryDecision":"required","versionPolicy":"npm-fixed-3.x","stability":"stable","role":"framework-neutral normalized graph"},
@@ -94,10 +94,10 @@
     "nextjsPerRequestGraph": true
   },
   "protocols": {
-    "a2ui": {"version":"0.9.1","stability":"stable","renderer":"official-engine","applicationActionPolicy":"allowlisted"},
-    "agui": {"stability":"stable","role":"event-transport","distinctFromA2uiRendering":true},
+    "a2ui": {"version":"1.0-rc","stability":"release-candidate-compatibility","renderer":"official-v0.9-engine-adapter","applicationActionPolicy":"allowlisted"},
+    "agui": {"version":"0.0.59","stability":"stable","role":"event-transport","distinctFromA2uiRendering":true},
     "a2a": {"versionPolicy":"pinned-conformance-matrix","stability":"stable","authenticationBoundary":"http-transport"},
-    "flutterGenui": {"stability":"experimental","protocol":"A2UI 0.9.1","mayOwnCanonicalGraph":false}
+    "flutterGenui": {"version":"0.10.2","stability":"experimental","protocol":"A2UI 1.0-RC compatibility over v0.9 renderer","mayOwnCanonicalGraph":false}
   },
   "securityBoundaries": {
     "agentActions": "validated allowlist with explicit approval for destructive mutations",

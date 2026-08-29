@@ -26,7 +26,7 @@ flowchart LR
 ## Current release boundary
 
 The active documentation line is **3.x**. All twelve npm packages are public
-at stable `3.0.3` on the `latest` tag (published 2026-08-24; the short-lived
+at stable `3.0.4` on the `latest` tag (published 2026-08-29; the short-lived
 `3.0.0` manifests shipped an unresolved `workspace:` protocol and are
 deprecated). Flutter is public as `entity_graph_flutter@3.0.0` on pub.dev. See
 the [verified registry snapshot](../packages/index.md) before choosing an
