@@ -1,0 +1,110 @@
+{
+  "fixture": "prometheus.entity-graph.devtools.time-travel",
+  "fixtureVersion": 1,
+  "protocol": "prometheus.entity-graph.devtools",
+  "protocolVersion": 1,
+  "storeId": "time-a",
+  "retention": {
+    "countLimit": 2,
+    "byteLimit": 1048576,
+    "baselineCursor": 40,
+    "retainedCursors": [41, 42],
+    "expiredBaseline": {
+      "status": "expired-history",
+      "cursor": 40,
+      "reason": "evicted",
+      "oldestCursor": 41,
+      "newestCursor": 42,
+      "latestCursor": 42
+    }
+  },
+  "snapshots": [
+    {
+      "cursor": 41,
+      "capturedAt": "2026-08-29T19:58:00.000Z",
+      "eventSequence": 7,
+      "data": {
+        "entities": {
+          "Task": {
+            "one": { "id": "one", "value": 1, "title": "First" }
+          }
+        },
+        "patches": {},
+        "entityStates": {},
+        "syncMetadata": {},
+        "lists": {}
+      }
+    },
+    {
+      "cursor": 42,
+      "capturedAt": "2026-08-29T19:59:00.000Z",
+      "eventSequence": 8,
+      "data": {
+        "entities": {
+          "Task": {
+            "one": { "id": "one", "value": 2, "title": "Second" }
+          }
+        },
+        "patches": {
+          "Task": {
+            "one": { "title": "Second draft" }
+          }
+        },
+        "entityStates": {},
+        "syncMetadata": {},
+        "lists": {}
+      }
+    }
+  ],
+  "rewind": {
+    "status": "rewound",
+    "cursor": 41,
+    "source": "retained",
+    "previousCursor": null,
+    "previousSource": null
+  },
+  "returnToLive": {
+    "status": "live",
+    "cursor": null,
+    "previousCursor": 41,
+    "previousSource": "retained",
+    "reason": "command"
+  },
+  "mutationWhileRewound": {
+    "eventOrder": ["time-travel:live:mutation", "mutation"],
+    "newLiveValue": 20,
+    "returnAfterMutation": null
+  },
+  "validImport": {
+    "protocol": "prometheus.entity-graph.devtools",
+    "version": 1,
+    "storeId": "time-a",
+    "exportedAt": "2026-08-29T20:00:00.000Z",
+    "snapshots": [
+      {
+        "cursor": 9001,
+        "capturedAt": "2026-08-29T19:59:30.000Z",
+        "eventSequence": null,
+        "data": {
+          "entities": {
+            "Task": {
+              "one": { "id": "one", "value": 9001, "title": "Imported" }
+            }
+          },
+          "patches": {},
+          "entityStates": {},
+          "syncMetadata": {},
+          "lists": {}
+        }
+      }
+    ]
+  },
+  "importExpectations": {
+    "inspectionStatus": "awaiting-confirmation",
+    "inspectionMutatesGraph": false,
+    "confirmationRequired": true,
+    "restoreStatus": "rewound",
+    "restoreSource": "import",
+    "candidateIsOneShot": true
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "k3",
+  "producer_model": "openai/gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": ".refiner/artifacts/v3-devtools-time-travel-archive-qa/state.json",
+      "line": 7,
+      "claim": "The refiner artifact was substantively mutated after its recorded terminate convergence with no new iteration entry, so the artifact that certifies 'exact evidence traceability' again misattributes post-termination work to the terminated iteration.",
+      "evidence": "state.json keeps iteration_history[0] as the sole iteration with \"decision\": \"terminate\", \"timestamp\": \"2026-08-29T20:20:06Z\", yet records \"updated_at\"/\"finalized_at\": \"2026-08-29T21:06:46Z\" and adds a checkpoint_authority block; refinement_log.md lists 'Added the machine checkpoint-authority marker, the JSON package-subpath ledger, and a canonical-state archive guard' under the heading 'Iteration 1 — 2026-08-29T20:15:30Z' even though those actions postdate the 20:20:06 termination (the archive guard's pre-gate receipt and correction receipt are stamped ≥20:38Z); registry.json finalized_at was re-stamped to 21:06:46Z. reflection.json still claims all blocking constraints 'pass with exact evidence traceability' for the blocking evidence-and-fixture-integrity constraint — the same chronology-falsification class flagged in rounds 1–3, recurring in the final artifact.",
+      "suggested_fix": "Record a second iteration (or an explicit post-termination amendment entry with its own timestamp) in iteration_history covering the checkpoint-marker, subpath-ledger, and archive-guard additions, so the chronology authority itself accurately describes when the final content was produced."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".refiner/artifacts/v3-devtools-time-travel-archive-qa/checkpoints/45bed4e9.json",
+      "line": 7,
+      "claim": "The round-7 fix inserted checkpoint_authority stale markers into the three current checkpoint files without updating their updated_at fields, so each file now falsely asserts it was last modified at its first-write time.",
+      "evidence": "checkpoints/45bed4e9.json contains the checkpoint_authority block ({\"stale\": true, \"superseded_by\": \"../state.json\"}) yet still claims \"updated_at\": \"2026-08-29T20:20:06Z\"; 9100ef56.json (\"updated_at\": \"2026-08-29T20:20:05Z\") and f0578e81.json (\"updated_at\": \"2026-08-29T20:17:10Z\") likewise embed the marker. resolution.md's Round 7 disposition states the markers were 'fixed inside each of the three affected current checkpoint files' — i.e., after round-7-findings.json, which itself postdates 20:38Z. A consumer trusting updated_at (the field the rounds 1–3 findings treated as the modification signal) will read these files as unmodified first writes.",
+      "suggested_fix": "Bump updated_at in each edited checkpoint file to the actual marker-insertion time, or add an explicit marker_inserted_at field, so the falsity-marker edit does not itself falsify the file's modification timestamp."
+    },
+    {
+      "severity": "WARNING",
+      "file": "scripts/verify-skills-exports.mjs",
+      "line": 74,
+      "claim": "The new JSON-subpath ledger check builds package paths as path.join(root, \"packages\", selected.directory, ...), which double-prefixes 'packages/' if selected.directory follows the shared public-package inventory convention — either the check crashes with ENOENT or the pass claims in verification.md could not have been produced by this code.",
+      "evidence": "The hunk uses path.join(root, \"packages\", selected.directory, \"package.json\") and path.resolve(root, \"packages\", selected.directory, target). In the same scripts directory, package-contract-validation.mjs identifies the core package with publicPackage.directory === \"packages/entity-graph-core\" (hunk at line 67), i.e., the shared inventory's directory field already includes the 'packages/' prefix. If verify-skills-exports.mjs consumes the same inventory, the joined path is <root>/packages/packages/entity-graph-core/package.json and readFileSync throws before any comparison — yet verification.md asserts 'node scripts/verify-skills-exports.mjs --pkg core ... pass' and resolution.md Round 5 claims 'both fixture subpaths pass'. The packet contains no evidence resolving which inventory shape verify-skills-exports.mjs actually uses.",
+      "suggested_fix": "Show the definition of selected.directory in verify-skills-exports.mjs and align it with the package-contract-validation convention (use selected.directory directly if it already contains 'packages/'), and re-run the verifier capturing its output as receipt evidence."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "scripts/verify-kbd-archive-guard.mjs",
+      "line": 104,
+      "claim": "The guard hashes final-packet.json but never parses or validates its contents, and assumes final-findings.json has a findings array, so malformed final artifacts fail with a raw TypeError or pass with an unexamined packet.",
+      "evidence": "The hunk does readFileSync(finalArtifactPaths.packet) and sha256(finalPacketBytes) without JSON.parse or any structural check, and calls finalFindings.findings.filter(...) unguarded — a findings file missing the findings field throws 'Cannot read properties of undefined' instead of an archive-guard diagnostic, contrary to the round-7 fix's stated goal of explicit guard diagnostics for final-artifact problems.",
+      "suggested_fix": "JSON.parse the packet and assert expected shape (e.g., mode/target fields), and guard the findings array with Array.isArray before filtering, emitting 'archive guard: final artifacts malformed' diagnostics."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "openai/gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".refiner/artifacts/v3-devtools-time-travel-archive-qa/artifact_manifest.json",
+      "line": 6,
+      "claim": "The artifact-refiner manifest declares dist/archive-qa-report.md as its only output variant, but that report is not added anywhere in the change, leaving the required artifact-refiner output missing.",
+      "evidence": "The manifest hunk declares `\"file\": \"dist/archive-qa-report.md\"`; plan.json lists `.refiner/artifacts/v3-devtools-time-travel-archive-qa/dist/archive-qa-report.md` under `files_to_create`; no hunk adds that path under the current artifact or any of the three history snapshots. Acceptance task 10 requires synchronized artifact-refiner output before verify and archive.",
+      "suggested_fix": "Generate and commit the actual archive-qa-report.md in the current artifact and the appropriate immutable history snapshots, or remove the variant and creation claim if the report is intentionally not retained; the former is needed to satisfy the artifact-refiner acceptance requirement."
+    },
+    {
+      "severity": "WARNING",
+      "file": "scripts/verify-kbd-archive-guard.mjs",
+      "line": 98,
+      "claim": "The archive guard reduces the strict anti-sycophancy gate to an unanchored substring search, so stale, non-strict, or mixed PASS/FAIL content can satisfy the gate.",
+      "evidence": "The hunk performs only `if (!sycophancy.includes(\"[adv-gate] PASS\"))`. It does not require `strictness=strict`, reject a later or additional `FAIL`, parse the score, or bind the screen to the same change, review round, runtime revision, or packet as final-findings.json, even though the acceptance criterion permits verify/archive only after both gates pass.",
+      "suggested_fix": "Parse an anchored machine-readable result, require exactly one latest `[adv-gate] PASS` with `strictness=strict`, fail on any subsequent or accompanying `FAIL`, and validate metadata binding the screen to the final review target and revision or packet digest."
+    },
+    {
+      "severity": "WARNING",
+      "file": "scripts/verify-skills-exports.mjs",
+      "line": 78,
+      "claim": "The new package-subpath ledger check compares only JSON export keys and not their target paths, despite the resolution claiming an exact package-export-map comparison.",
+      "evidence": "The hunk builds `actualJsonSubpaths` with `Object.keys(packageManifest.exports).filter((subpath) => subpath.endsWith(\".json\")).sort()` and compares that key array to `subpathLedger.json`; it never compares `packageManifest.exports[subpath]` to an expected target. resolution.md's Round 5 disposition claims the fix added \"an exact package-export-map comparison.\"",
+      "suggested_fix": "Extend the ledger schema to record each subpath's expected target and compare sorted `[subpath, target]` entries, and verify that each target resolves to an existing package file."
+    },
+    {
+      "severity": "WARNING",
+      "file": "scripts/verify-kbd-archive-guard.mjs",
+      "line": 78,
+      "claim": "The stale-projection defect-record check allows the correction receipt to point outside the repository through an absolute path or `..` traversal.",
+      "evidence": "The hunk uses `existsSync(resolve(root, correction.legacyProjection.defectRecord))` on a JSON-controlled string. `path.resolve` preserves absolute paths and permits parent traversal, and the guard checks only existence rather than repository containment or the expected postmortem identity.",
+      "suggested_fix": "Require a relative path, normalize it, reject absolute paths and any normalized path outside the repository, and preferably constrain or exactly match the sanctioned `.prometheus/postmortems/kbd-authoritative-phase-projection-lag.md` record."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".refiner/artifacts/v3-devtools-time-travel-archive-qa/artifact_manifest.json",
+      "line": 12,
+      "claim": "The machine-readable manifest reports a passing browser preview with no console or request failures while simultaneously stating that no browser preview was run.",
+      "evidence": "The manifest contains `\"preview_status\": \"pass\"`, `\"has_console_errors\": false`, and `\"has_request_failures\": false`, followed by the note `\"No browser preview applies to this framework-neutral controller/protocol boundary.\"` The same contradictory validation block is copied into the history manifests.",
+      "suggested_fix": "Use an explicit `not_applicable`/`null` status for preview and browser diagnostics, or remove those fields for this artifact type, rather than recording an unexecuted check as passed."
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "runtimeRevision": 341,
+  "planRevision": 9,
+  "activePhase": {
+    "id": "v3-devtools-parity",
+    "status": "in_progress"
+  },
+  "change": {
+    "id": "v3-devtools-time-travel",
+    "status": "complete",
+    "terminalReopenAttempt": "rejected-409"
+  },
+  "task": {
+    "id": "10",
+    "status": "in_progress"
+  },
+  "activePathTaskId": null,
+  "activePathTaskExplanation": "phase-level activation clears the active task pointer without changing the canonical task entity status",
+  "exactNextCommand": "/kbd-apply v3-devtools-time-travel",
+  "postGateSequence": [
+    "require isolated adversarial review pass",
+    "require strict sycophancy pass",
+    "run signed end-task to complete canonical task 10 and refresh unified position",
+    "run signed verify",
+    "run signed archive"
+  ],
+  "legacyProjection": {
+    "sourceRevision": 338,
+    "status": "known-stale-authoritative-runtime-compatibility-ledger",
+    "endTaskBehavior": "sync_progress returns without rewriting progress.json when kbd_runtime_authoritative is true",
+    "defectRecord": ".prometheus/postmortems/kbd-authoritative-phase-projection-lag.md"
+  },
+  "unifiedPositionProjection": {
+    "sourceRevision": 341,
+    "status": "mixed-current-waypoint-stale-change-summary",
+    "embeddedChangeTasksDone": 6,
+    "embeddedChangeTasksTotal": 10
+  },
+  "reviewBindingLimitation": {
+    "status": "accepted-residual",
+    "description": "The final packet/findings/sycophancy hashes bind review artifacts to each other but do not recompute the current worktree diff after signed KBD completion/archive mutations.",
+    "allowedPostReviewMutations": [
+      "final review and sycophancy evidence files",
+      "signed task completion and unified position projections",
+      "native change archive move",
+      "final guard receipt"
+    ]
+  },
+  "authority": "current-waypoint.json and canonical prometheus kbd status"
+}

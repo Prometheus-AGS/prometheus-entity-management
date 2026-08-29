@@ -1,0 +1,13 @@
+{
+  "status": "pass",
+  "runtimeRevision": 344,
+  "phaseId": "v3-devtools-parity",
+  "changeId": "v3-devtools-time-travel",
+  "gatedTaskId": "10",
+  "canonicalTasksOpen": 0,
+  "legacyProjectionStale": false,
+  "legacyProjectionSourceRevision": 344,
+  "authority": "current-waypoint.json and canonical prometheus kbd status",
+  "review": "pass",
+  "sycophancy": "pass"
+}

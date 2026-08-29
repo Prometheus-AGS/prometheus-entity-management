@@ -1,12 +1,11 @@
 {
   "conflictCount": 0,
   "cursor": [
-    "v3-devtools-parity",
-    "execute"
+    "v3-devtools-parity"
   ],
-  "derivedRevision": 336,
+  "derivedRevision": 345,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 336
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 345
   },
   "generatedBy": "kbd-runtime",
   "root": {
@@ -598,10 +597,10 @@
           {
             "id": "v3-devtools-time-travel",
             "progress": {
-              "done": 6,
+              "done": 7,
               "total": 10
             },
-            "status": "IN_PROGRESS",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -661,7 +660,7 @@
         ],
         "id": "v3-devtools-parity",
         "progress": {
-          "done": 2,
+          "done": 3,
           "total": 9
         },
         "status": "IN_PROGRESS",
@@ -670,13 +669,13 @@
     ],
     "id": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
     "progress": {
-      "done": 34,
+      "done": 35,
       "total": 63
     },
     "status": "running",
     "type": "phase"
   },
   "schemaVersion": "1",
-  "sourceRevision": 336,
-  "updatedAt": "2026-08-29T20:07:28.873313Z"
+  "sourceRevision": 345,
+  "updatedAt": "2026-08-29T21:25:30.823458Z"
 }

@@ -64,7 +64,8 @@ export function validateTarballFileList(publicPackage, files) {
       publicPackage.directory === "packages/entity-graph-core" &&
       (
         file === "fixtures/devtools/README.md" ||
-        file === "fixtures/devtools/entity-inspection-v1.json"
+        file === "fixtures/devtools/entity-inspection-v1.json" ||
+        file === "fixtures/devtools/time-travel-v1.json"
       )
     ) return false;
     if (publicPackage.directory !== "packages/entity-graph-tauri") return true;

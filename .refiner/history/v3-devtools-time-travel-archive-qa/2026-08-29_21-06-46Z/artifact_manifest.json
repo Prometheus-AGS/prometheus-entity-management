@@ -1,0 +1,19 @@
+{
+  "artifact_type": "content",
+  "variants": [
+    {
+      "name": "archive-qa-report",
+      "file": "dist/archive-qa-report.md",
+      "format": "markdown",
+      "description": "Delta-first artifact-refiner report for the DevTools time-travel change."
+    }
+  ],
+  "validation": {
+    "notes": [
+      "No browser preview applies to this framework-neutral controller/protocol boundary.",
+      "The complete packed runtime, scoped built ledger, and three fixture representations passed.",
+      "Public content explicitly excludes all downstream DevTools surfaces and publication."
+    ]
+  },
+  "generated_at": "2026-08-29T21:06:26Z"
+}

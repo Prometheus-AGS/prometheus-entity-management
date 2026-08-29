@@ -1,4 +1,5 @@
 import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
@@ -20,6 +21,21 @@ if (reportFlag >= 0 && !reportPath) throw new Error("--report requires a file pa
 const corePackage = PUBLIC_PACKAGES.find(({ name }) => name === "@prometheus-ags/entity-graph-core");
 if (!corePackage) throw new Error("core package inventory is incomplete");
 
+const coreFixturePath = join(
+  workspaceRoot,
+  "packages/entity-graph-core/fixtures/devtools/time-travel-v1.json",
+);
+const flutterFixturePath = join(
+  workspaceRoot,
+  "packages/entity_graph_flutter/fixtures/devtools/time-travel-v1.json",
+);
+const [coreFixture, flutterFixture] = await Promise.all([
+  readFile(coreFixturePath),
+  readFile(flutterFixturePath),
+]);
+if (!coreFixture.equals(flutterFixture)) throw new Error("core and Flutter time-travel fixtures drifted");
+const fixtureSha256 = createHash("sha256").update(coreFixture).digest("hex");
+
 const temporaryRoot = await mkdtemp(join(tmpdir(), "prometheus-devtools-time-travel-"));
 const tarballDirectory = join(temporaryRoot, "tarballs");
 const consumerDirectory = join(temporaryRoot, "consumer");
@@ -27,6 +43,7 @@ const report = {
   schemaVersion: 1,
   generatedAt: new Date().toISOString(),
   boundary: "assembled-multi-store-packed-consumer-time-travel",
+  fixture: { sha256: fixtureSha256, parity: "pass", packed: "pending" },
   package: { payload: "pending", manifest: "pending", rootPayloadExclusion: "pending" },
   consumers: {
     rootOnlyEsm: "pending",
@@ -65,8 +82,21 @@ try {
   const tarballPath = resolve(packedResult.filename);
   const files = packedResult.files.map(({ path }) => path).sort();
   validateTarballFileList(corePackage, files);
+  if (!files.includes("fixtures/devtools/time-travel-v1.json")) {
+    throw new Error("packed core package is missing the time-travel fixture");
+  }
   const manifest = await run("tar", ["-xOf", tarballPath, "package/package.json"]);
   validatePackedManifestData(JSON.parse(manifest.stdout), workspaceRoot);
+  const packedFixture = await runBuffer("tar", [
+    "-xOf",
+    tarballPath,
+    "package/fixtures/devtools/time-travel-v1.json",
+  ]);
+  const packedFixtureSha256 = createHash("sha256").update(packedFixture.stdout).digest("hex");
+  if (!packedFixture.stdout.equals(coreFixture) || packedFixtureSha256 !== fixtureSha256) {
+    throw new Error("packed time-travel fixture differs from the shared source fixture");
+  }
+  report.fixture.packed = "pass";
   report.package.payload = "pass";
   report.package.manifest = "pass";
 
@@ -135,6 +165,7 @@ console.log("[devtools-time-travel] packed root-only ESM exclusion passed");
 
   await writeFile(join(directory, "consumer.mjs"), String.raw`
 import assert from "node:assert/strict";
+import { createRequire } from "node:module";
 import {
   configureTimeTravel,
   createGraphStore,
@@ -153,6 +184,13 @@ import {
   createGraphDevtoolsClient,
   getGraphDevtoolsController,
 } from "@prometheus-ags/entity-graph-core/devtools";
+
+const require = createRequire(import.meta.url);
+const timeTravelFixture = require(
+  "@prometheus-ags/entity-graph-core/devtools/fixtures/time-travel-v1.json",
+);
+assert.equal(timeTravelFixture.fixture, "prometheus.entity-graph.devtools.time-travel");
+assert.equal(timeTravelFixture.fixtureVersion, 1);
 
 function graphData(store) {
   const state = store.getState();
@@ -251,20 +289,10 @@ assert.equal(branchEvents[1].payload.snapshot.status, "retained");
 assert.equal(controllerA.rewind(2).status, "expired-history");
 
 const liveBeforeImport = graphData(storeA);
-const importedData = structuredClone(liveBeforeImport);
-importedData.entities.Task.one = { id: "one", value: 9001 };
-const validImport = {
-  protocol: GRAPH_DEVTOOLS_PROTOCOL,
-  version: GRAPH_DEVTOOLS_PROTOCOL_VERSION,
-  storeId: controllerA.storeId,
-  exportedAt: "2026-08-29T20:00:00.000Z",
-  snapshots: [{
-    cursor: 9001,
-    capturedAt: "2026-08-29T19:59:00.000Z",
-    eventSequence: null,
-    data: importedData,
-  }],
-};
+const validImport = timeTravelFixture.validImport;
+assert.equal(validImport.protocol, GRAPH_DEVTOOLS_PROTOCOL);
+assert.equal(validImport.version, GRAPH_DEVTOOLS_PROTOCOL_VERSION);
+assert.equal(validImport.storeId, controllerA.storeId);
 const wrongStoreInspection = await clientA.request("inspect-history-import", {
   candidate: { ...validImport, storeId: controllerB.storeId },
 });
@@ -411,6 +439,8 @@ const store = core.createGraphStore();
 store.getState().upsertEntity("Task", "one", { id: "one", value: 0 });
 assert.equal(core.recordGraphSnapshot("before-devtools", store), -1);
 const devtools = require("@prometheus-ags/entity-graph-core/devtools");
+const fixture = require("@prometheus-ags/entity-graph-core/devtools/fixtures/time-travel-v1.json");
+assert.equal(fixture.fixtureVersion, 1);
 const attachment = devtools.attachGraphDevtools(store, {
   storeId: "cjs-time-travel",
   snapshotLimit: 4,
@@ -532,6 +562,22 @@ async function run(command, args, options = {}) {
   } catch (error) {
     const stdout = error.stdout ? `\nstdout:\n${error.stdout}` : "";
     const stderr = error.stderr ? `\nstderr:\n${error.stderr}` : "";
+    throw new Error(`${command} ${args.join(" ")} failed${stdout}${stderr}`, { cause: error });
+  }
+}
+
+async function runBuffer(command, args, options = {}) {
+  try {
+    return await execFileAsync(command, args, {
+      cwd: workspaceRoot,
+      env: { ...process.env, FORCE_COLOR: "0" },
+      maxBuffer: 20 * 1024 * 1024,
+      encoding: "buffer",
+      ...options,
+    });
+  } catch (error) {
+    const stdout = error.stdout ? `\nstdout:\n${error.stdout.toString("utf8")}` : "";
+    const stderr = error.stderr ? `\nstderr:\n${error.stderr.toString("utf8")}` : "";
     throw new Error(`${command} ${args.join(" ")} failed${stdout}${stderr}`, { cause: error });
   }
 }

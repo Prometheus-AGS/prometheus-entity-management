@@ -1,0 +1,42 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "openai/gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/progress.json",
+      "line": 28,
+      "claim": "The diff still ships a terminal COMPLETE/DONE projection with consumed completion counters while acceptance task 10 remains open and gated, so any consumer of the legacy phase projection can archive or advance on a false completion record.",
+      "evidence": "progress.json sets \"implementation_status\": \"COMPLETE\", \"status\": \"DONE\", \"changes_completed\": 3, \"implementation_completed\": 3, and \"tasks_done\": 6 of 10; tasks.md still shows \"[ ] 10 ... (IN_PROGRESS)\"; the acceptance criterion says task 10 includes \"artifact-only adversarial review; verify and archive only after both gates pass\"; control-plane-correction.json admits the compatibility ledger is \"known-stale-authoritative-runtime-compatibility-ledger\" at sourceRevision 338 rather than corrected.",
+      "suggested_fix": "Add an enforced archive/verify guard that refuses to proceed when progress.json/tasks.md lag the canonical revision or when a change is DONE with open gated tasks; if the signed API cannot repair the legacy ledger, remove it from automation inputs or emit an explicit machine-readable stale flag rather than relying on prose."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/package.json",
+      "line": 41,
+      "claim": "A new public package export subpath is added, but the packet only proves runtime named exports are unchanged and does not show any export-map/package-contract ledger synchronization for that new public surface.",
+      "evidence": "package.json adds \"./devtools/fixtures/time-travel-v1.json\": { \"default\": \"./fixtures/devtools/time-travel-v1.json\" }; verification.md says only \"128 unchanged root exports and 7 unchanged optional ./devtools exports\" matching core-library-exports.json; acceptance task 10 requires synchronizing \"public API and skills ledgers\" before verify/archive.",
+      "suggested_fix": "Refresh the relevant exports/package-contract ledger for the new JSON subpath, or add an explicit verified rule that fixture JSON subpaths are intentionally outside the runtime-export ledger and are covered by package payload validation."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".refiner/artifacts/v3-devtools-time-travel-archive-qa/checkpoints/45bed4e9.json",
+      "line": 55,
+      "claim": "The current refiner artifact still contains machine-readable checkpoint files whose embedded terminate timestamp contradicts state.json, while reflection.json continues to claim exact evidence traceability.",
+      "evidence": "current checkpoints/45bed4e9.json, 9100ef56.json, and f0578e81.json embed iteration_history[0] \"decision\": \"terminate\", \"timestamp\": \"2026-08-29T20:15:30Z\"; current state.json records the same decision at \"2026-08-29T20:20:06Z\"; reflection.json says deterministic validation passes with \"exact evidence traceability\" and only prose in decisions.md marks the checkpoints as stale mirrors.",
+      "suggested_fix": "Remove stale checkpoint files from the current artifact, regenerate them from the corrected final state, or add an explicit machine-readable authority/stale marker so auditors and tooling do not parse them as chronological evidence."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": ".kbd-orchestrator/changes/v3-devtools-time-travel/files.txt",
+      "line": 1,
+      "claim": "The change manifest is not a reliable file inventory: it lists directories for the refiner artifact/history trees and omits files.txt itself while the diff adds many individual files under those trees.",
+      "evidence": "files.txt contains entries such as \".refiner/artifacts/v3-devtools-time-travel-archive-qa\" and \".refiner/history/v3-devtools-time-travel-archive-qa/2026-08-29_20-20-25Z\" rather than the added state.json/checkpoints/decisions/reflection files, and its first entry is \".kbd-orchestrator/changes/v3-devtools-time-travel\" rather than \".kbd-orchestrator/changes/v3-devtools-time-travel/files.txt\".",
+      "suggested_fix": "Generate files.txt as an exhaustive file list including the manifest itself, or rename/document it as a directory-scope index so verification does not treat it as complete file evidence."
+    }
+  ]
+}

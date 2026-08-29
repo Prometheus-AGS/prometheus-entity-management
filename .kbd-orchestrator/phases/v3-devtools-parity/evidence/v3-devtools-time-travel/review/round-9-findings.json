@@ -1,0 +1,54 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "k3",
+  "producer_model": "openai/gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": ".refiner/history/v3-devtools-time-travel-archive-qa/2026-08-29_20-20-25Z/artifact_manifest.json",
+      "line": 12,
+      "claim": "The round-6 disposition claims the false browser-preview pass fields were removed, but all three committed history manifests still record `\"preview_status\": \"pass\"`, `\"has_console_errors\": false`, `\"has_request_failures\": false` alongside the note that no browser preview was run — only the current artifact's manifest was corrected.",
+      "evidence": "resolution.md Round 6 disposition states the fix was 'removing preview-status and browser-diagnostic fields; content validation notes remain', yet history/2026-08-29_20-20-25Z/artifact_manifest.json, history/2026-08-29_20-26-47Z/artifact_manifest.json, and history/2026-08-29_20-32-27Z/artifact_manifest.json (all introduced as new files in this diff) each still contain the `\"preview_status\": \"pass\"` validation block with the contradictory note 'No browser preview applies to this framework-neutral controller/protocol boundary' — the exact condition round-6-findings.json flagged, including its observation that 'the same contradictory validation block is copied into the history manifests'.",
+      "suggested_fix": "Either amend the round-6 disposition and resolution text to state the correction applies only to the current manifest while history snapshots retain the original (contradictory) bytes, or add a machine-readable supersession marker to the three history manifests so the archived record does not assert an unexecuted check as passed."
+    },
+    {
+      "severity": "WARNING",
+      "file": "scripts/verify-kbd-archive-guard.mjs",
+      "line": 121,
+      "claim": "The archive gate validates verdict, blocking severities, and sycophancy hash bindings, but never validates the isolation provenance fields (judge_model, producer_model, isolation_mode, cross_model_check) that the acceptance criterion's 'artifact-only isolated adversarial review' requirement depends on, so a same-model, non-isolated self-review with correctly hashed artifacts would satisfy the gate.",
+      "evidence": "The guard checks only `finalFindings.verdict !== \"PASS\"`, blocking severities, packet/findings shape, and sycophancy hashes; meanwhile every retained findings file in this diff (findings.json through round-8-findings.json) carries `judge_model`, `producer_model`, `isolation_mode`, and `cross_model_check: \"verified-distinct\"` fields that exist precisely to evidence isolation, and acceptance task 10 requires 'artifact-only adversarial review' before verify/archive.",
+      "suggested_fix": "Have the guard require final-findings.json to declare judge_model distinct from producer_model, a non-local isolation_mode, and cross_model_check === \"verified-distinct\" (or the packet schema's equivalent), and fail with an explicit diagnostic otherwise."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".kbd-orchestrator/changes/v3-devtools-time-travel/tasks.json",
+      "line": 91,
+      "claim": "Task 10's native verify command is self-gating: verify-kbd-archive-guard.mjs refuses to pass unless canonical task 10 and the whole change are already 'complete', so if the runtime executes a task's verify command as part of completing that task, the gate deadlocks — it only works under the assumption that verify runs strictly after signed end-task.",
+      "evidence": "tasks.json sets task 10's `\"verify\"` to `node scripts/verify-kbd-archive-guard.mjs v3-devtools-parity v3-devtools-time-travel 10`, while the guard throws unless `gatedTask.status === \"complete\"` and `canonicalChange.status === \"complete\"` with zero open tasks; the committed pre-gate receipt (archive-guard-pre-gate.md) demonstrates exit 1 with 'open tasks: 10' while task 10 is in progress. The packet never shows the runtime's verify-before-complete vs verify-after-end-task ordering, and resolution.md's postGateSequence is the only place the required ordering is asserted (prose, not enforced).",
+      "suggested_fix": "Document in tasks.json notes or the guard's usage error that this verify command is post-end-task only, or split the guard into a pre-completion mode (review/sycophancy artifacts present, task open allowed) and a post-completion archive mode (canonical completion required) so the native verify hook cannot deadlock task completion."
+    },
+    {
+      "severity": "WARNING",
+      "file": "scripts/verify-kbd-archive-guard.mjs",
+      "line": 133,
+      "claim": "The guard's hash chain binds the sycophancy receipt to the final packet and findings bytes, but nothing binds the final review to the repository state under review, so a PASS packet produced against an earlier diff still satisfies the gate after further content changes; the round-7 disposition retains this hole on a process claim only.",
+      "evidence": "The guard verifies `sycophancy.packetSha256 === sha256(finalPacketBytes)` and `sycophancy.findingsSha256 === sha256(finalFindingsBytes)` but reads no diff digest, files.txt hash, git revision, or runtime revision from the packet to compare against current state; round-7-findings.json raised exactly this as a SUGGESTION and resolution.md's Round 7 disposition states it is 'retained as a residual limitation', relying on the unenforced claim that 'post-review mutations are limited to those final evidence files and signed KBD transitions'.",
+      "suggested_fix": "Require final-packet.json to record the reviewed diff digest (or files.txt content hash / source revision) and have the guard recompute it against current change contents before accepting the PASS verdict; if intentionally deferred, record the limitation in the machine-readable control-plane-correction.json rather than only in resolution prose."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-time-travel/review/findings.json",
+      "claim": "Three of the new review evidence JSON files (findings.json, round-7-findings.json, round-8-findings.json) lack a trailing newline even though this same change corrected and claimed newline termination for refiner JSON artifacts.",
+      "evidence": "Diff markers `\\ No newline at end of file` appear on review/findings.json, review/round-7-findings.json, and review/round-8-findings.json, while the current archive-qa-report.md states 'Current and corrected-snapshot JSON artifacts end with a newline' and the round-1 newline SUGGESTION was dispositioned as fixed for artifact/snapshot/registry files.",
+      "suggested_fix": "Terminate the retained review findings JSON files with a newline, or narrow the newline-termination claim in the QA report to exclude review evidence files."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

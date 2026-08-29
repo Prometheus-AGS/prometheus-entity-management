@@ -1,0 +1,66 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    {
+      "id": "api-ledger-truth",
+      "description": "The built core root and optional ./devtools runtime exports must exactly match the committed skills ledger, while declaration-only controller time-travel types remain documented as types.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Build through the assembled gate, then run node scripts/verify-skills-exports.mjs --pkg core."
+      }
+    },
+    {
+      "id": "time-travel-semantics-truth",
+      "description": "Public content must match controller ownership, complete capture, stable expiry, rewind/live, branching, import, teardown, and deprecated facade semantics in production source.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Compare README and skills/API references with protocol.ts, controller.ts, time-travel.ts, the compatibility bridge, and the accepted specification."
+      }
+    },
+    {
+      "id": "security-boundary-truth",
+      "description": "The security receipt must state local full-value snapshot sensitivity, metadata-only serialization, rewind/import mutation authority, untrusted import validation, store isolation, and host transport responsibility.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Inspect the security receipt against snapshot retention, command parsing, restore boundaries, controller lifecycle, and serialized receipts/events."
+      }
+    },
+    {
+      "id": "evidence-and-fixture-integrity",
+      "description": "Every fixture, package, consumer, and scenario status must pass; TypeScript, Flutter, and packed fixtures must be byte-identical at the recorded SHA-256.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Run pnpm run verify:devtools-time-travel, recursively reject non-pass statuses, compare both source fixtures, and match the receipt hash."
+      }
+    },
+    {
+      "id": "scope-honesty",
+      "description": "Time-travel readiness must not be presented as completion of React/Flutter inspector surfaces, extensions, site, release certification, or publication.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Require explicit downstream exclusions in the skills reference, verification receipt, and QA report."
+      }
+    }
+  ],
+  "global_rules": [
+    "Refinement may correct documentation or observed implementation defects but may not broaden production scope.",
+    "Only the completed assembled packed-consumer gate counts as behavioral evidence.",
+    "Do not create or run unit, component, isolated, mock-backed, snapshot, or partial tests.",
+    "Do not imply package publication or full DevTools product certification."
+  ],
+  "termination_conditions": [
+    "All five blocking constraints are satisfied.",
+    "The ledger, packed receipt, and cross-runtime fixture validator pass.",
+    "No further delta improves truthfulness, security clarity, or traceability."
+  ]
+}

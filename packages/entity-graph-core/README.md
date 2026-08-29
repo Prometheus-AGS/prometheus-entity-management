@@ -224,6 +224,67 @@ import fixture from "@prometheus-ags/entity-graph-core/devtools/fixtures/entity-
   with { type: "json" };
 ```
 
+### Rewind controller-owned snapshot history
+
+Each active controller captures one initial attach baseline and the complete
+mutable graph data slice after every semantic graph publication. Snapshot
+payloads, stable cursors, imported candidates, rewind state, and the protected
+live head stay inside that controller; UI code renders status and submits
+intent rather than owning a second history ring.
+
+```ts
+const attachment = attachGraphDevtools(store, {
+  storeId: "admin-graph",
+  snapshotLimit: 50,
+  snapshotBytesLimit: 10 * 1024 * 1024,
+});
+
+const controller = attachment.controller;
+if (controller) {
+  const status = controller.getSnapshotHistoryStatus();
+  const cursor = status.newestCursor;
+
+  if (cursor !== null) {
+    const rewind = controller.rewind(cursor);
+    if (rewind?.status === "rewound") {
+      // Every graph subscriber now reads the selected historical state.
+      controller.returnToLive();
+    }
+  }
+}
+```
+
+Count and byte ceilings both apply; eviction always removes whole oldest
+snapshots. A cursor is never reused. Rewinding an evicted, cleared, or
+unavailable capture returns a typed `expired-history` receipt with the current
+retained range and never mutates the graph. Oversize captures remain visible as
+`unavailable` metadata rather than retaining a partial graph.
+
+The first rewind protects an exact deep clone of the live head. Explicit
+return-to-live restores that clone through the Zustand publication boundary.
+If an application mutation occurs while rewound, DevTools first emits a live
+transition with `reason: "mutation"`, then emits and snapshots the completed
+mutation as the new branch; the former protected future is released.
+
+History imports are inert until confirmation. `inspectHistoryImport()` accepts
+only the current protocol version, the same controller store ID, ordered stable
+cursors, JSON-safe complete graph data, and the controller's count/byte budget.
+`confirmHistoryImport(candidateId, cursor)` is one-shot and restores only the
+exact inspected candidate. Inspection receipts and time-travel events expose
+metadata, not snapshot values.
+
+The deprecated root functions (`recordGraphSnapshot`,
+`restoreGraphSnapshot*`, `stepTimeTravel`, and `getTimeTravelState`) are a thin
+compatibility facade over the selected store's controller. They own no graph
+payloads or cursors and return unavailable results until the explicit
+`@prometheus-ags/entity-graph-core/devtools` module has been loaded. New tools
+should use the controller's stable cursors and explicit return-to-live API.
+
+The versioned time-travel fixture is published at
+`@prometheus-ags/entity-graph-core/devtools/fixtures/time-travel-v1.json`. Its
+byte-identical Flutter source copy freezes retention, rewind/live, branching,
+expired-cursor, and confirmed-import semantics for the later Dart controller.
+
 Each store owns one reference-counted controller. Attachments to the same store
 share its event sequence and bounded history; separate stores never share
 events, commands, clients, or teardown. The first active attachment determines

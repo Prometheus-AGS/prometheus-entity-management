@@ -1,0 +1,54 @@
+{
+  "specification": {
+    "artifact_name": "v3-devtools-time-travel-archive-qa",
+    "clarified_intent": {
+      "description": "Validate and refine controller-owned time travel, public documentation, human and runtime API ledgers, the shared fixture, security note, and assembled acceptance receipt for truthful archive readiness.",
+      "domain": "content"
+    },
+    "constraints": [
+      "The built root and ./devtools runtime export names must equal the committed core ledger.",
+      "Documentation must describe controller ownership, complete graph capture, retention, stable expiry, rewind/live, branching, import confirmation, teardown, and compatibility exactly.",
+      "The security record must distinguish sensitive controller-local snapshot values from metadata-only serialized receipts and name rewind/import mutation authority.",
+      "Every behavioral claim must trace to the assembled packed receipt and byte-identical TypeScript/Flutter fixture.",
+      "No artifact may claim completion of downstream UI, extension, site, certification, or publication work."
+    ],
+    "target_state": {
+      "description": "A schema-valid deterministic QA packet with zero blocking constraint failures and exact evidence/scope traceability.",
+      "success_criteria": [
+        "Built root and ./devtools runtime names equal the committed ledger.",
+        "Fixture parity plus all package, consumer, and scenario receipt fields pass.",
+        "The TypeScript and Flutter fixtures are byte-identical at the receipt SHA-256 and the packed ESM flow consumes the fixture import envelope.",
+        "README, skills reference, API table, security receipt, and verification receipt match production semantics.",
+        "Downstream DevTools and publication claims remain explicitly excluded."
+      ],
+      "measurable_outcomes": [
+        {
+          "metric": "blocking constraint violations",
+          "threshold": "0"
+        },
+        {
+          "metric": "non-pass acceptance statuses",
+          "threshold": "0"
+        },
+        {
+          "metric": "fixture hash mismatches",
+          "threshold": "0"
+        },
+        {
+          "metric": "unsupported downstream completion claims",
+          "threshold": "0"
+        }
+      ]
+    },
+    "content_type": "direct:content",
+    "unknowns": [
+      "The later React and Flutter changes may extend consumption surfaces; this artifact certifies only the framework-neutral controller contract."
+    ],
+    "requires_code_execution": true,
+    "likely_tools": [
+      "file_system",
+      "node",
+      "pnpm"
+    ]
+  }
+}

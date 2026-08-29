@@ -1,0 +1,42 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "openai/gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".kbd-orchestrator/changes/v3-devtools-time-travel/files.txt",
+      "line": 20,
+      "claim": "The committed 'immutable' refiner history trail contradicts the packet's own archived review evidence: the 2026-08-29_20-20-25Z snapshot contains only state.json plus three checkpoints, while the archived round-2 verdict proves that snapshot also held decisions.md, refinement_log.md, and reflection.json, and the archived round-3 verdict cites a 2026-08-29_20-32-27Z history entry that is entirely absent from the change manifest.",
+      "evidence": "files.txt lists exactly four files under .refiner/history/v3-devtools-time-travel-archive-qa/2026-08-29_20-20-25Z/ (state.json, checkpoints/45bed4e9.json, checkpoints/9100ef56.json, checkpoints/f0578e81.json) and no other history entries, and the diff shows all four as new files — so nothing else was committed there. But round-2-findings.json states 'the same snapshot's decisions.md, refinement_log.md, and reflection.json retain the pre-correction round-1 text', and round-3-findings.json states '(and f0578e81.json, 9100ef56.json, and the 2026-08-29_20-32-27Z history copies)'. resolution.md claims the snapshot was restored to 'its original ... bytes' and reflection.json claims 'all five blocking constraints pass with exact evidence traceability' for the blocking evidence-and-fixture-integrity constraint — a claim the committed trail cannot support when files referenced by the retained verdicts are missing.",
+      "suggested_fix": "Commit the complete 20-20-25Z snapshot contents (decisions.md, refinement_log.md, reflection.json, artifact_manifest.json, and the specify/plan checkpoints eca985ff/cb625bae) and the 20-26-47Z/20-32-27Z history entries the round-2/round-3 dispositions and findings reference, or amend resolution.md/reflection.json to state precisely which history files were never committed and why the archived verdicts describe files the repository does not contain."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-time-travel/control-plane-correction.json",
+      "line": 20,
+      "claim": "The corrective plan's key premise is unverified: it assumes a signed end-task will 'regenerate projections' into a correct state, but the only demonstrated signed-API behavior toward this change is a 409 refusal to reopen a terminal Complete, and the already-consumed global counters (implementationCompleted 35, changes_completed 3, position.json done 35/63, status COMPLETE with tasks_done 6/10) have no shown signed path to be decremented — so the falsified projection may survive archive even if the post-gate sequence executes exactly as written.",
+      "evidence": "control-plane-correction.json records '\"terminalReopenAttempt\": \"rejected-409\"' and a postGateSequence of 'run signed end-task to complete task 10 and regenerate projections', yet the diff still ships progress.json with '\"implementation_status\": \"COMPLETE\"', '\"status\": \"DONE\"', '\"tasks_done\": 6' of 10, '\"changes_completed\": 3', and the stale '\"next_task_pending\": \"Add targeted multi-store, retention, stale cursor, rewind/live, mutation ordering, import, and compatibility tests.\"' (contradicting the acceptance criterion 'do not add or run unit, isolated, mock-backed, snapshot, or partial tests'), plus position.json '\"status\": \"COMPLETE\"' with progress done 35/63. Nothing in the packet demonstrates that regenerating projections from a canonical state in which the change is already terminally Complete will produce anything other than the same false DONE record.",
+      "suggested_fix": "Before archive, dry-run or otherwise evidence what signed end-task actually writes to progress.json/position.json/current-waypoint.json for a change already in terminal Complete state; if it cannot correct the counters/status, record the uncorrectable falsification as a control-plane defect in the phase postmortem (the round-3 judge's alternative branch) rather than asserting end-task regeneration as the correction."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-time-travel/review/rejection.md",
+      "line": 1,
+      "claim": "A file named rejection.md contains an anti-sycophancy PASS line with no round attribution, so it is ambiguous which of the four review rounds (three BLOCK verdicts plus the pending round-4 gate) this screen result belongs to.",
+      "evidence": "The single-line hunk is '[adv-gate] PASS (score=0.0803571417927742, strictness=strict)' in a file called rejection.md, while findings.json, round-2-findings.json, and round-3-findings.json all record '\"verdict\": \"BLOCK\"' and resolution.md describes a separate 'Round 4 gate' that 'must ... pass the strict anti-sycophancy screen'.",
+      "suggested_fix": "Rename the file to reflect its content (e.g., sycophancy-screen.md) and record per-round screen results with round identifiers, or add a header line naming the round this PASS covers."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": ".kbd-orchestrator/current-waypoint.json",
+      "line": 7,
+      "claim": "current-waypoint.json holds '\"currentTask\": null' while control-plane-correction.json and the evidence README assert task 10 is in_progress and position-reminder.txt instructs agents to run '/kbd-apply v3-devtools-time-travel' as their first action, leaving the authoritative runtime file internally ambiguous about what work is active.",
+      "evidence": "The current-waypoint.json hunk shows '\"currentTask\": null' alongside '\"exactNextCommand\": \"/kbd-apply v3-devtools-time-travel\"', while control-plane-correction.json records '\"task\": { \"id\": \"10\", \"status\": \"in_progress\" }' and the evidence README states 'Canonical runtime state at revision 341 has phase in_progress and task 10 in_progress.'",
+      "suggested_fix": "Confirm whether the signed runtime should populate currentTask with task 10 at activation revision 341; if null is correct for a review-gate state, note that in the evidence README so auditors do not read currentTask: null as contradicting the in_progress task claim."
+    }
+  ]
+}

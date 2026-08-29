@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "authority": "../../artifacts/v3-devtools-time-travel-archive-qa/artifact_manifest.json",
+  "snapshots": {
+    "2026-08-29_20-20-25Z": {
+      "artifactManifestValidation": "superseded",
+      "reason": "Historical content manifest recorded browser preview PASS fields although preview was not applicable."
+    },
+    "2026-08-29_20-26-47Z": {
+      "artifactManifestValidation": "superseded",
+      "reason": "Historical content manifest recorded browser preview PASS fields although preview was not applicable."
+    },
+    "2026-08-29_20-32-27Z": {
+      "artifactManifestValidation": "superseded",
+      "reason": "Historical content manifest recorded browser preview PASS fields although preview was not applicable."
+    }
+  }
+}

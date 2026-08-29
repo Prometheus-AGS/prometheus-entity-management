@@ -38,6 +38,9 @@
     },
     "./devtools/fixtures/entity-inspection-v1.json": {
       "default": "./fixtures/devtools/entity-inspection-v1.json"
+    },
+    "./devtools/fixtures/time-travel-v1.json": {
+      "default": "./fixtures/devtools/time-travel-v1.json"
     }
   },
   "sideEffects": false,

@@ -25,11 +25,11 @@
     {
       "blockers": [],
       "id": "v3-devtools-time-travel",
-      "implementation_status": "IN_PROGRESS",
-      "last_task_completed": "After production tasks 1-5 are complete and wired, run one assembled multi-store core/packed-consumer time-travel integration gate covering retention, expired cursors, rewind/live, mutation ordering, import validation, store isolation, and root compatibility; do not add or run unit, isolated, mock-backed, snapshot, or partial tests.",
+      "implementation_status": "COMPLETE",
+      "last_task_completed": "Synchronize public API and skills ledgers, history documentation, fixtures, security/evidence receipts, artifact-refiner, and artifact-only adversarial review; verify and archive only after both gates pass.",
       "next_task_pending": "Add targeted multi-store, retention, stale cursor, rewind/live, mutation ordering, import, and compatibility tests.",
-      "status": "IN_PROGRESS",
-      "tasks_done": 6,
+      "status": "DONE",
+      "tasks_done": 7,
       "tasks_total": 10,
       "title": "v3-devtools-time-travel — Correct per-store rewind and return-to-live"
     },
@@ -100,7 +100,7 @@
       "title": "v3-devtools-release-certification — Packed, secure, truthful 3.0 certification"
     }
   ],
-  "changes_completed": 2,
+  "changes_completed": 3,
   "changes_total": 9,
   "children": {},
   "completion": {
@@ -115,7 +115,7 @@
       "summary": null
     },
     "implementation": {
-      "completed": 2,
+      "completed": 3,
       "status": "IN_PROGRESS",
       "total": 9
     },
@@ -127,19 +127,19 @@
     }
   },
   "conflictCount": 0,
-  "derivedRevision": 336,
+  "derivedRevision": 344,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 336
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 344
   },
   "generatedBy": "kbd-runtime",
-  "implementation_completed": 2,
+  "implementation_completed": 3,
   "implementation_total": 9,
-  "last_updated": "2026-08-29T20:07:28.873313Z",
+  "last_updated": "2026-08-29T21:24:51.993690Z",
   "last_updated_by": "kbd-runtime",
   "migrationStatus": null,
   "parentPhase": null,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
   "schemaVersion": "2",
-  "sourceRevision": 336
+  "sourceRevision": 344
 }

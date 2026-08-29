@@ -80,16 +80,16 @@
     {
       "id": "10",
       "title": "Synchronize public API and skills ledgers, history documentation, fixtures, security/evidence receipts, artifact-refiner, and artifact-only adversarial review; verify and archive only after both gates pass.",
-      "done": false,
-      "doneAt": null,
-      "doneBy": null,
+      "done": true,
+      "doneAt": "2026-08-29T21:24:25Z",
+      "doneBy": "claude-code",
       "files": [
         "packages/entity-graph-core/README.md",
         "prometheus-entity-skills",
         ".kbd-orchestrator/phases/v3-devtools-parity/evidence"
       ],
-      "verify": null,
-      "notes": "Post-integration truth and archive gate."
+      "verify": "node scripts/verify-kbd-archive-guard.mjs v3-devtools-parity v3-devtools-time-travel 10",
+      "notes": "Post-integration truth and archive gate. The verify command is post-end-task only: signed end-task completes canonical task 10 before native change verification runs."
     }
   ]
 }

@@ -8,4 +8,4 @@
 - [x] 4 Implement visible expired-history results and bounded import inspection/confirmed-restore validation.
 - [x] 5 Delegate deprecated root time-travel functions to the default-store controller.
 - [x] 9 After production tasks 1-5 are complete and wired, run one assembled multi-store core/packed-consumer time-travel integration gate covering retention, expired cursors, rewind/live, mutation ordering, import validation, store isolation, and root compatibility; do not add or run unit, isolated, mock-backed, snapshot, or partial tests.
-- [ ] 10 Synchronize public API and skills ledgers, history documentation, fixtures, security/evidence receipts, artifact-refiner, and artifact-only adversarial review; verify and archive only after both gates pass.
+- [x] 10 Synchronize public API and skills ledgers, history documentation, fixtures, security/evidence receipts, artifact-refiner, and artifact-only adversarial review; verify and archive only after both gates pass.

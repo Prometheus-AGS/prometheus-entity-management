@@ -1662,3 +1662,32 @@
   the final task synchronizes public records and evidence, runs artifact
   refinement and isolated adversarial review, verifies, and archives the
   change.
+
+## 2026-08-29 — DevTools time travel change complete
+
+- Completed and archived `v3-devtools-time-travel`, change 3 of 9 in
+  `v3-devtools-parity`. All seven executable native tasks are complete; the
+  archived manifest contains tasks 1–5, 9, and 10 with no open task.
+- The assembled `pnpm run verify:devtools-time-travel` acceptance gate passed
+  across the root-only ESM, packed ESM, packed CommonJS, and strict NodeNext
+  consumer lanes. All 12 runtime scenarios passed, the core and Flutter
+  fixtures were byte-identical, and the fixture SHA-256 is
+  `937478739c4fcf9d730050da375ff48a00d905cdef8c66c86cd7c24d2eda0ad5`.
+- Package/export ledger verification passed for 128 root exports, seven
+  `./devtools` exports, and both exact JSON fixture subpath-to-target pairs.
+- Artifact-refiner validation passed. Fresh-context cross-model adversarial
+  review round 10 passed with judge `k3`, producer `openai/gpt-5`, and
+  `verified-distinct` isolation through the local REST gateway. The strict
+  anti-sycophancy screen passed with score 0 and cryptographically binds the
+  final packet and findings.
+- The security review names the actual boundaries: bounded untrusted history
+  import, explicit confirmed restoration, per-store controller isolation, and
+  optional debug-only package surfaces. No speculative hardening was added.
+- Signed KBD recovery moved the parent change through revisions 343 and 344
+  after the task-after hook regenerated its projection. Native verification,
+  the final archive guard, and archive all passed with zero canonical tasks
+  open; revision 345 advanced the exact next command to
+  `/kbd-apply v3-devtools-react-inspector`.
+- No unit, component, isolated, mock-backed, snapshot, or partial integration
+  test was created or run. Phase state is now 3/9 changes complete; change 4 is
+  `v3-devtools-react-inspector`.

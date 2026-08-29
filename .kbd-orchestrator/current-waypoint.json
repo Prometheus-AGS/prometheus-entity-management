@@ -5,13 +5,13 @@
   "completionMetric": "implementation",
   "conflictCount": 0,
   "currentTask": null,
-  "derivedRevision": 336,
-  "exactNextCommand": "/kbd-apply v3-devtools-entity-inspection",
+  "derivedRevision": 345,
+  "exactNextCommand": "/kbd-apply v3-devtools-react-inspector",
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 336
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 345
   },
   "generatedBy": "kbd-runtime",
-  "implementationCompleted": 34,
+  "implementationCompleted": 35,
   "implementationTotal": 63,
   "path": [
     "v3-devtools-parity"
@@ -20,12 +20,12 @@
   "phaseIds": [
     "v3-devtools-parity"
   ],
-  "planRevision": 7,
+  "planRevision": 9,
   "projectId": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
-  "revision": 336,
+  "revision": 345,
   "runId": "full-3.0-release-20260801T113424Z",
   "schemaVersion": "5",
-  "sourceRevision": 336,
+  "sourceRevision": 345,
   "status": "running",
-  "updatedAt": "2026-08-29T20:07:28.873313Z"
+  "updatedAt": "2026-08-29T21:25:30.823458Z"
 }

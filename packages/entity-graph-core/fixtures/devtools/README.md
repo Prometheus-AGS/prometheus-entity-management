@@ -24,3 +24,12 @@ The fixture freezes these cross-runtime semantics:
 
 The JSON document is data, not a second graph state or a persistence format.
 Production projections are derived on demand from the owning graph store.
+
+`time-travel-v1.json` is the normative cross-runtime contract for controller-
+owned snapshot history. Its byte-identical Flutter copy freezes the complete
+five-field graph data shape, stable cursor and expiry semantics, rewind/live
+receipts, mutation-while-rewound ordering, and inert/confirmed import flow.
+The conformance harness attaches the fixture to the declared `time-a` store;
+consumers must attach that store ID or replace it consistently before import.
+Snapshot values remain local controller data; the fixture is conformance input,
+not a persistence or unbounded history format.

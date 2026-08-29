@@ -1,0 +1,100 @@
+{
+  "refinement_id": "bbe13341-e9d7-4d8d-b3f2-3cd0c97dd4d9",
+  "artifact_name": "v3-devtools-time-travel-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-29T20:15:30Z",
+  "updated_at": "2026-08-29T20:32:27Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Certify one controller-owned, store-isolated time-travel history path.",
+    "Bind public claims to the packed runtime and cross-language fixture evidence."
+  ],
+  "constraints": [
+    {
+      "id": "api-ledger-truth",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "time-travel-semantics-truth",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "security-boundary-truth",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "evidence-and-fixture-integrity",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "scope-honesty",
+      "severity": "blocking",
+      "status": "satisfied"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 5,
+      "constraints_total": 5,
+      "decision": "terminate",
+      "timestamp": "2026-08-29T20:20:06Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "eca985ff",
+      "phase": "specify",
+      "iteration": 0,
+      "timestamp": "2026-08-29T20:16:20Z"
+    },
+    {
+      "checkpoint_id": "cb625bae",
+      "phase": "plan",
+      "iteration": 0,
+      "timestamp": "2026-08-29T20:17:10Z"
+    },
+    {
+      "checkpoint_id": "f0578e81",
+      "phase": "execute",
+      "iteration": 1,
+      "timestamp": "2026-08-29T20:20:05Z"
+    },
+    {
+      "checkpoint_id": "9100ef56",
+      "phase": "reflect",
+      "iteration": 1,
+      "timestamp": "2026-08-29T20:20:06Z"
+    },
+    {
+      "checkpoint_id": "45bed4e9",
+      "phase": "persist",
+      "iteration": 1,
+      "timestamp": "2026-08-29T20:20:06Z"
+    }
+  ],
+  "prior_cycle_id": null,
+  "finalized_at": "2026-08-29T20:32:27Z"
+}

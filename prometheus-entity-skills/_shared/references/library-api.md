@@ -197,7 +197,15 @@ Use [`release/binding-singleton-contract.md`](../../../release/binding-singleton
 | `projectGraphDevtoolsRelationships` | function | Derive deterministic resolved/missing relationship edges from the existing CRUD schema registry and current merged graph values. |
 | `GRAPH_DEVTOOLS_PROTOCOL` | constant | Stable protocol identifier used by every command, result, snapshot, and event envelope. |
 | `GRAPH_DEVTOOLS_PROTOCOL_VERSION` | constant | Current wire major; incompatible envelopes are rejected. |
-| `GraphDevtoolsController` | type | Per-store snapshot, history, inspection, view-registration, command, transport, and lifecycle surface. |
+| `GraphDevtoolsController` | type | Per-store event/snapshot history, inspection, stable-cursor rewind/live, confirmed import, view-registration, command, transport, and lifecycle surface. |
+| `GraphDevtoolsSnapshotHistoryStatus` | type | Live/rewound mode, source, active cursor, retained count/bytes, limits, stable range, unavailable capture, and inert import-candidate metadata. |
+| `GraphDevtoolsSnapshotReference` | type | Stable retained snapshot metadata or an unavailable capture with a typed retention/capture/oversize reason. |
+| `GraphDevtoolsRewindResult` | type | Successful retained rewind or a typed expired-history receipt that never substitutes another cursor. |
+| `GraphDevtoolsReturnToLiveReceipt` | type | Exact restoration of the live head protected by the first rewind. |
+| `GraphDevtoolsHistoryImportEnvelope` | type | Versioned, same-store, JSON-safe complete graph snapshots accepted only for inert inspection. |
+| `GraphDevtoolsHistoryImportInspectionResult` | type | Awaiting-confirmation metadata or a typed non-mutating import rejection. |
+| `GraphDevtoolsHistoryImportRestoreResult` | type | One-shot confirmed import rewind receipt or typed rejection. |
+| `GraphDevtoolsTimeTravelEvent` | type | Ordered rewound/live transition event with retained/import source and command/import/mutation reason. |
 | `GraphDevtoolsEntityRecord` | type | One inspection record with distinct canonical, patch, and merged values plus dirty and lifecycle metadata. |
 | `GraphDevtoolsViewRegistration` | type | Token-scoped handle used by a rendered view to update membership and unregister safely. |
 | `GraphDevtoolsRelationship` | type | Schema-derived outgoing/reverse edge with resolved or missing-target status. |
