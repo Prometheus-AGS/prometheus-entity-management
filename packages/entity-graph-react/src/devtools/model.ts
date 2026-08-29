@@ -1,20 +1,25 @@
 import type { GraphStore } from "@prometheus-ags/entity-graph-core";
 import type {
   GraphDevtoolsController,
+  GraphDevtoolsCapabilities,
   GraphDevtoolsEntityRecord,
   GraphDevtoolsEvent,
   GraphDevtoolsRelationship,
   GraphDevtoolsSnapshot,
+  GraphDevtoolsSnapshotReference,
   GraphDevtoolsViewRecord,
 } from "@prometheus-ags/entity-graph-core/devtools";
 
 export interface EntityGraphInspectorModel {
   capturedAt: string;
   snapshot: GraphDevtoolsSnapshot;
+  capabilities: GraphDevtoolsCapabilities;
   entities: readonly GraphDevtoolsEntityRecord[];
+  policyEntities: readonly GraphDevtoolsEntityRecord[];
   views: readonly GraphDevtoolsViewRecord[];
   relationships: readonly GraphDevtoolsRelationship[];
   events: readonly GraphDevtoolsEvent[];
+  snapshotReferences: readonly Extract<GraphDevtoolsSnapshotReference, { status: "retained" }>[];
 }
 
 export interface EntityGraphInspectorModelStore {
@@ -46,13 +51,17 @@ function projectModel(
   store: GraphStore,
 ): EntityGraphInspectorModel {
   const snapshot = controller.getSnapshot();
+  const policyEntities = controller.getEntityRecords().entityRecords;
   return {
     capturedAt: snapshot.capturedAt,
     snapshot,
-    entities: withLocalValues(controller.getEntityRecords().entityRecords, store),
+    capabilities: controller.capabilities,
+    entities: withLocalValues(policyEntities, store),
+    policyEntities,
     views: controller.getViews().views,
     relationships: controller.getRelationships().relationships,
     events: controller.getHistory(),
+    snapshotReferences: controller.getSnapshotReferences(),
   };
 }
 

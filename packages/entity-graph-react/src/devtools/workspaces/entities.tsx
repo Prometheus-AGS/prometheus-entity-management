@@ -8,8 +8,11 @@ import type {
 import type { EntityFieldDiff } from "../diff";
 import { eventTitle, formatEventTime } from "../event-format";
 import type { EntityStatusFilter, EntityValueTab } from "../view-model";
+import type { InspectorActivePreview } from "../view-model";
+import type { EntityGraphDevtoolsValuePolicyMode } from "../provider";
 import { InspectorVirtualList } from "../components/virtual-list";
 import { InspectorDiff, InspectorValue } from "../components/value-inspector";
+import { inspectorEntityIdentity } from "../entity-identity";
 
 export interface EntitiesWorkspaceProps {
   search: string;
@@ -25,6 +28,18 @@ export interface EntitiesWorkspaceProps {
   relationships: readonly GraphDevtoolsRelationship[];
   views: readonly GraphDevtoolsViewRecord[];
   history: readonly GraphDevtoolsEvent[];
+  previewDraft: string;
+  onPreviewDraft(value: string): void;
+  previewValidationError: string | null;
+  previewDiff: readonly EntityFieldDiff[];
+  activePreview: InspectorActivePreview | null;
+  onApplyPreview(): void;
+  onRestorePreview(): void;
+  commandPending: boolean;
+  valuePolicyMode: EntityGraphDevtoolsValuePolicyMode;
+  canCopyValue: boolean;
+  onCopyIdentity(): void;
+  onCopyValue(): void;
   onSelectIdentity(type: string, id: string): void;
   onSelectView(view: GraphDevtoolsViewRecord): void;
   onSelectEvent(event: GraphDevtoolsEvent): void;
@@ -66,14 +81,14 @@ export function EntitiesWorkspace(props: EntitiesWorkspaceProps) {
         ) : (
           <InspectorVirtualList
             items={props.entities}
-            getKey={(entity) => entity.key}
+            getKey={inspectorEntityIdentity}
             estimateSize={38}
             ariaLabel="Matching entities"
             renderItem={(entity) => (
               <button
                 type="button"
                 className="pem-entity-row"
-                data-selected={entity.key === props.selected?.key}
+                data-selected={entity.type === props.selected?.type && entity.id === props.selected?.id}
                 onClick={() => props.onSelect(entity)}
                 title={`${entity.type} / ${entity.id}`}
               >
@@ -116,12 +131,25 @@ function EntityDetail(props: EntitiesWorkspaceProps & { selected: GraphDevtoolsE
           <p className="pem-eyebrow">Entity</p>
           <h2><span>{entity.type}</span> <code translate="no">{entity.id}</code></h2>
         </div>
-        <div className="pem-status-cluster" aria-label="Entity status">
-          {entity.dirty && <span data-tone="attention">◆ Dirty</span>}
-          {entity.entityState.error && <span data-tone="attention">! Error</span>}
-          {entity.entityState.isFetching && <span>↻ Fetching</span>}
-          {entity.entityState.stale && <span>◷ Stale</span>}
-          {!entity.sync.synced && <span>⇅ Unsynced</span>}
+        <div className="pem-detail-tools">
+          <div className="pem-status-cluster" aria-label="Entity status">
+            {entity.dirty && <span data-tone="attention">◆ Dirty</span>}
+            {entity.entityState.error && <span data-tone="attention">! Error</span>}
+            {entity.entityState.isFetching && <span>↻ Fetching</span>}
+            {entity.entityState.stale && <span>◷ Stale</span>}
+            {!entity.sync.synced && <span>⇅ Unsynced</span>}
+          </div>
+          <div className="pem-detail-actions">
+            <button type="button" onClick={props.onCopyIdentity}>Copy ID</button>
+            <button
+              type="button"
+              disabled={!props.canCopyValue}
+              title={props.canCopyValue ? "Copy the policy-projected value" : "Blocked by metadata-only policy"}
+              onClick={props.onCopyValue}
+            >
+              Copy value
+            </button>
+          </div>
         </div>
       </header>
 
@@ -151,6 +179,58 @@ function EntityDetail(props: EntitiesWorkspaceProps & { selected: GraphDevtoolsE
           ? <InspectorDiff rows={props.diff} />
           : <InspectorValue value={currentValue} label={`${props.valueTab} entity value`} />}
       </div>
+
+      <section className="pem-preview-panel" aria-labelledby="pem-preview-title">
+        <div className="pem-card-heading">
+          <div>
+            <p className="pem-eyebrow">Local patch workflow</p>
+            <h3 id="pem-preview-title">Preview proposed fields</h3>
+          </div>
+          <span>{props.valuePolicyMode} receipt</span>
+        </div>
+        <label className="pem-preview-editor">
+          <span>JSON patch</span>
+          <textarea
+            value={props.previewDraft}
+            onChange={(event) => props.onPreviewDraft(event.currentTarget.value)}
+            placeholder={'{\n  "status": "approved"\n}'}
+            spellCheck={false}
+          />
+        </label>
+        {props.previewValidationError && <p className="pem-inline-error" role="alert">{props.previewValidationError}</p>}
+        {props.previewDiff.length > 0 && (
+          <div className="pem-preview-diff">
+            <p>Proposed difference from the current live value</p>
+            <InspectorDiff rows={props.previewDiff} />
+          </div>
+        )}
+        <div className="pem-preview-actions">
+          <button
+            type="button"
+            className="pem-primary-action"
+            disabled={props.commandPending || props.previewDiff.length === 0}
+            onClick={props.onApplyPreview}
+          >
+            Apply local preview
+          </button>
+          {props.activePreview && (
+            <button
+              type="button"
+              className="pem-secondary-action"
+              disabled={props.commandPending}
+              onClick={props.onRestorePreview}
+            >
+              Restore exact prior patch
+            </button>
+          )}
+        </div>
+        {props.activePreview && (
+          <p className="pem-preview-receipt">
+            Active receipt <code translate="no">{props.activePreview.receipt.previewId}</code>
+            {" · "}revision {props.activePreview.receipt.previewRevision}
+          </p>
+        )}
+      </section>
 
       <div className="pem-detail-grid">
         <DetailSection title="Relationships" count={props.relationships.length}>

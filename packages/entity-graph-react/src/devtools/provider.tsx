@@ -1,5 +1,6 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -19,6 +20,7 @@ import {
 import { useGraphStoreApi } from "../graph-store";
 
 type ProviderStatus = "connecting" | "ready" | "disabled";
+export type EntityGraphDevtoolsValuePolicyMode = "metadata-only" | "include";
 
 interface SnapshotStore {
   getSnapshot(): GraphDevtoolsSnapshot;
@@ -26,8 +28,28 @@ interface SnapshotStore {
   dispose(): void;
 }
 
+export interface EntityGraphDevtoolsStoreDefinition {
+  store: GraphStore;
+  label?: string;
+  options?: Omit<AttachGraphDevtoolsOptions, "enabled">;
+}
+
+export interface EntityGraphDevtoolsStoreDescriptor {
+  storeId: string;
+  label: string;
+  selected: boolean;
+  valuePolicyMode: EntityGraphDevtoolsValuePolicyMode;
+}
+
+interface PreparedStoreDefinition {
+  store: GraphStore;
+  label: string;
+  options: AttachGraphDevtoolsOptions;
+}
+
 interface AttachedRuntime {
   store: GraphStore;
+  label: string;
   options: AttachGraphDevtoolsOptions;
   controller: GraphDevtoolsController;
   client: GraphDevtoolsClient;
@@ -35,10 +57,18 @@ interface AttachedRuntime {
   dispose(): void;
 }
 
+interface AttachedRuntimeSet {
+  definitions: readonly PreparedStoreDefinition[];
+  runtimes: readonly AttachedRuntime[];
+}
+
 export interface EntityGraphDevtoolsContextValue {
   status: ProviderStatus;
   store: GraphStore;
   storeId: string | null;
+  stores: readonly EntityGraphDevtoolsStoreDescriptor[];
+  selectStore(storeId: string): void;
+  valuePolicyMode: EntityGraphDevtoolsValuePolicyMode;
   controller: GraphDevtoolsController | null;
   client: GraphDevtoolsClient | null;
 }
@@ -73,83 +103,141 @@ function createSnapshotStore(controller: GraphDevtoolsController): SnapshotStore
   };
 }
 
+function prepareOptions(
+  base: Omit<AttachGraphDevtoolsOptions, "enabled"> | undefined,
+  override: Omit<AttachGraphDevtoolsOptions, "enabled"> | undefined,
+): AttachGraphDevtoolsOptions {
+  const values = override?.values ?? base?.values;
+  const redact = values?.mode === "include" ? values.redact : undefined;
+  return {
+    enabled: true,
+    storeId: override?.storeId ?? base?.storeId,
+    historyLimit: override?.historyLimit ?? base?.historyLimit,
+    historyBytesLimit: override?.historyBytesLimit ?? base?.historyBytesLimit,
+    eventBytesLimit: override?.eventBytesLimit ?? base?.eventBytesLimit,
+    snapshotLimit: override?.snapshotLimit ?? base?.snapshotLimit,
+    snapshotBytesLimit: override?.snapshotBytesLimit ?? base?.snapshotBytesLimit,
+    values: values?.mode === "include"
+      ? { mode: "include", ...(redact ? { redact } : {}) }
+      : { mode: "metadata-only" },
+  };
+}
+
+function attachRuntime(definition: PreparedStoreDefinition): AttachedRuntime | null {
+  const attachment = attachGraphDevtools(definition.store, definition.options);
+  const controller = attachment.controller;
+  if (!controller) {
+    attachment.detach();
+    return null;
+  }
+  const client = createGraphDevtoolsClient(controller.storeId, controller.connect());
+  const snapshots = createSnapshotStore(controller);
+  return {
+    ...definition,
+    controller,
+    client,
+    snapshots,
+    dispose() {
+      snapshots.dispose();
+      client.disconnect();
+      attachment.detach();
+    },
+  };
+}
+
 export interface EntityGraphDevtoolsProviderProps {
   children: ReactNode;
   store?: GraphStore;
+  stores?: readonly EntityGraphDevtoolsStoreDefinition[];
   enabled?: boolean;
   options?: Omit<AttachGraphDevtoolsOptions, "enabled">;
 }
 
-/** Attach one reference-counted core controller to the selected graph store. */
+/** Attach reference-counted controllers and select one explicit graph store for inspection. */
 export function EntityGraphDevtoolsProvider({
   children,
   store,
+  stores,
   enabled = true,
   options,
 }: EntityGraphDevtoolsProviderProps) {
   const inheritedStore = useGraphStoreApi();
-  const selectedStore = store ?? inheritedStore;
-  const valueMode = options?.values?.mode ?? "metadata-only";
-  const redact = options?.values?.mode === "include" ? options.values.redact : undefined;
-  const attachOptions = useMemo<AttachGraphDevtoolsOptions>(() => ({
-    enabled: true,
-    storeId: options?.storeId,
-    historyLimit: options?.historyLimit,
-    historyBytesLimit: options?.historyBytesLimit,
-    eventBytesLimit: options?.eventBytesLimit,
-    snapshotLimit: options?.snapshotLimit,
-    snapshotBytesLimit: options?.snapshotBytesLimit,
-    values: valueMode === "include"
-      ? { mode: "include", ...(redact ? { redact } : {}) }
-      : { mode: "metadata-only" },
-  }), [
+  const fallbackStore = store ?? inheritedStore;
+  const baseOptions = useMemo(() => prepareOptions(options, undefined), [
     options?.storeId,
     options?.historyLimit,
     options?.historyBytesLimit,
     options?.eventBytesLimit,
     options?.snapshotLimit,
     options?.snapshotBytesLimit,
-    redact,
-    valueMode,
+    options?.values?.mode,
+    options?.values?.mode === "include" ? options.values.redact : undefined,
   ]);
-  const [attached, setAttached] = useState<AttachedRuntime | null>(null);
+  const definitions = useMemo<readonly PreparedStoreDefinition[]>(() => {
+    const supplied: readonly EntityGraphDevtoolsStoreDefinition[] = stores && stores.length > 0
+      ? stores
+      : [{ store: fallbackStore, label: baseOptions.storeId ?? "Default graph" }];
+    const seen = new Set<GraphStore>();
+    return supplied.flatMap((definition, index) => {
+      if (seen.has(definition.store)) return [];
+      seen.add(definition.store);
+      const preparedOptions = prepareOptions(baseOptions, definition.options);
+      return [{
+        store: definition.store,
+        label: definition.label ?? preparedOptions.storeId ?? `Graph ${index + 1}`,
+        options: preparedOptions,
+      }];
+    });
+  }, [baseOptions, fallbackStore, stores]);
+  const [attached, setAttached] = useState<AttachedRuntimeSet | null>(null);
+  const [selectedStoreId, setSelectedStoreId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!enabled) return;
-
-    const attachment = attachGraphDevtools(selectedStore, attachOptions);
-    const controller = attachment.controller;
-    if (!controller) return attachment.detach;
-
-    const client = createGraphDevtoolsClient(controller.storeId, controller.connect());
-    const snapshots = createSnapshotStore(controller);
-    const runtime: AttachedRuntime = {
-      store: selectedStore,
-      options: attachOptions,
-      controller,
-      client,
-      snapshots,
-      dispose() {
-        snapshots.dispose();
-        client.disconnect();
-        attachment.detach();
-      },
+    const runtimes = definitions.flatMap((definition) => {
+      const runtime = attachRuntime(definition);
+      return runtime ? [runtime] : [];
+    });
+    const next = { definitions, runtimes };
+    setAttached(next);
+    setSelectedStoreId((current) => (
+      runtimes.some((runtime) => runtime.controller.storeId === current)
+        ? current
+        : runtimes[0]?.controller.storeId ?? null
+    ));
+    return () => {
+      for (const runtime of runtimes) runtime.dispose();
     };
-    setAttached(runtime);
-    return runtime.dispose;
-  }, [attachOptions, enabled, selectedStore]);
+  }, [definitions, enabled]);
 
-  const current = enabled && attached?.store === selectedStore && attached.options === attachOptions
-    ? attached
-    : null;
+  const currentSet = enabled && attached?.definitions === definitions ? attached : null;
+  const current = currentSet?.runtimes.find(
+    (runtime) => runtime.controller.storeId === selectedStoreId,
+  ) ?? currentSet?.runtimes[0] ?? null;
+  const selectStore = useCallback((storeId: string) => {
+    if (currentSet?.runtimes.some((runtime) => runtime.controller.storeId === storeId)) {
+      setSelectedStoreId(storeId);
+    }
+  }, [currentSet]);
+  const descriptors = useMemo<readonly EntityGraphDevtoolsStoreDescriptor[]>(() => (
+    (currentSet?.runtimes ?? []).map((runtime) => ({
+      storeId: runtime.controller.storeId,
+      label: runtime.label,
+      selected: runtime === current,
+      valuePolicyMode: runtime.options.values?.mode === "include" ? "include" : "metadata-only",
+    }))
+  ), [current, currentSet]);
   const value = useMemo<InternalEntityGraphDevtoolsContextValue>(() => ({
     status: !enabled ? "disabled" : current ? "ready" : "connecting",
-    store: selectedStore,
+    store: current?.store ?? definitions[0]?.store ?? fallbackStore,
     storeId: current?.controller.storeId ?? null,
+    stores: descriptors,
+    selectStore,
+    valuePolicyMode: current?.options.values?.mode === "include" ? "include" : "metadata-only",
     controller: current?.controller ?? null,
     client: current?.client ?? null,
     snapshots: current?.snapshots ?? null,
-  }), [current, enabled, selectedStore]);
+  }), [current, definitions, descriptors, enabled, fallbackStore, selectStore]);
 
   return (
     <EntityGraphDevtoolsContext.Provider value={value}>
@@ -167,7 +255,7 @@ export function useEntityGraphDevtools(): EntityGraphDevtoolsContextValue {
   return value;
 }
 
-/** Cached controller snapshot subscription suitable for React concurrent rendering and SSR. */
+/** Cached selected-controller snapshot subscription suitable for concurrent rendering and SSR. */
 export function useEntityGraphDevtoolsSnapshot(): GraphDevtoolsSnapshot | null {
   const value = useContext(EntityGraphDevtoolsContext);
   if (!value) {

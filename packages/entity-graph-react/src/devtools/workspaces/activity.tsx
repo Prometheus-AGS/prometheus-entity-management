@@ -1,4 +1,8 @@
-import type { GraphDevtoolsEvent } from "@prometheus-ags/entity-graph-core/devtools";
+import type {
+  GraphDevtoolsEvent,
+  GraphDevtoolsSnapshotReference,
+  GraphDevtoolsSnapshotHistoryStatus,
+} from "@prometheus-ags/entity-graph-core/devtools";
 import { InspectorVirtualList } from "../components/virtual-list";
 import { eventDetail, eventTitle, formatEventTime } from "../event-format";
 import type { ActivityTypeFilter } from "../view-model";
@@ -12,6 +16,14 @@ export interface ActivityWorkspaceProps {
   paused: boolean;
   onTogglePaused(): void;
   onSelect(event: GraphDevtoolsEvent): void;
+  snapshots: GraphDevtoolsSnapshotHistoryStatus;
+  snapshotReferences: readonly Extract<GraphDevtoolsSnapshotReference, { status: "retained" }>[];
+  rewindCursor: number | null;
+  onRewindCursor(cursor: number): void;
+  onRewind(): void;
+  onReturnToLive(): void;
+  timeTravelAvailable: boolean;
+  commandPending: boolean;
 }
 
 const filters: readonly ActivityTypeFilter[] = [
@@ -39,6 +51,43 @@ export function ActivityWorkspace(props: ActivityWorkspaceProps) {
             {filters.map((filter) => <option key={filter} value={filter}>{filter}</option>)}
           </select>
         </label>
+        <section className="pem-time-travel" aria-labelledby="pem-time-travel-title">
+          <div className="pem-card-heading">
+            <h3 id="pem-time-travel-title">Time travel</h3>
+            <span>{props.snapshots.mode}</span>
+          </div>
+          {!props.timeTravelAvailable ? (
+            <p className="pem-empty">This controller does not advertise time travel.</p>
+          ) : props.snapshots.mode === "rewound" ? (
+            <div className="pem-time-travel-controls">
+              <p>Inspecting snapshot <code translate="no">{props.snapshots.cursor}</code></p>
+              <button type="button" disabled={props.commandPending} onClick={props.onReturnToLive}>
+                Return to live
+              </button>
+            </div>
+          ) : props.snapshotReferences.length === 0 ? (
+            <p className="pem-empty">Graph publications will create rewindable snapshots.</p>
+          ) : (
+            <div className="pem-time-travel-controls">
+              <label className="pem-select-label">
+                <span>Retained snapshot</span>
+                <select
+                  value={props.rewindCursor ?? ""}
+                  onChange={(event) => props.onRewindCursor(Number(event.currentTarget.value))}
+                >
+                  {props.snapshotReferences.map((reference) => (
+                    <option key={reference.cursor} value={reference.cursor}>
+                      #{reference.cursor} · event {reference.eventSequence ?? "baseline"}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button type="button" disabled={props.commandPending || props.rewindCursor === null} onClick={props.onRewind}>
+                Rewind graph
+              </button>
+            </div>
+          )}
+        </section>
         {props.events.length === 0 ? (
           <p className="pem-empty">No retained events match this filter.</p>
         ) : (

@@ -45,9 +45,9 @@
     {
       "id": "4",
       "title": "Add store selection plus preview/diff/restore, rewind/return-live, copy, and policy-aware export interactions.",
-      "done": false,
-      "doneAt": null,
-      "doneBy": null,
+      "done": true,
+      "doneAt": "2026-08-29T22:17:20Z",
+      "doneBy": "codex",
       "files": [
         "packages/entity-graph-react/src/devtools"
       ],

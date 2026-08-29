@@ -1,13 +1,32 @@
 import type { GraphDevtoolsEvent } from "@prometheus-ags/entity-graph-core/devtools";
 import { eventDetail, eventTitle, formatEventTime } from "../event-format";
 import type { EntityGraphInspectorModel } from "../model";
+import type {
+  EntityGraphDevtoolsStoreDescriptor,
+  EntityGraphDevtoolsValuePolicyMode,
+} from "../provider";
 
 export interface OverviewWorkspaceProps {
   model: EntityGraphInspectorModel;
+  stores: readonly EntityGraphDevtoolsStoreDescriptor[];
+  selectedStoreId: string | null;
+  onSelectStore(storeId: string): void;
+  valuePolicyMode: EntityGraphDevtoolsValuePolicyMode;
+  onExport(): void;
+  exportPending: boolean;
   onSelectEvent(event: GraphDevtoolsEvent): void;
 }
 
-export function OverviewWorkspace({ model, onSelectEvent }: OverviewWorkspaceProps) {
+export function OverviewWorkspace({
+  model,
+  stores,
+  selectedStoreId,
+  onSelectStore,
+  valuePolicyMode,
+  onExport,
+  exportPending,
+  onSelectEvent,
+}: OverviewWorkspaceProps) {
   const dirty = model.entities.filter((entity) => entity.dirty).length;
   const errors = model.entities.filter((entity) => entity.entityState.error).length;
   const fetching = model.entities.filter((entity) => entity.entityState.isFetching).length;
@@ -22,9 +41,23 @@ export function OverviewWorkspace({ model, onSelectEvent }: OverviewWorkspacePro
           <p className="pem-eyebrow">Live graph health</p>
           <h2 id="pem-overview-title">Overview</h2>
         </div>
-        <span className="pem-live-status" data-state={snapshots.mode}>
-          {snapshots.mode === "live" ? "● Live" : `◉ Rewound · ${snapshots.cursor}`}
-        </span>
+        <div className="pem-overview-actions">
+          <label className="pem-store-select">
+            <span>Store</span>
+            <select value={selectedStoreId ?? ""} onChange={(event) => onSelectStore(event.currentTarget.value)}>
+              {stores.map((store) => (
+                <option key={store.storeId} value={store.storeId}>{store.label} · {store.storeId}</option>
+              ))}
+            </select>
+          </label>
+          <span className="pem-policy-status" data-policy={valuePolicyMode}>{valuePolicyMode}</span>
+          <button type="button" className="pem-secondary-action" disabled={exportPending} onClick={onExport}>
+            {exportPending ? "Exporting…" : "Export JSON"}
+          </button>
+          <span className="pem-live-status" data-state={snapshots.mode}>
+            {snapshots.mode === "live" ? "● Live" : `◉ Rewound · ${snapshots.cursor}`}
+          </span>
+        </div>
       </div>
 
       <div className="pem-metric-grid" aria-label="Graph health summary">

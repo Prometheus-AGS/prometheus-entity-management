@@ -1,31 +1,31 @@
 {
-  "activePhaseId": "v3-devtools-parity",
-  "change": null,
-  "childPointer": null,
-  "completionMetric": "implementation",
-  "conflictCount": 0,
-  "currentTask": null,
-  "derivedRevision": 358,
-  "exactNextCommand": "/kbd-apply v3-devtools-react-inspector",
-  "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 358
-  },
+  "schemaVersion": "5",
   "generatedBy": "kbd-runtime",
-  "implementationCompleted": 35,
-  "implementationTotal": 63,
+  "sourceRevision": 363,
+  "derivedRevision": 363,
+  "frontier": {
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 363
+  },
+  "conflictCount": 0,
+  "projectId": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
+  "runId": "full-3.0-release-20260801T113424Z",
   "path": [
     "v3-devtools-parity"
   ],
-  "phase": "v3-devtools-parity",
   "phaseIds": [
     "v3-devtools-parity"
   ],
-  "planRevision": 9,
-  "projectId": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
-  "revision": 358,
-  "runId": "full-3.0-release-20260801T113424Z",
-  "schemaVersion": "5",
-  "sourceRevision": 358,
+  "activePhaseId": "v3-devtools-parity",
+  "phase": "v3-devtools-parity",
+  "childPointer": null,
+  "change": null,
+  "currentTask": null,
   "status": "running",
-  "updatedAt": "2026-08-29T22:03:34.395421Z"
+  "completionMetric": "implementation",
+  "implementationCompleted": 35,
+  "implementationTotal": 63,
+  "planRevision": 9,
+  "revision": 363,
+  "exactNextCommand": "/kbd-apply v3-devtools-react-inspector",
+  "updatedAt": "2026-08-29T22:17:40.588376Z"
 }

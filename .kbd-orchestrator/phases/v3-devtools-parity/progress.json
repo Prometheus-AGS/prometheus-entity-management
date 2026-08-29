@@ -1,145 +1,145 @@
 {
-  "changes": [
-    {
-      "blockers": [],
-      "id": "v3-devtools-core-observability",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": "Update API and skills ledgers, package documentation, evidence and security-boundary notes; run artifact-refiner and isolated adversarial review, then archive the change when both gates pass.",
-      "next_task_pending": "Add targeted event-completeness, batch/coalescing, multi-store, multi-client, disabled-mode, and teardown tests.",
-      "status": "DONE",
-      "tasks_done": 8,
-      "tasks_total": 11,
-      "title": "v3-devtools-core-observability — Per-store semantic controller and protocol"
-    },
-    {
-      "blockers": [],
-      "id": "v3-devtools-entity-inspection",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": "Synchronize public API and skills ledgers, inspection semantics documentation, shared fixtures, security/evidence receipts, artifact-refiner, and artifact-only adversarial review; verify and archive only after both gates pass.",
-      "next_task_pending": "Add multi-store tests for projections, membership, relationships, preview propagation, successful restore, and conflict refusal.",
-      "status": "DONE",
-      "tasks_done": 7,
-      "tasks_total": 10,
-      "title": "v3-devtools-entity-inspection — Entity, view, relationship, and preview workflows"
-    },
-    {
-      "blockers": [],
-      "id": "v3-devtools-time-travel",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": "Synchronize public API and skills ledgers, history documentation, fixtures, security/evidence receipts, artifact-refiner, and artifact-only adversarial review; verify and archive only after both gates pass.",
-      "next_task_pending": "Add targeted multi-store, retention, stale cursor, rewind/live, mutation ordering, import, and compatibility tests.",
-      "status": "DONE",
-      "tasks_done": 7,
-      "tasks_total": 10,
-      "title": "v3-devtools-time-travel — Correct per-store rewind and return-to-live"
-    },
-    {
-      "blockers": [],
-      "id": "v3-devtools-react-inspector",
-      "implementation_status": "IN_PROGRESS",
-      "last_task_completed": "Rebuild the inspector around DevTools hooks/view models with overview, entity, view, relation, dirty/error, and timeline workflows.",
-      "next_task_pending": "Add store selection plus preview/diff/restore, rewind/return-live, copy, and policy-aware export interactions.",
-      "status": "IN_PROGRESS",
-      "tasks_done": 3,
-      "tasks_total": 12,
-      "title": "v3-devtools-react-inspector — Shared inspector and debug-only FAB"
-    },
-    {
-      "blockers": [],
-      "id": "v3-devtools-flutter-controller",
-      "implementation_status": "PENDING",
-      "last_task_completed": null,
-      "next_task_pending": "Confirm core, inspection, and time-travel changes are complete and import their stable cross-language fixtures.",
-      "status": "PENDING",
-      "tasks_done": 0,
-      "tasks_total": 9,
-      "title": "v3-devtools-flutter-controller — Dart parity and VM service bridge"
-    },
-    {
-      "blockers": [],
-      "id": "v3-devtools-chrome-extension",
-      "implementation_status": "PENDING",
-      "last_task_completed": null,
-      "next_task_pending": "Confirm the React inspector is complete and inventory the existing extension scaffold from a clean `origin/main` worktree.",
-      "status": "PENDING",
-      "tasks_done": 0,
-      "tasks_total": 9,
-      "title": "v3-devtools-chrome-extension — Secure tab-isolated MV3 extension"
-    },
-    {
-      "blockers": [],
-      "id": "v3-devtools-flutter-extension",
-      "implementation_status": "PENDING",
-      "last_task_completed": null,
-      "next_task_pending": "Confirm the Flutter controller/VM-service contract and official package-extension layout.",
-      "status": "PENDING",
-      "tasks_done": 0,
-      "tasks_total": 8,
-      "title": "v3-devtools-flutter-extension — Official Flutter DevTools companion"
-    },
-    {
-      "blockers": [],
-      "id": "v3-devtools-docs-examples",
-      "implementation_status": "PENDING",
-      "last_task_completed": null,
-      "next_task_pending": "Start from a clean `origin/main` worktree and verify the existing Docusaurus/Pages baseline named in the assessment.",
-      "status": "PENDING",
-      "tasks_done": 0,
-      "tasks_total": 9,
-      "title": "v3-devtools-docs-examples — Guides, scenarios, README parity, and evidence"
-    },
-    {
-      "blockers": [],
-      "id": "v3-devtools-release-certification",
-      "implementation_status": "PENDING",
-      "last_task_completed": null,
-      "next_task_pending": "Confirm every dependency is archived with clean T2 evidence and identify the immutable certification SHA.",
-      "status": "PENDING",
-      "tasks_done": 0,
-      "tasks_total": 10,
-      "title": "v3-devtools-release-certification — Packed, secure, truthful 3.0 certification"
-    }
-  ],
-  "changes_completed": 3,
-  "changes_total": 9,
-  "children": {},
-  "completion": {
-    "certification": {
-      "blockers": [],
-      "status": "PENDING",
-      "summary": null
-    },
-    "evidence": {
-      "blockers": [],
-      "status": "PENDING",
-      "summary": null
-    },
-    "implementation": {
-      "completed": 3,
-      "status": "IN_PROGRESS",
-      "total": 9
-    },
-    "primaryCounter": "implementation",
-    "publication": {
-      "blockers": [],
-      "status": "PENDING",
-      "summary": null
-    }
+  "schemaVersion": "2",
+  "generatedBy": "kbd-runtime",
+  "sourceRevision": 363,
+  "derivedRevision": 363,
+  "frontier": {
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 363
   },
   "conflictCount": 0,
-  "derivedRevision": 358,
-  "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 358
-  },
-  "generatedBy": "kbd-runtime",
-  "implementation_completed": 3,
-  "implementation_total": 9,
-  "last_updated": "2026-08-29T22:03:34.395421Z",
-  "last_updated_by": "kbd-runtime",
-  "migrationStatus": null,
-  "parentPhase": null,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
-  "schemaVersion": "2",
-  "sourceRevision": 358
+  "parentPhase": null,
+  "last_updated": "2026-08-29T22:17:40.588376Z",
+  "last_updated_by": "kbd-runtime",
+  "changes_total": 9,
+  "changes_completed": 3,
+  "implementation_total": 9,
+  "implementation_completed": 3,
+  "completion": {
+    "primaryCounter": "implementation",
+    "implementation": {
+      "completed": 3,
+      "total": 9,
+      "status": "IN_PROGRESS"
+    },
+    "evidence": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    },
+    "certification": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    },
+    "publication": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    }
+  },
+  "changes": [
+    {
+      "id": "v3-devtools-core-observability",
+      "title": "v3-devtools-core-observability — Per-store semantic controller and protocol",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 11,
+      "tasks_done": 8,
+      "last_task_completed": "Update API and skills ledgers, package documentation, evidence and security-boundary notes; run artifact-refiner and isolated adversarial review, then archive the change when both gates pass.",
+      "next_task_pending": "Add targeted event-completeness, batch/coalescing, multi-store, multi-client, disabled-mode, and teardown tests.",
+      "blockers": []
+    },
+    {
+      "id": "v3-devtools-entity-inspection",
+      "title": "v3-devtools-entity-inspection — Entity, view, relationship, and preview workflows",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 10,
+      "tasks_done": 7,
+      "last_task_completed": "Synchronize public API and skills ledgers, inspection semantics documentation, shared fixtures, security/evidence receipts, artifact-refiner, and artifact-only adversarial review; verify and archive only after both gates pass.",
+      "next_task_pending": "Add multi-store tests for projections, membership, relationships, preview propagation, successful restore, and conflict refusal.",
+      "blockers": []
+    },
+    {
+      "id": "v3-devtools-time-travel",
+      "title": "v3-devtools-time-travel — Correct per-store rewind and return-to-live",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 10,
+      "tasks_done": 7,
+      "last_task_completed": "Synchronize public API and skills ledgers, history documentation, fixtures, security/evidence receipts, artifact-refiner, and artifact-only adversarial review; verify and archive only after both gates pass.",
+      "next_task_pending": "Add targeted multi-store, retention, stale cursor, rewind/live, mutation ordering, import, and compatibility tests.",
+      "blockers": []
+    },
+    {
+      "id": "v3-devtools-react-inspector",
+      "title": "v3-devtools-react-inspector — Shared inspector and debug-only FAB",
+      "status": "IN_PROGRESS",
+      "implementation_status": "IN_PROGRESS",
+      "tasks_total": 12,
+      "tasks_done": 4,
+      "last_task_completed": "Add store selection plus preview/diff/restore, rewind/return-live, copy, and policy-aware export interactions.",
+      "next_task_pending": "Implement the SSR-safe, debug-only floating action button and responsive accessible panel behavior.",
+      "blockers": []
+    },
+    {
+      "id": "v3-devtools-flutter-controller",
+      "title": "v3-devtools-flutter-controller — Dart parity and VM service bridge",
+      "status": "PENDING",
+      "implementation_status": "PENDING",
+      "tasks_total": 9,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": "Confirm core, inspection, and time-travel changes are complete and import their stable cross-language fixtures.",
+      "blockers": []
+    },
+    {
+      "id": "v3-devtools-chrome-extension",
+      "title": "v3-devtools-chrome-extension — Secure tab-isolated MV3 extension",
+      "status": "PENDING",
+      "implementation_status": "PENDING",
+      "tasks_total": 9,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": "Confirm the React inspector is complete and inventory the existing extension scaffold from a clean `origin/main` worktree.",
+      "blockers": []
+    },
+    {
+      "id": "v3-devtools-flutter-extension",
+      "title": "v3-devtools-flutter-extension — Official Flutter DevTools companion",
+      "status": "PENDING",
+      "implementation_status": "PENDING",
+      "tasks_total": 8,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": "Confirm the Flutter controller/VM-service contract and official package-extension layout.",
+      "blockers": []
+    },
+    {
+      "id": "v3-devtools-docs-examples",
+      "title": "v3-devtools-docs-examples — Guides, scenarios, README parity, and evidence",
+      "status": "PENDING",
+      "implementation_status": "PENDING",
+      "tasks_total": 9,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": "Start from a clean `origin/main` worktree and verify the existing Docusaurus/Pages baseline named in the assessment.",
+      "blockers": []
+    },
+    {
+      "id": "v3-devtools-release-certification",
+      "title": "v3-devtools-release-certification — Packed, secure, truthful 3.0 certification",
+      "status": "PENDING",
+      "implementation_status": "PENDING",
+      "tasks_total": 10,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": "Confirm every dependency is archived with clean T2 evidence and identify the immutable certification SHA.",
+      "blockers": []
+    }
+  ],
+  "children": {},
+  "migrationStatus": null
 }

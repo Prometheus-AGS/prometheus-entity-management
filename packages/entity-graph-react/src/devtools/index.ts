@@ -6,6 +6,9 @@ export {
 export type {
   EntityGraphDevtoolsContextValue,
   EntityGraphDevtoolsProviderProps,
+  EntityGraphDevtoolsStoreDefinition,
+  EntityGraphDevtoolsStoreDescriptor,
+  EntityGraphDevtoolsValuePolicyMode,
 } from "./provider";
 export {
   EntityGraphDevtools,
@@ -26,6 +29,9 @@ export { useEntityGraphInspectorModel } from "./use-model";
 export { useEntityGraphInspectorViewModel } from "./view-model";
 export type {
   ActivityTypeFilter,
+  InspectorActivePreview,
+  InspectorCommandKind,
+  InspectorCommandState,
   EntityGraphInspectorViewModel,
   EntityStatusFilter,
   EntityValueTab,

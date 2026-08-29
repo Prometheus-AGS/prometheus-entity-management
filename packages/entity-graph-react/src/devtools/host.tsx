@@ -10,7 +10,10 @@ import {
 import { createPortal } from "react-dom";
 import type { GraphStore } from "@prometheus-ags/entity-graph-core";
 import type { AttachGraphDevtoolsOptions } from "@prometheus-ags/entity-graph-core/devtools";
-import { EntityGraphDevtoolsProvider } from "./provider";
+import {
+  EntityGraphDevtoolsProvider,
+  type EntityGraphDevtoolsStoreDefinition,
+} from "./provider";
 import { isEntityGraphDevtoolsEnabled, type EntityGraphDevtoolsMode } from "./mode";
 import { ENTITY_GRAPH_DEVTOOLS_STYLES } from "./styles";
 
@@ -35,6 +38,7 @@ export function preloadEntityGraphDevtools(): Promise<unknown> {
 export interface EntityGraphDevtoolsProps {
   mode?: EntityGraphDevtoolsMode;
   store?: GraphStore;
+  stores?: readonly EntityGraphDevtoolsStoreDefinition[];
   options?: Omit<AttachGraphDevtoolsOptions, "enabled">;
   fallback?: ReactNode;
 }
@@ -43,6 +47,7 @@ export interface EntityGraphDevtoolsProps {
 export function EntityGraphDevtools({
   mode = "auto",
   store,
+  stores,
   options,
   fallback = <div className="pem-devtools-loading" role="status">Loading Graph DevTools…</div>,
 }: EntityGraphDevtoolsProps) {
@@ -68,7 +73,7 @@ export function EntityGraphDevtools({
     "div",
     { ref: hostRef, "data-pem-devtools-host": "" },
     shadowRoot && createPortal(
-      <EntityGraphDevtoolsProvider store={store} options={options}>
+      <EntityGraphDevtoolsProvider store={store} stores={stores} options={options}>
         <Suspense fallback={fallback}>
           <LazyInspector />
         </Suspense>

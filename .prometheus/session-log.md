@@ -1762,3 +1762,29 @@
   path repaired a missing start receipt. The known parent reset was restored at
   revision 358. Change 4 is 3/9 executable tasks complete (3/12 canonical,
   including three cancelled tasks); task 4 is next.
+
+## 2026-08-29 — React inspector task 4/9
+
+- Added explicit multi-store provider/host definitions, reference-counted all
+  supplied graph controllers, and exposed stable store descriptors plus one
+  selected controller/client without a hidden global UI registry.
+- Added protocol-client services and view-model commands for preview/diff/
+  restore, retained-snapshot rewind, exact return-to-live, copy, and JSON
+  export. Preview restore retains and consumes controller receipts and surfaces
+  typed conflicts instead of overwriting intervening changes.
+- Added Overview store/policy/export controls, entity JSON preview and proposed
+  field diff, exact restore, policy-safe copy, and Activity rewind/live controls
+  with visible expired-history feedback.
+- Corrected entity selection and virtualization to use collision-free
+  serialized `[type,id]` identities rather than the ambiguous display key.
+- Clipboard and downloads are treated as serialized trust boundaries. Value
+  copy uses only controller-policy projections; metadata-only exports actively
+  strip entity and mutation before/after values even when a shared controller
+  was created by a more permissive attachment.
+- TypeScript syntax parsing across 22 DevTools files, staged whitespace checks,
+  and task source-contract assertions passed. No typecheck, test, or build ran.
+- Task 4 completed at canonical revision 362 through the local runtime fallback
+  because the sovereign-sync control socket was unavailable. Sovereign sync was
+  not changed. The known parent reset was restored at revision 363. Change 4 is
+  now 4/9 executable tasks complete (4/12 canonical including three cancelled
+  tasks); task 5 is next.
