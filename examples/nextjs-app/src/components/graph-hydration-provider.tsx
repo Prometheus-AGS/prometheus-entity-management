@@ -19,6 +19,7 @@
 
 import { useState } from "react";
 import { GraphStoreProvider } from "@prometheus-ags/prometheus-entity-management";
+import { NextEntityGraphDevtools } from "@/components/entity-graph-devtools";
 import {
   hydrateGraphStore,
   type DehydratedGraphSnapshot,
@@ -34,5 +35,10 @@ export function GraphHydrationProvider({
   children,
 }: GraphHydrationProviderProps) {
   const [store] = useState(() => hydrateGraphStore(snapshot));
-  return <GraphStoreProvider store={store}>{children}</GraphStoreProvider>;
+  return (
+    <GraphStoreProvider store={store}>
+      {children}
+      <NextEntityGraphDevtools store={store} />
+    </GraphStoreProvider>
+  );
 }

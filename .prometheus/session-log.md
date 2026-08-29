@@ -1812,3 +1812,24 @@
   without changing sovereign sync. The known parent reset was restored at
   revision 368. Change 4 is now 5/9 executable tasks complete (5/12 canonical,
   including three cancelled tasks); task 6 is next.
+
+## 2026-08-29 — React inspector task 6/9
+
+- Added a Vite client-root opt-in that dynamically imports the public
+  `./devtools/auto` entry only under `import.meta.env.DEV`; Vite's documented
+  production replacement removes the branch.
+- Added a Next client composition component that waits until hydration,
+  excludes production activation, dynamically imports the public `./devtools`
+  entry, and passes the exact request-hydrated scoped browser store.
+- Preserved Next's request graph → serializable snapshot → scoped
+  `GraphStoreProvider` flow and both examples' existing component → hook →
+  store layering. No debug component writes graph business state.
+- Context7 confirmed current Next.js 16.2.9 Client Component boundaries and
+  Vite 8.0.10 development-condition replacement/tree-shaking semantics.
+- Scoped ESLint, TypeScript syntax parsing, source assertions, and diff
+  whitespace checks passed. No typecheck, test, or build ran; task 11 remains
+  the full assembled acceptance gate.
+- Task 6 completed at canonical revision 372 through the local runtime fallback
+  without changing sovereign sync. The known parent reset was restored at
+  revision 373. Change 4 is now 6/9 executable tasks complete (6/12 canonical,
+  including three cancelled tasks); task 10 is next.

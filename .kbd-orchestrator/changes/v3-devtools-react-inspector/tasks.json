@@ -69,9 +69,9 @@
     {
       "id": "6",
       "title": "Add Vite and Next example scenarios using the public DevTools entry and existing layered application APIs.",
-      "done": false,
-      "doneAt": null,
-      "doneBy": null,
+      "done": true,
+      "doneAt": "2026-08-29T22:36:10Z",
+      "doneBy": "codex",
       "files": [
         "examples/vite-app",
         "examples/nextjs-app"
