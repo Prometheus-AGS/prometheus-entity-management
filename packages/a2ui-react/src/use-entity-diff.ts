@@ -13,13 +13,15 @@
  * diff snapshots are point-in-time and do not cause continuous re-renders.
  */
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
+  graphStore,
   useGraphStore,
   recordGraphSnapshot,
   restoreGraphSnapshot,
   getTimeTravelState,
 } from "@prometheus-ags/entity-graph-core";
+import { attachGraphDevtools } from "@prometheus-ags/entity-graph-core/devtools";
 import type { FieldDiff, EntityDiffResult, DiffOperation } from "./types.js";
 
 // ── Primitive diff helpers ────────────────────────────────────────────────────
@@ -119,6 +121,11 @@ export function useEntityDiff({
 }: UseEntityDiffOptions): UseEntityDiffReturn {
   const [baselineSeq, setBaselineSeq] = useState<number | null>(null);
   const [diff, setDiff] = useState<EntityDiffResult | null>(null);
+
+  useEffect(() => {
+    const attachment = attachGraphDevtools(graphStore);
+    return () => attachment.detach();
+  }, []);
 
   const captureBaseline = useCallback((): number => {
     const seq = recordGraphSnapshot(`baseline:${entityType}:${entityId}`);

@@ -4,6 +4,7 @@ import { type DevtoolsEvent } from "@prometheus-ags/entity-graph-core";
 import { exportGraphSnapshot } from "@prometheus-ags/entity-graph-core";
 import { recordGraphSnapshot, restoreGraphSnapshotBySeq } from "@prometheus-ags/entity-graph-core";
 import { useGraphStoreApi } from "../../../graph-store";
+import { useLegacyTimeTravelController } from "../hooks/use-legacy-time-travel-controller";
 
 /**
  * Timeline tab (change C5) — time-travel-style inspection of the entity graph.
@@ -44,6 +45,7 @@ function describePayload(event: DevtoolsEvent): string {
 export function TimelineTab() {
   const { bus } = useEntityExplorer();
   const storeApi = useGraphStoreApi();
+  useLegacyTimeTravelController(storeApi);
   const seqRef = useRef(0);
   const [entries, setEntries] = useState<TimelineEntry[]>([]);
   const [selected, setSelected] = useState<number | null>(null);

@@ -54,9 +54,9 @@
     {
       "id": "5",
       "title": "Delegate deprecated root time-travel functions to the default-store controller.",
-      "done": false,
-      "doneAt": null,
-      "doneBy": null,
+      "done": true,
+      "doneAt": "2026-08-29T20:01:12Z",
+      "doneBy": "claude-code",
       "files": [
         "packages/entity-graph-core/src/devtools-time-travel.ts",
         "packages/entity-graph-core/src/index.ts"

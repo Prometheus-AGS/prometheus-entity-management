@@ -40,8 +40,11 @@ export interface GraphDevtoolsReturnToLiveAttempt {
 }
 
 export interface GraphDevtoolsSnapshotHistory {
-  capture(state: GraphState, eventSequence: number | null): GraphDevtoolsSnapshotReference;
+  capture(state: GraphState, eventSequence: number | null, label?: string): GraphDevtoolsSnapshotReference;
+  captureCompatibility(state: GraphState, label?: string): GraphDevtoolsSnapshotReference;
   getStatus(): GraphDevtoolsSnapshotHistoryStatus;
+  getReferences(): ReadonlyArray<Extract<GraphDevtoolsSnapshotReference, { status: "retained" }>>;
+  getCompatibilityReferences(): ReadonlyArray<Extract<GraphDevtoolsSnapshotReference, { status: "retained" }>>;
   read(cursor: number): GraphDevtoolsGraphData | null;
   rewind(
     cursor: number,
@@ -57,6 +60,8 @@ export interface GraphDevtoolsSnapshotHistory {
   ): GraphDevtoolsImportRestoreAttempt;
   returnToLive(restore: (data: GraphDevtoolsGraphData) => void): GraphDevtoolsReturnToLiveAttempt | null;
   leaveRewindForMutation(): GraphDevtoolsReturnToLiveAttempt | null;
+  configureLimit(snapshotLimit: number): void;
+  subscribe(listener: () => void): () => void;
   clear(): void;
   dispose(): void;
 }
@@ -185,6 +190,9 @@ export function createGraphDevtoolsSnapshotHistory(
   options: GraphDevtoolsSnapshotHistoryOptions,
 ): GraphDevtoolsSnapshotHistory {
   const retained: GraphDevtoolsRetainedSnapshot[] = [];
+  const compatibilityLabels = new Map<number, string | undefined>();
+  const listeners = new Set<() => void>();
+  let snapshotLimit = options.snapshotLimit;
   let retainedBytes = 0;
   let latestCursor = 0;
   let baselineCursor: number | null = null;
@@ -202,22 +210,34 @@ export function createGraphDevtoolsSnapshotHistory(
   let nextImportCandidate = 1;
   let disposed = false;
 
+  const notify = () => {
+    for (const listener of [...listeners]) {
+      try {
+        listener();
+      } catch {
+        // Compatibility observers are isolated from the snapshot owner.
+      }
+    }
+  };
+
   const unavailable = (
     cursor: number,
     capturedAt: string,
     eventSequence: number | null,
     reason: Extract<GraphDevtoolsSnapshotReference, { status: "unavailable" }>["reason"],
+    label?: string,
   ): GraphDevtoolsSnapshotReference => {
     const reference: Extract<GraphDevtoolsSnapshotReference, { status: "unavailable" }> = {
       cursor,
       capturedAt,
       eventSequence,
+      ...(label !== undefined ? { label } : {}),
       status: "unavailable",
       reason,
     };
     lastUnavailable = reference;
     unavailableReferences.set(cursor, reference);
-    while (unavailableReferences.size > Math.max(1, options.snapshotLimit)) {
+    while (unavailableReferences.size > Math.max(1, snapshotLimit)) {
       const oldest = unavailableReferences.keys().next().value as number | undefined;
       if (oldest === undefined) break;
       unavailableReferences.delete(oldest);
@@ -277,15 +297,17 @@ export function createGraphDevtoolsSnapshotHistory(
   };
 
   const history: GraphDevtoolsSnapshotHistory = {
-    capture(state, eventSequence) {
+    capture(state, eventSequence, label) {
       // Live graph activity invalidates an inspected-but-unrestored candidate
       // and releases its portion of the one controller-local memory budget.
       importedCandidate = null;
       const cursor = ++latestCursor;
       const capturedAt = new Date().toISOString();
       if (baselineCursor === null) baselineCursor = cursor;
-      if (disposed || options.snapshotLimit === 0 || options.snapshotBytesLimit === 0) {
-        return unavailable(cursor, capturedAt, eventSequence, "retention-disabled");
+      if (disposed || snapshotLimit === 0 || options.snapshotBytesLimit === 0) {
+        const reference = unavailable(cursor, capturedAt, eventSequence, "retention-disabled", label);
+        notify();
+        return reference;
       }
 
       let data: GraphDevtoolsGraphData;
@@ -294,27 +316,57 @@ export function createGraphDevtoolsSnapshotHistory(
         data = cloneGraphData(state);
         bytes = encodedBytes(data);
       } catch {
-        return unavailable(cursor, capturedAt, eventSequence, "capture-failed");
+        const reference = unavailable(cursor, capturedAt, eventSequence, "capture-failed", label);
+        notify();
+        return reference;
       }
       if (bytes > options.snapshotBytesLimit) {
-        return unavailable(cursor, capturedAt, eventSequence, "oversize");
+        const unavailableReference = unavailable(cursor, capturedAt, eventSequence, "oversize", label);
+        notify();
+        return unavailableReference;
       }
 
       const reference: Extract<GraphDevtoolsSnapshotReference, { status: "retained" }> = {
         cursor,
         capturedAt,
         eventSequence,
+        ...(label !== undefined ? { label } : {}),
         status: "retained",
         bytes,
       };
       retained.push({ reference, data });
       retainedBytes += bytes;
       while (
-        retained.length > options.snapshotLimit ||
+        retained.length > snapshotLimit ||
         retainedBytes > options.snapshotBytesLimit
       ) {
         const removed = retained.shift();
+        if (removed) compatibilityLabels.delete(removed.reference.cursor);
         retainedBytes -= removed?.reference.bytes ?? 0;
+      }
+      notify();
+      return reference;
+    },
+    captureCompatibility(state, label) {
+      const candidateCursor = mode === "live"
+        ? latestCursor
+        : activeSource === "retained"
+          ? activeCursor
+          : null;
+      const current = candidateCursor === null
+        ? undefined
+        : retained.find(({ reference }) => reference.cursor === candidateCursor);
+      if (current && !compatibilityLabels.has(current.reference.cursor)) {
+        compatibilityLabels.set(current.reference.cursor, label);
+        notify();
+        return {
+          ...current.reference,
+          ...(label !== undefined ? { label } : {}),
+        };
+      }
+      const reference = history.capture(state, null, label);
+      if (reference.status === "retained") {
+        compatibilityLabels.set(reference.cursor, label);
       }
       return reference;
     },
@@ -325,7 +377,7 @@ export function createGraphDevtoolsSnapshotHistory(
         source: activeSource,
         retainedSnapshots: retained.length,
         retainedBytes,
-        snapshotLimit: options.snapshotLimit,
+        snapshotLimit,
         byteLimit: options.snapshotBytesLimit,
         baselineCursor,
         oldestCursor: retained[0]?.reference.cursor ?? null,
@@ -343,6 +395,17 @@ export function createGraphDevtoolsSnapshotHistory(
           : null,
       };
     },
+    getReferences() {
+      return retained.map(({ reference }) => ({ ...reference }));
+    },
+    getCompatibilityReferences() {
+      return retained
+        .filter(({ reference }) => compatibilityLabels.has(reference.cursor))
+        .map(({ reference }) => {
+          const label = compatibilityLabels.get(reference.cursor);
+          return { ...reference, ...(label !== undefined ? { label } : {}) };
+        });
+    },
     read(cursor) {
       const snapshot = retained.find((candidate) => candidate.reference.cursor === cursor);
       return snapshot ? cloneGraphData(snapshot.data) : null;
@@ -351,7 +414,9 @@ export function createGraphDevtoolsSnapshotHistory(
       if (disposed) return null;
       const snapshot = retained.find((candidate) => candidate.reference.cursor === cursor);
       if (!snapshot) return expired(cursor);
-      return enterRewind(cursor, "retained", snapshot.data, liveState, restore);
+      const result = enterRewind(cursor, "retained", snapshot.data, liveState, restore);
+      if (result) notify();
+      return result;
     },
     inspectImport(candidate, storeId) {
       // Every inspection attempt replaces the prior inert candidate, including
@@ -360,7 +425,10 @@ export function createGraphDevtoolsSnapshotHistory(
       const rejected = (
         reason: Extract<GraphDevtoolsHistoryImportInspectionResult, { status: "rejected" }>["reason"],
         message: string,
-      ): GraphDevtoolsHistoryImportInspectionResult => ({ status: "rejected", reason, message });
+      ): GraphDevtoolsHistoryImportInspectionResult => {
+        notify();
+        return { status: "rejected", reason, message };
+      };
       try {
         if (!isRecord(candidate) || !isJsonValue(candidate) || candidate.protocol !== GRAPH_DEVTOOLS_PROTOCOL) {
           return rejected("invalid-envelope", "Import must use the Prometheus entity-graph DevTools protocol");
@@ -374,8 +442,8 @@ export function createGraphDevtoolsSnapshotHistory(
         if (!isTimestamp(candidate.exportedAt) || !Array.isArray(candidate.snapshots) || candidate.snapshots.length === 0) {
           return rejected("invalid-envelope", "Import metadata and at least one snapshot are required");
         }
-        if (candidate.snapshots.length > options.snapshotLimit) {
-          return rejected("snapshot-limit-exceeded", `Import contains ${candidate.snapshots.length} snapshots; limit is ${options.snapshotLimit}`);
+        if (candidate.snapshots.length > snapshotLimit) {
+          return rejected("snapshot-limit-exceeded", `Import contains ${candidate.snapshots.length} snapshots; limit is ${snapshotLimit}`);
         }
         const importBytes = encodedBytes(candidate);
         if (importBytes > options.snapshotBytesLimit) {
@@ -409,16 +477,18 @@ export function createGraphDevtoolsSnapshotHistory(
 
         const candidateBytes = snapshots.reduce((total, snapshot) => total + snapshot.bytes, 0);
         while (
-          retained.length + snapshots.length > options.snapshotLimit ||
+          retained.length + snapshots.length > snapshotLimit ||
           retainedBytes + candidateBytes > options.snapshotBytesLimit
         ) {
           const removed = retained.shift();
           if (!removed) break;
+          compatibilityLabels.delete(removed.reference.cursor);
           retainedBytes -= removed.reference.bytes;
         }
 
         const candidateId = `import-${nextImportCandidate++}`;
         importedCandidate = { candidateId, bytes: candidateBytes, snapshots };
+        notify();
         const receipt: GraphDevtoolsHistoryImportInspectionReceipt = {
           status: "awaiting-confirmation",
           candidateId,
@@ -444,6 +514,7 @@ export function createGraphDevtoolsSnapshotHistory(
       // Confirmation is one-shot. Reusing imported data requires a fresh,
       // visible inspection and confirmation cycle.
       importedCandidate = null;
+      notify();
       return restored;
     },
     returnToLive(restore) {
@@ -460,6 +531,7 @@ export function createGraphDevtoolsSnapshotHistory(
       activeCursor = null;
       activeSource = null;
       protectedLiveHead = null;
+      notify();
       return { previousCursor, previousSource };
     },
     leaveRewindForMutation() {
@@ -471,17 +543,44 @@ export function createGraphDevtoolsSnapshotHistory(
       activeCursor = null;
       activeSource = null;
       protectedLiveHead = null;
+      notify();
       return { previousCursor, previousSource };
+    },
+    configureLimit(nextLimit) {
+      if (!Number.isFinite(nextLimit) || nextLimit <= 0) return;
+      snapshotLimit = Math.max(1, Math.floor(nextLimit));
+      while (retained.length > snapshotLimit) {
+        const removed = retained.shift();
+        if (removed) compatibilityLabels.delete(removed.reference.cursor);
+        retainedBytes -= removed?.reference.bytes ?? 0;
+      }
+      while (unavailableReferences.size > Math.max(1, snapshotLimit)) {
+        const oldest = unavailableReferences.keys().next().value as number | undefined;
+        if (oldest === undefined) break;
+        unavailableReferences.delete(oldest);
+      }
+      if (importedCandidate && retained.length + importedCandidate.snapshots.length > snapshotLimit) {
+        importedCandidate = null;
+      }
+      notify();
+    },
+    subscribe(listener) {
+      if (disposed) return () => {};
+      listeners.add(listener);
+      return () => listeners.delete(listener);
     },
     clear() {
       retained.length = 0;
+      compatibilityLabels.clear();
       retainedBytes = 0;
       clearedThroughCursor = latestCursor;
       importedCandidate = null;
+      notify();
     },
     dispose() {
       disposed = true;
       retained.length = 0;
+      compatibilityLabels.clear();
       retainedBytes = 0;
       lastUnavailable = null;
       unavailableReferences.clear();
@@ -490,6 +589,7 @@ export function createGraphDevtoolsSnapshotHistory(
       activeSource = null;
       protectedLiveHead = null;
       importedCandidate = null;
+      listeners.clear();
     },
   };
 

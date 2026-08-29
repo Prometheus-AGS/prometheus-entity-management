@@ -82,6 +82,7 @@ export type GraphDevtoolsSnapshotReference =
       cursor: number;
       capturedAt: string;
       eventSequence: number | null;
+      label?: string;
       status: "retained";
       bytes: number;
     }
@@ -89,6 +90,7 @@ export type GraphDevtoolsSnapshotReference =
       cursor: number;
       capturedAt: string;
       eventSequence: number | null;
+      label?: string;
       status: "unavailable";
       reason: "retention-disabled" | "capture-failed" | "oversize";
     };

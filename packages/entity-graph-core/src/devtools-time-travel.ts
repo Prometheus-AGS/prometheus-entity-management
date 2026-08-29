@@ -1,24 +1,17 @@
 /**
- * devtools-time-travel.ts — G4 parity: true time-travel for the entity graph.
+ * Deprecated root time-travel compatibility facade.
  *
- * The Timeline tab (C5) inspected a read-only history log. This adds the
- * defining Redux-DevTools capability the gap analysis called out: **rewind the
- * LIVE graph to a prior recorded state and replay forward.**
- *
- * Model:
- * - `recordGraphSnapshot()` captures the canonical graph data (entities, patches,
- *   entityStates, syncMetadata, lists) into a bounded ring (default 50).
- * - `restoreGraphSnapshot(index)` writes a captured snapshot back into the live
- *   Zustand store — the graph (and every subscriber/view) reverts to that state.
- * - `getTimeTravelState()` exposes the ring + current cursor for the devtools UI.
- *
- * Snapshots are deep-cloned on capture and on restore so restoring never aliases
- * ring contents into the live store (a later mutation must not corrupt history).
- *
- * This is debug-time machinery: it is intended to run behind the EntityExplorer,
- * not in production data paths.
+ * Snapshot data, cursors, retention, rewind state, and listeners are owned by
+ * the optional per-store DevTools controller. This root module imports only a
+ * lightweight delegate bridge, so normal package imports do not pull the
+ * optional controller/protocol implementation into the root bundle.
  */
 
+import {
+  getGraphDevtoolsCompatibilityDelegate,
+  resetGraphDevtoolsCompatibility,
+  subscribeGraphDevtoolsCompatibility,
+} from "./devtools-compatibility-bridge";
 import { graphStore, type GraphStore } from "./graph";
 
 type GraphSlice = Pick<
@@ -27,147 +20,75 @@ type GraphSlice = Pick<
 >;
 
 export interface TimeTravelSnapshot {
-  /** Monotonic id (capture order). */
+  /** Monotonic controller cursor for the captured state. */
   seq: number;
   /** Capture timestamp (ms). */
   at: number;
-  /** Optional label (e.g. the action that produced this state). */
+  /** Optional compatibility label. */
   label?: string;
+  /** Snapshot payloads are controller-private and no longer exposed at root. */
   data: GraphSlice;
 }
 
 export interface TimeTravelState {
   snapshots: ReadonlyArray<Omit<TimeTravelSnapshot, "data">>;
-  /** Index currently restored, or null if live (at head). */
+  /** Compatibility ring index currently restored, or null when live. */
   cursor: number | null;
   capacity: number;
 }
 
-interface StoreTimeTravelState {
-  capacity: number;
-  ring: TimeTravelSnapshot[];
-  seqCounter: number;
-  cursor: number | null;
-  listeners: Set<() => void>;
-}
-
-let storeStates = new WeakMap<GraphStore, StoreTimeTravelState>();
-
-function getStoreState(storeApi: GraphStore): StoreTimeTravelState {
-  let state = storeStates.get(storeApi);
-  if (!state) {
-    state = {
-      capacity: 50,
-      ring: [],
-      seqCounter: 0,
-      cursor: null,
-      listeners: new Set(),
-    };
-    storeStates.set(storeApi, state);
-  }
-  return state;
-}
-
-function notify(state: StoreTimeTravelState): void {
-  for (const listener of state.listeners) listener();
-}
-
-function cloneSlice(s: GraphSlice): GraphSlice {
-  return {
-    entities: structuredClone(s.entities),
-    patches: structuredClone(s.patches),
-    entityStates: structuredClone(s.entityStates),
-    syncMetadata: structuredClone(s.syncMetadata),
-    lists: structuredClone(s.lists),
-  };
-}
-
-/** Configure ring capacity (number of retained snapshots). */
+/** @deprecated Attach `@prometheus-ags/entity-graph-core/devtools` and configure its controller. */
 export function configureTimeTravel(
   opts: { capacity?: number },
   storeApi: GraphStore = graphStore,
 ): void {
-  const state = getStoreState(storeApi);
-  if (opts.capacity && opts.capacity > 0) state.capacity = opts.capacity;
-  if (state.ring.length > state.capacity) state.ring = state.ring.slice(-state.capacity);
-  notify(state);
-}
-
-/** Capture the current live graph state into the ring. Returns the snapshot seq. */
-export function recordGraphSnapshot(label?: string, storeApi: GraphStore = graphStore): number {
-  const state = getStoreState(storeApi);
-  const s = storeApi.getState();
-  const snap: TimeTravelSnapshot = {
-    seq: state.seqCounter++,
-    at: Date.now(),
-    ...(label !== undefined ? { label } : {}),
-    data: cloneSlice(s),
-  };
-  state.ring.push(snap);
-  if (state.ring.length > state.capacity) state.ring = state.ring.slice(-state.capacity);
-  // Recording new state means we're at the live head again.
-  state.cursor = null;
-  notify(state);
-  return snap.seq;
+  if (opts.capacity && opts.capacity > 0) {
+    getGraphDevtoolsCompatibilityDelegate(storeApi)?.configure(opts.capacity);
+  }
 }
 
 /**
- * Restore the live graph to the snapshot at ring `index` (0-based into the
- * current ring). The Zustand store is overwritten with a deep clone of the
- * captured slice, so all subscribers re-render at that historical state.
- * Returns true if restored.
+ * @deprecated Use the attached controller's automatic snapshot history.
+ * Returns `-1` when the optional controller is not attached to `storeApi`.
  */
+export function recordGraphSnapshot(label?: string, storeApi: GraphStore = graphStore): number {
+  return getGraphDevtoolsCompatibilityDelegate(storeApi)?.capture(label) ?? -1;
+}
+
+/** @deprecated Use `controller.rewind(cursor)` from the explicit `./devtools` entry. */
 export function restoreGraphSnapshot(index: number, storeApi: GraphStore = graphStore): boolean {
-  const state = getStoreState(storeApi);
-  const snap = state.ring[index];
-  if (!snap) return false;
-  const clone = cloneSlice(snap.data);
-  storeApi.setState(clone as Partial<ReturnType<typeof graphStore.getState>>);
-  state.cursor = index;
-  notify(state);
-  return true;
+  return getGraphDevtoolsCompatibilityDelegate(storeApi)?.restoreByIndex(index) ?? false;
 }
 
-/** Restore by capture seq (stable across ring eviction within capacity). */
+/** @deprecated Use `controller.rewind(cursor)` from the explicit `./devtools` entry. */
 export function restoreGraphSnapshotBySeq(seq: number, storeApi: GraphStore = graphStore): boolean {
-  const state = getStoreState(storeApi);
-  const index = state.ring.findIndex((snapshot) => snapshot.seq === seq);
-  return index === -1 ? false : restoreGraphSnapshot(index, storeApi);
+  return getGraphDevtoolsCompatibilityDelegate(storeApi)?.restoreByCursor(seq) ?? false;
 }
 
-/** Step the cursor by `delta` (negative = back in time) and restore. */
+/** @deprecated Resolve retained cursors through the explicit per-store controller. */
 export function stepTimeTravel(delta: number, storeApi: GraphStore = graphStore): boolean {
-  const state = getStoreState(storeApi);
-  const base = state.cursor ?? state.ring.length - 1;
-  const target = Math.max(0, Math.min(state.ring.length - 1, base + delta));
-  return restoreGraphSnapshot(target, storeApi);
+  return getGraphDevtoolsCompatibilityDelegate(storeApi)?.step(delta) ?? false;
 }
 
-/** Snapshot metadata + cursor for the devtools UI (no heavy data payloads). */
+/** @deprecated Use `controller.getSnapshotHistoryStatus()` and controller events. */
 export function getTimeTravelState(storeApi: GraphStore = graphStore): TimeTravelState {
-  const state = getStoreState(storeApi);
-  return {
-    snapshots: state.ring.map(({ data: _data, ...meta }) => meta),
-    cursor: state.cursor,
-    capacity: state.capacity,
+  return getGraphDevtoolsCompatibilityDelegate(storeApi)?.getState() ?? {
+    snapshots: [],
+    cursor: null,
+    capacity: 50,
   };
 }
 
-/** Subscribe to ring/cursor changes (for useSyncExternalStore in the UI). */
+/** @deprecated Subscribe to the explicit per-store controller. */
 export function subscribeTimeTravel(
   cb: () => void,
   storeApi: GraphStore = graphStore,
 ): () => void {
-  const state = getStoreState(storeApi);
-  state.listeners.add(cb);
-  return () => state.listeners.delete(cb);
+  return subscribeGraphDevtoolsCompatibility(storeApi, cb);
 }
 
-/** @internal Test-only reset. */
+/** @internal Test-only bridge reset. It owns no snapshot data. */
 export function __resetTimeTravel(storeApi?: GraphStore): void {
-  if (storeApi) {
-    storeStates.delete(storeApi);
-    return;
-  }
-  storeStates = new WeakMap<GraphStore, StoreTimeTravelState>();
+  const target = storeApi ?? graphStore;
+  resetGraphDevtoolsCompatibility(target);
 }

@@ -1,5 +1,9 @@
 import type { GraphState, GraphStore } from "../graph";
 import {
+  registerGraphDevtoolsCompatibilityDelegate,
+  registerGraphDevtoolsCompatibilityFactory,
+} from "../devtools-compatibility-bridge";
+import {
   advanceGraphDevtoolsEntityRevisions,
   graphDevtoolsEntityIdentityKey,
   projectGraphDevtoolsEntityRecords,
@@ -31,6 +35,7 @@ import {
   type GraphDevtoolsResult,
   type GraphDevtoolsSnapshot,
   type GraphDevtoolsSnapshotHistoryStatus,
+  type GraphDevtoolsSnapshotReference,
   type GraphDevtoolsTimeTravelEvent,
   type GraphDevtoolsTransport,
   type GraphDevtoolsValuePolicy,
@@ -68,6 +73,12 @@ export interface GraphDevtoolsController {
   getHistory(): ReadonlyArray<GraphDevtoolsEvent>;
   getHistoryStatus(): GraphDevtoolsHistoryStatus;
   getSnapshotHistoryStatus(): GraphDevtoolsSnapshotHistoryStatus;
+  getSnapshotReferences(): ReadonlyArray<Extract<GraphDevtoolsSnapshotReference, { status: "retained" }>>;
+  getCompatibilitySnapshotReferences(): ReadonlyArray<Extract<GraphDevtoolsSnapshotReference, { status: "retained" }>>;
+  captureCompatibilitySnapshot(label?: string): number;
+  configureSnapshotLimit(snapshotLimit: number): void;
+  subscribeSnapshotHistory(listener: () => void): () => void;
+  clearSnapshotHistory(): void;
   getEntityRecords(): GraphDevtoolsEntityRecordsSnapshot;
   getViews(): GraphDevtoolsViewsSnapshot;
   getRelationships(): GraphDevtoolsRelationshipsSnapshot;
@@ -517,6 +528,26 @@ function createController(
     getSnapshotHistoryStatus() {
       return snapshotHistory.getStatus();
     },
+    getSnapshotReferences() {
+      return snapshotHistory.getReferences();
+    },
+    getCompatibilitySnapshotReferences() {
+      return snapshotHistory.getCompatibilityReferences();
+    },
+    captureCompatibilitySnapshot(label) {
+      const reference = snapshotHistory.captureCompatibility(store.getState(), label);
+      return reference.status === "retained" ? reference.cursor : -1;
+    },
+    configureSnapshotLimit(nextSnapshotLimit) {
+      snapshotHistory.configureLimit(nextSnapshotLimit);
+      capabilities.limits.snapshots = snapshotHistory.getStatus().snapshotLimit;
+    },
+    subscribeSnapshotHistory(listener) {
+      return snapshotHistory.subscribe(listener);
+    },
+    clearSnapshotHistory() {
+      snapshotHistory.clear();
+    },
     getEntityRecords() {
       return projectGraphDevtoolsEntityRecords(
         store.getState(),
@@ -799,11 +830,64 @@ function createController(
     },
   };
 
+  const unregisterCompatibility = registerGraphDevtoolsCompatibilityDelegate(store, {
+    configure(capacity) {
+      controller.configureSnapshotLimit(capacity);
+    },
+    capture(label) {
+      return controller.captureCompatibilitySnapshot(label);
+    },
+    restoreByIndex(index) {
+      if (!Number.isInteger(index)) return false;
+      const reference = controller.getCompatibilitySnapshotReferences()[index];
+      if (!reference) return false;
+      return controller.rewind(reference.cursor)?.status === "rewound";
+    },
+    restoreByCursor(cursor) {
+      return controller.rewind(cursor)?.status === "rewound";
+    },
+    step(delta) {
+      if (!Number.isInteger(delta)) return false;
+      const references = controller.getCompatibilitySnapshotReferences();
+      if (references.length === 0) return false;
+      const status = controller.getSnapshotHistoryStatus();
+      const activeIndex = status.source === "retained" && status.cursor !== null
+        ? references.findIndex((reference) => reference.cursor === status.cursor)
+        : -1;
+      const base = activeIndex === -1 ? references.length - 1 : activeIndex;
+      const target = Math.max(0, Math.min(references.length - 1, base + delta));
+      return controller.rewind(references[target]!.cursor)?.status === "rewound";
+    },
+    getState() {
+      const references = controller.getCompatibilitySnapshotReferences();
+      const status = controller.getSnapshotHistoryStatus();
+      const cursor = status.source === "retained" && status.cursor !== null
+        ? references.findIndex((reference) => reference.cursor === status.cursor)
+        : -1;
+      return {
+        snapshots: references.map((reference) => ({
+          seq: reference.cursor,
+          at: Date.parse(reference.capturedAt),
+          ...(reference.label !== undefined ? { label: reference.label } : {}),
+        })),
+        cursor: cursor === -1 ? null : cursor,
+        capacity: status.snapshotLimit,
+      };
+    },
+    subscribe(listener) {
+      return controller.subscribeSnapshotHistory(listener);
+    },
+    clear() {
+      controller.clearSnapshotHistory();
+    },
+  });
+
   const dispose = () => {
     if (disposed) return;
     activeClients = 0;
     publishLifecycle("disposed");
     disposed = true;
+    unregisterCompatibility();
     unsubscribeStore();
     listeners.clear();
     history.length = 0;
@@ -877,3 +961,8 @@ export function getGraphDevtoolsController(store: GraphStore): GraphDevtoolsCont
   const entry = controllers.get(store);
   return entry && !entry.controller.isDisposed() ? entry.controller : null;
 }
+
+registerGraphDevtoolsCompatibilityFactory((store) => {
+  const attachment = attachGraphDevtools(store);
+  return () => attachment.detach();
+});

@@ -1595,3 +1595,39 @@
 - Phase remains 2/9 changes complete. Change 3 is 4/7 executable tasks complete;
   next task delegates deprecated root time-travel functions to the default
   store controller before the single assembled integration gate.
+
+## 2026-08-29 — DevTools time travel task 5/7
+
+- Removed the deprecated root module's independent WeakMap snapshot rings,
+  payload clones, cursor state, capacity state, and listener ownership. The
+  existing public functions now delegate to the one optional DevTools
+  controller attached to the selected graph store.
+- Added a lightweight, versioned compatibility bridge shared across packed ESM
+  and CJS entry points. The bridge carries only controller delegates,
+  attachment cleanup, and facade listeners; it never owns graph values,
+  snapshots, history retention, or rewind cursors.
+- Loading the explicit `./devtools` entry registers a lazy controller factory,
+  while the root entry remains free of static imports from the optional
+  controller, protocol, and snapshot-history implementation. Root-only use
+  reports the documented unavailable results until DevTools is loaded.
+- Controller-owned compatibility metadata presents manually requested
+  checkpoints through the legacy ring-shaped view without duplicating the
+  automatic snapshot captured for the same graph publication. Repeated manual
+  captures without a mutation still receive distinct stable cursors.
+- Compatibility configuration, capture, restore by index/cursor, stepping,
+  subscription, clearing, and reset all flow through the owning per-store
+  controller. Controller retention continues to evict whole snapshot payloads
+  under the single count/byte policy.
+- The A2UI entity-diff hook and React timeline hook now attach/detach the
+  optional controller through hook-layer lifecycles, preserving the repository
+  rule that UI components do not own store/service communication.
+- Security/audit boundary: the cross-bundle global symbol contains only the
+  versioned delegate bridge and no business or snapshot data. Full graph values
+  remain controller-local and never cross the root compatibility facade.
+- No unit, component, isolated, mock-backed, snapshot, partial integration,
+  typecheck, or build ran. Signed task completion and both before/after hooks
+  passed with zero failures; the known incomplete-change projection reset was
+  restored through signed KBD revision 333.
+- Phase remains 2/9 changes complete. Change 3 is 5/7 executable tasks complete;
+  next task runs the one assembled multi-store core/packed-consumer integration
+  gate across the complete production path.
