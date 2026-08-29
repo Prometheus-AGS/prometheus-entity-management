@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.1
+
+- Refresh the public package guide with the verified pub.dev installation path,
+  Android and iOS smoke evidence, and current release boundaries.
+- Document the Flutter A2UI 1.0-RC compatibility example over GenUI 0.10.2 and
+  its application-owned action policy.
+- Retain the 3.0.0 Dart runtime API without behavioral or compatibility changes.
+
 ## 3.0.0
 
 - Preserve one Dart-native normalized entity graph with ID-only lists.

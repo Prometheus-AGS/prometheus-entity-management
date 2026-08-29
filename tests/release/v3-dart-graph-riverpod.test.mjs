@@ -16,7 +16,7 @@ const evidenceRoot = join(
 
 test("the stable Dart package and generated Riverpod contract are structurally complete", () => {
   const report = verifyDartGraphRiverpod({ runFlutter: false });
-  assert.equal(report.package, "entity_graph_flutter@3.0.0");
+  assert.equal(report.package, "entity_graph_flutter@3.0.1");
   assert.equal(report.result, "pass");
   assert.ok(Object.values(report.contracts).every((result) => result === "pass"));
   assert.equal(report.publicApiDeclarations, 81);

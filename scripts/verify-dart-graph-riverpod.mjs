@@ -93,7 +93,7 @@ export function verifyDartGraphRiverpod({ runFlutter = true } = {}) {
   const dartLedger = verifyDartLedger();
 
   for (const phrase of [
-    "version: 3.0.0",
+    "version: 3.0.1",
     'sdk: ">=3.12.0 <4.0.0"',
     'flutter: ">=3.44.0"',
     'flutter_riverpod: ">=3.3.2 <3.4.0"',
@@ -182,7 +182,7 @@ export function verifyDartGraphRiverpod({ runFlutter = true } = {}) {
 
   return {
     schemaVersion: "1",
-    package: "entity_graph_flutter@3.0.0",
+    package: "entity_graph_flutter@3.0.1",
     result: "pass",
     flutter: {
       executed: runFlutter,

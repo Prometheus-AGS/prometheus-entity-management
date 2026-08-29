@@ -18,7 +18,7 @@ Provides a **normalized, reactive entity graph store** for Flutter with:
 
 This directory is the sole canonical Dart graph package in the 3.0 release inventory. Reusable KnowMe source history is retained separately under `provenance/imports/knowme-flutter` as a non-buildable, non-workspace, non-public review boundary; it is not another package and must never be compiled or published.
 
-See [`release/flutter-source-provenance.md`](https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/flutter-source-provenance.md) for source revisions, license and attribution, commit mappings, and path dispositions. Runtime and Riverpod evidence is documented separately in [`release/dart-graph-riverpod.md`](https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/dart-graph-riverpod.md). Those earlier gates did not authorize publication or certify the complete application; subsequent release work published `3.0.0` and added Android emulator and iOS simulator smoke evidence.
+See [`release/flutter-source-provenance.md`](https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/flutter-source-provenance.md) for source revisions, license and attribution, commit mappings, and path dispositions. Runtime and Riverpod evidence is documented separately in [`release/dart-graph-riverpod.md`](https://github.com/Prometheus-AGS/prometheus-entity-management/blob/main/release/dart-graph-riverpod.md). Subsequent release work added Android emulator and iOS simulator smoke evidence plus strict A2UI 1.0-RC input compatibility over the published GenUI 0.10.2 renderer boundary.
 
 The complete application composition is demonstrated in
 [`examples/flutter-riverpod`](https://github.com/Prometheus-AGS/prometheus-entity-management/tree/main/examples/flutter-riverpod) and
@@ -52,14 +52,14 @@ caches or call transport APIs directly.
 
 ```yaml
 dependencies:
-  entity_graph_flutter: ^3.0.0
+  entity_graph_flutter: ^3.0.1
   flutter_riverpod: ^3.3.2
 ```
 
 Or add it from the command line:
 
 ```bash
-flutter pub add entity_graph_flutter:^3.0.0
+flutter pub add entity_graph_flutter:^3.0.1
 ```
 
 ### 2. Wrap your app with `ProviderScope`
@@ -289,12 +289,15 @@ every widget watching `Invoice` entities rebuilds in the same frame.
 
 ## Current publication and evidence boundary
 
-- `entity_graph_flutter@3.0.0` is public on pub.dev, its archive hash is recorded
-  in `release/pubdev-registry-status.json`, and a clean consumer import/analyzer
-  check passed. pub.dev has not yet assigned the package to a verified publisher.
+- The live pub.dev version and archive hash are recorded in
+  `release/pubdev-registry-status.json`, and a clean consumer import/analyzer
+  check is required after every publication.
 - Flutter 3.44.8 generation, analysis, package/showcase tests, three goldens,
   Android emulator, and iOS simulator smoke lanes are recorded in
   `examples/coverage.json`.
+- The Flutter showcase accepts strict A2UI 1.0-RC surfaces and normalizes them
+  to the published GenUI 0.10.2 renderer only after catalog, component,
+  function, action, tenant, and entity validation.
 - Physical devices, store submission, signing, and a cross-ecosystem stable
   release bundle are not claimed.
 - realtime coalescing or durable peer convergence.
