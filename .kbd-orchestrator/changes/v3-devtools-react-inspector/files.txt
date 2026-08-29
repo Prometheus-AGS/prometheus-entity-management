@@ -1,0 +1,15 @@
+.kbd-orchestrator/changes/v3-devtools-react-inspector
+.kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-react-inspector
+.kbd-orchestrator/phases/v3-devtools-parity/ui-spec.md
+.prometheus/decisions.md
+.prometheus/session-log.md
+examples/nextjs-app
+examples/vite-app
+package.json
+packages/entity-graph-react/README.md
+packages/entity-graph-react/package.json
+packages/entity-graph-react/src/devtools
+packages/entity-graph-react/tsup.config.ts
+prometheus-entity-skills
+scripts
+tests/browser

@@ -97,3 +97,21 @@ evicted, so event retention cannot safely double as rewind storage. A single
 controller-owned snapshot policy removes the legacy second owner, preserves
 store isolation and deterministic teardown, and gives React and Flutter one
 portable meaning for retention, expiry, rewind, and exact return-to-live.
+
+## 2026-08-29 — React DevTools uses explicit optional entries and Shadow DOM isolation
+
+The React package preserves its ordinary root as a side-effect-free production
+surface. The new `./devtools` entry is also side-effect-free and owns the
+provider, hooks/view models, explicit host component, and lazy inspector
+control. `./devtools/auto` is the only import-time mounting surface and is
+declared side-effectful so consumer bundlers do not erase the explicit debug
+opt-in. It checks development/host mode before loading the heavy inspector or
+touching the DOM and emits no server markup.
+
+The embedded inspector mounts into one open Shadow Root. Its CSS is scoped
+inside that root, performs no host reset or remote font request, and consumes
+inherited `--pem-devtools-*` overrides with self-contained fallbacks. This
+keeps the debug UI visually reliable without contaminating the application and
+preserves intentional host theming. The existing lightweight
+`useGraphDevTools` root export remains compatible but does not import the new
+inspector.

@@ -1691,3 +1691,26 @@
 - No unit, component, isolated, mock-backed, snapshot, or partial integration
   test was created or run. Phase state is now 3/9 changes complete; change 4 is
   `v3-devtools-react-inspector`.
+
+## 2026-08-29 — React inspector task 1/9
+
+- Confirmed both dependency gates from their archived manifests and acceptance
+  receipts. Entity inspection is archived at `dd574d24`; time travel is
+  archived at `91fa67cf`; every executable task in both manifests is complete.
+- Confirmed the optional core entry exposes the entity, dirty/original/live,
+  registered-view membership, relationship, preview/restore, event-history,
+  snapshot-history, rewind, return-to-live, and value-policy contracts required
+  by the accepted React UI specification.
+- Materialized the nine-task native change surface, excluding canonical tasks
+  7–9 because they are explicitly cancelled. Tasks 1–6 and 10–12 remain the
+  executable contract.
+- Froze the React packaging boundary: preserve the lightweight root hook;
+  publish a side-effect-free `./devtools` entry and an explicitly
+  side-effectful `./devtools/auto` opt-in; check enablement before lazy loading
+  or DOM mutation; isolate the embedded instrument in an open Shadow Root with
+  inherited `--pem-devtools-*` tokens and no global CSS.
+- No test, typecheck, or build ran. Task 11 remains the sole assembled packed
+  Vite/Next/browser acceptance gate after the complete production path exists.
+- Canonical task 1 completed at signed revision 347. The known task-after
+  parent reset recurred and was corrected through signed revision 348. Change
+  4 remains in progress at 1/9 executable tasks; task 2 is next.
