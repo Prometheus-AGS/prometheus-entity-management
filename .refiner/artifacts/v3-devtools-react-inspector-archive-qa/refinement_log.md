@@ -38,3 +38,14 @@
 - Aligned the package Next.js snippet with the retained unmount guard.
 - Corrected the packed verifier so `dirtyTaskFiles` is measured over the
   production/package/browser-gate scope rather than hardcoded `true`.
+
+## Iteration 3 — 2026-08-29
+
+- The corrected isolated review passed with 2 evidence-quality warnings and no
+  critical or blocking finding.
+- Changed the assembled report to retain `gateStartedAt` and stamp
+  `generatedAt` only after the embedded browser receipt exists.
+- Promoted the accepted performance budgets into explicit receipt thresholds
+  and executable assertions: target 500 events/s, minimum measured 490
+  events/s, search p95 under 100 ms, preloaded open p95 under 150 ms, no
+  inspector long task over 50 ms, and at most 500 retained events.

@@ -1,0 +1,26 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "k3",
+  "producer_model": "openai/gpt-5.6-sol",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-react-inspector/task-11-packed-browser-acceptance.json",
+      "line": 3,
+      "claim": "The acceptance file's generatedAt (23:50:41.807Z) precedes the recordedAt of the receipt embedded inside it (23:51:21.908Z) and the Playwright run it summarizes (startTime 23:51:01.355Z), so the provenance timestamp of the assembled record does not actually denote when the record was assembled.",
+      "evidence": "Hunk: `\"generatedAt\": \"2026-08-29T23:50:41.807Z\"` vs. embedded `\"recordedAt\": \"2026-08-29T23:51:21.908Z\"` in the same file, and `\"startTime\": \"2026-08-29T23:51:01.355Z\"` in task-11-playwright-report.json. Any consumer ordering or validating evidence by generatedAt will mis-sequence this artifact relative to the evidence it contains.",
+      "suggested_fix": "Rename the field to reflect gate-start time (e.g. `gateStartedAt`) or stamp `generatedAt` when the acceptance record is finalized, after the embedded receipt and Playwright report exist."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-react-inspector/task-11-browser-evidence.json",
+      "line": 83,
+      "claim": "The re-recorded run moved every performance metric in the negative direction \u2014 search p95 latency rose ~36% (14.3ms \u2192 19.4ms), panel-open p95 rose (11.9ms \u2192 13.2ms), and throughput fell below the nominal 500 events/sec emit rate (498.88) \u2014 yet status remains \"pass\" because the evidence schema carries no threshold fields, so the task-11 'responsive 500-event interaction' criterion has no enforced numeric guard and regressions pass silently.",
+      "evidence": "Hunk in task-11-browser-evidence.json: `\"achievedEventsPerSecond\": 498.8825031929222` (< 500 for `\"emittedEvents\": 5000`), `\"searchLatencyP95Ms\": 19.399999998509884` vs. prior 14.3; criterion task 11 requires proving 'responsive 500-event interaction' but the artifact contains only raw numbers with no assertion bounds.",
+      "suggested_fix": "Add explicit threshold fields (e.g. maxSearchLatencyP95Ms, minEventsPerSecond) to the evidence schema and have the gate assert against them, so 'responsive' is verified rather than implied by a passing status."
+    }
+  ]
+}

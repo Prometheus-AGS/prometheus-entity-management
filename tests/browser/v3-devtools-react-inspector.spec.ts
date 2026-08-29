@@ -15,6 +15,14 @@ const urls = {
 };
 const scenarios: Record<string, { status: "pass"; proof: Record<string, unknown> }> = {};
 const screenshots: string[] = [];
+const performanceThresholds = {
+  targetEventsPerSecond: 500,
+  minEventsPerSecond: 490,
+  maxSearchLatencyP95Ms: 100,
+  maxPreloadedPanelOpenP95Ms: 150,
+  maxInspectorLongTasksOver50Ms: 0,
+  maxRetainedEvents: 500,
+} as const;
 
 function pass(id: string, proof: Record<string, unknown>) {
   scenarios[id] = { status: "pass", proof };
@@ -279,7 +287,10 @@ test("narrow layout and sustained 500-event interaction remain responsive", asyn
     await closeInspector(page);
   }
   const panelOpenP95 = percentile(openDurations, 0.95);
-  expect(panelOpenP95, `preloaded panel durations: ${JSON.stringify(openDurations)}`).toBeLessThan(150);
+  expect(
+    panelOpenP95,
+    `preloaded panel durations: ${JSON.stringify(openDurations)}`,
+  ).toBeLessThan(performanceThresholds.maxPreloadedPanelOpenP95Ms);
 
   await openInspector(page);
   await page.evaluate(() => {
@@ -342,26 +353,31 @@ test("narrow layout and sustained 500-event interaction remain responsive", asyn
     __pemStress: Promise<{ emitted: number; durationMs: number; longTasks: number[] }>;
   }).__pemStress);
   const searchP95 = percentile(searchLatencies, 0.95);
+  const achievedEventsPerSecond = stress.emitted / (stress.durationMs / 1_000);
   expect(stress.emitted).toBe(5_000);
   expect(stress.durationMs).toBeGreaterThanOrEqual(9_500);
   expect(stress.durationMs).toBeLessThan(13_000);
-  expect(searchP95).toBeLessThan(100);
-  expect(stress.longTasks.filter((duration) => duration > 50)).toEqual([]);
+  expect(achievedEventsPerSecond).toBeGreaterThanOrEqual(performanceThresholds.minEventsPerSecond);
+  expect(searchP95).toBeLessThan(performanceThresholds.maxSearchLatencyP95Ms);
+  expect(stress.longTasks.filter((duration) => duration > 50)).toHaveLength(
+    performanceThresholds.maxInspectorLongTasksOver50Ms,
+  );
 
   await page.getByRole("tab", { name: /Overview/ }).click();
   const retainedText = await page.locator(".pem-metric").filter({ hasText: "Retained events" }).locator("strong").textContent();
   const retainedEvents = Number((retainedText ?? "").replaceAll(",", ""));
-  expect(retainedEvents).toBeLessThanOrEqual(500);
+  expect(retainedEvents).toBeLessThanOrEqual(performanceThresholds.maxRetainedEvents);
   await screenshot(page, "task-11-responsive-500-events.png");
   pass("responsive-500-event-interaction", {
     viewport: { width: 390, height: 844, safeAreaPanel: true, drillBack: true },
     hardwareBaseline: hardware,
     emittedEvents: stress.emitted,
     durationMs: stress.durationMs,
-    achievedEventsPerSecond: stress.emitted / (stress.durationMs / 1_000),
+    achievedEventsPerSecond,
     searchLatencyP95Ms: searchP95,
     preloadedPanelOpenP95Ms: panelOpenP95,
     inspectorLongTasksOver50Ms: 0,
     retainedEvents,
+    thresholds: performanceThresholds,
   });
 });

@@ -38,7 +38,8 @@ const evidenceDirectory = resolve(
 
 const report = {
   schemaVersion: 1,
-  generatedAt: new Date().toISOString(),
+  gateStartedAt: new Date().toISOString(),
+  generatedAt: null,
   boundary: "packed-vite-next-browser-acceptance",
   source: { commit: await gitHead(), dirtyTaskFiles: await gitTaskFilesDirty() },
   packages: {
@@ -119,6 +120,7 @@ try {
   report.browser = { status: "pass", receipt: browserReceipt };
 
   if (reportPath) {
+    report.generatedAt = new Date().toISOString();
     const absolute = resolve(workspaceRoot, reportPath);
     await mkdir(dirname(absolute), { recursive: true });
     await writeFile(absolute, `${JSON.stringify(report, null, 2)}\n`);
@@ -126,6 +128,7 @@ try {
   process.stdout.write("[devtools-react-inspector] PASS: packed Vite/Next/browser acceptance gate.\n");
 } catch (error) {
   if (reportPath) {
+    report.generatedAt = new Date().toISOString();
     const absolute = resolve(workspaceRoot, reportPath);
     await mkdir(dirname(absolute), { recursive: true });
     await writeFile(absolute, `${JSON.stringify({ ...report, failure: error.message }, null, 2)}\n`);

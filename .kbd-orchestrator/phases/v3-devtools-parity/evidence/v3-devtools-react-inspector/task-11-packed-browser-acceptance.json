@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-29T23:39:13.693Z",
+  "generatedAt": "2026-08-29T23:50:41.807Z",
   "boundary": "packed-vite-next-browser-acceptance",
   "source": {
-    "commit": "8e1cefaa0e2f60a68e138178631ef0757a0c261d",
-    "dirtyTaskFiles": true
+    "commit": "7ff2fe285dc630b618ae9f7d7b21967e0ef1e29d",
+    "dirtyTaskFiles": false
   },
   "packages": {
     "core": {
@@ -15,7 +15,7 @@
     "react": {
       "build": "pass",
       "pack": "pass",
-      "sha256": "383b0d339e0f10684a3d96c4f74a065ea16494f087d0c1ee3e7aa09e74ef5a11"
+      "sha256": "005665e2a68ab2ca20d2c47eb2e257552ea3660f34d94cadbf7e71dfe0f8f117"
     }
   },
   "consumers": {
@@ -31,7 +31,7 @@
     "receipt": {
       "schemaVersion": 1,
       "change": "v3-devtools-react-inspector",
-      "recordedAt": "2026-08-29T23:39:54.500Z",
+      "recordedAt": "2026-08-29T23:51:21.908Z",
       "status": "pass",
       "evidenceKind": "packed-vite-next-development-production-browser",
       "countsAsPackedPackageEvidence": true,
@@ -110,10 +110,10 @@
               "memoryGiB": 32
             },
             "emittedEvents": 5000,
-            "durationMs": 10016.199999999255,
-            "achievedEventsPerSecond": 499.1913100777113,
-            "searchLatencyP95Ms": 14.300000000745058,
-            "preloadedPanelOpenP95Ms": 11.900000002235174,
+            "durationMs": 10022.39999999851,
+            "achievedEventsPerSecond": 498.8825031929222,
+            "searchLatencyP95Ms": 19.399999998509884,
+            "preloadedPanelOpenP95Ms": 13.200000002980232,
             "inspectorLongTasksOver50Ms": 0,
             "retainedEvents": 500
           }
