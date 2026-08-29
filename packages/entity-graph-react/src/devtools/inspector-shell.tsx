@@ -1,3 +1,4 @@
+import { useRef, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import type { InspectorWorkspace } from "./view-model";
 import { useEntityGraphInspectorViewModel } from "./view-model";
 import { OverviewWorkspace } from "./workspaces/overview";
@@ -15,6 +16,23 @@ const workspaces: readonly { id: InspectorWorkspace; label: string }[] = [
 export function EntityGraphInspectorShell() {
   const viewModel = useEntityGraphInspectorViewModel();
   const model = viewModel.model;
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+  const onWorkspaceKeyDown = (event: ReactKeyboardEvent<HTMLButtonElement>, index: number) => {
+    const nextIndex = event.key === "ArrowRight"
+      ? (index + 1) % workspaces.length
+      : event.key === "ArrowLeft"
+        ? (index - 1 + workspaces.length) % workspaces.length
+        : event.key === "Home"
+          ? 0
+          : event.key === "End"
+            ? workspaces.length - 1
+            : null;
+    if (nextIndex === null) return;
+    event.preventDefault();
+    viewModel.setWorkspace(workspaces[nextIndex].id);
+    tabRefs.current[nextIndex]?.focus();
+  };
 
   if (!model) {
     return (
@@ -45,13 +63,17 @@ export function EntityGraphInspectorShell() {
       </header>
 
       <nav className="pem-workspace-tabs" role="tablist" aria-label="Inspector workspaces">
-        {workspaces.map((workspace) => (
+        {workspaces.map((workspace, index) => (
           <button
+            ref={(element) => { tabRefs.current[index] = element; }}
             type="button"
             role="tab"
             key={workspace.id}
             aria-selected={viewModel.workspace === workspace.id}
+            aria-controls="pem-workspace-panel"
+            tabIndex={viewModel.workspace === workspace.id ? 0 : -1}
             onClick={() => viewModel.setWorkspace(workspace.id)}
+            onKeyDown={(event) => onWorkspaceKeyDown(event, index)}
           >
             {workspace.label}
             {workspace.id === "entities" && model.entities.length > 0 && <small>{model.entities.length}</small>}
@@ -75,7 +97,12 @@ export function EntityGraphInspectorShell() {
         )}
       </div>
 
-      <main className="pem-shell-main">
+      <main
+        id="pem-workspace-panel"
+        className="pem-shell-main"
+        role="tabpanel"
+        aria-label={`${viewModel.workspace} workspace`}
+      >
         {viewModel.workspace === "overview" && (
           <OverviewWorkspace
             model={model}
@@ -118,6 +145,8 @@ export function EntityGraphInspectorShell() {
             onSelectIdentity={viewModel.selectEntityIdentity}
             onSelectView={viewModel.selectView}
             onSelectEvent={viewModel.selectEvent}
+            narrowDetailOpen={viewModel.narrowDetailOpen}
+            onCloseNarrowDetail={viewModel.closeNarrowDetail}
           />
         )}
         {viewModel.workspace === "views" && (
@@ -127,6 +156,8 @@ export function EntityGraphInspectorShell() {
             selected={viewModel.selectedView}
             onSelect={viewModel.selectView}
             onSelectIdentity={viewModel.selectEntityIdentity}
+            narrowDetailOpen={viewModel.narrowDetailOpen}
+            onCloseNarrowDetail={viewModel.closeNarrowDetail}
           />
         )}
         {viewModel.workspace === "activity" && (
@@ -147,6 +178,8 @@ export function EntityGraphInspectorShell() {
             onReturnToLive={viewModel.returnToLive}
             timeTravelAvailable={viewModel.timeTravelAvailable}
             commandPending={viewModel.command.pending !== null}
+            narrowDetailOpen={viewModel.narrowDetailOpen}
+            onCloseNarrowDetail={viewModel.closeNarrowDetail}
           />
         )}
       </main>

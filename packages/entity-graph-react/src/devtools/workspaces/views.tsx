@@ -10,6 +10,8 @@ export interface ViewsWorkspaceProps {
   selected: GraphDevtoolsViewRecord | null;
   onSelect(view: GraphDevtoolsViewRecord): void;
   onSelectIdentity(type: string, id: string): void;
+  narrowDetailOpen: boolean;
+  onCloseNarrowDetail(): void;
 }
 
 export function ViewsWorkspace({
@@ -18,11 +20,17 @@ export function ViewsWorkspace({
   selected,
   onSelect,
   onSelectIdentity,
+  narrowDetailOpen,
+  onCloseNarrowDetail,
 }: ViewsWorkspaceProps) {
   const entityByIdentity = new Map(entities.map((entity) => [`${entity.type}\u0000${entity.id}`, entity]));
 
   return (
-    <section className="pem-workspace pem-view-workspace" aria-labelledby="pem-views-title">
+    <section
+      className="pem-workspace pem-view-workspace"
+      data-narrow-detail={narrowDetailOpen}
+      aria-labelledby="pem-views-title"
+    >
       <aside className="pem-navigator" aria-label="Registered view navigator">
         <div className="pem-navigator-heading">
           <p className="pem-eyebrow">Registered now</p>
@@ -52,6 +60,7 @@ export function ViewsWorkspace({
       </aside>
 
       <div className="pem-view-detail">
+        <button type="button" className="pem-mobile-back" onClick={onCloseNarrowDetail}>← Views</button>
         {!selected ? (
           <p className="pem-empty pem-empty-large">No registered views are currently observable.</p>
         ) : (

@@ -43,13 +43,19 @@ export interface EntitiesWorkspaceProps {
   onSelectIdentity(type: string, id: string): void;
   onSelectView(view: GraphDevtoolsViewRecord): void;
   onSelectEvent(event: GraphDevtoolsEvent): void;
+  narrowDetailOpen: boolean;
+  onCloseNarrowDetail(): void;
 }
 
 const valueTabs: readonly EntityValueTab[] = ["original", "patch", "live", "diff"];
 
 export function EntitiesWorkspace(props: EntitiesWorkspaceProps) {
   return (
-    <section className="pem-workspace pem-entity-workspace" aria-labelledby="pem-entities-title">
+    <section
+      className="pem-workspace pem-entity-workspace"
+      data-narrow-detail={props.narrowDetailOpen}
+      aria-labelledby="pem-entities-title"
+    >
       <aside className="pem-navigator" aria-label="Entity navigator">
         <div className="pem-navigator-heading">
           <p className="pem-eyebrow">Find</p>
@@ -108,6 +114,7 @@ export function EntitiesWorkspace(props: EntitiesWorkspaceProps) {
       </aside>
 
       <div className="pem-entity-detail">
+        <button type="button" className="pem-mobile-back" onClick={props.onCloseNarrowDetail}>← Entities</button>
         {props.selected ? <EntityDetail {...props} selected={props.selected} /> : (
           <p className="pem-empty pem-empty-large">Select an entity to inspect its graph state.</p>
         )}

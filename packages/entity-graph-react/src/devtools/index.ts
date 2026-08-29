@@ -16,6 +16,22 @@ export {
 } from "./host";
 export type { EntityGraphDevtoolsProps } from "./host";
 export {
+  DEFAULT_ENTITY_GRAPH_DEVTOOLS_PREFERENCES,
+  DEFAULT_ENTITY_GRAPH_DEVTOOLS_SHORTCUT,
+  ENTITY_GRAPH_DEVTOOLS_PREFERENCE_KEY,
+  entityGraphDevtoolsAriaShortcut,
+  matchesEntityGraphDevtoolsShortcut,
+  readEntityGraphDevtoolsPreferences,
+  writeEntityGraphDevtoolsPreferences,
+} from "./preferences";
+export type {
+  EntityGraphDevtoolsLauncherForm,
+  EntityGraphDevtoolsLauncherPosition,
+  EntityGraphDevtoolsPanelLayout,
+  EntityGraphDevtoolsPreferences,
+  EntityGraphDevtoolsShortcut,
+} from "./preferences";
+export {
   isEntityGraphDevtoolsEnabled,
 } from "./mode";
 export type { EntityGraphDevtoolsMode } from "./mode";

@@ -1,16 +1,16 @@
 {
   "schemaVersion": "2",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 363,
-  "derivedRevision": 363,
+  "sourceRevision": 368,
+  "derivedRevision": 368,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 363
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 368
   },
   "conflictCount": 0,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
   "parentPhase": null,
-  "last_updated": "2026-08-29T22:17:40.588376Z",
+  "last_updated": "2026-08-29T22:31:57.608392Z",
   "last_updated_by": "kbd-runtime",
   "changes_total": 9,
   "changes_completed": 3,
@@ -79,9 +79,9 @@
       "status": "IN_PROGRESS",
       "implementation_status": "IN_PROGRESS",
       "tasks_total": 12,
-      "tasks_done": 4,
-      "last_task_completed": "Add store selection plus preview/diff/restore, rewind/return-live, copy, and policy-aware export interactions.",
-      "next_task_pending": "Implement the SSR-safe, debug-only floating action button and responsive accessible panel behavior.",
+      "tasks_done": 5,
+      "last_task_completed": "Implement the SSR-safe, debug-only floating action button and responsive accessible panel behavior.",
+      "next_task_pending": "Add Vite and Next example scenarios using the public DevTools entry and existing layered application APIs.",
       "blockers": []
     },
     {

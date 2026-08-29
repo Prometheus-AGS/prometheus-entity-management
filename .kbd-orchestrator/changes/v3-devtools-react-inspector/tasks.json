@@ -57,9 +57,9 @@
     {
       "id": "5",
       "title": "Implement the SSR-safe, debug-only floating action button and responsive accessible panel behavior.",
-      "done": false,
-      "doneAt": null,
-      "doneBy": null,
+      "done": true,
+      "doneAt": "2026-08-29T22:31:41Z",
+      "doneBy": "codex",
       "files": [
         "packages/entity-graph-react/src/devtools"
       ],

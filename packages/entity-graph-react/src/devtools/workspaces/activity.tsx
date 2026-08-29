@@ -24,6 +24,8 @@ export interface ActivityWorkspaceProps {
   onReturnToLive(): void;
   timeTravelAvailable: boolean;
   commandPending: boolean;
+  narrowDetailOpen: boolean;
+  onCloseNarrowDetail(): void;
 }
 
 const filters: readonly ActivityTypeFilter[] = [
@@ -37,7 +39,11 @@ const filters: readonly ActivityTypeFilter[] = [
 
 export function ActivityWorkspace(props: ActivityWorkspaceProps) {
   return (
-    <section className="pem-workspace pem-activity-workspace" aria-labelledby="pem-activity-title">
+    <section
+      className="pem-workspace pem-activity-workspace"
+      data-narrow-detail={props.narrowDetailOpen}
+      aria-labelledby="pem-activity-title"
+    >
       <aside className="pem-navigator pem-activity-nav" aria-label="Graph activity stream">
         <div className="pem-navigator-heading pem-activity-heading">
           <div><p className="pem-eyebrow">Retained history</p><h2 id="pem-activity-title">Activity</h2></div>
@@ -114,6 +120,7 @@ export function ActivityWorkspace(props: ActivityWorkspaceProps) {
       </aside>
 
       <div className="pem-activity-detail">
+        <button type="button" className="pem-mobile-back" onClick={props.onCloseNarrowDetail}>← Activity</button>
         {props.selectedExpired ? (
           <div className="pem-expired" role="status">
             <strong>Selected event expired from retained history</strong>

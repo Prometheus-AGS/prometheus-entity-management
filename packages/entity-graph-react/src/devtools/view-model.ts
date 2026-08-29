@@ -92,6 +92,8 @@ export interface EntityGraphInspectorViewModel {
   valuePolicyMode: EntityGraphDevtoolsValuePolicyMode;
   workspace: InspectorWorkspace;
   setWorkspace(workspace: InspectorWorkspace): void;
+  narrowDetailOpen: boolean;
+  closeNarrowDetail(): void;
   search: string;
   setSearch(value: string): void;
   entityFilter: EntityStatusFilter;
@@ -142,6 +144,7 @@ export function useEntityGraphInspectorViewModel(): EntityGraphInspectorViewMode
   const runtime = useEntityGraphDevtools();
   const model = useEntityGraphInspectorModel();
   const [workspace, setWorkspace] = useState<InspectorWorkspace>("overview");
+  const [narrowDetailOpen, setNarrowDetailOpen] = useState(false);
   const [search, setSearch] = useState("");
   const deferredSearch = useDeferredValue(search.trim().toLocaleLowerCase());
   const [entityFilter, setEntityFilter] = useState<EntityStatusFilter>("all");
@@ -159,6 +162,7 @@ export function useEntityGraphInspectorViewModel(): EntityGraphInspectorViewMode
 
   useEffect(() => {
     setSelectedRewindCursor(null);
+    setNarrowDetailOpen(false);
     setCommand({ pending: null, notice: null, error: null });
   }, [runtime.storeId]);
 
@@ -264,6 +268,7 @@ export function useEntityGraphInspectorViewModel(): EntityGraphInspectorViewMode
   const selectEntity = useCallback((entity: GraphDevtoolsEntityRecord) => {
     setSelectedEntityKey(inspectorEntityIdentity(entity));
     setPreviewDraft("");
+    setNarrowDetailOpen(true);
   }, []);
   const selectEntityIdentity = useCallback((type: string, id: string) => {
     const entity = model?.entities.find((candidate) => candidate.type === type && candidate.id === id);
@@ -271,15 +276,23 @@ export function useEntityGraphInspectorViewModel(): EntityGraphInspectorViewMode
     setSelectedEntityKey(inspectorEntityIdentity(entity));
     setPreviewDraft("");
     setWorkspace("entities");
+    setNarrowDetailOpen(true);
   }, [model?.entities]);
   const selectView = useCallback((view: GraphDevtoolsViewRecord) => {
     setSelectedViewId(view.viewId);
     setWorkspace("views");
+    setNarrowDetailOpen(true);
   }, []);
   const selectEvent = useCallback((event: GraphDevtoolsEvent) => {
     setSelectedSequence(event.sequence);
     setWorkspace("activity");
+    setNarrowDetailOpen(true);
   }, []);
+  const selectWorkspace = useCallback((nextWorkspace: InspectorWorkspace) => {
+    setWorkspace(nextWorkspace);
+    setNarrowDetailOpen(false);
+  }, []);
+  const closeNarrowDetail = useCallback(() => setNarrowDetailOpen(false), []);
   const togglePaused = useCallback(() => {
     if (!paused) setPausedEvents(liveEvents);
     setPaused((current) => !current);
@@ -397,7 +410,9 @@ export function useEntityGraphInspectorViewModel(): EntityGraphInspectorViewMode
     selectStore: runtime.selectStore,
     valuePolicyMode: runtime.valuePolicyMode,
     workspace,
-    setWorkspace,
+    setWorkspace: selectWorkspace,
+    narrowDetailOpen,
+    closeNarrowDetail,
     search,
     setSearch,
     entityFilter,

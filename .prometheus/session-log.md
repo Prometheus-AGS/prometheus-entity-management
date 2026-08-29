@@ -1788,3 +1788,27 @@
   not changed. The known parent reset was restored at revision 363. Change 4 is
   now 4/9 executable tasks complete (4/12 canonical including three cancelled
   tasks); task 5 is next.
+
+## 2026-08-29 — React inspector task 5/9
+
+- Added the explicit debug-only Graph DevTools launcher with versioned browser
+  preferences for four positions, floating/edge-tab form, and floating,
+  dock-right, or dock-bottom panel layout.
+- Added Hide until reload, Hide for this browser, configurable/disableable
+  Mod+Shift+G restoration, pointer/focus preload, and an open-panel-only heavy
+  inspector mount while the controller provider continues retaining history.
+- Added layered Escape behavior, named controls, close-to-launcher focus return,
+  roving workspace tabs, and keyboard Home/End/Left/Right navigation.
+- Added a safe-area-aware sub-720px single-pane navigator/detail drill-in with
+  Back controls, 44px targets, contained overscroll, horizontal tabs, and
+  scrollable forensic diffs without changing browser zoom behavior.
+- Treats browser storage as a mutable boundary: only preference schema v1 and
+  recognized enum values are accepted; graph/entity values are never stored.
+- TypeScript syntax parsing, scoped source assertions, scoped lint outside
+  three confirmed pre-existing view-model warnings, and diff whitespace checks
+  passed. No typecheck, test, or build ran; task 11 remains the full assembled
+  integration gate.
+- Task 5 completed at canonical revision 367 through the local runtime fallback
+  without changing sovereign sync. The known parent reset was restored at
+  revision 368. Change 4 is now 5/9 executable tasks complete (5/12 canonical,
+  including three cancelled tasks); task 6 is next.
