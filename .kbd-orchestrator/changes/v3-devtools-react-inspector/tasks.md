@@ -4,7 +4,7 @@
 
 - [x] 1 Confirm inspection and time-travel dependencies and existing React export/build conventions.
 - [x] 2 Add the React `./devtools` export, client provider/hook, lazy entry, and isolated CSS contract.
-- [ ] 3 Rebuild the inspector around DevTools hooks/view models with overview, entity, view, relation, dirty/error, and timeline workflows.
+- [x] 3 Rebuild the inspector around DevTools hooks/view models with overview, entity, view, relation, dirty/error, and timeline workflows.
 - [ ] 4 Add store selection plus preview/diff/restore, rewind/return-live, copy, and policy-aware export interactions.
 - [ ] 5 Implement the SSR-safe, debug-only floating action button and responsive accessible panel behavior.
 - [ ] 6 Add Vite and Next example scenarios using the public DevTools entry and existing layered application APIs.

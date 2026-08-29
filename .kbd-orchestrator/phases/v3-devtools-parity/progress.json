@@ -37,10 +37,10 @@
       "blockers": [],
       "id": "v3-devtools-react-inspector",
       "implementation_status": "IN_PROGRESS",
-      "last_task_completed": "Add the React `./devtools` export, client provider/hook, lazy entry, and isolated CSS contract.",
-      "next_task_pending": "Rebuild the inspector around DevTools hooks/view models with overview, entity, view, relation, dirty/error, and timeline workflows.",
+      "last_task_completed": "Rebuild the inspector around DevTools hooks/view models with overview, entity, view, relation, dirty/error, and timeline workflows.",
+      "next_task_pending": "Add store selection plus preview/diff/restore, rewind/return-live, copy, and policy-aware export interactions.",
       "status": "IN_PROGRESS",
-      "tasks_done": 2,
+      "tasks_done": 3,
       "tasks_total": 12,
       "title": "v3-devtools-react-inspector — Shared inspector and debug-only FAB"
     },
@@ -127,19 +127,19 @@
     }
   },
   "conflictCount": 0,
-  "derivedRevision": 351,
+  "derivedRevision": 358,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 351
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 358
   },
   "generatedBy": "kbd-runtime",
   "implementation_completed": 3,
   "implementation_total": 9,
-  "last_updated": "2026-08-29T21:43:51.708561Z",
+  "last_updated": "2026-08-29T22:03:34.395421Z",
   "last_updated_by": "kbd-runtime",
   "migrationStatus": null,
   "parentPhase": null,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
   "schemaVersion": "2",
-  "sourceRevision": 351
+  "sourceRevision": 358
 }

@@ -3,9 +3,9 @@
   "cursor": [
     "v3-devtools-parity"
   ],
-  "derivedRevision": 351,
+  "derivedRevision": 358,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 351
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 358
   },
   "generatedBy": "kbd-runtime",
   "root": {
@@ -606,7 +606,7 @@
           {
             "id": "v3-devtools-react-inspector",
             "progress": {
-              "done": 2,
+              "done": 3,
               "total": 12
             },
             "status": "IN_PROGRESS",
@@ -676,6 +676,6 @@
     "type": "phase"
   },
   "schemaVersion": "1",
-  "sourceRevision": 351,
-  "updatedAt": "2026-08-29T21:43:51.708561Z"
+  "sourceRevision": 358,
+  "updatedAt": "2026-08-29T22:03:34.395421Z"
 }

@@ -33,9 +33,9 @@
     {
       "id": "3",
       "title": "Rebuild the inspector around DevTools hooks/view models with overview, entity, view, relation, dirty/error, and timeline workflows.",
-      "done": false,
-      "doneAt": null,
-      "doneBy": null,
+      "done": true,
+      "doneAt": "2026-08-29T22:02:51Z",
+      "doneBy": "codex",
       "files": [
         "packages/entity-graph-react/src/devtools"
       ],

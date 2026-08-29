@@ -1737,3 +1737,28 @@
 - Canonical task 2 completed at signed revision 350. The known task-after
   parent reset was corrected through signed revision 351. Change 4 is now 2/9
   executable tasks complete; task 3 is next.
+
+## 2026-08-29 — React inspector task 3/9
+
+- Added a controller-backed, animation-frame-coalesced inspector model plus a
+  React view model for workspace navigation, search/filtering, selection,
+  original/patch/live/diff projection, relationships, registered views,
+  entity history, event filtering, and activity pause/resume.
+- Added pure Overview, Entities, Views, and Activity workspaces with stable-key
+  virtualization above 50 rows, expired-history feedback, list health,
+  mutation publication details, screen-reader announcements, and cross-
+  workspace navigation.
+- Same-origin entity values join directly from the selected GraphStore; the
+  controller remains the owner of metadata/history/views/relationships and
+  serialized remote transport remains metadata-only by default.
+- Added the shared desktop forensic Shadow DOM presentation and optional-entry
+  exports. Commands, store selection, FAB/responsive behavior, examples, Graph
+  Pulse, final refinement, and the assembled browser gate remain later tasks.
+- Context7 confirmed the current TanStack Virtual `useVirtualizer`, stable
+  `getItemKey`, virtual item, and row measurement contracts.
+- Diff whitespace checks, source-contract assertions, and TypeScript syntax
+  parsing across 20 DevTools files passed. No typecheck, test, or build ran.
+- Task 3 completed at signed revision 357 after the official guard recovery
+  path repaired a missing start receipt. The known parent reset was restored at
+  revision 358. Change 4 is 3/9 executable tasks complete (3/12 canonical,
+  including three cancelled tasks); task 4 is next.
