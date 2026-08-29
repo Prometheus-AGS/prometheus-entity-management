@@ -24,12 +24,12 @@ reads that entity.
 | Surface | Artifacts | Binding |
 | ------- | --------- | ------- |
 | Framework-neutral core | `@prometheus-ags/entity-graph-core` | Any JS runtime |
-| React 19 | `@prometheus-ags/prometheus-entity-management` | Hooks, CRUD, UI, GraphQL |
+| React 19 | `@prometheus-ags/prometheus-entity-management@3.0.5` | Hooks, CRUD, UI, GraphQL |
 | Local-first sync | `@prometheus-ags/entity-graph-sync` | Loro CRDT + PGlite |
 | Svelte / Solid / Alpine / HTMX / Web Components | 5 binding packages | Stores, signals, plugins, SSE, elements |
-| Agentic surfaces | `@prometheus-ags/a2ui-react`, `@prometheus-ags/entity-graph-a2a` | A2UI v1.0-RC compatibility, AG-UI 0.0.59, A2A v1 |
+| Agentic surfaces | `@prometheus-ags/a2ui-react@3.0.5`, `@prometheus-ags/entity-graph-a2a@3.0.5` | A2UI v1.0-RC compatibility, AG-UI 0.0.59, A2A v1 |
 | Desktop / mobile | `@prometheus-ags/entity-graph-tauri` | Tauri 2 plugin |
-| Flutter | `entity_graph_flutter` | Dart graph + Riverpod |
+| Flutter | `entity_graph_flutter@3.0.1` | Dart graph + Riverpod; A2UI 1.0-RC compatibility via GenUI 0.10.2 in the showcase |
 | Tooling | `entity-graph-cli`, `entity-graph-mcp` | Rust crates |
 
 ## Certification model

@@ -2,15 +2,16 @@
 
 ## 3.0 status: stable published
 
-**Update 2026-08-29: 3.0.4 stable is published.** All twelve
-`@prometheus-ags/*` npm packages are public at `3.0.4` with both `latest` and
-`next` pointing at it (tag `v3.0.4`). `3.0.0` shipped with an unresolved pnpm
+**Update 2026-08-29: 3.0.5 stable is published.** All twelve
+`@prometheus-ags/*` npm packages are public at `3.0.5` with both `latest` and
+`next` pointing at it (tag `v3.0.5`). `3.0.0` shipped with an unresolved pnpm
 `workspace:` protocol in ten of twelve manifests and is deprecated; `3.0.1` and
 `3.0.2` were corrective republications, `3.0.3` made fetched list ingestion
-atomic, and `3.0.4` fixes provider-scoped imperative access and adds A2UI
+atomic, `3.0.4` was deprecated after stale build artifacts were discovered,
+and `3.0.5` correctly distributes the provider-scoped imperative-access fix and A2UI
 1.0-RC compatibility. These publications ran directly with a granular npm token at
 operator direction, so they carry no npm provenance attestation; the governed
-OIDC path below remains for future releases. `entity_graph_flutter@3.0.0` is
+OIDC path below remains for future releases. `entity_graph_flutter@3.0.1` is
 public on pub.dev. Do not run `changeset publish`, publish an individual
 workspace package, or move any npm `latest` tag based only on local builds or
 the main CI baseline.
@@ -220,7 +221,7 @@ pnpm run verify:skills
 The scoped list/detail widget goldens are library evidence, not complete app,
 accessibility, Android/iOS, or device certification. The Flutter 3.44.8 stable
 clean candidate passed `flutter pub publish --dry-run` with zero warnings and
-`entity_graph_flutter@3.0.0` is now public on pub.dev. A clean downstream
+`entity_graph_flutter@3.0.1` is now public on pub.dev. A clean downstream
 consumer resolved, imported, and analyzed the published archive. pub.dev
 verified-publisher assignment and immutable release-wide certification remain
 separate.

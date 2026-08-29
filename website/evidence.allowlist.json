@@ -88,7 +88,7 @@
       "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-dart-report.json",
       "receiptAssertion": {"field": "result", "equals": "pass"},
       "sourceSha256": "cf8cafe9e6ef51f7138f74f73ae732d7286d695b9c3bad1afb46a8730f648e3a",
-      "receiptSha256": "173831fb410a51e5dea751e914074d764c9786e71205422a318bfa6d37e700a9",
+      "receiptSha256": "3b3c9ab6572d123532975e0b3985639807c4442e99002ba3ed0d457a07fa339c",
       "visualReview": ["no-visible-secrets", "no-internal-paths", "not-blank", "not-icon"],
       "certificationStatus": "verified-golden"
     },
@@ -101,7 +101,7 @@
       "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-dart-report.json",
       "receiptAssertion": {"field": "result", "equals": "pass"},
       "sourceSha256": "e1e6ea7a4e4f4fe9339111f2a4ec1a1bbe9d81ca3c3a993b60bf58cb8ca8aac3",
-      "receiptSha256": "173831fb410a51e5dea751e914074d764c9786e71205422a318bfa6d37e700a9",
+      "receiptSha256": "3b3c9ab6572d123532975e0b3985639807c4442e99002ba3ed0d457a07fa339c",
       "visualReview": ["no-visible-secrets", "no-internal-paths", "not-blank", "not-icon"],
       "certificationStatus": "verified-golden"
     },

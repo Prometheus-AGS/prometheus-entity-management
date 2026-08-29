@@ -6,7 +6,7 @@ Update a post in one screen and every list row, detail panel, and badge that rea
 
 ## 3.0 React release
 
-The `3.0.4` package line and its React 19/Vite 8
+The `3.0.5` package line and its React 19/Vite 8
 source-workspace showcase is implemented. The production-browser gate covers
 normalized cross-view updates, optimistic confirm/rollback, relationships,
 view completeness modes, REST/GraphQL seams, realtime coalescing, PGlite/Loro,
@@ -249,7 +249,7 @@ module-level helpers, and mutation callbacks honour a mounted
 2. the module-level store published by a mounted `GraphStoreProvider`,
 3. the package singleton.
 
-With no provider and no request scope this is exactly the pre-3.0.4 behaviour,
+With no provider and no request scope this is exactly the pre-3.0.5 behaviour,
 so existing imperative callers are unaffected.
 
 **Server code must open a request scope.** `GraphStoreProvider` is React context

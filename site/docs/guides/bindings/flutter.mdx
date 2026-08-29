@@ -10,6 +10,12 @@ Riverpod. The architecture is identical to the TypeScript bindings: a
 canonical graph owns entity data, lists carry IDs, and widgets are pure
 projections of provider state.
 
+Install the current public package:
+
+```bash
+flutter pub add entity_graph_flutter:^3.0.1
+```
+
 Add the package to your Flutter app's `pubspec.yaml` (see the
 [package overview](/docs/packages/overview) for distribution channels), then
 wire providers.
@@ -66,3 +72,8 @@ Flutter mobile and desktop apps that share a backend (and a schema) with a
 TypeScript web app. Sync providers from `entity-graph-sync` work over the
 same CRDT documents, so a Flutter app and a React app can edit the same
 entities peer-to-peer.
+
+For generated UI, the companion Flutter showcase validates strict A2UI 1.0-RC
+surface envelopes before adapting them to GenUI 0.10.2. React applications use
+`@prometheus-ags/a2ui-react@3.0.5` with the same application-owned authority
+boundary and AG-UI 0.0.59 transport support.

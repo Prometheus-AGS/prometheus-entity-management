@@ -8,7 +8,7 @@ description: Mobile showcase — official A2UI surfaces through genui, a fail-cl
 `examples/flutter-riverpod` proves the mobile slice of the 3.0 contract: a
 Flutter/Riverpod 3 app renders official A2UI surfaces and drives optimistic
 CRUD plus offline persistence/convergence against the certified
-`entity_graph_flutter` package.
+`entity_graph_flutter@3.0.1` package.
 
 ## Architecture
 
@@ -16,7 +16,8 @@ The app composes published surfaces only — no library changes:
 
 - `entity_graph_flutter` — the canonical Dart graph plus Riverpod provider
   families (`entityListProvider`, `entityCrudProvider`, …).
-- `genui` + `a2ui_core` — official A2UI `SurfaceController` rendering.
+- `genui@0.10.2` — published v0.9 renderer used behind a strict A2UI 1.0-RC
+  compatibility adapter.
 - An **app-owned, fail-closed action policy**: allowlisted `task.update`,
   approval-gated `task.replace`, denied `task.delete`, a tenant guard, and
   malformed-message rejection.
@@ -46,13 +47,13 @@ flutter run                      # attach a device or emulator
 ## Test commands
 
 ```bash
-pnpm run verify:flutter-riverpod-a2ui   # analyzer, widget tests, compile-level platform builds
-pnpm run dart:test                      # melos test across the pub workspace
+flutter analyze lib/features/a2ui test/a2ui_contract_test.dart
+flutter test test/a2ui_contract_test.dart
 ```
 
-Platform verification is **compile-level**: `flutter build apk --debug` and
-`flutter build ios --simulator --no-codesign`. No booted-device run was
-performed for the 3.0 evidence — that limit is retained, not waived.
+The recorded platform boundary includes an Android API 35 emulator and an iOS
+26.5 simulator smoke run. Physical devices, signing, and store submission are
+not claimed.
 
 ## Deployment and platform notes
 

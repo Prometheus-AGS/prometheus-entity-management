@@ -83,7 +83,7 @@
         "example.graph.normalized-cross-view"
       ],
       "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-dart-report.json",
-      "executionReceiptSha256": "173831fb410a51e5dea751e914074d764c9786e71205422a318bfa6d37e700a9",
+      "executionReceiptSha256": "3b3c9ab6572d123532975e0b3985639807c4442e99002ba3ed0d457a07fa339c",
       "certificationStatus": "verified-golden"
     },
     {
@@ -95,7 +95,7 @@
         "example.crud.optimistic-rollback"
       ],
       "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-dart-graph-riverpod/task-3-dart-report.json",
-      "executionReceiptSha256": "173831fb410a51e5dea751e914074d764c9786e71205422a318bfa6d37e700a9",
+      "executionReceiptSha256": "3b3c9ab6572d123532975e0b3985639807c4442e99002ba3ed0d457a07fa339c",
       "certificationStatus": "verified-golden"
     },
     {

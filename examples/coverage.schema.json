@@ -18,7 +18,7 @@
   ],
   "properties": {
     "schemaVersion": { "const": "1.0.0" },
-    "release": { "const": "3.0.4" },
+    "release": { "const": "3.0.5" },
     "contract": { "const": "release/v3-release-contract.json" },
     "status": { "enum": ["in-progress", "complete"] },
     "semanticContract": {

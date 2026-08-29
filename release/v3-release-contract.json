@@ -3,7 +3,7 @@
   "schemaVersion": "1.0.0",
   "release": {
     "name": "Prometheus Entity Management",
-    "version": "3.0.4",
+    "version": "3.0.5",
     "channel": "stable",
     "owner": "Prometheus AGS",
     "repository": "https://github.com/Prometheus-AGS/prometheus-entity-management",
@@ -18,7 +18,7 @@
   "versionPolicy": {
     "npm": {
       "strategy": "fixed",
-      "version": "3.0.4",
+      "version": "3.0.5",
       "prereleaseTag": "next",
       "stableTag": "latest",
       "packages": [
@@ -38,14 +38,14 @@
     },
     "native": {
       "strategy": "independent-aligned-major",
-      "version": "3.0.0",
-      "note": "Native packages remain version-aligned in source. Their public registries are explicitly deferred until registry ownership and platform-specific release gates are verified."
+      "version": "3.0.1",
+      "note": "The Dart package releases independently within the aligned 3.x major. Rust artifacts retain their separately recorded source versions and deferred registry status."
     }
   },
   "registryScope": {
     "requiredForStable": ["npm", "github-releases", "github-pages"],
     "deferred": ["pub.dev", "crates.io", "apple-app-store", "google-play", "microsoft-store"],
-    "deferredPolicy": "A deferred registry does not block the npm 3.0.4 release, but documentation must not claim the artifact is installable from that registry until post-publish smoke evidence exists."
+    "deferredPolicy": "A deferred registry does not block the npm 3.0.5 release, but documentation must not claim the artifact is installable from that registry until post-publish smoke evidence exists."
   },
   "artifacts": [
     {"id":"npm-core","ecosystem":"npm","packageName":"@prometheus-ags/entity-graph-core","path":"packages/entity-graph-core","owner":"Prometheus AGS Entity Graph Team","registry":"npm","registryDecision":"required","versionPolicy":"npm-fixed-3.x","stability":"stable","role":"framework-neutral normalized graph"},

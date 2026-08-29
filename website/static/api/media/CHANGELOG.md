@@ -1,5 +1,45 @@
 # @prometheus-ags/prometheus-entity-management
 
+## 3.0.5
+
+### Patch Changes
+
+- Resolve imperative graph access against the active graph instead of the package
+  singleton, so `GraphStoreProvider` scopes `useGraphStore.getState()`,
+  `.setState()`, `.subscribe()` and `.getInitialState()` (issue #42).
+
+  3.0.4 replaced the copied StoreApi with delegates that warned but still targeted
+  the singleton, which left consumers using the documented imperative API with no
+  isolation. The React binding now proxies those methods, resolving per call.
+
+  New in `entity-graph-core`:
+  - `runWithGraphStore(store, fn)` — an `AsyncLocalStorage` request scope, so
+    concurrent server renders never share entity state.
+  - `prepareGraphStoreScope()` — awaited once during startup on **pure-ESM**
+    servers, where there is no synchronous `require` to load `node:async_hooks`.
+    Without it request scoping degrades to a module-level store and warns.
+  - `setActiveGraphStore(store)` — the module-level active store, set by
+    `GraphStoreProvider` on mount and restored on unmount.
+  - `resolveActiveGraphStore(fallback)` — request scope → module-level store →
+    fallback.
+
+  `node:async_hooks` is loaded lazily and never statically imported, so browser
+  bundles are unaffected. With no provider and no request scope, behaviour is
+  unchanged from 3.0.4, and the deprecation warning is gone because the methods
+  now do what callers expected.
+
+- Updated dependencies
+  - @prometheus-ags/entity-graph-core@3.0.5
+
+## 3.0.4
+
+### Patch Changes
+
+- Make provider-scoped imperative graph access explicit, correct Next.js
+  hydration writes, add A2UI 1.0-RC compatibility for React and Flutter, and
+  accept AG-UI 0.0.59 A2UI activity snapshots.
+  - @prometheus-ags/entity-graph-core@3.0.4
+
 ## 3.0.3
 
 ### Patch Changes

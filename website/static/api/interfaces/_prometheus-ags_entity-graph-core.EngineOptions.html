@@ -16,7 +16,7 @@
 Keeps hook signatures small: <code>useEntity</code> / <code>useEntityList</code> merge these with per-query overrides.</p>
 </div></section>
 <div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">EngineOptions</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#defaultgctime">defaultGcTime</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#defaultstaletime">defaultStaleTime</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#gcinterval">gcInterval</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#maxretries">maxRetries</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#retrybasedelay">retryBaseDelay</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#revalidateonfocus">revalidateOnFocus</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#revalidateonreconnect">revalidateOnReconnect</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div>
-<section class="tsd-panel tsd-hierarchy" data-refl="49463">
+<section class="tsd-panel tsd-hierarchy" data-refl="51654">
 <h4>Hierarchy (<a href="../hierarchy.html#@prometheus-ags/entity-graph-core.EngineOptions">View Summary</a>)</h4>
 <ul class="tsd-hierarchy">
 <li class="tsd-hierarchy-item"><span class="tsd-hierarchy-target">EngineOptions</span>
@@ -24,7 +24,7 @@ Keeps hook signatures small: <code>useEntity</code> / <code>useEntityList</code>
 <li class="tsd-hierarchy-item"><a href="_prometheus-ags_entity-graph-solid.GraphProviderOptions.html" class="tsd-signature-type tsd-kind-interface">GraphProviderOptions</a></li>
 <li class="tsd-hierarchy-item"><a href="_prometheus-ags_entity-graph-svelte.InitEntityGraphOptions.html" class="tsd-signature-type tsd-kind-interface">InitEntityGraphOptions</a></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:1717</li></ul></aside>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:1788</li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -49,39 +49,39 @@ Keeps hook signatures small: <code>useEntity</code> / <code>useEntityList</code>
 <div class="tsd-comment tsd-typography"><p>Max age (<code>Date.now() - lastFetched</code>) for evicting entities with zero subscribers during GC.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:1720</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:1791</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="defaultstaletime"><code class="tsd-tag">Optional</code><span>default<wbr/>Stale<wbr/>Time</span><a href="#defaultstaletime" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">defaultStaleTime</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:1718</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:1789</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="gcinterval"><code class="tsd-tag">Optional</code><span>gc<wbr/>Interval</span><a href="#gcinterval" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">gcInterval</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span></div>
 <div class="tsd-comment tsd-typography"><p>Interval between GC passes when the collector is active (default 60s).</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:1722</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:1793</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="maxretries"><code class="tsd-tag">Optional</code><span>max<wbr/>Retries</span><a href="#maxretries" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">maxRetries</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:1723</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:1794</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="retrybasedelay"><code class="tsd-tag">Optional</code><span>retry<wbr/>Base<wbr/>Delay</span><a href="#retrybasedelay" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">retryBaseDelay</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:1724</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:1795</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="revalidateonfocus"><code class="tsd-tag">Optional</code><span>revalidate<wbr/>On<wbr/>Focus</span><a href="#revalidateonfocus" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">revalidateOnFocus</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:1725</li></ul></aside></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:1796</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="revalidateonreconnect"><code class="tsd-tag">Optional</code><span>revalidate<wbr/>On<wbr/>Reconnect</span><a href="#revalidateonreconnect" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">revalidateOnReconnect</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:1726</li></ul></aside></section></section></details></div>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:1797</li></ul></aside></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

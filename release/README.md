@@ -188,7 +188,7 @@ full 3.0 release.
 
 ## Registry decision
 
-The stable npm 3.0.0 release requires all twelve npm packages, a GitHub Release, and the production GitHub Pages documentation site. `entity_graph_flutter@3.0.0` is now public and consumer-verified on pub.dev, although a verified publisher is not yet assigned. Standalone Rust publication to crates.io remains deferred. The Tauri Rust crate is embedded in the npm plugin tarball.
+The stable npm line has all twelve packages public at 3.0.5 with a GitHub Release and production GitHub Pages documentation site. The stale-artifact 3.0.4 publication is deprecated. `entity_graph_flutter@3.0.1` is public and consumer-verified on pub.dev, although a verified publisher is not yet assigned. Standalone Rust publication to crates.io remains deferred. The Tauri Rust crate is embedded in the npm plugin tarball.
 
 The live npm and pub.dev snapshots are recorded in
 [`npm-registry-status.json`](npm-registry-status.json) and
