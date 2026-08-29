@@ -63,6 +63,7 @@ export interface GraphDevtoolsCapabilities {
     | "relationship-inspection"
     | "local-preview"
     | "snapshot-history"
+    | "time-travel"
   >;
   limits: {
     historyEvents: number;
@@ -109,7 +110,7 @@ export interface GraphDevtoolsEventBase {
   storeId: string;
   sequence: number;
   eventId: string;
-  /** In v1 one event represents one Zustand publication, so this equals eventId. */
+  /** For v1 mutation events one event represents one Zustand publication. */
   correlationId: string;
   observedAt: string;
 }
@@ -158,11 +159,22 @@ export interface GraphDevtoolsViewEvent extends GraphDevtoolsEventBase {
   };
 }
 
+export interface GraphDevtoolsTimeTravelEvent extends GraphDevtoolsEventBase {
+  type: "time-travel";
+  payload: {
+    state: "rewound" | "live";
+    cursor: number | null;
+    previousCursor: number | null;
+    reason: "command" | "mutation";
+  };
+}
+
 export type GraphDevtoolsEvent =
   | GraphDevtoolsMutationEvent
   | GraphDevtoolsLifecycleEvent
   | GraphDevtoolsDiagnosticEvent
-  | GraphDevtoolsViewEvent;
+  | GraphDevtoolsViewEvent
+  | GraphDevtoolsTimeTravelEvent;
 
 export interface GraphDevtoolsSnapshot {
   protocol: typeof GRAPH_DEVTOOLS_PROTOCOL;
@@ -310,6 +322,25 @@ export interface GraphDevtoolsRestoreEntityPreviewPayload {
   previewId: string;
 }
 
+export interface GraphDevtoolsRewindPayload {
+  cursor: number;
+}
+
+export interface GraphDevtoolsRewindReceipt {
+  status: "rewound";
+  cursor: number;
+  previousCursor: number | null;
+  changedAt: string;
+}
+
+export interface GraphDevtoolsReturnToLiveReceipt {
+  status: "live";
+  cursor: null;
+  previousCursor: number;
+  reason: "command";
+  changedAt: string;
+}
+
 export interface GraphDevtoolsPreviewAppliedReceipt {
   previewId: string;
   entity: { type: string; id: string };
@@ -353,6 +384,9 @@ export type GraphDevtoolsCommandName =
   | "get-relationships"
   | "preview-entity-patch"
   | "restore-entity-preview"
+  | "get-time-travel-status"
+  | "rewind"
+  | "return-to-live"
   | "clear-history";
 
 export interface GraphDevtoolsCommand {
@@ -373,6 +407,9 @@ export type GraphDevtoolsResultPayload =
   | GraphDevtoolsRelationshipsSnapshot
   | GraphDevtoolsPreviewAppliedReceipt
   | GraphDevtoolsPreviewRestoreReceipt
+  | GraphDevtoolsSnapshotHistoryStatus
+  | GraphDevtoolsRewindReceipt
+  | GraphDevtoolsReturnToLiveReceipt
   | ReadonlyArray<GraphDevtoolsEvent>
   | { cleared: true };
 
@@ -400,6 +437,9 @@ export type GraphDevtoolsResult =
           | "unsupported-command"
           | "entity-not-found"
           | "preview-not-found"
+          | "snapshot-not-found"
+          | "time-travel-unavailable"
+          | "not-rewound"
           | "disposed";
         message: string;
       };

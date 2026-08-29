@@ -30,9 +30,9 @@
     {
       "id": "3",
       "title": "Implement rewind, exact return-to-live, internal replay markers, and mutation-while-rewound ordering.",
-      "done": false,
-      "doneAt": null,
-      "doneBy": null,
+      "done": true,
+      "doneAt": "2026-08-29T19:30:41Z",
+      "doneBy": "claude-code",
       "files": [
         "packages/entity-graph-core/src/devtools"
       ],

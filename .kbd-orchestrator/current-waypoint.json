@@ -5,10 +5,10 @@
   "completionMetric": "implementation",
   "conflictCount": 0,
   "currentTask": null,
-  "derivedRevision": 324,
+  "derivedRevision": 327,
   "exactNextCommand": "/kbd-apply v3-devtools-entity-inspection",
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 324
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 327
   },
   "generatedBy": "kbd-runtime",
   "implementationCompleted": 34,
@@ -22,10 +22,10 @@
   ],
   "planRevision": 7,
   "projectId": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
-  "revision": 324,
+  "revision": 327,
   "runId": "full-3.0-release-20260801T113424Z",
   "schemaVersion": "5",
-  "sourceRevision": 324,
+  "sourceRevision": 327,
   "status": "running",
-  "updatedAt": "2026-08-29T19:23:02.119750Z"
+  "updatedAt": "2026-08-29T19:30:55.812919Z"
 }

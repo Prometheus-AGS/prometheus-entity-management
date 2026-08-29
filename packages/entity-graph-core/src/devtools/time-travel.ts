@@ -18,6 +18,13 @@ export interface GraphDevtoolsSnapshotHistory {
   capture(state: GraphState, eventSequence: number | null): GraphDevtoolsSnapshotReference;
   getStatus(): GraphDevtoolsSnapshotHistoryStatus;
   read(cursor: number): GraphDevtoolsGraphData | null;
+  rewind(
+    cursor: number,
+    liveState: GraphState,
+    restore: (data: GraphDevtoolsGraphData) => void,
+  ): boolean;
+  returnToLive(restore: (data: GraphDevtoolsGraphData) => void): number | null;
+  leaveRewindForMutation(): number | null;
   clear(): void;
   dispose(): void;
 }
@@ -50,6 +57,9 @@ export function createGraphDevtoolsSnapshotHistory(
   let latestCursor = 0;
   let baselineCursor: number | null = null;
   let lastUnavailable: Extract<GraphDevtoolsSnapshotReference, { status: "unavailable" }> | null = null;
+  let mode: GraphDevtoolsSnapshotHistoryStatus["mode"] = "live";
+  let activeCursor: number | null = null;
+  let protectedLiveHead: GraphDevtoolsGraphData | null = null;
   let disposed = false;
 
   const unavailable = (
@@ -110,8 +120,8 @@ export function createGraphDevtoolsSnapshotHistory(
     },
     getStatus() {
       return {
-        mode: "live",
-        cursor: null,
+        mode,
+        cursor: activeCursor,
         retainedSnapshots: retained.length,
         retainedBytes,
         snapshotLimit: options.snapshotLimit,
@@ -129,6 +139,46 @@ export function createGraphDevtoolsSnapshotHistory(
       const snapshot = retained.find((candidate) => candidate.reference.cursor === cursor);
       return snapshot ? cloneGraphData(snapshot.data) : null;
     },
+    rewind(cursor, liveState, restore) {
+      if (disposed) return false;
+      const snapshot = retained.find((candidate) => candidate.reference.cursor === cursor);
+      if (!snapshot || (mode === "rewound" && protectedLiveHead === null)) return false;
+
+      let target: GraphDevtoolsGraphData;
+      let nextLiveHead = protectedLiveHead;
+      try {
+        target = cloneGraphData(snapshot.data);
+        if (mode === "live") nextLiveHead = cloneGraphData(liveState);
+        restore(target);
+      } catch {
+        return false;
+      }
+      protectedLiveHead = nextLiveHead;
+      mode = "rewound";
+      activeCursor = cursor;
+      return true;
+    },
+    returnToLive(restore) {
+      if (disposed || mode !== "rewound" || protectedLiveHead === null) return null;
+      const previousCursor = activeCursor;
+      try {
+        restore(cloneGraphData(protectedLiveHead));
+      } catch {
+        return null;
+      }
+      mode = "live";
+      activeCursor = null;
+      protectedLiveHead = null;
+      return previousCursor;
+    },
+    leaveRewindForMutation() {
+      if (mode !== "rewound") return null;
+      const previousCursor = activeCursor;
+      mode = "live";
+      activeCursor = null;
+      protectedLiveHead = null;
+      return previousCursor;
+    },
     clear() {
       retained.length = 0;
       retainedBytes = 0;
@@ -138,6 +188,9 @@ export function createGraphDevtoolsSnapshotHistory(
       retained.length = 0;
       retainedBytes = 0;
       lastUnavailable = null;
+      mode = "live";
+      activeCursor = null;
+      protectedLiveHead = null;
     },
   };
 

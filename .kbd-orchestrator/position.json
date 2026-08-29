@@ -4,9 +4,9 @@
     "v3-devtools-parity",
     "execute"
   ],
-  "derivedRevision": 324,
+  "derivedRevision": 327,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 324
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 327
   },
   "generatedBy": "kbd-runtime",
   "root": {
@@ -598,7 +598,7 @@
           {
             "id": "v3-devtools-time-travel",
             "progress": {
-              "done": 2,
+              "done": 3,
               "total": 10
             },
             "status": "IN_PROGRESS",
@@ -677,6 +677,6 @@
     "type": "phase"
   },
   "schemaVersion": "1",
-  "sourceRevision": 324,
-  "updatedAt": "2026-08-29T19:23:02.119750Z"
+  "sourceRevision": 327,
+  "updatedAt": "2026-08-29T19:30:55.812919Z"
 }

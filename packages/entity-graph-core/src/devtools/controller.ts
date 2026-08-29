@@ -10,6 +10,7 @@ import {
   GRAPH_DEVTOOLS_PROTOCOL_VERSION,
   type GraphDevtoolsCapabilities,
   type GraphDevtoolsCommand,
+  type GraphDevtoolsCommandName,
   type GraphDevtoolsDiagnosticEvent,
   type GraphDevtoolsEvent,
   type GraphDevtoolsEntityRecordsSnapshot,
@@ -17,18 +18,25 @@ import {
   type GraphDevtoolsLifecycleEvent,
   type GraphDevtoolsMutationEvent,
   type GraphDevtoolsPreviewEntityPatchPayload,
+  type GraphDevtoolsRewindPayload,
+  type GraphDevtoolsRewindReceipt,
   type GraphDevtoolsRelationshipsSnapshot,
   type GraphDevtoolsRestoreEntityPreviewPayload,
+  type GraphDevtoolsReturnToLiveReceipt,
   type GraphDevtoolsResult,
   type GraphDevtoolsSnapshot,
   type GraphDevtoolsSnapshotHistoryStatus,
+  type GraphDevtoolsTimeTravelEvent,
   type GraphDevtoolsTransport,
   type GraphDevtoolsValuePolicy,
   type GraphDevtoolsViewDefinition,
   type GraphDevtoolsViewEvent,
   type GraphDevtoolsViewsSnapshot,
 } from "./protocol";
-import { createGraphDevtoolsSnapshotHistory } from "./time-travel";
+import {
+  createGraphDevtoolsSnapshotHistory,
+  type GraphDevtoolsGraphData,
+} from "./time-travel";
 import {
   createGraphDevtoolsViewRegistry,
   type GraphDevtoolsViewRegistration,
@@ -62,6 +70,8 @@ export interface GraphDevtoolsController {
   getViews(): GraphDevtoolsViewsSnapshot;
   getRelationships(): GraphDevtoolsRelationshipsSnapshot;
   registerView(definition: GraphDevtoolsViewDefinition): GraphDevtoolsViewRegistration;
+  rewind(cursor: number): GraphDevtoolsRewindReceipt | null;
+  returnToLive(): GraphDevtoolsReturnToLiveReceipt | null;
   clearHistory(): void;
   subscribe(listener: (event: GraphDevtoolsEvent) => void, replay?: boolean): () => void;
   connect(clientId?: string): GraphDevtoolsTransport;
@@ -155,6 +165,14 @@ function parseRestorePreviewPayload(payload: unknown): GraphDevtoolsRestoreEntit
   return typeof previewId === "string" && previewId.length > 0 ? { previewId } : null;
 }
 
+function parseRewindPayload(payload: unknown): GraphDevtoolsRewindPayload | null {
+  if (typeof payload !== "object" || payload === null || Array.isArray(payload)) return null;
+  const cursor = (payload as Partial<GraphDevtoolsRewindPayload>).cursor;
+  return typeof cursor === "number" && Number.isSafeInteger(cursor) && cursor > 0
+    ? { cursor }
+    : null;
+}
+
 function createController(
   store: GraphStore,
   options: AttachGraphDevtoolsOptions,
@@ -165,11 +183,30 @@ function createController(
   const eventBytesLimit = boundedLimit(options.eventBytesLimit, 256 * 1024, 1024);
   const snapshotLimit = boundedLimit(options.snapshotLimit, 50);
   const snapshotBytesLimit = boundedLimit(options.snapshotBytesLimit, 10 * 1024 * 1024);
+  const timeTravelEnabled = snapshotLimit > 0 && snapshotBytesLimit > 0;
+  const timeTravelCommands: GraphDevtoolsCommandName[] = timeTravelEnabled
+    ? ["get-time-travel-status", "rewind", "return-to-live"]
+    : [];
+  const timeTravelFeatures: Array<GraphDevtoolsCapabilities["features"][number]> = timeTravelEnabled
+    ? ["snapshot-history", "time-travel"]
+    : [];
   const valuePolicy = options.values ?? { mode: "metadata-only" };
   const capabilities: GraphDevtoolsCapabilities = {
     protocolVersion: GRAPH_DEVTOOLS_PROTOCOL_VERSION,
     metadataOnlyByDefault: true,
-    commands: ["get-capabilities", "get-snapshot", "get-history", "get-history-status", "get-entity-records", "get-views", "get-relationships", "preview-entity-patch", "restore-entity-preview", "clear-history"],
+    commands: [
+      "get-capabilities",
+      "get-snapshot",
+      "get-history",
+      "get-history-status",
+      "get-entity-records",
+      "get-views",
+      "get-relationships",
+      "preview-entity-patch",
+      "restore-entity-preview",
+      ...timeTravelCommands,
+      "clear-history",
+    ],
     features: [
       "semantic-events",
       "diagnostic-events",
@@ -180,9 +217,7 @@ function createController(
       "view-inspection",
       "relationship-inspection",
       "local-preview",
-      ...(snapshotLimit > 0 && snapshotBytesLimit > 0
-        ? ["snapshot-history" as const]
-        : []),
+      ...timeTravelFeatures,
     ],
     limits: {
       historyEvents: historyLimit,
@@ -203,6 +238,7 @@ function createController(
   let nextClientNumber = 1;
   let disposed = false;
   let projectionFailureRevision = 0;
+  let internalReplayDepth = 0;
   const snapshotHistory = createGraphDevtoolsSnapshotHistory({
     snapshotLimit,
     snapshotBytesLimit,
@@ -314,13 +350,44 @@ function createController(
     });
   };
 
+  const publishTimeTravel = (
+    state: GraphDevtoolsTimeTravelEvent["payload"]["state"],
+    cursor: number | null,
+    previousCursor: number | null,
+    reason: GraphDevtoolsTimeTravelEvent["payload"]["reason"],
+  ): GraphDevtoolsTimeTravelEvent => {
+    const event: GraphDevtoolsTimeTravelEvent = {
+      ...nextBase(),
+      type: "time-travel",
+      payload: { state, cursor, previousCursor, reason },
+    };
+    publish(event);
+    return event;
+  };
+
+  const restoreGraphData = (data: GraphDevtoolsGraphData) => {
+    internalReplayDepth += 1;
+    try {
+      store.setState(data as Partial<GraphState>);
+    } finally {
+      internalReplayDepth -= 1;
+    }
+  };
+
+  const leaveRewindForMutation = () => {
+    const previousCursor = snapshotHistory.leaveRewindForMutation();
+    if (previousCursor === null) return;
+    projectionFailureRevision += 1;
+    publishTimeTravel("live", null, previousCursor, "mutation");
+  };
+
   const viewRegistry = createGraphDevtoolsViewRegistry(storeId, () => store.getState(), (payload) => {
     const event: GraphDevtoolsViewEvent = { ...nextBase(), type: "view", payload };
     publish(event);
   });
 
   const unsubscribeStore = store.subscribe((current: GraphState, previous: GraphState) => {
-    if (disposed) return;
+    if (disposed || internalReplayDepth > 0) return;
     const startedAt = nowDuration();
     let changes: GraphDevtoolsMutationEvent["payload"]["changes"];
     try {
@@ -329,6 +396,7 @@ function createController(
       // The failed projection cannot prove which values changed. Advance a
       // controller-wide epoch so every active preview refuses a possibly
       // destructive restore rather than treating an unknown publication as safe.
+      leaveRewindForMutation();
       projectionFailureRevision += 1;
       const base = nextBase();
       const event: GraphDevtoolsDiagnosticEvent = {
@@ -344,6 +412,7 @@ function createController(
       return;
     }
     if (changes.length === 0) return;
+    leaveRewindForMutation();
     advanceGraphDevtoolsEntityRevisions(changes, entityRevisions, current, entityValueRevisions);
     const base = nextBase();
     const event: GraphDevtoolsMutationEvent = {
@@ -419,6 +488,33 @@ function createController(
     },
     registerView(definition) {
       return viewRegistry.register(definition);
+    },
+    rewind(cursor) {
+      if (!timeTravelEnabled) return null;
+      const previousCursor = snapshotHistory.getStatus().cursor;
+      if (!snapshotHistory.rewind(cursor, store.getState(), restoreGraphData)) return null;
+      projectionFailureRevision += 1;
+      const event = publishTimeTravel("rewound", cursor, previousCursor, "command");
+      return {
+        status: "rewound",
+        cursor,
+        previousCursor,
+        changedAt: event.observedAt,
+      };
+    },
+    returnToLive() {
+      if (!timeTravelEnabled) return null;
+      const previousCursor = snapshotHistory.returnToLive(restoreGraphData);
+      if (previousCursor === null) return null;
+      projectionFailureRevision += 1;
+      const event = publishTimeTravel("live", null, previousCursor, "command");
+      return {
+        status: "live",
+        cursor: null,
+        previousCursor,
+        reason: "command",
+        changedAt: event.observedAt,
+      };
     },
     clearHistory() {
       history.length = 0;
@@ -498,6 +594,27 @@ function createController(
         case "get-entity-records": result = controller.getEntityRecords(); break;
         case "get-views": result = controller.getViews(); break;
         case "get-relationships": result = controller.getRelationships(); break;
+        case "get-time-travel-status": {
+          if (!timeTravelEnabled) return resultError(storeId, parsed.requestId, "time-travel-unavailable", "Time travel is disabled for this controller");
+          result = controller.getSnapshotHistoryStatus();
+          break;
+        }
+        case "rewind": {
+          if (!timeTravelEnabled) return resultError(storeId, parsed.requestId, "time-travel-unavailable", "Time travel is disabled for this controller");
+          const payload = parseRewindPayload(parsed.payload);
+          if (!payload) return resultError(storeId, parsed.requestId, "invalid-payload", "Invalid rewind payload");
+          const receipt = controller.rewind(payload.cursor);
+          if (!receipt) return resultError(storeId, parsed.requestId, "snapshot-not-found", `Snapshot cursor ${payload.cursor} is not retained`);
+          result = receipt;
+          break;
+        }
+        case "return-to-live": {
+          if (!timeTravelEnabled) return resultError(storeId, parsed.requestId, "time-travel-unavailable", "Time travel is disabled for this controller");
+          const receipt = controller.returnToLive();
+          if (!receipt) return resultError(storeId, parsed.requestId, "not-rewound", "The graph is already live");
+          result = receipt;
+          break;
+        }
         case "preview-entity-patch": {
           const payload = parsePreviewPayload(parsed.payload);
           if (!payload) return resultError(storeId, parsed.requestId, "invalid-payload", "Invalid entity preview payload");

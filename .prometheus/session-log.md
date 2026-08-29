@@ -1530,3 +1530,35 @@
 - Phase remains 2/9 changes complete. Change 3 is 2/7 executable tasks complete;
   next task implements rewind, exact return-to-live, replay markers, and
   mutation-while-rewound ordering.
+
+## 2026-08-29 — DevTools time travel task 3/7
+
+- Added optional-controller commands and typed receipts for time-travel status,
+  rewind by stable cursor, and explicit return to live. Capabilities advertise
+  the commands and `time-travel` feature only when both snapshot ceilings are
+  enabled.
+- Rewind restores the complete graph data slice through the real Zustand state
+  boundary so application subscribers observe historical state. The first
+  rewind deep-clones and protects the exact live head; later cursor changes
+  preserve that same head until return, live-branch mutation, or disposal.
+- Internal restore publications are marked by controller-local replay depth and
+  are excluded from ordinary semantic mutation capture, preventing recursive
+  snapshots and false business history.
+- A real graph mutation while rewound clears the protected future, invalidates
+  outstanding preview-restore receipts, emits the explicit transition to live,
+  then publishes and captures the mutation as the new live branch. Explicit
+  rewind and return also invalidate pre-existing preview receipts.
+- Added ordered `time-travel` lifecycle events with the current and previous
+  cursor. Return-to-live restores the protected deep clone atomically and
+  releases it only after the store publication succeeds.
+- Security/audit boundary: rewind remains an explicit local debug command;
+  complete snapshot values never enter command receipts or event envelopes,
+  while every mode transition receives the controller's monotonic event
+  identity and timestamp.
+- No unit, component, isolated, mock-backed, snapshot, partial integration,
+  typecheck, or build ran. Signed task completion and both after-hooks passed;
+  the known incomplete-change projection reset was restored through signed KBD
+  revision 327.
+- Phase remains 2/9 changes complete. Change 3 is 3/7 executable tasks complete;
+  next task adds visible expired-history results and bounded inert import
+  inspection with explicit confirmed restore.

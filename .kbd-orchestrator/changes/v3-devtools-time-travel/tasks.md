@@ -4,7 +4,7 @@
 
 - [x] 1 Confirm core controller contracts are complete and document the single retention policy.
 - [x] 2 Replace global snapshot/cursor state with controller-owned histories whose events reference captured snapshots.
-- [ ] 3 Implement rewind, exact return-to-live, internal replay markers, and mutation-while-rewound ordering.
+- [x] 3 Implement rewind, exact return-to-live, internal replay markers, and mutation-while-rewound ordering.
 - [ ] 4 Implement visible expired-history results and bounded import inspection/confirmed-restore validation.
 - [ ] 5 Delegate deprecated root time-travel functions to the default-store controller.
 - [ ] 9 After production tasks 1-5 are complete and wired, run one assembled multi-store core/packed-consumer time-travel integration gate covering retention, expired cursors, rewind/live, mutation ordering, import validation, store isolation, and root compatibility; do not add or run unit, isolated, mock-backed, snapshot, or partial tests.
