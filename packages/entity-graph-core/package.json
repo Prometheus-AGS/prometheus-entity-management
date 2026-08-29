@@ -35,11 +35,15 @@
         "types": "./dist/devtools.d.cts",
         "default": "./dist/devtools.cjs"
       }
+    },
+    "./devtools/fixtures/entity-inspection-v1.json": {
+      "default": "./fixtures/devtools/entity-inspection-v1.json"
     }
   },
   "sideEffects": false,
   "files": [
     "dist",
+    "fixtures",
     "README.md",
     "CHANGELOG.md"
   ],

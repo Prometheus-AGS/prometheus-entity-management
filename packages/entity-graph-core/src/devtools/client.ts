@@ -9,7 +9,7 @@ import {
 
 export interface GraphDevtoolsClient {
   readonly storeId: string;
-  request(command: GraphDevtoolsCommandName): Promise<GraphDevtoolsResult>;
+  request(command: GraphDevtoolsCommandName, payload?: unknown): Promise<GraphDevtoolsResult>;
   subscribe(listener: (event: GraphDevtoolsEvent) => void): () => void;
   disconnect(): void;
 }
@@ -24,7 +24,7 @@ export function createGraphDevtoolsClient(
   let disconnected = false;
   return {
     storeId,
-    request(command) {
+    request(command, payload) {
       const requestId = `request-${nextRequest++}`;
       return transport.request({
         protocol: GRAPH_DEVTOOLS_PROTOCOL,
@@ -32,6 +32,7 @@ export function createGraphDevtoolsClient(
         requestId,
         storeId,
         command,
+        ...(payload !== undefined ? { payload } : {}),
       });
     },
     subscribe(listener) {

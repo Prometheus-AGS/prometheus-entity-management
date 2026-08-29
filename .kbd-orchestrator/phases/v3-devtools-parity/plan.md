@@ -1,7 +1,7 @@
 # PLAN: v3-devtools-parity
 
-**Plan revision:** 6
-**Canonical authority:** signed KBD runtime revision 277
+**Plan revision:** 7
+**Canonical authority:** signed KBD runtime revision 290
 **Changes:** 9
 **Execution policy:** implementation first; full integration/acceptance evidence only
 **Model class:** frontier fallback because `project.json` has no model-policy registry
@@ -22,6 +22,7 @@ Deliver equivalent, store-isolated DevTools capabilities for the TypeScript/Reac
 
 - **Depends on:** core observability
 - **Outcome:** entity, list/view, relationship, error/dirty, and conflict-safe preview/restore projections shared by downstream surfaces.
+- **Execution:** implement production tasks 1–5 without partial tests; run one assembled multi-store packed-consumer integration gate; then synchronize docs/fixtures/evidence, refine, review, and archive.
 
 ### 3. `v3-devtools-time-travel`
 

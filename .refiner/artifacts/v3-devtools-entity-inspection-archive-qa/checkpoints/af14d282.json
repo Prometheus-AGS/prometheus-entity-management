@@ -1,0 +1,49 @@
+{
+  "refinement_id": "2b63f6b9-6e0e-4ed0-941c-67950b7a4c24",
+  "artifact_name": "v3-devtools-entity-inspection-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-29T18:36:04Z",
+  "updated_at": "2026-08-29T18:36:09Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Correct the adversarially observed composite-identity collision without changing the wire fixture.",
+    "Revalidate entity-inspection public contracts and evidence after the corrective implementation delta."
+  ],
+  "constraints": [
+    { "id": "api-ledger-truth", "severity": "blocking", "status": "satisfied" },
+    { "id": "inspection-semantics-truth", "severity": "blocking", "status": "satisfied" },
+    { "id": "security-boundary-truth", "severity": "blocking", "status": "satisfied" },
+    { "id": "evidence-and-fixture-integrity", "severity": "blocking", "status": "satisfied" },
+    { "id": "scope-honesty", "severity": "blocking", "status": "satisfied" }
+  ],
+  "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+      "constraints_satisfied": 5,
+      "constraints_total": 5,
+      "decision": "terminate",
+      "timestamp": "2026-08-29T18:36:09Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "5ff48608",
+      "phase": "specify",
+      "iteration": 0,
+      "timestamp": "2026-08-29T18:36:04Z"
+    },
+    {
+      "checkpoint_id": "cf95a8d7",
+      "phase": "plan",
+      "iteration": 0,
+      "timestamp": "2026-08-29T18:36:04Z"
+    }
+  ],
+  "prior_cycle_id": "d4e75737-8d38-4ece-b58a-0c7cc378d4df"
+}

@@ -1,0 +1,93 @@
+{
+  "refinement_id": "d4e75737-8d38-4ece-b58a-0c7cc378d4df",
+  "artifact_name": "v3-devtools-entity-inspection-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-29T18:24:22Z",
+  "updated_at": "2026-08-29T18:29:14Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Refine entity-inspection public contracts and evidence against production source.",
+    "Prevent entity-inspection readiness from being presented as downstream UI or release readiness."
+  ],
+  "constraints": [
+    {
+      "id": "api-ledger-truth",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "inspection-semantics-truth",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "security-boundary-truth",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "evidence-and-fixture-integrity",
+      "severity": "blocking",
+      "status": "satisfied"
+    },
+    {
+      "id": "scope-honesty",
+      "severity": "blocking",
+      "status": "satisfied"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": [
+        "specify",
+        "plan",
+        "execute",
+        "reflect",
+        "persist"
+      ],
+      "constraints_satisfied": 5,
+      "constraints_total": 5,
+      "decision": "terminate",
+      "timestamp": "2026-08-29T18:26:31Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "35fe7880",
+      "phase": "specify",
+      "iteration": 0,
+      "timestamp": "2026-08-29T18:26:13Z"
+    },
+    {
+      "checkpoint_id": "f06baee3",
+      "phase": "plan",
+      "iteration": 0,
+      "timestamp": "2026-08-29T18:26:13Z"
+    },
+    {
+      "checkpoint_id": "793b2654",
+      "phase": "execute",
+      "iteration": 1,
+      "timestamp": "2026-08-29T18:29:14Z"
+    },
+    {
+      "checkpoint_id": "9cf59694",
+      "phase": "reflect",
+      "iteration": 1,
+      "timestamp": "2026-08-29T18:29:14Z"
+    }
+  ],
+  "prior_cycle_id": null
+}

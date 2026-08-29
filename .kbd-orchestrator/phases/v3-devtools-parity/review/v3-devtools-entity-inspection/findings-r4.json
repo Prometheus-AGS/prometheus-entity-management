@@ -1,0 +1,55 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "k3",
+  "producer_model": "openai/gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/inspection.ts",
+      "line": 62,
+      "claim": "A fetch/sync metadata publication for one entity advances the displayed `revision` of every colon-colliding entity whose `type:id` wire key matches, because `graphDevtoolsEntityIdentitiesForStateKey` returns all bucket matches and `advanceGraphDevtoolsEntityRevisions` increments each of them.",
+      "evidence": "`graphDevtoolsEntityIdentitiesForStateKey` pushes every `(type, id)` whose `wireEntityKey(type, id) === key` into `matches`, and `advanceGraphDevtoolsEntityRevisions` does `touched.add(...)` for all returned identities on `entity-state`/`sync` changes. With entities `(\"a:b\",\"c\")` and `(\"a\",\"b:c\")` both present, `setEntityFetching(\"a:b\",\"c\")` alone produces key `\"a:b:c\"` matching both buckets, so both revisions advance. The consumer test in scripts/verify-devtools-entity-inspection.mjs sets metadata on BOTH entities (`setEntityFetching(\"a:b\",\"c\",...)` and `setEntitySyncMetadata(\"a\",\"b:c\",...)`), so it cannot detect this over-advancement. verification.md claims fetch/sync publications 'increment the same collision-free entity revisions', which is only true in aggregate.",
+      "suggested_fix": "Track which entity a metadata publication actually touched (e.g., resolve the key only against buckets that changed in this publication, or thread the true type/id through the semantic change) instead of incrementing every bucket that textually matches the legacy key. Add a gate scenario that mutates metadata for only one of two colon-colliding entities and asserts the other's revision is unchanged."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/inspection.ts",
+      "line": 78,
+      "claim": "The first-colon `splitEntityKey` fallback silently misattributes retained metadata for deleted colon-bearing entity types, projecting a phantom record with the wrong `type`/`id` instead of failing closed.",
+      "evidence": "`splitEntityKey(\"a:b:c\")` returns `{ type: \"a\", id: \"b:c\" }`. `graphDevtoolsEntityIdentitiesForStateKey` uses this fallback whenever no current entity/patch bucket matches, i.e. exactly when entity `(\"a:b\",\"c\")` was deleted but its `entityStates`/`syncMetadata` entries remain. `collectEntityIdentities` then projects a `missing-canonical` record under the fabricated identity `(\"a\",\"b:c\")`. round-3-resolutions.md acknowledges the fallback remains but only describes the happy case ('metadata-only state that has no canonical or patch identity from which an unambiguous pair can be recovered'); for colon-bearing types the pair it recovers is unambiguously wrong.",
+      "suggested_fix": "When bucket-first resolution finds no match and the key contains more than one colon, either omit the record or mark the identity as unrecoverable rather than guessing at the first colon; at minimum document the residual misattribution in security-boundary.md."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/inspection.ts",
+      "line": 150,
+      "claim": "Projected entity records still use the colon-joined `wireEntityKey` as their `key`, so two distinct entities in one snapshot can carry identical `key` values even though round 3 claims collision-free identities.",
+      "evidence": "`recordFor` sets `key = wireEntityKey(type, id)` (`\"${type}:${id}\"`). For `(\"a:b\",\"c\")` and `(\"a\",\"b:c\")` both records emit `key: \"a:b:c\"`. The collision store in scripts/verify-devtools-entity-inspection.mjs asserts only `recordsAfterMetadata.length === 2` and per-`(type,id)` lookups; it never asserts key uniqueness. verification.md/round-3-resolutions.md claim 'collision-free controller identities', which covers the internal maps but not the wire field the fixture presents as the record identifier (`\"key\": \"Project:p1\"` in entity-inspection-v1.json), and nothing in the fixture README states `key` is display-only/non-unique.",
+      "suggested_fix": "Either state explicitly in fixtures/devtools/README.md and protocol.ts that `key` is a non-unique display label and consumers must key on `(type, id)`, or emit the JSON-encoded identity as the wire key."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/views.ts",
+      "line": 155,
+      "claim": "A duplicate `registerView` for an existing `viewId` silently discards the new definition, so a second consumer registering the same ID with a different `entityType`/`kind`/`queryKey` gets a working token whose membership is projected under the first registration's definition.",
+      "evidence": "In `register`, when `entries.get(definition.viewId)` already exists, only `entry.registrations.set(token, ...)` runs; the passed `definition` is never compared to `entry.definition`. `membershipFor` then types every member id with `entry.definition.entityType`, and `viewRecord` derives list stats from the first registration's `queryKey`. There is no validation, error, or event for the divergent definition, and the security/verification docs do not state that first-definition-wins is intended.",
+      "suggested_fix": "Validate that a duplicate registration's `label`/`kind`/`entityType`/`queryKey` match the existing entry and return a typed failure or no-op handle on mismatch, or document the first-definition-wins rule."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "packages/entity-graph-core/src/devtools/client.ts",
+      "line": 35,
+      "claim": "`request` forwards arbitrary `payload` to the transport with no JSON-safety normalization, so values like BigInt, functions, or cycles in a preview patch fail with untyped transport/structured-clone errors on real JSON/postMessage transports instead of the typed `invalid-payload` failure the boundary document promises for malformed payloads.",
+      "evidence": "`...(payload !== undefined ? { payload } : {})` passes the raw object through; `parsePreviewPayload` in controller.ts validates only shape (`typeof candidate.patch === \"object\"`, non-empty keys), never value serializability. security-boundary.md states 'malformed payloads ... return typed failures rather than executing a mutation' and the fixture README freezes JSON-safe wire semantics, but the enforcement happens only after the payload has already crossed the transport.",
+      "suggested_fix": "Normalize or validate the payload client-side (e.g., reuse `toGraphDevtoolsTransportValue` or a JSON round-trip check) and return/throw a typed `invalid-payload` before calling `transport.request`."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

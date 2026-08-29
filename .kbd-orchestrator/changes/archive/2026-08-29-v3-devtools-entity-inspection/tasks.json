@@ -1,0 +1,95 @@
+{
+  "changeId": "v3-devtools-entity-inspection",
+  "schemaVersion": "1",
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Confirm `v3-devtools-core-observability` is complete and freeze shared projection fixtures for downstream React/Flutter consumers.",
+      "done": true,
+      "doneAt": "2026-08-29T16:07:54Z",
+      "doneBy": "claude-code",
+      "files": [
+        "packages/entity-graph-core",
+        "packages/entity_graph_flutter"
+      ],
+      "verify": null,
+      "notes": "Architecture and fixture contract only; do not run tests."
+    },
+    {
+      "id": "2",
+      "title": "Implement entity records for canonical/patch/merged values, timestamps, sync metadata, dirty reasons, and typed errors.",
+      "done": true,
+      "doneAt": "2026-08-29T17:46:58Z",
+      "doneBy": "claude-code",
+      "files": [
+        "packages/entity-graph-core/src/devtools"
+      ],
+      "verify": null,
+      "notes": "Production implementation first."
+    },
+    {
+      "id": "3",
+      "title": "Implement stable view registration, cleanup, list statistics, and reverse entity-to-view membership.",
+      "done": true,
+      "doneAt": "2026-08-29T17:56:07Z",
+      "doneBy": "claude-code",
+      "files": [
+        "packages/entity-graph-core/src/devtools"
+      ],
+      "verify": null,
+      "notes": "Production implementation first."
+    },
+    {
+      "id": "4",
+      "title": "Implement schema-driven outgoing/reverse entity relationships with missing-target reporting.",
+      "done": true,
+      "doneAt": "2026-08-29T18:04:38Z",
+      "doneBy": "claude-code",
+      "files": [
+        "packages/entity-graph-core/src/devtools",
+        "packages/entity-graph-core/src/schema-registry.ts"
+      ],
+      "verify": null,
+      "notes": "Use the existing schema registry; add no parallel schema source."
+    },
+    {
+      "id": "5",
+      "title": "Implement local preview receipts and conflict-safe exact restore using the existing patch layer only.",
+      "done": true,
+      "doneAt": "2026-08-29T18:10:39Z",
+      "doneBy": "claude-code",
+      "files": [
+        "packages/entity-graph-core/src/devtools"
+      ],
+      "verify": null,
+      "notes": "DevTools never becomes durable business state."
+    },
+    {
+      "id": "9",
+      "title": "After production tasks 1-5 are complete and wired, run one assembled multi-store core/packed-consumer entity-inspection integration gate covering projections, membership, relationships, preview propagation, exact restore, conflict refusal, and shared fixture parity; do not add or run unit, isolated, mock-backed, snapshot, or partial tests.",
+      "done": true,
+      "doneAt": "2026-08-29T18:15:14Z",
+      "doneBy": "claude-code",
+      "files": [
+        "scripts",
+        "packages/entity-graph-core"
+      ],
+      "verify": null,
+      "notes": "Only the complete assembled integration gate counts."
+    },
+    {
+      "id": "10",
+      "title": "Synchronize public API and skills ledgers, inspection semantics documentation, shared fixtures, security/evidence receipts, artifact-refiner, and artifact-only adversarial review; verify and archive only after both gates pass.",
+      "done": true,
+      "doneAt": "2026-08-29T19:10:46Z",
+      "doneBy": "claude-code",
+      "files": [
+        "packages/entity-graph-core/README.md",
+        "prometheus-entity-skills",
+        ".kbd-orchestrator/phases/v3-devtools-parity/evidence"
+      ],
+      "verify": null,
+      "notes": "Post-integration truth and archive gate."
+    }
+  ]
+}

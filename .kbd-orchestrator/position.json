@@ -4,9 +4,9 @@
     "v3-devtools-parity",
     "execute"
   ],
-  "derivedRevision": 284,
+  "derivedRevision": 312,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 284
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 312
   },
   "generatedBy": "kbd-runtime",
   "root": {
@@ -589,10 +589,10 @@
           {
             "id": "v3-devtools-entity-inspection",
             "progress": {
-              "done": 0,
-              "total": 8
+              "done": 7,
+              "total": 10
             },
-            "status": "PENDING",
+            "status": "COMPLETE",
             "type": "change"
           },
           {
@@ -661,7 +661,7 @@
         ],
         "id": "v3-devtools-parity",
         "progress": {
-          "done": 1,
+          "done": 2,
           "total": 9
         },
         "status": "IN_PROGRESS",
@@ -670,13 +670,13 @@
     ],
     "id": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
     "progress": {
-      "done": 33,
+      "done": 34,
       "total": 63
     },
     "status": "running",
     "type": "phase"
   },
   "schemaVersion": "1",
-  "sourceRevision": 284,
-  "updatedAt": "2026-08-29T15:57:11.452798Z"
+  "sourceRevision": 312,
+  "updatedAt": "2026-08-29T19:11:06.901188Z"
 }

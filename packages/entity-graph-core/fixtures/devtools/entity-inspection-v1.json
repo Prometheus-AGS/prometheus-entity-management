@@ -1,0 +1,302 @@
+{
+  "fixture": "prometheus.entity-graph.devtools.entity-inspection",
+  "fixtureVersion": 1,
+  "protocol": "prometheus.entity-graph.devtools",
+  "protocolVersion": 1,
+  "storeId": "fixture-store",
+  "capturedAt": "2026-08-29T15:04:05.000Z",
+  "entityRecords": [
+    {
+      "key": "Project:p1",
+      "type": "Project",
+      "id": "p1",
+      "presence": "present",
+      "canonical": {
+        "id": "p1",
+        "name": "Apollo",
+        "ownerId": "u1",
+        "status": "active"
+      },
+      "patch": {
+        "name": "Apollo RC",
+        "status": "review"
+      },
+      "merged": {
+        "id": "p1",
+        "name": "Apollo RC",
+        "ownerId": "u1",
+        "status": "review"
+      },
+      "dirty": true,
+      "dirtyReasons": [
+        {
+          "kind": "local-patch",
+          "field": "name",
+          "change": "changed"
+        },
+        {
+          "kind": "local-patch",
+          "field": "status",
+          "change": "changed"
+        },
+        {
+          "kind": "sync-state",
+          "field": null,
+          "change": "unsynced"
+        }
+      ],
+      "entityState": {
+        "isFetching": false,
+        "lastFetchedAt": "2026-08-29T15:03:00.000Z",
+        "stale": false,
+        "error": null
+      },
+      "sync": {
+        "synced": false,
+        "origin": "optimistic",
+        "updatedAt": "2026-08-29T15:04:00.000Z"
+      },
+      "revision": 15,
+      "viewIds": [
+        "project-detail:p1",
+        "project-list:active"
+      ]
+    },
+    {
+      "key": "Project:p2",
+      "type": "Project",
+      "id": "p2",
+      "presence": "present",
+      "canonical": {
+        "id": "p2",
+        "name": "Hermes",
+        "ownerId": "u-missing",
+        "status": "active"
+      },
+      "patch": null,
+      "merged": {
+        "id": "p2",
+        "name": "Hermes",
+        "ownerId": "u-missing",
+        "status": "active"
+      },
+      "dirty": false,
+      "dirtyReasons": [],
+      "entityState": {
+        "isFetching": false,
+        "lastFetchedAt": "2026-08-29T15:02:00.000Z",
+        "stale": true,
+        "error": {
+          "kind": "entity-fetch",
+          "message": "Background refresh failed",
+          "retryable": true
+        }
+      },
+      "sync": {
+        "synced": true,
+        "origin": "server",
+        "updatedAt": "2026-08-29T15:02:00.000Z"
+      },
+      "revision": 8,
+      "viewIds": [
+        "project-list:active"
+      ]
+    },
+    {
+      "key": "User:u1",
+      "type": "User",
+      "id": "u1",
+      "presence": "present",
+      "canonical": {
+        "id": "u1",
+        "displayName": "Ada"
+      },
+      "patch": null,
+      "merged": {
+        "id": "u1",
+        "displayName": "Ada"
+      },
+      "dirty": false,
+      "dirtyReasons": [],
+      "entityState": {
+        "isFetching": false,
+        "lastFetchedAt": null,
+        "stale": false,
+        "error": null
+      },
+      "sync": {
+        "synced": true,
+        "origin": "server",
+        "updatedAt": "2026-08-29T14:59:00.000Z"
+      },
+      "revision": 3,
+      "viewIds": []
+    }
+  ],
+  "views": [
+    {
+      "viewId": "project-detail:p1",
+      "label": "Project detail",
+      "kind": "entity",
+      "entityType": "Project",
+      "queryKey": null,
+      "registeredAt": "2026-08-29T15:00:00.000Z",
+      "lastRenderedAt": "2026-08-29T15:04:04.000Z",
+      "renderCount": 12,
+      "membership": [
+        {
+          "type": "Project",
+          "id": "p1"
+        }
+      ],
+      "list": null
+    },
+    {
+      "viewId": "project-list:active",
+      "label": "Active projects",
+      "kind": "list",
+      "entityType": "Project",
+      "queryKey": "[\"projects\",{\"status\":\"active\"}]",
+      "registeredAt": "2026-08-29T14:58:00.000Z",
+      "lastRenderedAt": "2026-08-29T15:04:03.000Z",
+      "renderCount": 31,
+      "membership": [
+        {
+          "type": "Project",
+          "id": "p1"
+        },
+        {
+          "type": "Project",
+          "id": "p2"
+        }
+      ],
+      "list": {
+        "visibleCount": 2,
+        "graphCount": 2,
+        "total": 2,
+        "isFetching": false,
+        "isFetchingMore": false,
+        "stale": false,
+        "hasNextPage": false,
+        "hasPreviousPage": false
+      }
+    }
+  ],
+  "entityViewMembership": [
+    {
+      "type": "Project",
+      "id": "p1",
+      "viewIds": [
+        "project-detail:p1",
+        "project-list:active"
+      ]
+    },
+    {
+      "type": "Project",
+      "id": "p2",
+      "viewIds": [
+        "project-list:active"
+      ]
+    },
+    {
+      "type": "User",
+      "id": "u1",
+      "viewIds": []
+    }
+  ],
+  "relationships": [
+    {
+      "relation": "owner",
+      "cardinality": "belongsTo",
+      "direction": "outgoing",
+      "source": {
+        "type": "Project",
+        "id": "p1",
+        "field": "ownerId"
+      },
+      "target": {
+        "type": "User",
+        "id": "u1"
+      },
+      "status": "resolved"
+    },
+    {
+      "relation": "projects",
+      "cardinality": "hasMany",
+      "direction": "reverse",
+      "source": {
+        "type": "User",
+        "id": "u1",
+        "field": null
+      },
+      "target": {
+        "type": "Project",
+        "id": "p1"
+      },
+      "status": "resolved"
+    },
+    {
+      "relation": "owner",
+      "cardinality": "belongsTo",
+      "direction": "outgoing",
+      "source": {
+        "type": "Project",
+        "id": "p2",
+        "field": "ownerId"
+      },
+      "target": {
+        "type": "User",
+        "id": "u-missing"
+      },
+      "status": "missing-target"
+    }
+  ],
+  "previewReceipts": {
+    "applied": {
+      "previewId": "preview-p1-1",
+      "entity": {
+        "type": "Project",
+        "id": "p1"
+      },
+      "priorPatch": {
+        "name": "Apollo RC",
+        "status": "review"
+      },
+      "previewPatch": {
+        "status": "paused"
+      },
+      "appliedPatch": {
+        "name": "Apollo RC",
+        "status": "paused"
+      },
+      "baselineRevision": 14,
+      "previewRevision": 15,
+      "appliedAt": "2026-08-29T15:04:00.000Z"
+    },
+    "restored": {
+      "previewId": "preview-p1-1",
+      "status": "restored",
+      "restoredPatch": {
+        "name": "Apollo RC",
+        "status": "review"
+      },
+      "observedRevision": 15,
+      "restoredAt": "2026-08-29T15:04:06.000Z"
+    },
+    "conflict": {
+      "previewId": "preview-p1-2",
+      "status": "conflict",
+      "reason": "entity-changed-since-preview",
+      "expectedRevision": 19,
+      "observedRevision": 20,
+      "currentPatch": {
+        "name": "Apollo Final",
+        "status": "review"
+      },
+      "priorPatch": {
+        "name": "Apollo RC",
+        "status": "review"
+      }
+    }
+  }
+}

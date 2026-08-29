@@ -1,0 +1,64 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "k3",
+  "producer_model": "openai/gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/progress.json",
+      "claim": "The progress tracker points the next pending action at a task that was explicitly skipped, so the orchestrator's own next-step guidance contradicts the plan.",
+      "evidence": "progress.json hunk sets `\"next_task_pending\": \"Add multi-store tests for projections, membership, relationships, preview propagation, successful restore, and conflict refusal.\"` \u2014 that is the text of task 6, which tasks.md now marks `(SKIPPED)`, while the actual open work is task 10 (docs/ledger/evidence sync, IN_PROGRESS).",
+      "suggested_fix": "Set next_task_pending to the task 10 text (synchronize ledgers, docs, fixtures, evidence receipts, refiner, adversarial review)."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/crud/relations.ts",
+      "claim": "Production code was extended outside the optional devtools subpath despite the acceptance criterion restricting the change surface to @prometheus-ags/entity-graph-core/devtools.",
+      "evidence": "Acceptance criterion: \"Extend only `@prometheus-ags/entity-graph-core/devtools`; normal core root imports remain free of the optional inspection implementation.\" The diff adds a new exported function `getRegisteredSchemas()` to `src/crud/relations.ts`, which is part of the root CRUD module, not the devtools subpath.",
+      "suggested_fix": "Either keep the registry read inside the devtools module (e.g., a devtools-local accessor injected via the existing registry), or document in the change record that this root-level accessor addition is a deliberate, reviewed exception to the criterion."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/controller.ts",
+      "claim": "Entity revision map keys are built by naive string concatenation and can collide across distinct (type, id) pairs, corrupting conflict detection for preview/restore.",
+      "evidence": "controller.ts hunk: `entityValueRevisions.get(`${type}:${id}`) ?? 0`. A store with type `a:b`, id `c` collides with type `a`, id `b:c` (both keys `a:b:c`). The README itself uses colon-containing identifiers such as viewId `users:active-table` and queryKey `users:active`, so colons in identifiers are an established pattern in this codebase.",
+      "suggested_fix": "Key the maps with a nested Map<type, Map<id, number>> or a length-prefixed/JSON-encoded composite key (e.g., JSON.stringify([type, id]))."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/controller.ts",
+      "claim": "The preview-entity-patch payload parser validates only the patch's shape, not its keys, so transport-supplied patches containing dangerous keys such as __proto__/constructor/prototype are passed straight into the graph patch layer.",
+      "evidence": "controller.ts hunk `parsePreviewPayload` checks only `typeof candidate.patch === \"object\"`, non-null, non-array, and `Object.keys(...).length > 0`, then the command handler calls `previewController.apply(payload.type, payload.id, payload.patch)` with the raw object. This is a boundary input arriving over the transport from arbitrary DevTools clients.",
+      "suggested_fix": "Reject patches whose own keys include __proto__, constructor, or prototype before calling apply, and use Object.create(null) or a fresh object copy when forwarding the patch."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "packages/entity-graph-core/src/devtools/protocol.ts",
+      "claim": "The viewIds field doc comment is stale and now misdescribes shipped behavior.",
+      "evidence": "protocol.ts hunk: `/** Populated by the view-membership registry in the next inspection layer. */` on `viewIds`, but the same diff wires `viewRegistry.getViewIdsByEntity()` into `getEntityRecords()`, so the membership layer is present, not \"next\".",
+      "suggested_fix": "Update the comment to describe current behavior, e.g. \"Stable IDs of registered views currently displaying this entity.\""
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/tasks.md",
+      "claim": "Skipped tasks retain unchecked markdown checkboxes, making the task list ambiguous to any parser or reader that keys off checkbox state.",
+      "evidence": "tasks.md hunk: `- [ ] 6 \u2014 Add multi-store tests ... (SKIPPED)`, `- [ ] 7 ... (SKIPPED)`, `- [ ] 8 ... (SKIPPED)` \u2014 the `- [ ]` prefix signals pending while the suffix says skipped.",
+      "suggested_fix": "Use a distinct marker for skipped tasks (e.g., `- [-]` or strike-through) so skipped is distinguishable from pending."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "packages/entity-graph-core/package.json",
+      "claim": "The new JSON subpath export has no documented consumption contract; Node ESM consumers importing it without import attributes will fail at runtime.",
+      "evidence": "package.json hunk adds `\"./devtools/fixtures/entity-inspection-v1.json\": { \"default\": \"./fixtures/devtools/entity-inspection-v1.json\" }`. Node requires `import ... with { type: \"json\" }` for JSON modules; neither the README section documenting the fixture (`entity-inspection-v1.json`) nor the export advertises this.",
+      "suggested_fix": "Add a README snippet showing the import-attribute form (and the readFile fallback) for the fixture subpath."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

@@ -121,6 +121,7 @@ All paths below are relative to the **repository root** of `prometheus-entity-ma
 | `prometheus-entity-skills/_shared/references/a2a-conformance-agent.md` | Official A2A v1 JSON-RPC lifecycle, application authority, TCK scope, migration, and evidence limits |
 | `prometheus-entity-skills/_shared/references/dart-graph-riverpod.md` | Canonical Dart graph/Riverpod architecture, API, commands, and evidence limits |
 | `prometheus-entity-skills/_shared/references/tauri-mobile-plugin.md` | Tauri v2 bindings, capabilities, in-memory mirror, desktop/packed proof, and Android/iOS evidence boundary |
+| `prometheus-entity-skills/_shared/references/devtools-entity-inspection.md` | Optional core `./devtools` entity/view/relationship projections, preview/restore semantics, value boundary, fixtures, and evidence limits |
 | `prometheus-entity-skills/_shared/references/release-candidate-pipeline.md` | Contract-derived RC manifest, non-mutating rehearsal, OIDC staging, protected tags, and restart recovery boundary |
 | `prometheus-entity-skills/_shared/references/v3-release-contract.md` | Entry point for authoritative 3.0 artifact, compatibility, maturity, promotion, and recovery rules |
 | `release/ci-baseline.md` | Implemented hermetic main-CI guarantees and explicit certification limits |

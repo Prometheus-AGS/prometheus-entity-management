@@ -130,6 +130,100 @@ if (attachment.controller) {
 attachment.detach();
 ```
 
+### Inspect entities, rendered views, and relationships
+
+The controller projects inspection state on demand from the owning graph. It
+does not copy entity values into a second store:
+
+```ts
+const attachment = attachGraphDevtools(store, {
+  storeId: "admin-graph",
+  values: { mode: "include" },
+});
+
+const controller = attachment.controller;
+if (controller) {
+  const view = controller.registerView({
+    viewId: "users:active-table",
+    label: "Active users",
+    kind: "list",
+    entityType: "users",
+    queryKey: "users:active",
+  });
+
+  // Call this whenever the rendered membership changes.
+  view.updateMembership(["user-1", "user-2"]);
+
+  const entities = controller.getEntityRecords();
+  const views = controller.getViews();
+  const relationships = controller.getRelationships();
+
+  view.unregister();
+}
+```
+
+Entity records keep the canonical server-confirmed original, local graph patch,
+and merged live value distinct. `dirtyReasons` names patched fields and
+unsynchronized state; fetch/sync timestamps, typed fetch errors, store-local
+revisions, and the stable IDs of views displaying the entity are projected
+beside them. Missing canonical rows retained only by patch or metadata state are
+reported as `presence: "missing-canonical"`.
+
+View registrations are token-scoped. Duplicate registrations for one stable
+`viewId` share the projected view but retain independent lifetimes, so one
+consumer cannot unregister another. List views include current graph/list
+statistics, and membership is available in both directions.
+
+Relationships are derived from the existing CRUD schema registry and current
+merged graph values. `belongsTo`, reverse `hasMany`, and `manyToMany` edges are
+reported as `resolved` or `missing-target`; DevTools does not create a parallel
+relationship registry.
+
+### Preview and restore a local patch
+
+Preview commands write through the graph's existing patch layer, so every live
+consumer observes the proposed value:
+
+```ts
+const preview = await client.request("preview-entity-patch", {
+  type: "users",
+  id: "user-1",
+  patch: { displayName: "Proposed name" },
+});
+
+if (preview.ok && "previewId" in preview.result) {
+  const restore = await client.request("restore-entity-preview", {
+    previewId: preview.result.previewId,
+  });
+}
+```
+
+The receipt captures the exact prior patch. Restore replaces that patch
+atomically only when no intervening canonical or patch publication touched the
+entity. Otherwise it returns a typed `conflict` receipt and leaves current graph
+state unchanged. Fetch/sync metadata-only publications do not cause false
+conflicts. Only one active preview is retained per entity, and receipts are
+discarded with their controller.
+
+The same value policy governs events, entity records, and preview receipts.
+Under the default metadata-only policy, value positions contain an explicit
+`{ $type: "hidden-by-policy" }` marker. Hosts must opt into `mode: "include"`
+before canonical values, patches, merged values, or receipt values can cross the
+inspection boundary.
+
+The versioned conformance fixture is published at
+`@prometheus-ags/entity-graph-core/devtools/fixtures/entity-inspection-v1.json`.
+Its byte-identical source copy under `packages/entity_graph_flutter` freezes the
+TypeScript/Flutter wire semantics; changing those semantics requires a new
+fixture version.
+
+Node ESM consumers import the JSON fixture with an import attribute:
+
+```ts
+import fixture from "@prometheus-ags/entity-graph-core/devtools/fixtures/entity-inspection-v1.json"
+  with { type: "json" };
+```
+
 Each store owns one reference-counted controller. Attachments to the same store
 share its event sequence and bounded history; separate stores never share
 events, commands, clients, or teardown. The first active attachment determines
@@ -174,7 +268,8 @@ const attachment = attachGraphDevtools(store, {
 ```
 
 The current v1 redactor receives each whole changed value, represented by an
-empty `context.fieldPath`. Nested field paths are reserved for later
+empty `context.fieldPath`. `context.destination` distinguishes retained event
+history from on-demand inspection. Nested field paths are reserved for later
 field-level inspection. A throwing redactor marks that change with
 `valueState: "redaction-error"` and exposes neither the exception nor the
 original value.

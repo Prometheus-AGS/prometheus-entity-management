@@ -1364,3 +1364,112 @@
   `https://github.com/Prometheus-AGS/prometheus-entity-management/pull/41`.
 - No package was published, no tag or dist-tag moved, and UAR remains pinned to
   the released 3.0.2 package until a fixed upstream release exists.
+
+## 2026-08-29 — DevTools entity inspection task 2/7
+
+- Added the optional `get-entity-records` DevTools command and projection for
+  canonical originals, local patches, merged live values, dirty reasons,
+  fetch/sync timestamps, typed inspection errors, and store-local revisions.
+- Entity revisions advance once per completed store publication and remain
+  owned by the controller lifecycle; no graph business state was duplicated.
+- Security boundary: inspection values obey the controller's existing
+  metadata-only/include/redaction policy, preventing the new command from
+  bypassing transport value controls.
+- No test, typecheck, or build ran. Per the implementation-first phase rule,
+  the assembled integration gate remains deferred until inspection production
+  tasks 2–5 are complete and wired. Next task: rendered-view membership.
+
+## 2026-08-29 — DevTools entity inspection task 3/7
+
+- Added controller-owned stable view registration with token-scoped cleanup,
+  membership updates, render metadata, and bounded view lifecycle events.
+- Added `get-views` projections with current list statistics and both
+  view-to-entity and entity-to-view membership. Entity records now include the
+  registered views displaying each entity.
+- Duplicate stable view IDs retain independent registration lifetimes; removing
+  one registration cannot remove another live consumer. Controller disposal
+  clears the complete registry.
+- No test, typecheck, or build ran. The assembled integration gate remains
+  deferred until relationship and preview/restore production tasks are wired.
+- KBD reset the change projection to pending after the completed task; signed
+  revision 299 restored `v3-devtools-entity-inspection` to in-progress.
+
+## 2026-08-29 — DevTools entity inspection task 4/7
+
+- Added `get-relationships` and deterministic relationship snapshots for
+  `belongsTo`, reverse `hasMany`, and `manyToMany` schema descriptors.
+- Projections use the existing CRUD schema registry and current merged graph
+  values, including local foreign-key patches. No parallel schema registry or
+  relationship business state was introduced.
+- Missing canonical targets are reported explicitly, including missing child
+  IDs retained by schema-derived relation lists.
+- No test, typecheck, or build ran. The assembled integration gate remains
+  deferred until preview/restore completes the production inspection path.
+- KBD reset the change projection after task completion; signed revision 302
+  restored `v3-devtools-entity-inspection` to in-progress.
+
+## 2026-08-29 — DevTools entity inspection task 5/7
+
+- Added policy-aware `preview-entity-patch` and `restore-entity-preview`
+  transport commands with typed applied, restored, and conflict receipts.
+- Preview writes only to the existing graph patch layer. Exact restore replaces
+  the prior patch atomically, preserving the distinction between no patch and
+  an existing patch without emitting an intermediate cleared state.
+- Conflict detection uses a dedicated canonical/patch publication revision, so
+  intervening entity or patch writes refuse restore while fetch/sync metadata
+  updates do not create false conflicts.
+- Active receipt storage is bounded to one preview per entity and cleared with
+  the owning controller. Returned patch values obey metadata/redaction policy.
+- No test, typecheck, or build ran. All production inspection tasks are now
+  wired; the assembled integration gate is the next task.
+- KBD reset the change projection after task completion; signed revision 305
+  restored `v3-devtools-entity-inspection` to in-progress.
+
+## 2026-08-29 — DevTools entity inspection task 6/7
+
+- Ran the completed production path through `pnpm run verify:devtools-entity-inspection`;
+  the assembled packed-consumer integration gate passed on its first run.
+- The gate built and packed the real core package, installed it into a temporary
+  consumer, and passed ESM, CJS, and NodeNext TypeScript consumption plus 13
+  runtime scenarios covering entity projections, dirty originals/live values,
+  view membership and cleanup, list statistics, relationships and missing
+  targets, preview propagation, exact and metadata-only restore, canonical and
+  patch conflict refusal, multi-store isolation, and value-policy enforcement.
+- Core and Flutter shared fixtures were byte-identical at SHA-256
+  `d07ecda2402b801889b4bf7b6bac5f92eb8434d3db3883b16bfa2d15eb1176ab`,
+  and the fixture/package payload contract passed.
+- Evidence receipt:
+  `.kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-entity-inspection/task-9-packed-acceptance.json`.
+- No unit, component, isolated, snapshot, mock-backed, or partial test ran.
+- Both task-after hooks passed. KBD reset the change projection after task
+  completion; signed revision 308 restored
+  `v3-devtools-entity-inspection` to in-progress.
+
+## 2026-08-29 — DevTools entity inspection task 7/7 and change completion
+
+- Synchronized the optional `./devtools` public API, core and skills ledgers,
+  inspection semantics documentation, cross-language fixtures, security
+  boundary, verification record, and machine-readable packed acceptance
+  receipt. The root core export ledger remains unchanged at 128 names.
+- The final assembled packed-consumer gate passed 16 runtime scenarios through
+  the real ESM, CJS, and NodeNext package surfaces. Later adversarial
+  corrections added collision-safe internal identities, projection-failure
+  restore invalidation, and legacy metadata-key coverage; the final gate also
+  passed package payload, manifest, and byte-identical Flutter fixture checks.
+- Artifact-refiner completed four persisted refinement cycles. Its optional
+  workflow-dispatch helper could not parse the repository's workflow response,
+  but filesystem checkpoints, schema validation, ledger validation, fixture
+  parity, and the final artifact record all completed; no workflow trigger is
+  configured for this repository.
+- Four fresh-context distinct-model adversarial rounds were retained. The final
+  `k3` review against producer `openai/gpt-5` returned `PASS` with no critical
+  findings, and the strict sycophancy screen passed at score `0.0`. Remaining
+  legacy metadata-key/view-registration/transport warnings are recorded in
+  `round-4-resolutions.md` rather than hidden.
+- No unit, component, isolated, snapshot, mock-backed, or partial integration
+  test was added or run. Native backend verification passed.
+- Signed KBD revisions 311–312 restored the task-hook reset through the legal
+  `Pending -> In Progress -> Complete` sequence. The change was archived at
+  `.kbd-orchestrator/changes/archive/2026-08-29-v3-devtools-entity-inspection`.
+- Phase `v3-devtools-parity` is now 2/9 changes complete. Next change:
+  `v3-devtools-time-travel`.

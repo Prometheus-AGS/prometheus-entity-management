@@ -1,0 +1,49 @@
+{
+  "refinement_id": "a20b5826-b61a-4aef-826c-4b48cdef3176",
+  "artifact_name": "v3-devtools-entity-inspection-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-29T18:54:43Z",
+  "updated_at": "2026-08-29T18:54:44Z",
+  "current_iteration": 1,
+  "max_iterations": 5,
+  "goals": [
+    "Unify canonical, patch, fetch, sync, view, and preview entity identity mapping.",
+    "Prove colon-bearing metadata identities without phantom entity records."
+  ],
+  "constraints": [
+    { "id": "api-ledger-truth", "severity": "blocking", "status": "satisfied" },
+    { "id": "inspection-semantics-truth", "severity": "blocking", "status": "satisfied" },
+    { "id": "security-boundary-truth", "severity": "blocking", "status": "satisfied" },
+    { "id": "evidence-and-fixture-integrity", "severity": "blocking", "status": "satisfied" },
+    { "id": "scope-honesty", "severity": "blocking", "status": "satisfied" }
+  ],
+  "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "phases_completed": ["specify", "plan", "execute", "reflect", "persist"],
+      "constraints_satisfied": 5,
+      "constraints_total": 5,
+      "decision": "terminate",
+      "timestamp": "2026-08-29T18:54:44Z"
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "b02d2811",
+      "phase": "specify",
+      "iteration": 0,
+      "timestamp": "2026-08-29T18:54:44Z"
+    },
+    {
+      "checkpoint_id": "3fcb1ada",
+      "phase": "plan",
+      "iteration": 0,
+      "timestamp": "2026-08-29T18:54:44Z"
+    }
+  ],
+  "prior_cycle_id": "4e661941-ae9f-4f45-a043-58d0d64c2574"
+}

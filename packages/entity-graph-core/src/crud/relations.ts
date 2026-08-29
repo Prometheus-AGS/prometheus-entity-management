@@ -30,6 +30,8 @@ const schemaRegistry = new Map<EntityType, EntitySchema>();
 export function registerSchema(schema: EntitySchema) { schemaRegistry.set(schema.type, schema); }
 /** Lookup schema for cascade/join reads; returns null if unregistered. */
 export function getSchema(type: EntityType) { return schemaRegistry.get(type) ?? null; }
+/** Read the existing registry for derived tooling projections without creating a second schema source. */
+export function getRegisteredSchemas(): readonly EntitySchema[] { return [...schemaRegistry.values()]; }
 
 /**
  * After a successful mutation, mark related entities/lists stale so hooks refetch without manually hunting query keys.

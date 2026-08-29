@@ -134,6 +134,8 @@
     "GRAPH_DEVTOOLS_PROTOCOL_VERSION",
     "attachGraphDevtools",
     "createGraphDevtoolsClient",
-    "getGraphDevtoolsController"
+    "getGraphDevtoolsController",
+    "projectGraphDevtoolsEntityRecords",
+    "projectGraphDevtoolsRelationships"
   ]
 }

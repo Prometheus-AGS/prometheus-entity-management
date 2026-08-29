@@ -16,6 +16,15 @@ Generated from `src/index.ts`. Use this when scaffolding imports or explaining c
 
 **Companion A2A boundary:** `@prometheus-ags/entity-graph-a2a` has its own two-entry-point [`a2a-library-exports.json`](a2a-library-exports.json) ledger and [`a2a-conformance-agent.md`](a2a-conformance-agent.md) reference. Its root implements official A2A v1 JSON-RPC; `./legacy` is only the pre-v3 slash-method migration surface. Protocol validity never grants application authority.
 
+**Core DevTools boundary:** `@prometheus-ags/entity-graph-core/devtools` is an
+optional, versioned entry point tracked under `./devtools` in
+[`core-library-exports.json`](core-library-exports.json). Its entity/view/
+relationship projections, local preview/restore rules, value policy, shared
+fixture, and evidence limits are documented in
+[`devtools-entity-inspection.md`](devtools-entity-inspection.md). These core
+contracts do not claim that a React inspector, Flutter controller, browser
+extension, or Flutter DevTools extension is complete.
+
 ---
 
 ## Core (`graph.ts`)
@@ -176,6 +185,24 @@ Use [`release/binding-singleton-contract.md`](../../../release/binding-singleton
 | Export | Kind | Description |
 |--------|------|-------------|
 | `useGraphDevTools` | hook | Development-oriented subscription to graph stats / introspection (useful for debugging, not for production UI). |
+
+### Core DevTools subpath (`@prometheus-ags/entity-graph-core/devtools`)
+
+| Export | Kind | Description |
+|--------|------|-------------|
+| `attachGraphDevtools` | function | Reference-count one per-store controller attachment with bounded history and an explicit value policy. |
+| `getGraphDevtoolsController` | function | Read the currently attached controller for a selected `GraphStore`, or `null`. |
+| `createGraphDevtoolsClient` | function | Create a transport-only command/event client for one controller store ID. |
+| `projectGraphDevtoolsEntityRecords` | function | Project canonical, patch, merged, dirty, fetch/sync, revision, and view-membership records without retaining another graph. |
+| `projectGraphDevtoolsRelationships` | function | Derive deterministic resolved/missing relationship edges from the existing CRUD schema registry and current merged graph values. |
+| `GRAPH_DEVTOOLS_PROTOCOL` | constant | Stable protocol identifier used by every command, result, snapshot, and event envelope. |
+| `GRAPH_DEVTOOLS_PROTOCOL_VERSION` | constant | Current wire major; incompatible envelopes are rejected. |
+| `GraphDevtoolsController` | type | Per-store snapshot, history, inspection, view-registration, command, transport, and lifecycle surface. |
+| `GraphDevtoolsEntityRecord` | type | One inspection record with distinct canonical, patch, and merged values plus dirty and lifecycle metadata. |
+| `GraphDevtoolsViewRegistration` | type | Token-scoped handle used by a rendered view to update membership and unregister safely. |
+| `GraphDevtoolsRelationship` | type | Schema-derived outgoing/reverse edge with resolved or missing-target status. |
+| `GraphDevtoolsPreviewRestoreReceipt` | type | Successful exact restore or typed conflict result after an intervening entity/patch publication. |
+| `GraphDevtoolsValuePolicy` | type | Metadata-only default or explicit value inclusion with a host redactor for history and inspection destinations. |
 
 ---
 

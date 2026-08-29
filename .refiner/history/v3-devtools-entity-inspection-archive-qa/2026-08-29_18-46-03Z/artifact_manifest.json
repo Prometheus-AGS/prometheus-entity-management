@@ -1,0 +1,22 @@
+{
+  "artifact_type": "content",
+  "variants": [
+    {
+      "name": "archive-qa-report",
+      "file": "dist/archive-qa-report.md",
+      "format": "markdown",
+      "description": "Delta-first artifact-refiner report for the DevTools entity-inspection change."
+    }
+  ],
+  "validation": {
+    "preview_status": "pass",
+    "has_console_errors": false,
+    "has_request_failures": false,
+    "notes": [
+      "No browser preview applies to this framework-neutral protocol/controller boundary.",
+      "The scoped built runtime ledger, packed acceptance receipt, and both fixture hashes passed.",
+      "Public content explicitly excludes all downstream DevTools surfaces and publication."
+    ]
+  },
+  "generated_at": "2026-08-29T18:44:33Z"
+}

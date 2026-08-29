@@ -1,0 +1,72 @@
+{
+  "plan": {
+    "stages": [
+      {
+        "id": "inspect",
+        "description": "Compare implementation, specification, documentation, security note, ledger, fixture, and packed receipt.",
+        "requires_execution": false
+      },
+      {
+        "id": "refine",
+        "description": "Apply only truthfulness, completeness, or traceability deltas exposed by inspection.",
+        "requires_execution": false
+      },
+      {
+        "id": "validate",
+        "description": "Verify the built runtime ledger, recursively check receipt statuses, and prove fixture bytes and hashes.",
+        "requires_execution": true,
+        "tool": "node/pnpm"
+      },
+      {
+        "id": "persist",
+        "description": "Persist the QA report, manifest, reflection, log, state, and convergence decision.",
+        "requires_execution": false
+      }
+    ],
+    "tool_invocations": [
+      {
+        "stage_id": "validate",
+        "tool": "pnpm",
+        "purpose": "Run the scoped built core runtime export-ledger verifier."
+      },
+      {
+        "stage_id": "validate",
+        "tool": "node",
+        "purpose": "Parse the packed receipt and prove fixture parity and SHA-256 identity."
+      }
+    ],
+    "state_updates": {
+      "files_to_create": [
+        ".refiner/artifacts/v3-devtools-entity-inspection-archive-qa/dist/archive-qa-report.md",
+        ".refiner/artifacts/v3-devtools-entity-inspection-archive-qa/artifact_manifest.json",
+        ".refiner/artifacts/v3-devtools-entity-inspection-archive-qa/reflection.json",
+        ".refiner/artifacts/v3-devtools-entity-inspection-archive-qa/refinement_log.md",
+        ".refiner/artifacts/v3-devtools-entity-inspection-archive-qa/decisions.md"
+      ],
+      "files_to_update": [
+        ".refiner/artifacts/v3-devtools-entity-inspection-archive-qa/state.json"
+      ],
+      "directories_required": [
+        ".refiner/artifacts/v3-devtools-entity-inspection-archive-qa/dist"
+      ]
+    },
+    "validation_plan": [
+      {
+        "constraint_id": "api-ledger-truth",
+        "validation_method": "Require the scoped built core ledger verifier to pass and only the intended two ./devtools runtime exports to be added.",
+        "execution_required": true
+      },
+      {
+        "constraint_id": "evidence-and-fixture-integrity",
+        "validation_method": "Require all recursive status leaves to equal pass, both fixtures to compare equal, and both SHA-256 values to match the receipt.",
+        "execution_required": true
+      },
+      {
+        "constraint_id": "scope-honesty",
+        "validation_method": "Inspect public and evidence content for explicit downstream exclusions.",
+        "execution_required": false
+      }
+    ],
+    "template": ".codex/skills/artifact-refiner/assets/templates/content-report.template.html"
+  }
+}

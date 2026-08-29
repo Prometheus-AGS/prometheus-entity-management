@@ -1,0 +1,78 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "openai/gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/entity-graph-core/src/devtools/inspection.ts",
+      "line": 214,
+      "claim": "Fetch/sync-only publications advance `entityRevisions` under the raw wire key (`change.key`, e.g. \"Project:p1\") while entity/patch publications use the JSON identity key, and `recordFor` reads only the JSON key \u2014 so the projected per-entity `revision` never advances for fetch/sync-only publications, contradicting the shipped reference doc and protocol comment, and the map silently accumulates unreadable dead keys.",
+      "evidence": "In `advanceGraphDevtoolsEntityRevisions`: for category \"entity\"/\"patch\" it does `touched.add(graphDevtoolsEntityIdentityKey(change.key, change.id))`, but for \"entity-state\"/\"sync\" it does `touched.add(change.key)` (raw colon key). `recordFor` reads `revisions.get(identityKey)` where `identityKey = graphDevtoolsEntityIdentityKey(type, id)` = `JSON.stringify([type, id])`. Meanwhile the diff's own contract states: devtools-entity-inspection.md \"Entity revisions advance once per store publication that touches entity, patch, fetch, or sync state\" and protocol.ts `/** Store-local revision; increments once per publication that touches this entity. */`. The packed gate's metadata-only scenario only exercises restore conflict behavior (which uses `entityValueRevisions`, untouched by this bug), so the defect is not covered by the 15 passing scenarios.",
+      "suggested_fix": "For entity-state/sync changes, parse `change.key` and add `graphDevtoolsEntityIdentityKey(parsed.type, parsed.id)` to `touched` so all revisions live under one key format; add an assembled gate assertion that a fetch/sync-only publication increments the record's `revision`."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/inspection.ts",
+      "line": 44,
+      "claim": "`splitEntityKey` splits on the first colon, so an entity type containing a colon (e.g. type \"a:b\", id \"c\" \u2192 state key \"a:b:c\") produces a phantom `{type: \"a\", id: \"b:c\"}` identity in entity records and view membership, reintroducing identity corruption through the entityStates/syncMetadata path that the JSON-identity fix was meant to eliminate.",
+      "evidence": "inspection.ts `splitEntityKey` uses `key.indexOf(\":\")` then `key.slice(0, separator)` / `key.slice(separator + 1)`; it is called in `collectEntityIdentities` over `Object.keys(state.entityStates)` and `Object.keys(state.syncMetadata)`, and the identical helper is duplicated in views.ts `allEntityIdentities`. The composite-identity scenario in verify-devtools-entity-inspection.mjs only upserts entities (entities/patches maps, which are keyed by real type buckets) and never calls setEntityFetched/setEntitySyncMetadata on the colon-typed entities, so the gate cannot observe the phantom record.",
+      "suggested_fix": "Resolve entity-state/sync wire keys against the actual `state.entities`/`state.patches` type buckets (match by longest registered type prefix or by membership) instead of naive first-colon splitting, and extend the collision scenario to mutate fetch/sync metadata for colon-bearing types."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/crud/relations.ts",
+      "line": 33,
+      "claim": "The production requirement restricts the change surface to the optional devtools subpath, but the diff adds a new exported accessor to the root CRUD module, and the packed gate does not demonstrate that root imports remain free of the inspection implementation.",
+      "evidence": "Spec requirement: \"Extend only `@prometheus-ags/entity-graph-core/devtools`; normal core root imports remain free of the optional inspection implementation.\" The diff adds `export function getRegisteredSchemas(): readonly EntitySchema[]` to `src/crud/relations.ts` (root module), added solely for the devtools relationship projection (`relationships.ts` imports it from \"../crud/relations\"). This was flagged in review round 1 and is unchanged in this revision; `getRegisteredSchemas` is also absent from the `core-library-exports.json` ledger even though it is a new exported symbol from a root module.",
+      "suggested_fix": "Either move registry enumeration behind the devtools entry (e.g. inject a reader at attach time) or, if a root-level export is a deliberate exception, record that exception in the change spec and ledger the symbol."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/controller.ts",
+      "line": 135,
+      "claim": "`parsePreviewPayload` still validates only the patch's shape, so transport-supplied patches containing `__proto__`/`constructor`/`prototype` keys are forwarded unfiltered into the graph patch layer; whether this pollutes depends entirely on the merge semantics of `patchEntity`, which is not shown.",
+      "evidence": "controller.ts `parsePreviewPayload` checks object-ness and `Object.keys(candidate.patch).length > 0`, then the handler calls `previewController.apply(payload.type, payload.id, payload.patch)`; previews.ts copies with `{ ...patch }` (safe for own `__proto__`) but then calls `store.getState().patchEntity(type, id, previewPatch)`, whose merge implementation is outside the diff \u2014 if it uses `Object.assign` or `target[k] = v`, an own `__proto__` key triggers the prototype setter. This is boundary input from arbitrary DevTools clients, and the security-boundary receipt claims malformed payloads return typed failures. Flagged in round 1; unaddressed in this revision.",
+      "suggested_fix": "Reject patches whose own keys include \"__proto__\", \"constructor\", or \"prototype\" in `parsePreviewPayload`, and build the forwarded patch with `Object.create(null)` or a key-filtered copy."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/progress.json",
+      "line": 20,
+      "claim": "`next_task_pending` still contains the skipped task 6 text, directing the executor toward the partial multi-store test work the revised acceptance boundary explicitly forbids, instead of the actually open task 10.",
+      "evidence": "progress.json sets `\"next_task_pending\": \"Add multi-store tests for projections, membership, relationships, preview propagation, successful restore, and conflict refusal.\"` while the phase tasks.md marks tasks 6\u20138 `(SKIPPED)` and task 10 `(IN_PROGRESS)`, and the spec's acceptance boundary states \"Unit, isolated, mock-backed, snapshot, and partial tests are excluded.\" This exact finding appeared in both prior review rounds (findings.json, findings-r2.json) and remains unfixed in this revision.",
+      "suggested_fix": "Set `next_task_pending` to the task 10 text (ledger/docs/fixture/evidence synchronization plus adversarial-review gates)."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/review/v3-devtools-entity-inspection",
+      "claim": "The reviewed artifact is not a single coherent diff: the same files are patched twice with different post-images, so the packet being archived is ambiguous about the actual final state.",
+      "evidence": "The diff contains two top-level hunks for `packages/entity-graph-core/src/devtools/controller.ts` (result blobs `329a4f8c` without `projectionFailureRevision` and `4591f859` with it), two for `.refiner/registry.json` (same base `3c5f7369`, different results `3df98b9c` vs `e50535cc`), two for `protocol.ts` (one with the stale \"next inspection layer\" comment, one corrected), and a `packages/entity-graph-core/CHANGELOG.md` hunk adding a manual \"## Unreleased\" section that refinement iteration 3 claims was removed (\"Removed the premature manual changelog section\") with no compensating hunk. This is the same packet-construction defect class that produced the false CRITICAL in round 2 (untracked files omitted), and the round-3 refinement log claims it was fixed structurally (\"stage only scoped change files so the next isolated packet includes every new module\") \u2014 it was not.",
+      "suggested_fix": "Regenerate the review/archive packet from a single clean staged tree so each file appears exactly once, and drop the stale CHANGELOG hunk before archive."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "packages/entity-graph-core/src/devtools/views.ts",
+      "line": 215,
+      "claim": "Registering a view on a disposed registry silently returns a functional-looking no-op handle instead of failing, so a late React/Flutter binding can believe its membership is tracked when nothing is recorded.",
+      "evidence": "views.ts `register`: `if (disposed) return { viewId: definition.viewId, updateMembership() {}, unregister() {} };` \u2014 no event, no error, and `getSnapshot()` afterwards will not contain the viewId.",
+      "suggested_fix": "Throw or return a distinguishable rejected registration when disposed, matching the typed-failure posture used for transport commands (`disposed` error code)."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "packages/entity-graph-core/src/devtools/inspection.ts",
+      "line": 177,
+      "claim": "For `presence: \"missing-canonical\"` entities the record projects `patch` but forces `merged: null`, discarding the live merged value (which for a patch-only entity is the patch itself) that the spec requires to be projected.",
+      "evidence": "recordFor: `merged: canonical ? projectGraphDevtoolsInspectionValue({ ...canonical, ...(patch ?? {}) }, ...) : null`. Spec: \"Project canonical entity data, local patches, merged live values ... per store.\" The fixture contains no patch-only entity, so the gate never exercises this branch.",
+      "suggested_fix": "When canonical is absent but a patch exists, project `merged` from the patch (or document `merged: null` for missing-canonical as deliberate fixture-contract behavior and add it to the fixture)."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

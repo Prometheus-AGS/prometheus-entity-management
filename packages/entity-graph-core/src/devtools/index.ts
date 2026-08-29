@@ -11,16 +11,38 @@ export type {
   GraphDevtoolsCommandName,
   GraphDevtoolsCounts,
   GraphDevtoolsDiagnosticEvent,
+  GraphDevtoolsEntityDirtyReason,
+  GraphDevtoolsEntityError,
+  GraphDevtoolsEntityRecord,
+  GraphDevtoolsEntityRecordsSnapshot,
   GraphDevtoolsEvent,
   GraphDevtoolsHistoryStatus,
   GraphDevtoolsLifecycleEvent,
   GraphDevtoolsMutationEvent,
+  GraphDevtoolsPreviewAppliedReceipt,
+  GraphDevtoolsPreviewConflictReceipt,
+  GraphDevtoolsPreviewEntityPatchPayload,
+  GraphDevtoolsPreviewRestoredReceipt,
+  GraphDevtoolsPreviewRestoreReceipt,
+  GraphDevtoolsRestoreEntityPreviewPayload,
+  GraphDevtoolsRelationship,
+  GraphDevtoolsRelationshipEndpoint,
+  GraphDevtoolsRelationshipsSnapshot,
   GraphDevtoolsResult,
   GraphDevtoolsSnapshot,
   GraphDevtoolsTransport,
   GraphDevtoolsValueContext,
   GraphDevtoolsValuePolicy,
+  GraphDevtoolsViewDefinition,
+  GraphDevtoolsViewEvent,
+  GraphDevtoolsViewListStats,
+  GraphDevtoolsViewMembership,
+  GraphDevtoolsViewRecord,
+  GraphDevtoolsViewsSnapshot,
+  GraphDevtoolsEntityViewMembership,
 } from "./protocol";
+export { projectGraphDevtoolsEntityRecords } from "./inspection";
+export { projectGraphDevtoolsRelationships } from "./relationships";
 export {
   attachGraphDevtools,
   getGraphDevtoolsController,
@@ -30,5 +52,6 @@ export type {
   GraphDevtoolsAttachment,
   GraphDevtoolsController,
 } from "./controller";
+export type { GraphDevtoolsViewRegistration } from "./views";
 export { createGraphDevtoolsClient } from "./client";
 export type { GraphDevtoolsClient } from "./client";

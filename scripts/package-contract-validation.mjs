@@ -60,6 +60,13 @@ export function validateTarballFileList(publicPackage, files) {
   const allowedPackageFiles = new Set(["package.json", "README.md", "CHANGELOG.md"]);
   const unexpected = files.filter((file) => {
     if (allowedPackageFiles.has(file) || file.startsWith("dist/")) return false;
+    if (
+      publicPackage.directory === "packages/entity-graph-core" &&
+      (
+        file === "fixtures/devtools/README.md" ||
+        file === "fixtures/devtools/entity-inspection-v1.json"
+      )
+    ) return false;
     if (publicPackage.directory !== "packages/entity-graph-tauri") return true;
     return !(
       file === "rust-plugin/Cargo.toml" ||

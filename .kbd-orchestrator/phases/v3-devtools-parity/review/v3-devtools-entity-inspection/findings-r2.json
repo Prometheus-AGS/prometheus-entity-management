@@ -1,0 +1,63 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "openai/gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/entity-graph-core/src/devtools/controller.ts",
+      "line": 2,
+      "claim": "The diff imports four new modules (`./inspection`, `./views`, `./relationships`, `./previews`) and `package.json` exports a new fixture path, but the diff contains no hunks adding any of those files, so as presented the package cannot compile or pack.",
+      "evidence": "controller.ts hunk adds `import { advanceGraphDevtoolsEntityRevisions, ... } from \"./inspection\"`, `createGraphDevtoolsViewRegistry` from \"./views\", `projectGraphDevtoolsRelationships` from \"./relationships\", `createGraphDevtoolsPreviewController` from \"./previews\"; packages/entity-graph-core/package.json adds export `\"./devtools/fixtures/entity-inspection-v1.json\": { \"default\": \"./fixtures/devtools/entity-inspection-v1.json\" }`. No diff hunk creates `src/devtools/inspection.ts`, `views.ts`, `relationships.ts`, `previews.ts`, or `fixtures/devtools/entity-inspection-v1.json`, and the acceptance criteria require the frozen fixture plus a byte-identical copy under `packages/entity_graph_flutter/fixtures/devtools/`, none of which is in the packet.",
+      "suggested_fix": "Include the four new source modules and both fixture copies (TypeScript and Flutter) in the change; without them the claimed packed-consumer integration gate cannot have exercised this code."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/controller.ts",
+      "line": 306,
+      "claim": "The store subscription has an early-`return` diagnostic path before `advanceGraphDevtoolsEntityRevisions` runs, so any publication taking that path never advances `entityValueRevisions`, and preview restore conflict detection \u2014 which reads only that map \u2014 would miss the intervening change and perform a non-conflicting restore over it.",
+      "evidence": "In the `unsubscribeStore` hunk, the sequence is: diagnostic/early `return;` block, then `if (changes.length === 0) return;`, then the added `advanceGraphDevtoolsEntityRevisions(changes, entityRevisions, entityValueRevisions);`. The restore conflict callback `(type, id) => entityValueRevisions.get(...) ?? 0` can only observe revisions advanced past that early return. This undermines the acceptance requirement to 'refuse restore with a typed conflict receipt after intervening canonical or patch changes.'",
+      "suggested_fix": "Advance `entityValueRevisions` for every store publication that touches entity canonical/patch state before any early return, or advance revisions from raw state diffing independent of the event-projection success path."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/controller.ts",
+      "line": 132,
+      "claim": "`parseCommand` is unmodified while five new command names were added to the protocol; if it validates the command string against the original five-command set, every new command (`get-entity-records`, `get-views`, `get-relationships`, `preview-entity-patch`, `restore-entity-preview`) is rejected as an invalid envelope before reaching the new switch arms.",
+      "evidence": "The diff hunk at `function parseCommand(command: unknown): GraphDevtoolsCommand | null` shows only `return candidate as GraphDevtoolsCommand;` unchanged, while the capabilities hunk adds five new entries to `commands` and protocol.ts extends `GraphDevtoolsCommandName`. The validation body of `parseCommand` is never shown accepting the new names.",
+      "suggested_fix": "Show/verify that `parseCommand`'s accepted-command set includes the five new command names, or replace any hardcoded whitelist with validation against the `GraphDevtoolsCommandName` union's runtime list."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/CHANGELOG.md",
+      "line": 3,
+      "claim": "A manual `## Unreleased` entry is added to the package CHANGELOG in a changesets-managed repository, bypassing the changeset workflow and risking a conflict or lost entry the next time `changeset version` regenerates the file.",
+      "evidence": "The file tree contains `./.changeset/config.json` and an existing changeset (`certify-nextjs-app-router.md`), while the CHANGELOG.md hunk hand-writes `## Unreleased / ### Minor Changes` instead of adding a `.changeset/*.md` file.",
+      "suggested_fix": "Revert the manual CHANGELOG edit and add a changeset file (e.g. `.changeset/devtools-entity-inspection.md`) declaring the minor bump for `@prometheus-ags/entity-graph-core`."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/progress.json",
+      "line": 20,
+      "claim": "`next_task_pending` still points at the skipped task 6 text ('Add multi-store tests for projections, membership, relationships, preview propagation, successful restore, and conflict refusal.'), directing the executor toward exactly the partial/multi-store test work the revised plan and acceptance boundary forbid, instead of the actual open task 10.",
+      "evidence": "progress.json hunk sets `\"next_task_pending\": \"Add multi-store tests for projections, membership, relationships, preview propagation, successful restore, and conflict refusal.\"` while tasks.md marks tasks 6\u20138 `(SKIPPED)` and task 10 `(IN_PROGRESS)`, and plan.md's new Execution line mandates the single assembled gate with 'no partial tests'.",
+      "suggested_fix": "Regenerate or correct `next_task_pending` to the task 10 text (ledger/docs/fixture/evidence synchronization and adversarial review gates)."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "packages/entity-graph-core/src/crud/relations.ts",
+      "line": 33,
+      "claim": "The newly exported `getRegisteredSchemas` widens the CRUD module's public surface but appears in neither the `core-library-exports.json` ledger nor `library-api.md` updates in this diff.",
+      "evidence": "relations.ts adds `export function getRegisteredSchemas(): readonly EntitySchema[]`; the core-library-exports.json hunk only adds `projectGraphDevtoolsEntityRecords` and `projectGraphDevtoolsRelationships` to the devtools list, and library-api.md's new table omits `getRegisteredSchemas`. Task 10 (ledger synchronization) is still open, so this may be intentional deferral.",
+      "suggested_fix": "If the symbol is re-exported from the package root, add it to the exports ledger and API reference when task 10 runs; if it must stay internal, avoid exporting it from a module that the root index re-exports."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

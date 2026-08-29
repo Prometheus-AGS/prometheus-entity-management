@@ -1,0 +1,66 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    {
+      "id": "api-ledger-truth",
+      "description": "The core runtime ledger must retain the root exports and exactly match the built optional ./devtools entry point.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Run the scoped core skills-ledger verifier and compare the generated diff with the two intended new runtime projection exports."
+      }
+    },
+    {
+      "id": "inspection-semantics-truth",
+      "description": "Public content must match entity, view, relationship, preview, restore, revision, and lifecycle semantics in production source.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Compare README and skills/API references with protocol.ts, controller.ts, inspection.ts, views.ts, relationships.ts, and previews.ts."
+      }
+    },
+    {
+      "id": "security-boundary-truth",
+      "description": "The security receipt must state metadata-only value hiding, remaining identifier/topology exposure, host transport authority, preview mutation limits, conflicts, and per-store lifecycle.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Inspect the security receipt against command parsing, value projection, controller ownership, and preview implementation."
+      }
+    },
+    {
+      "id": "evidence-and-fixture-integrity",
+      "description": "Every package, consumer, fixture, and scenario status must pass and both fixture sources must be byte-identical at the recorded SHA-256.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Parse task-9-packed-acceptance.json, recursively reject non-pass statuses, compare fixtures byte-for-byte, and recompute both hashes."
+      }
+    },
+    {
+      "id": "scope-honesty",
+      "description": "Entity-inspection readiness must not be presented as completion of later phase changes or publication.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Require explicit exclusions for time travel, React/Flutter inspectors, extensions, site, certification, and publication."
+      }
+    }
+  ],
+  "global_rules": [
+    "Refinement may correct documentation or observed implementation defects but may not broaden production scope.",
+    "Only the completed assembled packed-consumer gate counts as behavioral evidence.",
+    "Do not create or run unit, component, isolated, mock-backed, snapshot, or partial tests.",
+    "Do not imply package publication or full DevTools product certification."
+  ],
+  "termination_conditions": [
+    "All five blocking constraints are satisfied.",
+    "The ledger/evidence/fixture validator passes.",
+    "No further delta improves truthfulness, security clarity, or traceability."
+  ]
+}

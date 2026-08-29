@@ -1,0 +1,38 @@
+{
+  "specification": {
+    "artifact_name": "v3-devtools-entity-inspection-archive-qa",
+    "clarified_intent": {
+      "description": "Validate and refine the entity-inspection implementation, public documentation, skills/API ledgers, shared fixture, security note, and assembled acceptance receipt for truthful archive readiness.",
+      "domain": "content"
+    },
+    "constraints": [
+      "The public ./devtools export ledger must match the built runtime without changing the root runtime export set.",
+      "Documentation must distinguish canonical originals, local patches, merged live values, view membership, schema-derived relationships, and preview conflict semantics exactly.",
+      "Metadata-only behavior and the remaining identifier/topology exposure must be stated without implying anonymity or transport authorization.",
+      "Every behavioral claim must trace to the retained assembled packed-consumer receipt and byte-identical fixture sources.",
+      "The artifact must not claim completion of downstream time travel, React/Flutter UI, extension, site, or release work."
+    ],
+    "target_state": {
+      "description": "A schema-valid, deterministic QA packet with zero blocking constraint failures and exact evidence/scope traceability.",
+      "success_criteria": [
+        "The built ./devtools runtime export names equal the committed core ledger.",
+        "The acceptance receipt contains only pass statuses across package, consumers, fixture, and 13 scenarios.",
+        "The core and Flutter fixtures are byte-identical at the receipt SHA-256.",
+        "README, skills reference, API table, changelog, and security receipt match production semantics.",
+        "No downstream DevTools or publication completion claim appears."
+      ],
+      "measurable_outcomes": [
+        { "metric": "blocking constraint violations", "threshold": "0" },
+        { "metric": "non-pass acceptance statuses", "threshold": "0" },
+        { "metric": "fixture hash mismatches", "threshold": "0" },
+        { "metric": "unsupported downstream completion claims", "threshold": "0" }
+      ]
+    },
+    "content_type": "direct:content",
+    "unknowns": [
+      "The later time-travel and UI changes may extend the protocol; this artifact certifies only entity inspection."
+    ],
+    "requires_code_execution": true,
+    "likely_tools": ["file_system", "node", "pnpm"]
+  }
+}

@@ -1,4 +1,9 @@
 import type { GraphState, GraphStore } from "../graph";
+import {
+  advanceGraphDevtoolsEntityRevisions,
+  graphDevtoolsEntityIdentityKey,
+  projectGraphDevtoolsEntityRecords,
+} from "./inspection";
 import { collectGraphDevtoolsCounts, projectGraphDevtoolsChanges } from "./projection";
 import {
   GRAPH_DEVTOOLS_PROTOCOL,
@@ -7,14 +12,27 @@ import {
   type GraphDevtoolsCommand,
   type GraphDevtoolsDiagnosticEvent,
   type GraphDevtoolsEvent,
+  type GraphDevtoolsEntityRecordsSnapshot,
   type GraphDevtoolsHistoryStatus,
   type GraphDevtoolsLifecycleEvent,
   type GraphDevtoolsMutationEvent,
+  type GraphDevtoolsPreviewEntityPatchPayload,
+  type GraphDevtoolsRelationshipsSnapshot,
+  type GraphDevtoolsRestoreEntityPreviewPayload,
   type GraphDevtoolsResult,
   type GraphDevtoolsSnapshot,
   type GraphDevtoolsTransport,
   type GraphDevtoolsValuePolicy,
+  type GraphDevtoolsViewDefinition,
+  type GraphDevtoolsViewEvent,
+  type GraphDevtoolsViewsSnapshot,
 } from "./protocol";
+import {
+  createGraphDevtoolsViewRegistry,
+  type GraphDevtoolsViewRegistration,
+} from "./views";
+import { projectGraphDevtoolsRelationships } from "./relationships";
+import { createGraphDevtoolsPreviewController } from "./previews";
 
 export interface AttachGraphDevtoolsOptions {
   /**
@@ -35,6 +53,10 @@ export interface GraphDevtoolsController {
   getSnapshot(): GraphDevtoolsSnapshot;
   getHistory(): ReadonlyArray<GraphDevtoolsEvent>;
   getHistoryStatus(): GraphDevtoolsHistoryStatus;
+  getEntityRecords(): GraphDevtoolsEntityRecordsSnapshot;
+  getViews(): GraphDevtoolsViewsSnapshot;
+  getRelationships(): GraphDevtoolsRelationshipsSnapshot;
+  registerView(definition: GraphDevtoolsViewDefinition): GraphDevtoolsViewRegistration;
   clearHistory(): void;
   subscribe(listener: (event: GraphDevtoolsEvent) => void, replay?: boolean): () => void;
   connect(clientId?: string): GraphDevtoolsTransport;
@@ -110,6 +132,24 @@ function parseCommand(command: unknown): GraphDevtoolsCommand | null {
   return candidate as GraphDevtoolsCommand;
 }
 
+function parsePreviewPayload(payload: unknown): GraphDevtoolsPreviewEntityPatchPayload | null {
+  if (typeof payload !== "object" || payload === null || Array.isArray(payload)) return null;
+  const candidate = payload as Partial<GraphDevtoolsPreviewEntityPatchPayload>;
+  if (
+    typeof candidate.type !== "string" || candidate.type.length === 0 ||
+    typeof candidate.id !== "string" || candidate.id.length === 0 ||
+    typeof candidate.patch !== "object" || candidate.patch === null || Array.isArray(candidate.patch) ||
+    Object.keys(candidate.patch).length === 0
+  ) return null;
+  return candidate as GraphDevtoolsPreviewEntityPatchPayload;
+}
+
+function parseRestorePreviewPayload(payload: unknown): GraphDevtoolsRestoreEntityPreviewPayload | null {
+  if (typeof payload !== "object" || payload === null || Array.isArray(payload)) return null;
+  const previewId = (payload as Partial<GraphDevtoolsRestoreEntityPreviewPayload>).previewId;
+  return typeof previewId === "string" && previewId.length > 0 ? { previewId } : null;
+}
+
 function createController(
   store: GraphStore,
   options: AttachGraphDevtoolsOptions,
@@ -122,18 +162,21 @@ function createController(
   const capabilities: GraphDevtoolsCapabilities = {
     protocolVersion: GRAPH_DEVTOOLS_PROTOCOL_VERSION,
     metadataOnlyByDefault: true,
-    commands: ["get-capabilities", "get-snapshot", "get-history", "get-history-status", "clear-history"],
-    features: ["semantic-events", "diagnostic-events", "bounded-history", "multi-client", "multi-store"],
+    commands: ["get-capabilities", "get-snapshot", "get-history", "get-history-status", "get-entity-records", "get-views", "get-relationships", "preview-entity-patch", "restore-entity-preview", "clear-history"],
+    features: ["semantic-events", "diagnostic-events", "bounded-history", "multi-client", "multi-store", "entity-inspection", "view-inspection", "relationship-inspection", "local-preview"],
     limits: { historyEvents: historyLimit, historyBytes: historyBytesLimit, eventBytes: eventBytesLimit },
   };
   const listeners = new Set<(event: GraphDevtoolsEvent) => void>();
   const history: GraphDevtoolsEvent[] = [];
   const historySizes: number[] = [];
+  const entityRevisions = new Map<string, number>();
+  const entityValueRevisions = new Map<string, number>();
   let retainedBytes = 0;
   let sequence = 0;
   let activeClients = 0;
   let nextClientNumber = 1;
   let disposed = false;
+  let projectionFailureRevision = 0;
 
   const nextBase = () => {
     const current = ++sequence;
@@ -240,6 +283,11 @@ function createController(
     });
   };
 
+  const viewRegistry = createGraphDevtoolsViewRegistry(storeId, () => store.getState(), (payload) => {
+    const event: GraphDevtoolsViewEvent = { ...nextBase(), type: "view", payload };
+    publish(event);
+  });
+
   const unsubscribeStore = store.subscribe((current: GraphState, previous: GraphState) => {
     if (disposed) return;
     const startedAt = nowDuration();
@@ -247,6 +295,10 @@ function createController(
     try {
       changes = projectGraphDevtoolsChanges(previous, current, valuePolicy, storeId);
     } catch {
+      // The failed projection cannot prove which values changed. Advance a
+      // controller-wide epoch so every active preview refuses a possibly
+      // destructive restore rather than treating an unknown publication as safe.
+      projectionFailureRevision += 1;
       const event: GraphDevtoolsDiagnosticEvent = {
         ...nextBase(),
         type: "diagnostic",
@@ -259,6 +311,7 @@ function createController(
       return;
     }
     if (changes.length === 0) return;
+    advanceGraphDevtoolsEntityRevisions(changes, entityRevisions, current, entityValueRevisions);
     const event: GraphDevtoolsMutationEvent = {
       ...nextBase(),
       type: "mutation",
@@ -273,6 +326,16 @@ function createController(
     };
     publish(event);
   });
+
+  const previewController = createGraphDevtoolsPreviewController(
+    store,
+    storeId,
+    valuePolicy,
+    (type, id) => (
+      (entityValueRevisions.get(graphDevtoolsEntityIdentityKey(type, id)) ?? 0) +
+      projectionFailureRevision
+    ),
+  );
 
   const controller: GraphDevtoolsController = {
     storeId,
@@ -299,6 +362,24 @@ function createController(
         oldestSequence: history[0]?.sequence ?? null,
         newestSequence: history.length > 0 ? history[history.length - 1]!.sequence : null,
       };
+    },
+    getEntityRecords() {
+      return projectGraphDevtoolsEntityRecords(
+        store.getState(),
+        storeId,
+        entityRevisions,
+        valuePolicy,
+        viewRegistry.getViewIdsByEntity(),
+      );
+    },
+    getViews() {
+      return viewRegistry.getSnapshot();
+    },
+    getRelationships() {
+      return projectGraphDevtoolsRelationships(store.getState(), storeId);
+    },
+    registerView(definition) {
+      return viewRegistry.register(definition);
     },
     clearHistory() {
       history.length = 0;
@@ -375,6 +456,25 @@ function createController(
         case "get-snapshot": result = controller.getSnapshot(); break;
         case "get-history": result = controller.getHistory(); break;
         case "get-history-status": result = controller.getHistoryStatus(); break;
+        case "get-entity-records": result = controller.getEntityRecords(); break;
+        case "get-views": result = controller.getViews(); break;
+        case "get-relationships": result = controller.getRelationships(); break;
+        case "preview-entity-patch": {
+          const payload = parsePreviewPayload(parsed.payload);
+          if (!payload) return resultError(storeId, parsed.requestId, "invalid-payload", "Invalid entity preview payload");
+          const receipt = previewController.apply(payload.type, payload.id, payload.patch);
+          if (!receipt) return resultError(storeId, parsed.requestId, "entity-not-found", `Entity ${payload.type}:${payload.id} was not found`);
+          result = receipt;
+          break;
+        }
+        case "restore-entity-preview": {
+          const payload = parseRestorePreviewPayload(parsed.payload);
+          if (!payload) return resultError(storeId, parsed.requestId, "invalid-payload", "Invalid preview restore payload");
+          const receipt = previewController.restore(payload.previewId);
+          if (!receipt) return resultError(storeId, parsed.requestId, "preview-not-found", `Preview ${payload.previewId} was not found`);
+          result = receipt;
+          break;
+        }
         case "clear-history": controller.clearHistory(); result = { cleared: true }; break;
         default:
           return resultError(storeId, parsed.requestId, "unsupported-command", `Unsupported DevTools command ${parsed.command}`);
@@ -403,6 +503,10 @@ function createController(
     history.length = 0;
     historySizes.length = 0;
     retainedBytes = 0;
+    entityRevisions.clear();
+    entityValueRevisions.clear();
+    viewRegistry.dispose();
+    previewController.dispose();
   };
 
   publishLifecycle("attached");

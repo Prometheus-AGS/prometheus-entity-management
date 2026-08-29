@@ -111,6 +111,13 @@
       "content_type": "direct:content",
       "updated_at": "2026-08-29T15:15:19Z",
       "finalized_at": "2026-08-29T15:15:19Z"
+    },
+    "v3-devtools-entity-inspection-archive-qa": {
+      "path": ".refiner/artifacts/v3-devtools-entity-inspection-archive-qa",
+      "artifact_type": "content",
+      "content_type": "direct:content",
+      "updated_at": "2026-08-29T18:56:20Z",
+      "finalized_at": "2026-08-29T18:56:20Z"
     }
   }
 }

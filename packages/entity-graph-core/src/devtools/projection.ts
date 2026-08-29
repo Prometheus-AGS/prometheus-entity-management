@@ -80,7 +80,7 @@ function withValues(
   };
   const projectValue = (value: unknown, side: GraphDevtoolsValueContext["side"]) => {
     try {
-      return { value: toTransportValue(redact(value, { ...baseContext, side })), failed: false };
+      return { value: toGraphDevtoolsTransportValue(redact(value, { ...baseContext, side })), failed: false };
     } catch {
       return { value: { $type: "redaction-error" }, failed: true };
     }
@@ -100,7 +100,8 @@ function withValues(
   };
 }
 
-function toTransportValue(value: unknown, seen = new WeakSet<object>()): unknown {
+/** Convert graph values into deterministic JSON-safe DevTools payloads. */
+export function toGraphDevtoolsTransportValue(value: unknown, seen = new WeakSet<object>()): unknown {
   if (value === null || typeof value === "string" || typeof value === "boolean") return value;
   if (typeof value === "number") return Number.isFinite(value) ? value : String(value);
   if (typeof value === "bigint") return { $type: "bigint", value: value.toString() };
@@ -112,10 +113,10 @@ function toTransportValue(value: unknown, seen = new WeakSet<object>()): unknown
   if (seen.has(value)) return { $type: "circular" };
   seen.add(value);
   try {
-    if (Array.isArray(value)) return value.map((item) => toTransportValue(item, seen));
+    if (Array.isArray(value)) return value.map((item) => toGraphDevtoolsTransportValue(item, seen));
     const normalized: Record<string, unknown> = {};
     for (const [key, item] of Object.entries(value as Record<string, unknown>)) {
-      normalized[key] = toTransportValue(item, seen);
+      normalized[key] = toGraphDevtoolsTransportValue(item, seen);
     }
     return normalized;
   } finally {
