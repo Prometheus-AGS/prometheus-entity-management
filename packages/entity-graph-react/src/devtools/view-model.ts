@@ -175,6 +175,7 @@ function readAdapterState(
   }
 }
 
+/** Coordinate inspector display state and submit commands to the selected graph controller. */
 export function useEntityGraphInspectorViewModel(
   stateAdapter?: EntityGraphInspectorStateAdapter,
 ): EntityGraphInspectorViewModel {

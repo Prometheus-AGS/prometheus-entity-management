@@ -35,6 +35,7 @@ const workspaces: readonly { id: InspectorWorkspace; label: string }[] = [
   { id: "activity", label: "Activity" },
 ];
 
+/** Render the four causal workspaces and persistent Graph Pulse from a DevTools view model. */
 export function EntityGraphInspectorShell({
   stateAdapter,
 }: {

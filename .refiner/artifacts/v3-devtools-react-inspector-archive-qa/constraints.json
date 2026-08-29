@@ -1,0 +1,77 @@
+{
+  "artifact_type": "ui",
+  "constraints": [
+    {
+      "id": "optional-entry-boundary",
+      "description": "The ordinary root excludes inspector code and DOM effects; only the explicit debug entries expose or mount it.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Run the packed Vite/Next gate and inspect package exports, sideEffects, and production chunks."
+      }
+    },
+    {
+      "id": "causal-and-dirty-truth",
+      "description": "Graph Pulse, entity values/history, view membership, preview/restore, and time travel reflect controller-owned production state without inferred rendered visibility.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Run the complete packed browser workflow and compare UI copy against controller projections and the ui-spec."
+      }
+    },
+    {
+      "id": "value-security-boundary",
+      "description": "Remote/serialized values remain metadata-only unless explicitly included and redacted; the UI cannot grant commit authority.",
+      "severity": "blocking",
+      "type": "security",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Inspect source/docs and require packed policy workflows to pass without exposing sentinel values."
+      }
+    },
+    {
+      "id": "interaction-quality",
+      "description": "The inspector preserves accessible semantic interaction, responsive layout, visible focus, virtualization, deferred search, bounded rendering cadence, and reduced motion.",
+      "severity": "blocking",
+      "type": "visual",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Require packed Chromium keyboard/screen-reader/responsive/load lanes plus retained screenshots and metrics."
+      }
+    },
+    {
+      "id": "public-record-parity",
+      "description": "Built exports, skills, README files, Docusaurus guidance, generated API reference, screenshots, and receipts match the implemented three-entry surface.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Refresh/verify the React export ledger, run API generation, and inspect every public record."
+      }
+    },
+    {
+      "id": "formative-usability",
+      "description": "At least 12 developers across first-time and oriented cohorts perform the seeded dirty-entity and registered-view tasks; 10 of 12 succeed unassisted and each cohort median is under 10 seconds.",
+      "severity": "blocking",
+      "type": "user-study",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Inspect the retained participant protocol/results and timing evidence; automated browser runs do not satisfy this constraint."
+      }
+    }
+  ],
+  "global_rules": [
+    "Refinement may correct observed implementation, design, documentation, or evidence defects but may not broaden into Chrome or Flutter extension work.",
+    "Only the complete packed Vite/Next/Chromium suite counts as automated behavioral evidence.",
+    "Do not create or run unit, component, isolated, mock-backed, snapshot, or partial tests.",
+    "Do not claim formatively certified world-class UX or archive readiness without the human usability record.",
+    "Impeccable absence must be disclosed; available Anthropic and Vercel reviews do not impersonate it."
+  ],
+  "termination_conditions": [
+    "All six blocking constraints are satisfied.",
+    "The API generator, entry ledger, packed browser receipt, artifact validation, isolated adversarial review, and sycophancy correction pass.",
+    "No further delta improves truthfulness, usability, security clarity, visual quality, or traceability."
+  ]
+}

@@ -24,6 +24,7 @@ export function mountAutoEntityGraphDevtools(): AutoEntityGraphDevtoolsHandle | 
   return { unmount: unmountAutoEntityGraphDevtools };
 }
 
+/** Cancel a pending auto mount and remove the mounted development host, if present. */
 export function unmountAutoEntityGraphDevtools(): void {
   if (pendingMount) {
     document.removeEventListener("DOMContentLoaded", pendingMount);

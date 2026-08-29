@@ -12,7 +12,11 @@ export const SKILL_LEDGER_PACKAGES = Object.freeze([
     id: "react",
     directory: "entity-graph-react",
     ledger: "library-exports.json",
-    entryPoints: [[".", "index.mjs"]],
+    entryPoints: [
+      [".", "index.mjs"],
+      ["./devtools", "devtools.mjs"],
+      ["./devtools/auto", "devtools/auto.mjs"],
+    ],
     legacyFlag: null, // default mode for backwards compatibility
   },
   {

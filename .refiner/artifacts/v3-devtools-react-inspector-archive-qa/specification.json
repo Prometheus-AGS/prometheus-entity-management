@@ -1,0 +1,44 @@
+{
+  "specification": {
+    "artifact_name": "v3-devtools-react-inspector-archive-qa",
+    "clarified_intent": {
+      "description": "Refine and validate the optional React entity-graph inspector, its public entries, documentation, screenshots, evidence, and archive claims against the accepted ui-spec.",
+      "domain": "ui"
+    },
+    "constraints": [
+      "The ordinary React root must exclude the inspector; ./devtools must be side-effect-free and ./devtools/auto must mount only after explicit development opt-in.",
+      "Overview, Entities, Views, Activity, and Graph Pulse must use controller-owned projections and truthful registered-view causality.",
+      "Original, patch, live, diff, preview/restore, history, rewind, and return-live semantics must match the core controller.",
+      "Serialized transports must remain metadata-only unless a host explicitly includes and redacts values.",
+      "The UI must retain semantic controls, keyboard and screen-reader workflows, visible focus, responsive layouts, deferred search, virtualization, bounded cadence, and reduced motion.",
+      "The three React runtime entries, skills, package README, root README, Docusaurus pages, and generated API reference must agree.",
+      "The mandatory 12-developer formative usability gate cannot be replaced by automated evidence."
+    ],
+    "target_state": {
+      "description": "A deterministic artifact packet with truthful automated evidence and an explicit archive decision for every blocking ui-spec criterion.",
+      "success_criteria": [
+        "Packed Vite/Next/Chromium acceptance passes with no production-root inspector reachability.",
+        "React root, ./devtools, and ./devtools/auto runtime ledgers match their built artifacts.",
+        "Generated API documentation passes its stable-export coverage policy.",
+        "Screenshots visibly demonstrate the causal inspector and responsive 500-event surface.",
+        "Adversarial and sycophancy reviews contain no unresolved blocking finding.",
+        "At least 10 of 12 retained study participants complete both seeded tasks without assistance and each cohort median is under 10 seconds."
+      ],
+      "measurable_outcomes": [
+        { "metric": "packed browser scenarios", "threshold": "5/5 pass" },
+        { "metric": "inspector-attributable tasks over 50 ms", "threshold": "0" },
+        { "metric": "retained events", "threshold": "<= 500 and <= 5 MiB" },
+        { "metric": "runtime export mismatches", "threshold": "0" },
+        { "metric": "unresolved blocking review findings", "threshold": "0" },
+        { "metric": "unassisted usability completions", "threshold": ">= 10 of 12" }
+      ]
+    },
+    "content_type": "direct:react",
+    "unknowns": [
+      "No retained formative-study participant record has been found; archive readiness therefore remains provisional until that human gate exists.",
+      "Impeccable was requested first but no installed skill/package was discoverable in the available skill roots or searched local paths."
+    ],
+    "requires_code_execution": true,
+    "likely_tools": ["file_system", "pnpm", "playwright", "typedoc", "artifact-refiner", "adversarial-review", "sycophancy-correction"]
+  }
+}

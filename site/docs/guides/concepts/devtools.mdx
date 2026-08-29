@@ -1,76 +1,157 @@
 ---
-title: DevTools and time travel
-description: The devtools event bus, store registry, and snapshot-based time travel built into the core package.
+title: DevTools & Graph Pulse
+description: Activate the optional React inspector and trace entities, dirty values, registered views, events, and controller-owned history.
 ---
 
-# DevTools and time travel
+# DevTools & Graph Pulse
 
-Because all state lives in one explicit graph store, debugging tooling can
-observe everything without framework-specific hacks. The core package ships
-the primitives; any UI (browser extension, in-app panel, CLI) can build on
-them.
+:::caution Unreleased package entries
 
-## Event bus
+The inspector is implemented in repository source after npm `3.0.5` and will
+ship in the next minor release. The published `3.0.5` tarball does not expose
+`./devtools` or `./devtools/auto`.
 
-Every engine and graph action emits a `DevtoolsEvent`. Create a bus to
-subscribe with replay — new subscribers immediately receive buffered history,
-and bursts coalesce into a single list event instead of flooding the UI:
+:::
 
-```ts
-import { createDevtoolsEventBus } from "@prometheus-ags/entity-graph-core";
+The optional React DevTools answer 3 questions from one store-scoped causal
+workspace:
 
-const bus = createDevtoolsEventBus({ bufferSize: 500, coalesceBurstThreshold: 20 });
+1. What changed?
+2. What is dirty and still uncommitted?
+3. Which registered rendered views are affected?
 
-const unsubscribe = bus.subscribe((event) => {
-  // event.kind: "entity" | "list" | "patch" | ...
-  console.log(event.kind, event.at);
-});
-```
+The normal `@prometheus-ags/prometheus-entity-management` entry does not import
+or mount this UI. Applications opt in through an optional development entry.
 
-## Store registry
+## Vite: Automatic Development Launcher
 
-Multi-store apps (e.g. micro-frontends) register each store's event source so
-DevTools can enumerate them:
+Add one guarded dynamic import to the client entry:
 
 ```ts
-import {
-  createDevtoolsEventBus,
-  getRegisteredStores,
-  registerStore,
-  subscribeDevtoolsEvent,
-} from "@prometheus-ags/entity-graph-core";
-
-const bus = createDevtoolsEventBus();
-// subscribeDevtoolsEvent is the engine's raw event tap — a DevtoolsSourceFn.
-registerStore(bus, subscribeDevtoolsEvent, "entity-graph");
-const stores = getRegisteredStores();
+if (import.meta.env.DEV) {
+  void import("@prometheus-ags/prometheus-entity-management/devtools/auto");
+}
 ```
 
-## Time travel
+Vite replaces the condition at build time. The auto entry then checks the
+browser and host mode before it mutates the document or requests the lazy
+inspector chunk. Production and disabled modes render nothing.
 
-Snapshot-based time travel records graph states and restores them by index or
-sequence number:
+## Next.js: Explicit Post-Hydration Host
 
-```ts
-import {
-  configureTimeTravel,
-  getTimeTravelState,
-  recordGraphSnapshot,
-  restoreGraphSnapshot,
-  stepTimeTravel,
-} from "@prometheus-ags/entity-graph-core";
+Server markup must remain unchanged. Mount the explicit host from a client
+component after hydration and give it the same request/provider-owned graph as
+the application:
 
-configureTimeTravel({ capacity: 100 });
+```tsx
+"use client";
 
-const index = recordGraphSnapshot("before-mutation");
-// ... user edits, mutations land ...
-restoreGraphSnapshot(index); // rewind
-stepTimeTravel(1); // step forward again
+import { useEffect, useState } from "react";
+import type { GraphStore } from "@prometheus-ags/entity-graph-core";
 
-const state: ReturnType<typeof getTimeTravelState> = getTimeTravelState();
+type Host = typeof import(
+  "@prometheus-ags/prometheus-entity-management/devtools"
+)["EntityGraphDevtools"];
+
+export function DevelopmentGraphTools({ store }: { store: GraphStore }) {
+  const [Host, setHost] = useState<Host | null>(null);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    let active = true;
+    void import("@prometheus-ags/prometheus-entity-management/devtools")
+      .then((module) => {
+        if (active) setHost(() => module.EntityGraphDevtools);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  return Host ? <Host mode="auto" store={store} /> : null;
+}
 ```
 
-Restoring a snapshot rewrites the graph — every subscribed view across every
-binding re-renders from the restored state, because no view holds its own
-copy. That is the payoff of the normalized architecture: time travel is a
-store operation, not a UI operation.
+## Launcher Controls
+
+After opt-in, development mode displays a floating **Graph** launcher. Its
+display menu can:
+
+- move the launcher to any corner;
+- switch it to a compact edge tab;
+- dock the inspector right or bottom, or keep it floating;
+- hide it until reload; or
+- hide it for the current browser preference.
+
+Press <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>G</kbd> to open,
+restore, or close the inspector. The shortcut and preference key are
+configurable through the explicit host API. Focus returns to the launcher when
+the panel closes.
+
+## Causal Workspaces
+
+| Workspace | What it proves |
+| --------- | -------------- |
+| **Overview** | Store health, dirty/error/fetching counts, registered vs. rendered views, event rate, and bounded event/snapshot retention. |
+| **Entities** | Search/filter, original/patch/live/diff values, dirty reasons, relationships, rendered-view membership, preview/restore, and per-entity history. |
+| **Views** | Truthful registered membership, subscriber/render counts, list completeness/freshness, and the last event that changed the view. |
+| **Activity** | Ordered retained publications, correlation IDs, affected entities/views, time-travel snapshots, rewind, and return to live. |
+
+**Graph Pulse** remains visible across the workspaces. Selecting a pulse
+segment follows one real publication to its entities, dirty fields, and every
+registered view attributed by the controller. It does not infer rendered
+visibility from list membership alone.
+
+## Original, Patch, Live & Diff
+
+- **Original** is the server-confirmed canonical entity.
+- **Patch** is the local graph overlay that has not yet been committed.
+- **Live** is the merged value application hooks currently read.
+- **Diff** identifies added, changed, and removed field paths without relying
+  on color alone.
+
+Preview applies a local patch through the real graph action and returns a
+revision-bound receipt. Restore reinstates the exact prior patch only if the
+entity revision still matches; a conflict leaves the newer graph state intact.
+This is separate from time travel, which rewinds the controller-owned complete
+graph snapshot and always exposes **Return to Live**.
+
+## Value & Security Boundary
+
+The embedded same-origin inspector can read its selected local store. Values
+that cross a serialized browser, VM-service, or remote transport remain
+metadata-only by default. A host must explicitly choose include mode and apply
+its redactor before values may enter that transport. Hidden, redacted,
+truncated, unavailable, and actual `null` states remain distinguishable.
+
+This boundary exists because entity values can contain credentials, personal
+data, or tenant-scoped business records. The inspector never grants commit or
+server-mutation authority to a transport.
+
+## Core Controller APIs
+
+The React inspector consumes the optional
+`@prometheus-ags/entity-graph-core/devtools` controller rather than creating a
+second graph or history store. Advanced hosts can attach controllers, register
+custom rendered views, consume versioned projections/events, preview patches,
+and drive stable-cursor time travel directly.
+
+The older root-level `createDevtoolsEventBus`, store registry, and snapshot
+helpers remain available for compatibility, but new inspection UIs should use
+the store-scoped controller contract.
+
+## Evidence Boundary
+
+The packed React gate exercises clean Vite and Next consumers plus Chromium
+workflows for production exclusion, automatic activation, hide/restore,
+dirty/original/view/history causality, hydration, keyboard and screen-reader
+accessibility, responsive layouts, and a sustained 500-event interaction.
+
+```bash
+pnpm run verify:devtools-react-inspector
+```
+
+The retained phase receipt records the exact machine and timings. A separate
+12-developer formative study is still required before describing the UX as
+formatively certified “world class”; automated evidence does not substitute
+for that product-usability gate.

@@ -483,8 +483,11 @@ async function assertDocumentationContracts() {
       "utf8",
     ),
   );
+  const runtimeExports = Array.isArray(exportsLedger)
+    ? exportsLedger
+    : Object.values(exportsLedger).filter(Array.isArray).flat();
   for (const name of ["createFlintAdapter", "publishFlintMutation"]) {
-    requireCondition(exportsLedger.includes(name), `runtime export ledger omits ${name}`);
+    requireCondition(runtimeExports.includes(name), `runtime export ledger omits ${name}`);
   }
 
   const requiredDocumentation = new Map([

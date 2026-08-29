@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "change": "v3-devtools-react-inspector",
-  "recordedAt": "2026-08-29T23:21:46.446Z",
+  "recordedAt": "2026-08-29T23:39:54.500Z",
   "status": "pass",
   "evidenceKind": "packed-vite-next-development-production-browser",
   "countsAsPackedPackageEvidence": true,
@@ -80,10 +80,10 @@
           "memoryGiB": 32
         },
         "emittedEvents": 5000,
-        "durationMs": 10015.10000000149,
-        "achievedEventsPerSecond": 499.2461383310457,
-        "searchLatencyP95Ms": 18.5,
-        "preloadedPanelOpenP95Ms": 13.400000002235174,
+        "durationMs": 10016.199999999255,
+        "achievedEventsPerSecond": 499.1913100777113,
+        "searchLatencyP95Ms": 14.300000000745058,
+        "preloadedPanelOpenP95Ms": 11.900000002235174,
         "inspectorLongTasksOver50Ms": 0,
         "retainedEvents": 500
       }

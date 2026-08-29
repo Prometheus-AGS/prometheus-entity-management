@@ -346,7 +346,6 @@ function DevtoolsSettings({
       <label>
         <span>Launcher position</span>
         <select
-          autoFocus
           value={preferences.launcherPosition}
           onChange={(event) => onUpdate({
             launcherPosition: event.currentTarget.value as EntityGraphDevtoolsPreferences["launcherPosition"],

@@ -40,7 +40,7 @@ const report = {
   schemaVersion: 1,
   generatedAt: new Date().toISOString(),
   boundary: "packed-vite-next-browser-acceptance",
-  source: { commit: await gitHead(), dirtyTaskFiles: true },
+  source: { commit: await gitHead(), dirtyTaskFiles: await gitTaskFilesDirty() },
   packages: {
     core: { build: "pending", pack: "pending", sha256: null },
     react: { build: "pending", pack: "pending", sha256: null },
@@ -144,6 +144,23 @@ function requirePackage(name) {
 
 async function gitHead() {
   return (await run("git", ["rev-parse", "HEAD"])).stdout.trim();
+}
+
+async function gitTaskFilesDirty() {
+  const status = await run("git", [
+    "status",
+    "--porcelain",
+    "--",
+    "packages/entity-graph-core",
+    "packages/entity-graph-react",
+    "examples/vite-app/src/main.tsx",
+    "examples/nextjs-app/src/components/entity-graph-devtools.tsx",
+    "examples/nextjs-app/src/components/graph-hydration-provider.tsx",
+    "scripts/verify-devtools-react-inspector.mjs",
+    "tests/browser/v3-devtools-react-inspector.playwright.config.ts",
+    "tests/browser/v3-devtools-react-inspector.spec.ts",
+  ]);
+  return status.stdout.trim().length > 0;
 }
 
 async function packAndValidate(selectedPackage) {

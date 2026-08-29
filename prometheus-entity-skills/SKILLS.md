@@ -96,7 +96,7 @@ All paths below are relative to the **repository root** of `prometheus-entity-ma
 
 | Path | Role |
 | ---- | ---- |
-| `prometheus-entity-skills/_shared/references/library-exports.json` | Sorted list of **runtime export names** from `dist/index.mjs`; must match `pnpm run verify:skills` |
+| `prometheus-entity-skills/_shared/references/library-exports.json` | Entry-keyed runtime exports for React `.`, `./devtools`, and `./devtools/auto`; must match `pnpm run verify:skills` |
 | `prometheus-entity-skills/_shared/references/core-library-exports.json` | Runtime exports for `entity-graph-core`; verified by `pnpm run verify:skills` |
 | `prometheus-entity-skills/_shared/references/svelte-library-exports.json` | Runtime exports for `entity-graph-svelte`; verified by `pnpm run verify:skills` |
 | `prometheus-entity-skills/_shared/references/solid-library-exports.json` | Runtime exports for `entity-graph-solid`; verified by `pnpm run verify:skills` |
@@ -123,6 +123,7 @@ All paths below are relative to the **repository root** of `prometheus-entity-ma
 | `prometheus-entity-skills/_shared/references/tauri-mobile-plugin.md` | Tauri v2 bindings, capabilities, in-memory mirror, desktop/packed proof, and Android/iOS evidence boundary |
 | `prometheus-entity-skills/_shared/references/devtools-entity-inspection.md` | Optional core `./devtools` entity/view/relationship projections, preview/restore semantics, value boundary, fixtures, and evidence limits |
 | `prometheus-entity-skills/_shared/references/devtools-time-travel.md` | Optional core `./devtools` controller-owned snapshot retention, rewind/live, expiry, import, compatibility, fixture, and evidence boundaries |
+| `prometheus-entity-skills/_shared/references/devtools-react-inspector.md` | Optional React `./devtools` and `./devtools/auto` activation, inspector workflows, bundle/value boundaries, public exports, and evidence limits |
 | `prometheus-entity-skills/_shared/references/release-candidate-pipeline.md` | Contract-derived RC manifest, non-mutating rehearsal, OIDC staging, protected tags, and restart recovery boundary |
 | `prometheus-entity-skills/_shared/references/v3-release-contract.md` | Entry point for authoritative 3.0 artifact, compatibility, maturity, promotion, and recovery rules |
 | `release/ci-baseline.md` | Implemented hermetic main-CI guarantees and explicit certification limits |

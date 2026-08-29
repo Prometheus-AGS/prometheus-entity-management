@@ -2,7 +2,13 @@
 
 Generated from `src/index.ts`. Use this when scaffolding imports or explaining capabilities. Types are TypeScript-only unless noted.
 
-**Runtime exports ledger:** Agent skills that must match shipped code should align with `library-exports.json` (export names from the built ESM bundle). After changing `src/index.ts` exports, run `pnpm run refresh:exports` at the repo root and commit `prometheus-entity-skills/_shared/references/library-exports.json`. CI runs `pnpm run verify:skills`.
+**Runtime exports ledger:** Agent skills that must match shipped code should align with `library-exports.json` (entry-keyed export names from the built ESM bundles). After changing any React public entry, run `pnpm run refresh:exports` at the repo root and commit `prometheus-entity-skills/_shared/references/library-exports.json`. CI runs `pnpm run verify:skills`.
+
+The React ledger is entry-point keyed: `.` is the ordinary package root,
+`./devtools` is the side-effect-free inspector API, and `./devtools/auto` is
+the explicit development bootstrap. React inspector activation, UI semantics,
+value policy, and evidence limits are documented in
+[`devtools-react-inspector.md`](devtools-react-inspector.md).
 
 **3.0 release surface:** Packaging, compatibility, protocol maturity, publication, and rollback claims come from [`v3-release-contract.md`](v3-release-contract.md), which links to the authoritative machine-readable contract. These release concerns are intentionally separate from the runtime export ledger.
 
@@ -24,6 +30,13 @@ fixture, and evidence limits are documented in
 [`devtools-entity-inspection.md`](devtools-entity-inspection.md). These core
 contracts do not claim that a React inspector, Flutter controller, browser
 extension, or Flutter DevTools extension is complete.
+
+**React DevTools boundary:**
+`@prometheus-ags/prometheus-entity-management/devtools` exposes the explicit
+SSR-safe host/provider/hooks and lazy inspector;
+`@prometheus-ags/prometheus-entity-management/devtools/auto` is the only
+side-effectful automatic browser mount. The ordinary root remains inspector-
+free. See [`devtools-react-inspector.md`](devtools-react-inspector.md).
 
 ---
 

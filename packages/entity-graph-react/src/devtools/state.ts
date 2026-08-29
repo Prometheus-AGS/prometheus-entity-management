@@ -31,6 +31,7 @@ function enumValue<T extends string>(values: readonly T[], value: unknown): T | 
   return typeof value === "string" && values.includes(value as T) ? value as T : undefined;
 }
 
+/** Validate a partial inspector display-state value without accepting unknown versions. */
 export function normalizeEntityGraphInspectorState(
   value: unknown,
 ): Partial<EntityGraphInspectorState> | null {
@@ -59,10 +60,12 @@ export function normalizeEntityGraphInspectorState(
   };
 }
 
+/** Serialize versioned inspector display state for a host-owned adapter or URL. */
 export function serializeEntityGraphInspectorState(state: EntityGraphInspectorState): string {
   return JSON.stringify(state);
 }
 
+/** Parse and normalize serialized inspector display state. */
 export function parseEntityGraphInspectorState(serialized: string): Partial<EntityGraphInspectorState> | null {
   try {
     return normalizeEntityGraphInspectorState(JSON.parse(serialized));
@@ -71,6 +74,7 @@ export function parseEntityGraphInspectorState(serialized: string): Partial<Enti
   }
 }
 
+/** Create a URL query-parameter adapter for deep-linkable inspector display state. */
 export function createEntityGraphInspectorUrlStateAdapter(
   parameter = "pemDevtools",
 ): EntityGraphInspectorStateAdapter {

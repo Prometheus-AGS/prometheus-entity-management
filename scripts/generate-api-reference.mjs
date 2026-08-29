@@ -54,7 +54,7 @@ const reportPath = reportFlag >= 0 ? args[reportFlag + 1] : null;
 /** The 12 publishable npm packages: slug, directory, ledger, entry points. */
 const NPM_PACKAGES = [
   { slug: "entity-graph-core", name: "@prometheus-ags/entity-graph-core", directory: "entity-graph-core", ledger: "core-library-exports.json", entries: ["src/index.ts", "src/devtools/index.ts"] },
-  { slug: "prometheus-entity-management", name: "@prometheus-ags/prometheus-entity-management", directory: "entity-graph-react", ledger: "library-exports.json", entries: ["src/index.ts"] },
+  { slug: "prometheus-entity-management", name: "@prometheus-ags/prometheus-entity-management", directory: "entity-graph-react", ledger: "library-exports.json", entries: ["src/index.ts", "src/devtools/index.ts", "src/devtools/auto.tsx"] },
   { slug: "entity-graph-sync", name: "@prometheus-ags/entity-graph-sync", directory: "entity-graph-sync", ledger: "sync-library-exports.json", entries: ["src/index.ts"] },
   { slug: "entity-graph-svelte", name: "@prometheus-ags/entity-graph-svelte", directory: "entity-graph-svelte", ledger: "svelte-library-exports.json", entries: ["src/index.ts"] },
   { slug: "entity-graph-solid", name: "@prometheus-ags/entity-graph-solid", directory: "entity-graph-solid", ledger: "solid-library-exports.json", entries: ["src/index.ts"] },
@@ -256,11 +256,64 @@ function collectTopLevel(model) {
   const visit = (node) => {
     for (const child of node.children ?? []) {
       if (child.kind === 2 || child.kind === 4) visit(child); // module / namespace
-      else if (!map.has(child.name)) map.set(child.name, child);
+      else {
+        const current = map.get(child.name);
+        const currentDoc = commentText(current?.comment) || commentText(current?.signatures?.[0]?.comment);
+        const candidateDoc = commentText(child.comment) || commentText(child.signatures?.[0]?.comment);
+        if (!current || (!currentDoc && candidateDoc)) map.set(child.name, child);
+      }
     }
   };
   visit(model);
   return map;
+}
+
+// TypeDoc 0.28 drops comments from a small set of named re-exports when a
+// package is generated from multiple entry modules. Recover the actual source
+// JSDoc for only those known package/name pairs. Removing or moving the source
+// comment therefore fails the documentation policy instead of being masked by
+// frozen fallback prose.
+const TIME_TRAVEL_SOURCE = "packages/entity-graph-core/src/devtools-time-travel.ts";
+const timeTravelNames = [
+  "configureTimeTravel",
+  "recordGraphSnapshot",
+  "restoreGraphSnapshot",
+  "restoreGraphSnapshotBySeq",
+  "stepTimeTravel",
+  "getTimeTravelState",
+  "subscribeTimeTravel",
+];
+const REEXPORT_SOURCES = Object.freeze({
+  "entity-graph-core": Object.fromEntries(timeTravelNames.map((name) => [name, TIME_TRAVEL_SOURCE])),
+  "prometheus-entity-management": {
+    ...Object.fromEntries(timeTravelNames.map((name) => [name, TIME_TRAVEL_SOURCE])),
+    EntityGraphDevtools: "packages/entity-graph-react/src/devtools/host.tsx",
+    EntityGraphDevtoolsProvider: "packages/entity-graph-react/src/devtools/provider.tsx",
+    EntityGraphInspectorShell: "packages/entity-graph-react/src/devtools/inspector-shell.tsx",
+    preloadEntityGraphDevtools: "packages/entity-graph-react/src/devtools/host.tsx",
+    useEntityGraphDevtools: "packages/entity-graph-react/src/devtools/provider.tsx",
+    useEntityGraphDevtoolsSnapshot: "packages/entity-graph-react/src/devtools/provider.tsx",
+  },
+});
+
+function sourceReexportDoc(packageSlug, name) {
+  const sourcePath = REEXPORT_SOURCES[packageSlug]?.[name];
+  if (!sourcePath) return "";
+  const source = readFileSync(join(workspaceRoot, sourcePath), "utf8");
+  const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const declaration = new RegExp(
+    `export\\s+(?:async\\s+)?(?:function|const|class)\\s+${escapedName}\\b`,
+  );
+  const declarationIndex = source.search(declaration);
+  if (declarationIndex < 0) return "";
+  const match = source.slice(0, declarationIndex).match(/\/\*\*([\s\S]*?)\*\/\s*$/);
+  if (!match) return "";
+  return match[1]
+    .split("\n")
+    .map((line) => line.replace(/^\s*\*\s?/, "").trim())
+    .filter(Boolean)
+    .map((line) => line.replace(/^@deprecated\s*/, "Deprecated: "))
+    .join(" ");
 }
 
 // ── Step 2: policy enforcement ───────────────────────────────────────────────
@@ -294,7 +347,10 @@ for (const pkg of NPM_PACKAGES) {
       report.policy.vanished.push(`${pkg.slug}:${name}`);
       continue;
     }
-    const doc = commentText(symbol.comment) || commentText(symbol.signatures?.[0]?.comment);
+    const doc = commentText(symbol.comment) ||
+      commentText(symbol.signatures?.[0]?.comment) ||
+      sourceReexportDoc(pkg.slug, name) ||
+      "";
     const documented = doc.length > 0;
     if (!documented) {
       undocumented.push(name);
@@ -460,6 +516,31 @@ for (const pkg of NPM_PACKAGES) {
   const deps = Object.entries(manifest.dependencies ?? {}).map(
     ([name, range]) => `| \`${name}\` | \`${range}\` |`,
   );
+  const packageSpecific = pkg.slug === "prometheus-entity-management"
+    ? [
+        "## Optional DevTools entries",
+        "",
+        "> **Unreleased:** these repository entries were implemented after npm `3.0.5`",
+        "> and will ship in the next minor release. They are not present in the",
+        "> published `3.0.5` tarball.",
+        "",
+        "| Entry | Contract |",
+        "| ----- | -------- |",
+        "| `@prometheus-ags/prometheus-entity-management/devtools` | Side-effect-free explicit provider, host, hooks, state adapters, and lazy inspector. |",
+        "| `@prometheus-ags/prometheus-entity-management/devtools/auto` | Side-effectful development opt-in that mounts the automatic floating launcher only in an enabled browser host. |",
+        "",
+        "The normal package root excludes the inspector. Vite applications can import",
+        "`./devtools/auto` behind `import.meta.env.DEV`; Next.js applications should",
+        "mount the explicit `EntityGraphDevtools` host from a client component after",
+        "hydration. Serialized transports are metadata-only until the host explicitly",
+        "enables and redacts values.",
+        "",
+        "Read [DevTools & Graph Pulse](/docs/guides/concepts/devtools) for activation,",
+        "hide/restore controls, dirty/original/live semantics, registered-view",
+        "membership, history, and time travel.",
+        "",
+      ]
+    : [];
   const page = [
     "---",
     `title: ${yamlQuote(manifest.name)}`,
@@ -494,6 +575,7 @@ for (const pkg of NPM_PACKAGES) {
     "",
     deps.length > 0 ? "| Package | Range |\n| ------- | ----- |\n" + deps.join("\n") : "None.",
     "",
+    ...packageSpecific,
     `API reference: [\`${manifest.name}\` exports](/docs/api/npm/${pkg.slug})`,
     "",
   ].join("\n");

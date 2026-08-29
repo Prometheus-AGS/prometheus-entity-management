@@ -14,9 +14,11 @@ export interface EntityGraphDevtoolsPreferences {
   panelLayout: EntityGraphDevtoolsPanelLayout;
 }
 
+/** Default versioned browser key for non-business launcher and panel preferences. */
 export const ENTITY_GRAPH_DEVTOOLS_PREFERENCE_KEY =
   "prometheus.entity-graph.devtools.preferences.v1";
 
+/** Default visible bottom-right launcher and floating panel preferences. */
 export const DEFAULT_ENTITY_GRAPH_DEVTOOLS_PREFERENCES: EntityGraphDevtoolsPreferences = {
   version: 1,
   hiddenForBrowser: false,
@@ -34,6 +36,7 @@ const positions: readonly EntityGraphDevtoolsLauncherPosition[] = [
 const forms: readonly EntityGraphDevtoolsLauncherForm[] = ["button", "edge-tab"];
 const layouts: readonly EntityGraphDevtoolsPanelLayout[] = ["floating", "dock-right", "dock-bottom"];
 
+/** Read and normalize version 1 display preferences from browser-local storage. */
 export function readEntityGraphDevtoolsPreferences(
   key = ENTITY_GRAPH_DEVTOOLS_PREFERENCE_KEY,
 ): EntityGraphDevtoolsPreferences {
@@ -61,6 +64,7 @@ export function readEntityGraphDevtoolsPreferences(
   }
 }
 
+/** Persist version 1 display preferences without storing graph or entity values. */
 export function writeEntityGraphDevtoolsPreferences(
   preferences: EntityGraphDevtoolsPreferences,
   key = ENTITY_GRAPH_DEVTOOLS_PREFERENCE_KEY,
@@ -78,12 +82,14 @@ export interface EntityGraphDevtoolsShortcut {
   shiftKey?: boolean;
 }
 
+/** Default cross-platform restore/toggle shortcut: Ctrl/Cmd+Shift+G. */
 export const DEFAULT_ENTITY_GRAPH_DEVTOOLS_SHORTCUT: Required<EntityGraphDevtoolsShortcut> = {
   key: "g",
   modifier: "mod",
   shiftKey: true,
 };
 
+/** Return whether a keyboard event matches the configured DevTools shortcut. */
 export function matchesEntityGraphDevtoolsShortcut(
   event: KeyboardEvent,
   shortcut: Required<EntityGraphDevtoolsShortcut>,
@@ -99,6 +105,7 @@ export function matchesEntityGraphDevtoolsShortcut(
     event.key.toLocaleLowerCase() === shortcut.key.toLocaleLowerCase();
 }
 
+/** Format a shortcut for the `aria-keyshortcuts` attribute. */
 export function entityGraphDevtoolsAriaShortcut(
   shortcut: Required<EntityGraphDevtoolsShortcut>,
 ): string {

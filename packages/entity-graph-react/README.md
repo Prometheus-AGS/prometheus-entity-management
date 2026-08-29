@@ -13,20 +13,20 @@ view completeness modes, REST/GraphQL seams, realtime coalescing, PGlite/Loro,
 Suspense/error containment, DevTools, and accessibility.
 
 See the [React 19/Vite 8 release guide](../../release/vite-react19-example.md)
-and run `pnpm run bdd:vite-react19` from the monorepo root. That application
-receipt is intentionally not packed-package or npm publication evidence.
-
-After the protected RC workflow has actually staged the candidate under npm's
-`next` tag, consumers can install the matching core and React pair with:
+for the assembled example evidence. Install the matching stable core and React
+pair with:
 
 ```bash
-pnpm add @prometheus-ags/entity-graph-core@next \
-  @prometheus-ags/prometheus-entity-management@next \
+pnpm add @prometheus-ags/entity-graph-core@3.0.5 \
+  @prometheus-ags/prometheus-entity-management@3.0.5 \
   react@^19 react-dom@^19
 ```
 
-Do not use that command as evidence that `next` already exists; registry status
-and the immutable rehearsal remain release-pipeline concerns.
+> **Release boundary:** npm `3.0.5` contains the released graph APIs but not
+> the new `./devtools` or `./devtools/auto` inspector entries documented
+> below. Those entries are currently available from this repository workspace
+> and will ship in the next minor release; do not import them from the `3.0.5`
+> tarball.
 
 ### Documentation map
 
@@ -39,6 +39,7 @@ and the immutable rehearsal remain release-pipeline concerns.
 | [CHANGELOG.md](CHANGELOG.md) | Release history |
 | [../../release/binding-singleton-contract.md](../../release/binding-singleton-contract.md) | Core peer ownership and packed singleton verification |
 | [../../release/vite-react19-example.md](../../release/vite-react19-example.md) | React 19/Vite 8 showcase scenarios, commands, and evidence boundary |
+| [../../prometheus-entity-skills/_shared/references/devtools-react-inspector.md](../../prometheus-entity-skills/_shared/references/devtools-react-inspector.md) | Optional React inspector entries, activation, privacy, and workflow contract |
 
 ---
 
@@ -381,11 +382,69 @@ that wants no ambient resolution at all.
 | `useLocalFirst` | Hook for local-first workflows with the adapter. |
 | `usePGliteQuery` | Run queries against PGlite in sync with the graph story. |
 
-### DevTools
+### DevTools (unreleased inspector)
 
-| Export | Description |
-|--------|-------------|
-| `useGraphDevTools` | Hook for debugging graph shape and activity in development. |
+The ordinary package root keeps the lightweight legacy `useGraphDevTools`
+hook and does not import or mount the inspector. The full inspector is an
+unreleased repository feature behind two optional subpaths. It is not present
+in the published `3.0.5` tarball:
+
+| Entry/export | Description |
+|--------------|-------------|
+| `./devtools/auto` | Side-effectful debug opt-in that detects development mode, waits for the browser, and mounts the launcher. |
+| `EntityGraphDevtools` from `./devtools` | SSR-safe explicit host for provider-owned or Next.js graphs. |
+| `EntityGraphDevtoolsProvider` and inspector hooks from `./devtools` | Advanced multi-store, custom host, and state-adapter integration. |
+
+For Vite, add one debug-only dynamic import near the client entry:
+
+```ts
+if (import.meta.env.DEV) {
+  void import("@prometheus-ags/prometheus-entity-management/devtools/auto");
+}
+```
+
+For Next.js, mount the explicit host from a client component after hydration
+and pass the same provider-owned graph used by the application:
+
+```tsx
+"use client";
+
+import { useEffect, useState } from "react";
+import type { GraphStore } from "@prometheus-ags/entity-graph-core";
+
+type Host = typeof import(
+  "@prometheus-ags/prometheus-entity-management/devtools"
+)["EntityGraphDevtools"];
+
+export function DevelopmentGraphTools({ store }: { store: GraphStore }) {
+  const [Host, setHost] = useState<Host | null>(null);
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    let active = true;
+    void import("@prometheus-ags/prometheus-entity-management/devtools")
+      .then((module) => {
+        if (active) setHost(() => module.EntityGraphDevtools);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+  return Host ? <Host mode="auto" store={store} /> : null;
+}
+```
+
+After opt-in, development mode shows a floating **Graph** launcher. Open it to
+inspect Overview, Entities, Views, Activity, Graph Pulse causality, canonical
+originals, local patches, merged live values, registered rendered-view
+membership, retained entity history, and controller-owned time travel. The
+display menu can move or compact the launcher, dock the inspector, hide it
+until reload, or hide it for the browser. Restore/toggle it with
+<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>G</kbd>.
+
+Serialized/remote inspection remains metadata-only unless the host explicitly
+enables an include/redact value policy. The same-origin embedded inspector can
+read the selected local store without sending values over a transport. The
+optional Loro adapter is loaded only when a consumer uses that integration.
 
 ### UI (optional)
 

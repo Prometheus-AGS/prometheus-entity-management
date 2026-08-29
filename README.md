@@ -132,6 +132,28 @@ local/remote/hybrid views, REST/GraphQL seams, realtime coalescing, PGlite,
 Loro, Suspense, DevTools, and accessibility. See
 [the React/Vite guide](website/docs/frameworks/react-vite.md).
 
+Opt into the optional inspector from a Vite client entry without adding it to
+production bundles:
+
+> The inspector entries shown here are implemented in this repository after
+> the published `3.0.5` release and will ship in the next minor release.
+> npm `3.0.5` does not resolve `./devtools` or `./devtools/auto`.
+
+```ts
+if (import.meta.env.DEV) {
+  void import("@prometheus-ags/prometheus-entity-management/devtools/auto");
+}
+```
+
+The development launcher opens Overview, Entities, Views, Activity, and the
+Graph Pulse causal ribbon. It shows canonical originals beside uncommitted
+patch/live values, retained entity history, and every registered rendered view
+containing an entity. The launcher can be moved, compacted, hidden until reload,
+hidden for the browser, and restored with <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>G</kbd>.
+Next.js applications use the explicit client-only `./devtools` host after
+hydration so server markup remains unchanged. See the
+[package DevTools guide](packages/entity-graph-react/README.md#devtools).
+
 ### Flutter + Riverpod 3
 
 Install the public Flutter package from pub.dev:

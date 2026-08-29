@@ -11,9 +11,9 @@ inside `staleTime`.
 
 ## Architecture
 
-The React binding's hooks bind to a **process-global** store — correct in the
-browser, wrong during server rendering where concurrent requests would share
-it. The example therefore splits the world:
+The React binding supports provider-owned graphs, which are required during
+server rendering so concurrent requests never share entity state. The example
+therefore splits the world:
 
 - **Server:** `src/lib/server/request-graph.ts` mints a fresh graph per
   request with the core's `createGraphStore()`. A release contract test
@@ -24,6 +24,17 @@ it. The example therefore splits the world:
 - **Client:** `RequestHydrationBoundary` renders an identical shell on server
   and first client pass (no hydration mismatch), writes the payload post-mount
   with freshness stamps, then mounts graph-reading children.
+
+The client-owned `GraphHydrationProvider` also mounts a development-only
+`NextEntityGraphDevtools`. That client component checks
+`process.env.NODE_ENV`, dynamically imports the side-effect-free `./devtools`
+entry after hydration, and passes the same provider-owned store to
+`EntityGraphDevtools`. No launcher markup is emitted by the server and the
+ordinary package root remains inspector-free.
+
+The inspector subpath is implemented in repository source after npm `3.0.5`
+and will ship in the next minor release; it is not present in the published
+`3.0.5` tarball.
 
 ## Setup
 

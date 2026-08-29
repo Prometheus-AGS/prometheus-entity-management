@@ -14,7 +14,7 @@ export const ENTITY_GRAPH_DEVTOOLS_STYLES = `
 
 *, *::before, *::after { box-sizing: border-box; }
 button, input, select, textarea { font: inherit; }
-button { color: inherit; }
+button { color: inherit; touch-action: manipulation; }
 h1, h2, h3, p, dl, dd, ol, ul { margin: 0; }
 ol, ul { padding: 0; list-style: none; }
 code, pre, .pem-mono {
@@ -35,6 +35,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   pointer-events: none;
   color: var(--pem-devtools-color-text, #e8e6df);
   font: 13px/1.4 var(--pem-devtools-font-body, ui-sans-serif, system-ui, sans-serif);
+  font-variant-numeric: tabular-nums;
 }
 .pem-launcher-slot {
   position: fixed;
@@ -282,11 +283,33 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   cursor: pointer;
 }
 .pem-workspace-tabs button {
+  display: inline-flex;
   min-height: 38px;
+  align-items: center;
+  gap: 5px;
   padding: 0 12px;
   border-bottom: 2px solid transparent;
   color: var(--pem-muted);
   font-weight: 650;
+}
+.pem-workspace-tabs button:hover,
+.pem-value-tabs button:hover,
+.pem-filter-row button:hover,
+.pem-pause:hover,
+.pem-panel-toolbar button:hover,
+.pem-settings button:hover,
+.pem-detail-actions button:hover,
+.pem-preview-actions button:hover,
+.pem-time-travel-controls button:hover,
+.pem-pulse-toggle:hover,
+.pem-pulse-segments button:hover {
+  border-color: #5f756f;
+  background: #202a2d;
+  color: #f5f2e9;
+}
+.pem-workspace-tabs small {
+  color: #829096;
+  font: 700 10px/1 var(--pem-devtools-font-mono, ui-monospace, monospace);
 }
 .pem-workspace-tabs button[aria-selected="true"] {
   border-color: var(--pem-accent);

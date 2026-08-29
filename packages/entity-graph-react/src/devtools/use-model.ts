@@ -15,6 +15,7 @@ interface ModelBinding {
 const subscribeToNothing = () => () => {};
 const getNoModel = (): EntityGraphInspectorModel | null => null;
 
+/** Subscribe to the selected controller's frame-bounded local inspector projection. */
 export function useEntityGraphInspectorModel(): EntityGraphInspectorModel | null {
   const runtime = useEntityGraphDevtools();
   const [binding, setBinding] = useState<ModelBinding | null>(null);

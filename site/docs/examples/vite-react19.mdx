@@ -25,6 +25,23 @@ pnpm run dev:vite
 
 Open `http://localhost:5173` and navigate to `/release-showcase`.
 
+The client entry opts into the optional inspector only for Vite development:
+
+This inspector entry is implemented in repository source after npm `3.0.5`
+and is not available from the published `3.0.5` tarball.
+
+```ts
+if (import.meta.env.DEV) {
+  void import("@prometheus-ags/prometheus-entity-management/devtools/auto");
+}
+```
+
+The floating **Graph** launcher can be moved, compacted, hidden, restored with
+<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>G</kbd>, or opened to trace
+original/patch/live values, registered rendered views, entity history, and
+Graph Pulse publications. The guarded optional entry is absent from the normal
+production root.
+
 ## Feature scenarios
 
 Each scenario card on the showcase route maps to a shared coverage scenario
@@ -64,7 +81,8 @@ deterministic and keyless; no external service is required.
 - **Stale showcase data between runs:** the PGlite demo database persists in
   IndexedDB; clear site data to reset the seed.
 - **Realtime demo looks idle:** the burst scenario fires on demand from its
-  scenario card; watch the DevTools event log, not the network tab.
+  scenario card; watch Graph Pulse and the Activity workspace, not only the
+  network tab.
 - **Port already in use:** `pnpm run dev:vite` binds 5173; stop the stale
   dev server rather than running two instances against one graph demo.
 
