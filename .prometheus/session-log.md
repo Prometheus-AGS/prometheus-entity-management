@@ -1873,3 +1873,29 @@
   retention remained bounded at 500 events.
 - No unit, component, isolated, mock-backed, snapshot, or partial test was
   created or run. Sovereign sync was not touched.
+
+## 2026-08-30 — React inspector task 12/12 automated QA complete; human gate pending
+
+- Synchronized the three React DevTools entries across runtime ledgers,
+  package/root README, Docusaurus guides/examples/API generation, and a new
+  skill reference. Public guidance now truthfully labels the inspector
+  repository/unreleased after already-published npm 3.0.5 and a Changesets
+  minor record owns its future release.
+- Refined the inspector's focus, hover, touch, count, and telemetry details and
+  documented every public DevTools API. Impeccable was unavailable; the
+  requested available Anthropic and Vercel design reviews were applied and the
+  absence was retained in Artifact Refiner state.
+- Versioned the packed acceptance receipt and made its full performance
+  threshold snapshot machine-readable. The final assembled Vite/Next/Chromium
+  run passed 5/5 against clean commit `47c017b`: search p95 14 ms,
+  preloaded-open p95 11.7 ms, zero inspector tasks over 50 ms, and 500 retained
+  events under the 500/s producer schedule.
+- Fresh-context `k3` adversarial review passed with zero critical findings and
+  verified distinct producer/judge models. The findings and delta-first
+  reflection each passed strict sycophancy screening at score 0.0.
+- Artifact Refiner records 5/6 blocking constraints satisfied. It remains
+  unconverged, task 12 remains in progress, and the change is not archived
+  because the accepted 12-developer formative usability study has no retained
+  participant results. Automated browser evidence cannot waive that gate.
+- No unit, component, isolated, mock-backed, snapshot, or partial test was
+  created or run. Sovereign sync was not touched.

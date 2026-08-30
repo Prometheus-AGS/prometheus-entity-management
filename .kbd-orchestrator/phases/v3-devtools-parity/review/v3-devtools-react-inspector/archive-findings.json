@@ -1,0 +1,39 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "k3",
+  "producer_model": "openai/gpt-5.6-sol",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-react-inspector/task-11-playwright-report.json",
+      "line": 112,
+      "claim": "The regenerated evidence was produced against a modified test spec (every test's line number shifted by exactly +12: 84\u219296, 104\u2192116, 129\u2192141, 183\u2192195, 241\u2192253) and a new source commit (7ff2fe28\u2026 \u2192 47c017ba\u2026), but this diff contains no spec or source changes, so the code the evidence attests to is absent from the packet and the evidence's provenance cannot be validated from this change.",
+      "evidence": "task-11-playwright-report.json hunks show `\"line\": 84` \u2192 `\"line\": 96` (and identical +12 shifts for all five tests) in `v3-devtools-react-inspector.spec.ts`, and task-11-packed-browser-acceptance.json shows `\"commit\": \"7ff2fe285dc630b618ae9f7d7b21967e0ef1e29d\"` \u2192 `\"47c017ba91e6f3924eed62b46fc9d4c912b56825\"`, while the diff touches only evidence JSON/PNG/trace.zip files. The +12 shift coincides with the new thresholds block, implying the spec gained threshold constants that are not in this diff.",
+      "suggested_fix": "Include the spec/source changes that motivated the gate re-run in the same change set (or reference the commit/change that contains them), so the evidence's claimed `dirtyTaskFiles: false` provenance is auditable against the packet."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-react-inspector/task-11-browser-evidence.json",
+      "line": 7,
+      "claim": "The new thresholds are only recorded into the evidence by the producer itself; nothing in the diff shows an enforcement mechanism (scripts/verify-devtools-react-inspector.mjs is untouched), so `\"status\": \"pass\"` remains self-attested and a future threshold breach would not be caught by anything visible in this change.",
+      "evidence": "The diff adds `\"thresholds\"` / `\"thresholdSnapshot\"` blocks with `minEventsPerSecond: 490`, `maxSearchLatencyP95Ms: 100`, etc. alongside `\"status\": \"pass\"` in the same producer-written files, but no verifier, schema, or gate code is added or modified to compare measured values (`achievedEventsPerSecond: 498.748\u2026`) against those thresholds.",
+      "suggested_fix": "Have the acceptance gate or verify-devtools-react-inspector.mjs read the threshold snapshot and fail the run when measured values violate it, rather than embedding pass status and thresholds in the same self-authored receipt."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-react-inspector/task-11-packed-browser-acceptance.json",
+      "line": 14,
+      "claim": "The identical threshold object is duplicated in at least four places (top-level `thresholds`, scenario-level `thresholds`, `thresholdSnapshot`, and the embedded receipt's two copies), creating drift risk if thresholds are ever revised.",
+      "evidence": "task-11-browser-evidence.json adds the 7-key thresholds block twice (top level and inside the responsive scenario), and task-11-packed-browser-acceptance.json repeats it as `thresholdSnapshot` plus twice more inside the embedded receipt.",
+      "suggested_fix": "Emit the threshold snapshot once in the acceptance record and have the receipt reference it (or have the generator project it), instead of hand-duplicating the literal object."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

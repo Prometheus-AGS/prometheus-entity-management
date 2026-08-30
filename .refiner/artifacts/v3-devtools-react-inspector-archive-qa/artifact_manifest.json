@@ -1,0 +1,49 @@
+{
+  "artifact_type": "ui",
+  "generated_at": "2026-08-30T00:04:32Z",
+  "variants": [
+    {
+      "name": "archive-qa-report",
+      "file": "dist/archive-qa-report.md",
+      "format": "markdown",
+      "description": "Truthful automated certification and remaining human gate."
+    },
+    {
+      "name": "causal-inspector",
+      "file": "dist/causal-inspector.png",
+      "format": "png",
+      "description": "Desktop entity, view, history, Activity, and Graph Pulse evidence."
+    },
+    {
+      "name": "responsive-load",
+      "file": "dist/responsive-500-events.png",
+      "format": "png",
+      "description": "Responsive inspector after the sustained 500-events/second workflow."
+    },
+    {
+      "name": "constraint-validation",
+      "file": "dist/validation.json",
+      "format": "json",
+      "description": "Constraint-by-constraint disposition with retained evidence."
+    },
+    {
+      "name": "sycophancy-receipt",
+      "file": "dist/sycophancy-receipt.json",
+      "format": "json",
+      "description": "Strict reflection and independent-findings anti-theater results."
+    }
+  ],
+  "preview": {
+    "required": false,
+    "runs": []
+  },
+  "validation": {
+    "preview_status": "partial",
+    "has_console_errors": false,
+    "has_request_failures": false,
+    "notes": [
+      "Screenshots and Playwright traces were captured from the complete packed Vite/Next/Chromium integration runtime; that temporary packed runtime is intentionally not preserved as a standalone HTML preview.",
+      "Five automated blocking constraints pass; formative-usability remains blocked pending retained results from 12 developers."
+    ]
+  }
+}

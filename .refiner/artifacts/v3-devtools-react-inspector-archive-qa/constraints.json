@@ -25,7 +25,7 @@
       "id": "value-security-boundary",
       "description": "Remote/serialized values remain metadata-only unless explicitly included and redacted; the UI cannot grant commit authority.",
       "severity": "blocking",
-      "type": "security",
+      "type": "technical",
       "validation": {
         "requires_code_execution": true,
         "validation_method": "Inspect source/docs and require packed policy workflows to pass without exposing sentinel values."
@@ -55,7 +55,7 @@
       "id": "formative-usability",
       "description": "At least 12 developers across first-time and oriented cohorts perform the seeded dirty-entity and registered-view tasks; 10 of 12 succeed unassisted and each cohort median is under 10 seconds.",
       "severity": "blocking",
-      "type": "user-study",
+      "type": "semantic",
       "validation": {
         "requires_code_execution": false,
         "validation_method": "Inspect the retained participant protocol/results and timing evidence; automated browser runs do not satisfy this constraint."

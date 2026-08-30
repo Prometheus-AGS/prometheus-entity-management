@@ -1,0 +1,57 @@
+{
+  "artifact": "v3-devtools-react-inspector-archive-qa",
+  "validatedAt": "2026-08-30T00:04:32Z",
+  "status": "blocked",
+  "constraintsSatisfied": 5,
+  "constraintsTotal": 6,
+  "results": [
+    {
+      "id": "optional-entry-boundary",
+      "status": "pass",
+      "evidence": "Packed Vite and Next production builds contain no DevTools host, auto root, or inspector markers; development activation passes."
+    },
+    {
+      "id": "causal-and-dirty-truth",
+      "status": "pass",
+      "evidence": "Packed Chromium completes original/patch/live/diff, three registered views, entity history, Activity correlation, and one-segment Graph Pulse causality."
+    },
+    {
+      "id": "value-security-boundary",
+      "status": "pass",
+      "evidence": "Local values remain same-origin; serialized surfaces are metadata-only unless explicitly included and redacted. Browser persistence is preferences-only."
+    },
+    {
+      "id": "interaction-quality",
+      "status": "pass",
+      "evidence": "Keyboard, responsive, axe, deferred-search, preloaded-open, long-task, and bounded-retention lanes pass in the packed browser gate."
+    },
+    {
+      "id": "public-record-parity",
+      "status": "pass",
+      "evidence": "Three-entry runtime ledger, skills verification, generated API policy, package/root README, and Docusaurus production build pass."
+    },
+    {
+      "id": "formative-usability",
+      "status": "blocked",
+      "evidence": "No retained 12-developer participant protocol/results were found. Automated browser evidence does not satisfy this human gate."
+    }
+  ],
+  "automatedGate": {
+    "status": "pass",
+    "sourceCommit": "47c017ba91e6f3924eed62b46fc9d4c912b56825",
+    "dirtyTaskFiles": false,
+    "scenarios": "5/5",
+    "gateVersion": "v3-devtools-react-inspector/1",
+    "receiptSha256": "8c28a09d3809275ca426af408c9f3d27158beb5ed08f154800bb77539888a9d3"
+  },
+  "isolatedReview": {
+    "status": "pass",
+    "critical": 0,
+    "warning": 2,
+    "suggestion": 1,
+    "crossModelCheck": "verified-distinct",
+    "findingsSha256": "2b3ce122d760264b7f37c42386a041ff8912f0a901114c0145bd734e8592a0e6",
+    "sycophancyScore": 0.0
+  }
+}
+

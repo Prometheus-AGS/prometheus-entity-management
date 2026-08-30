@@ -1,0 +1,42 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "k3",
+  "producer_model": "openai/gpt-5.6-sol",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-react-inspector/task-11-browser-evidence.json",
+      "line": 85,
+      "claim": "Measured throughput (498.99 events/sec) misses the stated target of 500 events/sec and only passes because the newly added thresholds block introduces a lower minEventsPerSecond of 490, while acceptance criterion task 11 requires evidence of \"responsive 500-event interaction\".",
+      "evidence": "Hunk changes achievedEventsPerSecond to 498.9920360871412 and adds \"thresholds\": { \"targetEventsPerSecond\": 500, \"minEventsPerSecond\": 490, ... } in the same edit; the pass verdict thus rests on a threshold that did not exist in the prior evidence revision.",
+      "suggested_fix": "Confirm the 490 eps floor is the contractually accepted bound (cite the ui-spec or task-11 gate definition in the evidence), or re-run until achievedEventsPerSecond >= 500 so the receipt meets the stated target rather than a newly introduced minimum."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-react-inspector/task-11-playwright-report.json",
+      "line": 112,
+      "claim": "Every test's reported spec line number shifted by exactly +8 (84\u219292, 104\u2192112, 129\u2192137, 183\u2192191, 241\u2192249), proving v3-devtools-react-inspector.spec.ts was edited between evidence runs, but this diff contains no change to that spec file, so the evidence was generated from a spec version that is not part of this change.",
+      "evidence": "Playwright report hunks show \"line\": 84\u219292, 104\u2192112, 129\u2192137, 183\u2192191, 241\u2192249 and source.commit changed from 7ff2fe285dc630b618ae9f7d7b21967e0ef1e29d to febc1835ad63a86319656af004ce037b752bb4e8, with no corresponding spec/production hunk in the diff.",
+      "suggested_fix": "Ensure the spec edit that produced the +8 line shift is committed in the same or a prior change and that \"dirtyTaskFiles\": false was evaluated against a tree containing it; otherwise the evidence does not correspond to the committed code under review."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-react-inspector/task-11-browser-evidence.json",
+      "line": 84,
+      "claim": "searchLatencyP95Ms regressed ~26% (19.4ms \u2192 24.4ms) between the two evidence revisions with no accompanying code change in this diff, indicating either measurement instability or an unrecorded change affecting search performance.",
+      "evidence": "Hunk changes \"searchLatencyP95Ms\": 19.399999998509884 \u2192 24.400000002235174 while the diff touches only evidence artifacts, so nothing in this change explains the latency movement.",
+      "suggested_fix": "Note the variance in the evidence or gate on a stable environment; if the regression is real, identify the causing commit before archiving task 11."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-react-inspector/task-11-packed-browser-acceptance.json",
+      "line": 3,
+      "claim": "The acceptance record now carries both gateStartedAt and generatedAt but no field recording which threshold set the pass verdict was evaluated against, so a future schema consumer cannot tell whether the older threshold-less evidence was judged by the same bar.",
+      "evidence": "The thresholds object was added only to the nested performance receipt; the top-level acceptance envelope gained gateStartedAt/generatedAt but no reference to the gate/threshold version used.",
+      "suggested_fix": "Add a gateVersion or thresholdSnapshot reference at the envelope level so receipts are self-describing about the criteria they passed."
+    }
+  ]
+}

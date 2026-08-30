@@ -1,10 +1,20 @@
 {
   "schemaVersion": 1,
+  "gateVersion": "v3-devtools-react-inspector/1",
   "change": "v3-devtools-react-inspector",
-  "recordedAt": "2026-08-29T23:51:21.908Z",
+  "recordedAt": "2026-08-30T00:01:22.736Z",
   "status": "pass",
   "evidenceKind": "packed-vite-next-development-production-browser",
   "countsAsPackedPackageEvidence": true,
+  "thresholds": {
+    "targetEventsPerSecond": 500,
+    "timerJitterAllowancePercent": 2,
+    "minEventsPerSecond": 490,
+    "maxSearchLatencyP95Ms": 100,
+    "maxPreloadedPanelOpenP95Ms": 150,
+    "maxInspectorLongTasksOver50Ms": 0,
+    "maxRetainedEvents": 500
+  },
   "scenarios": {
     "production-exclusion": {
       "status": "pass",
@@ -80,12 +90,21 @@
           "memoryGiB": 32
         },
         "emittedEvents": 5000,
-        "durationMs": 10022.39999999851,
-        "achievedEventsPerSecond": 498.8825031929222,
-        "searchLatencyP95Ms": 19.399999998509884,
-        "preloadedPanelOpenP95Ms": 13.200000002980232,
+        "durationMs": 10025.10000000149,
+        "achievedEventsPerSecond": 498.7481421630963,
+        "searchLatencyP95Ms": 14,
+        "preloadedPanelOpenP95Ms": 11.699999999254942,
         "inspectorLongTasksOver50Ms": 0,
-        "retainedEvents": 500
+        "retainedEvents": 500,
+        "thresholds": {
+          "targetEventsPerSecond": 500,
+          "timerJitterAllowancePercent": 2,
+          "minEventsPerSecond": 490,
+          "maxSearchLatencyP95Ms": 100,
+          "maxPreloadedPanelOpenP95Ms": 150,
+          "maxInspectorLongTasksOver50Ms": 0,
+          "maxRetainedEvents": 500
+        }
       }
     }
   },

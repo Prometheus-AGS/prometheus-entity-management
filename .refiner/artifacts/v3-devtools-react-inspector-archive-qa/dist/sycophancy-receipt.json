@@ -1,0 +1,15 @@
+{
+  "screenedAt": "2026-08-30T00:07:00Z",
+  "strictness": "strict",
+  "status": "pass",
+  "reflectionScore": 0.0,
+  "findingsScore": 0.0,
+  "reflectionSha256": "f5840e12fa8a06800401f6e625318a8be4dc6a5d95758f8dce6633b55fbfd2ca",
+  "reportSha256": "5343849418381f798988402e91f37c7d445ea39805137d09423f3a48c0d499f4",
+  "findingsSha256": "2b3ce122d760264b7f37c42386a041ff8912f0a901114c0145bd734e8592a0e6",
+  "notes": [
+    "The reflection leads with delivery deltas, then root causes and corrective actions.",
+    "The independent findings report passed the adversarial-review anti-theater screen."
+  ]
+}
+

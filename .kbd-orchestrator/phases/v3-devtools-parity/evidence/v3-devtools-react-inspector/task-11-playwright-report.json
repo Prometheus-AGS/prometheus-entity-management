@@ -88,12 +88,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 267,
+                  "duration": 270,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-29T23:51:05.272Z",
+                  "startTime": "2026-08-30T00:01:05.645Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -109,7 +109,7 @@
           ],
           "id": "debf03924aed98337c12-d4086321128f3621bc6f",
           "file": "v3-devtools-react-inspector.spec.ts",
-          "line": 84,
+          "line": 96,
           "column": 5
         },
         {
@@ -128,12 +128,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 617,
+                  "duration": 676,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-29T23:51:05.674Z",
+                  "startTime": "2026-08-30T00:01:06.108Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -149,7 +149,7 @@
           ],
           "id": "debf03924aed98337c12-91773f4f3bfcfb055d5b",
           "file": "v3-devtools-react-inspector.spec.ts",
-          "line": 104,
+          "line": 116,
           "column": 5
         },
         {
@@ -168,12 +168,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1256,
+                  "duration": 1291,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-29T23:51:06.309Z",
+                  "startTime": "2026-08-30T00:01:06.802Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -189,7 +189,7 @@
           ],
           "id": "debf03924aed98337c12-6f06aa737c7e928b63f0",
           "file": "v3-devtools-react-inspector.spec.ts",
-          "line": 129,
+          "line": 141,
           "column": 5
         },
         {
@@ -208,12 +208,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1572,
+                  "duration": 1625,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-29T23:51:07.666Z",
+                  "startTime": "2026-08-30T00:01:08.197Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -229,7 +229,7 @@
           ],
           "id": "debf03924aed98337c12-5d69c89c07fcb7fb3aad",
           "file": "v3-devtools-react-inspector.spec.ts",
-          "line": 183,
+          "line": 195,
           "column": 5
         },
         {
@@ -248,12 +248,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 12603,
+                  "duration": 12847,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-29T23:51:09.298Z",
+                  "startTime": "2026-08-30T00:01:09.882Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -269,7 +269,7 @@
           ],
           "id": "debf03924aed98337c12-a839827e646719874f14",
           "file": "v3-devtools-react-inspector.spec.ts",
-          "line": 241,
+          "line": 253,
           "column": 5
         }
       ]
@@ -277,8 +277,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-08-29T23:51:01.355Z",
-    "duration": 20888.885,
+    "startTime": "2026-08-30T00:01:01.639Z",
+    "duration": 21464.975000000002,
     "expected": 5,
     "skipped": 0,
     "unexpected": 0,

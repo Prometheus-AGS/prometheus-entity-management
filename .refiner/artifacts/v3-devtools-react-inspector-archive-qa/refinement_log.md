@@ -49,3 +49,20 @@
   and executable assertions: target 500 events/s, minimum measured 490
   events/s, search p95 under 100 ms, preloaded open p95 under 150 ms, no
   inspector long task over 50 ms, and at most 500 retained events.
+
+## Iteration 4 — 2026-08-30
+
+- Versioned the packed/browser gate and embedded the complete threshold
+  snapshot in both independently auditable receipts. The 490/s wall-clock
+  floor is explicitly a 2% Chromium timer-jitter allowance around the 500/s
+  producer schedule, not a reduced workload target.
+- Re-ran the complete packed Vite/Next/Chromium gate against clean commit
+  `47c017b`; all 5 scenarios passed. Search p95 was 14 ms, preloaded-open p95
+  11.7 ms, no inspector task exceeded 50 ms, and retention remained 500.
+- The final isolated `k3` review passed with zero critical findings. Its two
+  baseline-context warnings and one duplication suggestion remain retained
+  with evidence-backed resolutions. The strict sycophancy screen passed at
+  score 0.0.
+- Persisted the report, screenshots, constraint results, security boundary,
+  hashes, and delta-first reflection. Convergence remains running because the
+  mandatory 12-developer formative study is absent.
