@@ -155,7 +155,11 @@ test("human-study fixture masks host answers while retaining the seeded causal s
   await page.locator(".pem-entity-row").filter({ hasText: "o-1042" }).click();
   await expect(page.getByText("◆ Dirty", { exact: true })).toBeVisible();
   await expect(page.getByText("Visible in registered views")).toBeVisible();
-  await expect(page.locator(".pem-causal-rail")).toContainText("3 views");
+  for (const view of ["active", "all", "attention"]) {
+    await expect(page.locator(".pem-detail-grid code").filter({
+      hasText: `list:Order:["orders","${view}"]`,
+    })).toBeVisible();
+  }
 
   pass("human-study-fixture-readiness", {
     hostAnswersMasked: true,
