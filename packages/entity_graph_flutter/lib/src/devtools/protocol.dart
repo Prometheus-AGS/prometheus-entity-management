@@ -199,6 +199,7 @@ enum EntityGraphDevtoolsProtocolErrorCode {
   timeTravelUnavailable('time-travel-unavailable'),
   notRewound('not-rewound'),
   confirmationRequired('confirmation-required'),
+  transportLimitExceeded('transport-limit-exceeded'),
   disposed('disposed');
 
   const EntityGraphDevtoolsProtocolErrorCode(this.wireName);
@@ -339,6 +340,43 @@ final class EntityGraphDevtoolsCapabilities {
         .map((feature) => feature.wireName)
         .toList(growable: false),
     'limits': limits.toJson(),
+  };
+}
+
+/// One active graph advertised by the isolate-wide VM-service registry.
+final class EntityGraphDevtoolsStoreDescriptor {
+  const EntityGraphDevtoolsStoreDescriptor({
+    required this.storeId,
+    required this.capabilities,
+  });
+
+  final String storeId;
+  final EntityGraphDevtoolsCapabilities capabilities;
+
+  Map<String, Object?> toJson() => {
+    'storeId': storeId,
+    'capabilities': capabilities.toJson(),
+  };
+}
+
+/// Versioned discovery result for every active graph in one isolate.
+final class EntityGraphDevtoolsStoreRegistry {
+  EntityGraphDevtoolsStoreRegistry({
+    required this.capturedAt,
+    required Iterable<EntityGraphDevtoolsStoreDescriptor> stores,
+  }) : stores = List.unmodifiable(stores);
+
+  final String capturedAt;
+  final List<EntityGraphDevtoolsStoreDescriptor> stores;
+
+  String get protocol => entityGraphDevtoolsProtocol;
+  int get version => entityGraphDevtoolsProtocolVersion;
+
+  Map<String, Object?> toJson() => {
+    'protocol': protocol,
+    'version': version,
+    'capturedAt': capturedAt,
+    'stores': stores.map((store) => store.toJson()).toList(growable: false),
   };
 }
 

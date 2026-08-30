@@ -1,12 +1,15 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 
 import '../graph.dart';
 import '../sdl.dart';
 import 'protocol.dart';
 
+part 'commands.dart';
 part 'history.dart';
 part 'preview.dart';
 part 'projection.dart';
+part 'vm_service.dart';
 
 /// Receives one controller attachment lifecycle event.
 typedef EntityGraphDevtoolsLifecycleListener =
@@ -27,6 +30,7 @@ final class EntityGraphDevtoolsController {
     required this.storeId,
     required this.valuePolicy,
     required this.schema,
+    required this.vmServiceEnabled,
     required int? historyLimit,
     required int? historyBytesLimit,
     required int? eventBytesLimit,
@@ -104,6 +108,9 @@ final class EntityGraphDevtoolsController {
   /// Optional validated schema used exclusively for relationship projection.
   final EntityGraphIR? schema;
 
+  /// Whether this controller is advertised through the isolate VM service.
+  final bool vmServiceEnabled;
+
   final int historyLimit;
   final int historyBytesLimit;
   final int eventBytesLimit;
@@ -128,6 +135,7 @@ final class EntityGraphDevtoolsController {
 
   void Function()? _stopViewObservation;
   void Function()? _stopPublicationObservation;
+  void Function()? _stopVmService;
   var _sequence = 0;
   var _disposed = false;
   var _retainedEventBytes = 0;
@@ -227,6 +235,10 @@ final class EntityGraphDevtoolsController {
 
   EntityGraphDevtoolsRelationshipsSnapshot getRelationships() =>
       _projectRelationships(this);
+
+  /// Validate and execute one transport-independent v1 command envelope.
+  EntityGraphDevtoolsResult handleCommand(Object? command) =>
+      _handleCommand(this, command);
 
   EntityGraphDevtoolsPreviewAppliedReceipt? previewEntityPatch(
     String type,
@@ -392,6 +404,7 @@ final class EntityGraphDevtoolsController {
   }
 
   void _startObservingGraph() {
+    if (vmServiceEnabled) _stopVmService = _attachVmController(this);
     _captureGraphSnapshot(this, _graph.captureSnapshot(), null);
     _stopPublicationObservation = _graph.subscribePublications(
       _observePublication,
@@ -606,6 +619,8 @@ final class EntityGraphDevtoolsController {
     _stopViewObservation?.call();
     _stopViewObservation = null;
     _publishLifecycle(EntityGraphDevtoolsLifecycleState.disposed);
+    _stopVmService?.call();
+    _stopVmService = null;
     _disposed = true;
     _lifecycleListeners.clear();
     _eventListeners.clear();
@@ -682,6 +697,7 @@ final class EntityGraphDevtoolsBinding {
     EntityGraphDevtoolsValuePolicy valuePolicy =
         const EntityGraphDevtoolsValuePolicy.metadataOnly(),
     EntityGraphIR? schema,
+    bool vmServiceEnabled = _vmServiceAvailable,
     int? historyLimit,
     int? historyBytesLimit,
     int? eventBytesLimit,
@@ -708,16 +724,17 @@ final class EntityGraphDevtoolsBinding {
         storeId: resolvedStoreId,
         valuePolicy: valuePolicy,
         schema: schema,
+        vmServiceEnabled: vmServiceEnabled,
         historyLimit: historyLimit,
         historyBytesLimit: historyBytesLimit,
         eventBytesLimit: eventBytesLimit,
         snapshotLimit: snapshotLimit,
         snapshotBytesLimit: snapshotBytesLimit,
       );
-      entry = _EntityGraphDevtoolsControllerEntry(controller);
-      slot.entry = entry;
       controller._startObservingGraph();
       controller._publishLifecycle(EntityGraphDevtoolsLifecycleState.attached);
+      entry = _EntityGraphDevtoolsControllerEntry(controller);
+      slot.entry = entry;
     }
 
     final retainedEntry = entry;

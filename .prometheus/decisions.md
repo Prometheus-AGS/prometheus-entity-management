@@ -115,3 +115,18 @@ keeps the debug UI visually reliable without contaminating the application and
 preserves intentional host theming. The existing lightweight
 `useGraphDevTools` root export remains compatible but does not import the new
 inspector.
+
+## 2026-08-30 — Route Flutter DevTools through one isolate-wide VM-service registry
+
+The Dart package registers one versioned discovery method and one versioned
+command method per isolate, then routes every command through an explicit
+active `storeId`. Controllers attach and detach from that registry with their
+graph bindings; the VM-service methods remain registered with an empty registry
+after the final detach because Dart service-extension registration is
+isolate-global and cannot be unregistered.
+
+Rationale: registering methods per graph would collide at the Dart VM-service
+boundary, while an implicit default graph would break multi-store isolation.
+One inspectable registry supports multiple graphs and deterministic controller
+teardown without creating a second owner of business state. Commands cannot
+alter the host-owned value/redaction policy.

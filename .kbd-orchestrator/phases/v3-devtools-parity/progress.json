@@ -1,16 +1,16 @@
 {
   "schemaVersion": "2",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 412,
-  "derivedRevision": 412,
+  "sourceRevision": 417,
+  "derivedRevision": 417,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 412
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 417
   },
   "conflictCount": 0,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
   "parentPhase": null,
-  "last_updated": "2026-08-30T01:00:59.919697Z",
+  "last_updated": "2026-08-30T01:13:03.681495Z",
   "last_updated_by": "kbd-runtime",
   "changes_total": 9,
   "changes_completed": 4,
@@ -90,9 +90,9 @@
       "status": "IN_PROGRESS",
       "implementation_status": "IN_PROGRESS",
       "tasks_total": 9,
-      "tasks_done": 5,
-      "last_task_completed": "Implement equivalent projections, local conflict-safe preview/restore, per-graph history, rewind, and return-to-live.",
-      "next_task_pending": "Register bounded/versioned VM service methods and events with strict command/store/value-policy validation.",
+      "tasks_done": 6,
+      "last_task_completed": "Register bounded/versioned VM service methods and events with strict command/store/value-policy validation.",
+      "next_task_pending": "Add fixture-parity, instrumentation, isolation, disposal, projection, preview conflict, history, and VM-service tests.",
       "blockers": []
     },
     {

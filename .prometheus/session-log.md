@@ -1991,3 +1991,19 @@
   SHA-256, and scoped diff whitespace checks passed. No analyzer, compiler,
   test, or build ran; the assembled integration gate remains task 8.
 - Optional sovereign-sync sharing was not enabled or changed.
+
+## 2026-08-30 — Flutter controller task 6/9
+
+- Added one isolate-wide Dart VM-service router with versioned store discovery,
+  strict per-store command dispatch, and listener-gated versioned events.
+- Added exact protocol/envelope/payload validation for every controller command,
+  explicit import confirmation, JSON-compatible preview validation, and typed
+  request/response transport-limit failures.
+- Capped encoded requests at 256 KiB and responses at 8 MiB; events retain the
+  controller-owned 256 KiB per-event ceiling and typed truncation behavior.
+- Kept value policy host-owned: remote commands cannot select value inclusion
+  or replace the redactor, and metadata-only remains the default.
+- Formatter/parser, static source/layering assertions, fixture equality/JSON,
+  SHA-256, and scoped diff whitespace checks passed. No analyzer, compiler,
+  test, or build ran; assembled integration remains task 8.
+- Optional sovereign-sync sharing was not enabled or changed.
