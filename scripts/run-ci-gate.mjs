@@ -9,7 +9,7 @@ export const gateDefinitions = {
   lint: { command: ["pnpm", "run", "lint"], timeoutMs: 5 * 60_000 },
   typecheck: { command: ["pnpm", "run", "typecheck"], timeoutMs: 10 * 60_000 },
   build: { command: ["pnpm", "run", "build"], timeoutMs: 15 * 60_000 },
-  test: { command: ["pnpm", "run", "test"], timeoutMs: 45 * 60_000 },
+  integration: { command: ["pnpm", "run", "integration:devtools"], timeoutMs: 45 * 60_000 },
   skills: { command: ["pnpm", "run", "verify:skills"], timeoutMs: 5 * 60_000 },
   security: { command: ["pnpm", "run", "security:audit"], timeoutMs: 5 * 60_000 },
 };

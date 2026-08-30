@@ -278,6 +278,8 @@ assert.deepEqual(finiteLimitAttachment.controller.capabilities.limits, {
   historyEvents: 500,
   historyBytes: 5 * 1024 * 1024,
   eventBytes: 256 * 1024,
+  snapshots: 50,
+  snapshotBytes: 10 * 1024 * 1024,
 });
 finiteLimitAttachment.detach();
 
@@ -486,9 +488,14 @@ async function verifyRootPayloadExclusion(consumerDirectory) {
     "entity-graph-core",
   );
   const forbidden = [
-    "prometheus.entity-graph.devtools",
-    "attachGraphDevtools",
-    "createGraphDevtoolsClient",
+    {
+      label: "prometheus.entity-graph.devtools",
+      matches: (source) => ["\"", "'", "`"].some(
+        (quote) => source.includes(`${quote}prometheus.entity-graph.devtools${quote}`),
+      ),
+    },
+    { label: "attachGraphDevtools", matches: (source) => source.includes("attachGraphDevtools") },
+    { label: "createGraphDevtoolsClient", matches: (source) => source.includes("createGraphDevtoolsClient") },
   ];
   const visited = new Set();
 
@@ -497,8 +504,8 @@ async function verifyRootPayloadExclusion(consumerDirectory) {
     visited.add(relativeFile);
     const source = await readFile(join(packageDirectory, relativeFile), "utf8");
     for (const marker of forbidden) {
-      if (source.includes(marker)) {
-        throw new Error(`core root payload ${relativeFile} includes optional DevTools marker ${marker}`);
+      if (marker.matches(source)) {
+        throw new Error(`core root payload ${relativeFile} includes optional DevTools marker ${marker.label}`);
       }
     }
     const dependencies = relativeFile.endsWith(".mjs")

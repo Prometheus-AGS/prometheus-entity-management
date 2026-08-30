@@ -2175,3 +2175,24 @@
   Docusaurus sites, Chrome DevTools, Next.js, and every Vite consumer. Remote
   CI and Pages propagation remain to be certified after the repair is pushed.
   Sovereign sync was not touched.
+
+## 2026-08-30 — Integration-only CI and DevTools byte-boundary repair
+
+- The clean Node 22 lane reached the legacy workspace unit suite after every
+  release contract, lint, type, and aggregate build gate passed. Those isolated
+  assertions exercised the retired root time-travel implementation and violated
+  the repository's immutable integration-only rule.
+- Replaced the root/CI unit gate with one Node 24 packed DevTools integration
+  boundary: core/React observability, entity inspection, time travel, and the
+  real Vite/Next/Chromium inspector. Node 22 and 26 retain compatibility through
+  contract, lint, type, build, and skills gates without tripling browser work.
+- The first assembled run corrected an over-broad root-payload marker check and
+  exposed a real 1,024-byte mutation-event defect. Large `affectedEntities`
+  metadata could survive after all changes were omitted; the limiter now drops
+  optional affected-entity/view metadata only when the empty event still cannot
+  fit, then retains the largest semantic change prefix that does fit.
+- The complete packed integration passed all four boundaries and six Chromium
+  scenarios. Release validation (13/13 shared scenarios) and lint passed. The
+  prior Documentation workflow deployed and certified routes, search,
+  accessibility, visuals, and mobile Lighthouse on GitHub Pages. Sovereign sync
+  was not touched.

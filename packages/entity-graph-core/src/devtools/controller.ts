@@ -333,9 +333,7 @@ function createController(
     };
     if (encodedBytes(withoutValues) <= eventBytesLimit) return withoutValues;
 
-    let lower = 0;
-    let upper = withoutValues.payload.changes.length;
-    let bounded: GraphDevtoolsMutationEvent = {
+    const emptyWithAffectedMetadata: GraphDevtoolsMutationEvent = {
       ...withoutValues,
       payload: {
         ...withoutValues.payload,
@@ -343,12 +341,27 @@ function createController(
         changesOmitted: withoutValues.payload.changes.length,
       },
     };
+    const { affectedEntities: _affectedEntities, affectedViewIds: _affectedViewIds, ...compactPayload } =
+      withoutValues.payload;
+    const boundedBase = encodedBytes(emptyWithAffectedMetadata) <= eventBytesLimit
+      ? withoutValues
+      : { ...withoutValues, payload: compactPayload };
+    let lower = 0;
+    let upper = withoutValues.payload.changes.length;
+    let bounded: GraphDevtoolsMutationEvent = {
+      ...boundedBase,
+      payload: {
+        ...boundedBase.payload,
+        changes: [],
+        changesOmitted: withoutValues.payload.changes.length,
+      },
+    };
     while (lower <= upper) {
       const count = Math.floor((lower + upper) / 2);
       const candidate: GraphDevtoolsMutationEvent = {
-        ...withoutValues,
+        ...boundedBase,
         payload: {
-          ...withoutValues.payload,
+          ...boundedBase.payload,
           changes: withoutValues.payload.changes.slice(0, count),
           changesOmitted: withoutValues.payload.changes.length - count,
         },
