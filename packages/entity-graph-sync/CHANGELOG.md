@@ -1,5 +1,11 @@
 # @prometheus-ags/entity-graph-sync
 
+## 3.2.0
+
+### Minor Changes
+
+- Release the complete DevTools distribution with the synchronized 3.2.0 workspace, including bounded core event metadata and responsive React inspector search during continuous graph updates.
+
 ## 3.1.0
 
 ### Patch Changes

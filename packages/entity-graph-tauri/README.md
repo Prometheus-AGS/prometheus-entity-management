@@ -178,7 +178,7 @@ pnpm run verify:tauri-plugin
 
 The gate registers the real plugin in a Tauri consumer, invokes `graph_platform_ping` through IPC, proves a webview without the capability is rejected, packs the npm candidate, and repeats the Rust host test using only the extracted tarball. It also verifies that the tarball contains the Android, iOS, Rust, and permission sources required by a consumer build.
 
-Desktop proof is not mobile proof. Android and iOS require the simulator/device procedure in [`release/tauri-mobile-device-lane.md`](../../release/tauri-mobile-device-lane.md); the npm package is published at stable `3.1.0`, but mobile runtime certification remains outstanding until those artifacts are captured.
+Desktop proof is not mobile proof. Android and iOS require the simulator/device procedure in [`release/tauri-mobile-device-lane.md`](../../release/tauri-mobile-device-lane.md); the npm package is published at stable `3.2.0`, but mobile runtime certification remains outstanding until those artifacts are captured.
 
 ---
 

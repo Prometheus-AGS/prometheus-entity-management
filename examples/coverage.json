@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "release": "3.1.0",
+  "release": "3.2.0",
   "contract": "release/v3-release-contract.json",
   "status": "in-progress",
   "semanticContract": {
@@ -1360,7 +1360,7 @@
           "paths": [
             ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-chrome-extension/task-8-package-gate.json",
             ".kbd-orchestrator/phases/v3-devtools-parity/review/v3-devtools-chrome-extension/final-findings.json",
-            "extension/prometheus-entity-graph-devtools-3.1.0.zip"
+            "extension/prometheus-entity-graph-devtools-3.2.0.zip"
           ],
           "applicability": "Certifies a deterministic least-permission Manifest V3 package that reuses the shared inspector with bounded, versioned, tab-isolated routing; Chrome Web Store publication is not claimed."
         },

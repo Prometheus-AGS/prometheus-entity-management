@@ -4,7 +4,7 @@ Strict A2UI v1.0 release-candidate compatibility for React over the maintained
 official v0.9.1 renderer, with a default-deny Prometheus entity-graph action
 bridge and AG-UI 0.0.59 A2UI activity transport.
 
-> Version `3.1.0` carries this 1.0-RC compatibility boundary. It does not claim an
+> Version `3.2.0` carries this 1.0-RC compatibility boundary. It does not claim an
 > unpublished native upstream v1 renderer.
 
 ## Two protocol surfaces

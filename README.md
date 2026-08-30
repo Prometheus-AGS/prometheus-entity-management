@@ -98,18 +98,18 @@ they cannot create hidden graph singletons.
 <!-- BEGIN GENERATED:PACKAGES -->
 | Package | Candidate | Stability | Role |
 | --- | --- | --- | --- |
-| `@prometheus-ags/entity-graph-core` | `3.1.0` | stable | framework-neutral normalized graph |
-| `@prometheus-ags/prometheus-entity-management` | `3.1.0` | stable | React 19 hooks and UI |
-| `@prometheus-ags/entity-graph-sdl` | `3.1.0` | stable | schema definition language |
-| `@prometheus-ags/entity-graph-sync` | `3.1.0` | stable | local-first and CRDT sync providers |
-| `@prometheus-ags/entity-graph-svelte` | `3.1.0` | stable | Svelte 5 binding |
-| `@prometheus-ags/entity-graph-solid` | `3.1.0` | stable | Solid binding |
-| `@prometheus-ags/entity-graph-web-components` | `3.1.0` | stable | Lit web components |
-| `@prometheus-ags/entity-graph-alpine` | `3.1.0` | stable | Alpine plugin |
-| `@prometheus-ags/entity-graph-htmx` | `3.1.0` | stable | HTMX server adapter |
-| `@prometheus-ags/entity-graph-a2a` | `3.1.0` | stable | A2A reference server |
-| `@prometheus-ags/a2ui-react` | `3.1.0` | stable | A2UI React renderer and graph bridge after AG-UI migration |
-| `@prometheus-ags/entity-graph-tauri` | `3.1.0` | stable | Tauri JavaScript binding and bundled Rust plugin |
+| `@prometheus-ags/entity-graph-core` | `3.2.0` | stable | framework-neutral normalized graph |
+| `@prometheus-ags/prometheus-entity-management` | `3.2.0` | stable | React 19 hooks and UI |
+| `@prometheus-ags/entity-graph-sdl` | `3.2.0` | stable | schema definition language |
+| `@prometheus-ags/entity-graph-sync` | `3.2.0` | stable | local-first and CRDT sync providers |
+| `@prometheus-ags/entity-graph-svelte` | `3.2.0` | stable | Svelte 5 binding |
+| `@prometheus-ags/entity-graph-solid` | `3.2.0` | stable | Solid binding |
+| `@prometheus-ags/entity-graph-web-components` | `3.2.0` | stable | Lit web components |
+| `@prometheus-ags/entity-graph-alpine` | `3.2.0` | stable | Alpine plugin |
+| `@prometheus-ags/entity-graph-htmx` | `3.2.0` | stable | HTMX server adapter |
+| `@prometheus-ags/entity-graph-a2a` | `3.2.0` | stable | A2A reference server |
+| `@prometheus-ags/a2ui-react` | `3.2.0` | stable | A2UI React renderer and graph bridge after AG-UI migration |
+| `@prometheus-ags/entity-graph-tauri` | `3.2.0` | stable | Tauri JavaScript binding and bundled Rust plugin |
 <!-- END GENERATED:PACKAGES -->
 
 Package-level READMEs remain the package-specific API sources. The generated

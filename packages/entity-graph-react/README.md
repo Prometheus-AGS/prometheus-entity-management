@@ -6,7 +6,7 @@ Update a post in one screen and every list row, detail panel, and badge that rea
 
 ## 3.0 React release
 
-The `3.1.0` package line and its React 19/Vite 8
+The `3.2.0` package line and its React 19/Vite 8
 source-workspace showcase is implemented. The production-browser gate covers
 normalized cross-view updates, optimistic confirm/rollback, relationships,
 view completeness modes, REST/GraphQL seams, realtime coalescing, PGlite/Loro,
@@ -17,12 +17,12 @@ for the assembled example evidence. Install the matching stable core and React
 pair with:
 
 ```bash
-pnpm add @prometheus-ags/entity-graph-core@3.1.0 \
-  @prometheus-ags/prometheus-entity-management@3.1.0 \
+pnpm add @prometheus-ags/entity-graph-core@3.2.0 \
+  @prometheus-ags/prometheus-entity-management@3.2.0 \
   react@^19 react-dom@^19
 ```
 
-> **Release boundary:** npm `3.1.0` includes the optional `./devtools` and
+> **Release boundary:** npm `3.2.0` includes the optional `./devtools` and
 > development-only `./devtools/auto` inspector entries documented below. The
 > ordinary package root remains inspector-free.
 
@@ -384,7 +384,7 @@ that wants no ambient resolution at all.
 
 The ordinary package root keeps the lightweight legacy `useGraphDevTools`
 hook and does not import or mount the inspector. The full inspector ships in
-`3.1.0` behind two optional subpaths:
+`3.2.0` behind two optional subpaths:
 
 | Entry/export | Description |
 |--------------|-------------|

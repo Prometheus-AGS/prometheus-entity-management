@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Prometheus Entity Graph DevTools",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "DevTools panel for inspecting entity graph state in apps using @prometheus-ags/prometheus-entity-management",
   "background": {
     "service_worker": "background.js"

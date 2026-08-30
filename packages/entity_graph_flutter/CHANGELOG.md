@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.1.0
+
+- Consolidate the complete optional DevTools controller and official companion in a minor release, including store isolation, dirty/original inspection, previews, time travel, and multi-client history cancellation.
+- Rebuild the bundled official DevTools extension at version 3.1.0. The Dart runtime API is unchanged from 3.0.5.
+
 ## 3.0.5
 
 - Make VM-service controller generations explicit so stale debugger clients
