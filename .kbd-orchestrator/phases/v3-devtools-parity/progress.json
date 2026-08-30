@@ -1,25 +1,25 @@
 {
   "schemaVersion": "2",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 385,
-  "derivedRevision": 385,
+  "sourceRevision": 392,
+  "derivedRevision": 392,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 385
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 392
   },
   "conflictCount": 0,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
   "parentPhase": null,
-  "last_updated": "2026-08-29T23:25:46.058852Z",
+  "last_updated": "2026-08-30T00:13:04.720725Z",
   "last_updated_by": "kbd-runtime",
   "changes_total": 9,
-  "changes_completed": 3,
+  "changes_completed": 4,
   "implementation_total": 9,
-  "implementation_completed": 3,
+  "implementation_completed": 4,
   "completion": {
     "primaryCounter": "implementation",
     "implementation": {
-      "completed": 3,
+      "completed": 4,
       "total": 9,
       "status": "IN_PROGRESS"
     },
@@ -76,8 +76,8 @@
     {
       "id": "v3-devtools-react-inspector",
       "title": "v3-devtools-react-inspector — Shared inspector and debug-only FAB",
-      "status": "IN_PROGRESS",
-      "implementation_status": "IN_PROGRESS",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
       "tasks_total": 12,
       "tasks_done": 8,
       "last_task_completed": "After the complete UI is wired, run one packed Vite/Next/browser acceptance gate proving production exclusion, automatic development activation, hide/restore, dirty/original/view/history workflows, responsive layouts, keyboard and screen-reader accessibility, and responsive 500-event interaction without unit, isolated, mock-backed, snapshot, or partial test evidence.",
@@ -87,12 +87,12 @@
     {
       "id": "v3-devtools-flutter-controller",
       "title": "v3-devtools-flutter-controller — Dart parity and VM service bridge",
-      "status": "PENDING",
-      "implementation_status": "PENDING",
+      "status": "IN_PROGRESS",
+      "implementation_status": "IN_PROGRESS",
       "tasks_total": 9,
-      "tasks_done": 0,
-      "last_task_completed": null,
-      "next_task_pending": "Confirm core, inspection, and time-travel changes are complete and import their stable cross-language fixtures.",
+      "tasks_done": 1,
+      "last_task_completed": "Confirm core, inspection, and time-travel changes are complete and import their stable cross-language fixtures.",
+      "next_task_pending": "Define Dart v1 envelope, snapshot, entity/view/relation/error/metrics, preview, and data-policy contracts.",
       "blockers": []
     },
     {

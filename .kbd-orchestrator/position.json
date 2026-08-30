@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 385,
-  "derivedRevision": 385,
+  "sourceRevision": 392,
+  "derivedRevision": 392,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 385
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 392
   },
   "conflictCount": 0,
-  "updatedAt": "2026-08-29T23:25:46.058852Z",
+  "updatedAt": "2026-08-30T00:13:04.720725Z",
   "cursor": [
     "v3-devtools-parity"
   ],
@@ -16,7 +16,7 @@
     "id": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
     "status": "running",
     "progress": {
-      "done": 35,
+      "done": 36,
       "total": 63
     },
     "children": [
@@ -587,7 +587,7 @@
         "canonicalId": "v3-devtools-parity",
         "status": "IN_PROGRESS",
         "progress": {
-          "done": 3,
+          "done": 4,
           "total": 9
         },
         "children": [
@@ -621,7 +621,7 @@
           {
             "type": "change",
             "id": "v3-devtools-react-inspector",
-            "status": "IN_PROGRESS",
+            "status": "COMPLETE",
             "progress": {
               "done": 8,
               "total": 12
@@ -630,9 +630,9 @@
           {
             "type": "change",
             "id": "v3-devtools-flutter-controller",
-            "status": "PENDING",
+            "status": "IN_PROGRESS",
             "progress": {
-              "done": 0,
+              "done": 1,
               "total": 9
             }
           },

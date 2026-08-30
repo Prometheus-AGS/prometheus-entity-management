@@ -1899,3 +1899,16 @@
   participant results. Automated browser evidence cannot waive that gate.
 - No unit, component, isolated, mock-backed, snapshot, or partial test was
   created or run. Sovereign sync was not touched.
+
+## 2026-08-30 — Flutter controller task 1/9
+
+- Recorded the React inspector's production implementation as complete at KBD
+  revision 386 while leaving its independent human-usability certification and
+  task 12 archive gate open.
+- Activated `v3-devtools-flutter-controller`; its core, inspection, and
+  time-travel dependencies are implementation-complete and carry no blocker.
+- Confirmed the entity-inspection and time-travel fixtures already imported
+  into `packages/entity_graph_flutter/fixtures/devtools/` are byte-identical to
+  the normative core copies. Retained SHA-256 and originating commits in the
+  task receipt rather than rewriting identical files.
+- No test, analyzer, compiler, or build ran. Sovereign sync was not touched.
