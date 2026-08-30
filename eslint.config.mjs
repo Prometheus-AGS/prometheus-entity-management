@@ -16,6 +16,7 @@ export default tseslint.config(
       "**/.turbo/**",
       "**/.dart_tool/**",
       "**/target/**",
+      "packages/entity_graph_flutter/extension/devtools/build/**",
       "packages/entity-graph-tauri/src/generated-bindings.ts",
       "tests/fixtures/tauri-plugin-host/fixtures/contract.js",
     ],
