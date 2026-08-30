@@ -1,16 +1,16 @@
 {
   "schemaVersion": "2",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 402,
-  "derivedRevision": 402,
+  "sourceRevision": 407,
+  "derivedRevision": 407,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 402
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 407
   },
   "conflictCount": 0,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
   "parentPhase": null,
-  "last_updated": "2026-08-30T00:32:25.547599Z",
+  "last_updated": "2026-08-30T00:44:20.892353Z",
   "last_updated_by": "kbd-runtime",
   "changes_total": 9,
   "changes_completed": 4,
@@ -90,9 +90,9 @@
       "status": "IN_PROGRESS",
       "implementation_status": "IN_PROGRESS",
       "tasks_total": 9,
-      "tasks_done": 3,
-      "last_task_completed": "Implement the per-graph, reference-counted controller and `EntityGraphDevtoolsBinding.attach` lifecycle.",
-      "next_task_pending": "Instrument the shared Dart graph-write boundary and register Riverpod/list/view lifecycles without duplicate events.",
+      "tasks_done": 4,
+      "last_task_completed": "Instrument the shared Dart graph-write boundary and register Riverpod/list/view lifecycles without duplicate events.",
+      "next_task_pending": "Implement equivalent projections, local conflict-safe preview/restore, per-graph history, rewind, and return-to-live.",
       "blockers": []
     },
     {

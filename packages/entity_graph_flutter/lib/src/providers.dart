@@ -126,6 +126,7 @@ class EntityListConfig<T extends Object> {
 @Riverpod(retry: entityProviderRetry)
 class EntityList<T extends Object> extends _$EntityList<T> {
   StreamSubscription<GraphChange>? _graphSubscription;
+  GraphViewRegistration? _viewRegistration;
   var _disposed = false;
   var _revalidating = false;
   var _ready = false;
@@ -144,6 +145,16 @@ class EntityList<T extends Object> extends _$EntityList<T> {
     _disposed = false;
     _ready = false;
     final graph = ref.watch(entityGraphProvider);
+    _viewRegistration?.dispose();
+    _viewRegistration = graph.registerView(
+      GraphViewDefinition(
+        viewId: 'entity-list:${type.length}:$type:$queryKey',
+        label: '$type list',
+        kind: GraphViewKind.list,
+        entityType: type,
+        queryKey: queryKey,
+      ),
+    );
     if (subscribe) {
       ref.watch(entityChangeBridgeProvider<T>(type: type));
     }
@@ -152,6 +163,7 @@ class EntityList<T extends Object> extends _$EntityList<T> {
     _graphSubscription = graph.changes.listen(_onGraphChange);
     ref.onDispose(() {
       _disposed = true;
+      _viewRegistration?.dispose();
       unawaited(_graphSubscription?.cancel());
     });
 
@@ -172,7 +184,8 @@ class EntityList<T extends Object> extends _$EntityList<T> {
 
   void _onGraphChange(GraphChange change) {
     if (_disposed || !_ready) return;
-    if (change is EntityChanged && change.type == type ||
+    if (change is GraphReset ||
+        change is EntityChanged && change.type == type ||
         change is EntityRemoved && change.type == type ||
         change is ListChanged && change.queryKey == queryKey) {
       state = AsyncValue.data(_buildSnapshot(ref.read(entityGraphProvider)));
@@ -217,6 +230,9 @@ class EntityList<T extends Object> extends _$EntityList<T> {
     final effectiveState = useLocal
         ? stored.copyWith(ids: ids, total: ids.length)
         : stored;
+    _viewRegistration?.update(
+      ids.map((id) => GraphEntityIdentity(type: type, id: id)),
+    );
     final error = stored.error == null ? null : TransientError(stored.error!);
     return EntityListSnapshot(
       items: List.unmodifiable(items),
@@ -331,6 +347,7 @@ class EntityConfig<T extends Object> {
 @Riverpod(retry: entityProviderRetry)
 class Entity<T extends Object> extends _$Entity<T> {
   StreamSubscription<GraphChange>? _graphSubscription;
+  GraphViewRegistration? _viewRegistration;
   var _disposed = false;
   var _revalidating = false;
   var _ready = false;
@@ -347,6 +364,19 @@ class Entity<T extends Object> extends _$Entity<T> {
     _disposed = false;
     _ready = false;
     final graph = ref.watch(entityGraphProvider);
+    _viewRegistration?.dispose();
+    final entityId = id;
+    _viewRegistration = entityId == null
+        ? null
+        : graph.registerView(
+            GraphViewDefinition(
+              viewId: 'entity:${type.length}:$type:$entityId',
+              label: '$type detail',
+              kind: GraphViewKind.entity,
+              entityType: type,
+            ),
+            membership: [GraphEntityIdentity(type: type, id: entityId)],
+          );
     if (subscribe) {
       ref.watch(entityChangeBridgeProvider<T>(type: type));
     }
@@ -355,6 +385,7 @@ class Entity<T extends Object> extends _$Entity<T> {
     _graphSubscription = graph.changes.listen(_onGraphChange);
     ref.onDispose(() {
       _disposed = true;
+      _viewRegistration?.dispose();
       unawaited(_graphSubscription?.cancel());
     });
 
@@ -369,7 +400,8 @@ class Entity<T extends Object> extends _$Entity<T> {
 
   void _onGraphChange(GraphChange change) {
     if (_disposed || !_ready) return;
-    if (change is EntityChanged &&
+    if (change is GraphReset ||
+        change is EntityChanged &&
             change.type == type &&
             (change.id == id || change.id == '*') ||
         change is EntityRemoved && change.type == type && change.id == id) {
@@ -404,6 +436,7 @@ class Entity<T extends Object> extends _$Entity<T> {
       return const EntitySnapshot(entity: null, state: EntityState());
     }
     final row = graph.readEntity(type, entityId);
+    _viewRegistration?.update([GraphEntityIdentity(type: type, id: entityId)]);
     return EntitySnapshot(
       entity: row == null ? null : fromGraph(row),
       state: graph.entityState(type, entityId),
@@ -523,9 +556,10 @@ class EntityCrud<T extends Object> extends _$EntityCrud<T> {
   }) {
     final graph = ref.watch(entityGraphProvider);
     _graphSubscription = graph.changes.listen((change) {
-      if (change is EntityChanged &&
-          change.type == type &&
-          change.id == id &&
+      if ((change is GraphReset ||
+              change is EntityChanged &&
+                  change.type == type &&
+                  change.id == id) &&
           !state.isDirty &&
           !state.isSaving) {
         state = EditBuffer(original: graph.readEntity(type, id) ?? const {});

@@ -1950,3 +1950,23 @@
   exclusion, and diff whitespace checks passed. No analyzer, compiler, test,
   or build ran; assembled integration remains task 8.
 - Optional sovereign-sync sharing was not enabled or changed.
+
+## 2026-08-30 — Flutter controller task 4/9
+
+- Routed all 29 public Dart graph mutation methods through one nested-aware
+  outer publication boundary. Compound removal, rollback, invalidation, and
+  list operations now deduplicate affected identities before notification.
+- Added listener-gated immutable before/after graph snapshots, so ordinary
+  production writes retain their existing low-overhead change stream until an
+  observability consumer explicitly attaches.
+- Added framework-neutral logical view definitions, reference registrations,
+  merged ID-only membership, render/subscriber counts, and registered,
+  membership-changed, and unregistered lifecycle records.
+- Wired generated entity and list Riverpod providers to register/update/dispose
+  logical views and made graph reset refresh entity, list, and CRUD providers.
+- Bridged graph view lifecycles into protocol-v1 controller view events while
+  keeping normal providers independent of the optional DevTools library.
+- Formatter parsing, a 29-method static boundary audit, lifecycle/source
+  assertions, root-layering checks, and diff whitespace checks passed. No
+  analyzer, compiler, test, or build ran; full integration remains task 8.
+- Optional sovereign-sync sharing was not enabled or changed.

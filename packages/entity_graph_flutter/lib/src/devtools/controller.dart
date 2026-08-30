@@ -5,6 +5,10 @@ import 'protocol.dart';
 typedef EntityGraphDevtoolsLifecycleListener =
     void Function(EntityGraphDevtoolsLifecycleEvent event);
 
+/// Receives one live protocol event from an attached controller.
+typedef EntityGraphDevtoolsEventListener =
+    void Function(EntityGraphDevtoolsEvent event);
+
 /// The one development-tooling controller owned by an attached [EntityGraph].
 ///
 /// Controllers are created through [EntityGraphDevtoolsBinding.attach]. Their
@@ -27,7 +31,9 @@ final class EntityGraphDevtoolsController {
 
   final List<EntityGraphDevtoolsLifecycleEvent> _lifecycleEvents = [];
   final Set<EntityGraphDevtoolsLifecycleListener> _lifecycleListeners = {};
+  final Set<EntityGraphDevtoolsEventListener> _eventListeners = {};
 
+  void Function()? _stopViewObservation;
   var _sequence = 0;
   var _disposed = false;
 
@@ -65,29 +71,111 @@ final class EntityGraphDevtoolsController {
     };
   }
 
+  /// Observe live lifecycle, view, and later mutation/time-travel events.
+  void Function() subscribe(EntityGraphDevtoolsEventListener listener) {
+    if (_disposed) return _noop;
+    _eventListeners.add(listener);
+    var subscribed = true;
+    return () {
+      if (!subscribed) return;
+      subscribed = false;
+      _eventListeners.remove(listener);
+    };
+  }
+
+  void _startObservingGraph() {
+    _stopViewObservation = _graph.subscribeViewLifecycles(
+      _publishViewLifecycle,
+    );
+    for (final record in _graph.viewRecords) {
+      _publishView(
+        EntityGraphDevtoolsViewEventState.registered,
+        record.definition.viewId,
+        record.membership.length,
+      );
+    }
+  }
+
   void _publishLifecycle(EntityGraphDevtoolsLifecycleState state) {
-    final sequence = ++_sequence;
-    final eventId = '$storeId:$sequence';
+    final identity = _nextIdentity();
     final event = EntityGraphDevtoolsLifecycleEvent(
       storeId: storeId,
-      sequence: sequence,
-      eventId: eventId,
-      correlationId: eventId,
-      observedAt: DateTime.now().toUtc().toIso8601String(),
+      sequence: identity.sequence,
+      eventId: identity.eventId,
+      correlationId: identity.eventId,
+      observedAt: identity.observedAt,
       state: state,
       activeClients: 0,
     );
     _lifecycleEvents.add(event);
+    _publishEvent(event);
     for (final listener in List.of(_lifecycleListeners)) {
       _deliver(listener, event);
     }
   }
 
+  void _publishViewLifecycle(GraphViewLifecycleEvent event) {
+    _publishView(
+      switch (event.state) {
+        GraphViewLifecycleState.registered =>
+          EntityGraphDevtoolsViewEventState.registered,
+        GraphViewLifecycleState.membershipChanged =>
+          EntityGraphDevtoolsViewEventState.membershipChanged,
+        GraphViewLifecycleState.unregistered =>
+          EntityGraphDevtoolsViewEventState.unregistered,
+      },
+      event.record.definition.viewId,
+      event.record.membership.length,
+    );
+  }
+
+  void _publishView(
+    EntityGraphDevtoolsViewEventState state,
+    String viewId,
+    int membershipCount,
+  ) {
+    final identity = _nextIdentity();
+    _publishEvent(
+      EntityGraphDevtoolsViewEvent(
+        storeId: storeId,
+        sequence: identity.sequence,
+        eventId: identity.eventId,
+        correlationId: identity.eventId,
+        observedAt: identity.observedAt,
+        state: state,
+        viewId: viewId,
+        membershipCount: membershipCount,
+      ),
+    );
+  }
+
+  ({int sequence, String eventId, String observedAt}) _nextIdentity() {
+    final sequence = ++_sequence;
+    return (
+      sequence: sequence,
+      eventId: '$storeId:$sequence',
+      observedAt: DateTime.now().toUtc().toIso8601String(),
+    );
+  }
+
+  void _publishEvent(EntityGraphDevtoolsEvent event) {
+    for (final listener in List.of(_eventListeners)) {
+      try {
+        listener(event);
+      } on Object {
+        // Development tooling is isolated from the production graph.
+      }
+    }
+  }
+
   void _dispose() {
     if (_disposed) return;
+    _stopViewObservation?.call();
+    _stopViewObservation = null;
     _publishLifecycle(EntityGraphDevtoolsLifecycleState.disposed);
     _disposed = true;
     _lifecycleListeners.clear();
+    _eventListeners.clear();
   }
 
   static void _deliver(
@@ -163,6 +251,7 @@ final class EntityGraphDevtoolsBinding {
       entry = _EntityGraphDevtoolsControllerEntry(controller);
       slot.entry = entry;
       controller._publishLifecycle(EntityGraphDevtoolsLifecycleState.attached);
+      controller._startObservingGraph();
     }
 
     final retainedEntry = entry;
