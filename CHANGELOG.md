@@ -5,6 +5,22 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [3.2.0] — 2026-08-30
+
+### Added
+
+- Publish the completed DevTools distribution across all twelve npm packages
+  at 3.2.0 and the downloadable Chrome DevTools 3.2.0 ZIP.
+- Publish Flutter 3.1.0 with the complete optional controller and rebuilt
+  official DevTools companion, retaining the 3.0.5 Dart runtime behavior.
+
+### Fixed
+
+- Keep React entity search responsive during continuous graph updates.
+- Bound oversized core mutation events by dropping optional affected metadata
+  before reducing retained semantic changes.
+- Refresh README, both Docusaurus sites, and generated API references.
+
 ## [Unreleased] — 3.0 release program
 
 ### Fixed — 3.0.3 (2026-08-24)

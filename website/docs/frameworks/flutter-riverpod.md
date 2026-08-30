@@ -10,10 +10,10 @@ families project entities and lists without copying entity data into widgets.
 The package covers local/remote/hybrid views, optimistic rollback, realtime
 invalidation, transports, an optional FFI seam, and cross-view widget goldens.
 
-Install the public `3.0.5` package from pub.dev:
+Install the public `3.1.0` package from pub.dev:
 
 ```bash
-flutter pub add entity_graph_flutter:^3.0.5
+flutter pub add entity_graph_flutter:^3.1.0
 ```
 
 The published archive passed a clean consumer import and analyzer check. pub.dev
@@ -26,7 +26,7 @@ Start with `packages/entity_graph_flutter/README.md` and the
 
 ## Optional DevTools
 
-Version `3.0.5` includes a separate, optional
+Version `3.1.0` includes a separate, optional
 `package:entity_graph_flutter/devtools.dart` library with a reference-counted
 controller per graph and a store-explicit Dart VM-service bridge. It observes
 real graph publications and Riverpod logical views, projects canonical/patch/

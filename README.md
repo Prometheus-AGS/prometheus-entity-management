@@ -12,39 +12,41 @@ parallel query caches.
 
 ## 3.x release status
 
-**3.1.0 stable is published.** All twelve npm packages are public at `3.1.0`
-with the `latest` and `next` tags pointing at it (published 2026-08-29). `3.1.0`
-includes the optional React DevTools inspector, provider-scoped imperative
-graph access, A2UI 1.0-RC React/Flutter compatibility, and AG-UI 0.0.59
-activity support. `3.0.0` shipped with an
+**3.2.0 stable is published.** All twelve npm packages are public at `3.2.0`
+with the `latest` and `next` tags pointing at it (published 2026-08-30). `3.2.0`
+ships the complete optional DevTools distribution, including bounded core event
+metadata and responsive React inspector search during continuous updates. It
+retains provider-scoped imperative graph access, A2UI 1.0-RC React/Flutter
+compatibility, and AG-UI 0.0.59 activity support. `3.0.0` shipped with an
 unresolved pnpm `workspace:` protocol in its manifests and is deprecated; `3.0.1`
 and `3.0.2` were corrective republications. `3.0.4` was published with stale
-build artifacts and is deprecated in favor of `3.1.0`. Flutter `3.0.5` adds the
-optional controller and official DevTools companion; React and A2UI React remain
-at npm `3.1.0`.
+build artifacts and is deprecated. Flutter `3.1.0` consolidates the completed
+controller and official DevTools companion, including multi-client cancellation.
+The [Chrome DevTools 3.2.0 ZIP](https://github.com/Prometheus-AGS/prometheus-entity-management/releases/download/v3.2.0/prometheus-entity-graph-devtools-3.2.0.zip)
+is available for developer-mode installation; it is not a Chrome Web Store listing.
 The production documentation is available at
 [prometheus-ags.github.io/prometheus-entity-management](https://prometheus-ags.github.io/prometheus-entity-management/).
 
 <!-- BEGIN GENERATED:RELEASE_TAGS -->
-Registry snapshot: 2026-08-30T04:02:31Z. Expected candidate: `3.1.0`.
+Registry snapshot: 2026-08-30T22:54:50.026Z. Expected candidate: `3.2.0`.
 
 | Package | `latest` | `alpha` | `next` | Release state |
 | --- | --- | --- | --- | --- |
-| `@prometheus-ags/entity-graph-core` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-sdl` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-solid` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-svelte` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-sync` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-tauri` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-web-components` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/prometheus-entity-management` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/a2ui-react` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-a2a` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-alpine` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-htmx` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
+| `@prometheus-ags/entity-graph-core` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-sdl` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-solid` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-svelte` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-sync` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-tauri` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-web-components` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/prometheus-entity-management` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/a2ui-react` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-a2a` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-alpine` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-htmx` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
 <!-- END GENERATED:RELEASE_TAGS -->
 
-The stable release is tagged `v3.1.0` and was verified live against the public
+The stable release is tagged `v3.2.0` and was verified live against the public
 registry after publication. See [RELEASING.md](RELEASING.md) for the release
 contract, the governed OIDC promotion path, and recovery rules.
 
@@ -137,7 +139,7 @@ Loro, Suspense, DevTools, and accessibility. See
 Opt into the optional inspector from a Vite client entry without adding it to
 production bundles:
 
-> npm `3.1.0` ships the optional `./devtools` and development-only
+> npm `3.2.0` ships the optional `./devtools` and development-only
 > `./devtools/auto` entries. The ordinary package root remains inspector-free.
 
 ```ts
@@ -160,15 +162,15 @@ hydration so server markup remains unchanged. See the
 Install the public Flutter package from pub.dev:
 
 ```bash
-flutter pub add entity_graph_flutter:^3.0.5
+flutter pub add entity_graph_flutter:^3.1.0
 ```
 
 <!-- BEGIN GENERATED:NATIVE_RELEASES -->
-pub.dev snapshot: 2026-08-30T15:54:36Z.
+pub.dev snapshot: 2026-08-30T22:55:17.910Z.
 
 | Package | Version | State | Published |
 | --- | --- | --- | --- |
-| [`entity_graph_flutter`](https://pub.dev/packages/entity_graph_flutter) | `3.0.5` | published | 2026-08-30T15:49:48.424393Z |
+| [`entity_graph_flutter`](https://pub.dev/packages/entity_graph_flutter) | `3.1.0` | published | 2026-08-30T22:50:00.407947Z |
 
 The published archive passed a clean consumer resolution, import, and analyzer check.
 pub.dev does not yet associate the package with a verified publisher.
@@ -180,7 +182,7 @@ example uses generated Riverpod families, optimistic/offline CRUD,
 relationships, realtime invalidation, policy-gated GenUI, responsive layouts,
 and an optional FFI transport.
 
-Flutter `3.0.5` ships an optional, metadata-first DevTools controller,
+Flutter `3.1.0` ships an optional, metadata-first DevTools controller,
 store-isolated VM-service bridge, and official responsive DevTools package
 extension. Import `package:entity_graph_flutter/devtools.dart` only from a
 debug bootstrap; the ordinary package entry and product-mode builds remain
@@ -268,7 +270,7 @@ paths, and token-shaped content.
 | pnpm | `>=10.33.0 <12` | pnpm 10.33.0 is pinned; pnpm 11 consumer workspaces are supported |
 | React | 19.x | vanilla core remains React-free |
 | Next.js | App Router / 16.x example | one graph per server request |
-| Flutter | 3.44.8+ | `entity_graph_flutter@3.0.5`; Riverpod 3 generated providers; official DevTools companion; A2UI 1.0-RC compatibility via GenUI 0.10.2 |
+| Flutter | 3.44.8+ | `entity_graph_flutter@3.1.0`; Riverpod 3 generated providers; official DevTools companion; A2UI 1.0-RC compatibility via GenUI 0.10.2 |
 | Tauri | 2.x | shared desktop/mobile application and native plugin |
 | npm module formats | ESM + CommonJS + loader-specific declarations | verified from packed tarballs |
 

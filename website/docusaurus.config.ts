@@ -78,7 +78,7 @@ const config: Config = {
     announcementBar: {
       id: 'v3_stable',
       content:
-        '<strong>3.1.0 stable</strong> — all twelve npm packages are public on npm at 3.1.0, including the optional React DevTools inspector. Flutter 3.0.5 is public on pub.dev with its official DevTools companion.',
+        '<strong>3.2.0 stable</strong> — all twelve npm packages are public on npm at 3.2.0, including the optional React DevTools inspector. Flutter 3.1.0 is public on pub.dev with its official DevTools companion.',
       backgroundColor: '#0B0F14',
       textColor: '#FFFFFF',
       isCloseable: false,

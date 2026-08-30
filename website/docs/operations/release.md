@@ -5,8 +5,8 @@ sidebar_position: 6
 
 # Stage 3.0.0-rc.1 without a write token
 
-> **Status:** the 3.0 line is complete. Stable `3.1.0` holds `latest` on all
-> twelve npm packages (published 2026-08-29; the short-lived `3.0.0` stable
+> **Status:** the 3.0 line is complete. Stable `3.2.0` holds `latest` on all
+> twelve npm packages (published 2026-08-30; the short-lived `3.0.0` stable
 > manifests shipped an unresolved `workspace:` protocol, and `3.0.4` shipped
 > stale build artifacts; both are deprecated).
 > This page remains the runbook for staging future release candidates.
@@ -18,36 +18,36 @@ The immutable candidate was staged in GitHub Actions run
 [`31082488746`](https://github.com/Prometheus-AGS/prometheus-entity-management/actions/runs/31082488746).
 
 <!-- BEGIN GENERATED:NPM_REGISTRY_STATUS -->
-Registry snapshot: 2026-08-30T04:02:31Z. Expected candidate: `3.1.0`.
+Registry snapshot: 2026-08-30T22:54:50.026Z. Expected candidate: `3.2.0`.
 
 | Package | `latest` | `alpha` | `next` | Release state |
 | --- | --- | --- | --- | --- |
-| `@prometheus-ags/entity-graph-core` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-sdl` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-solid` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-svelte` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-sync` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-tauri` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-web-components` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/prometheus-entity-management` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/a2ui-react` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-a2a` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-alpine` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
-| `@prometheus-ags/entity-graph-htmx` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
+| `@prometheus-ags/entity-graph-core` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-sdl` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-solid` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-svelte` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-sync` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-tauri` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-web-components` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/prometheus-entity-management` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/a2ui-react` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-a2a` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-alpine` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-htmx` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
 <!-- END GENERATED:NPM_REGISTRY_STATUS -->
 
 <!-- BEGIN GENERATED:PUBDEV_REGISTRY_STATUS -->
-pub.dev snapshot: 2026-08-30T15:54:36Z.
+pub.dev snapshot: 2026-08-30T22:55:17.910Z.
 
 | Package | Version | State | Published |
 | --- | --- | --- | --- |
-| [`entity_graph_flutter`](https://pub.dev/packages/entity_graph_flutter) | `3.0.5` | published | 2026-08-30T15:49:48.424393Z |
+| [`entity_graph_flutter`](https://pub.dev/packages/entity_graph_flutter) | `3.1.0` | published | 2026-08-30T22:50:00.407947Z |
 
 The published archive passed a clean consumer resolution, import, and analyzer check.
 pub.dev does not yet associate the package with a verified publisher.
 <!-- END GENERATED:PUBDEV_REGISTRY_STATUS -->
 
-The rc.1 stage completed and stable `3.1.0` now holds `latest` on all twelve
+The rc.1 stage completed and stable `3.2.0` now holds `latest` on all twelve
 packages; stale-artifact `3.0.4` is deprecated. The historical stage run below is kept for reference; do not rerun
 staging for versions that are already immutable on the registry.
 

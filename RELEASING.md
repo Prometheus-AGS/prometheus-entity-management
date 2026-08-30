@@ -2,18 +2,20 @@
 
 ## 3.x status: stable published
 
-**Update 2026-08-29: 3.1.0 stable is published.** All twelve
-`@prometheus-ags/*` npm packages are public at `3.1.0` with both `latest` and
-`next` pointing at it (tag `v3.1.0`). `3.0.0` shipped with an unresolved pnpm
+**Update 2026-08-30: 3.2.0 stable is published.** All twelve
+`@prometheus-ags/*` npm packages are public at `3.2.0` with both `latest` and
+`next` pointing at it (tag `v3.2.0`). `3.0.0` shipped with an unresolved pnpm
 `workspace:` protocol in ten of twelve manifests and is deprecated; `3.0.1` and
 `3.0.2` were corrective republications, `3.0.3` made fetched list ingestion
 atomic, `3.0.4` was deprecated after stale build artifacts were discovered,
-and `3.1.0` adds the optional React DevTools entries while carrying the
-provider-scoped imperative-access fix and A2UI 1.0-RC compatibility. These
+and `3.1.0` introduced the optional React DevTools entries. `3.2.0` completes
+the DevTools distribution with bounded event metadata and responsive search,
+while retaining the provider-scoped imperative-access fix and A2UI 1.0-RC compatibility. These
 publications ran directly with a granular npm token at
 operator direction, so they carry no npm provenance attestation; the governed
-OIDC path below remains for future releases. `entity_graph_flutter@3.0.1` is
-public on pub.dev. Do not run `changeset publish`, publish an individual
+OIDC path below remains for future releases. `entity_graph_flutter@3.1.0` is
+public on pub.dev with its official companion; the Chrome 3.2.0 ZIP is attached
+to the GitHub release, not submitted to the Chrome Web Store. Do not run `changeset publish`, publish an individual
 workspace package, or move any npm `latest` tag based only on local builds or
 the main CI baseline.
 
@@ -44,7 +46,7 @@ pnpm install --frozen-lockfile
 pnpm run ci
 ```
 
-The individual `ci:*` commands and timeout behavior are documented in [`release/ci-baseline.md`](release/ci-baseline.md). `pnpm run test` includes workspace tests, release-contract tests, CI-policy tests, and Cucumber BDD.
+The individual `ci:*` commands and timeout behavior are documented in [`release/ci-baseline.md`](release/ci-baseline.md). `pnpm run test` and `ci:integration` execute the complete packed DevTools core/React/Vite/Next/browser acceptance gate. Legacy isolated suites are not release evidence.
 
 ## Shared example contract verification
 

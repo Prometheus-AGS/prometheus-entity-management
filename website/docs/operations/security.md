@@ -61,7 +61,7 @@ ceilings. Detach every retained binding so a disposed application graph is
 removed from debugger discovery.
 
 The controller, bridge, and official Flutter DevTools extension are published
-in pub.dev `3.0.5`. The assembled acceptance proves the real VM-service and
+in pub.dev `3.1.0`. The assembled acceptance proves the real VM-service and
 Riverpod boundary; official extension build validation is recorded separately.
 
 ## Secret and evidence handling

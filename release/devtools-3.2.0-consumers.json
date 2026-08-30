@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-08-30T22:57:49.623Z",
+  "npm": {
+    "version": "3.2.0",
+    "packages": 12,
+    "latest": "3.2.0",
+    "next": "3.2.0",
+    "cleanHostedEsmConsumer": "passed",
+    "cleanHostedCommonJsConsumer": "passed",
+    "devtoolsSubpaths": "passed",
+    "lockfileSha256": "840e5050e9418475aa3e8b1435d1ccfce0afb75f01bf6757a5beb35c92530810"
+  },
+  "flutter": {
+    "version": "3.1.0",
+    "registry": "https://pub.dev",
+    "archiveSha256": "f79c5a97a9994769cb152c68b47bca1c59e1ebb3d0ba343af8c257fca92ba1cb",
+    "bundledExtensionVersion": "3.1.0",
+    "lockfileSha256": "922cc1d762f9b1e568218f81799afc6d91b404b3f7622578f6ec2a95673115af",
+    "hostedResolution": "passed",
+    "analyzer": "no issues",
+    "releaseWebBuild": "passed"
+  },
+  "chrome": {
+    "version": "3.2.0",
+    "assetUrl": "https://github.com/Prometheus-AGS/prometheus-entity-management/releases/download/v3.2.0/prometheus-entity-graph-devtools-3.2.0.zip",
+    "sha256": "4b14933cb134c72c26decf1a355feab9d0034b217313e735c730fe5d7b83ee69"
+  },
+  "sourceCommit": "4780a27128683a946f45d098e7eded19a3ff98cc",
+  "hostedCi": {
+    "run": 33340174173,
+    "initialAttempt": "Node 22 and 26 passed; Node 24 failed long-task budget with 51/66/58 ms; failed job rerun requested without code or threshold changes"
+  },
+  "docsDeployment": {
+    "run": 33340174145,
+    "status": "success"
+  }
+}

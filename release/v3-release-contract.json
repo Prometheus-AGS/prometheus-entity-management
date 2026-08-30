@@ -38,7 +38,7 @@
     },
     "native": {
       "strategy": "independent-aligned-major",
-      "version": "3.0.5",
+      "version": "3.1.0",
       "note": "The Dart package releases independently within the aligned 3.x major. Rust artifacts retain their separately recorded source versions and deferred registry status."
     }
   },

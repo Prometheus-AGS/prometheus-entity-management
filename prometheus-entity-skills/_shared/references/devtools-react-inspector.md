@@ -1,9 +1,9 @@
 # React DevTools inspector
 
 This reference governs agent guidance for the optional React inspector
-implemented in repository source after the published `3.0.5` package. The
+implemented in repository source after the published `3.1.0` package. The
 entries will ship in the next minor release and must not be claimed as present
-in the `3.0.5` tarball. Runtime export names for
+in the `3.1.0` tarball. Runtime export names for
 the root, `./devtools`, and `./devtools/auto` entries are authoritative in
 [`library-exports.json`](library-exports.json).
 

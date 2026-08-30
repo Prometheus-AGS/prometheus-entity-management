@@ -7,6 +7,11 @@ Web Store by this phase.
 
 ## Build and install
 
+Download the [3.2.0 release ZIP](https://github.com/Prometheus-AGS/prometheus-entity-management/releases/download/v3.2.0/prometheus-entity-graph-devtools-3.2.0.zip),
+extract it, and use **Load unpacked** on the extracted directory in
+`chrome://extensions`. This is a developer-mode distribution, not a Chrome
+Web Store listing. To build from source instead:
+
 ```bash
 pnpm --filter @prometheus-ags/entity-graph-core build
 pnpm --filter @prometheus-ags/prometheus-entity-management build

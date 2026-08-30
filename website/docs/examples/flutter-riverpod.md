@@ -24,5 +24,5 @@ history-retention, and teardown assertions. The official Flutter DevTools
 extension build and package layout are validated separately.
 
 The reusable library is public as
-[`entity_graph_flutter@3.0.5`](https://pub.dev/packages/entity_graph_flutter).
+[`entity_graph_flutter@3.1.0`](https://pub.dev/packages/entity_graph_flutter).
 That registry publication is separate from the example's platform evidence.
