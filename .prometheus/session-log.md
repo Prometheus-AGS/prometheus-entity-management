@@ -2229,3 +2229,28 @@
   packed integration passed with 16.1 ms search p95, 499.03 events/second, zero
   in-window long tasks over 50 ms, and 500 retained events. Sovereign sync was
   not touched.
+
+## 2026-08-30 — Complete DevTools minor distribution
+
+- Delta: hosted CI subsequently observed 51/66/58 ms long tasks on its Node 24
+  runner although the complete local gate and Node 22/26 lanes passed. The
+  source and threshold were left unchanged; final hosted verification remains
+  separate from the passing local certificate. A docs-only push superseded the
+  first retry with a complete new run.
+- Frozen package source d7dff293 passed all twelve packed consumers, the full
+  core/React/Vite/Next/browser gate (6/6, search p95 12.7 ms), and the real
+  Flutter/Riverpod/VM-service flow (46 events). Official Flutter extension
+  validation, zero-warning pub dry run, and both docs builds passed before
+  publication. Independent k3 review had zero critical and four recorded
+  nonblocking warnings; strict sycophancy score was 0.0803571417927742.
+- Published all twelve npm packages at 3.2.0 with latest/next aligned, Flutter
+  3.1.0 with the bundled companion, and Chrome 3.2.0 as a GitHub release ZIP.
+  Public core/React DevTools bytes match the certified builds. Fresh hosted
+  npm ESM/CommonJS and Flutter resolution/analyzer/web-build consumers passed.
+- Updated both documentation trees, README, changelogs, API references and
+  registry receipts. Post-publication docs verification found two stale
+  hard-coded 3.1.0 expectations and an API inventory still bound to the old
+  registry SHA; use the current registry version and regenerate the inventory.
+- Phase implementation remains 9/9 complete. Chrome Web Store, human usability,
+  physical devices, app stores and verified pub.dev publisher identity remain
+  unclaimed. No new runtime hardening or sovereign-sync changes were added.
