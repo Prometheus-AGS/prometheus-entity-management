@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "boundary": "flutter-riverpod-vm-service-acceptance",
+  "status": "pass",
+  "executedAt": "2026-08-30T02:02:16.319Z",
+  "sourceCommit": "ad72bcf8d99d7175cf2bf36d4f8ce4594d200da4",
+  "device": "7F63354E-3475-4158-BB5E-F75D5E7ECFBA",
+  "fixtures": {
+    "entity-inspection-v1.json": {
+      "sha256": "5b2654e1ee326b2309b6ceb786db95dcfc3912a015adba2379cafebbea849890",
+      "bytes": 6719
+    },
+    "time-travel-v1.json": {
+      "sha256": "937478739c4fcf9d730050da375ff48a00d905cdef8c66c86cd7c24d2eda0ad5",
+      "bytes": 2613
+    }
+  },
+  "stores": [
+    "flutter-acceptance-a",
+    "flutter-acceptance-b"
+  ],
+  "extensionEvents": {
+    "total": 28,
+    "types": [
+      "lifecycle",
+      "mutation",
+      "time-travel",
+      "view"
+    ]
+  },
+  "assertions": [
+    "cross-language fixtures are byte-identical and valid JSON",
+    "real Flutter app registers Riverpod entity and list views",
+    "two active graphs remain isolated through discovery, commands, history, and disposal",
+    "graph publications emit bounded versioned Extension-stream events",
+    "entity, dirty, error, view, and relationship projections are complete",
+    "host redaction removes the sentinel before history and VM serialization",
+    "remote commands cannot escalate value policy or exceed request bounds",
+    "preview restore refuses a post-preview conflict",
+    "retained rewind returns exactly to the protected live head",
+    "the first real graph mutation after rewind returns history mode to live before publication",
+    "final detach removes every active store from discovery"
+  ]
+}

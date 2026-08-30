@@ -1,5 +1,24 @@
 # Session log
 
+## 2026-08-30 — Flutter controller task 8/9
+
+- Ran the one scoped Dart analyzer after implementation; it exited 0 with no
+  errors or warnings and four pre-existing style infos.
+- Corrected the assembled runner's unsupported macOS default, masked
+  `app.stop` failure path, sanitized milestone diagnostics, and invented
+  applied-preview status assertion.
+- Corrected runtime-dynamic immutable snapshot maps by typing every nested
+  `Map.unmodifiable` constructor in both graph snapshot entry points.
+- The complete Flutter/Riverpod/VM-service acceptance flow passed on a booted
+  configured iOS simulator with 28 lifecycle, mutation, time-travel, and view
+  events across two isolated graph controllers.
+- Final receipt source commit is
+  `ad72bcf8d99d7175cf2bf36d4f8ce4594d200da4`; fixture identity, redaction,
+  policy refusal, transport/event bounds, preview conflict, rewind/live,
+  history clearing, and disposal all passed.
+- No unit, widget, component, golden, snapshot, mock-backed, isolated, or
+  partial integration test ran. Sovereign sync was not touched.
+
 ## 2026-08-29 — React DevTools accepted UI specification implementation
 
 - Completed task 10 of `v3-devtools-react-inspector` at canonical revision 377

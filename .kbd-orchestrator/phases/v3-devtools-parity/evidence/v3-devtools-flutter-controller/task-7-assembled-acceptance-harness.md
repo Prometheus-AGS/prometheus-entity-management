@@ -10,7 +10,7 @@ the package's legacy isolated test suites:
 ```text
 Node verifier
   -> Flutter tool machine protocol
-  -> real macOS debug application
+  -> real supported-device debug application
   -> Dart VM-service WebSocket JSON-RPC
   -> versioned production DevTools methods and Extension stream
   -> two production EntityGraph controllers
@@ -23,8 +23,9 @@ Node verifier
 - Added a test-only, exact-parameter VM-service step method that drives only
   public graph and binding APIs. The application surface never becomes a
   second business-state owner.
-- Added an external Node 22 verifier that discovers the app's VM-service URI
-  from `flutter run --machine`, locates the isolate that owns the registered
+- Added an external Node 22 verifier that discovers a connected device whose
+  platform is configured by the example, obtains the app's VM-service URI from
+  `flutter run --machine`, locates the isolate that owns the registered
   extension methods, subscribes to the real Extension stream, and invokes the
   production versioned RPCs.
 - The single flow asserts cross-runtime fixture identity, multi-store discovery
