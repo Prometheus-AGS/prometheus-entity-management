@@ -208,33 +208,33 @@ final class EntityGraphSnapshot {
     required Map<String, ListState> lists,
     Map<String, String> listTypes = const {},
   }) => EntityGraphSnapshot._(
-    entities: Map.unmodifiable({
+    entities: Map<String, Map<String, Map<String, Object?>>>.unmodifiable({
       for (final type in entities.entries)
-        type.key: Map.unmodifiable({
+        type.key: Map<String, Map<String, Object?>>.unmodifiable({
           for (final entity in type.value.entries)
-            entity.key: Map.unmodifiable({
+            entity.key: Map<String, Object?>.unmodifiable({
               for (final field in entity.value.entries)
                 field.key: EntityGraph._copySnapshotValue(field.value),
             }),
         }),
     }),
-    patches: Map.unmodifiable({
+    patches: Map<String, Map<String, Map<String, Object?>>>.unmodifiable({
       for (final type in patches.entries)
-        type.key: Map.unmodifiable({
+        type.key: Map<String, Map<String, Object?>>.unmodifiable({
           for (final patch in type.value.entries)
-            patch.key: Map.unmodifiable({
+            patch.key: Map<String, Object?>.unmodifiable({
               for (final field in patch.value.entries)
                 field.key: EntityGraph._copySnapshotValue(field.value),
             }),
         }),
     }),
-    entityStates: Map.unmodifiable(entityStates),
-    syncMetadata: Map.unmodifiable(syncMetadata),
-    lists: Map.unmodifiable({
+    entityStates: Map<String, EntityState>.unmodifiable(entityStates),
+    syncMetadata: Map<String, EntitySyncMetadata>.unmodifiable(syncMetadata),
+    lists: Map<String, ListState>.unmodifiable({
       for (final entry in lists.entries)
         entry.key: EntityGraph._copyListState(entry.value),
     }),
-    listTypes: Map.unmodifiable(listTypes),
+    listTypes: Map<String, String>.unmodifiable(listTypes),
   );
 
   final Map<String, Map<String, Map<String, Object?>>> entities;
@@ -455,33 +455,33 @@ class EntityGraph {
   }
 
   EntityGraphSnapshot _snapshot() => EntityGraphSnapshot._(
-    entities: Map.unmodifiable({
+    entities: Map<String, Map<String, Map<String, Object?>>>.unmodifiable({
       for (final type in _entities.entries)
-        type.key: Map.unmodifiable({
+        type.key: Map<String, Map<String, Object?>>.unmodifiable({
           for (final entity in type.value.entries)
-            entity.key: Map.unmodifiable({
+            entity.key: Map<String, Object?>.unmodifiable({
               for (final field in entity.value.entries)
                 field.key: _copySnapshotValue(field.value),
             }),
         }),
     }),
-    patches: Map.unmodifiable({
+    patches: Map<String, Map<String, Map<String, Object?>>>.unmodifiable({
       for (final type in _patches.entries)
-        type.key: Map.unmodifiable({
+        type.key: Map<String, Map<String, Object?>>.unmodifiable({
           for (final patch in type.value.entries)
-            patch.key: Map.unmodifiable({
+            patch.key: Map<String, Object?>.unmodifiable({
               for (final field in patch.value.entries)
                 field.key: _copySnapshotValue(field.value),
             }),
         }),
     }),
-    entityStates: Map.unmodifiable(_entityStates),
-    syncMetadata: Map.unmodifiable(_syncMetadata),
-    lists: Map.unmodifiable({
+    entityStates: Map<String, EntityState>.unmodifiable(_entityStates),
+    syncMetadata: Map<String, EntitySyncMetadata>.unmodifiable(_syncMetadata),
+    lists: Map<String, ListState>.unmodifiable({
       for (final entry in _lists.entries)
         entry.key: _copyListState(entry.value),
     }),
-    listTypes: Map.unmodifiable(_listTypes),
+    listTypes: Map<String, String>.unmodifiable(_listTypes),
   );
 
   /// Capture the complete graph-owned data needed for local DevTools rewind.

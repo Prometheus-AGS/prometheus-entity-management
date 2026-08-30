@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { spawn, spawnSync } from "node:child_process";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { createInterface } from "node:readline";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -19,7 +20,9 @@ const protocolVersion = 1;
 const storeA = "flutter-acceptance-a";
 const storeB = "flutter-acceptance-b";
 const secretSentinel = "PEM_DEVTOOLS_SECRET_SENTINEL";
-const startTimeoutMs = 240_000;
+// Startup is normally incremental in this gate. Keep the diagnostic bound
+// finite so a missing machine-protocol milestone fails with safe telemetry.
+const startTimeoutMs = 300_000;
 const rpcTimeoutMs = 15_000;
 
 function argument(name, fallback = undefined) {
@@ -83,6 +86,19 @@ function sanitizedChildEnvironment() {
   return environment;
 }
 
+function sanitizeDiagnostic(value) {
+  let sanitized = String(value)
+    .replaceAll(secretSentinel, "[redacted]")
+    .replaceAll(repositoryRoot, "[repository]");
+  const userHome = process.env.HOME;
+  if (userHome) sanitized = sanitized.replaceAll(userHome, "[home]");
+  for (const name of ["CARGO_REGISTRY_TOKEN", "NPM_TOKEN", "NODE_AUTH_TOKEN"]) {
+    const secret = process.env[name];
+    if (secret) sanitized = sanitized.replaceAll(secret, "[redacted]");
+  }
+  return sanitized;
+}
+
 function parseMachineMessage(line) {
   try {
     const decoded = JSON.parse(line);
@@ -100,6 +116,35 @@ function sourceCommit() {
   });
   if (result.status !== 0) throw new Error("Unable to resolve acceptance source commit");
   return result.stdout.trim();
+}
+
+function resolveDevice(flutterExecutable, requestedDevice) {
+  if (requestedDevice) return requestedDevice;
+  const result = spawnSync(flutterExecutable, ["devices", "--machine"], {
+    cwd: exampleRoot,
+    env: sanitizedChildEnvironment(),
+    encoding: "utf8",
+    shell: false,
+  });
+  if (result.status !== 0) throw new Error("Unable to discover Flutter devices");
+  const devices = JSON.parse(result.stdout);
+  const platformDirectory = (targetPlatform) => {
+    if (targetPlatform === "ios") return "ios";
+    if (targetPlatform.startsWith("android")) return "android";
+    if (targetPlatform === "darwin") return "macos";
+    if (targetPlatform.startsWith("web")) return "web";
+    return null;
+  };
+  const supported = devices.find((candidate) => {
+    const directory = platformDirectory(candidate.targetPlatform);
+    return directory && existsSync(resolve(exampleRoot, directory));
+  });
+  if (!supported) {
+    throw new Error(
+      "No connected Flutter device matches a platform configured by the acceptance example",
+    );
+  }
+  return supported.id;
 }
 
 class VmServiceClient {
@@ -255,13 +300,20 @@ async function main() {
       ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-flutter-controller/task-8-assembled-acceptance.json",
     ),
   );
-  const device = argument("--device", process.env.PEM_FLUTTER_DEVICE ?? "macos");
   const flutterExecutable = argument("--flutter", process.env.FLUTTER_BIN ?? "flutter");
+  const device = resolveDevice(
+    flutterExecutable,
+    argument("--device", process.env.PEM_FLUTTER_DEVICE),
+  );
   const fixtures = await fixtureReceipt();
   const debugPort = deferred();
   const appStarted = deferred();
   const appStart = deferred();
+  const startupEvents = new Set();
+  const startupDiagnostics = new Set();
+  const startupDiagnosticDetails = [];
   let diagnosticLineCount = 0;
+  let machineMessageCount = 0;
   let flutter;
   let client;
   let appId;
@@ -278,8 +330,26 @@ async function main() {
       },
     );
 
-    const remember = () => {
+    const remember = (line) => {
       diagnosticLineCount += 1;
+      for (const marker of [
+        "Building macOS application",
+        "Building iOS application",
+        "Built build/macos",
+        "Launching",
+        "Error",
+        "Failed",
+      ]) {
+        if (line.includes(marker)) {
+          startupDiagnostics.add(marker);
+          if (
+            (marker === "Error" || marker === "Failed") &&
+            startupDiagnosticDetails.length < 8
+          ) {
+            startupDiagnosticDetails.push(sanitizeDiagnostic(line));
+          }
+        }
+      }
     };
     createInterface({ input: flutter.stdout, crlfDelay: Infinity }).on("line", (line) => {
       const message = parseMachineMessage(line);
@@ -287,6 +357,8 @@ async function main() {
         remember(line);
         return;
       }
+      machineMessageCount += 1;
+      if (typeof message.event === "string") startupEvents.add(message.event);
       if (message.event === "app.start") {
         appId = message.params?.appId;
         appStart.resolve(message.params);
@@ -294,8 +366,14 @@ async function main() {
         debugPort.resolve(message.params?.wsUri);
       } else if (message.event === "app.started") {
         appStarted.resolve(message.params);
-      } else if (message.event === "app.stop" && message.params?.error) {
-        remember(String(message.params.error));
+      } else if (message.event === "app.stop") {
+        const detail = message.params?.error ?? message.params?.trace ?? "no error detail";
+        const error = new Error(
+          `Flutter acceptance host stopped during startup: ${sanitizeDiagnostic(detail)}`,
+        );
+        debugPort.reject(error);
+        appStarted.reject(error);
+        appStart.reject(error);
       }
     });
     createInterface({ input: flutter.stderr, crlfDelay: Infinity }).on("line", remember);
@@ -305,19 +383,31 @@ async function main() {
       appStart.reject(error);
     });
     flutter.once("exit", (code) => {
-      if (!appId) {
-        const error = new Error(`Flutter acceptance host exited early with code ${code}`);
-        debugPort.reject(error);
-        appStarted.reject(error);
-        appStart.reject(error);
-      }
+      const error = new Error(`Flutter acceptance host exited before startup with code ${code}`);
+      debugPort.reject(error);
+      appStarted.reject(error);
+      appStart.reject(error);
     });
 
-    const [, wsUri, start] = await withTimeout(
-      Promise.all([appStarted.promise, debugPort.promise, appStart.promise]),
-      startTimeoutMs,
-      "Flutter acceptance host startup",
-    );
+    let startup;
+    try {
+      startup = await withTimeout(
+        Promise.all([appStarted.promise, debugPort.promise, appStart.promise]),
+        startTimeoutMs,
+        "Flutter acceptance host startup",
+      );
+    } catch (error) {
+      throw new Error(
+        `${error.message}; machineMessages=${machineMessageCount}; ` +
+          `events=${JSON.stringify([...startupEvents].sort())}; ` +
+          `diagnostics=${JSON.stringify([...startupDiagnostics].sort())}; ` +
+          `diagnosticDetails=${JSON.stringify(startupDiagnosticDetails)}; ` +
+          `appId=${appId === undefined ? "missing" : "present"}; ` +
+          `processExit=${flutter.exitCode ?? "running"}`,
+        { cause: error },
+      );
+    }
+    const [, wsUri, start] = startup;
     assert.equal(start.mode, "debug", "VM-service acceptance must run a debug app");
     assert.equal(typeof wsUri, "string");
 
@@ -515,7 +605,9 @@ async function main() {
       { type: "AcceptanceTask", id: "task-1", patch: { status: "preview" } },
     );
     assert.equal(preview.ok, true);
-    assert.equal(preview.result.status, "applied");
+    assert.equal(preview.result.entity.type, "AcceptanceTask");
+    assert.equal(preview.result.entity.id, "task-1");
+    assert.equal(preview.result.appliedPatch.status, "preview");
     await acceptanceStep(client, isolateId, "preview-conflict");
     const restore = await command(
       client,
@@ -649,7 +741,7 @@ async function main() {
 
     const receipt = {
       schemaVersion: 1,
-      boundary: "flutter-macos-riverpod-vm-service-acceptance",
+      boundary: "flutter-riverpod-vm-service-acceptance",
       status: "pass",
       executedAt: new Date().toISOString(),
       sourceCommit: sourceCommit(),
