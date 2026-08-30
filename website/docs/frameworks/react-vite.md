@@ -15,7 +15,7 @@ inside stores or adapters. The verified showcase covers:
 - local, remote, and hybrid views with realtime coalescing;
 - PGlite, Loro, Suspense, DevTools, and accessibility.
 
-Install the published stable `3.0.5` pair:
+Install the published stable `3.1.0` pair:
 
 ```bash
 pnpm add @prometheus-ags/entity-graph-core \
@@ -32,6 +32,6 @@ pnpm run dev:vite
 
 See the [React/Vite example evidence](../examples/react-vite.md).
 
-Generated UI remains a separate boundary: `@prometheus-ags/a2ui-react@3.0.5`
+Generated UI remains a separate boundary: `@prometheus-ags/a2ui-react@3.1.0`
 accepts A2UI 1.0-RC envelopes through the maintained official v0.9.1 renderer
 and consumes AG-UI 0.0.59 activities without granting them graph authority.

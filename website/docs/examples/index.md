@@ -9,7 +9,7 @@ sidebar_position: 5
 All showcases use the shared Project/User/Task/Comment/Activity domain and the
 capabilities in `examples/coverage.json`. “Implemented” records a bounded source
 and evidence claim; registry publication is reported separately. Flutter is
-public on pub.dev and all twelve npm packages are public at stable `3.0.5`; no
+public on pub.dev and all twelve npm packages are public at stable `3.1.0`; no
 app-store release is claimed.
 
 | Example | Current boundary |

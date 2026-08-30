@@ -1,15 +1,16 @@
 # Releasing Prometheus Entity Management
 
-## 3.0 status: stable published
+## 3.x status: stable published
 
-**Update 2026-08-29: 3.0.5 stable is published.** All twelve
-`@prometheus-ags/*` npm packages are public at `3.0.5` with both `latest` and
-`next` pointing at it (tag `v3.0.5`). `3.0.0` shipped with an unresolved pnpm
+**Update 2026-08-29: 3.1.0 stable is published.** All twelve
+`@prometheus-ags/*` npm packages are public at `3.1.0` with both `latest` and
+`next` pointing at it (tag `v3.1.0`). `3.0.0` shipped with an unresolved pnpm
 `workspace:` protocol in ten of twelve manifests and is deprecated; `3.0.1` and
 `3.0.2` were corrective republications, `3.0.3` made fetched list ingestion
 atomic, `3.0.4` was deprecated after stale build artifacts were discovered,
-and `3.0.5` correctly distributes the provider-scoped imperative-access fix and A2UI
-1.0-RC compatibility. These publications ran directly with a granular npm token at
+and `3.1.0` adds the optional React DevTools entries while carrying the
+provider-scoped imperative-access fix and A2UI 1.0-RC compatibility. These
+publications ran directly with a granular npm token at
 operator direction, so they carry no npm provenance attestation; the governed
 OIDC path below remains for future releases. `entity_graph_flutter@3.0.1` is
 public on pub.dev. Do not run `changeset publish`, publish an individual

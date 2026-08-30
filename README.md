@@ -10,39 +10,40 @@ explicit local patch. A single write therefore updates list rows, detail panels,
 relationships, badges, and policy-controlled generated UI without maintaining
 parallel query caches.
 
-## 3.0 release status
+## 3.x release status
 
-**3.0.5 stable is published.** All twelve npm packages are public at `3.0.5`
-with the `latest` and `next` tags pointing at it (published 2026-08-29). `3.0.5`
-fixes provider-scoped imperative graph access and adds A2UI 1.0-RC React/Flutter
-compatibility plus AG-UI 0.0.59 activity support. `3.0.0` shipped with an
+**3.1.0 stable is published.** All twelve npm packages are public at `3.1.0`
+with the `latest` and `next` tags pointing at it (published 2026-08-29). `3.1.0`
+includes the optional React DevTools inspector, provider-scoped imperative
+graph access, A2UI 1.0-RC React/Flutter compatibility, and AG-UI 0.0.59
+activity support. `3.0.0` shipped with an
 unresolved pnpm `workspace:` protocol in its manifests and is deprecated; `3.0.1`
 and `3.0.2` were corrective republications. `3.0.4` was published with stale
-build artifacts and is deprecated in favor of `3.0.5`. Flutter is public on pub.dev as
-`entity_graph_flutter@3.0.1`; React and A2UI React remain at npm `3.0.5`.
+build artifacts and is deprecated in favor of `3.1.0`. Flutter is public on pub.dev as
+`entity_graph_flutter@3.0.1`; React and A2UI React remain at npm `3.1.0`.
 The production documentation is available at
 [prometheus-ags.github.io/prometheus-entity-management](https://prometheus-ags.github.io/prometheus-entity-management/).
 
 <!-- BEGIN GENERATED:RELEASE_TAGS -->
-Registry snapshot: 2026-08-29T12:49:00Z. Expected candidate: `3.0.5`.
+Registry snapshot: 2026-08-30T04:02:31Z. Expected candidate: `3.1.0`.
 
 | Package | `latest` | `alpha` | `next` | Release state |
 | --- | --- | --- | --- | --- |
-| `@prometheus-ags/entity-graph-core` | `3.0.5` | `3.0.0-alpha.0` | `3.0.5` | published |
-| `@prometheus-ags/entity-graph-sdl` | `3.0.5` | `3.0.0-alpha.0` | `3.0.5` | published |
-| `@prometheus-ags/entity-graph-solid` | `3.0.5` | `3.0.0-alpha.0` | `3.0.5` | published |
-| `@prometheus-ags/entity-graph-svelte` | `3.0.5` | `3.0.0-alpha.0` | `3.0.5` | published |
-| `@prometheus-ags/entity-graph-sync` | `3.0.5` | `3.0.0-alpha.0` | `3.0.5` | published |
-| `@prometheus-ags/entity-graph-tauri` | `3.0.5` | `3.0.0-alpha.0` | `3.0.5` | published |
-| `@prometheus-ags/entity-graph-web-components` | `3.0.5` | `3.0.0-alpha.0` | `3.0.5` | published |
-| `@prometheus-ags/prometheus-entity-management` | `3.0.5` | `3.0.0-alpha.0` | `3.0.5` | published |
-| `@prometheus-ags/a2ui-react` | `3.0.5` | `3.0.0-alpha.0` | `3.0.5` | published |
-| `@prometheus-ags/entity-graph-a2a` | `3.0.5` | `3.0.0-alpha.0` | `3.0.5` | published |
-| `@prometheus-ags/entity-graph-alpine` | `3.0.5` | `3.0.0-alpha.0` | `3.0.5` | published |
-| `@prometheus-ags/entity-graph-htmx` | `3.0.5` | `3.0.0-alpha.0` | `3.0.5` | published |
+| `@prometheus-ags/entity-graph-core` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
+| `@prometheus-ags/entity-graph-sdl` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
+| `@prometheus-ags/entity-graph-solid` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
+| `@prometheus-ags/entity-graph-svelte` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
+| `@prometheus-ags/entity-graph-sync` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
+| `@prometheus-ags/entity-graph-tauri` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
+| `@prometheus-ags/entity-graph-web-components` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
+| `@prometheus-ags/prometheus-entity-management` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
+| `@prometheus-ags/a2ui-react` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
+| `@prometheus-ags/entity-graph-a2a` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
+| `@prometheus-ags/entity-graph-alpine` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
+| `@prometheus-ags/entity-graph-htmx` | `3.1.0` | `3.0.0-alpha.0` | `3.1.0` | published |
 <!-- END GENERATED:RELEASE_TAGS -->
 
-The stable release is tagged `v3.0.5` and was verified live against the public
+The stable release is tagged `v3.1.0` and was verified live against the public
 registry after publication. See [RELEASING.md](RELEASING.md) for the release
 contract, the governed OIDC promotion path, and recovery rules.
 
@@ -96,18 +97,18 @@ they cannot create hidden graph singletons.
 <!-- BEGIN GENERATED:PACKAGES -->
 | Package | Candidate | Stability | Role |
 | --- | --- | --- | --- |
-| `@prometheus-ags/entity-graph-core` | `3.0.5` | stable | framework-neutral normalized graph |
-| `@prometheus-ags/prometheus-entity-management` | `3.0.5` | stable | React 19 hooks and UI |
-| `@prometheus-ags/entity-graph-sdl` | `3.0.5` | stable | schema definition language |
-| `@prometheus-ags/entity-graph-sync` | `3.0.5` | stable | local-first and CRDT sync providers |
-| `@prometheus-ags/entity-graph-svelte` | `3.0.5` | stable | Svelte 5 binding |
-| `@prometheus-ags/entity-graph-solid` | `3.0.5` | stable | Solid binding |
-| `@prometheus-ags/entity-graph-web-components` | `3.0.5` | stable | Lit web components |
-| `@prometheus-ags/entity-graph-alpine` | `3.0.5` | stable | Alpine plugin |
-| `@prometheus-ags/entity-graph-htmx` | `3.0.5` | stable | HTMX server adapter |
-| `@prometheus-ags/entity-graph-a2a` | `3.0.5` | stable | A2A reference server |
-| `@prometheus-ags/a2ui-react` | `3.0.5` | stable | A2UI React renderer and graph bridge after AG-UI migration |
-| `@prometheus-ags/entity-graph-tauri` | `3.0.5` | stable | Tauri JavaScript binding and bundled Rust plugin |
+| `@prometheus-ags/entity-graph-core` | `3.1.0` | stable | framework-neutral normalized graph |
+| `@prometheus-ags/prometheus-entity-management` | `3.1.0` | stable | React 19 hooks and UI |
+| `@prometheus-ags/entity-graph-sdl` | `3.1.0` | stable | schema definition language |
+| `@prometheus-ags/entity-graph-sync` | `3.1.0` | stable | local-first and CRDT sync providers |
+| `@prometheus-ags/entity-graph-svelte` | `3.1.0` | stable | Svelte 5 binding |
+| `@prometheus-ags/entity-graph-solid` | `3.1.0` | stable | Solid binding |
+| `@prometheus-ags/entity-graph-web-components` | `3.1.0` | stable | Lit web components |
+| `@prometheus-ags/entity-graph-alpine` | `3.1.0` | stable | Alpine plugin |
+| `@prometheus-ags/entity-graph-htmx` | `3.1.0` | stable | HTMX server adapter |
+| `@prometheus-ags/entity-graph-a2a` | `3.1.0` | stable | A2A reference server |
+| `@prometheus-ags/a2ui-react` | `3.1.0` | stable | A2UI React renderer and graph bridge after AG-UI migration |
+| `@prometheus-ags/entity-graph-tauri` | `3.1.0` | stable | Tauri JavaScript binding and bundled Rust plugin |
 <!-- END GENERATED:PACKAGES -->
 
 Package-level READMEs remain the package-specific API sources. The generated
@@ -135,9 +136,8 @@ Loro, Suspense, DevTools, and accessibility. See
 Opt into the optional inspector from a Vite client entry without adding it to
 production bundles:
 
-> The inspector entries shown here are implemented in this repository after
-> the published `3.0.5` release and will ship in the next minor release.
-> npm `3.0.5` does not resolve `./devtools` or `./devtools/auto`.
+> npm `3.1.0` ships the optional `./devtools` and development-only
+> `./devtools/auto` entries. The ordinary package root remains inspector-free.
 
 ```ts
 if (import.meta.env.DEV) {

@@ -63,7 +63,7 @@ flutter pub add entity_graph_flutter:^3.0.1
 ```
 
 All twelve npm packages, including the React and A2UI React bindings, are
-public at stable `3.0.5`; Flutter is public at `3.0.1`. The exact registry state and
+public at stable `3.1.0`; Flutter is public at `3.0.1`. The exact registry state and
 protected tags are recorded in the [release operations
 guide](../operations/release.md).
 
