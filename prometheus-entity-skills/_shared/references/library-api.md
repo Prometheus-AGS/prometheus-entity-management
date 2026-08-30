@@ -422,8 +422,9 @@ In this monorepo’s examples, the package may resolve via TypeScript path alias
 ## Canonical Dart companion library
 
 `entity_graph_flutter` has an independent declaration ledger at
-`dart-library-exports.json` and detailed agent guidance in
-`dart-graph-riverpod.md`. Its generated Riverpod families orchestrate one
+`dart-library-exports.json`, an optional tooling-entry ledger at
+`dart-devtools-library-exports.json`, and detailed agent guidance in
+`dart-graph-riverpod.md` plus `devtools-flutter-controller.md`. Its generated Riverpod families orchestrate one
 Dart-native graph; it is not a wrapper around this React package and does not
 share a runtime singleton across JavaScript and Dart processes. Run
 `pnpm run verify:dart-exports` after any Dart public declaration change.

@@ -1,0 +1,70 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "openai/gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "prometheus-entity-skills/_shared/references/dart-devtools-library-exports.json",
+      "claim": "The diff wires the new DevTools ledger and the new reference doc into four verification/docs surfaces but never creates either file, so every gate that now requires them fails closed (or the acceptance criterion 'ledgers cover both Dart entries' is unmet).",
+      "evidence": "scripts/dart-public-api-contract.mjs adds defaultDevtoolsLedgerPath and verifyDartDevtoolsLedger() which throws 'missing Dart public API ledger' if absent; scripts/verify-dart-graph-riverpod.mjs requiredFiles now includes 'dart-devtools-library-exports.json' and 'devtools-flutter-controller.md'; tests/release/v3-skills-ecosystem.test.mjs NPM_LEDGERS adds 'dart-devtools-library-exports.json'; SKILL.md/SKILLS.md/library-api.md/dart-graph-riverpod.md all link 'devtools-flutter-controller.md'. No hunk in this diff adds either file, while the sibling root-ledger update (dart-library-exports.json) IS in the diff, proving this diff is the vehicle for ledger updates. Acceptance criterion: 'Source-derived public declaration ledgers cover both Dart entries and fail closed through the package/skills/API verification chain.'",
+      "suggested_fix": "Add prometheus-entity-skills/_shared/references/dart-devtools-library-exports.json (generated via the new --write path) and prometheus-entity-skills/_shared/references/devtools-flutter-controller.md to this change."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "prometheus-entity-skills/SKILL.md",
+      "line": 123,
+      "claim": "The mandated evidence gate for Dart graph/Riverpod claims is weakened from 'verify:dart-graph-riverpod plus verify:dart-exports' to only 'verify:dart-exports', contradicting the rest of the repo which still treats verify:dart-graph-riverpod as the Dart graph contract gate.",
+      "evidence": "SKILL.md hunk replaces 'require `pnpm run verify:dart-graph-riverpod` plus `pnpm run verify:dart-exports`' with 'require `pnpm run verify:dart-exports`'. package-selection.md makes the same substitution in the Dart/Flutter row. Yet ecosystem-claims.json keeps gate 'verify:dart-graph-riverpod' for the dart-riverpod claim, site/docs/api/dart.mdx still lists 'pnpm run verify:dart-graph-riverpod # Dart graph contract' under Gates, and scripts/verify-dart-graph-riverpod.mjs still exists and is still exercised by tests/release/v3-dart-graph-riverpod.test.mjs. The acceptance criterion requires the verification chain to 'fail closed'; the skills layer is the enforcement surface for agent claims and now permits skipping the structural graph/Riverpod contract.",
+      "suggested_fix": "Restore 'verify:dart-graph-riverpod plus verify:dart-exports' as the base requirement and add verify:devtools-flutter-controller only for the optional DevTools entry claims."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity_graph_flutter/README.md",
+      "line": 323,
+      "claim": "The documented Dart verification command list drops 'pnpm run dart:test' and 'pnpm run verify:dart-graph-riverpod', so contributors following the package README or dart-graph-riverpod.md no longer run the package unit/widget tests or the graph contract gate.",
+      "evidence": "README.md hunk replaces '-pnpm run dart:test\\n-pnpm run verify:dart-graph-riverpod' with '+pnpm run verify:devtools-flutter-controller'; the identical substitution is made in prometheus-entity-skills/_shared/references/dart-graph-riverpod.md. Nothing in the packet shows verify:devtools-flutter-controller subsuming dart:test or the golden/widget harness asserted by verify-dart-graph-riverpod.mjs.",
+      "suggested_fix": "Keep dart:test and verify:dart-graph-riverpod in the list and append verify:devtools-flutter-controller rather than replacing them."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity_graph_flutter/pubspec.yaml",
+      "line": 5,
+      "claim": "The 3.0.1 package manifest description now advertises 'optional DevTools' even though every doc added in this same diff states devtools.dart is not present in the published 3.0.1 archive.",
+      "evidence": "pubspec.yaml: 'local/remote/hybrid views, pluggable transports, and optional DevTools.' at 'version: 3.0.1'; README.md and release/dart-graph-riverpod.md hunks state the entry 'was added after the published 3.0.1 archive' and 'Pub.dev 3.0.1 does not contain package:entity_graph_flutter/devtools.dart'. The publication-truth criterion requires distinguishing repository source from the published archive; the manifest of that exact version now contradicts it.",
+      "suggested_fix": "Either leave the 3.0.1 description unchanged until the version that actually ships devtools.dart, or bump the version in the same change that publishes the entry."
+    },
+    {
+      "severity": "WARNING",
+      "file": "prometheus-entity-skills/_shared/references/ecosystem-claims.json",
+      "line": 95,
+      "claim": "The new claim cites an acceptance receipt that this diff does not add, so the 'record evidence' half of task 9 and the sanitized-receipt acceptance boundary cannot be confirmed.",
+      "evidence": "ecosystem-claims.json evidence array references '.kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-flutter-controller/task-8-assembled-acceptance.json'; no hunk adds that file. Acceptance boundary: 'The accepted receipt must remain sanitized and identify the tested source commit.' The file tree lists only the .kbd-orchestrator/phases directory, so existence is unverifiable from the packet.",
+      "suggested_fix": "Include the sanitized acceptance receipt (with tested commit hash, no VM-service URIs/tokens/values) in this change, or remove the evidence pointer."
+    },
+    {
+      "severity": "WARNING",
+      "file": "scripts/generate-api-reference.mjs",
+      "line": 628,
+      "claim": "The dartdoc presence check now hard-reads dart-devtools-library-exports.json without an existence guard and silently changes the report schema/semantics of report.packages.entity_graph_flutter.exports from the root-entry count (81) to a combined count with a new 'libraries' field, with no baseline update in the diff.",
+      "evidence": "Hunk adds readFileSync(join(referencesDir, 'dart-devtools-library-exports.json')) outside any try/fail path (a missing file produces a raw ENOENT instead of the script's fail() diagnostics), and replaces 'exports: dartLedger.exports.length' with a reduce over both ledgers plus a new 'libraries' object. site/api-docs-baseline.json exists in the tree and no hunk updates it; any consumer expecting a numeric exports count or the old total breaks.",
+      "suggested_fix": "Guard the ledger read with existsSync + fail(), and update/regenerate site/api-docs-baseline.json (or document the report schema change) in the same change."
+    },
+    {
+      "severity": "WARNING",
+      "file": "scripts/dart-public-api-contract.mjs",
+      "line": 150,
+      "claim": "Passing a custom --ledger silently disables all DevTools-ledger verification and writing, so the advertised 'both Dart public entries' guarantee holds only for the default invocation.",
+      "evidence": "In --write mode the devtools ledger is written only 'if (ledgerIndex < 0)', and in verify mode 'const devtoolsLedger = ledgerIndex < 0 ? verifyDartDevtoolsLedger() : null;' \u2014 a caller verifying a release-specific root ledger via --ledger gets an OK message claiming the ledgers match while the DevTools entry was never checked.",
+      "suggested_fix": "Add an explicit --devtools-ledger flag (defaulting to the standard path) or always verify the devtools ledger regardless of --ledger, and state the skip in the output if intentional."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

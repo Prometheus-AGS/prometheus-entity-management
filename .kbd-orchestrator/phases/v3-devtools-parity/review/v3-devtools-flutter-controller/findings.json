@@ -1,0 +1,43 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "k3",
+  "producer_model": "openai/gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": "release/dart-graph-riverpod.md",
+      "claim": "The new verification doctrine removes every behavioral gate for the ordinary Dart graph/Riverpod surface, so the next package release of the non-DevTools entry would ship on static checks alone.",
+      "evidence": "The hunk deletes `pnpm run dart:test`, `pnpm run test:dart-graph-riverpod`, and `pnpm run bdd:dart-graph-riverpod` from the release boundary, states \"Do not run or cite the legacy unit, widget, provider, golden, Node, Cucumber, or partial suites\", and declares \"Historical Flutter unit/widget/golden receipts remain audit history ... not current completion or release evidence\" \u2014 while the only assembled acceptance flow named (`verify:devtools-flutter-controller`) exercises the optional DevTools controller, not the ordinary library. No replacement behavioral flow for the ordinary surface is introduced anywhere in the diff (RELEASING.md hunk shows the same removal).",
+      "suggested_fix": "Either keep one assembled acceptance flow that covers the ordinary graph/Riverpod surface as release evidence, or state explicitly which future gate restores behavioral coverage for the non-DevTools entry before the next pub.dev release."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".kbd-orchestrator/changes/v3-devtools-flutter-controller/verification.md",
+      "claim": "verification.md's refiner claims are stale and internally contradicted by the refiner state files shipped in the same diff.",
+      "evidence": "verification.md says \"Artifact-refiner iteration 2 passed all six blocking constraints and was finalized after the first adversarial-review correction round\", but `.refiner/artifacts/.../state.json` records `current_iteration: 3` with `finalized_at: \"2026-08-30T02:41:02Z\"`, and `refinement_log.md` iteration 3 says convergence is only \"terminate after the corrected artifact passes fresh isolated review and strict sycophancy screening\". Simultaneously, `state.json` is marked finalized while verification.md itself says \"Final archive remains contingent on a fresh isolated review\" \u2014 i.e., the refiner artifact declares itself finalized before the gate its own log says is still pending.",
+      "suggested_fix": "Update verification.md to describe iteration 3, and either clear `finalized_at`/`convergence_status` in state.json until the fresh review passes or reconcile the log's termination condition with the recorded finalization."
+    },
+    {
+      "severity": "WARNING",
+      "file": "scripts/dart-public-api-contract.mjs",
+      "claim": "The declaration collector silently drops public declarations with nullable function-typed returns (`Function()?`) or function types with nested function-typed parameters, and because the same collector backs both `--write` and verify, the ledger round-trips cleanly while missing real public API (fail-open).",
+      "evidence": "The new hunk parses with `/^(?:[A-Za-z_][A-Za-z0-9_<>,?.]*\\s+)?Function\\([^)]*\\)\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*(?:<[^>{;]+>)?\\s*\\(/` \u2014 after `Function(...)` it requires whitespace before the name, so `void Function()? name(` never matches (the `?` breaks it), and `[^)]*` stops at the first `)` so `void Function(void Function()) name(` also never matches; the general `fn` fallback cannot match either because its return-type character class excludes `(` and `?` in that position. A missed declaration is absent from both the expected and actual ledger, so `verifyLedger` passes and the hardcoded 93/99 counts only trip on additions, not on silently skipped declarations already in source.",
+      "suggested_fix": "Extend the callable-return regex to allow `?` after `Function(...)` and balanced/nested parameter lists, or derive declarations from `dart doc` index.json (already generated in Task 9) instead of regex parsing; add a cross-check that dartdoc public names \u2286 ledger names."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "scripts/dart-public-api-contract.mjs",
+      "claim": "The DevTools publication block hardcodes `publishedArchiveVersion: \"3.0.1\"` and `publishedArchiveIncludesLibrary: false` in the generator while `version` is read dynamically from the pubspec, so the script's output becomes a false statement the moment a version containing `devtools.dart` is published.",
+      "evidence": "In `expectedDartDevtoolsLedger()`: `publication: { status: \"repository-source-only\", publishedArchiveVersion: \"3.0.1\", publishedArchiveIncludesLibrary: false }` is a literal, whereas the root ledger's `version` comes from `pubspec.yaml`. The fail-closed string comparison forces a regeneration at the next version bump, but regeneration will emit this same stale block unless a human remembers to edit the script.",
+      "suggested_fix": "Read the published-archive status from a checked-in data file (e.g., `release/pubdev-registry-status.json`, which exists in the file tree) or add a code comment plus a release-checklist step that flips this block at publication time."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

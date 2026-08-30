@@ -6,7 +6,10 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { verifyDartLedger } from "./dart-public-api-contract.mjs";
+import {
+  verifyDartDevtoolsLedger,
+  verifyDartLedger,
+} from "./dart-public-api-contract.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const packageRoot = join(root, "packages/entity_graph_flutter");
@@ -35,7 +38,9 @@ const requiredFiles = [
   linuxInitialGolden,
   linuxOptimisticGolden,
   "prometheus-entity-skills/_shared/references/dart-library-exports.json",
+  "prometheus-entity-skills/_shared/references/dart-devtools-library-exports.json",
   "prometheus-entity-skills/_shared/references/dart-graph-riverpod.md",
+  "prometheus-entity-skills/_shared/references/devtools-flutter-controller.md",
   "release/dart-graph-riverpod.md",
 ];
 
@@ -91,6 +96,7 @@ export function verifyDartGraphRiverpod({ runFlutter = true } = {}) {
   const skillGuide = read("prometheus-entity-skills/_shared/references/dart-graph-riverpod.md");
   const coverage = JSON.parse(read("examples/coverage.json"));
   const dartLedger = verifyDartLedger();
+  const dartDevtoolsLedger = verifyDartDevtoolsLedger();
 
   for (const phrase of [
     "version: 3.0.1",
@@ -151,7 +157,11 @@ export function verifyDartGraphRiverpod({ runFlutter = true } = {}) {
   }
   assertMatch(releaseGuide, /does not certify/i, "release guide does not state exclusions");
   assertMatch(skillGuide, /pnpm run verify:dart-exports/, "skill guide omits ledger verification");
-  assert(dartLedger.exports.length === 81, "unexpected Dart public declaration count");
+  assert(dartLedger.exports.length === 93, "unexpected Dart root declaration count");
+  assert(
+    dartDevtoolsLedger.exports.length === 99,
+    "unexpected Dart DevTools declaration count",
+  );
 
   const qualityGate = coverage.qualityGates.find(({ id }) => id === "release.platform.dart-riverpod");
   assert(qualityGate, "coverage omits the Dart/Riverpod quality gate");
@@ -202,7 +212,10 @@ export function verifyDartGraphRiverpod({ runFlutter = true } = {}) {
       publicApiLedger: "pass",
       declaredSurface: "pass",
     },
-    publicApiDeclarations: dartLedger.exports.length,
+    publicApiDeclarations: {
+      root: dartLedger.exports.length,
+      devtools: dartDevtoolsLedger.exports.length,
+    },
     visualEvidence: {
       scope: "Flutter widget harness for cross-view optimistic propagation; not full app, device, or accessibility certification",
       inspected: true,

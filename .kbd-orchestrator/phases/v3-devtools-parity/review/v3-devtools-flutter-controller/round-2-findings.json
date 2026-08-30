@@ -1,0 +1,55 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "openai/gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "prometheus-entity-skills/_shared/references/dart-devtools-library-exports.json",
+      "line": 500,
+      "claim": "The new source-derived DevTools ledger contains a phantom export named literally \"Function\" of kind \"function\" from vm_service.dart, which is almost certainly a regex misparsing of a `void Function()` return type rather than a real declaration (a declaration named `Function` is illegal Dart), so the ledger is not actually source-faithful and the hard-coded count of 100 includes a nonexistent symbol.",
+      "evidence": "Last entry of dart-devtools-library-exports.json: { \"name\": \"Function\", \"kind\": \"function\", \"source\": \"lib/src/devtools/vm_service.dart\" }; the collector in scripts/dart-public-api-contract.mjs `collectDeclarations()` pattern-matches names from source text; verification.md claims \"pnpm run verify:dart-exports passed with ... 100 optional DevTools declarations\" and only \"Node syntax passed\" for generate-api-reference.mjs, meaning the dartdoc presence check (`dartNames.has(decl.name)` in scripts/generate-api-reference.mjs) was never executed against this phantom entry and will fail closed later.",
+      "suggested_fix": "Fix the declaration regex in collectDeclarations so return-type function signatures like `void Function()` are not captured as declarations, regenerate dart-devtools-library-exports.json, correct the expected count in scripts/verify-dart-graph-riverpod.mjs, and actually run the generate-api-reference dartdoc presence check once before claiming the fail-closed chain passes."
+    },
+    {
+      "severity": "WARNING",
+      "file": "prometheus-entity-skills/_shared/references/dart-devtools-library-exports.json",
+      "line": 4,
+      "claim": "The DevTools ledger is stamped \"version\": \"3.0.1\" for library package:entity_graph_flutter/devtools.dart, directly contradicting the documentation added in this same diff that pub.dev 3.0.1 does not contain devtools.dart \u2014 any consumer of the ledger will conclude the 3.0.1 archive ships this entry.",
+      "evidence": "Ledger header: { \"package\": \"entity_graph_flutter\", \"version\": \"3.0.1\", \"library\": \"package:entity_graph_flutter/devtools.dart\" }; versus README.md hunk (\"do not import package:entity_graph_flutter/devtools.dart from pub.dev 3.0.1\"), packages/entity_graph_flutter/README.md (\"Pub.dev 3.0.1 does not contain package:entity_graph_flutter/devtools.dart\"), and the refinement log noting the pubspec description was corrected for exactly this misleading-publication concern.",
+      "suggested_fix": "Either bump the source pubspec to a pre-release of the next version so the generated ledger no longer asserts the devtools surface at 3.0.1, or add an explicit field (e.g. \"publishedArchive\": false) to the ledger schema so machine consumers cannot misread it."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".kbd-orchestrator/changes/v3-devtools-flutter-controller/tasks.json",
+      "line": 100,
+      "claim": "Acceptance task 8 (\"Run `dart analyze` and targeted tests during work; run full Dart/Flutter package T2 gates only at completion\") is marked done while its own notes state no targeted tests ran, and the verification.md evidence for Tasks 8/9 never cites a `dart analyze` result \u2014 the criterion is satisfied only on the completion gate, and the analyzer portion has no evidence in the packet at all.",
+      "evidence": "tasks.json task 8 notes: \"Under the immutable implementation-first rule, no incremental or targeted tests ran. One completed external Flutter/Riverpod/VM-service acceptance gate supplied all behavioral evidence.\"; verification.md \"Task 9 deterministic checks\" lists Node syntax, verify:dart-graph-riverpod (--skip-flutter), verify:dart-exports, verify:skills \u2014 no dart analyze entry; meanwhile RELEASING.md and packages/entity_graph_flutter/README.md still present `pnpm run dart:analyze` as a required gate.",
+      "suggested_fix": "Record the dart analyze invocation and result in the Task 8/9 evidence (or in the acceptance receipt if the harness runs it), and reconcile the task title with the implementation-first doctrine so the checked box matches what was executed."
+    },
+    {
+      "severity": "WARNING",
+      "file": "tests/release/v3-dart-graph-riverpod.test.mjs",
+      "line": 22,
+      "claim": "This diff modifies the assertions of three test files (v3-dart-graph-riverpod.test.mjs, v3-skills-ecosystem.test.mjs, v3-dart-graph-riverpod.steps.ts) while verification.md explicitly states no Node test or Cucumber suite ran in Task 9, so the updated expectations (e.g. deepEqual {root: 93, devtools: 100}) are unverified in this change and a shape/count mismatch would only surface in later CI.",
+      "evidence": "Diff changes `assert.equal(report.publicApiDeclarations, 81)` to `assert.deepEqual(report.publicApiDeclarations, { root: 93, devtools: 100 })` and adds \"dart-devtools-library-exports.json\" to NPM_LEDGERS; verification.md: \"No unit, widget, provider, component, isolated, mock-backed, snapshot, golden, Node test, Cucumber, partial integration, or full repository build ran in Task 9.\"",
+      "suggested_fix": "Run the two modified Node test files and the affected Cucumber feature once (they are deterministic repo tests, not the banned Dart evidence classes) or explicitly record that the modified tests are intentionally deferred to CI with the risk accepted."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "scripts/dart-public-api-contract.mjs",
+      "line": 144,
+      "claim": "The new --devtools-ledger argument is resolved before its presence is validated, so `dart-public-api-contract.mjs --devtools-ledger` with no value throws a raw TypeError from resolve() instead of the intended invariant message.",
+      "evidence": "CLI hunk: `const devtoolsLedgerPath = resolve(repositoryRoot, devtoolsLedgerIndex >= 0 ? args[devtoolsLedgerIndex + 1] : defaultDevtoolsLedgerPath);` executes before `invariant(devtoolsLedgerIndex < 0 || args[devtoolsLedgerIndex + 1], \"--devtools-ledger requires a path\")` \u2014 passing undefined to resolve throws first (the pre-existing --ledger path has the same ordering, now duplicated).",
+      "suggested_fix": "Move both invariant checks above the resolve() calls."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

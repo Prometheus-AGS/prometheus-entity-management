@@ -1,0 +1,12 @@
+{
+  "artifact_name": "v3-devtools-flutter-controller-archive-qa",
+  "iteration": 1,
+  "steps": [
+    "Verify both Dart declaration ledgers against their public entry source.",
+    "Verify the complete cross-package skills ledger chain.",
+    "Compare public documentation and skill guidance with controller and VM-service source.",
+    "Validate the assembled acceptance receipt and forbidden-sensitive-marker scan.",
+    "Record the remaining extension, registry, deployment, and release-certification exclusions.",
+    "Persist a delta-first refinement decision and archive QA report."
+  ]
+}

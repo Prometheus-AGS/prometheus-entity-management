@@ -1,0 +1,132 @@
+{
+  "changeId": "v3-devtools-flutter-controller",
+  "schemaVersion": "1",
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Confirm core, inspection, and time-travel changes are complete and import their stable cross-language fixtures.",
+      "done": true,
+      "doneAt": "2026-08-30T00:12:42Z",
+      "doneBy": "codex",
+      "files": [
+        ".kbd-orchestrator/changes/v3-devtools-flutter-controller/spec.md",
+        "packages/entity_graph_flutter/fixtures/devtools",
+        ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-flutter-controller"
+      ],
+      "verify": null,
+      "notes": "Architecture and fixture confirmation only; no test or build ran."
+    },
+    {
+      "id": "2",
+      "title": "Define Dart v1 envelope, snapshot, entity/view/relation/error/metrics, preview, and data-policy contracts.",
+      "done": true,
+      "doneAt": "2026-08-30T00:27:18Z",
+      "doneBy": "codex",
+      "files": [
+        "packages/entity_graph_flutter/lib/devtools.dart",
+        "packages/entity_graph_flutter/lib/src/devtools"
+      ],
+      "verify": null,
+      "notes": "Production protocol implementation first."
+    },
+    {
+      "id": "3",
+      "title": "Implement the per-graph, reference-counted controller and `EntityGraphDevtoolsBinding.attach` lifecycle.",
+      "done": true,
+      "doneAt": "2026-08-30T00:32:14Z",
+      "doneBy": "codex",
+      "files": [
+        "packages/entity_graph_flutter/lib/src/devtools",
+        "packages/entity_graph_flutter/lib/src/graph.dart"
+      ],
+      "verify": null,
+      "notes": "One weak per-graph slot, inert disabled attachment, idempotent detach, and final-reference disposal."
+    },
+    {
+      "id": "4",
+      "title": "Instrument the shared Dart graph-write boundary and register Riverpod/list/view lifecycles without duplicate events.",
+      "done": true,
+      "doneAt": "2026-08-30T00:44:08Z",
+      "doneBy": "codex",
+      "files": [
+        "packages/entity_graph_flutter/lib/src/graph.dart",
+        "packages/entity_graph_flutter/lib/src/providers.dart",
+        "packages/entity_graph_flutter/lib/src/devtools"
+      ],
+      "verify": null,
+      "notes": "Graph publication remains the single mutation boundary; Riverpod registers logical rendered views."
+    },
+    {
+      "id": "5",
+      "title": "Implement equivalent projections, local conflict-safe preview/restore, per-graph history, rewind, and return-to-live.",
+      "done": true,
+      "doneAt": "2026-08-30T01:00:45Z",
+      "doneBy": "codex",
+      "files": [
+        "packages/entity_graph_flutter/lib/src/devtools"
+      ],
+      "verify": null,
+      "notes": "Controller-owned bounded debug state only; graph state remains authoritative."
+    },
+    {
+      "id": "6",
+      "title": "Register bounded/versioned VM service methods and events with strict command/store/value-policy validation.",
+      "done": true,
+      "doneAt": "2026-08-30T01:12:51Z",
+      "doneBy": "codex",
+      "files": [
+        "packages/entity_graph_flutter/lib/src/devtools/vm_service.dart"
+      ],
+      "verify": null,
+      "notes": "One isolate-wide router; remote commands cannot alter host-owned value/redaction policy."
+    },
+    {
+      "id": "7",
+      "title": "Add fixture-parity, instrumentation, isolation, disposal, projection, preview conflict, history, and VM-service tests.",
+      "done": true,
+      "doneAt": "2026-08-30T01:29:28Z",
+      "doneBy": "codex",
+      "files": [
+        "packages/entity_graph_flutter/tool/devtools_acceptance_app",
+        "scripts/verify-devtools-flutter-controller.mjs"
+      ],
+      "verify": null,
+      "notes": "Implemented one external assembled acceptance harness; no unit, widget, isolated, mock, snapshot, golden, or partial test was added or run."
+    },
+    {
+      "id": "8",
+      "title": "Run `dart analyze` and targeted tests during work; run full Dart/Flutter package T2 gates only at completion.",
+      "done": true,
+      "doneAt": "2026-08-30T02:03:43Z",
+      "doneBy": "codex",
+      "files": [
+        "scripts/verify-devtools-flutter-controller.mjs",
+        ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-flutter-controller/task-8-assembled-acceptance.json",
+        ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-flutter-controller/task-8-assembled-acceptance.md"
+      ],
+      "verify": null,
+      "notes": "Under the immutable implementation-first rule, no incremental or targeted tests ran. One completed external Flutter/Riverpod/VM-service acceptance gate supplied all behavioral evidence; its immutable Task 8 receipt prevents archive verification from rerunning the expensive gate. Task 9 later ran the one allowed post-implementation scoped analyzer check: no errors, four style-level infos."
+    },
+    {
+      "id": "9",
+      "title": "Update Dart API/skills ledgers and security docs, then record evidence and isolated review before archive.",
+      "done": true,
+      "doneAt": "2026-08-30T02:49:04Z",
+      "doneBy": "codex",
+      "files": [
+        "README.md",
+        "RELEASING.md",
+        "packages/entity_graph_flutter/README.md",
+        "prometheus-entity-skills",
+        "release/dart-graph-riverpod.md",
+        "site/docs/api/dart.mdx",
+        "website/docs",
+        ".refiner/artifacts/v3-devtools-flutter-controller-archive-qa",
+        ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-flutter-controller",
+        ".kbd-orchestrator/phases/v3-devtools-parity/review/v3-devtools-flutter-controller"
+      ],
+      "verify": "node scripts/verify-kbd-archive-guard.mjs v3-devtools-parity v3-devtools-flutter-controller 9",
+      "notes": "Post-integration API, documentation, security, deterministic refinement, isolated review, verification, and archive gate."
+    }
+  ]
+}

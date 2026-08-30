@@ -126,6 +126,11 @@
       "source": "lib/src/providers.g.dart"
     },
     {
+      "name": "EntityGraphSnapshot",
+      "kind": "class",
+      "source": "lib/src/graph.dart"
+    },
+    {
       "name": "EntityList",
       "kind": "class",
       "source": "lib/src/providers.dart"
@@ -287,6 +292,61 @@
     },
     {
       "name": "GraphChange",
+      "kind": "class",
+      "source": "lib/src/graph.dart"
+    },
+    {
+      "name": "GraphEntityIdentity",
+      "kind": "class",
+      "source": "lib/src/graph.dart"
+    },
+    {
+      "name": "GraphPublication",
+      "kind": "class",
+      "source": "lib/src/graph.dart"
+    },
+    {
+      "name": "GraphPublicationListener",
+      "kind": "typedef",
+      "source": "lib/src/graph.dart"
+    },
+    {
+      "name": "GraphReset",
+      "kind": "class",
+      "source": "lib/src/graph.dart"
+    },
+    {
+      "name": "GraphViewDefinition",
+      "kind": "class",
+      "source": "lib/src/graph.dart"
+    },
+    {
+      "name": "GraphViewKind",
+      "kind": "enum",
+      "source": "lib/src/graph.dart"
+    },
+    {
+      "name": "GraphViewLifecycleEvent",
+      "kind": "class",
+      "source": "lib/src/graph.dart"
+    },
+    {
+      "name": "GraphViewLifecycleListener",
+      "kind": "typedef",
+      "source": "lib/src/graph.dart"
+    },
+    {
+      "name": "GraphViewLifecycleState",
+      "kind": "enum",
+      "source": "lib/src/graph.dart"
+    },
+    {
+      "name": "GraphViewRecord",
+      "kind": "class",
+      "source": "lib/src/graph.dart"
+    },
+    {
+      "name": "GraphViewRegistration",
       "kind": "class",
       "source": "lib/src/graph.dart"
     },

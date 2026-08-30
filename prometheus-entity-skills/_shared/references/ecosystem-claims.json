@@ -88,6 +88,17 @@
       "evidence": ["packages/entity_graph_flutter", "examples/flutter-riverpod"]
     },
     {
+      "id": "tooling.flutter-devtools-controller",
+      "claim": "Repository-source Flutter entity-graph controller with bounded, store-isolated VM-service inspection",
+      "package": "entity_graph_flutter",
+      "gate": "verify:devtools-flutter-controller",
+      "evidence": [
+        "packages/entity_graph_flutter/lib/devtools.dart",
+        ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-flutter-controller/task-8-assembled-acceptance.json"
+      ],
+      "publicationLimit": "Not present in the published pub.dev 3.0.1 archive; the Flutter DevTools extension UI is not yet certified"
+    },
+    {
       "id": "integration.sdl",
       "claim": "SDL JSON schema parsing and validation",
       "package": "@prometheus-ags/entity-graph-sdl",

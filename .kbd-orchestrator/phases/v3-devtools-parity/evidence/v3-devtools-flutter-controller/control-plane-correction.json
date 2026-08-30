@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "runtimeRevision": 432,
+  "planRevision": 9,
+  "activePhase": {
+    "id": "v3-devtools-parity",
+    "status": "in_progress"
+  },
+  "change": {
+    "id": "v3-devtools-flutter-controller",
+    "status": "complete"
+  },
+  "task": {
+    "id": "9",
+    "status": "complete"
+  },
+  "activePathTaskId": null,
+  "exactNextCommand": "/kbd-apply v3-devtools-react-inspector",
+  "postGateSequence": [
+    "isolated adversarial review passed",
+    "strict sycophancy screen passed",
+    "signed task 9 completion committed",
+    "run native verification",
+    "run native archive"
+  ],
+  "legacyProjection": {
+    "sourceRevision": 432,
+    "status": "current-authoritative-runtime-compatibility-ledger",
+    "defectRecord": ".prometheus/postmortems/kbd-authoritative-phase-projection-lag.md"
+  },
+  "unifiedPositionProjection": {
+    "sourceRevision": 432,
+    "status": "current",
+    "embeddedChangeTasksDone": 9,
+    "embeddedChangeTasksTotal": 9
+  },
+  "reviewBindingLimitation": {
+    "status": "accepted-residual",
+    "description": "The final packet/findings/sycophancy hashes bind review artifacts to each other but do not recompute the worktree diff after warning-resolution documentation, signed KBD completion, archive projection, or final guard receipt.",
+    "allowedPostReviewMutations": [
+      "warning-resolution documentation and registry-derived publication metadata",
+      "final review and sycophancy evidence files",
+      "signed task completion and unified position projections",
+      "native change archive move",
+      "final guard receipt"
+    ]
+  },
+  "authority": "canonical prometheus kbd status plus current-waypoint.json"
+}

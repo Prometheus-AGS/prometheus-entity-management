@@ -18,6 +18,7 @@ artifact — canonical source docs are never duplicated into these pages:
 
 - <a href={useBaseUrl('api/dart/index.html')} target="_blank" rel="noreferrer"><strong>dartdoc: entity_graph_flutter</strong></a> — complete
   generated API for `package:entity_graph_flutter/entity_graph_flutter.dart`
+  and the optional `package:entity_graph_flutter/devtools.dart` entry
 
 ## Entry points
 
@@ -27,14 +28,25 @@ artifact — canonical source docs are never duplicated into these pages:
 | `EntityGraphRiverpod` | providers | Riverpod wiring over the Dart graph |
 | `ChangeEvent` / `ChangeOp` | class / enum | Transport-level change vocabulary |
 | `EntityTransportRegistry` | class | Pluggable fetch/sync transports |
+| `EntityGraphDevtoolsBinding` | class | Explicit, reference-counted development tooling attachment for one graph |
+| `EntityGraphDevtoolsController` | class | Bounded inspection, history, preview, and time-travel projection |
+| `EntityGraphDevtoolsVmService` | class | Store-explicit versioned VM-service method/event contract |
 
-The authoritative 81-declaration export surface lives in the Dart ledger
-(`dart-library-exports.json`); the API generator fails if any declaration
-vanishes from the dartdoc index.
+The ordinary entry and optional DevTools entry have independent authoritative
+ledgers (`dart-library-exports.json` and
+`dart-devtools-library-exports.json`); the API generator fails if any declared
+symbol vanishes from the dartdoc index. The DevTools entry is implemented in
+repository source after pub.dev `3.0.1` and will ship in a later package
+release.
 
 ## Gates
 
 ```bash
-pnpm run verify:dart-graph-riverpod   # Dart graph contract
-pnpm run verify:flutter-riverpod-a2ui # mobile/A2UI showcase
+pnpm run verify:dart-graph-riverpod   # static Dart graph contract; not test evidence
+pnpm run verify:devtools-flutter-controller # assembled VM-service controller
+pnpm run verify:dart-exports          # both Dart public entries
 ```
+
+Analyzer, unit, widget, provider, golden, and other partial checks are not test
+evidence. Behavioral claims require the complete assembled production flow for
+the affected Flutter surface.

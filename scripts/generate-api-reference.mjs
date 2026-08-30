@@ -622,18 +622,32 @@ if (!skipArtifacts) {
   report.artifacts.dart = existsSync(join(staticApi, "dart/index.html")) ? "generated" : "failed";
   if (report.artifacts.dart !== "generated") fail("dart doc artifact missing index.html");
 
-  // Dart presence policy: every dart-ledger declaration appears in dartdoc's index.json.
+  // Dart presence policy: every declaration from both public Dart entry points
+  // appears in dartdoc's index.json.
   const dartIndex = JSON.parse(readFileSync(join(staticApi, "dart/index.json"), "utf8"));
   const dartNames = new Set(dartIndex.map((entry) => entry.name));
-  const dartLedger = JSON.parse(readFileSync(join(referencesDir, "dart-library-exports.json"), "utf8"));
-  for (const decl of dartLedger.exports) {
-    if (!dartNames.has(decl.name)) {
-      fail(`vanished stable export: ${decl.name} (entity_graph_flutter) not in the dartdoc index`);
-      report.policy.vanished.push(`entity_graph_flutter:${decl.name}`);
+  const readDartLedger = (name) => {
+    const path = join(referencesDir, name);
+    if (!existsSync(path)) fail(`missing Dart public API ledger: ${name}`);
+    return JSON.parse(readFileSync(path, "utf8"));
+  };
+  const dartLedgers = [
+    readDartLedger("dart-library-exports.json"),
+    readDartLedger("dart-devtools-library-exports.json"),
+  ];
+  for (const ledger of dartLedgers) {
+    for (const decl of ledger.exports) {
+      if (!dartNames.has(decl.name)) {
+        fail(`vanished stable export: ${decl.name} (${ledger.library}) not in the dartdoc index`);
+        report.policy.vanished.push(`${ledger.library}:${decl.name}`);
+      }
     }
   }
   report.packages.entity_graph_flutter = {
-    exports: dartLedger.exports.length,
+    exports: dartLedgers.reduce((total, ledger) => total + ledger.exports.length, 0),
+    libraries: Object.fromEntries(
+      dartLedgers.map((ledger) => [ledger.library, ledger.exports.length]),
+    ),
     documented: null, // dartdoc index.json carries no comment coverage; see retained limits
     undocumented: null,
   };

@@ -1,0 +1,13 @@
+{
+  "status": "pass",
+  "runtimeRevision": 432,
+  "phaseId": "v3-devtools-parity",
+  "changeId": "v3-devtools-flutter-controller",
+  "gatedTaskId": "9",
+  "canonicalTasksOpen": 0,
+  "legacyProjectionStale": false,
+  "legacyProjectionSourceRevision": 432,
+  "authority": "canonical prometheus kbd status plus current-waypoint.json",
+  "review": "pass",
+  "sycophancy": "pass"
+}

@@ -1,0 +1,18 @@
+{
+  "iteration": 2,
+  "delta_first": true,
+  "delta": [
+    "The skills surface dropped the static base Dart graph contract while adding the optional controller gate",
+    "The 3.0.1 source manifest description implied that the already-published archive contained DevTools",
+    "Custom root-ledger verification skipped the optional DevTools ledger without saying so",
+    "The API generator surfaced a raw missing-file error instead of its fail-closed diagnostic"
+  ],
+  "corrective_actions": [
+    "Restored the base graph contract as an explicitly static, non-test gate",
+    "Removed DevTools from the 3.0.1 pubspec description while retaining repository-source guidance",
+    "Made custom ledger paths verify and write both public entries",
+    "Added an explicit missing-ledger diagnostic and reran all deterministic constraints"
+  ],
+  "constraint_failures": [],
+  "convergence": "terminate"
+}

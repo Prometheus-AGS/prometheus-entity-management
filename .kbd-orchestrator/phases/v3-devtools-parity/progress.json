@@ -1,25 +1,25 @@
 {
   "schemaVersion": "2",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 427,
-  "derivedRevision": 427,
+  "sourceRevision": 432,
+  "derivedRevision": 432,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 427
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 432
   },
   "conflictCount": 0,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
   "parentPhase": null,
-  "last_updated": "2026-08-30T02:04:02.885938Z",
+  "last_updated": "2026-08-30T02:49:07.675173Z",
   "last_updated_by": "kbd-runtime",
   "changes_total": 9,
-  "changes_completed": 4,
+  "changes_completed": 5,
   "implementation_total": 9,
-  "implementation_completed": 4,
+  "implementation_completed": 5,
   "completion": {
     "primaryCounter": "implementation",
     "implementation": {
-      "completed": 4,
+      "completed": 5,
       "total": 9,
       "status": "IN_PROGRESS"
     },
@@ -87,12 +87,12 @@
     {
       "id": "v3-devtools-flutter-controller",
       "title": "v3-devtools-flutter-controller — Dart parity and VM service bridge",
-      "status": "IN_PROGRESS",
-      "implementation_status": "IN_PROGRESS",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
       "tasks_total": 9,
-      "tasks_done": 8,
-      "last_task_completed": "Run `dart analyze` and targeted tests during work; run full Dart/Flutter package T2 gates only at completion.",
-      "next_task_pending": "Update Dart API/skills ledgers and security docs, then record evidence and isolated review before archive.",
+      "tasks_done": 9,
+      "last_task_completed": "Update Dart API/skills ledgers and security docs, then record evidence and isolated review before archive.",
+      "next_task_pending": null,
       "blockers": []
     },
     {

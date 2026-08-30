@@ -18,6 +18,15 @@ Dart graph owner. Its public library exports:
 - a pluggable transport registry plus an optional callback-backed FFI adapter;
 - the shared SDL parser and intermediate representation.
 
+Repository source now also contains a separate optional
+`package:entity_graph_flutter/devtools.dart` entry. It is not exported from the
+ordinary barrel and was added after the published `3.0.1` archive. The entry
+provides a reference-counted controller per graph, Riverpod logical-view
+instrumentation, bounded inspection/history/preview/time travel, and an
+isolate-wide store-explicit VM-service bridge. Its complete assembled gate is
+`pnpm run verify:devtools-flutter-controller`; it does not certify the later
+Flutter DevTools extension UI or a pub.dev payload.
+
 The primary generated entry points are `entityGraphProvider`,
 `entityTransportRegistryProvider`, `entityChangeBridgeProvider<T>`,
 `entityListProvider<T>`, `entityProvider<T>`, `entityCrudProvider<T>`, and
@@ -52,32 +61,41 @@ generator 4.0.4, and build_runner 2.15.1 are the newest mutually compatible
 stable set at the declared Flutter floor. Runtime constraints allow compatible
 patch releases; generation tools stay exact for reproducible output.
 
-## Behavioral evidence
+## Current verification doctrine
 
 Run from the repository root:
 
 ```bash
 pnpm run dart:format
 pnpm run dart:analyze
-pnpm run dart:test
-pnpm run test:dart-graph-riverpod
-pnpm run bdd:dart-graph-riverpod
 pnpm run verify:dart-graph-riverpod
 pnpm run verify:dart-exports
+pnpm run verify:devtools-flutter-controller # when certifying the optional controller
 ```
 
-The permanent Flutter suite covers graph mechanics, every local view operator,
-remote normalization, local and hybrid execution, list/detail cross-view
-updates, optimistic create/update/delete confirmation and rollback, bounded
-retry, realtime update/delete invalidation, the optional FFI transport, SDL,
-and a rendered widget harness. Cucumber binds those behaviors to the release
-contract. `dart-library-exports.json` records all public barrel declarations,
-including the generated Riverpod part, and is compared mechanically to source.
+Implement the complete production path before verification. Formatting,
+analysis, `verify:dart-graph-riverpod`, and the dual export-ledger check are
+static confirmations, not behavioral test evidence. Do not run or cite the
+legacy unit, widget, provider, golden, Node, Cucumber, or partial suites. Only
+a complete assembled production flow across the affected real boundaries
+counts as behavioral evidence; the optional controller uses the external
+Flutter/Riverpod/VM-service acceptance command above.
 
-The two Flutter goldens prove one narrow visual statement: a graph patch changes
-the same joined entity name in both a list card and a detail card without layout
-collapse. Their hashes are in the Dart verification receipt. They do not prove
-a complete application or device experience.
+`dart-library-exports.json` records the ordinary public barrel, including the
+generated Riverpod part. `dart-devtools-library-exports.json` separately
+records the optional repository-source DevTools barrel. Both are compared
+mechanically to source.
+
+Historical Flutter unit/widget/golden receipts remain audit history for the
+published `3.0.1` candidate, but they are not current completion or release
+evidence under the implementation-first, full-integration-only doctrine.
+
+Before the next pub.dev release, `v3-devtools-release-certification` must add
+and pass one ordinary-library assembled Flutter/Riverpod acceptance flow that
+exercises the production graph, generated providers, transport, view, CRUD,
+realtime, and rendering boundaries without unit/widget/mock substitution. The
+DevTools controller gate does not replace that future ordinary-library release
+gate.
 
 ## Clean stable-SDK candidate
 
@@ -95,7 +113,10 @@ showcase, documentation, security, and publication lane at one commit.
 ## Public API ledger
 
 The authoritative Dart ledger is
-`prometheus-entity-skills/_shared/references/dart-library-exports.json`.
+`prometheus-entity-skills/_shared/references/dart-library-exports.json` for the
+ordinary entry and
+`prometheus-entity-skills/_shared/references/dart-devtools-library-exports.json`
+for the optional DevTools entry.
 Whenever the barrel, an exported source, or `providers.g.dart` changes public
 declarations, run:
 

@@ -1,0 +1,77 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    {
+      "id": "dual-dart-ledger-truth",
+      "description": "The ordinary Dart entry and optional DevTools entry must each have a source-derived, fail-closed public declaration ledger wired into the root verifier and API generator.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Run pnpm run verify:dart-exports and pnpm run verify:skills; require 93 root and 100 DevTools declarations."
+      }
+    },
+    {
+      "id": "controller-architecture-truth",
+      "description": "Public guidance must preserve the optional entry, one controller per graph, reference-counted lifecycle, graph publication ownership, Riverpod logical views, explicit store IDs, and isolate-wide VM-service router.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Compare package, release, website, and skill guidance with devtools.dart, controller.dart, graph.dart, providers.dart, and vm_service.dart."
+      }
+    },
+    {
+      "id": "debugger-security-truth",
+      "description": "Security guidance must name the VM service as a debugger trust boundary, metadata-only defaults, host-owned redaction, non-escalating commands, payload/history limits, secret URI handling, debug-mode activation, and deterministic detach.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Inspect the Docusaurus security page, package README, skill reference, VM-service source, and accepted redaction/bounds receipt."
+      }
+    },
+    {
+      "id": "assembled-evidence-integrity",
+      "description": "The final controller receipt must remain pass, name the platform-neutral Flutter/Riverpod/VM-service boundary, retain 28 versioned events, point to the tested source commit, and contain no actual sentinel value, token names, host path, or raw debugger URI.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "Parse task-8-assembled-acceptance.json, verify exact status/boundary/event count/source commit, and scan forbidden sensitive markers."
+      }
+    },
+    {
+      "id": "publication-and-extension-honesty",
+      "description": "No artifact may claim that pub.dev 3.0.1 contains devtools.dart or that the separate Flutter DevTools extension UI, documentation deployment, immutable release SHA, or next package publication is complete.",
+      "severity": "blocking",
+      "type": "semantic",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Require the repository-source, published-archive, pending-extension, and later-release distinctions in every public guide."
+      }
+    },
+    {
+      "id": "implementation-first-evidence-discipline",
+      "description": "QA must rely on the completed assembled gate plus deterministic ledger/content checks and must not create or run unit, widget, component, isolated, mock-backed, snapshot, golden, or partial integration tests.",
+      "severity": "blocking",
+      "type": "technical",
+      "validation": {
+        "requires_code_execution": false,
+        "validation_method": "Inspect task evidence, session commands, and QA report for gate classification and excluded test types."
+      }
+    }
+  ],
+  "global_rules": [
+    "Preserve the graph as the sole owner of business state.",
+    "Do not authorize registry publication or claim the pending extension UI is complete.",
+    "Do not expose raw diagnostics, VM-service URIs, debugger tokens, registry credentials, sentinel values, or host-local paths.",
+    "Do not create or run unit, widget, component, isolated, mock-backed, snapshot, golden, or partial integration tests."
+  ],
+  "termination_conditions": [
+    "All six blocking constraints are satisfied.",
+    "Both Dart ledgers and the complete skills ledger gate pass.",
+    "The accepted assembled receipt remains intact and sanitized.",
+    "No further content change improves API traceability, security clarity, or scope honesty."
+  ]
+}

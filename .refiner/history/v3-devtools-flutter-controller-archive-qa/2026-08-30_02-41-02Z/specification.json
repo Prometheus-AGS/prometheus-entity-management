@@ -1,0 +1,14 @@
+{
+  "artifact_name": "v3-devtools-flutter-controller-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "target_state": {
+    "description": "A truthful, mechanically verified archive QA package for the completed repository-source Flutter controller and VM-service bridge, with explicit registry and extension exclusions."
+  },
+  "source_boundary": {
+    "phase": "v3-devtools-parity",
+    "change": "v3-devtools-flutter-controller",
+    "accepted_source_commit": "ad72bcf8d99d7175cf2bf36d4f8ce4594d200da4",
+    "assembled_receipt": ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-flutter-controller/task-8-assembled-acceptance.json"
+  }
+}

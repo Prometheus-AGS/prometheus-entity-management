@@ -13,6 +13,7 @@ Provides a **normalized, reactive entity graph store** for Flutter with:
 - **Optional native bridge** — `FfiEntityTransportAdapter` accepts a host callback bridge without requiring Rust, `dart:ffi`, or `flutter_rust_bridge`
 - **SDL parser** — parse `entity-graph-sdl` JSON schema documents into a validated `EntityGraphIR`; same IR consumed by the Rust CLI and TS generators
 - **Typed errors** — `TerminalError` (4xx / permanent) and `TransientError` (5xx / retryable), mirroring `entity-graph-core`'s `errors.ts`
+- **Optional development tooling** — a separate `devtools.dart` entry provides a per-graph controller, bounded history, inspection, preview/restore, time travel, and a store-isolated VM-service bridge without entering the ordinary application barrel
 
 ## Canonical ownership and imported history
 
@@ -45,6 +46,56 @@ This mirrors the `Component → Hook → Store` layering from entity-graph-core.
 Widgets read providers and invoke provider controllers. Providers orchestrate;
 the graph owns state; transports own I/O. Widgets do not maintain copied entity
 caches or call transport APIs directly.
+
+## Optional DevTools controller
+
+> This entry is implemented in repository source after the published `3.0.1`
+> archive and will ship in the next Flutter package release. Pub.dev `3.0.1`
+> does not contain `package:entity_graph_flutter/devtools.dart`.
+
+Import the optional library only from development tooling or a host-controlled
+debug bootstrap. The ordinary `entity_graph_flutter.dart` entry does not export
+or initialize DevTools.
+
+```dart
+import 'package:entity_graph_flutter/devtools.dart';
+import 'package:entity_graph_flutter/entity_graph_flutter.dart';
+
+final devtoolsBinding = EntityGraphDevtoolsBinding.attach(
+  graph,
+  enabled: !const bool.fromEnvironment('dart.vm.product'),
+  storeId: 'application',
+);
+
+// Release the reference when this debug host is disposed.
+devtoolsBinding.detach();
+```
+
+Repeated attachments to the same `EntityGraph` share one reference-counted
+controller. Each graph has an explicit store ID, event history, snapshot ring,
+view registry, and value policy; no controller owns business state. The
+isolate-wide bridge exposes versioned list/command methods and Extension-stream
+events only when Dart VM service extensions are available. It supports multiple
+graphs without an implicit default store.
+
+Values are metadata-only by default. A host that opts into value inclusion must
+provide any required redactor before canonical values, patches, history, or
+preview data can cross the debugger boundary. A VM-service command cannot
+enable values, replace the redactor, or commit a preview. Encoded requests are
+limited to 256 KiB, responses to 8 MiB, and individual events to 256 KiB by
+default. History and snapshots are bounded by simultaneous count and byte
+limits.
+
+The repository acceptance command launches a real configured Flutter
+application, connects from outside the isolate over VM-service WebSocket
+JSON-RPC, and drives the production controller through real Riverpod views:
+
+```bash
+pnpm run verify:devtools-flutter-controller
+```
+
+This certifies the controller and VM-service bridge, not the still-pending
+official Flutter DevTools extension UI or a pub.dev release.
 
 ## Setup
 
@@ -269,10 +320,15 @@ pnpm run dart:bootstrap:frozen
 pnpm run dart:generate
 pnpm run dart:format
 pnpm run dart:analyze
-pnpm run dart:test
-pnpm run verify:dart-graph-riverpod
+pnpm run verify:dart-graph-riverpod # static source contract; not test evidence
 pnpm run verify:dart-exports
+pnpm run verify:devtools-flutter-controller # full assembled controller acceptance
 ```
+
+Implementation comes first. The analyzer and static graph/export contracts are
+not test evidence. Do not run or cite legacy unit, widget, provider, golden,
+Node, Cucumber, or partial suites; behavioral completion requires the complete
+assembled production flow for the affected surface.
 
 The package uses Riverpod generation. It does not use or require Freezed or
 JSON model generation. `providers.g.dart` is generated source and must never be
@@ -298,6 +354,10 @@ every widget watching `Invoice` entities rebuilds in the same frame.
 - The Flutter showcase accepts strict A2UI 1.0-RC surfaces and normalizes them
   to the published GenUI 0.10.2 renderer only after catalog, component,
   function, action, tenant, and entity validation.
+- The repository-source optional DevTools controller passed its complete
+  Flutter/Riverpod/VM-service acceptance flow with two isolated graphs and 28
+  versioned events. This does not change the contents of pub.dev `3.0.1` or
+  certify the pending Flutter DevTools extension UI.
 - Physical devices, store submission, signing, and a cross-ecosystem stable
   release bundle are not claimed.
 - realtime coalescing or durable peer convergence.

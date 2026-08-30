@@ -149,7 +149,7 @@
     "verify:agentic-a2ui": "node scripts/verify-agentic-a2ui-example.mjs",
     "verify:binding-singletons": "pnpm run build:packages && node scripts/verify-binding-singletons.mjs",
     "verify:dart-exports": "node scripts/dart-public-api-contract.mjs",
-    "verify:dart-graph-riverpod": "node scripts/verify-dart-graph-riverpod.mjs",
+    "verify:dart-graph-riverpod": "node scripts/verify-dart-graph-riverpod.mjs --skip-flutter",
     "verify:docs-api-reference": "node scripts/verify-docs-api-reference.mjs --report .kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-api-reference/verification.json",
     "verify:docs-concepts": "node scripts/verify-docs-concepts.mjs --report .kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-concepts-packages/verification.json",
     "verify:docs-examples": "node scripts/verify-docs-examples.mjs --report .kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-examples-integrations/verification.json",

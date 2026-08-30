@@ -2044,3 +2044,34 @@
   analyzer, compiler, Flutter build, test, or device launch ran. Task 8 owns
   the single assembled gate.
 - Optional sovereign-sync sharing was not enabled or changed.
+
+## 2026-08-30 — Flutter controller tasks 8–9/9 and archive
+
+- Ran the one external assembled Flutter/Riverpod/VM-service acceptance gate
+  after the production controller path was complete. It passed on the iOS
+  debug host with two isolated stores and 28 versioned Extension-stream events.
+- Retained a sanitized receipt bound to source commit
+  `ad72bcf8d99d7175cf2bf36d4f8ce4594d200da4`; the actual sentinel value,
+  debugger URI/token, registry-token names, host path, and entity values are
+  absent.
+- Added source-derived ledgers for both Dart entries. Adversarial review found
+  and drove correction of a phantom `Function` export caused by callback-return
+  parsing. The final ledgers contain 93 ordinary and 99 DevTools declarations,
+  all present in package dartdoc.
+- Synchronized root/package/release/API/framework/example/security guidance and
+  Prometheus entity skills. Machine data now separates repository-only DevTools
+  source from the published pub.dev `3.0.1` archive and pending extension UI.
+- Package-scoped `dart analyze` completed with no errors and four style infos;
+  package dartdoc completed with zero warnings/errors. Static Dart graph,
+  dual-ledger, complete skills-ledger, JSON/schema, receipt-sanitization, and
+  whitespace gates passed. None are cited as behavioral test evidence.
+- Artifact-refiner converged after three concrete correction iterations. Final
+  distinct-model REST review passed with 0 critical / 3 warning / 1 suggestion;
+  strict sycophancy screening passed at `0.0`.
+- Canonical Task 9 completed at signed runtime revision 432; native archive
+  guard and KBD verification passed; the change moved to
+  `.kbd-orchestrator/changes/archive/2026-08-30-v3-devtools-flutter-controller`.
+- Phase implementation is 5/9 changes; project implementation remains 37/63.
+  The canonical next command is `/kbd-apply v3-devtools-react-inspector`.
+- No legacy unit/widget/component/mock/snapshot/golden/partial suite or full
+  repository build ran in Task 9. Sovereign sync was not touched.

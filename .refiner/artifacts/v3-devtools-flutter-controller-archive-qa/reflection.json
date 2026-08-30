@@ -1,0 +1,18 @@
+{
+  "iteration": 3,
+  "delta_first": true,
+  "delta": [
+    "The Dart collector misparsed a private callback-return function as a public declaration named Function",
+    "The DevTools ledger did not machine-encode that its 3.0.1 source version postdates the published archive",
+    "The archive evidence omitted the allowed post-implementation analyzer and dartdoc presence checks",
+    "CLI path validation ran after path resolution"
+  ],
+  "corrective_actions": [
+    "Corrected callback-return parsing and regenerated the DevTools ledger at 99 real declarations",
+    "Added repository-source-only publication metadata to the DevTools ledger",
+    "Ran scoped analysis plus dartdoc-to-ledger presence verification",
+    "Moved both CLI argument invariants ahead of path resolution and reran all constraints"
+  ],
+  "constraint_failures": [],
+  "convergence": "terminate"
+}

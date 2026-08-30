@@ -25,7 +25,7 @@ gate before repeating the claim in generated docs or client guidance.
 
 | Package | Use it for | Evidence gate |
 | ------- | ---------- | ------------- |
-| `entity_graph_flutter` (`packages/entity_graph_flutter`) | Canonical Dart graph + Riverpod providers | `pnpm run verify:dart-graph-riverpod`; mobile/A2UI showcase: `pnpm run verify:flutter-riverpod-a2ui` |
+| `entity_graph_flutter` (`packages/entity_graph_flutter`) | Canonical Dart graph + Riverpod providers; repository-source optional DevTools controller/VM-service bridge | static contracts: `pnpm run verify:dart-graph-riverpod` + `pnpm run verify:dart-exports`; assembled controller: `pnpm run verify:devtools-flutter-controller`; assembled mobile/A2UI: `pnpm run verify:flutter-riverpod-a2ui` |
 
 ## Rust crates
 

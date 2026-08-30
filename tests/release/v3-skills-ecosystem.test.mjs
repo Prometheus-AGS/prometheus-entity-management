@@ -36,6 +36,7 @@ const NPM_LEDGERS = [
   "web-components-library-exports.json",
   "sdl-library-exports.json",
   "dart-library-exports.json",
+  "dart-devtools-library-exports.json",
 ];
 
 function* walkMarkdown(dir) {

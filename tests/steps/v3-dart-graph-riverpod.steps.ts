@@ -114,7 +114,10 @@ Then(
   "the Dart barrel and generated provider part match the public declaration ledger",
   function () {
     assert.equal(ensureReport().contracts.publicApiLedger, "pass");
-    assert.equal(ensureReport().publicApiDeclarations, 81);
+    assert.deepEqual(ensureReport().publicApiDeclarations, {
+      root: 93,
+      devtools: 99,
+    });
   },
 );
 

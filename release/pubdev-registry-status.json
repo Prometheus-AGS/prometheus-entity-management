@@ -11,5 +11,8 @@
   "packageUrl": "https://pub.dev/packages/entity_graph_flutter",
   "publisherId": null,
   "consumerVerification": "passed",
-  "publicationMethod": "manual-dart-pub-publish"
+  "publicationMethod": "manual-dart-pub-publish",
+  "includedPublicLibraries": [
+    "package:entity_graph_flutter/entity_graph_flutter.dart"
+  ]
 }

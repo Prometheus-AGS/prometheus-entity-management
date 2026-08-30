@@ -39,6 +39,31 @@ native response before projection. Flutter FFI is a transport seam, not a way
 to hide a second graph or bypass Dart-side policy. Signing, notarization, and
 store distribution are independent release authorities.
 
+## Development tooling and debugger rules
+
+DevTools are local debugging capabilities, not application authorization or a
+production administration API. Keep ordinary application entries independent
+of optional tooling entries, activate tooling only under an explicit host-owned
+development condition, and remove it from production artifacts.
+
+For Flutter, `package:entity_graph_flutter/devtools.dart` registers store-
+explicit methods and events through the Dart VM service only when service
+extensions are available. Treat the VM-service URI and its authentication token
+as secrets. Do not proxy it onto an untrusted network, record it in evidence, or
+expose it from an application endpoint. Every graph uses an explicit store ID;
+there is no implicit default graph across the isolate.
+
+Flutter DevTools values are metadata-only by default. A host may enable values
+only with an application-owned policy and required redactor. Commands cannot
+escalate that policy, replace the redactor, or commit a preview. Requests,
+responses, events, history, and snapshots retain simultaneous byte/count
+ceilings. Detach every retained binding so a disposed application graph is
+removed from debugger discovery.
+
+The repository-source controller and bridge are newer than the published
+pub.dev `3.0.1` archive. Their assembled acceptance does not certify or publish
+the separate Flutter DevTools extension UI.
+
 ## Secret and evidence handling
 
 Release workflows use GitHub OIDC and stage-only npm authority. `NPM_TOKEN` and
@@ -48,3 +73,9 @@ fail-closed on exact source and receipt hashes, exact successful receipt values,
 minimum dimensions, nonblank entropy, and a hash-bound human review for visible
 secrets and internal paths. Published originals are re-encoded to remove source
 metadata; only allowlisted assets enter the gallery.
+
+Flutter/Xcode child processes must also remove inherited
+`CARGO_REGISTRY_TOKEN`, `NPM_TOKEN`, and `NODE_AUTH_TOKEN` before diagnostic
+capture. Acceptance receipts retain bounded structured assertions and hashes,
+never raw tool output, VM-service URIs, debugger tokens, entity values, or
+host-local absolute paths.

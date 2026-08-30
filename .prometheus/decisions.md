@@ -145,3 +145,22 @@ and still leave registration, JSON-RPC routing, Extension events, isolate/store
 discovery, payload ceilings, redaction, and teardown unproved. One external
 assembled flow covers those boundaries while also mounting the real Riverpod
 entity/list providers and avoids multiplying partial suites.
+
+## 2026-08-30 — Separate Dart source version from registry inclusion
+
+The optional DevTools ledger keeps the repository pubspec version for source
+API drift but derives publication status from
+`release/pubdev-registry-status.json` and its explicit included-public-library
+list. The published `3.0.1` archive excludes `devtools.dart`, so the ledger is
+machine-marked `repository-source-only` until a later registry snapshot proves
+otherwise.
+
+Rationale: source can advance after a registry publication without changing the
+manifest version immediately. Encoding both facts prevents a source ledger
+from becoming a false pub.dev availability claim and makes later publication
+status a checked data transition rather than a remembered code edit.
+
+Before the next pub.dev release, the release-certification phase must add and
+pass one ordinary-library assembled Flutter/Riverpod acceptance flow. The
+controller acceptance proves the optional debugger path and does not substitute
+for the normal graph/provider/transport/rendering release boundary.

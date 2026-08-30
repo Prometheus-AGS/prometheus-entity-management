@@ -135,9 +135,11 @@ pnpm run verify:skills
 
 The root command verifies the npm runtime ledgers plus
 `dart-library-exports.json`, which records every public declaration exported by
-the Dart barrel and generated Riverpod part. Commit a ledger only when its
-public surface changes. Type-only npm changes belong in their API references;
-policy-only changes do not justify rewriting runtime or Dart declaration ledgers.
+the ordinary Dart barrel and generated Riverpod part, and
+`dart-devtools-library-exports.json`, which records the optional tooling entry
+and its controller parts. Commit a ledger only when its public surface changes.
+Type-only npm changes belong in their API references; policy-only changes do
+not justify rewriting runtime or Dart declaration ledgers.
 
 ## Native documentation certification
 
@@ -204,12 +206,21 @@ pnpm run dart:bootstrap:frozen
 pnpm run dart:generate
 pnpm run dart:format
 pnpm run dart:analyze
-pnpm run dart:test
-pnpm run test:dart-graph-riverpod
-pnpm run bdd:dart-graph-riverpod
 pnpm run verify:dart-graph-riverpod
 pnpm run verify:dart-exports
 ```
+
+These are generation/static confirmations, not behavioral test evidence. Do
+not run or cite legacy Dart unit, widget, provider, golden, Node, Cucumber, or
+partial suites. After the complete affected production path is implemented,
+run its one assembled acceptance flow; the repository-source optional
+controller uses `pnpm run verify:devtools-flutter-controller`.
+
+No later pub.dev release may proceed on these static checks or the controller
+gate alone. The `v3-devtools-release-certification` phase must first run one
+ordinary-library assembled Flutter/Riverpod acceptance flow across the real
+graph, generated-provider, transport, view, CRUD, realtime, and rendering
+boundaries.
 
 The full boundary is documented in [`release/dart-graph-riverpod.md`](release/dart-graph-riverpod.md). A public declaration change also requires:
 

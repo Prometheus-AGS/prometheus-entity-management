@@ -1,0 +1,84 @@
+{
+  "refinement_id": "24064f94-4115-4e47-bfa8-2db84e2ae015",
+  "artifact_name": "v3-devtools-flutter-controller-archive-qa",
+  "artifact_type": "content",
+  "content_type": "direct:content",
+  "started_at": "2026-08-30T02:14:47Z",
+  "updated_at": "2026-08-30T02:39:38Z",
+  "current_iteration": 3,
+  "max_iterations": 5,
+  "goals": [
+    "Certify API, documentation, security, and evidence truth before archive"
+  ],
+  "constraints": [
+    {
+      "id": "dual-dart-ledger-truth",
+      "severity": "blocking"
+    },
+    {
+      "id": "controller-architecture-truth",
+      "severity": "blocking"
+    },
+    {
+      "id": "debugger-security-truth",
+      "severity": "blocking"
+    },
+    {
+      "id": "assembled-evidence-integrity",
+      "severity": "blocking"
+    },
+    {
+      "id": "publication-and-extension-honesty",
+      "severity": "blocking"
+    },
+    {
+      "id": "implementation-first-evidence-discipline",
+      "severity": "blocking"
+    }
+  ],
+  "phases_completed": [
+    "specify",
+    "plan",
+    "execute",
+    "reflect",
+    "persist"
+  ],
+  "convergence_status": "converged",
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "status": "pass",
+      "completed_at": "2026-08-30T02:15:07Z",
+      "blocking_failures": 0
+    },
+    {
+      "iteration": 2,
+      "status": "pass",
+      "completed_at": "2026-08-30T02:29:03Z",
+      "blocking_failures": 0
+    },
+    {
+      "iteration": 3,
+      "status": "pass",
+      "completed_at": "2026-08-30T02:39:38Z",
+      "blocking_failures": 0
+    }
+  ],
+  "workflow_triggers": [],
+  "checkpoints": [
+    {
+      "checkpoint_id": "f7fbfc09",
+      "phase": "persist",
+      "iteration": 1,
+      "timestamp": "2026-08-30T02:20:08Z"
+    },
+    {
+      "checkpoint_id": "789e937d",
+      "phase": "persist",
+      "iteration": 2,
+      "timestamp": "2026-08-30T02:30:32Z"
+    }
+  ],
+  "prior_cycle_id": null,
+  "finalized_at": null
+}

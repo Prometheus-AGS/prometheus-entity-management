@@ -46,7 +46,7 @@ with gates: `prometheus-entity-skills/_shared/references/package-selection.md`.
 | A2A agent server | `@prometheus-ags/entity-graph-a2a` | `a2a-library-exports.json` |
 | Tauri 2 desktop/mobile | `@prometheus-ags/entity-graph-tauri` | `tauri-library-exports.json` |
 | SDL schema parsing | `@prometheus-ags/entity-graph-sdl` | `sdl-library-exports.json` |
-| Dart / Flutter | `entity_graph_flutter` | `dart-library-exports.json` |
+| Dart / Flutter | `entity_graph_flutter` | `dart-library-exports.json`, `dart-devtools-library-exports.json` |
 | Rust scaffolding CLI | `entity-graph-cli` | n/a (Cargo) |
 | Rust MCP server | `entity-graph-mcp` | n/a (Cargo) |
 
@@ -114,6 +114,7 @@ All paths below are relative to the **repository root** of `prometheus-entity-ma
 | `prometheus-entity-skills/_shared/references/a2ui-library-exports.json` | Root and `./ag-ui` runtime exports for `a2ui-react`; verified by its package skill gate |
 | `prometheus-entity-skills/_shared/references/a2a-library-exports.json` | Official root and `./legacy` runtime exports for `entity-graph-a2a`; verified by its package skill gate |
 | `prometheus-entity-skills/_shared/references/dart-library-exports.json` | Public declarations from the canonical Dart barrel and generated Riverpod part; verified against source |
+| `prometheus-entity-skills/_shared/references/dart-devtools-library-exports.json` | Public declarations from the optional Dart DevTools entry and its controller parts; verified against source |
 | `prometheus-entity-skills/_shared/references/tauri-library-exports.json` | Runtime and declaration exports for `entity-graph-tauri`; verified against its built ESM and declaration entry points |
 | `prometheus-entity-skills/_shared/references/library-api.md` | Human-oriented API notes for agents |
 | `prometheus-entity-skills/_shared/references/sync-persistence-path.md` | Certified PGlite/Loro persistence, convergence, reconnect, API, and evidence boundary |
@@ -124,6 +125,7 @@ All paths below are relative to the **repository root** of `prometheus-entity-ma
 | `prometheus-entity-skills/_shared/references/devtools-entity-inspection.md` | Optional core `./devtools` entity/view/relationship projections, preview/restore semantics, value boundary, fixtures, and evidence limits |
 | `prometheus-entity-skills/_shared/references/devtools-time-travel.md` | Optional core `./devtools` controller-owned snapshot retention, rewind/live, expiry, import, compatibility, fixture, and evidence boundaries |
 | `prometheus-entity-skills/_shared/references/devtools-react-inspector.md` | Optional React `./devtools` and `./devtools/auto` activation, inspector workflows, bundle/value boundaries, public exports, and evidence limits |
+| `prometheus-entity-skills/_shared/references/devtools-flutter-controller.md` | Optional Dart `devtools.dart` controller, Riverpod view instrumentation, VM-service routing, value/security limits, public exports, and evidence boundary |
 | `prometheus-entity-skills/_shared/references/release-candidate-pipeline.md` | Contract-derived RC manifest, non-mutating rehearsal, OIDC staging, protected tags, and restart recovery boundary |
 | `prometheus-entity-skills/_shared/references/v3-release-contract.md` | Entry point for authoritative 3.0 artifact, compatibility, maturity, promotion, and recovery rules |
 | `release/ci-baseline.md` | Implemented hermetic main-CI guarantees and explicit certification limits |

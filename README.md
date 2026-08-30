@@ -179,6 +179,13 @@ example uses generated Riverpod families, optimistic/offline CRUD,
 relationships, realtime invalidation, policy-gated GenUI, responsive layouts,
 and an optional FFI transport.
 
+The repository source also implements an optional, metadata-first Flutter
+DevTools controller and store-isolated VM-service bridge. It was added after
+the published `3.0.1` archive and will ship in the next Flutter package release;
+do not import `package:entity_graph_flutter/devtools.dart` from pub.dev `3.0.1`.
+The assembled controller gate passes, while the separate official Flutter
+DevTools extension UI remains a later phase change.
+
 ## Frameworks, transports, and platforms
 
 | Category | Supported 3.x surfaces |
