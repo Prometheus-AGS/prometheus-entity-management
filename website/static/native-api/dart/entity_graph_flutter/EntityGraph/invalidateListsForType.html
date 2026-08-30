@@ -73,13 +73,15 @@ compatibility, while provider-created lists use the explicit type map.</p>
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">void invalidateListsForType(String type) {
-  for (final key in _lists.keys) {
-    final knownType = _listTypes[key];
-    if (knownType == type || (knownType == null &amp;&amp; key.startsWith(type))) {
-      _lists[key] = _lists[key]!.copyWith(stale: true);
-      _notifyList(key);
+  _write(() {
+    for (final key in _lists.keys) {
+      final knownType = _listTypes[key];
+      if (knownType == type || (knownType == null &amp;&amp; key.startsWith(type))) {
+        _lists[key] = _lists[key]!.copyWith(stale: true);
+        _notifyList(key);
+      }
     }
-  }
+  });
 }</code></pre>
 </section>
 
@@ -108,7 +110,7 @@ compatibility, while provider-created lists use the explicit type map.</p>
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.1
+      3.0.5
   </span>
   
 </footer>

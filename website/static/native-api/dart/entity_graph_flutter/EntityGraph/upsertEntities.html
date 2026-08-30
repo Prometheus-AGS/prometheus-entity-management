@@ -75,18 +75,20 @@
   String type,
   List&lt;({String id, Map&lt;String, Object?&gt; data})&gt; entries,
 ) {
-  _entities.putIfAbsent(type, () =&gt; {});
-  for (final e in entries) {
-    final prev = _entities[type]![e.id] ?? {};
-    _entities[type]![e.id] = {...prev, ...e.data};
-    _syncMetadata.putIfAbsent(
-      _ek(type, e.id),
-      () =&gt; const EntitySyncMetadata(),
-    );
-  }
-  for (final e in entries) {
-    _notifyEntity(type, e.id);
-  }
+  _write(() {
+    _entities.putIfAbsent(type, () =&gt; {});
+    for (final e in entries) {
+      final prev = _entities[type]![e.id] ?? {};
+      _entities[type]![e.id] = {...prev, ...e.data};
+      _syncMetadata.putIfAbsent(
+        _ek(type, e.id),
+        () =&gt; const EntitySyncMetadata(),
+      );
+    }
+    for (final e in entries) {
+      _notifyEntity(type, e.id);
+    }
+  });
 }</code></pre>
 </section>
 
@@ -115,7 +117,7 @@
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.1
+      3.0.5
   </span>
   
 </footer>

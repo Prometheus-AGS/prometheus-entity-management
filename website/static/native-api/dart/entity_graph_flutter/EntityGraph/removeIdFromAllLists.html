@@ -69,19 +69,21 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">void removeIdFromAllLists(String type, String id) {
-  for (final key in _lists.keys) {
-    final knownType = _listTypes[key];
-    if (knownType != null &amp;&amp; knownType != type) continue;
-    final list = _lists[key]!;
-    if (list.ids.contains(id)) {
-      final newIds = list.ids.where((e) =&gt; e != id).toList();
-      _lists[key] = list.copyWith(
-        ids: newIds,
-        total: list.total != null ? list.total! - 1 : null,
-      );
-      _notifyList(key);
+  _write(() {
+    for (final key in _lists.keys) {
+      final knownType = _listTypes[key];
+      if (knownType != null &amp;&amp; knownType != type) continue;
+      final list = _lists[key]!;
+      if (list.ids.contains(id)) {
+        final newIds = list.ids.where((e) =&gt; e != id).toList();
+        _lists[key] = list.copyWith(
+          ids: List.unmodifiable(newIds),
+          total: list.total != null ? list.total! - 1 : null,
+        );
+        _notifyList(key);
+      }
     }
-  }
+  });
 }</code></pre>
 </section>
 
@@ -110,7 +112,7 @@
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.1
+      3.0.5
   </span>
   
 </footer>

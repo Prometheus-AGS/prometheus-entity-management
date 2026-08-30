@@ -76,22 +76,24 @@
   Object position, {
   String? entityType,
 }) {
-  final prev = _lists[queryKey] ?? ListState.empty;
-  if (entityType != null) _listTypes[queryKey] = entityType;
-  final isNew = !prev.ids.contains(id);
-  final ids = prev.ids.where((e) =&gt; e != id).toList();
-  if (position == &#39;start&#39;) {
-    ids.insert(0, id);
-  } else if (position == &#39;end&#39;) {
-    ids.add(id);
-  } else if (position is int) {
-    ids.insert(position.clamp(0, ids.length), id);
-  }
-  _lists[queryKey] = prev.copyWith(
-    ids: List.unmodifiable(ids),
-    total: isNew &amp;&amp; prev.total != null ? prev.total! + 1 : prev.total,
-  );
-  _notifyList(queryKey);
+  _write(() {
+    final prev = _lists[queryKey] ?? ListState.empty;
+    if (entityType != null) _listTypes[queryKey] = entityType;
+    final isNew = !prev.ids.contains(id);
+    final ids = prev.ids.where((e) =&gt; e != id).toList();
+    if (position == &#39;start&#39;) {
+      ids.insert(0, id);
+    } else if (position == &#39;end&#39;) {
+      ids.add(id);
+    } else if (position is int) {
+      ids.insert(position.clamp(0, ids.length), id);
+    }
+    _lists[queryKey] = prev.copyWith(
+      ids: List.unmodifiable(ids),
+      total: isNew &amp;&amp; prev.total != null ? prev.total! + 1 : prev.total,
+    );
+    _notifyList(queryKey);
+  });
 }</code></pre>
 </section>
 
@@ -120,7 +122,7 @@
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.1
+      3.0.5
   </span>
   
 </footer>

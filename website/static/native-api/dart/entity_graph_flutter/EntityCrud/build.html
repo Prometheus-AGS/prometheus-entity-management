@@ -82,9 +82,10 @@ EditBuffer build({
 }) {
   final graph = ref.watch(entityGraphProvider);
   _graphSubscription = graph.changes.listen((change) {
-    if (change is EntityChanged &amp;&amp;
-        change.type == type &amp;&amp;
-        change.id == id &amp;&amp;
+    if ((change is GraphReset ||
+            change is EntityChanged &amp;&amp;
+                change.type == type &amp;&amp;
+                change.id == id) &amp;&amp;
         !state.isDirty &amp;&amp;
         !state.isSaving) {
       state = EditBuffer(original: graph.readEntity(type, id) ?? const {});
@@ -120,7 +121,7 @@ EditBuffer build({
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.1
+      3.0.5
   </span>
   
 </footer>

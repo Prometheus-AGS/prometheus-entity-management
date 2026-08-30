@@ -1,5 +1,18 @@
 # @prometheus-ags/prometheus-entity-management
 
+## 3.1.0
+
+### Minor Changes
+
+- 7ff2fe2: Add the optional `./devtools` inspector surface and development-only
+  `./devtools/auto` bootstrap with Graph Pulse causality, original/patch/live
+  dirty inspection, registered rendered-view membership, entity history, and
+  controller-owned time travel. The normal package root remains inspector-free.
+
+### Patch Changes
+
+- @prometheus-ags/entity-graph-core@3.1.0
+
 ## 3.0.5
 
 ### Patch Changes

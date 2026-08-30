@@ -70,12 +70,15 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">void reset() {
-  _entities.clear();
-  _patches.clear();
-  _entityStates.clear();
-  _syncMetadata.clear();
-  _lists.clear();
-  _listTypes.clear();
+  _write(() {
+    _entities.clear();
+    _patches.clear();
+    _entityStates.clear();
+    _syncMetadata.clear();
+    _lists.clear();
+    _listTypes.clear();
+    _notifyReset();
+  });
 }</code></pre>
 </section>
 
@@ -104,7 +107,7 @@
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.1
+      3.0.5
   </span>
   
 </footer>

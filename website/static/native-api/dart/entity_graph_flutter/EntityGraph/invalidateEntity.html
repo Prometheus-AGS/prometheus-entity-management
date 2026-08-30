@@ -69,20 +69,22 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">void invalidateEntity(String type, {String? id}) {
-  if (id != null) {
-    final k = _ek(type, id);
-    if (_entityStates[k] != null) {
-      _entityStates[k] = _entityStates[k]!.copyWith(stale: true);
-      _notifyEntity(type, id);
-    }
-  } else {
-    for (final k in _entityStates.keys) {
-      if (k.startsWith(&#39;$type:&#39;)) {
+  _write(() {
+    if (id != null) {
+      final k = _ek(type, id);
+      if (_entityStates[k] != null) {
         _entityStates[k] = _entityStates[k]!.copyWith(stale: true);
+        _notifyEntity(type, id);
       }
+    } else {
+      for (final k in _entityStates.keys) {
+        if (k.startsWith(&#39;$type:&#39;)) {
+          _entityStates[k] = _entityStates[k]!.copyWith(stale: true);
+        }
+      }
+      _notifyEntity(type, &#39;*&#39;);
     }
-    _changeController.add(EntityChanged(type, &#39;*&#39;));
-  }
+  });
 }</code></pre>
 </section>
 
@@ -111,7 +113,7 @@
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.1
+      3.0.5
   </span>
   
 </footer>

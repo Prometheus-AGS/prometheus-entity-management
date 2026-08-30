@@ -2144,3 +2144,17 @@
   Web Store, verified pub.dev publisher identity, Pages propagation, human
   Flutter DevTools usability, physical devices, and app stores remain
   explicitly unclaimed. Sovereign sync was not touched.
+
+## 2026-08-30 — Post-push documentation artifact repair
+
+- The first Documentation workflow for the archived phase failed because two
+  legacy site-contract expectations still named npm `3.0.5`, while the live
+  twelve-package stable release is `3.1.0`, and the packed API inventory still
+  identified the previous npm candidate source revision.
+- Updated only those stale expectations and regenerated the packed TypeDoc,
+  search, Dart, CLI, MCP, and Tauri references from the published npm `3.1.0`
+  inputs and the pinned Flutter `3.44.8` / Rust `1.88` toolchains.
+- Native API drift, generated-artifact integrity, documentation content, and
+  README parity checks all pass. The full Documentation workflow remains the
+  release integration authority and must pass before Pages propagation is
+  claimed. Sovereign sync was not touched.

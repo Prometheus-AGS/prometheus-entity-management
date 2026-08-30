@@ -89,6 +89,19 @@ Future&lt;EntitySnapshot&lt;T&gt;&gt; build({
   _disposed = false;
   _ready = false;
   final graph = ref.watch(entityGraphProvider);
+  _viewRegistration?.dispose();
+  final entityId = id;
+  _viewRegistration = entityId == null
+      ? null
+      : graph.registerView(
+          GraphViewDefinition(
+            viewId: &#39;entity:${type.length}:$type:$entityId&#39;,
+            label: &#39;$type detail&#39;,
+            kind: GraphViewKind.entity,
+            entityType: type,
+          ),
+          membership: [GraphEntityIdentity(type: type, id: entityId)],
+        );
   if (subscribe) {
     ref.watch(entityChangeBridgeProvider&lt;T&gt;(type: type));
   }
@@ -97,6 +110,7 @@ Future&lt;EntitySnapshot&lt;T&gt;&gt; build({
   _graphSubscription = graph.changes.listen(_onGraphChange);
   ref.onDispose(() {
     _disposed = true;
+    _viewRegistration?.dispose();
     unawaited(_graphSubscription?.cancel());
   });
 
@@ -135,7 +149,7 @@ Future&lt;EntitySnapshot&lt;T&gt;&gt; build({
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.1
+      3.0.5
   </span>
   
 </footer>

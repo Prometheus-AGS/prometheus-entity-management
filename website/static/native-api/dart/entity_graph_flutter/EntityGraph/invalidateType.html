@@ -68,8 +68,10 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">void invalidateType(String type) {
-  invalidateEntity(type);
-  invalidateListsForType(type);
+  _write(() {
+    invalidateEntity(type);
+    invalidateListsForType(type);
+  });
 }</code></pre>
 </section>
 
@@ -98,7 +100,7 @@
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.1
+      3.0.5
   </span>
   
 </footer>

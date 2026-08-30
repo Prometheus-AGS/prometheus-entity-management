@@ -72,24 +72,26 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">EntityRemovalSnapshot removeEntityOptimistically(String type, String id) {
-  final indexes = &lt;String, int&gt;{};
-  for (final entry in _lists.entries) {
-    final knownType = _listTypes[entry.key];
-    if (knownType != null &amp;&amp; knownType != type) continue;
-    final index = entry.value.ids.indexOf(id);
-    if (index &gt;= 0) indexes[entry.key] = index;
-  }
-  final snapshot = EntityRemovalSnapshot(
-    type: type,
-    id: id,
-    entity: readCanonicalEntity(type, id),
-    patch: readEntityPatch(type, id),
-    state: _entityStates[_ek(type, id)],
-    syncMetadata: _syncMetadata[_ek(type, id)],
-    listIndexes: Map.unmodifiable(indexes),
-  );
-  removeEntity(type, id);
-  return snapshot;
+  return _write(() {
+    final indexes = &lt;String, int&gt;{};
+    for (final entry in _lists.entries) {
+      final knownType = _listTypes[entry.key];
+      if (knownType != null &amp;&amp; knownType != type) continue;
+      final index = entry.value.ids.indexOf(id);
+      if (index &gt;= 0) indexes[entry.key] = index;
+    }
+    final snapshot = EntityRemovalSnapshot(
+      type: type,
+      id: id,
+      entity: readCanonicalEntity(type, id),
+      patch: readEntityPatch(type, id),
+      state: _entityStates[_ek(type, id)],
+      syncMetadata: _syncMetadata[_ek(type, id)],
+      listIndexes: Map.unmodifiable(indexes),
+    );
+    removeEntity(type, id);
+    return snapshot;
+  });
 }</code></pre>
 </section>
 
@@ -118,7 +120,7 @@
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.1
+      3.0.5
   </span>
   
 </footer>

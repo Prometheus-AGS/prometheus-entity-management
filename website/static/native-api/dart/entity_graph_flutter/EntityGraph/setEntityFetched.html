@@ -69,20 +69,22 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">void setEntityFetched(String type, String id) {
-  final k = _ek(type, id);
-  _entityStates[k] = (_entityStates[k] ?? const EntityState()).copyWith(
-    lastFetched: DateTime.now(),
-    isFetching: false,
-    stale: false,
-    clearError: true,
-  );
-  _syncMetadata[k] = (_syncMetadata[k] ?? const EntitySyncMetadata())
-      .copyWith(
-        synced: true,
-        origin: SyncOrigin.server,
-        updatedAt: DateTime.now(),
-      );
-  _notifyEntity(type, id);
+  _write(() {
+    final k = _ek(type, id);
+    _entityStates[k] = (_entityStates[k] ?? const EntityState()).copyWith(
+      lastFetched: DateTime.now(),
+      isFetching: false,
+      stale: false,
+      clearError: true,
+    );
+    _syncMetadata[k] = (_syncMetadata[k] ?? const EntitySyncMetadata())
+        .copyWith(
+          synced: true,
+          origin: SyncOrigin.server,
+          updatedAt: DateTime.now(),
+        );
+    _notifyEntity(type, id);
+  });
 }</code></pre>
 </section>
 
@@ -111,7 +113,7 @@
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.1
+      3.0.5
   </span>
   
 </footer>

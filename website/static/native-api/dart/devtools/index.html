@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="devtools library API docs, for the Dart programming language.">
+  <title>devtools library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">entity_graph_flutter</a></li>
+    <li class="self-crumb">devtools.dart</li>
+  </ol>
+  <div class="self-name">devtools</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar=""
+    data-below-sidebar="devtools&#47;devtools-library-sidebar.html">
+  
+    <div>
+      
+
+      <h1>
+        <span class="kind-library">devtools</span>
+        library 
+ 
+
+      </h1>
+    </div>
+
+    
+<section class="desc markdown">
+  <p>Optional DevTools protocol surface for <code>entity_graph_flutter</code>.</p>
+<p>Import this library from development tooling, embedded inspectors, or
+Flutter DevTools extensions. The ordinary <code>entity_graph_flutter.dart</code>
+entry remains free of DevTools API reachability.</p>
+</section>
+
+
+    <section class="summary offset-anchor" id="classes">
+      <h2>Classes</h2>
+      <dl>
+          <dt id="EntityGraphDevtoolsActivePreview">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsActivePreview-class.html">EntityGraphDevtoolsActivePreview</a></span> 
+
+</dt>
+<dd>
+  Metadata required to recover one active local preview across clients.
+</dd>
+
+          <dt id="EntityGraphDevtoolsBinding">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsBinding-class.html">EntityGraphDevtoolsBinding</a></span> 
+
+</dt>
+<dd>
+  Reference-counted attachment to the controller for one <a href="../entity_graph_flutter/EntityGraph-class.html">EntityGraph</a>.
+</dd>
+
+          <dt id="EntityGraphDevtoolsCapabilities">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsCapabilities-class.html">EntityGraphDevtoolsCapabilities</a></span> 
+
+</dt>
+<dd>
+  Controller capabilities returned before a tool sends commands.
+</dd>
+
+          <dt id="EntityGraphDevtoolsChange">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsChange-class.html">EntityGraphDevtoolsChange</a></span> 
+
+</dt>
+<dd>
+  One semantic change inside a completed graph publication.
+</dd>
+
+          <dt id="EntityGraphDevtoolsCommand">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsCommand-class.html">EntityGraphDevtoolsCommand</a></span> 
+
+</dt>
+<dd>
+  Store-scoped command envelope used by local and VM-service transports.
+</dd>
+
+          <dt id="EntityGraphDevtoolsConfirmHistoryImport">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsConfirmHistoryImport-class.html">EntityGraphDevtoolsConfirmHistoryImport</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsController">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsController-class.html">EntityGraphDevtoolsController</a></span> 
+
+</dt>
+<dd>
+  The one development-tooling controller owned by an attached <a href="../entity_graph_flutter/EntityGraph-class.html">EntityGraph</a>.
+</dd>
+
+          <dt id="EntityGraphDevtoolsCounts">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsCounts-class.html">EntityGraphDevtoolsCounts</a></span> 
+
+</dt>
+<dd>
+  Aggregate graph metrics captured at one completed publication boundary.
+</dd>
+
+          <dt id="EntityGraphDevtoolsDiagnosticEvent">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsDiagnosticEvent-class.html">EntityGraphDevtoolsDiagnosticEvent</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsEntityDirtyReason">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsEntityDirtyReason-class.html">EntityGraphDevtoolsEntityDirtyReason</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsEntityError">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsEntityError-class.html">EntityGraphDevtoolsEntityError</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsEntityRecord">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsEntityRecord-class.html">EntityGraphDevtoolsEntityRecord</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsEntityRecordsSnapshot">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsEntityRecordsSnapshot-class.html">EntityGraphDevtoolsEntityRecordsSnapshot</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsEntityState">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsEntityState-class.html">EntityGraphDevtoolsEntityState</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsEntityViewMembership">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsEntityViewMembership-class.html">EntityGraphDevtoolsEntityViewMembership</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsEnvelope">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsEnvelope-class.html">EntityGraphDevtoolsEnvelope</a></span> 
+
+</dt>
+<dd>
+  Base for every store-scoped v1 envelope.
+</dd>
+
+          <dt id="EntityGraphDevtoolsErrorResult">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsErrorResult-class.html">EntityGraphDevtoolsErrorResult</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsEvent">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsEvent-class.html">EntityGraphDevtoolsEvent</a></span> 
+
+</dt>
+<dd>
+  Base fields shared by every retained or streamed semantic event.
+</dd>
+
+          <dt id="EntityGraphDevtoolsExpiredHistoryReceipt">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsExpiredHistoryReceipt-class.html">EntityGraphDevtoolsExpiredHistoryReceipt</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsGraphData">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsGraphData-class.html">EntityGraphDevtoolsGraphData</a></span> 
+
+</dt>
+<dd>
+  The five graph-owned data structures retained by one history snapshot.
+</dd>
+
+          <dt id="EntityGraphDevtoolsHistoryImportCancellationReceipt">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsHistoryImportCancellationReceipt-class.html">EntityGraphDevtoolsHistoryImportCancellationReceipt</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsHistoryImportCancellationRejectedReceipt">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsHistoryImportCancellationRejectedReceipt-class.html">EntityGraphDevtoolsHistoryImportCancellationRejectedReceipt</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsHistoryImportCancellationResult">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsHistoryImportCancellationResult-class.html">EntityGraphDevtoolsHistoryImportCancellationResult</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsHistoryImportEnvelope">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsHistoryImportEnvelope-class.html">EntityGraphDevtoolsHistoryImportEnvelope</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsHistoryImportInspectionReceipt">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsHistoryImportInspectionReceipt-class.html">EntityGraphDevtoolsHistoryImportInspectionReceipt</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsHistoryImportInspectionResult">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsHistoryImportInspectionResult-class.html">EntityGraphDevtoolsHistoryImportInspectionResult</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsHistoryImportRejectedReceipt">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsHistoryImportRejectedReceipt-class.html">EntityGraphDevtoolsHistoryImportRejectedReceipt</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsHistoryImportRestoreReceipt">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsHistoryImportRestoreReceipt-class.html">EntityGraphDevtoolsHistoryImportRestoreReceipt</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsHistoryImportRestoreRejectedReceipt">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsHistoryImportRestoreRejectedReceipt-class.html">EntityGraphDevtoolsHistoryImportRestoreRejectedReceipt</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsHistoryImportRestoreResult">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsHistoryImportRestoreResult-class.html">EntityGraphDevtoolsHistoryImportRestoreResult</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsHistoryImportSnapshot">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsHistoryImportSnapshot-class.html">EntityGraphDevtoolsHistoryImportSnapshot</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsHistoryImportSnapshotInspection">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsHistoryImportSnapshotInspection-class.html">EntityGraphDevtoolsHistoryImportSnapshotInspection</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsHistoryStatus">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsHistoryStatus-class.html">EntityGraphDevtoolsHistoryStatus</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsImportCandidateStatus">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsImportCandidateStatus-class.html">EntityGraphDevtoolsImportCandidateStatus</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsInspectHistoryImport">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsInspectHistoryImport-class.html">EntityGraphDevtoolsInspectHistoryImport</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsLifecycleEvent">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsLifecycleEvent-class.html">EntityGraphDevtoolsLifecycleEvent</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsLimits">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsLimits-class.html">EntityGraphDevtoolsLimits</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsMutationEvent">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsMutationEvent-class.html">EntityGraphDevtoolsMutationEvent</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsPreviewAppliedReceipt">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsPreviewAppliedReceipt-class.html">EntityGraphDevtoolsPreviewAppliedReceipt</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsPreviewConflictReceipt">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsPreviewConflictReceipt-class.html">EntityGraphDevtoolsPreviewConflictReceipt</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsPreviewEntityPatch">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsPreviewEntityPatch-class.html">EntityGraphDevtoolsPreviewEntityPatch</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsPreviewRestoredReceipt">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsPreviewRestoredReceipt-class.html">EntityGraphDevtoolsPreviewRestoredReceipt</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsPreviewRestoreReceipt">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsPreviewRestoreReceipt-class.html">EntityGraphDevtoolsPreviewRestoreReceipt</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsProtocolError">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsProtocolError-class.html">EntityGraphDevtoolsProtocolError</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsRelationship">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsRelationship-class.html">EntityGraphDevtoolsRelationship</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsRelationshipEndpoint">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsRelationshipEndpoint-class.html">EntityGraphDevtoolsRelationshipEndpoint</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsRelationshipsSnapshot">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsRelationshipsSnapshot-class.html">EntityGraphDevtoolsRelationshipsSnapshot</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsRestoreEntityPreview">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsRestoreEntityPreview-class.html">EntityGraphDevtoolsRestoreEntityPreview</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsResult">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsResult-class.html">EntityGraphDevtoolsResult</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsRetainedSnapshotReference">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsRetainedSnapshotReference-class.html">EntityGraphDevtoolsRetainedSnapshotReference</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsReturnToLiveReceipt">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsReturnToLiveReceipt-class.html">EntityGraphDevtoolsReturnToLiveReceipt</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsRewind">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsRewind-class.html">EntityGraphDevtoolsRewind</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsRewindReceipt">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsRewindReceipt-class.html">EntityGraphDevtoolsRewindReceipt</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsRewindResult">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsRewindResult-class.html">EntityGraphDevtoolsRewindResult</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsSnapshot">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsSnapshot-class.html">EntityGraphDevtoolsSnapshot</a></span> 
+
+</dt>
+<dd>
+  Store-level metrics, active previews, and bounded-history status.
+</dd>
+
+          <dt id="EntityGraphDevtoolsSnapshotHistoryStatus">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsSnapshotHistoryStatus-class.html">EntityGraphDevtoolsSnapshotHistoryStatus</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsSnapshotReference">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsSnapshotReference-class.html">EntityGraphDevtoolsSnapshotReference</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsStoreDescriptor">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsStoreDescriptor-class.html">EntityGraphDevtoolsStoreDescriptor</a></span> 
+
+</dt>
+<dd>
+  One active graph advertised by the isolate-wide VM-service registry.
+</dd>
+
+          <dt id="EntityGraphDevtoolsStoreRegistry">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsStoreRegistry-class.html">EntityGraphDevtoolsStoreRegistry</a></span> 
+
+</dt>
+<dd>
+  Versioned discovery result for every active graph in one isolate.
+</dd>
+
+          <dt id="EntityGraphDevtoolsSuccessResult">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsSuccessResult-class.html">EntityGraphDevtoolsSuccessResult</a></span> 
+
+</dt>
+<dd>
+  Successful command result. <a href="../devtools/EntityGraphDevtoolsSuccessResult/result.html">result</a> must already be JSON-compatible when
+this envelope crosses a serialized transport.
+</dd>
+
+          <dt id="EntityGraphDevtoolsSyncState">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsSyncState-class.html">EntityGraphDevtoolsSyncState</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsTimeTravelEvent">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsTimeTravelEvent-class.html">EntityGraphDevtoolsTimeTravelEvent</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsUnavailableSnapshotReference">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsUnavailableSnapshotReference-class.html">EntityGraphDevtoolsUnavailableSnapshotReference</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsValueContext">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsValueContext-class.html">EntityGraphDevtoolsValueContext</a></span> 
+
+</dt>
+<dd>
+  Context supplied to a host-owned value redactor before retention or
+serialization. <a href="../devtools/EntityGraphDevtoolsValueContext/fieldPath.html">fieldPath</a> members are strings or integer indexes.
+</dd>
+
+          <dt id="EntityGraphDevtoolsValuePolicy">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsValuePolicy-class.html">EntityGraphDevtoolsValuePolicy</a></span> 
+
+</dt>
+<dd>
+  Host-owned policy applied before values enter retained history or any
+serialized envelope. A transport cannot escalate this policy.
+</dd>
+
+          <dt id="EntityGraphDevtoolsViewDefinition">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsViewDefinition-class.html">EntityGraphDevtoolsViewDefinition</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsViewEvent">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsViewEvent-class.html">EntityGraphDevtoolsViewEvent</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsViewListStats">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsViewListStats-class.html">EntityGraphDevtoolsViewListStats</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsViewMembership">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsViewMembership-class.html">EntityGraphDevtoolsViewMembership</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsViewRecord">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsViewRecord-class.html">EntityGraphDevtoolsViewRecord</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsViewsSnapshot">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsViewsSnapshot-class.html">EntityGraphDevtoolsViewsSnapshot</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsVmService">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsVmService-class.html">EntityGraphDevtoolsVmService</a></span> 
+
+</dt>
+<dd>
+  Isolate-wide, versioned VM-service surface used by Flutter DevTools.
+</dd>
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="enums">
+      <h2>Enums</h2>
+      <dl>
+          <dt id="EntityGraphDevtoolsChangeAction">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsChangeAction.html">EntityGraphDevtoolsChangeAction</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsChangeCategory">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsChangeCategory.html">EntityGraphDevtoolsChangeCategory</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsCommandName">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsCommandName.html">EntityGraphDevtoolsCommandName</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsDirtyChange">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsDirtyChange.html">EntityGraphDevtoolsDirtyChange</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsDirtyReasonKind">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsDirtyReasonKind.html">EntityGraphDevtoolsDirtyReasonKind</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsEntityPresence">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsEntityPresence.html">EntityGraphDevtoolsEntityPresence</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsExpiredHistoryReason">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsExpiredHistoryReason.html">EntityGraphDevtoolsExpiredHistoryReason</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsFeature">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsFeature.html">EntityGraphDevtoolsFeature</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsHistoryImportCancellationRejectionReason">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsHistoryImportCancellationRejectionReason.html">EntityGraphDevtoolsHistoryImportCancellationRejectionReason</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsHistoryImportInspectionRejectionReason">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsHistoryImportInspectionRejectionReason.html">EntityGraphDevtoolsHistoryImportInspectionRejectionReason</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsHistoryImportRestoreRejectionReason">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsHistoryImportRestoreRejectionReason.html">EntityGraphDevtoolsHistoryImportRestoreRejectionReason</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsHistoryMode">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsHistoryMode.html">EntityGraphDevtoolsHistoryMode</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsLifecycleState">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsLifecycleState.html">EntityGraphDevtoolsLifecycleState</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsProtocolErrorCode">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsProtocolErrorCode.html">EntityGraphDevtoolsProtocolErrorCode</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsRelationshipCardinality">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsRelationshipCardinality.html">EntityGraphDevtoolsRelationshipCardinality</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsRelationshipDirection">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsRelationshipDirection.html">EntityGraphDevtoolsRelationshipDirection</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsRelationshipStatus">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsRelationshipStatus.html">EntityGraphDevtoolsRelationshipStatus</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsSnapshotSource">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsSnapshotSource.html">EntityGraphDevtoolsSnapshotSource</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsSnapshotUnavailableReason">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsSnapshotUnavailableReason.html">EntityGraphDevtoolsSnapshotUnavailableReason</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsSyncOrigin">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsSyncOrigin.html">EntityGraphDevtoolsSyncOrigin</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsTimeTravelReason">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsTimeTravelReason.html">EntityGraphDevtoolsTimeTravelReason</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsValueDestination">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsValueDestination.html">EntityGraphDevtoolsValueDestination</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsValuePolicyMode">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsValuePolicyMode.html">EntityGraphDevtoolsValuePolicyMode</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsValueSide">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsValueSide.html">EntityGraphDevtoolsValueSide</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsValueState">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsValueState.html">EntityGraphDevtoolsValueState</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsViewEventState">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsViewEventState.html">EntityGraphDevtoolsViewEventState</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="EntityGraphDevtoolsViewKind">
+  <span class="name "><a href="../devtools/EntityGraphDevtoolsViewKind.html">EntityGraphDevtoolsViewKind</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+      </dl>
+    </section>
+
+
+
+
+    <section class="summary offset-anchor" id="constants">
+      <h2>Constants</h2>
+      <dl class="properties">
+          <dt id="entityGraphDevtoolsProtocol" class="constant">
+    <span class="name "><a href="../devtools/entityGraphDevtoolsProtocol-constant.html">entityGraphDevtoolsProtocol</a></span>
+  <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  
+
+</dt>
+<dd>
+  Stable wire identifier for every entity-graph DevTools envelope.
+  
+
+</dd>
+
+          <dt id="entityGraphDevtoolsProtocolVersion" class="constant">
+    <span class="name "><a href="../devtools/entityGraphDevtoolsProtocolVersion-constant.html">entityGraphDevtoolsProtocolVersion</a></span>
+  <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  Current wire protocol major. Other major versions are incompatible.
+  
+
+</dd>
+
+      </dl>
+    </section>
+
+
+
+    <section class="summary offset-anchor" id="typedefs">
+      <h2>Typedefs</h2>
+      <dl>
+          
+  <dt id="EntityGraphDevtoolsEventListener" class="callable">
+    <span class="name"><a href="../devtools/EntityGraphDevtoolsEventListener.html">EntityGraphDevtoolsEventListener</a></span><span class="signature">
+      <span class="returntype parameter">= void Function<span class="signature">(<span class="parameter" id="param-event"><span class="type-annotation"><a href="../devtools/EntityGraphDevtoolsEvent-class.html">EntityGraphDevtoolsEvent</a></span> <span class="parameter-name">event</span></span>)</span></span>
+    </span>
+    
+
+  </dt>
+  <dd>
+    Receives one live protocol event from an attached controller.
+    
+
+  </dd>
+
+          
+  <dt id="EntityGraphDevtoolsLifecycleListener" class="callable">
+    <span class="name"><a href="../devtools/EntityGraphDevtoolsLifecycleListener.html">EntityGraphDevtoolsLifecycleListener</a></span><span class="signature">
+      <span class="returntype parameter">= void Function<span class="signature">(<span class="parameter" id="param-event"><span class="type-annotation"><a href="../devtools/EntityGraphDevtoolsLifecycleEvent-class.html">EntityGraphDevtoolsLifecycleEvent</a></span> <span class="parameter-name">event</span></span>)</span></span>
+    </span>
+    
+
+  </dt>
+  <dd>
+    Receives one controller attachment lifecycle event.
+    
+
+  </dd>
+
+          
+  <dt id="EntityGraphDevtoolsValueRedactor" class="callable">
+    <span class="name"><a href="../devtools/EntityGraphDevtoolsValueRedactor.html">EntityGraphDevtoolsValueRedactor</a></span><span class="signature">
+      <span class="returntype parameter">= <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a>? Function<span class="signature">(<span class="parameter" id="param-value"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a>?</span> <span class="parameter-name">value</span>, </span><span class="parameter" id="param-context"><span class="type-annotation"><a href="../devtools/EntityGraphDevtoolsValueContext-class.html">EntityGraphDevtoolsValueContext</a></span> <span class="parameter-name">context</span></span>)</span></span>
+    </span>
+    
+
+  </dt>
+  <dd>
+    
+    
+
+  </dd>
+
+      </dl>
+    </section>
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">entity_graph_flutter</a></li>
+    <li class="self-crumb">devtools.dart</li>
+</ol>
+
+    <h5><span class="package-name">entity_graph_flutter</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="../devtools/">devtools</a></li>
+      <li><a href="../entity_graph_flutter/">entity_graph_flutter</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+    <h5>devtools library</h5>
+  </div><!--/sidebar-offcanvas-right-->
+</main>
+<footer>
+  <span class="no-break">
+    entity_graph_flutter
+      3.0.5
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

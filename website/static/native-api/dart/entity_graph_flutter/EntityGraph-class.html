@@ -116,6 +116,18 @@ selectively react to <a href="../entity_graph_flutter/EntityChanged-class.html">
 
 </dd>
 
+        <dt id="viewRecords" class="property">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/viewRecords.html">viewRecords</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../entity_graph_flutter/GraphViewRecord-class.html">GraphViewRecord</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  Current framework view registrations projected without entity copies.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
     </dl>
   </section>
 
@@ -134,6 +146,19 @@ selectively react to <a href="../entity_graph_flutter/EntityChanged-class.html">
 </dt>
 <dd>
   
+  
+
+</dd>
+
+        <dt id="captureSnapshot" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/captureSnapshot.html">captureSnapshot</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="../entity_graph_flutter/EntityGraphSnapshot-class.html">EntityGraphSnapshot</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Capture the complete graph-owned data needed for local DevTools rewind.
   
 
 </dd>
@@ -372,6 +397,19 @@ selectively react to <a href="../entity_graph_flutter/EntityChanged-class.html">
 
 </dd>
 
+        <dt id="registerView" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/registerView.html">registerView</a></span><span class="signature">(<wbr><span class="parameter" id="registerView-param-definition"><span class="type-annotation"><a href="../entity_graph_flutter/GraphViewDefinition-class.html">GraphViewDefinition</a></span> <span class="parameter-name">definition</span>, {</span><span class="parameter" id="registerView-param-membership"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Iterable-class.html">Iterable</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../entity_graph_flutter/GraphEntityIdentity-class.html">GraphEntityIdentity</a></span>&gt;</span></span> <span class="parameter-name">membership</span> = <span class="default-value">const []</span></span>})
+    <span class="returntype parameter">&#8594; <a href="../entity_graph_flutter/GraphViewRegistration-class.html">GraphViewRegistration</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Register one mounted framework view and its current entity membership.
+  
+
+</dd>
+
         <dt id="removeEntity" class="callable">
   <span class="name"><a href="../entity_graph_flutter/EntityGraph/removeEntity.html">removeEntity</a></span><span class="signature">(<wbr><span class="parameter" id="removeEntity-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="removeEntity-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span></span>)
     <span class="returntype parameter">&#8594; void</span>
@@ -424,6 +462,19 @@ selectively react to <a href="../entity_graph_flutter/EntityChanged-class.html">
 
 </dd>
 
+        <dt id="replaceEntityPatch" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/replaceEntityPatch.html">replaceEntityPatch</a></span><span class="signature">(<wbr><span class="parameter" id="replaceEntityPatch-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="replaceEntityPatch-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span>, </span><span class="parameter" id="replaceEntityPatch-param-patch"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a>?</span>&gt;</span>?</span> <span class="parameter-name">patch</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Replace the exact local patch for one entity in a single publication.
+  
+
+</dd>
+
         <dt id="reset" class="callable">
   <span class="name"><a href="../entity_graph_flutter/EntityGraph/reset.html">reset</a></span><span class="signature">(<wbr>)
     <span class="returntype parameter">&#8594; void</span>
@@ -446,6 +497,19 @@ selectively react to <a href="../entity_graph_flutter/EntityChanged-class.html">
 </dt>
 <dd>
   Restore a failed optimistic removal from its graph-owned receipt.
+  
+
+</dd>
+
+        <dt id="restoreSnapshot" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/restoreSnapshot.html">restoreSnapshot</a></span><span class="signature">(<wbr><span class="parameter" id="restoreSnapshot-param-snapshot"><span class="type-annotation"><a href="../entity_graph_flutter/EntityGraphSnapshot-class.html">EntityGraphSnapshot</a></span> <span class="parameter-name">snapshot</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Restore one graph-owned snapshot through the normal publication boundary.
   
 
 </dd>
@@ -576,6 +640,32 @@ selectively react to <a href="../entity_graph_flutter/EntityChanged-class.html">
 </dt>
 <dd>
   
+  
+
+</dd>
+
+        <dt id="subscribePublications" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/subscribePublications.html">subscribePublications</a></span><span class="signature">(<wbr><span class="parameter" id="subscribePublications-param-listener"><span class="type-annotation"><a href="../entity_graph_flutter/GraphPublicationListener.html">GraphPublicationListener</a></span> <span class="parameter-name">listener</span></span>)
+    <span class="returntype parameter">&#8594; void Function<span class="signature">()</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Observe complete outer writes without changing graph ownership.
+  
+
+</dd>
+
+        <dt id="subscribeViewLifecycles" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/EntityGraph/subscribeViewLifecycles.html">subscribeViewLifecycles</a></span><span class="signature">(<wbr><span class="parameter" id="subscribeViewLifecycles-param-listener"><span class="type-annotation"><a href="../entity_graph_flutter/GraphViewLifecycleListener.html">GraphViewLifecycleListener</a></span> <span class="parameter-name">listener</span></span>)
+    <span class="returntype parameter">&#8594; void Function<span class="signature">()</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Observe logical framework view registration and membership changes.
   
 
 </dd>
@@ -712,7 +802,7 @@ selectively react to <a href="../entity_graph_flutter/EntityChanged-class.html">
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.1
+      3.0.5
   </span>
   
 </footer>

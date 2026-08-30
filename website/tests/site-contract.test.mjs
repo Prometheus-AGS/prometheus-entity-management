@@ -62,7 +62,7 @@ test('publishes the complete primary navigation and RC boundary', () => {
     'Start Here', 'Concepts', 'Frameworks', 'Integrations', 'Examples',
     'Packages & API', 'Evidence', 'Migration & Operations',
   ]) assert.match(config, new RegExp(`label: '${label.replace('&', '\\&')}'`));
-  assert.match(config, /3\.0\.5 stable/);
+  assert.match(config, /3\.1\.0 stable/);
   assert.match(config, /label: '3\.x'/);
 });
 
@@ -86,7 +86,7 @@ test('keeps install guidance in registry-snapshot parity', () => {
   const installGuidance = [packageChooser, reactGuide, flutterGuide].join('\n');
   assert.doesNotMatch(installGuidance, /@next/, 'stable install guidance must not pin the archived RC channel');
   assert.match(config, /all twelve npm packages are public/);
-  assert.match(packageIndex, /all twelve npm packages public at stable\s+`3\.0\.5`/);
+  assert.match(packageIndex, /all twelve npm packages public at stable\s+`3\.1\.0`/);
   assert.match(reactGuide, /pnpm add @prometheus-ags\/entity-graph-core/);
   assert.match(reactGuide, /pnpm add @prometheus-ags\/entity-graph-core \\?\n?\s*@prometheus-ags\/prometheus-entity-management/);
   assert.equal(pubdevRegistryStatus.releaseStatus, 'published');

@@ -71,32 +71,34 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">void restoreRemovedEntity(EntityRemovalSnapshot snapshot) {
-  final entity = snapshot.entity;
-  if (entity != null) {
-    _entities.putIfAbsent(snapshot.type, () =&gt; {});
-    _entities[snapshot.type]![snapshot.id] = Map.of(entity);
-  }
-  final patch = snapshot.patch;
-  if (patch != null) {
-    _patches.putIfAbsent(snapshot.type, () =&gt; {});
-    _patches[snapshot.type]![snapshot.id] = Map.of(patch);
-  }
-  final key = _ek(snapshot.type, snapshot.id);
-  if (snapshot.state != null) _entityStates[key] = snapshot.state!;
-  if (snapshot.syncMetadata != null) {
-    _syncMetadata[key] = snapshot.syncMetadata!;
-  }
-  for (final entry in snapshot.listIndexes.entries) {
-    final previous = _lists[entry.key] ?? ListState.empty;
-    final ids = previous.ids.where((item) =&gt; item != snapshot.id).toList();
-    ids.insert(entry.value.clamp(0, ids.length), snapshot.id);
-    _lists[entry.key] = previous.copyWith(
-      ids: List.unmodifiable(ids),
-      total: previous.total == null ? null : previous.total! + 1,
-    );
-    _notifyList(entry.key);
-  }
-  _notifyEntity(snapshot.type, snapshot.id);
+  _write(() {
+    final entity = snapshot.entity;
+    if (entity != null) {
+      _entities.putIfAbsent(snapshot.type, () =&gt; {});
+      _entities[snapshot.type]![snapshot.id] = Map.of(entity);
+    }
+    final patch = snapshot.patch;
+    if (patch != null) {
+      _patches.putIfAbsent(snapshot.type, () =&gt; {});
+      _patches[snapshot.type]![snapshot.id] = Map.of(patch);
+    }
+    final key = _ek(snapshot.type, snapshot.id);
+    if (snapshot.state != null) _entityStates[key] = snapshot.state!;
+    if (snapshot.syncMetadata != null) {
+      _syncMetadata[key] = snapshot.syncMetadata!;
+    }
+    for (final entry in snapshot.listIndexes.entries) {
+      final previous = _lists[entry.key] ?? ListState.empty;
+      final ids = previous.ids.where((item) =&gt; item != snapshot.id).toList();
+      ids.insert(entry.value.clamp(0, ids.length), snapshot.id);
+      _lists[entry.key] = previous.copyWith(
+        ids: List.unmodifiable(ids),
+        total: previous.total == null ? null : previous.total! + 1,
+      );
+      _notifyList(entry.key);
+    }
+    _notifyEntity(snapshot.type, snapshot.id);
+  });
 }</code></pre>
 </section>
 
@@ -125,7 +127,7 @@
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.1
+      3.0.5
   </span>
   
 </footer>

@@ -209,6 +209,14 @@ graph feedback.
 or a deliberately scoped application graph.
 </dd>
 
+          <dt id="EntityGraphSnapshot">
+  <span class="name "><a href="../entity_graph_flutter/EntityGraphSnapshot-class.html">EntityGraphSnapshot</a></span> 
+
+</dt>
+<dd>
+  Immutable graph data captured at one publication boundary.
+</dd>
+
           <dt id="EntityList">
   <span class="name "><a href="../entity_graph_flutter/EntityList-class.html">EntityList</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
 
@@ -389,6 +397,62 @@ graph's state ownership.
   Coarse-grained graph change event.
 </dd>
 
+          <dt id="GraphEntityIdentity">
+  <span class="name "><a href="../entity_graph_flutter/GraphEntityIdentity-class.html">GraphEntityIdentity</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="GraphPublication">
+  <span class="name "><a href="../entity_graph_flutter/GraphPublication-class.html">GraphPublication</a></span> 
+
+</dt>
+<dd>
+  One completed outer graph write with deduplicated affected identities.
+</dd>
+
+          <dt id="GraphReset">
+  <span class="name "><a href="../entity_graph_flutter/GraphReset-class.html">GraphReset</a></span> 
+
+</dt>
+<dd>
+  The complete graph was cleared or replaced.
+</dd>
+
+          <dt id="GraphViewDefinition">
+  <span class="name "><a href="../entity_graph_flutter/GraphViewDefinition-class.html">GraphViewDefinition</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="GraphViewLifecycleEvent">
+  <span class="name "><a href="../entity_graph_flutter/GraphViewLifecycleEvent-class.html">GraphViewLifecycleEvent</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="GraphViewRecord">
+  <span class="name "><a href="../entity_graph_flutter/GraphViewRecord-class.html">GraphViewRecord</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="GraphViewRegistration">
+  <span class="name "><a href="../entity_graph_flutter/GraphViewRegistration-class.html">GraphViewRegistration</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
           <dt id="IrEntity">
   <span class="name "><a href="../entity_graph_flutter/IrEntity-class.html">IrEntity</a></span> 
 
@@ -515,6 +579,22 @@ depends on this invariant.
 </dt>
 <dd>
   Filter operator — mirrors FilterOperator in view/types.ts.
+</dd>
+
+          <dt id="GraphViewKind">
+  <span class="name "><a href="../entity_graph_flutter/GraphViewKind.html">GraphViewKind</a></span> 
+
+</dt>
+<dd>
+  
+</dd>
+
+          <dt id="GraphViewLifecycleState">
+  <span class="name "><a href="../entity_graph_flutter/GraphViewLifecycleState.html">GraphViewLifecycleState</a></span> 
+
+</dt>
+<dd>
+  
 </dd>
 
           <dt id="SdlRelationKind">
@@ -834,6 +914,34 @@ a validated <a href="../entity_graph_flutter/EntityGraphIR-class.html">EntityGra
 </dd>
 
 
+          
+  <dt id="GraphPublicationListener" class="callable">
+    <span class="name"><a href="../entity_graph_flutter/GraphPublicationListener.html">GraphPublicationListener</a></span><span class="signature">
+      <span class="returntype parameter">= void Function<span class="signature">(<span class="parameter" id="param-publication"><span class="type-annotation"><a href="../entity_graph_flutter/GraphPublication-class.html">GraphPublication</a></span> <span class="parameter-name">publication</span></span>)</span></span>
+    </span>
+    
+
+  </dt>
+  <dd>
+    Receives one completed graph publication synchronously after its write.
+    
+
+  </dd>
+
+          
+  <dt id="GraphViewLifecycleListener" class="callable">
+    <span class="name"><a href="../entity_graph_flutter/GraphViewLifecycleListener.html">GraphViewLifecycleListener</a></span><span class="signature">
+      <span class="returntype parameter">= void Function<span class="signature">(<span class="parameter" id="param-event"><span class="type-annotation"><a href="../entity_graph_flutter/GraphViewLifecycleEvent-class.html">GraphViewLifecycleEvent</a></span> <span class="parameter-name">event</span></span>)</span></span>
+    </span>
+    
+
+  </dt>
+  <dd>
+    
+    
+
+  </dd>
+
       </dl>
     </section>
 
@@ -890,6 +998,7 @@ a validated <a href="../entity_graph_flutter/EntityGraphIR-class.html">EntityGra
     <h5><span class="package-name">entity_graph_flutter</span> <span class="package-kind">package</span></h5>
     <ol>
       <li class="section-title">Libraries</li>
+      <li><a href="../devtools/">devtools</a></li>
       <li><a href="../entity_graph_flutter/">entity_graph_flutter</a></li>
 </ol>
 
@@ -901,7 +1010,7 @@ a validated <a href="../entity_graph_flutter/EntityGraphIR-class.html">EntityGra
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.1
+      3.0.5
   </span>
   
 </footer>

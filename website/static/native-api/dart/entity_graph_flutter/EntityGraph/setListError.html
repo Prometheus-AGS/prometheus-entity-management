@@ -69,16 +69,18 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">void setListError(String queryKey, String? error) {
-  final prev = _lists[queryKey] ?? ListState.empty;
-  _lists[queryKey] = prev.copyWith(
-    error: error,
-    clearError: error == null,
-    isFetching: false,
-    isFetchingMore: false,
-    lastFetched: DateTime.now(),
-    stale: false,
-  );
-  _notifyList(queryKey);
+  _write(() {
+    final prev = _lists[queryKey] ?? ListState.empty;
+    _lists[queryKey] = prev.copyWith(
+      error: error,
+      clearError: error == null,
+      isFetching: false,
+      isFetchingMore: false,
+      lastFetched: DateTime.now(),
+      stale: false,
+    );
+    _notifyList(queryKey);
+  });
 }</code></pre>
 </section>
 
@@ -107,7 +109,7 @@
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.1
+      3.0.5
   </span>
   
 </footer>

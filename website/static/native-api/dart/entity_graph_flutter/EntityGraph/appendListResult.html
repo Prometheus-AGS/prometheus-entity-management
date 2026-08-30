@@ -80,21 +80,26 @@
   String? nextCursor,
   bool hasNextPage = false,
 }) {
-  if (entityType != null) _listTypes[queryKey] = entityType;
-  final prev = _lists[queryKey] ?? ListState.empty;
-  final merged = [...prev.ids, ...ids.where((id) =&gt; !prev.ids.contains(id))];
-  _lists[queryKey] = prev.copyWith(
-    ids: List.unmodifiable(merged),
-    total: total ?? prev.total,
-    nextCursor: nextCursor,
-    hasNextPage: hasNextPage,
-    isFetching: false,
-    isFetchingMore: false,
-    lastFetched: DateTime.now(),
-    stale: false,
-    clearError: true,
-  );
-  _notifyList(queryKey);
+  _write(() {
+    if (entityType != null) _listTypes[queryKey] = entityType;
+    final prev = _lists[queryKey] ?? ListState.empty;
+    final merged = [
+      ...prev.ids,
+      ...ids.where((id) =&gt; !prev.ids.contains(id)),
+    ];
+    _lists[queryKey] = prev.copyWith(
+      ids: List.unmodifiable(merged),
+      total: total ?? prev.total,
+      nextCursor: nextCursor,
+      hasNextPage: hasNextPage,
+      isFetching: false,
+      isFetchingMore: false,
+      lastFetched: DateTime.now(),
+      stale: false,
+      clearError: true,
+    );
+    _notifyList(queryKey);
+  });
 }</code></pre>
 </section>
 
@@ -123,7 +128,7 @@
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.1
+      3.0.5
   </span>
   
 </footer>
