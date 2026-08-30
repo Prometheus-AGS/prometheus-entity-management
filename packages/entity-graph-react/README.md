@@ -6,7 +6,7 @@ Update a post in one screen and every list row, detail panel, and badge that rea
 
 ## 3.0 React release
 
-The `3.0.5` package line and its React 19/Vite 8
+The `3.1.0` package line and its React 19/Vite 8
 source-workspace showcase is implemented. The production-browser gate covers
 normalized cross-view updates, optimistic confirm/rollback, relationships,
 view completeness modes, REST/GraphQL seams, realtime coalescing, PGlite/Loro,
@@ -17,16 +17,14 @@ for the assembled example evidence. Install the matching stable core and React
 pair with:
 
 ```bash
-pnpm add @prometheus-ags/entity-graph-core@3.0.5 \
-  @prometheus-ags/prometheus-entity-management@3.0.5 \
+pnpm add @prometheus-ags/entity-graph-core@3.1.0 \
+  @prometheus-ags/prometheus-entity-management@3.1.0 \
   react@^19 react-dom@^19
 ```
 
-> **Release boundary:** npm `3.0.5` contains the released graph APIs but not
-> the new `./devtools` or `./devtools/auto` inspector entries documented
-> below. Those entries are currently available from this repository workspace
-> and will ship in the next minor release; do not import them from the `3.0.5`
-> tarball.
+> **Release boundary:** npm `3.1.0` includes the optional `./devtools` and
+> development-only `./devtools/auto` inspector entries documented below. The
+> ordinary package root remains inspector-free.
 
 ### Documentation map
 
@@ -382,12 +380,11 @@ that wants no ambient resolution at all.
 | `useLocalFirst` | Hook for local-first workflows with the adapter. |
 | `usePGliteQuery` | Run queries against PGlite in sync with the graph story. |
 
-### DevTools (unreleased inspector)
+### DevTools
 
 The ordinary package root keeps the lightweight legacy `useGraphDevTools`
-hook and does not import or mount the inspector. The full inspector is an
-unreleased repository feature behind two optional subpaths. It is not present
-in the published `3.0.5` tarball:
+hook and does not import or mount the inspector. The full inspector ships in
+`3.1.0` behind two optional subpaths:
 
 | Entry/export | Description |
 |--------------|-------------|

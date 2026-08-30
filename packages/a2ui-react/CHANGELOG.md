@@ -1,5 +1,11 @@
 # @prometheus-ags/a2ui-react changelog
 
+## 3.1.0
+
+### Patch Changes
+
+- @prometheus-ags/entity-graph-core@3.1.0
+
 ## 3.0.5
 
 ### Patch Changes

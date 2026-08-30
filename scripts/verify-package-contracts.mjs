@@ -71,14 +71,21 @@ try {
     ]);
     process.stdout.write(publint.stdout);
 
-    const attw = await run("pnpm", [
+    const attwArgs = [
       "exec",
       "attw",
       tarballPath,
       "--profile",
       "strict",
       "--no-color",
-    ]);
+    ];
+    if (publicPackage.attwExcludeEntrypoints?.length) {
+      attwArgs.push(
+        "--exclude-entrypoints",
+        ...publicPackage.attwExcludeEntrypoints,
+      );
+    }
+    const attw = await run("pnpm", attwArgs);
     process.stdout.write(attw.stdout);
 
     report.packages.push({

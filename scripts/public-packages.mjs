@@ -2,7 +2,14 @@ export const PUBLIC_PACKAGES = Object.freeze([
   { directory: "packages/a2ui-react", name: "@prometheus-ags/a2ui-react" },
   { directory: "packages/entity-graph-a2a", name: "@prometheus-ags/entity-graph-a2a" },
   { directory: "packages/entity-graph-alpine", name: "@prometheus-ags/entity-graph-alpine" },
-  { directory: "packages/entity-graph-core", name: "@prometheus-ags/entity-graph-core" },
+  {
+    directory: "packages/entity-graph-core",
+    name: "@prometheus-ags/entity-graph-core",
+    attwExcludeEntrypoints: [
+      "devtools/fixtures/entity-inspection-v1.json",
+      "devtools/fixtures/time-travel-v1.json",
+    ],
+  },
   { directory: "packages/entity-graph-htmx", name: "@prometheus-ags/entity-graph-htmx" },
   {
     directory: "packages/entity-graph-react",
