@@ -124,3 +124,22 @@ with safe quoting.
 - Put response-owned base projections in the same graph transaction. Keep
   realtime subscribers for independent events, but make the response's success
   snapshot already contain every matching ID so those subscribers have no work.
+
+## Pub.dev API visibility can precede solver visibility
+
+- A newly published version may appear in the pub.dev package API and archive
+  endpoint before `flutter pub add` can resolve it. Do not mark the consumer
+  gate passed from API visibility alone; retry the hosted resolver and require
+  the lockfile, analyzer, and release build to name the exact version.
+- A clean package dry run can pass while broader repository documentation is
+  dirty. Freeze package sources first, verify the acceptance receipt reports
+  `trackedDirty: false`, then publish from that committed package directory.
+
+## Multi-client evidence requires multiple transport clients
+
+- Calling the same VM-service method twice from one connection does not prove a
+  multi-client claim. Connect a second client, discover shared state through the
+  production protocol, perform the cross-client action, and compare retained
+  state before/after.
+- A cancellation command that clears all history is not a safe escape hatch.
+  Bind cancellation to the candidate ID and preserve event/snapshot retention.

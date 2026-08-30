@@ -6,7 +6,8 @@ default singleton behavior for applications that do not use a scoped provider.
 
 The React and Flutter documentation now records A2UI 1.0-RC compatibility and
 AG-UI 0.0.59 transport support. Flutter remains independently published as
-`entity_graph_flutter@3.0.1` on pub.dev.
+`entity_graph_flutter@3.0.5` on pub.dev, including the optional controller and
+official Flutter DevTools companion.
 
 All twelve `@prometheus-ags` npm packages are published at 3.0.5. Both `latest`
 and `next` point to 3.0.5. Version 3.0.4 is deprecated because it was published

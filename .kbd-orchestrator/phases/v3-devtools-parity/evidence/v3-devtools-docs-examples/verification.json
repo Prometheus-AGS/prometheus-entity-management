@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "phase": "v3-devtools-parity",
+  "changeId": "v3-devtools-docs-examples",
+  "status": "passed",
+  "versions": {
+    "npmReact": "3.1.0",
+    "flutter": "3.0.5",
+    "a2ui": "1.0-RC",
+    "flutterGenui": "0.10.2"
+  },
+  "checks": [
+    "README parity passed for 12 packages, 5 examples, 16 capabilities, and 17 commands",
+    "all 13 shared example scenarios passed",
+    "website Docusaurus production build passed",
+    "site Docusaurus production build and API generation passed",
+    "pub.dev registry block names entity_graph_flutter 3.0.5 with exact publication timestamp",
+    "root, package, release, binding, API, integration, example, and operations guides use current React and Flutter versions"
+  ],
+  "notClaimed": [
+    "post-push GitHub Pages propagation",
+    "human Flutter DevTools usability certification",
+    "Chrome Web Store publication",
+    "physical-device or app-store certification"
+  ]
+}

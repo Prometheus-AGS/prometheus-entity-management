@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "changeId": "v3-devtools-flutter-extension",
+  "status": "passed",
+  "package": "entity_graph_flutter",
+  "version": "3.0.5",
+  "sourceCommit": "b1c18b4f1d508feb445cb60713d7e04ac937b0e2",
+  "publishedAt": "2026-08-30T15:49:48.424393Z",
+  "archiveSha256": "8903b9b13f41312c72ad88046e30bbba45fcaa8bc51e17dc73057b786f8831f6",
+  "archiveContents": [
+    "package:entity_graph_flutter/entity_graph_flutter.dart",
+    "package:entity_graph_flutter/devtools.dart",
+    "extension/devtools/config.yaml",
+    "extension/devtools/build/main.dart.js"
+  ],
+  "consumerGate": {
+    "resolution": "entity_graph_flutter 3.0.5 from pub.dev",
+    "resolvedArchiveSha256": "8903b9b13f41312c72ad88046e30bbba45fcaa8bc51e17dc73057b786f8831f6",
+    "lockfileSha256": "08f0d0436a060c39712282b20a497076a02e5b98c45f61645288a3a949115da7",
+    "imports": [
+      "package:entity_graph_flutter/entity_graph_flutter.dart",
+      "package:entity_graph_flutter/devtools.dart"
+    ],
+    "analysis": "passed with no issues",
+    "releaseWebBuild": "passed"
+  },
+  "publicationWarningDisposition": "The final 3.0.5 dry run reported zero package warnings before the reviewed candidate was published.",
+  "notClaimed": [
+    "verified pub.dev publisher identity",
+    "human DevTools usability certification",
+    "physical-device or app-store certification"
+  ]
+}

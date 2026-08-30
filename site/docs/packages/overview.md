@@ -29,7 +29,7 @@ Every row names its evidence gate; run the gate before repeating the claim.
 
 | Package | Use it for | Evidence gate |
 | ------- | ---------- | ------------- |
-| `entity_graph_flutter@3.0.2` | Canonical Dart graph, Riverpod providers, optional DevTools controller, and official Flutter DevTools companion | `pnpm run verify:devtools-flutter-controller` + official extension validation |
+| `entity_graph_flutter@3.0.5` | Canonical Dart graph, Riverpod providers, optional DevTools controller, and official Flutter DevTools companion | `pnpm run verify:devtools-flutter-controller` + official extension validation |
 
 ## Rust crates
 

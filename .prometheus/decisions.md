@@ -164,3 +164,23 @@ Before the next pub.dev release, the release-certification phase must add and
 pass one ordinary-library assembled Flutter/Riverpod acceptance flow. The
 controller acceptance proves the optional debugger path and does not substitute
 for the normal graph/provider/transport/rendering release boundary.
+
+## 2026-08-30 — Immutable registry mutation is the final release action
+
+For a pub.dev release, freeze and commit the candidate, run its complete
+assembled acceptance, finish artifact-only distinct-model review, build and
+validate official extension assets, refresh public ledgers, and pass the
+zero-warning dry run before publication. After publication, only registry,
+archive, clean hosted-consumer, and documentation verification may remain.
+
+Rationale: publishing Flutter 3.0.2, 3.0.3, and 3.0.4 before the final review
+exhausted lifecycle/evidence findings created immutable intermediate versions
+and forced 3.0.5. Pub registries cannot replace those archives. Treating
+publication as the last mutation makes the reviewed frozen SHA and uploaded
+archive the same artifact.
+
+History-import cancellation is candidate-ID-bound and non-destructive. A
+mismatched client cannot cancel the pending candidate; repeating a completed
+cancellation is a safe no-op; cancellation does not clear retained history.
+This preserves multi-client availability without letting one debugger destroy
+another client's retained evidence.

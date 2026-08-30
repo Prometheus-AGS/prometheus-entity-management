@@ -1385,7 +1385,7 @@
             "packages/entity_graph_flutter/extension/devtools/config.yaml",
             ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-flutter-extension/task-7-official-build.json"
           ],
-          "applicability": "Certifies the analyzer-clean official Flutter DevTools package-extension build and package layout for 3.0.2; a connected DevTools host and human usability study are not claimed."
+          "applicability": "Certifies the analyzer-clean official Flutter DevTools package-extension build and package layout for 3.0.5; a connected DevTools host and human usability study are not claimed."
         }
       ]
     },

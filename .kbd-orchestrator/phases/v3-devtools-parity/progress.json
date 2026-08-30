@@ -2,27 +2,27 @@
   "schemaVersion": "2",
   "generatedBy": "kbd-runtime",
   "projectionContractVersion": 2,
-  "sourceRevision": 489,
-  "derivedRevision": 489,
+  "sourceRevision": 523,
+  "derivedRevision": 523,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 489
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 523
   },
   "conflictCount": 6,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
   "parentPhase": null,
-  "last_updated": "2026-08-30T13:08:56.045125Z",
+  "last_updated": "2026-08-30T15:58:47.140196Z",
   "last_updated_by": "kbd-runtime",
   "changes_total": 9,
-  "changes_completed": 6,
+  "changes_completed": 9,
   "implementation_total": 9,
-  "implementation_completed": 6,
+  "implementation_completed": 9,
   "completion": {
     "primaryCounter": "implementation",
     "implementation": {
-      "completed": 6,
+      "completed": 9,
       "total": 9,
-      "status": "IN_PROGRESS"
+      "status": "COMPLETE"
     },
     "evidence": {
       "status": "PENDING",
@@ -110,34 +110,34 @@
     {
       "id": "v3-devtools-flutter-extension",
       "title": "v3-devtools-flutter-extension — Official Flutter DevTools companion",
-      "status": "IN_PROGRESS",
-      "implementation_status": "IN_PROGRESS",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
       "tasks_total": 8,
-      "tasks_done": 7,
-      "last_task_completed": "Run T0 analysis/targeted tests and T2 official validation/web build at change completion; reserve connected smoke/device work for T3.",
-      "next_task_pending": "Update Flutter API/skills/coverage docs and record sanitized evidence plus isolated review before archive.",
+      "tasks_done": 8,
+      "last_task_completed": "Update Flutter API/skills/coverage docs and record sanitized evidence plus isolated review before archive.",
+      "next_task_pending": null,
       "blockers": []
     },
     {
       "id": "v3-devtools-docs-examples",
       "title": "v3-devtools-docs-examples — Guides, scenarios, README parity, and evidence",
-      "status": "IN_PROGRESS",
-      "implementation_status": "IN_PROGRESS",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
       "tasks_total": 9,
-      "tasks_done": 7,
-      "last_task_completed": "Update `examples/coverage.json` and create allowlisted, hashed, responsive, sanitized evidence receipts/assets.",
-      "next_task_pending": "Run T0/T1 locally and full docs/example T2 gates at completion; reserve deployed Pages/Lighthouse probes for T3.",
+      "tasks_done": 9,
+      "last_task_completed": "Record claim-status evidence and isolated review before archive.",
+      "next_task_pending": null,
       "blockers": []
     },
     {
       "id": "v3-devtools-release-certification",
       "title": "v3-devtools-release-certification — Packed, secure, truthful 3.0 certification",
-      "status": "PENDING",
-      "implementation_status": "PENDING",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
       "tasks_total": 10,
-      "tasks_done": 0,
-      "last_task_completed": null,
-      "next_task_pending": "Confirm every dependency is archived with clean T2 evidence and identify the immutable certification SHA.",
+      "tasks_done": 10,
+      "last_task_completed": "Record remaining manual publication gates; do not move npm/native tags or submit to the Chrome Web Store in this change.",
+      "next_task_pending": null,
       "blockers": []
     }
   ],

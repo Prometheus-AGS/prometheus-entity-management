@@ -21,12 +21,12 @@ verified registry snapshot has all twelve npm packages public at stable
 | `@prometheus-ags/prometheus-entity-management` (React) | `pnpm add @prometheus-ags/prometheus-entity-management` | `3.1.0` |
 | `@prometheus-ags/entity-graph-core` | `pnpm add @prometheus-ags/entity-graph-core` | `3.1.0` |
 | Other ten `@prometheus-ags/*` packages | `pnpm add <package>` | `3.1.0` |
-| `entity_graph_flutter` | pub.dev `3.0.1` | `3.0.1` |
+| `entity_graph_flutter` | pub.dev `3.0.5` | `3.0.5` |
 
 Installs resolve stable `3.1.0` from `latest` by default. The withdrawn
 `3.0.0` manifests are deprecated (unresolved `workspace:` protocol), and
 stale-artifact `3.0.4` is also deprecated. `@next` now points at stable `3.1.0`
-as well. Flutter 3.0.1 is public
+as well. Flutter 3.0.5 is public
 and consumer-verified, although pub.dev has not yet associated the package
 with a verified publisher.
 

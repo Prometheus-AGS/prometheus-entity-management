@@ -2123,3 +2123,24 @@
   implementation `complete`, Task 12 `in_progress`, phase implementation 5/9,
   project implementation 37/63, exact next work unchanged. A postmortem records
   the control-plane modeling defect and prevention rule.
+
+## 2026-08-30 — DevTools parity phase completion and Flutter 3.0.5
+
+- Final artifact-only review found and corrected a multi-client history-import
+  lock: clients can now cancel only the matching pending candidate without
+  clearing event/snapshot retention, and a second VM client proves the flow.
+- Frozen-candidate Flutter/Riverpod/VM-service acceptance passed from
+  `b1c18b4f1d508feb445cb60713d7e04ac937b0e2` with clean source hashes and 46
+  observed versioned events. Analyzer had zero errors/warnings and four
+  pre-existing style infos.
+- Published `entity_graph_flutter@3.0.5` to pub.dev. Registry API, immutable
+  archive SHA-256 `8903b9b13f41312c72ad88046e30bbba45fcaa8bc51e17dc73057b786f8831f6`,
+  both public libraries, official extension assets, and a clean hosted consumer
+  analyzer/release web build were verified.
+- README parity, all 13 shared scenarios, and both Docusaurus production builds
+  passed. React/npm remains 3.1.0; A2UI 1.0-RC compatibility remains documented
+  through GenUI 0.10.2.
+- Signed release certification completed 10/10 tasks at revision 522. Chrome
+  Web Store, verified pub.dev publisher identity, Pages propagation, human
+  Flutter DevTools usability, physical devices, and app stores remain
+  explicitly unclaimed. Sovereign sync was not touched.

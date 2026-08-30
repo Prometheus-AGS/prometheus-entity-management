@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "phase": "v3-devtools-parity",
-  "target": "v3-devtools-flutter-controller",
+  "target": "v3-devtools-flutter-extension",
   "result": "PASS",
   "strictness": "strict",
   "screen": "manual-fallback",
@@ -15,6 +15,5 @@
     "S-06": 0.0,
     "S-07": 0.0,
     "S-08": 0.0
-  },
-  "note": "The sycophancy-correction skill/binary was unavailable; the repository Constitution taxonomy was applied manually."
+  }
 }

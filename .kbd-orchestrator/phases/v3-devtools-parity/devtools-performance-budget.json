@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "changeId": "v3-devtools-release-certification",
+  "fixture": {
+    "semanticEvents": 5000,
+    "durationSeconds": 10,
+    "targetEventsPerSecond": 500,
+    "timerJitterAllowancePercent": 2,
+    "retainedEventLimit": 500,
+    "retainedByteLimit": 5242880,
+    "viewport": {"width": 390, "height": 844}
+  },
+  "environment": {
+    "minimumCpuCores": 4,
+    "minimumMemoryGiB": 8,
+    "browser": "project-pinned Playwright Chromium",
+    "productionConsumers": ["packed Vite", "packed Next.js"],
+    "normalization": [
+      "preload the inspector before timing panel open",
+      "measure browser performance.now monotonic time",
+      "run without CPU or network throttling",
+      "record actual logical cores and memory with the receipt"
+    ]
+  },
+  "repetitions": {
+    "completeGateRuns": 1,
+    "searchInteractionsPerRun": 25,
+    "preloadedPanelOpensPerRun": 25,
+    "eventStreamDurationSecondsPerRun": 10
+  },
+  "metrics": {
+    "achievedEventsPerSecond": {
+      "definition": "semantic events emitted divided by monotonic stream duration",
+      "minimum": 490
+    },
+    "searchLatencyP95Ms": {
+      "definition": "95th percentile from search keystroke to visible filtered result",
+      "maximum": 100
+    },
+    "preloadedPanelOpenP95Ms": {
+      "definition": "95th percentile from launcher activation to visible preloaded panel",
+      "maximum": 150
+    },
+    "inspectorLongTasksOver50Ms": {
+      "definition": "PerformanceObserver long tasks over 50 ms attributable to the inspector during the stream",
+      "maximum": 0
+    },
+    "retainedEvents": {
+      "definition": "controller events retained after the complete stream",
+      "maximum": 500
+    }
+  },
+  "recordedEvidence": ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-react-inspector/task-11-browser-evidence.json"
+}

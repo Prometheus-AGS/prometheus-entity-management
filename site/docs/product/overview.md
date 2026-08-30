@@ -29,7 +29,7 @@ reads that entity.
 | Svelte / Solid / Alpine / HTMX / Web Components | 5 binding packages | Stores, signals, plugins, SSE, elements |
 | Agentic surfaces | `@prometheus-ags/a2ui-react@3.1.0`, `@prometheus-ags/entity-graph-a2a@3.1.0` | A2UI v1.0-RC compatibility, AG-UI 0.0.59, A2A v1 |
 | Desktop / mobile | `@prometheus-ags/entity-graph-tauri` | Tauri 2 plugin |
-| Flutter | `entity_graph_flutter@3.0.2` | Dart graph + Riverpod; optional controller and official DevTools companion; A2UI 1.0-RC compatibility via GenUI 0.10.2 in the showcase |
+| Flutter | `entity_graph_flutter@3.0.5` | Dart graph + Riverpod; optional controller and official DevTools companion; A2UI 1.0-RC compatibility via GenUI 0.10.2 in the showcase |
 | Tooling | `entity-graph-cli`, `entity-graph-mcp` | Rust crates |
 
 ## Certification model

@@ -19,7 +19,7 @@ graph access, A2UI 1.0-RC React/Flutter compatibility, and AG-UI 0.0.59
 activity support. `3.0.0` shipped with an
 unresolved pnpm `workspace:` protocol in its manifests and is deprecated; `3.0.1`
 and `3.0.2` were corrective republications. `3.0.4` was published with stale
-build artifacts and is deprecated in favor of `3.1.0`. Flutter `3.0.2` adds the
+build artifacts and is deprecated in favor of `3.1.0`. Flutter `3.0.5` adds the
 optional controller and official DevTools companion; React and A2UI React remain
 at npm `3.1.0`.
 The production documentation is available at
@@ -160,15 +160,15 @@ hydration so server markup remains unchanged. See the
 Install the public Flutter package from pub.dev:
 
 ```bash
-flutter pub add entity_graph_flutter:^3.0.2
+flutter pub add entity_graph_flutter:^3.0.5
 ```
 
 <!-- BEGIN GENERATED:NATIVE_RELEASES -->
-pub.dev snapshot: 2026-08-29T12:03:04Z.
+pub.dev snapshot: 2026-08-30T15:54:36Z.
 
 | Package | Version | State | Published |
 | --- | --- | --- | --- |
-| [`entity_graph_flutter`](https://pub.dev/packages/entity_graph_flutter) | `3.0.1` | published | 2026-08-29T11:59:01.225827Z |
+| [`entity_graph_flutter`](https://pub.dev/packages/entity_graph_flutter) | `3.0.5` | published | 2026-08-30T15:49:48.424393Z |
 
 The published archive passed a clean consumer resolution, import, and analyzer check.
 pub.dev does not yet associate the package with a verified publisher.
@@ -180,7 +180,7 @@ example uses generated Riverpod families, optimistic/offline CRUD,
 relationships, realtime invalidation, policy-gated GenUI, responsive layouts,
 and an optional FFI transport.
 
-Flutter `3.0.2` ships an optional, metadata-first DevTools controller,
+Flutter `3.0.5` ships an optional, metadata-first DevTools controller,
 store-isolated VM-service bridge, and official responsive DevTools package
 extension. Import `package:entity_graph_flutter/devtools.dart` only from a
 debug bootstrap; the ordinary package entry and product-mode builds remain
@@ -268,7 +268,7 @@ paths, and token-shaped content.
 | pnpm | `>=10.33.0 <12` | pnpm 10.33.0 is pinned; pnpm 11 consumer workspaces are supported |
 | React | 19.x | vanilla core remains React-free |
 | Next.js | App Router / 16.x example | one graph per server request |
-| Flutter | 3.44.8+ | `entity_graph_flutter@3.0.2`; Riverpod 3 generated providers; official DevTools companion; A2UI 1.0-RC compatibility via GenUI 0.10.2 |
+| Flutter | 3.44.8+ | `entity_graph_flutter@3.0.5`; Riverpod 3 generated providers; official DevTools companion; A2UI 1.0-RC compatibility via GenUI 0.10.2 |
 | Tauri | 2.x | shared desktop/mobile application and native plugin |
 | npm module formats | ESM + CommonJS + loader-specific declarations | verified from packed tarballs |
 

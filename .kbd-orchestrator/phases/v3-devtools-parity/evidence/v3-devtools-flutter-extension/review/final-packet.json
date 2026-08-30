@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "mode": "diff",
+  "phase": "v3-devtools-parity",
+  "target": "v3-devtools-flutter-extension",
+  "producer_model": "openai/gpt-5.6-sol",
+  "sourceCommit": "b1c18b4f1d508feb445cb60713d7e04ac937b0e2",
+  "artifactPaths": [
+    "packages/entity_graph_flutter/lib/src/devtools",
+    "tool/entity_graph_flutter_devtools_extension/lib/main.dart",
+    "packages/entity_graph_flutter/extension/devtools"
+  ],
+  "reviewScope": [
+    "multi-store and multi-client command correlation",
+    "preview and time-travel lifecycle safety",
+    "history-import cancellation and retention",
+    "generation-safe extension refresh",
+    "official package-extension build and publication"
+  ]
+}

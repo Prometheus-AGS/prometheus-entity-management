@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "changeId": "v3-devtools-docs-examples",
+  "status": "passed",
+  "versions": {
+    "npm": "3.1.0",
+    "flutter": "3.0.5"
+  },
+  "checks": [
+    "Dart ordinary and DevTools public ledgers match 93 and 104 declarations",
+    "README parity passes for 12 npm packages, 5 examples, 16 capabilities, and 17 commands",
+    "13 of 13 shared semantic coverage scenarios pass",
+    "Both Docusaurus production sites compile and generate static files"
+  ],
+  "claimBoundaries": [
+    "React automated browser acceptance is recorded; the optional human study is not claimed",
+    "Chrome deterministic private ZIP is recorded; Chrome Web Store publication is not claimed",
+    "Flutter 3.0.5 publication and clean hosted consumer build are recorded; human DevTools-host usability is not claimed",
+    "Sovereign sync is outside this phase"
+  ]
+}

@@ -2,34 +2,34 @@
   "schemaVersion": 1,
   "changeId": "v3-devtools-flutter-extension",
   "status": "passed",
-  "sourceVersion": "3.0.3",
+  "sourceVersion": "3.0.5",
   "devtoolsExtensionsVersion": "0.5.1",
   "flutterToolchain": "3.48.0-0.1.pre",
   "protocolVersion": 1,
-  "sourceSha256": "1b21c55a06cc1ed96e5c9c90bc31cb116131d876f82143d6771af390c2d015f2",
-  "packageManifestSha256": "3b9ab359b0271e6e03e359fc0b533b7d79c441f3b97616bf6083652f294d787e",
-  "extensionConfigSha256": "ecf2d4fe8c9026f688ccdaa1c7519c9d904b4e70ee69cb78c39a7a7de745e31e",
-  "buildInventorySha256": "1ed1445b0ee238ce190e68bb5b3147d80bfb6c3bede99c03bbc4e4fa9d7f916e",
+  "sourceSha256": "7d0964fd4858ca963854844e77eea58a1aa6a005f8ae225962211bf845504d62",
+  "packageManifestSha256": "ccb6af0b69cb2df372b51a15f1013d5ece868404ee9752995048bfd4434963a2",
+  "extensionConfigSha256": "9062d3cf44bdb6aab8042c81d56abd04c30ee60a2e19981c34eec783a7d27c3b",
+  "buildInventorySha256": "1babfc051f166635494afae5f5e130b1eb75a3b1f31ebefba2e6dfd0756b90c8",
   "buildFileCount": 44,
   "checks": [
-    "scoped Dart analyzer with no issues",
+    "scoped Dart analyzer with zero errors and warnings",
     "official devtools_extensions build_and_copy release web build",
     "official devtools_extensions package validation",
     "publishable config.yaml and build inventory"
   ],
   "surfaces": [
     "overview and store selection",
-    "entities including dirty state",
+    "entities including dirty and original state",
     "views and relationships",
-    "event activity",
+    "event activity and retained history",
     "local entity preview and conflict-safe receipt restore",
     "snapshot rewind and return to live",
+    "multi-client history import inspection, cancellation, and confirmation",
     "loading, disconnected, incompatible, error, and ready states",
     "narrow and wide navigation"
   ],
   "notClaimed": [
-    "pub.dev publication after this source change",
-    "connected DevTools host certification",
-    "human usability certification"
+    "human usability certification",
+    "physical-device or app-store certification"
   ]
 }

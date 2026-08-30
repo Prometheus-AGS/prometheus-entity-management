@@ -6,7 +6,7 @@ sidebar_position: 3
 # Native API references
 
 The Dart package is canonical under `packages/entity_graph_flutter` and public
-on [pub.dev as `entity_graph_flutter@3.0.1`](https://pub.dev/packages/entity_graph_flutter). The
+on [pub.dev as `entity_graph_flutter@3.0.5`](https://pub.dev/packages/entity_graph_flutter). The
 [published dartdoc reference](https://prometheus-ags.github.io/prometheus-entity-management/native-api/dart/)
 is generated from that package, never from the provenance import:
 

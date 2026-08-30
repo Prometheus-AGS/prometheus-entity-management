@@ -6,7 +6,7 @@ turn the filtered KnowMe provenance tree into a second package.
 
 ## Certified boundary
 
-`packages/entity_graph_flutter` is versioned as `3.0.0` and remains the only
+`packages/entity_graph_flutter` is versioned as `3.0.5` and remains the only
 Dart graph owner. Its public library exports:
 
 - one normalized `EntityGraph` with canonical rows, local patches, sync
@@ -20,12 +20,13 @@ Dart graph owner. Its public library exports:
 
 Repository source now also contains a separate optional
 `package:entity_graph_flutter/devtools.dart` entry. It is not exported from the
-ordinary barrel and was added after the published `3.0.1` archive. The entry
+ordinary barrel and is published in the `3.0.5` archive. The entry
 provides a reference-counted controller per graph, Riverpod logical-view
 instrumentation, bounded inspection/history/preview/time travel, and an
 isolate-wide store-explicit VM-service bridge. Its complete assembled gate is
-`pnpm run verify:devtools-flutter-controller`; it does not certify the later
-Flutter DevTools extension UI or a pub.dev payload.
+`pnpm run verify:devtools-flutter-controller`. Version `3.0.5` also publishes
+the official `extension/devtools` UI after analyzer, build, package validation,
+archive inspection, and clean external-consumer gates.
 
 The primary generated entry points are `entityGraphProvider`,
 `entityTransportRegistryProvider`, `entityChangeBridgeProvider<T>`,
@@ -87,15 +88,14 @@ records the optional repository-source DevTools barrel. Both are compared
 mechanically to source.
 
 Historical Flutter unit/widget/golden receipts remain audit history for the
-published `3.0.1` candidate, but they are not current completion or release
+published `3.0.1` archive, but they are not current completion or release
 evidence under the implementation-first, full-integration-only doctrine.
 
-Before the next pub.dev release, `v3-devtools-release-certification` must add
-and pass one ordinary-library assembled Flutter/Riverpod acceptance flow that
-exercises the production graph, generated providers, transport, view, CRUD,
-realtime, and rendering boundaries without unit/widget/mock substitution. The
-DevTools controller gate does not replace that future ordinary-library release
-gate.
+The `3.0.5` release certification combines the existing ordinary
+Flutter/Riverpod application acceptance evidence with the real VM-service
+controller flow and a clean external consumer of both published libraries.
+The DevTools controller gate remains separate from ordinary application
+behavior so neither surface is used to overclaim the other.
 
 ## Clean stable-SDK candidate
 
@@ -134,7 +134,8 @@ change the ledger; change annotations/source and regenerate it.
 
 This gate does not certify:
 
-- pub.dev ownership, credentials, provenance, or publication;
+- a verified pub.dev publisher identity (the independently authorized `3.0.5`
+  publication and archive hash are recorded separately);
 - the immutable full-release SHA or cross-ecosystem certification bundle—the
   library's clean stable-SDK candidate is complete, but other release lanes are not;
 - the complete Flutter + Riverpod + A2UI showcase, Android/iOS runners,

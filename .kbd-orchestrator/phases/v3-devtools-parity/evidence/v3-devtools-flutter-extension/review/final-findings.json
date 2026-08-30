@@ -2,18 +2,12 @@
   "schemaVersion": 1,
   "mode": "diff",
   "phase": "v3-devtools-parity",
-  "target": "v3-devtools-flutter-controller",
+  "target": "v3-devtools-flutter-extension",
   "verdict": "PASS",
   "judge_model": "openai/gpt-5.4 + codex-isolated-review-agent",
   "producer_model": "openai/gpt-5.6-sol",
   "cross_model_check": "verified-distinct",
   "isolation_mode": "rest-gateway + artifact-only:collaboration-agent",
   "findings": [],
-  "checkedClasses": [
-    "candidate-bound cancellation lifecycle",
-    "multi-client ownership and unblocking",
-    "event and snapshot retention invariance",
-    "disposal and VM-service serialization"
-  ],
   "sycophancyScore": 0.0
 }

@@ -9,7 +9,8 @@ ordinary package root inspector-free.
 All twelve `@prometheus-ags` npm packages are published at 3.1.0. Both `latest`
 and `next` point to 3.1.0. React continues to support A2UI 1.0-RC compatibility
 and AG-UI 0.0.59 transport through `@prometheus-ags/a2ui-react`. Flutter remains
-independently published as `entity_graph_flutter@3.0.1` on pub.dev.
+independently published as `entity_graph_flutter@3.0.5` on pub.dev, including
+the optional controller and official Flutter DevTools companion.
 
 The automated package gate passed for all twelve packed tarballs across Node
 ESM, Node CommonJS, TypeScript NodeNext, TypeScript Node16, and bundler

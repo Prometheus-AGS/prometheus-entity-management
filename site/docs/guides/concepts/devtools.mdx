@@ -8,8 +8,8 @@ description: Activate the optional React inspector and trace entities, dirty val
 :::info Current versions
 
 React DevTools ships in npm `3.1.0` through `./devtools` and
-`./devtools/auto`. Flutter `3.0.1` is the current pub.dev release; the controller
-and official Flutter DevTools companion documented below ship in `3.0.2`.
+`./devtools/auto`. Flutter `3.0.5` is published on pub.dev with the controller
+and official Flutter DevTools companion documented below.
 
 :::
 
@@ -155,15 +155,18 @@ not an authentication boundary and should remain a development-only opt-in.
 
 ## Flutter DevTools companion
 
-Flutter `3.0.2` includes `extension/devtools/config.yaml` plus the compiled
+Flutter `3.0.5` includes `extension/devtools/config.yaml` plus the compiled
 official package extension. Attach an `EntityGraphDevtoolsController` from
-`package:entity_graph_flutter/devtools.dart` in a debug app. Dart DevTools then
-discovers overview, entities, views/relationships, and activity workspaces with
-explicit loading, disconnected, incompatible, error, and ready states.
+`package:entity_graph_flutter/devtools.dart` in a debug app. The packaged
+workflow is designed for Dart DevTools to discover overview, entities,
+views/relationships, and activity workspaces with explicit loading,
+disconnected, incompatible, error, and ready states.
 
 The VM-service methods are absent in product mode, store selection is explicit,
 and values stay metadata-only unless the app supplies an include/redaction
-policy. The extension cannot weaken that policy.
+policy. The extension cannot weaken that policy. Publication, static extension
+validation, and a clean consumer release build pass; an end-to-end connected
+DevTools-host certification is not claimed.
 
 ## Evidence Boundary
 

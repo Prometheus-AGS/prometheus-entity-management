@@ -37,11 +37,11 @@ Registry snapshot: 2026-08-30T04:02:31Z. Expected candidate: `3.1.0`.
 <!-- END GENERATED:NPM_REGISTRY_STATUS -->
 
 <!-- BEGIN GENERATED:PUBDEV_REGISTRY_STATUS -->
-pub.dev snapshot: 2026-08-29T12:03:04Z.
+pub.dev snapshot: 2026-08-30T15:54:36Z.
 
 | Package | Version | State | Published |
 | --- | --- | --- | --- |
-| [`entity_graph_flutter`](https://pub.dev/packages/entity_graph_flutter) | `3.0.1` | published | 2026-08-29T11:59:01.225827Z |
+| [`entity_graph_flutter`](https://pub.dev/packages/entity_graph_flutter) | `3.0.5` | published | 2026-08-30T15:49:48.424393Z |
 
 The published archive passed a clean consumer resolution, import, and analyzer check.
 pub.dev does not yet associate the package with a verified publisher.
