@@ -15,8 +15,10 @@ const urls = {
 };
 const scenarios: Record<string, { status: "pass"; proof: Record<string, unknown> }> = {};
 const screenshots: string[] = [];
+const gateVersion = "v3-devtools-react-inspector/1";
 const performanceThresholds = {
   targetEventsPerSecond: 500,
+  timerJitterAllowancePercent: 2,
   minEventsPerSecond: 490,
   maxSearchLatencyP95Ms: 100,
   maxPreloadedPanelOpenP95Ms: 150,
@@ -73,11 +75,13 @@ test.afterAll(() => {
     resolve(evidenceDirectory, "task-11-browser-evidence.json"),
     `${JSON.stringify({
       schemaVersion: 1,
+      gateVersion,
       change: "v3-devtools-react-inspector",
       recordedAt: new Date().toISOString(),
       status,
       evidenceKind: "packed-vite-next-development-production-browser",
       countsAsPackedPackageEvidence: true,
+      thresholds: performanceThresholds,
       scenarios,
       artifacts: {
         screenshots,

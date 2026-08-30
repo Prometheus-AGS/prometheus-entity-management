@@ -30,9 +30,17 @@ The gate proved:
 - automatic registration of three rendered list views through public hooks;
 - original, patch, live, diff, entity history, view membership, causal rail,
   Activity correlation, and one-segment Graph Pulse attribution;
-- 5,000 semantic publications over 10.015 seconds on a 10-core/32-GiB runner,
-  with search p95 18.5 ms, preloaded panel-open p95 13.4 ms, zero observed
-  tasks over 50 ms, and retained history capped at 500 events.
+- a producer scheduled at 500 semantic publications/second for 10 seconds,
+  while search and preloaded-panel interaction remained inside their explicit
+  p95 budgets, no inspector-attributable task exceeded 50 ms, and retained
+  history stayed capped at 500 events.
+
+The receipt records both the 500 events/second generator target and a 490
+events/second completion-window floor. The latter is a 2% allowance for
+Chromium timer wake-up drift after the final scheduled publication; it does
+not lower the generated workload. The gate version and complete threshold
+snapshot are retained at the top level of both browser and packed receipts so
+future evidence cannot be evaluated against an implicit or changed bar.
 
 ## Observed defects corrected by the gate
 

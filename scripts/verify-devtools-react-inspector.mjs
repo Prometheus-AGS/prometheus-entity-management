@@ -38,10 +38,12 @@ const evidenceDirectory = resolve(
 
 const report = {
   schemaVersion: 1,
+  gateVersion: "v3-devtools-react-inspector/1",
   gateStartedAt: new Date().toISOString(),
   generatedAt: null,
   boundary: "packed-vite-next-browser-acceptance",
   source: { commit: await gitHead(), dirtyTaskFiles: await gitTaskFilesDirty() },
+  thresholdSnapshot: null,
   packages: {
     core: { build: "pending", pack: "pending", sha256: null },
     react: { build: "pending", pack: "pending", sha256: null },
@@ -117,6 +119,11 @@ try {
   process.stdout.write(playwright.stdout);
   const browserReceipt = JSON.parse(await readFile(join(evidenceDirectory, "task-11-browser-evidence.json"), "utf8"));
   if (browserReceipt.status !== "pass") throw new Error("browser acceptance receipt did not pass");
+  if (browserReceipt.gateVersion !== report.gateVersion) {
+    throw new Error(`browser receipt gate version ${browserReceipt.gateVersion ?? "missing"} does not match ${report.gateVersion}`);
+  }
+  if (!browserReceipt.thresholds) throw new Error("browser acceptance receipt is missing its threshold snapshot");
+  report.thresholdSnapshot = browserReceipt.thresholds;
   report.browser = { status: "pass", receipt: browserReceipt };
 
   if (reportPath) {
