@@ -62,6 +62,8 @@
     "dart:package": "flutter pub run melos run package:check",
     "dart:test": "flutter pub run melos run test",
     "dev:agentic-a2ui": "pnpm --filter prometheus-agentic-a2ui-example dev",
+    "devtools:study:check": "node scripts/evaluate-devtools-usability-study.mjs --readiness",
+    "devtools:study:evaluate": "node scripts/evaluate-devtools-usability-study.mjs",
     "dev:next": "pnpm --filter prometheus-entity-management-nextjs dev",
     "dev:tauri": "pnpm --filter prometheus-entity-management-tauri dev",
     "dev:tauri-universal": "pnpm --filter prometheus-tauri-universal-example tauri dev",

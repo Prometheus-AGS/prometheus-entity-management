@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prometheus-ags.dev/schemas/react-devtools-usability-participant-v1.json",
+  "title": "React DevTools usability participant result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "studyId",
+    "participantId",
+    "cohort",
+    "consentRetainedEvidence",
+    "recordedAt",
+    "fixtureCommit",
+    "completionTimeMs",
+    "assistanceCount",
+    "identifiedEntity",
+    "identifiedOriginalStatus",
+    "identifiedLiveStatus",
+    "identifiedViews",
+    "frictionCode",
+    "confidence"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "studyId": { "const": "v3-devtools-react-inspector-formative-1" },
+    "participantId": { "type": "string", "pattern": "^p-[a-z0-9-]{2,32}$" },
+    "cohort": { "enum": ["first-time", "oriented"] },
+    "consentRetainedEvidence": { "const": true },
+    "recordedAt": { "type": "string", "format": "date-time" },
+    "fixtureCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "completionTimeMs": { "type": "integer", "minimum": 1, "maximum": 600000 },
+    "assistanceCount": { "type": "integer", "minimum": 0 },
+    "identifiedEntity": { "type": ["string", "null"] },
+    "identifiedOriginalStatus": { "type": ["string", "null"] },
+    "identifiedLiveStatus": { "type": ["string", "null"] },
+    "identifiedViews": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string" }
+    },
+    "frictionCode": {
+      "enum": [
+        "none",
+        "launcher",
+        "entity-search",
+        "dirty-state",
+        "value-tabs",
+        "registered-views",
+        "navigation",
+        "other-controlled"
+      ]
+    },
+    "confidence": { "type": "integer", "minimum": 1, "maximum": 5 }
+  }
+}

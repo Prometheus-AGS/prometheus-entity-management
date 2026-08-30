@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "studyId": "v3-devtools-react-inspector-formative-1",
+  "generatedAt": "2026-08-30T03:01:36.663Z",
+  "status": "blocked",
+  "evidenceKind": "retained-anonymized-human-formative-usability-study",
+  "automatedRunsCountAsParticipants": false,
+  "thresholds": {
+    "minimumParticipants": 12,
+    "minimumUnassistedSuccessRatio": "10/12",
+    "maximumCohortMedianCompletionTimeMsExclusive": 10000,
+    "requiredCohorts": [
+      "first-time",
+      "oriented"
+    ]
+  },
+  "result": {
+    "participantCount": 0,
+    "requiredSuccesses": 10,
+    "successfulParticipants": 0,
+    "bothCohortsPresent": false,
+    "cohortMediansPass": false,
+    "successThresholdPass": false,
+    "cohorts": {
+      "first-time": {
+        "count": 0,
+        "medianCompletionTimeMs": null
+      },
+      "oriented": {
+        "count": 0,
+        "medianCompletionTimeMs": null
+      }
+    }
+  },
+  "fixtureCommits": [],
+  "participants": []
+}

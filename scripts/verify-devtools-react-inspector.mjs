@@ -25,10 +25,15 @@ const workspaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const reportFlag = process.argv.indexOf("--report");
 const reportPath = reportFlag >= 0 ? process.argv[reportFlag + 1] : null;
 if (reportFlag >= 0 && !reportPath) throw new Error("--report requires a file path");
+const prepareStudyFlag = process.argv.indexOf("--prepare-study");
+const prepareStudyPath = prepareStudyFlag >= 0 ? process.argv[prepareStudyFlag + 1] : null;
+if (prepareStudyFlag >= 0 && !prepareStudyPath) throw new Error("--prepare-study requires an empty output directory path");
+if (prepareStudyPath && reportPath) throw new Error("--prepare-study and --report cannot be combined");
 
 const corePackage = requirePackage("@prometheus-ags/entity-graph-core");
 const reactPackage = requirePackage("@prometheus-ags/prometheus-entity-management");
-const temporaryRoot = await mkdtemp(join(tmpdir(), "prometheus-react-devtools-"));
+const retainedStudyRoot = prepareStudyPath ? resolve(workspaceRoot, prepareStudyPath) : null;
+const temporaryRoot = retainedStudyRoot ?? await mkdtemp(join(tmpdir(), "prometheus-react-devtools-"));
 const tarballDirectory = join(temporaryRoot, "tarballs");
 const consumerRoot = join(temporaryRoot, "consumer");
 const evidenceDirectory = resolve(
@@ -38,7 +43,7 @@ const evidenceDirectory = resolve(
 
 const report = {
   schemaVersion: 1,
-  gateVersion: "v3-devtools-react-inspector/1",
+  gateVersion: "v3-devtools-react-inspector/2",
   gateStartedAt: new Date().toISOString(),
   generatedAt: null,
   boundary: "packed-vite-next-browser-acceptance",
@@ -61,6 +66,7 @@ const report = {
 
 async function main() {
 try {
+  if (retainedStudyRoot) await createEmptyStudyRoot(retainedStudyRoot);
   await mkdir(tarballDirectory, { recursive: true });
   await mkdir(evidenceDirectory, { recursive: true });
 
@@ -81,6 +87,14 @@ try {
     cwd: consumerRoot,
   });
   report.consumers.install = "pass";
+
+  if (retainedStudyRoot) {
+    await writeStudyLaunchInstructions(retainedStudyRoot);
+    process.stdout.write(`[devtools-react-inspector] STUDY FIXTURE READY: ${retainedStudyRoot}\n`);
+    process.stdout.write(`Run: pnpm --dir ${join(consumerRoot, "apps/vite")} dev --host 127.0.0.1 --port 4191\n`);
+    process.stdout.write("Open: http://127.0.0.1:4191/?study=1\n");
+    return;
+  }
 
   await run("pnpm", ["--dir", join(consumerRoot, "apps/vite"), "typecheck"]);
   report.consumers.viteTypecheck = "pass";
@@ -142,8 +156,37 @@ try {
   }
   throw error;
 } finally {
-  await rm(temporaryRoot, { recursive: true, force: true });
+  if (!retainedStudyRoot) await rm(temporaryRoot, { recursive: true, force: true });
 }
+}
+
+async function createEmptyStudyRoot(path) {
+  try {
+    await stat(path);
+    throw new Error(`study output already exists: ${path}`);
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+  }
+  await mkdir(dirname(path), { recursive: true });
+  await mkdir(path);
+}
+
+async function writeStudyLaunchInstructions(path) {
+  const sourceCommit = await gitHead();
+  await writeFile(join(path, "STUDY-FIXTURE.md"), `# Generated React DevTools study fixture
+
+Source commit: \`${sourceCommit}\`
+
+Launch the Vite development consumer:
+
+\`\`\`bash
+pnpm --dir ${join(consumerRoot, "apps/vite")} dev --host 127.0.0.1 --port 4191
+\`\`\`
+
+Open <http://127.0.0.1:4191/?study=1>. The query parameter seeds the fixed
+dirty entity and all three registered views without exposing their identifiers
+in the host UI. Record the source commit in every participant result.
+`);
 }
 
 function requirePackage(name) {
@@ -368,6 +411,7 @@ if (import.meta.env.DEV) {
 }
 
 type Order = { id: string; status: string; total: number; customerId: string };
+const studyMode = new URLSearchParams(window.location.search).has("study");
 const keys = ["active", "all", "attention"].map((name) => serializeKey(["orders", name]));
 const initialOrder: Order = { id: "o-1042", status: "pending", total: 42, customerId: "c-22" };
 const graph = graphStore.getState();
@@ -386,22 +430,22 @@ declare global {
   }
 }
 
-function OrderView({ name, queryKey }: { name: string; queryKey: string }) {
+function OrderView({ name, queryKey, studyIndex }: { name: string; queryKey: string; studyIndex: number }) {
   const result = useEntityList<Order, Order>({
     type: "Order",
     queryKey: ["orders", name],
     enabled: true,
     staleTime: Number.POSITIVE_INFINITY,
   });
-  return <section aria-label={name + " orders"} data-query-key={queryKey}>
-    <h2>{name}</h2>
-    <ol>{result.items.map((order) => <li key={order.id}>{order.id} · {order.status}</li>)}</ol>
+  return <section aria-label={(studyMode ? "Rendered surface " + studyIndex : name + " orders")} data-query-key={queryKey}>
+    <h2>{studyMode ? "Rendered application surface " + studyIndex : name}</h2>
+    <ol>{result.items.map((order, index) => <li key={order.id}>{studyMode ? "Record " + (index + 1) : order.id + " · " + order.status}</li>)}</ol>
   </section>;
 }
 
 function App() {
   useEffect(() => {
-    window.__pemAcceptance = {
+    const acceptance = {
       batch() {
         const entries = Array.from({ length: 12 }, (_, index) => ({
           id: "batch-" + String(index + 1).padStart(2, "0"),
@@ -448,12 +492,18 @@ function App() {
         return { emitted, durationMs: performance.now() - startedAt, longTasks };
       },
     };
+    window.__pemAcceptance = acceptance;
+    if (studyMode) {
+      acceptance.batch();
+      acceptance.includeOrder();
+      acceptance.dirty();
+    }
   }, []);
 
   return <main>
-    <h1>Packed Vite entity graph</h1>
-    <p>Three public list hooks feed one normalized graph.</p>
-    {keys.map((key, index) => <OrderView key={key} name={["active", "all", "attention"][index]} queryKey={key} />)}
+    <h1>{studyMode ? "Prometheus DevTools study fixture" : "Packed Vite entity graph"}</h1>
+    <p>{studyMode ? "Use Graph DevTools to diagnose the seeded graph state." : "Three public list hooks feed one normalized graph."}</p>
+    {keys.map((key, index) => <OrderView key={key} name={["active", "all", "attention"][index]} queryKey={key} studyIndex={index + 1} />)}
   </main>;
 }
 

@@ -15,7 +15,7 @@ const urls = {
 };
 const scenarios: Record<string, { status: "pass"; proof: Record<string, unknown> }> = {};
 const screenshots: string[] = [];
-const gateVersion = "v3-devtools-react-inspector/1";
+const gateVersion = "v3-devtools-react-inspector/2";
 const performanceThresholds = {
   targetEventsPerSecond: 500,
   timerJitterAllowancePercent: 2,
@@ -66,6 +66,7 @@ test.afterAll(() => {
   const required = [
     "production-exclusion",
     "development-activation-next-hydration",
+    "human-study-fixture-readiness",
     "hide-restore-layout-accessibility",
     "dirty-original-view-history-causality",
     "responsive-500-event-interaction",
@@ -135,6 +136,32 @@ test("development activation is automatic after opt-in and Next hydration remain
     viteAutoEntryVisible: true,
     nextPostHydrationHostVisible: true,
     nextHydrationErrors: 0,
+  });
+});
+
+test("human-study fixture masks host answers while retaining the seeded causal state", async ({ page }) => {
+  await page.goto(`${urls.viteDev}/?study=1`);
+  const host = page.getByRole("main");
+  await expect(host.getByRole("heading", { name: "Prometheus DevTools study fixture" })).toBeVisible();
+  await expect(host.getByText("o-1042", { exact: false })).toHaveCount(0);
+  await expect(host.getByText("pending", { exact: false })).toHaveCount(0);
+  await expect(host.getByText("approved", { exact: false })).toHaveCount(0);
+  await expect(host.getByRole("heading", { name: /active|all|attention/i })).toHaveCount(0);
+  await expect(host.getByRole("listitem")).toHaveCount(39);
+
+  await openInspector(page);
+  await page.getByRole("tab", { name: /Entities/ }).click();
+  await page.getByRole("searchbox", { name: "Search entities" }).fill("o-1042");
+  await page.locator(".pem-entity-row").filter({ hasText: "o-1042" }).click();
+  await expect(page.getByText("◆ Dirty", { exact: true })).toBeVisible();
+  await expect(page.getByText("Visible in registered views")).toBeVisible();
+  await expect(page.locator(".pem-causal-rail")).toContainText("3 views");
+
+  pass("human-study-fixture-readiness", {
+    hostAnswersMasked: true,
+    dirtyEntitySeeded: "Order/o-1042",
+    registeredViewsSeeded: 3,
+    countsAsParticipant: false,
   });
 });
 

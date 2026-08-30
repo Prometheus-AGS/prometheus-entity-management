@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "studyId": "v3-devtools-react-inspector-formative-1",
+  "participantId": "p-replace-me",
+  "cohort": "first-time",
+  "consentRetainedEvidence": true,
+  "recordedAt": "REPLACE_WITH_ISO_8601_DATE_TIME",
+  "fixtureCommit": "REPLACE_WITH_40_CHARACTER_GIT_COMMIT",
+  "completionTimeMs": 1,
+  "assistanceCount": 0,
+  "identifiedEntity": null,
+  "identifiedOriginalStatus": null,
+  "identifiedLiveStatus": null,
+  "identifiedViews": [],
+  "frictionCode": "none",
+  "confidence": 1
+}

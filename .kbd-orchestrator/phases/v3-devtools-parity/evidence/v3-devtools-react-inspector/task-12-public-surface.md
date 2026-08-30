@@ -37,3 +37,19 @@ use a different package ledger.
 - `node scripts/generate-api-reference.mjs --skip-artifacts` — pass with no new undocumented baseline entries.
 - `pnpm --filter @prometheus-ags/entity-graph-docs-site build` — pass; generated API/chooser pages and Docusaurus production build compile.
 - `pnpm run docs:check` — pass for the repository's existing website content contract.
+
+## Human-study readiness
+
+- Added a disposable packed-consumer preparation mode:
+  `node scripts/verify-devtools-react-inspector.mjs --prepare-study <empty-dir>`.
+  Its `?study=1` surface seeds the accepted dirty entity and all three rendered
+  list-hook views while masking their identifiers in the host UI.
+- Retained a facilitator protocol, privacy contract, strict participant JSON
+  schema/template, named recruitment owner, result directory, and deterministic
+  evaluator under `usability-study/`.
+- `pnpm run devtools:study:check` passes the study-kit readiness contract.
+- `pnpm run devtools:study:evaluate` truthfully exits blocked with 0/12
+  participants and writes `usability-study/evaluation-report.json`.
+- Automated browser evidence remains excluded from the participant count. Task
+  12 and Artifact Refiner convergence remain open until authentic results pass
+  the accepted 10-of-12 and per-cohort median thresholds.

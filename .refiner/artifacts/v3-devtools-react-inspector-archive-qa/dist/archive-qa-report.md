@@ -49,3 +49,8 @@ participants must complete both without assistance and each cohort median must
 remain under 10 seconds. Until that evidence is attached, neither Artifact
 Refiner convergence nor KBD archive completion is truthful.
 
+The repository now retains a disposable packed study fixture, facilitator
+protocol, privacy-limited participant schema/template, named recruitment owner,
+and deterministic non-cherry-picking evaluator. Study-kit readiness passes, but
+the generated evaluation report records 0 participants. No recruitment message
+was sent by the coding agent and no automated run was counted as a developer.

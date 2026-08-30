@@ -66,3 +66,17 @@
 - Persisted the report, screenshots, constraint results, security boundary,
   hashes, and delta-first reflection. Convergence remains running because the
   mandatory 12-developer formative study is absent.
+
+## Iteration 5 — 2026-08-30
+
+- Added the missing human-study execution boundary without substituting agents
+  or browser automation for developers: packed fixture preparation, fixed
+  seeded task, masked host UI, facilitator protocol, privacy rules, strict
+  anonymized schema, named recruitment owner, and retained results directory.
+- Added a deterministic evaluator that rejects malformed or duplicate records,
+  requires both cohorts, hashes every participant file, applies the 10/12 ratio
+  to the entire retained set, and generates an auditable aggregate report.
+- Study-kit readiness passes. The aggregate report is `blocked` with 0 retained
+  participants, so the formative-usability constraint remains unsatisfied.
+- The refinement iteration cap is exhausted on an external human-evidence gate;
+  neither Artifact Refiner convergence nor KBD archive is claimed.

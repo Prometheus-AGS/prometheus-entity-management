@@ -2075,3 +2075,21 @@
   The canonical next command is `/kbd-apply v3-devtools-react-inspector`.
 - No legacy unit/widget/component/mock/snapshot/golden/partial suite or full
   repository build ran in Task 9. Sovereign sync was not touched.
+
+## 2026-08-30 — React inspector task 12 study readiness
+
+- Audited the accepted UI-spec and retained QA artifacts. Five of six blocking
+  constraints pass; the non-waivable 12-developer formative-usability study is
+  the only remaining React inspector certification gate.
+- Added a disposable packed Vite study-fixture preparation path with automatic
+  fixed-state seeding and masked host identifiers, plus facilitator protocol,
+  privacy-limited schema/template, named recruitment owner, and result storage.
+- Added a deterministic evaluator that rejects malformed/duplicate evidence,
+  excludes automation, applies the 10/12 ratio to the full retained set, checks
+  both cohort medians, and hashes participant files into its aggregate report.
+- Study-kit readiness passed. The generated report truthfully records 0/12
+  participants and remains blocked; no recruitment communication was
+  authorized or sent and no participant evidence was invented.
+- React implementation remains complete, but canonical Task 12 and Artifact
+  Refiner certification remain open. Phase implementation remains 5/9 and
+  project implementation remains 37/63. Sovereign sync was not touched.
