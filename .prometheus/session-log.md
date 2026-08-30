@@ -2158,3 +2158,20 @@
   README parity checks all pass. The full Documentation workflow remains the
   release integration authority and must pass before Pages propagation is
   claimed. Sovereign sync was not touched.
+
+## 2026-08-30 — Post-push aggregate build repair
+
+- The clean GitHub build exposed two Vite source aliases that resolved the
+  core package root before its `./devtools` subpath. Added the exact DevTools
+  source alias ahead of the package-root alias in the agentic A2UI and Tauri
+  universal examples; both targeted production builds passed.
+- The aggregate build then exposed 60 newly surfaced core re-exports as blank
+  entries in the secondary API site. The generator now recognizes actual React
+  core re-exports, carries canonical core documentation and links into the
+  React reference, and shrank the React undocumented baseline from 119 to 90.
+- Removed the obsolete secondary-site claim that React DevTools was unreleased
+  after npm `3.0.5`; it now records the published npm `3.1.0` entry points.
+- The serialized release build passed all 21 Turbo workspaces, including both
+  Docusaurus sites, Chrome DevTools, Next.js, and every Vite consumer. Remote
+  CI and Pages propagation remain to be certified after the repair is pushed.
+  Sovereign sync was not touched.

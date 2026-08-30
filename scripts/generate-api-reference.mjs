@@ -316,6 +316,40 @@ function sourceReexportDoc(packageSlug, name) {
     .join(" ");
 }
 
+function namedReexportsFrom(sourcePath, moduleSpecifier) {
+  const source = readFileSync(join(workspaceRoot, sourcePath), "utf8");
+  const escapedSpecifier = moduleSpecifier.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const statement = new RegExp(
+    `export\\s+(?:type\\s+)?\\{([^;]*?)\\}\\s+from\\s+["']${escapedSpecifier}["'];`,
+    "g",
+  );
+  const names = new Set();
+  for (const match of source.matchAll(statement)) {
+    for (const binding of match[1].split(",")) {
+      const exportedName = binding.trim().split(/\s+as\s+/).at(-1)?.trim();
+      if (exportedName) names.add(exportedName);
+    }
+  }
+  return names;
+}
+
+const REACT_CORE_REEXPORTS = namedReexportsFrom(
+  "packages/entity-graph-react/src/index.ts",
+  "@prometheus-ags/entity-graph-core",
+);
+const CORE_SYMBOLS = collectTopLevel(models.get("entity-graph-core"));
+
+function canonicalReexportDoc(packageSlug, name) {
+  if (packageSlug !== "prometheus-entity-management" || !REACT_CORE_REEXPORTS.has(name)) return "";
+  const coreSymbol = CORE_SYMBOLS.get(name);
+  const coreDoc = commentText(coreSymbol?.comment) ||
+    commentText(coreSymbol?.signatures?.[0]?.comment) ||
+    sourceReexportDoc("entity-graph-core", name);
+  const canonicalLink = `[canonical core API reference](/docs/api/npm/entity-graph-core#${anchorFor(name)})`;
+  const origin = `Re-exported from \`@prometheus-ags/entity-graph-core\`; see the ${canonicalLink}.`;
+  return coreDoc ? `${coreDoc} ${origin}` : origin;
+}
+
 // ── Step 2: policy enforcement ───────────────────────────────────────────────
 const baseline = existsSync(baselinePath)
   ? JSON.parse(readFileSync(baselinePath, "utf8"))
@@ -350,6 +384,7 @@ for (const pkg of NPM_PACKAGES) {
     const doc = commentText(symbol.comment) ||
       commentText(symbol.signatures?.[0]?.comment) ||
       sourceReexportDoc(pkg.slug, name) ||
+      canonicalReexportDoc(pkg.slug, name) ||
       "";
     const documented = doc.length > 0;
     if (!documented) {
@@ -520,9 +555,7 @@ for (const pkg of NPM_PACKAGES) {
     ? [
         "## Optional DevTools entries",
         "",
-        "> **Unreleased:** these repository entries were implemented after npm `3.0.5`",
-        "> and will ship in the next minor release. They are not present in the",
-        "> published `3.0.5` tarball.",
+        "> These entries are published in npm `3.1.0`.",
         "",
         "| Entry | Contract |",
         "| ----- | -------- |",

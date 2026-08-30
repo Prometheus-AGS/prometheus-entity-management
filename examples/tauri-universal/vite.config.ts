@@ -10,6 +10,10 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "./src"),
+      "@prometheus-ags/entity-graph-core/devtools": path.resolve(
+        import.meta.dirname,
+        "../../packages/entity-graph-core/src/devtools/index.ts",
+      ),
       "@prometheus-ags/entity-graph-core": path.resolve(
         import.meta.dirname,
         "../../packages/entity-graph-core/src/index.ts",
