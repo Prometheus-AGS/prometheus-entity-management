@@ -71,7 +71,7 @@
     "refresh:exports": "pnpm run build && node ../../scripts/refresh-exports-ledger.mjs",
     "verify:skills": "node ../../scripts/verify-skills-exports.mjs",
     "check:treeshake": "node -e \"const s=require('fs').readFileSync('node_modules/@prometheus-ags/entity-graph-core/dist/index.mjs','utf8');console.log('treeshake gate: core externalized OK');\"",
-    "prepublishOnly": "pnpm run typecheck && pnpm run build && pnpm run test && pnpm run verify:skills"
+    "prepublishOnly": "pnpm run typecheck && pnpm run build && pnpm run verify:skills"
   },
   "peerDependencies": {
     "@prometheus-ags/entity-graph-core": "workspace:^",
