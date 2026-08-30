@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "boundary": "flutter-riverpod-vm-service-acceptance",
+  "status": "pass",
+  "executedAt": "2026-08-30T22:45:34.229Z",
+  "sourceCommit": "d7dff293a79d9d3cba26fa3a0c0fbb47e8d07944",
+  "sourceArtifact": {
+    "commit": "d7dff293a79d9d3cba26fa3a0c0fbb47e8d07944",
+    "trackedDirty": false,
+    "trackedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "files": {
+      "packages/entity_graph_flutter/lib/src/devtools/commands.dart": "87699fbf356b7d8e9a83c75b54afd652157956005410019ce25c6402e99fc1dc",
+      "packages/entity_graph_flutter/lib/src/devtools/controller.dart": "fa1fbe3e07fa52f3c1bce0a6c4bac7b3c586dbd6561bccc492d2e1208165fd57",
+      "packages/entity_graph_flutter/lib/src/devtools/history.dart": "bdd8b80afdc8a26c0162a1ee773a0c9786045893e0ee495fffbeda84eab4c189",
+      "packages/entity_graph_flutter/lib/src/devtools/preview.dart": "2a37622da44ec84d5313cb088cf00b734f15d83d87acd0aca56e34b529b2d460",
+      "packages/entity_graph_flutter/lib/src/devtools/projection.dart": "c277f820f2257a8defd53ecc42783c3cd8256a2867dd1cd91e3cccd5005838a2",
+      "packages/entity_graph_flutter/lib/src/devtools/protocol.dart": "a4db99794f35f9fe905146b1a9b0fcb548fedb497c377148b231bd7537b6e75e",
+      "packages/entity_graph_flutter/lib/src/devtools/vm_service.dart": "16eecb68dc32293be654a27071dff6ecfb1c68f7fe69a3fd489fccaa6f28c446",
+      "tool/entity_graph_flutter_devtools_extension/lib/main.dart": "7d0964fd4858ca963854844e77eea58a1aa6a005f8ae225962211bf845504d62",
+      "examples/flutter-riverpod/integration_test/devtools_controller_acceptance_host.dart": "6566a3a8393e1d65bde4721f70bb0e6f833fe649e2db40d6189a67a7422eca8e",
+      "scripts/verify-devtools-flutter-controller.mjs": "a966d4b62de6da6881b58750250cac57e1c1fbd41282a3f43b9cc0b198ca2d59"
+    }
+  },
+  "device": "7F63354E-3475-4158-BB5E-F75D5E7ECFBA",
+  "fixtures": {
+    "entity-inspection-v1.json": {
+      "sha256": "5b2654e1ee326b2309b6ceb786db95dcfc3912a015adba2379cafebbea849890",
+      "bytes": 6719
+    },
+    "time-travel-v1.json": {
+      "sha256": "937478739c4fcf9d730050da375ff48a00d905cdef8c66c86cd7c24d2eda0ad5",
+      "bytes": 2613
+    }
+  },
+  "stores": [
+    "flutter-acceptance-a",
+    "flutter-acceptance-b"
+  ],
+  "extensionEvents": {
+    "total": 46,
+    "types": [
+      "lifecycle",
+      "mutation",
+      "time-travel",
+      "view"
+    ]
+  },
+  "assertions": [
+    "cross-language fixtures are byte-identical and valid JSON",
+    "real Flutter app registers Riverpod entity and list views",
+    "two active graphs remain isolated through discovery, commands, history, and disposal",
+    "graph publications emit bounded versioned Extension-stream events",
+    "entity, dirty, error, view, and relationship projections are complete",
+    "host redaction removes the sentinel before history and VM serialization",
+    "remote commands cannot escalate value policy or exceed request bounds",
+    "preview ownership is discoverable, duplicate-safe, canonical-update-safe, and released after a true patch conflict",
+    "preview restoration detects patch ABA changes without rejecting canonical-only updates",
+    "preview receipts deeply isolate nested caller-owned patch values",
+    "direct and VM-service rewind paths both reject active previews",
+    "retained rewind returns exactly to the protected live head",
+    "history import inspection is side-effect-free until explicit confirmation",
+    "history import count and byte ceilings reject candidates without evicting retained history",
+    "rejected import inspections do not invalidate another client's pending candidate",
+    "a second valid inspection cannot overwrite another client's pending candidate",
+    "candidate-bound import cancellation is mismatch-safe, idempotent, and unblocks another client without clearing history",
+    "entity previews are rejected while the graph is rewound",
+    "the first real graph mutation after rewind returns history mode to live before publication",
+    "reentrant attach during a throwing disposal callback creates an independent active controller",
+    "direct preview, rewind, and history-import mutations are rejected during disposal callbacks",
+    "controller generations reject stale commands and prevent preview-receipt collisions after same-store replacement",
+    "controller generations remain unique when a different graph reuses the same explicit store ID",
+    "duplicate live VM store IDs fail before a controller or graph observer is attached",
+    "the detached controller does not duplicate replacement-controller publication events",
+    "final detach removes discovery, publication, and VM-event observers even when preview cleanup conflicts"
+  ]
+}

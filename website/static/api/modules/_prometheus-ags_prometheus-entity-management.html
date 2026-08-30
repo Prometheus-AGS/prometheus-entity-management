@@ -14,7 +14,7 @@
 <p><strong>Normalized, globally-reactive entity graph store for React</strong></p>
 <p>Update a post in one screen and every list row, detail panel, and badge that reads that entity updates automatically—without hand-maintained query keys. Normalization is built around your <code>type</code> + <code>id</code> + <code>normalize</code> function, not a separate cache product. The same graph holds data from <strong>REST</strong>, <strong>GraphQL</strong>, <strong>WebSocket / Supabase / Convex</strong>, <strong>Prisma-shaped APIs</strong>, and <strong>ElectricSQL + PGlite</strong> local-first sync.</p>
 <h2 id="30-react-release" class="tsd-anchor-link">3.0 React release<a href="#30-react-release" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
-<p>The <code>3.1.0</code> package line and its React 19/Vite 8
+<p>The <code>3.2.0</code> package line and its React 19/Vite 8
 source-workspace showcase is implemented. The production-browser gate covers
 normalized cross-view updates, optimistic confirm/rollback, relationships,
 view completeness modes, REST/GraphQL seams, realtime coalescing, PGlite/Loro,
@@ -22,11 +22,11 @@ Suspense/error containment, DevTools, and accessibility.</p>
 <p>See the <a href="../../release/vite-react19-example.md">React 19/Vite 8 release guide</a>
 for the assembled example evidence. Install the matching stable core and React
 pair with:</p>
-<pre><code class="bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">@prometheus-ags/entity-graph-core@3.1.0</span><span class="hl-1"> </span><span class="hl-17">\</span><br/><span class="hl-1">  </span><span class="hl-2">@prometheus-ags/prometheus-entity-management@3.1.0</span><span class="hl-1"> </span><span class="hl-17">\</span><br/><span class="hl-1">  </span><span class="hl-2">react@^19</span><span class="hl-1"> </span><span class="hl-2">react-dom@^19</span>
+<pre><code class="bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">@prometheus-ags/entity-graph-core@3.2.0</span><span class="hl-1"> </span><span class="hl-17">\</span><br/><span class="hl-1">  </span><span class="hl-2">@prometheus-ags/prometheus-entity-management@3.2.0</span><span class="hl-1"> </span><span class="hl-17">\</span><br/><span class="hl-1">  </span><span class="hl-2">react@^19</span><span class="hl-1"> </span><span class="hl-2">react-dom@^19</span>
 </code><button type="button">Copy</button></pre>
 
 <blockquote>
-<p><strong>Release boundary:</strong> npm <code>3.1.0</code> includes the optional <code>./devtools</code> and
+<p><strong>Release boundary:</strong> npm <code>3.2.0</code> includes the optional <code>./devtools</code> and
 development-only <code>./devtools/auto</code> inspector entries documented below. The
 ordinary package root remains inspector-free.</p>
 </blockquote>
@@ -728,7 +728,7 @@ that wants no ambient resolution at all.</p>
 <h3 id="devtools" class="tsd-anchor-link">DevTools<a href="#devtools" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <p>The ordinary package root keeps the lightweight legacy <code>useGraphDevTools</code>
 hook and does not import or mount the inspector. The full inspector ships in
-<code>3.1.0</code> behind two optional subpaths:</p>
+<code>3.2.0</code> behind two optional subpaths:</p>
 <table>
 <thead>
 <tr>

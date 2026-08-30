@@ -59,7 +59,7 @@
 <li><strong>Optional development tooling</strong> — a separate <code>devtools.dart</code> entry provides a per-graph controller, bounded history, inspection, preview/restore, time travel, and a store-isolated VM-service bridge without entering the ordinary application barrel</li>
 </ul>
 <h2 id="flutter-devtools-companion">Flutter DevTools companion</h2>
-<p>Version <code>3.0.5</code> includes an official package extension under
+<p>Version <code>3.1.0</code> includes an official package extension under
 <code>extension/devtools</code>. In a debug application,
 attach an <code>EntityGraphDevtoolsController</code> to every graph that should be
 inspectable. Dart DevTools then discovers the <strong>Entity Graph</strong> tab, where it can
@@ -94,7 +94,7 @@ the graph owns state; transports own I/O. Widgets do not maintain copied entity
 caches or call transport APIs directly.</p>
 <h2 id="optional-devtools-controller">Optional DevTools controller</h2>
 <blockquote>
-<p>This entry is published in <code>3.0.5</code>; <code>package:entity_graph_flutter/devtools.dart</code>
+<p>This entry is included in <code>3.1.0</code>; <code>package:entity_graph_flutter/devtools.dart</code>
 remains separate from the ordinary application barrel.</p>
 </blockquote>
 <p>Import the optional library only from development tooling or a host-controlled
@@ -137,11 +137,11 @@ reported separately and are not inferred from the controller receipt.</p>
 <h2 id="setup">Setup</h2>
 <h3 id="1-add-to-pubspecyaml">1. Add to <code>pubspec.yaml</code></h3>
 <pre class="language-yaml"><code class="language-yaml">dependencies:
-  entity_graph_flutter: ^3.0.5
+  entity_graph_flutter: ^3.1.0
   flutter_riverpod: ^3.3.2
 </code></pre>
 <p>Or add it from the command line:</p>
-<pre class="language-bash"><code class="language-bash">flutter pub add entity_graph_flutter:^3.0.5
+<pre class="language-bash"><code class="language-bash">flutter pub add entity_graph_flutter:^3.1.0
 </code></pre>
 <h3 id="2-wrap-your-app-with-providerscope">2. Wrap your app with <code>ProviderScope</code></h3>
 <pre class="language-dart"><code class="language-dart">void main() {
@@ -349,7 +349,7 @@ to the published GenUI 0.10.2 renderer only after catalog, component,
 function, action, tenant, and entity validation.</li>
 <li>The optional DevTools controller passed its complete
 Flutter/Riverpod/VM-service acceptance flow with two isolated graphs and 28
-versioned events. Version <code>3.0.5</code> also includes the official, validated
+versioned events. Version <code>3.1.0</code> also includes the official, validated
 Flutter DevTools extension UI.</li>
 <li>Physical devices, store submission, signing, and a cross-ecosystem stable
 release bundle are not claimed.</li>
@@ -405,7 +405,7 @@ full npm 3.0 readiness from this Dart package version.</p>
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.0.5
+      3.1.0
   </span>
   
 </footer>

@@ -223,7 +223,7 @@
     },
     {
       "path": "packages/entity_graph_flutter/pubspec.yaml",
-      "sha256": "ccb6af0b69cb2df372b51a15f1013d5ece868404ee9752995048bfd4434963a2",
+      "sha256": "f5f43731180818f595b82e5cb9b63664883b042823ceefeacba58369faa6029a",
       "bytes": 1094
     },
     {
@@ -232,7 +232,7 @@
       "bytes": 15514
     }
   ],
-  "sourceAggregateSha256": "74ad36206300ad82bf13b81d2e91a5566322835160640b51911154049c56039a",
+  "sourceAggregateSha256": "e52784453411f2b06082c48f456906340ed1c6b6d2066eb0cbc5d2e50f9df456",
   "artifactFileCount": 1503,
-  "artifactAggregateSha256": "55b016ab668181d068711a788cf1dbec256b4c40e56ac3a83912454a439abb80"
+  "artifactAggregateSha256": "c4c8e41d416623b825dd417ba1b8dd469620eb8400ca57b952e1f17c796ab458"
 }

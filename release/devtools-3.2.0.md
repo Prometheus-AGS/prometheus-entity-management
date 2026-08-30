@@ -11,7 +11,7 @@
 
 ## Publication gate
 
-Publication remains pending until the candidate is committed, the packed core/React/browser and Flutter/Riverpod/VM-service acceptance gates pass, extension assets are rebuilt and validated, all twelve npm tarballs pass consumer verification, and independent review has no unresolved critical findings. Registry mutation is the final release action; receipts and documentation are refreshed afterward.
+Candidate `d7dff293a79d9d3cba26fa3a0c0fbb47e8d07944` passed the packed core/React/browser and Flutter/Riverpod/VM-service acceptance gates, official extension validation, twelve-package consumer verification, a zero-warning Flutter dry run, both documentation builds, and independent review with no critical findings. See `devtools-3.2.0-certification.json` and the review disposition. Registry mutation follows certification; publication receipts and documentation are refreshed afterward.
 
 ## Explicit exclusions
 

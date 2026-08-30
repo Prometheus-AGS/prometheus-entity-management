@@ -1,0 +1,47 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "k3",
+  "producer_model": "gpt-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/controller.ts",
+      "line": 348,
+      "claim": "The new compaction path drops affectedEntities/affectedViewIds from the payload, which silently breaks causal highlighting, event-to-entity matching, and selectedViewLastEvent in the inspector for exactly the oversized mutation events this change targets.",
+      "evidence": "Hunk adds `const { affectedEntities: _affectedEntities, affectedViewIds: _affectedViewIds, ...compactPayload } = withoutValues.payload;` and uses compactPayload as boundedBase. The provided react_view_model source shows `eventTouchesEntity`, `highlightEvent`, `causalEntityKeys`/`causalViewIds`, and `selectedViewLastEvent` all derive from `affectedEntitiesForEvent(event)` / `affectedViewIdsForEvent(event)`; with those fields stripped and changes possibly emptied, these consumers get empty results with no signal that metadata was omitted.",
+      "suggested_fix": "When stripping affected metadata for size, add an explicit flag (e.g. `affectedMetadataOmitted: true`) so consumers can distinguish 'no affected entities' from 'metadata omitted for bounding', or derive affected entities from the retained changes slice."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/controller.ts",
+      "line": 352,
+      "claim": "If even the compacted empty-change event exceeds eventBytesLimit (e.g. huge storeId or oversized remaining metadata), the initial `bounded` value is returned as-is and published over the limit, so the bound guaranteed by the acceptance criterion is not actually enforced on all paths.",
+      "evidence": "`let bounded: GraphDevtoolsMutationEvent = { ...boundedBase, payload: { ...boundedBase.payload, changes: [], ... } };` is assigned before the loop and the binary-search loop only replaces `bounded` when `encodedBytes(candidate) <= eventBytesLimit`; if no candidate fits, the possibly-over-limit initial value is returned, and `publish` (source_context) pushes it unconditionally. Criterion: 'npm 3.2.0 must include bounded metadata when a large mutation event exceeds eventBytesLimit.'",
+      "suggested_fix": "After the loop, assert or clamp: if the final event still exceeds eventBytesLimit, drop additional optional metadata or emit a minimal placeholder event guaranteed under the limit."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-core/src/devtools/controller.ts",
+      "line": 345,
+      "claim": "The compacted base constructs a payload without affectedEntities/affectedViewIds while the result is typed GraphDevtoolsMutationEvent; whether this compiles depends on those payload fields being optional, which cannot be verified from the packet, and publication is pending without assumed test/build success.",
+      "evidence": "`const { affectedEntities: _affectedEntities, affectedViewIds: _affectedViewIds, ...compactPayload } = withoutValues.payload;` then `boundedBase = ... : { ...withoutValues, payload: compactPayload };` with the result spread into `GraphDevtoolsMutationEvent`-typed `bounded`. The type definition of the mutation payload is not included in the packet; scope states 'Do not assume test success; publication is pending.'",
+      "suggested_fix": "Confirm GraphDevtoolsMutationEvent['payload'] declares affectedEntities/affectedViewIds as optional (or make them optional) and run a typecheck/build of entity-graph-core before publish."
+    },
+    {
+      "severity": "WARNING",
+      "file": "release/v3-release-contract.json",
+      "line": 48,
+      "claim": "Acceptance criteria 4 and 5 (rebuilt assets before publication; publish only after completed production path, assembled acceptance, clean committed sources, independent review and dry-run) have no verifiable evidence in the diff; the version bumps alone do not demonstrate these gates are satisfied.",
+      "evidence": "Criteria: 'No changed Flutter runtime source versus previously reviewed b1c18b4f; rebuild assets before publication' and 'Publish only after completed production path, assembled acceptance, clean committed package sources, independent review and dry-run.' The packet contains only version-string changes for Flutter pubspecs and no built-asset or dry-run artifacts; scope explicitly says 'Do not assume test success; publication is pending.'",
+      "suggested_fix": "Before publishing, attach rebuilt-asset checksums/diff evidence for the extension and Flutter devtools companion, plus recorded dry-run output, to the release packet."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

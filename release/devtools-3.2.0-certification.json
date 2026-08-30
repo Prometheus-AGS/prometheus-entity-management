@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "d7dff293a79d9d3cba26fa3a0c0fbb47e8d07944",
+  "status": "certified",
+  "implementation": {
+    "completed": 9,
+    "total": 9
+  },
+  "npmVersion": "3.2.0",
+  "flutterVersion": "3.1.0",
+  "recordedAt": "2026-08-30T22:48:59.756Z",
+  "checks": {
+    "npmPackageBuilds": "12 passed",
+    "packedConsumers": "12 tarballs; ESM/CommonJS/NodeNext/Node16/Bundler passed",
+    "devtoolsIntegration": "pnpm run integration:devtools exited 0",
+    "reactBrowser": {
+      "schemaVersion": 1,
+      "gateVersion": "v3-devtools-react-inspector/2",
+      "change": "v3-devtools-react-inspector",
+      "recordedAt": "2026-08-30T22:44:44.872Z",
+      "status": "pass",
+      "evidenceKind": "packed-vite-next-development-production-browser",
+      "countsAsPackedPackageEvidence": true,
+      "thresholds": {
+        "targetEventsPerSecond": 500,
+        "timerJitterAllowancePercent": 2,
+        "minEventsPerSecond": 490,
+        "maxSearchLatencyP95Ms": 100,
+        "maxPreloadedPanelOpenP95Ms": 150,
+        "maxInspectorLongTasksOver50Ms": 0,
+        "maxRetainedEvents": 500
+      },
+      "scenarios": {
+        "production-exclusion": {
+          "status": "pass",
+          "proof": {
+            "viteServerMarkup": "no-devtools",
+            "viteHydratedDom": "no-devtools",
+            "nextServerMarkup": "no-devtools",
+            "nextHydratedDom": "no-devtools"
+          }
+        },
+        "development-activation-next-hydration": {
+          "status": "pass",
+          "proof": {
+            "viteAutoEntryVisible": true,
+            "nextPostHydrationHostVisible": true,
+            "nextHydrationErrors": 0
+          }
+        },
+        "human-study-fixture-readiness": {
+          "status": "pass",
+          "proof": {
+            "hostAnswersMasked": true,
+            "dirtyEntitySeeded": "Order/o-1042",
+            "registeredViewsSeeded": 3,
+            "countsAsParticipant": false
+          }
+        },
+        "hide-restore-layout-accessibility": {
+          "status": "pass",
+          "proof": {
+            "temporaryHideRestoredByShortcut": true,
+            "persistedHideSurvivedReload": true,
+            "persistedHideRestoredByShortcut": true,
+            "layouts": [
+              "dock-right",
+              "dock-bottom",
+              "floating"
+            ],
+            "rovingTabs": [
+              "ArrowRight",
+              "End",
+              "Home"
+            ],
+            "seriousAccessibilityViolations": 0,
+            "criticalAccessibilityViolations": 0
+          }
+        },
+        "dirty-original-view-history-causality": {
+          "status": "pass",
+          "proof": {
+            "atomicBatch": {
+              "affectedEntities": 12,
+              "affectedViews": 3,
+              "graphPulseSegments": 1
+            },
+            "dirtyPatch": {
+              "affectedEntities": 1,
+              "affectedViews": 3
+            },
+            "projections": [
+              "original",
+              "patch",
+              "live",
+              "diff"
+            ],
+            "registeredViews": 3,
+            "entityHistoryVisible": true,
+            "correlationVisible": true
+          }
+        },
+        "responsive-500-event-interaction": {
+          "status": "pass",
+          "proof": {
+            "viewport": {
+              "width": 390,
+              "height": 844,
+              "safeAreaPanel": true,
+              "drillBack": true
+            },
+            "hardwareBaseline": {
+              "cores": 10,
+              "memoryGiB": 32
+            },
+            "emittedEvents": 5000,
+            "durationMs": 10023.59999999404,
+            "achievedEventsPerSecond": 498.8227782436423,
+            "searchLatencyP95Ms": 12.700000002980232,
+            "preloadedPanelOpenP95Ms": 12,
+            "inspectorLongTasksOver50Ms": 0,
+            "retainedEvents": 500,
+            "thresholds": {
+              "targetEventsPerSecond": 500,
+              "timerJitterAllowancePercent": 2,
+              "minEventsPerSecond": 490,
+              "maxSearchLatencyP95Ms": 100,
+              "maxPreloadedPanelOpenP95Ms": 150,
+              "maxInspectorLongTasksOver50Ms": 0,
+              "maxRetainedEvents": 500
+            }
+          }
+        }
+      },
+      "artifacts": {
+        "screenshots": [
+          "task-11-causal-inspector.png",
+          "task-11-responsive-500-events.png"
+        ],
+        "tracePolicy": "on",
+        "playwrightReport": "task-11-playwright-report.json",
+        "playwrightOutput": "task-11-playwright-artifacts"
+      }
+    },
+    "flutterAcceptance": "devtools-3.2.0-flutter-acceptance.json",
+    "flutterDryRun": "0 warnings",
+    "flutterStableConsumer": "Flutter 3.44.8 path consumer: resolve, analyze and release web build passed",
+    "flutterExtension": "official build_and_copy and validate passed",
+    "chrome": {
+      "version": "3.2.0",
+      "sha256": "4b14933cb134c72c26decf1a355feab9d0034b217313e735c730fe5d7b83ee69",
+      "deterministicBuilds": 2
+    },
+    "documentation": "both Docusaurus builds; packed and native API integrity checks passed",
+    "staticChecks": "CI validate, lint, typecheck, skills and security passed"
+  },
+  "review": {
+    "file": "devtools-3.2.0-review-findings.json",
+    "critical": 0,
+    "warning": 4,
+    "sycophancyScore": 0.0803571417927742
+  },
+  "notClaimed": [
+    "Chrome Web Store submission",
+    "human usability certification",
+    "physical-device/app-store certification",
+    "verified pub.dev publisher",
+    "unlimited host-supplied store identifiers within event-byte ceilings"
+  ]
+}
