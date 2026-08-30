@@ -608,6 +608,56 @@ async function main() {
     assert.equal(preview.result.entity.type, "AcceptanceTask");
     assert.equal(preview.result.entity.id, "task-1");
     assert.equal(preview.result.appliedPatch.status, "preview");
+
+    const duplicatePreview = await command(
+      client,
+      isolateId,
+      storeA,
+      "duplicate-preview",
+      "preview-entity-patch",
+      { type: "AcceptanceTask", id: "task-1", patch: { status: "duplicate" } },
+    );
+    assert.equal(duplicatePreview.ok, false);
+    assert.equal(duplicatePreview.error.code, "preview-already-active");
+
+    const previewTravelStatus = await command(
+      client,
+      isolateId,
+      storeA,
+      "preview-travel-status",
+      "get-time-travel-status",
+    );
+    const blockedPreviewRewind = await command(
+      client,
+      isolateId,
+      storeA,
+      "preview-rewind-blocked",
+      "rewind",
+      { cursor: previewTravelStatus.result.oldestCursor },
+    );
+    assert.equal(blockedPreviewRewind.ok, false);
+    assert.equal(blockedPreviewRewind.error.code, "preview-already-active");
+
+    await acceptanceStep(client, isolateId, "update");
+    const canonicalSafeRestore = await command(
+      client,
+      isolateId,
+      storeA,
+      "canonical-safe-restore",
+      "restore-entity-preview",
+      { previewId: preview.result.previewId },
+    );
+    assert.equal(canonicalSafeRestore.result.status, "restored");
+
+    const conflictPreview = await command(
+      client,
+      isolateId,
+      storeA,
+      "conflict-preview",
+      "preview-entity-patch",
+      { type: "AcceptanceTask", id: "task-1", patch: { status: "preview" } },
+    );
+    assert.equal(conflictPreview.ok, true);
     await acceptanceStep(client, isolateId, "preview-conflict");
     const restore = await command(
       client,
@@ -615,10 +665,20 @@ async function main() {
       storeA,
       "restore-conflict",
       "restore-entity-preview",
-      { previewId: preview.result.previewId },
+      { previewId: conflictPreview.result.previewId },
     );
     assert.equal(restore.result.status, "conflict");
     assert.equal(restore.result.reason, "entity-changed-since-preview");
+    await acceptanceStep(client, isolateId, "resolve-preview-conflict");
+    const recoveredRestore = await command(
+      client,
+      isolateId,
+      storeA,
+      "restore-after-conflict",
+      "restore-entity-preview",
+      { previewId: conflictPreview.result.previewId },
+    );
+    assert.equal(recoveredRestore.result.status, "restored");
 
     await acceptanceStep(client, isolateId, "update");
     const travelStatus = await command(

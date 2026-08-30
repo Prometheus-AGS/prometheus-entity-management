@@ -45,6 +45,28 @@ Object? _projectPreviewPatch(
   id: id,
 );
 
+bool _previewValueEquals(Object? left, Object? right) {
+  if (identical(left, right) || left == right) return true;
+  if (left is List && right is List) {
+    if (left.length != right.length) return false;
+    for (var index = 0; index < left.length; index += 1) {
+      if (!_previewValueEquals(left[index], right[index])) return false;
+    }
+    return true;
+  }
+  if (left is Map && right is Map) {
+    if (left.length != right.length) return false;
+    for (final entry in left.entries) {
+      if (!right.containsKey(entry.key) ||
+          !_previewValueEquals(entry.value, right[entry.key])) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
+}
+
 void _removePreviewReceipt(
   EntityGraphDevtoolsController controller,
   _EntityPreviewReceipt receipt,
@@ -67,10 +89,7 @@ EntityGraphDevtoolsPreviewAppliedReceipt? _applyEntityPreview(
     return null;
   }
   final key = _entityIdentityKey(type, id);
-  final previousPreviewId = controller._activePreviewByEntity[key];
-  if (previousPreviewId != null) {
-    controller._previewReceipts.remove(previousPreviewId);
-  }
+  if (controller._activePreviewByEntity.containsKey(key)) return null;
   final storedPriorPatch = controller._graph.readEntityPatch(type, id);
   final priorPatch = storedPriorPatch == null
       ? null
@@ -123,11 +142,11 @@ EntityGraphDevtoolsPreviewRestoreReceipt? _restoreEntityPreview(
     receipt.type,
     receipt.id,
   );
-  if (observedRevision != receipt.previewRevision) {
-    final currentPatch = controller._graph.readEntityPatch(
-      receipt.type,
-      receipt.id,
-    );
+  final currentPatch = controller._graph.readEntityPatch(
+    receipt.type,
+    receipt.id,
+  );
+  if (!_previewValueEquals(currentPatch, receipt.appliedPatch)) {
     final conflict = EntityGraphDevtoolsPreviewConflictReceipt(
       previewId: previewId,
       expectedRevision: receipt.previewRevision,
@@ -149,7 +168,6 @@ EntityGraphDevtoolsPreviewRestoreReceipt? _restoreEntityPreview(
               receipt.priorPatch,
             ),
     );
-    _removePreviewReceipt(controller, receipt);
     return conflict;
   }
   controller._graph.replaceEntityPatch(
@@ -158,7 +176,7 @@ EntityGraphDevtoolsPreviewRestoreReceipt? _restoreEntityPreview(
     receipt.priorPatch,
   );
   _removePreviewReceipt(controller, receipt);
-  return EntityGraphDevtoolsPreviewRestoredReceipt(
+  final result = EntityGraphDevtoolsPreviewRestoredReceipt(
     previewId: previewId,
     restoredPatch: receipt.priorPatch == null
         ? null
@@ -171,4 +189,8 @@ EntityGraphDevtoolsPreviewRestoreReceipt? _restoreEntityPreview(
     observedRevision: observedRevision,
     restoredAt: DateTime.now().toUtc().toIso8601String(),
   );
+  if (controller._pendingDisposal && !controller._disposeInProgress) {
+    controller._dispose();
+  }
+  return result;
 }

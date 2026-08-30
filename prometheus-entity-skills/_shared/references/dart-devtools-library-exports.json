@@ -1,15 +1,20 @@
 {
   "schemaVersion": "1",
   "package": "entity_graph_flutter",
-  "version": "3.0.1",
+  "version": "3.0.4",
   "library": "package:entity_graph_flutter/devtools.dart",
   "generatedPartsIncluded": false,
   "publication": {
-    "status": "repository-source-only",
-    "publishedArchiveVersion": "3.0.1",
-    "publishedArchiveIncludesLibrary": false
+    "status": "published",
+    "publishedArchiveVersion": "3.0.4",
+    "publishedArchiveIncludesLibrary": true
   },
   "exports": [
+    {
+      "name": "EntityGraphDevtoolsActivePreview",
+      "kind": "class",
+      "source": "lib/src/devtools/protocol.dart"
+    },
     {
       "name": "EntityGraphDevtoolsBinding",
       "kind": "class",

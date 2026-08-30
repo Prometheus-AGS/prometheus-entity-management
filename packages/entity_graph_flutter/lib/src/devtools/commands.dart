@@ -203,6 +203,16 @@ EntityGraphDevtoolsResult _handleCommand(
           !_isJsonCompatible(patch)) {
         break;
       }
+      if (controller._activePreviewByEntity.containsKey(
+        _entityIdentityKey(type, id),
+      )) {
+        return _commandError(
+          controller.storeId,
+          requestId,
+          EntityGraphDevtoolsProtocolErrorCode.previewAlreadyActive,
+          'Entity $type:$id already has an active preview',
+        );
+      }
       final receipt = controller.previewEntityPatch(type, id, patch);
       if (receipt == null) {
         return _commandError(
@@ -252,6 +262,14 @@ EntityGraphDevtoolsResult _handleCommand(
           requestId,
           EntityGraphDevtoolsProtocolErrorCode.timeTravelUnavailable,
           'Time travel is disabled for this controller',
+        );
+      }
+      if (controller._previewReceipts.isNotEmpty) {
+        return _commandError(
+          controller.storeId,
+          requestId,
+          EntityGraphDevtoolsProtocolErrorCode.previewAlreadyActive,
+          'Restore active entity previews before entering time travel',
         );
       }
       final receipt = controller.rewind(cursor);

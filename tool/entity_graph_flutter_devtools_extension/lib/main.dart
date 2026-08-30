@@ -54,12 +54,13 @@ class _InspectorPageState extends State<InspectorPage> {
   List<Object?> views = const [];
   List<Object?> relationships = const [];
   List<Object?> events = const [];
-  final previewIds = <String, String>{};
+  final previewIds = <({String storeId, String type, String id}), String>{};
   String? actionError;
   bool actionBusy = false;
   late final String _requestPrefix =
       '${DateTime.now().microsecondsSinceEpoch}-${Random.secure().nextInt(1 << 32)}';
   int _requestSequence = 0;
+  int _refreshGeneration = 0;
 
   @override
   void initState() {
@@ -83,12 +84,17 @@ class _InspectorPageState extends State<InspectorPage> {
     return value.cast<String, Object?>();
   }
 
-  Future<Map<String, Object?>> _command(
+  Future<Map<String, Object?>> _command(String command, [Object? payload]) {
+    final selected = storeId;
+    if (selected == null) throw StateError('No graph store is selected');
+    return _commandFor(selected, command, payload);
+  }
+
+  Future<Map<String, Object?>> _commandFor(
+    String selected,
     String command, [
     Object? payload,
   ]) async {
-    final selected = storeId;
-    if (selected == null) throw StateError('No graph store is selected');
     final requestId = 'flutter-devtools-$_requestPrefix-${_requestSequence++}';
     final envelope = <String, Object?>{
       'protocol': _protocol,
@@ -101,6 +107,13 @@ class _InspectorPageState extends State<InspectorPage> {
     final response = await _call(_commandMethod, {
       'command': jsonEncode(envelope),
     });
+    if (response['protocol'] != _protocol ||
+        response['version'] != 1 ||
+        response['storeId'] != selected) {
+      throw StateError(
+        'The VM service returned a mismatched response envelope',
+      );
+    }
     if (response['requestId'] != requestId) {
       throw StateError('The VM service returned a mismatched request ID');
     }
@@ -115,6 +128,7 @@ class _InspectorPageState extends State<InspectorPage> {
   }
 
   Future<void> _refresh() async {
+    final generation = ++_refreshGeneration;
     if (mounted) {
       setState(() {
         connection = _ConnectionState.loading;
@@ -128,33 +142,51 @@ class _InspectorPageState extends State<InspectorPage> {
           .map((entry) => entry.cast<String, Object?>())
           .toList(growable: false);
       if (listed.isEmpty) {
-        if (mounted) {
+        if (mounted && generation == _refreshGeneration) {
           setState(() {
             stores = listed;
+            storeId = null;
+            previewIds.clear();
             connection = _ConnectionState.disconnected;
           });
         }
         return;
       }
-      storeId = listed.any((entry) => entry['storeId'] == storeId)
+      final selected = listed.any((entry) => entry['storeId'] == storeId)
           ? storeId
           : listed.first['storeId'] as String;
-      final capabilities = await _command('get-capabilities');
+      if (selected == null) return;
+      final capabilities = await _commandFor(selected, 'get-capabilities');
       if (capabilities['protocolVersion'] != 1) {
-        if (mounted) setState(() => connection = _ConnectionState.incompatible);
+        if (mounted && generation == _refreshGeneration) {
+          setState(() => connection = _ConnectionState.incompatible);
+        }
         return;
       }
       final results = await Future.wait([
-        _command('get-snapshot'),
-        _command('get-entity-records'),
-        _command('get-views'),
-        _command('get-relationships'),
-        _command('get-history'),
+        _commandFor(selected, 'get-snapshot'),
+        _commandFor(selected, 'get-entity-records'),
+        _commandFor(selected, 'get-views'),
+        _commandFor(selected, 'get-relationships'),
+        _commandFor(selected, 'get-history'),
       ]);
-      if (!mounted) return;
+      if (!mounted || generation != _refreshGeneration) return;
       setState(() {
         stores = listed;
+        storeId = selected;
         snapshot = results[0];
+        previewIds.removeWhere((key, _) => key.storeId == selected);
+        for (final preview
+            in results[0]['activePreviews'] as List? ?? const []) {
+          if (preview is! Map) continue;
+          final previewId = preview['previewId'];
+          final entity = preview['entity'];
+          final type = entity is Map ? entity['type'] : null;
+          final id = entity is Map ? entity['id'] : null;
+          if (previewId is String && type is String && id is String) {
+            previewIds[_previewKey(selected, type, id)] = previewId;
+          }
+        }
         entities = (results[1]['entityRecords'] as List?) ?? const [];
         views = (results[2]['views'] as List?) ?? const [];
         relationships = (results[3]['relationships'] as List?) ?? const [];
@@ -162,7 +194,7 @@ class _InspectorPageState extends State<InspectorPage> {
         connection = _ConnectionState.ready;
       });
     } catch (caught) {
-      if (mounted) {
+      if (mounted && generation == _refreshGeneration) {
         setState(() {
           connection = _ConnectionState.error;
           error = '$caught';
@@ -217,6 +249,8 @@ class _InspectorPageState extends State<InspectorPage> {
     );
     controller.dispose();
     if (patch == null) return;
+    final selected = storeId;
+    if (selected == null) return;
     await _runAction(() async {
       final receipt = await _command('preview-entity-patch', {
         'type': type,
@@ -225,19 +259,23 @@ class _InspectorPageState extends State<InspectorPage> {
       });
       final previewId = receipt['previewId'];
       if (previewId is String) {
-        previewIds[_previewKey(storeId!, type, id)] = previewId;
+        previewIds[_previewKey(selected, type, id)] = previewId;
       }
       await _refresh();
     });
   }
 
-  String _previewKey(String selectedStoreId, String type, String id) =>
-      '$selectedStoreId:$type:$id';
+  ({String storeId, String type, String id}) _previewKey(
+    String selectedStoreId,
+    String type,
+    String id,
+  ) => (storeId: selectedStoreId, type: type, id: id);
 
   int? _snapshotCursor(Object? event) {
     final payload = event is Map ? event['payload'] : null;
     final snapshot = payload is Map ? payload['snapshot'] : null;
-    final cursor = snapshot is Map ? snapshot['cursor'] : null;
+    if (snapshot is! Map || snapshot['status'] != 'retained') return null;
+    final cursor = snapshot['cursor'];
     return cursor is int ? cursor : null;
   }
 
@@ -265,25 +303,60 @@ class _InspectorPageState extends State<InspectorPage> {
     final previewId = previewIds[key];
     if (previewId == null) return;
     await _runAction(() async {
-      await _command('restore-entity-preview', {'previewId': previewId});
+      final result = await _commandFor(selected, 'restore-entity-preview', {
+        'previewId': previewId,
+      });
       previewIds.remove(key);
       await _refresh();
+      if (result['status'] != 'restored') {
+        throw StateError(
+          result['status'] == 'conflict'
+              ? 'Preview was not restored because the entity changed after the preview.'
+              : 'Preview restore did not complete.',
+        );
+      }
     });
   }
 
   Future<void> _rewind(Object? event) async {
+    final selected = storeId;
     final cursor = _snapshotCursor(event);
-    if (cursor == null) return;
+    if (selected == null || cursor == null) return;
     await _runAction(() async {
-      await _command('rewind', {'cursor': cursor});
+      final result = await _commandFor(selected, 'rewind', {'cursor': cursor});
       await _refresh();
+      if (result['status'] != 'rewound') {
+        throw StateError(
+          result['status'] == 'expired-history'
+              ? 'That snapshot is no longer retained and cannot be rewound.'
+              : 'Rewind did not complete.',
+        );
+      }
     });
   }
 
-  Future<void> _returnLive() => _runAction(() async {
-    await _command('return-to-live');
-    await _refresh();
-  });
+  bool get _isRewound {
+    final snapshots = snapshot['snapshots'];
+    return snapshots is Map && snapshots['mode'] == 'rewound';
+  }
+
+  bool get _selectedStoreHasPreviews {
+    final selected = storeId;
+    return selected != null &&
+        previewIds.keys.any((key) => key.storeId == selected);
+  }
+
+  Future<void> _returnLive() {
+    final selected = storeId;
+    if (selected == null) return Future.value();
+    return _runAction(() async {
+      final result = await _commandFor(selected, 'return-to-live');
+      await _refresh();
+      if (result['status'] != 'live') {
+        throw StateError('Return to live did not complete.');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -293,7 +366,7 @@ class _InspectorPageState extends State<InspectorPage> {
         actions: [
           if (connection == _ConnectionState.ready)
             TextButton.icon(
-              onPressed: actionBusy ? null : _returnLive,
+              onPressed: actionBusy || !_isRewound ? null : _returnLive,
               icon: const Icon(Icons.play_arrow),
               label: const Text('Live'),
             ),
@@ -306,7 +379,9 @@ class _InspectorPageState extends State<InspectorPage> {
               ),
             ),
           IconButton(
-            onPressed: _refresh,
+            onPressed: actionBusy || connection == _ConnectionState.loading
+                ? null
+                : _refresh,
             tooltip: 'Refresh graph',
             icon: const Icon(Icons.refresh),
           ),
@@ -364,10 +439,12 @@ class _InspectorPageState extends State<InspectorPage> {
         snapshot: snapshot,
         stores: stores,
         storeId: storeId!,
-        onStore: (value) {
-          setState(() => storeId = value);
-          unawaited(_refresh());
-        },
+        onStore: actionBusy
+            ? null
+            : (value) {
+                setState(() => storeId = value);
+                unawaited(_refresh());
+              },
       ),
       1 => _RecordList(
         title: 'Entities',
@@ -406,10 +483,17 @@ class _InspectorPageState extends State<InspectorPage> {
         actions: (record) => _snapshotCursor(record) == null
             ? const []
             : [
-                TextButton.icon(
-                  onPressed: actionBusy ? null : () => _rewind(record),
-                  icon: const Icon(Icons.history),
-                  label: const Text('Rewind'),
+                Tooltip(
+                  message: _selectedStoreHasPreviews
+                      ? 'Restore active previews before rewinding.'
+                      : 'Rewind to this retained snapshot.',
+                  child: TextButton.icon(
+                    onPressed: actionBusy || _selectedStoreHasPreviews
+                        ? null
+                        : () => _rewind(record),
+                    icon: const Icon(Icons.history),
+                    label: const Text('Rewind'),
+                  ),
                 ),
               ],
       ),
@@ -511,7 +595,7 @@ class _Overview extends StatelessWidget {
   final Map<String, Object?> snapshot;
   final List<Map<String, Object?>> stores;
   final String storeId;
-  final ValueChanged<String> onStore;
+  final ValueChanged<String>? onStore;
   @override
   Widget build(BuildContext context) {
     final counts =
@@ -530,9 +614,11 @@ class _Overview extends StatelessWidget {
                 ),
               )
               .toList(),
-          onChanged: (value) {
-            if (value != null) onStore(value);
-          },
+          onChanged: onStore == null
+              ? null
+              : (value) {
+                  if (value != null) onStore!(value);
+                },
         ),
         const SizedBox(height: 24),
         Wrap(

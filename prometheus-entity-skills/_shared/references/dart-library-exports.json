@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1",
   "package": "entity_graph_flutter",
-  "version": "3.0.1",
+  "version": "3.0.4",
   "library": "package:entity_graph_flutter/entity_graph_flutter.dart",
   "generatedPartsIncluded": true,
   "exports": [

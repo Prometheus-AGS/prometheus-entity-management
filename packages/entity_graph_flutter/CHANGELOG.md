@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.0.4
+
+- Recover active preview receipts after DevTools reconnects and bind every
+  command response to its protocol, store, and request identity.
+- Serialize refresh state, disable invalid rewind/live actions, and surface
+  preview conflicts or expired history directly in the inspector.
+- Make preview ownership collision-safe across stores and clients, restore
+  preview layers and live heads during final detach, and keep blocked cleanup
+  recoverable until it can safely finalize.
+- Reject time travel while local previews are active and preserve safe preview
+  restoration across canonical server or realtime entity updates.
+
 ## 3.0.3
 
 - Scope preview receipts by graph store and prevent a second preview from

@@ -305,6 +305,7 @@ _enterRewind(
   required EntityGraphSnapshot target,
 }) {
   if (controller._disposed ||
+      controller._previewReceipts.isNotEmpty ||
       (controller._historyMode == EntityGraphDevtoolsHistoryMode.rewound &&
           controller._protectedLiveHead == null)) {
     return null;

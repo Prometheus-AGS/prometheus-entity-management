@@ -153,6 +153,8 @@ final class EntityGraphDevtoolsController {
   var _nextPreviewNumber = 1;
   var _internalReplayDepth = 0;
   var _projectionFailureRevision = 0;
+  var _pendingDisposal = false;
+  var _disposeInProgress = false;
 
   /// Whether the final binding has detached and released this controller.
   bool get isDisposed => _disposed;
@@ -213,6 +215,16 @@ final class EntityGraphDevtoolsController {
     counts: _collectCounts(_graph.captureSnapshot()),
     history: getHistoryStatus(),
     snapshots: getSnapshotHistoryStatus(),
+    activePreviews: _previewReceipts.values.map(
+      (receipt) => EntityGraphDevtoolsActivePreview(
+        previewId: receipt.previewId,
+        entity: EntityGraphDevtoolsViewMembership(
+          type: receipt.type,
+          id: receipt.id,
+        ),
+        appliedAt: receipt.appliedAt,
+      ),
+    ),
   );
 
   /// Copy of retained bounded semantic history.
@@ -309,11 +321,13 @@ final class EntityGraphDevtoolsController {
       previousSource: previousSource,
       reason: EntityGraphDevtoolsTimeTravelReason.command,
     );
-    return EntityGraphDevtoolsReturnToLiveReceipt(
+    final receipt = EntityGraphDevtoolsReturnToLiveReceipt(
       previousCursor: previousCursor,
       previousSource: previousSource,
       changedAt: event.observedAt,
     );
+    if (_pendingDisposal && !_disposeInProgress) _dispose();
+    return receipt;
   }
 
   EntityGraphDevtoolsHistoryImportInspectionResult inspectHistoryImport(
@@ -342,6 +356,12 @@ final class EntityGraphDevtoolsController {
         EntityGraphDevtoolsHistoryImportRestoreRejectionReason
             .timeTravelUnavailable,
         'Time travel is disabled for this controller',
+      );
+    }
+    if (_previewReceipts.isNotEmpty) {
+      return reject(
+        EntityGraphDevtoolsHistoryImportRestoreRejectionReason.activePreview,
+        'Restore active entity previews before entering time travel',
       );
     }
     final candidate = _importCandidate;
@@ -613,27 +633,42 @@ final class EntityGraphDevtoolsController {
   }
 
   void _dispose() {
-    if (_disposed) return;
-    _stopPublicationObservation?.call();
-    _stopPublicationObservation = null;
-    _stopViewObservation?.call();
-    _stopViewObservation = null;
-    _publishLifecycle(EntityGraphDevtoolsLifecycleState.disposed);
-    _stopVmService?.call();
-    _stopVmService = null;
-    _disposed = true;
-    _lifecycleListeners.clear();
-    _eventListeners.clear();
-    _history.clear();
-    _historySizes.clear();
-    _retainedSnapshots.clear();
-    _unavailableSnapshots.clear();
-    _previewReceipts.clear();
-    _activePreviewByEntity.clear();
-    _entityRevisions.clear();
-    _entityValueRevisions.clear();
-    _importCandidate = null;
-    _protectedLiveHead = null;
+    if (_disposed || _disposeInProgress) return;
+    _pendingDisposal = true;
+    _disposeInProgress = true;
+    try {
+      if (_historyMode == EntityGraphDevtoolsHistoryMode.rewound &&
+          returnToLive() == null) {
+        return;
+      }
+      for (final receipt in List.of(_previewReceipts.values)) {
+        final result = _restoreEntityPreview(this, receipt.previewId);
+        if (result is EntityGraphDevtoolsPreviewConflictReceipt) return;
+      }
+      _stopPublicationObservation?.call();
+      _stopPublicationObservation = null;
+      _stopViewObservation?.call();
+      _stopViewObservation = null;
+      _publishLifecycle(EntityGraphDevtoolsLifecycleState.disposed);
+      _stopVmService?.call();
+      _stopVmService = null;
+      _disposed = true;
+      _pendingDisposal = false;
+      _lifecycleListeners.clear();
+      _eventListeners.clear();
+      _history.clear();
+      _historySizes.clear();
+      _retainedSnapshots.clear();
+      _unavailableSnapshots.clear();
+      _previewReceipts.clear();
+      _activePreviewByEntity.clear();
+      _entityRevisions.clear();
+      _entityValueRevisions.clear();
+      _importCandidate = null;
+      _protectedLiveHead = null;
+    } finally {
+      _disposeInProgress = false;
+    }
   }
 
   static void _deliverLifecycle(
@@ -738,6 +773,9 @@ final class EntityGraphDevtoolsBinding {
     }
 
     final retainedEntry = entry;
+    if (retainedEntry.references == 0) {
+      retainedEntry.controller._pendingDisposal = false;
+    }
     retainedEntry.references += 1;
     var detached = false;
     return EntityGraphDevtoolsBinding._(
@@ -754,6 +792,7 @@ final class EntityGraphDevtoolsBinding {
         if (current.references > 0) current.references -= 1;
         if (current.references != 0) return;
         current.controller._dispose();
+        if (!current.controller.isDisposed) return;
         if (identical(slot.entry, current)) slot.entry = null;
       },
     );

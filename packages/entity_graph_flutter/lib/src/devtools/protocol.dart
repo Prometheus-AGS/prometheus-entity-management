@@ -194,6 +194,7 @@ enum EntityGraphDevtoolsProtocolErrorCode {
   wrongStore('wrong-store'),
   unsupportedCommand('unsupported-command'),
   entityNotFound('entity-not-found'),
+  previewAlreadyActive('preview-already-active'),
   previewNotFound('preview-not-found'),
   snapshotNotFound('snapshot-not-found'),
   timeTravelUnavailable('time-travel-unavailable'),
@@ -561,20 +562,41 @@ final class EntityGraphDevtoolsSnapshotHistoryStatus {
   };
 }
 
-/// Store-level metrics and bounded-history status.
+/// Metadata required to recover one active local preview across clients.
+final class EntityGraphDevtoolsActivePreview {
+  const EntityGraphDevtoolsActivePreview({
+    required this.previewId,
+    required this.entity,
+    required this.appliedAt,
+  });
+
+  final String previewId;
+  final EntityGraphDevtoolsViewMembership entity;
+  final String appliedAt;
+
+  Map<String, Object?> toJson() => {
+    'previewId': previewId,
+    'entity': entity.toJson(),
+    'appliedAt': appliedAt,
+  };
+}
+
+/// Store-level metrics, active previews, and bounded-history status.
 final class EntityGraphDevtoolsSnapshot extends EntityGraphDevtoolsEnvelope {
-  const EntityGraphDevtoolsSnapshot({
+  EntityGraphDevtoolsSnapshot({
     required super.storeId,
     required this.capturedAt,
     required this.counts,
     required this.history,
     required this.snapshots,
-  });
+    required Iterable<EntityGraphDevtoolsActivePreview> activePreviews,
+  }) : activePreviews = List.unmodifiable(activePreviews);
 
   final String capturedAt;
   final EntityGraphDevtoolsCounts counts;
   final EntityGraphDevtoolsHistoryStatus history;
   final EntityGraphDevtoolsSnapshotHistoryStatus snapshots;
+  final List<EntityGraphDevtoolsActivePreview> activePreviews;
 
   @override
   Map<String, Object?> toJson() => {
@@ -583,6 +605,9 @@ final class EntityGraphDevtoolsSnapshot extends EntityGraphDevtoolsEnvelope {
     'counts': counts.toJson(),
     'history': history.toJson(),
     'snapshots': snapshots.toJson(),
+    'activePreviews': activePreviews
+        .map((preview) => preview.toJson())
+        .toList(growable: false),
   };
 }
 
@@ -1554,6 +1579,7 @@ final class EntityGraphDevtoolsHistoryImportRestoreReceipt
 enum EntityGraphDevtoolsHistoryImportRestoreRejectionReason {
   candidateNotFound('candidate-not-found'),
   snapshotNotFound('snapshot-not-found'),
+  activePreview('active-preview'),
   restoreFailed('restore-failed'),
   timeTravelUnavailable('time-travel-unavailable'),
   disposed('disposed');

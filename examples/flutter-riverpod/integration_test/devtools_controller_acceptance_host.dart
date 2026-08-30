@@ -142,6 +142,9 @@ Map<String, Object?> _runAcceptanceStep(String step) {
     case 'preview-conflict':
       _graphA.patchEntity(_taskType, 'task-1', const {'status': 'conflict'});
       break;
+    case 'resolve-preview-conflict':
+      _graphA.patchEntity(_taskType, 'task-1', const {'status': 'preview'});
+      break;
     case 'oversized-event':
       _graphA.upsertEntity(_taskType, 'oversized-task', {
         'id': 'oversized-task',

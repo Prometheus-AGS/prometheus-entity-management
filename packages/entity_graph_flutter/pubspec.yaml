@@ -3,7 +3,7 @@ description: >
   Flutter/Dart mirror of the Prometheus entity graph — normalized, reactive
   entity store with generated Riverpod 3 provider families, optimistic CRUD,
   local/remote/hybrid views and pluggable transports.
-version: 3.0.3
+version: 3.0.4
 homepage: https://github.com/Prometheus-AGS/prometheus-entity-management
 
 environment:
