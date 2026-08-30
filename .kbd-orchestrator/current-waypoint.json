@@ -1,10 +1,10 @@
 {
   "schemaVersion": "5",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 392,
-  "derivedRevision": 392,
+  "sourceRevision": 397,
+  "derivedRevision": 397,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 392
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 397
   },
   "conflictCount": 0,
   "projectId": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
@@ -25,7 +25,7 @@
   "implementationCompleted": 36,
   "implementationTotal": 63,
   "planRevision": 9,
-  "revision": 392,
+  "revision": 397,
   "exactNextCommand": "/kbd-apply v3-devtools-react-inspector",
-  "updatedAt": "2026-08-30T00:13:04.720725Z"
+  "updatedAt": "2026-08-30T00:27:30.444843Z"
 }

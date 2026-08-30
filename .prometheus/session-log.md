@@ -1912,3 +1912,23 @@
   the normative core copies. Retained SHA-256 and originating commits in the
   task receipt rather than rewriting identical files.
 - No test, analyzer, compiler, or build ran. Sovereign sync was not touched.
+
+## 2026-08-30 — Flutter controller task 2/9
+
+- Added the optional `package:entity_graph_flutter/devtools.dart` entry while
+  keeping the ordinary Flutter package root free of DevTools API reachability.
+- Defined the complete typed Dart v1 wire surface for commands, results,
+  capabilities, metrics, semantic events, inspection projections, bounded
+  histories, conflict-safe preview/restore, rewind/live/import receipts, and
+  host-owned metadata-only/include value policy.
+- Evolved both entity-inspection fixture copies together with the production
+  `subscriberCount` field; both copies remain byte-identical at SHA-256
+  `5b2654e1ee326b2309b6ceb786db95dcfc3912a015adba2379cafebbea849890`.
+- The actual VM-service trust boundary is represented explicitly: metadata-only
+  remains the default, and any included value passes through the host-owned
+  synchronous redactor before retention or serialization.
+- Formatter parsing, static wire-contract assertions, fixture equality/JSON
+  checks, SHA-256, and diff whitespace checks passed. No analyzer, compiler,
+  test, or build ran; full assembled integration remains task 8.
+- The local signed KBD runtime remains authoritative. Optional sovereign-sync
+  sharing remains intentionally disabled and was not changed.

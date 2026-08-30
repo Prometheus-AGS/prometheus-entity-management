@@ -1,16 +1,16 @@
 {
   "schemaVersion": "2",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 392,
-  "derivedRevision": 392,
+  "sourceRevision": 397,
+  "derivedRevision": 397,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 392
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 397
   },
   "conflictCount": 0,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
   "parentPhase": null,
-  "last_updated": "2026-08-30T00:13:04.720725Z",
+  "last_updated": "2026-08-30T00:27:30.444843Z",
   "last_updated_by": "kbd-runtime",
   "changes_total": 9,
   "changes_completed": 4,
@@ -90,9 +90,9 @@
       "status": "IN_PROGRESS",
       "implementation_status": "IN_PROGRESS",
       "tasks_total": 9,
-      "tasks_done": 1,
-      "last_task_completed": "Confirm core, inspection, and time-travel changes are complete and import their stable cross-language fixtures.",
-      "next_task_pending": "Define Dart v1 envelope, snapshot, entity/view/relation/error/metrics, preview, and data-policy contracts.",
+      "tasks_done": 2,
+      "last_task_completed": "Define Dart v1 envelope, snapshot, entity/view/relation/error/metrics, preview, and data-policy contracts.",
+      "next_task_pending": "Implement the per-graph, reference-counted controller and `EntityGraphDevtoolsBinding.attach` lifecycle.",
       "blockers": []
     },
     {

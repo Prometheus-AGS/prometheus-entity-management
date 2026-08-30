@@ -16,6 +16,8 @@ The fixture freezes these cross-runtime semantics:
   `null`; omitted fields are not interchangeable with `null`.
 - View identities are stable host-provided strings. Membership is represented
   in both view-to-entity and entity-to-view directions and must agree.
+- `subscriberCount` is the number of active rendered registrations for a view;
+  it is independent of the cumulative `renderCount`.
 - Relationships come only from the existing entity schema registry and expose
   unresolved foreign keys as `missing-target` rather than inventing entities.
 - A preview receipt owns the exact prior patch and the entity revision produced

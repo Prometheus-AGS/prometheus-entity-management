@@ -143,6 +143,7 @@
       "registeredAt": "2026-08-29T15:00:00.000Z",
       "lastRenderedAt": "2026-08-29T15:04:04.000Z",
       "renderCount": 12,
+      "subscriberCount": 1,
       "membership": [
         {
           "type": "Project",
@@ -160,6 +161,7 @@
       "registeredAt": "2026-08-29T14:58:00.000Z",
       "lastRenderedAt": "2026-08-29T15:04:03.000Z",
       "renderCount": 31,
+      "subscriberCount": 1,
       "membership": [
         {
           "type": "Project",
