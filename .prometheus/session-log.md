@@ -2007,3 +2007,21 @@
   SHA-256, and scoped diff whitespace checks passed. No analyzer, compiler,
   test, or build ran; assembled integration remains task 8.
 - Optional sovereign-sync sharing was not enabled or changed.
+
+## 2026-08-30 — Flutter controller task 7/9
+
+- Added one external Flutter/Riverpod/VM-service acceptance harness rather than
+  extending legacy unit, widget, mock, snapshot, or partial suites.
+- The harness launches a real macOS debug app through the Flutter machine
+  protocol, connects over VM-service WebSocket JSON-RPC, drives two real graph
+  controllers, and observes production versioned methods and events.
+- The flow covers fixture parity, instrumentation, Riverpod views, store
+  isolation, projections, redaction and policy refusal, transport/event bounds,
+  preview conflicts, rewind/live history, clearing, and deterministic disposal.
+- Registry credentials are removed from the child environment and raw build
+  diagnostics are withheld at the actual tool boundary.
+- Dart formatting, Node syntax, static source-contract, fixture equality/JSON,
+  SHA-256, and scoped diff checks passed. The harness was not executed; no
+  analyzer, compiler, Flutter build, test, or device launch ran. Task 8 owns
+  the single assembled gate.
+- Optional sovereign-sync sharing was not enabled or changed.

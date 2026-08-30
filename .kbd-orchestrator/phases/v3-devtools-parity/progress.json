@@ -1,16 +1,16 @@
 {
   "schemaVersion": "2",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 417,
-  "derivedRevision": 417,
+  "sourceRevision": 422,
+  "derivedRevision": 422,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 417
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 422
   },
   "conflictCount": 0,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
   "parentPhase": null,
-  "last_updated": "2026-08-30T01:13:03.681495Z",
+  "last_updated": "2026-08-30T01:29:41.730466Z",
   "last_updated_by": "kbd-runtime",
   "changes_total": 9,
   "changes_completed": 4,
@@ -90,9 +90,9 @@
       "status": "IN_PROGRESS",
       "implementation_status": "IN_PROGRESS",
       "tasks_total": 9,
-      "tasks_done": 6,
-      "last_task_completed": "Register bounded/versioned VM service methods and events with strict command/store/value-policy validation.",
-      "next_task_pending": "Add fixture-parity, instrumentation, isolation, disposal, projection, preview conflict, history, and VM-service tests.",
+      "tasks_done": 7,
+      "last_task_completed": "Add fixture-parity, instrumentation, isolation, disposal, projection, preview conflict, history, and VM-service tests.",
+      "next_task_pending": "Run `dart analyze` and targeted tests during work; run full Dart/Flutter package T2 gates only at completion.",
       "blockers": []
     },
     {

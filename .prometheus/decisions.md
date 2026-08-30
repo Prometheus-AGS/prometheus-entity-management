@@ -130,3 +130,18 @@ boundary, while an implicit default graph would break multi-store isolation.
 One inspectable registry supports multiple graphs and deterministic controller
 teardown without creating a second owner of business state. Commands cannot
 alter the host-owned value/redaction policy.
+
+## 2026-08-30 — Certify Flutter DevTools from outside the VM-service boundary
+
+The Flutter controller acceptance gate launches a real debug application and
+uses an external Node client to discover its VM-service URI, subscribe to the
+Extension stream, and invoke the production service-extension methods. A
+test-only exact-parameter control method drives public graph operations inside
+the app; all observations and DevTools commands cross the real serialized
+boundary.
+
+Rationale: an in-isolate unit or widget test could call the controller directly
+and still leave registration, JSON-RPC routing, Extension events, isolate/store
+discovery, payload ceilings, redaction, and teardown unproved. One external
+assembled flow covers those boundaries while also mounting the real Riverpod
+entity/list providers and avoids multiplying partial suites.
