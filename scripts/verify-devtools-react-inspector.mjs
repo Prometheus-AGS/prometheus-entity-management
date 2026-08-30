@@ -463,12 +463,14 @@ function App() {
         graphStore.getState().patchEntity("Order", "o-1042", { status: "approved" });
       },
       async startStress() {
+        const startedAt = performance.now();
         const longTasks: number[] = [];
         const observer = new PerformanceObserver((list) => {
-          for (const entry of list.getEntries()) longTasks.push(entry.duration);
+          for (const entry of list.getEntries()) {
+            if (entry.startTime >= startedAt) longTasks.push(entry.duration);
+          }
         });
         try { observer.observe({ type: "longtask", buffered: true }); } catch { /* unsupported browser */ }
-        const startedAt = performance.now();
         let emitted = 0;
         await new Promise<void>((resolve) => {
           const timer = window.setInterval(() => {

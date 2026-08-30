@@ -2222,3 +2222,10 @@
   removed the deferred-render starvation. The complete packed integration then
   passed with 11.2 ms search p95, 499.14 events/second, zero inspector long tasks
   over 50 ms, and 500 retained events. Sovereign sync was not touched.
+- The hosted gate then confirmed search passed and exposed two pre-stream long
+  tasks (55 ms and 53 ms) admitted by `buffered: true`. The observer now filters
+  entries against the stream's monotonic start time, preserving the zero-long-
+  task budget while matching its documented measurement window. The complete
+  packed integration passed with 16.1 ms search p95, 499.03 events/second, zero
+  in-window long tasks over 50 ms, and 500 retained events. Sovereign sync was
+  not touched.
