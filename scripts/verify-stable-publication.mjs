@@ -77,7 +77,7 @@ export async function verifyStablePublicationPre({
   });
 
   check("contract-version-set", () => {
-    assert(/^3\.0\.\d+$/.test(targetVersion), "release version must be a stable 3.0 patch");
+    assert(/^3\.\d+\.\d+$/.test(targetVersion), "release version must be a stable 3.x release");
     assert(contract.versionPolicy.npm.strategy === "fixed", "npm strategy must be fixed");
     assert(contract.versionPolicy.npm.version === targetVersion, "npm version must match release version");
     assert(contract.versionPolicy.npm.stableTag === "latest", "stable tag must be latest");
