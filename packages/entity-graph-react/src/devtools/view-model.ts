@@ -1,6 +1,5 @@
 import {
   useCallback,
-  useDeferredValue,
   useEffect,
   useMemo,
   useState,
@@ -189,7 +188,7 @@ export function useEntityGraphInspectorViewModel(
   const [causalRailCollapsed, setCausalRailCollapsed] = useState(false);
   const [pulseCollapsed, setPulseCollapsed] = useState(false);
   const [search, setSearch] = useState(initialState?.search ?? "");
-  const deferredSearch = useDeferredValue(search.trim().toLocaleLowerCase());
+  const normalizedSearch = search.trim().toLocaleLowerCase();
   const [entityFilter, setEntityFilter] = useState<EntityStatusFilter>(initialState?.entityFilter ?? "all");
   const [selectedEntityKey, setSelectedEntityKey] = useState<string | null>(() => (
     initialState?.entityType && initialState.entityId
@@ -216,10 +215,10 @@ export function useEntityGraphInspectorViewModel(
   const entities = useMemo(() => (model?.entities ?? []).filter((entity) => {
     if (entityFilter === "dirty" && !entity.dirty) return false;
     if (entityFilter === "errors" && !entity.entityState.error) return false;
-    return deferredSearch.length === 0 ||
-      entity.type.toLocaleLowerCase().includes(deferredSearch) ||
-      entity.id.toLocaleLowerCase().includes(deferredSearch);
-  }), [deferredSearch, entityFilter, model?.entities]);
+    return normalizedSearch.length === 0 ||
+      entity.type.toLocaleLowerCase().includes(normalizedSearch) ||
+      entity.id.toLocaleLowerCase().includes(normalizedSearch);
+  }), [entityFilter, model?.entities, normalizedSearch]);
 
   const selectedEntity = useMemo(() => {
     const all = model?.entities ?? [];

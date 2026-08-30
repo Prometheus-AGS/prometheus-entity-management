@@ -2216,3 +2216,9 @@
   barrel. Added the source mapping; the exact `--skip-artifacts` generator path
   and the complete secondary Docusaurus production build pass without generated
   API drift. Sovereign sync was not touched.
+- The final Node 24 packed browser gate then reproduced search starvation twice
+  under the 5,000-event stress stream: 438.7 ms and 431.5 ms p95 against the
+  100 ms budget. Applying the small entity-search projection synchronously
+  removed the deferred-render starvation. The complete packed integration then
+  passed with 11.2 ms search p95, 499.14 events/second, zero inspector long tasks
+  over 50 ms, and 500 retained events. Sovereign sync was not touched.
