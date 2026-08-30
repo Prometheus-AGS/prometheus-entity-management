@@ -44,6 +44,7 @@ Object? _commandResultJson(Object? value) => switch (value) {
   EntityGraphDevtoolsRewindResult() => value.toJson(),
   EntityGraphDevtoolsReturnToLiveReceipt() => value.toJson(),
   EntityGraphDevtoolsHistoryImportInspectionResult() => value.toJson(),
+  EntityGraphDevtoolsHistoryImportCancellationResult() => value.toJson(),
   EntityGraphDevtoolsHistoryImportRestoreResult() => value.toJson(),
   List() => value.map(_commandResultJson).toList(growable: false),
   Map() => {
@@ -81,7 +82,7 @@ EntityGraphDevtoolsResult _handleCommand(
   final requestId = envelope?['requestId'] is String
       ? envelope!['requestId']! as String
       : 'invalid';
-  if (controller._disposed) {
+  if (controller.isDisposed) {
     return _commandError(
       controller.storeId,
       requestId,
@@ -93,6 +94,7 @@ EntityGraphDevtoolsResult _handleCommand(
     'protocol',
     'version',
     'storeId',
+    'controllerId',
     'requestId',
     'command',
     'payload',
@@ -102,9 +104,11 @@ EntityGraphDevtoolsResult _handleCommand(
       envelope['protocol'] is! String ||
       envelope['version'] is! int ||
       envelope['storeId'] is! String ||
+      envelope['controllerId'] is! String ||
       envelope['requestId'] is! String ||
       envelope['command'] is! String ||
       (envelope['storeId']! as String).isEmpty ||
+      (envelope['controllerId']! as String).isEmpty ||
       (envelope['requestId']! as String).isEmpty ||
       (envelope['command']! as String).isEmpty) {
     return _commandError(
@@ -137,6 +141,15 @@ EntityGraphDevtoolsResult _handleCommand(
       requestId,
       EntityGraphDevtoolsProtocolErrorCode.wrongStore,
       'Command targets $requestedStoreId, not ${controller.storeId}',
+    );
+  }
+  final requestedControllerId = envelope['controllerId']! as String;
+  if (requestedControllerId != controller.controllerId) {
+    return _commandError(
+      controller.storeId,
+      requestId,
+      EntityGraphDevtoolsProtocolErrorCode.staleController,
+      'Command targets an inactive controller generation',
     );
   }
   final commandName = EntityGraphDevtoolsCommandName.values
@@ -203,6 +216,14 @@ EntityGraphDevtoolsResult _handleCommand(
           !_isJsonCompatible(patch)) {
         break;
       }
+      if (controller._historyMode == EntityGraphDevtoolsHistoryMode.rewound) {
+        return _commandError(
+          controller.storeId,
+          requestId,
+          EntityGraphDevtoolsProtocolErrorCode.timeTravelActive,
+          'Return to live before applying an entity preview',
+        );
+      }
       if (controller._activePreviewByEntity.containsKey(
         _entityIdentityKey(type, id),
       )) {
@@ -227,6 +248,14 @@ EntityGraphDevtoolsResult _handleCommand(
       final value = _exactPayload(payload, const {'previewId'});
       final previewId = value?['previewId'];
       if (value == null || previewId is! String || previewId.isEmpty) break;
+      if (controller._historyMode == EntityGraphDevtoolsHistoryMode.rewound) {
+        return _commandError(
+          controller.storeId,
+          requestId,
+          EntityGraphDevtoolsProtocolErrorCode.timeTravelActive,
+          'Return to live before restoring an entity preview',
+        );
+      }
       final receipt = controller.restoreEntityPreview(previewId);
       if (receipt == null) {
         return _commandError(
@@ -277,8 +306,8 @@ EntityGraphDevtoolsResult _handleCommand(
         return _commandError(
           controller.storeId,
           requestId,
-          EntityGraphDevtoolsProtocolErrorCode.snapshotNotFound,
-          'Snapshot cursor $cursor is not retained',
+          EntityGraphDevtoolsProtocolErrorCode.restoreFailed,
+          'Snapshot cursor $cursor could not be restored',
         );
       }
       return _commandSuccess(controller, requestId, receipt);
@@ -292,13 +321,21 @@ EntityGraphDevtoolsResult _handleCommand(
           'Time travel is disabled for this controller',
         );
       }
-      final receipt = controller.returnToLive();
-      if (receipt == null) {
+      if (controller._historyMode != EntityGraphDevtoolsHistoryMode.rewound) {
         return _commandError(
           controller.storeId,
           requestId,
           EntityGraphDevtoolsProtocolErrorCode.notRewound,
           'The graph is already live',
+        );
+      }
+      final receipt = controller.returnToLive();
+      if (receipt == null) {
+        return _commandError(
+          controller.storeId,
+          requestId,
+          EntityGraphDevtoolsProtocolErrorCode.restoreFailed,
+          'Return to live failed; the graph remains rewound',
         );
       }
       return _commandSuccess(controller, requestId, receipt);
@@ -317,6 +354,17 @@ EntityGraphDevtoolsResult _handleCommand(
         controller,
         requestId,
         controller.inspectHistoryImport(value['candidate']),
+      );
+    case EntityGraphDevtoolsCommandName.cancelHistoryImport:
+      final value = _exactPayload(payload, const {'candidateId'});
+      final candidateId = value?['candidateId'];
+      if (value == null || candidateId is! String || candidateId.isEmpty) {
+        break;
+      }
+      return _commandSuccess(
+        controller,
+        requestId,
+        controller.cancelHistoryImport(candidateId),
       );
     case EntityGraphDevtoolsCommandName.confirmHistoryImport:
       final value = _exactPayload(payload, const {

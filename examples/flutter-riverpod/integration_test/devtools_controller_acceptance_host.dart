@@ -18,6 +18,14 @@ late final EntityGraph _graphA;
 late final EntityGraph _graphB;
 late final EntityGraphDevtoolsBinding _bindingA;
 late final EntityGraphDevtoolsBinding _bindingB;
+EntityGraphDevtoolsBinding? _replacementBindingA;
+EntityGraph? _graphC;
+EntityGraphDevtoolsBinding? _bindingC;
+var _disposalMutationsRejected = false;
+var _directPreviewRewindRejected = false;
+var _duplicateStoreRejected = false;
+String? _nestedPreviewId;
+var _nestedPreviewRestored = false;
 
 Map<String, Object?> _decodeEntity(Map<String, Object?> row) =>
     Map.unmodifiable(row);
@@ -142,8 +150,40 @@ Map<String, Object?> _runAcceptanceStep(String step) {
     case 'preview-conflict':
       _graphA.patchEntity(_taskType, 'task-1', const {'status': 'conflict'});
       break;
-    case 'resolve-preview-conflict':
+    case 'preview-aba':
+      _graphA.patchEntity(_taskType, 'task-1', const {'status': 'aba-away'});
       _graphA.patchEntity(_taskType, 'task-1', const {'status': 'preview'});
+      break;
+    case 'direct-rewind-while-preview':
+      _directPreviewRewindRejected = _bindingA.controller!.rewind(1) == null;
+      break;
+    case 'direct-nested-preview':
+      final nested = <String, Object?>{'value': 'original'};
+      final input = <String, Object?>{
+        'nested': nested,
+        'labels': <String>{'alpha', 'beta'},
+      };
+      _nestedPreviewId = _bindingA.controller!
+          .previewEntityPatch(_taskType, 'task-1', input)
+          ?.previewId;
+      nested['value'] = 'mutated-outside-graph';
+      break;
+    case 'restore-direct-nested-preview':
+      final previewId = _nestedPreviewId;
+      if (previewId != null) {
+        _nestedPreviewRestored =
+            _bindingA.controller!.restoreEntityPreview(previewId)
+                is EntityGraphDevtoolsPreviewRestoredReceipt;
+      }
+      break;
+    case 'duplicate-store-id':
+      final duplicateGraph = EntityGraph();
+      try {
+        EntityGraphDevtoolsBinding.attach(duplicateGraph, storeId: _storeA);
+      } on StateError {
+        _duplicateStoreRejected =
+            EntityGraphDevtoolsBinding.controllerFor(duplicateGraph) == null;
+      }
       break;
     case 'oversized-event':
       _graphA.upsertEntity(_taskType, 'oversized-task', {
@@ -163,6 +203,38 @@ Map<String, Object?> _runAcceptanceStep(String step) {
     case 'dispose-store-a':
       _bindingA.detach();
       break;
+    case 'mutate-after-reattach':
+      _graphA.upsertEntity(_taskType, 'task-1', {
+        'name': 'Observed only by replacement controller',
+      });
+      break;
+    case 'dispose-store-a-replacement':
+      _replacementBindingA?.detach();
+      _replacementBindingA = null;
+      break;
+    case 'mutate-after-final-detach':
+      _graphA.upsertEntity(_taskType, 'task-1', {
+        'name': 'No controller observes this mutation',
+      });
+      break;
+    case 'attach-new-graph-store-a':
+      final graph = EntityGraph()
+        ..upsertEntity(_taskType, 'task-1', {
+          'id': 'task-1',
+          'name': 'Different graph generation',
+          'status': 'fresh',
+        });
+      _graphC = graph;
+      _bindingC = EntityGraphDevtoolsBinding.attach(
+        graph,
+        storeId: _storeA,
+        valuePolicy: const EntityGraphDevtoolsValuePolicy.include(),
+      );
+      break;
+    case 'dispose-new-graph-store-a':
+      _bindingC?.detach();
+      _bindingC = null;
+      break;
     default:
       throw ArgumentError.value(step, 'step', 'Unknown acceptance step');
   }
@@ -170,6 +242,17 @@ Map<String, Object?> _runAcceptanceStep(String step) {
     'step': step,
     'storeAActive': EntityGraphDevtoolsBinding.controllerFor(_graphA) != null,
     'storeBActive': EntityGraphDevtoolsBinding.controllerFor(_graphB) != null,
+    'disposalMutationsRejected': _disposalMutationsRejected,
+    'directPreviewRewindRejected': _directPreviewRewindRejected,
+    'duplicateStoreRejected': _duplicateStoreRejected,
+    'nestedPreviewId': _nestedPreviewId,
+    'nestedPreviewRestored': _nestedPreviewRestored,
+    'nestedGraphValue':
+        (_graphA.readEntityPatch(_taskType, 'task-1')?['nested']
+            as Map?)?['value'],
+    'storeCActive':
+        _graphC != null &&
+        EntityGraphDevtoolsBinding.controllerFor(_graphC!) != null,
   };
 }
 
@@ -212,8 +295,60 @@ void main() {
     ),
     historyLimit: 64,
     snapshotLimit: 32,
+    snapshotBytesLimit: 64 * 1024,
   );
   _bindingB = EntityGraphDevtoolsBinding.attach(_graphB, storeId: _storeB);
+  _bindingA.controller!.subscribeLifecycle((event) {
+    if (event.state != EntityGraphDevtoolsLifecycleState.disposed) return;
+    final disposingController = _bindingA.controller!;
+    final importResult = disposingController.inspectHistoryImport(const {});
+    final confirmResult = disposingController.confirmHistoryImport(
+      'candidate-during-disposal',
+      1,
+    );
+    final cancelResult = disposingController.cancelHistoryImport(
+      'candidate-during-disposal',
+    );
+    _disposalMutationsRejected =
+        disposingController.previewEntityPatch(_taskType, 'task-1', const {
+              'status': 'during-disposal',
+            }) ==
+            null &&
+        disposingController.rewind(1) == null &&
+        disposingController.returnToLive() == null &&
+        disposingController.restoreEntityPreview('missing-preview') == null &&
+        importResult is EntityGraphDevtoolsHistoryImportRejectedReceipt &&
+        importResult.reason ==
+            EntityGraphDevtoolsHistoryImportInspectionRejectionReason
+                .disposed &&
+        confirmResult
+            is EntityGraphDevtoolsHistoryImportRestoreRejectedReceipt &&
+        confirmResult.reason ==
+            EntityGraphDevtoolsHistoryImportRestoreRejectionReason.disposed &&
+        cancelResult
+            is EntityGraphDevtoolsHistoryImportCancellationRejectedReceipt &&
+        cancelResult.reason ==
+            EntityGraphDevtoolsHistoryImportCancellationRejectionReason
+                .disposed;
+    _replacementBindingA = EntityGraphDevtoolsBinding.attach(
+      _graphA,
+      storeId: _storeA,
+      schema: _acceptanceSchema(),
+      valuePolicy: EntityGraphDevtoolsValuePolicy.include(
+        redact: _redactAcceptanceValue,
+      ),
+      historyLimit: 64,
+      snapshotLimit: 32,
+      snapshotBytesLimit: 64 * 1024,
+    );
+    throw StateError('acceptance lifecycle callback failure');
+  });
+  _bindingA.controller!.subscribe((event) {
+    if (event is EntityGraphDevtoolsLifecycleEvent &&
+        event.state == EntityGraphDevtoolsLifecycleState.disposed) {
+      throw StateError('acceptance event callback failure');
+    }
+  });
   developer.registerExtension(_acceptanceStepMethod, _handleAcceptanceStep);
 
   runApp(

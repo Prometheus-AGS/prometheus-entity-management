@@ -304,7 +304,7 @@ _enterRewind(
   required EntityGraphDevtoolsSnapshotSource source,
   required EntityGraphSnapshot target,
 }) {
-  if (controller._disposed ||
+  if (controller.isDisposed ||
       controller._previewReceipts.isNotEmpty ||
       (controller._historyMode == EntityGraphDevtoolsHistoryMode.rewound &&
           controller._protectedLiveHead == null)) {
@@ -466,7 +466,6 @@ EntityGraphDevtoolsHistoryImportInspectionResult _inspectHistoryImport(
   EntityGraphDevtoolsController controller,
   Object? candidate,
 ) {
-  controller._importCandidate = null;
   EntityGraphDevtoolsHistoryImportRejectedReceipt reject(
     EntityGraphDevtoolsHistoryImportInspectionRejectionReason reason,
     String message,
@@ -474,7 +473,7 @@ EntityGraphDevtoolsHistoryImportInspectionResult _inspectHistoryImport(
     reason: reason,
     message: message,
   );
-  if (controller._disposed) {
+  if (controller.isDisposed) {
     return reject(
       EntityGraphDevtoolsHistoryImportInspectionRejectionReason.disposed,
       'DevTools controller is disposed',
@@ -572,16 +571,31 @@ EntityGraphDevtoolsHistoryImportInspectionResult _inspectHistoryImport(
       0,
       (total, snapshot) => total + snapshot.bytes,
     );
-    while (controller._retainedSnapshots.length + snapshots.length >
-            controller.snapshotLimit ||
-        controller._retainedSnapshotBytes + candidateBytes >
-            controller.snapshotBytesLimit) {
-      if (controller._retainedSnapshots.isEmpty) break;
-      final removed = controller._retainedSnapshots.removeAt(0);
-      controller._retainedSnapshotBytes -= removed.reference.bytes;
+    if (snapshots.length > controller.snapshotLimit) {
+      return reject(
+        EntityGraphDevtoolsHistoryImportInspectionRejectionReason
+            .snapshotLimitExceeded,
+        'Import contains ${snapshots.length} snapshots; limit is '
+        '${controller.snapshotLimit}',
+      );
+    }
+    if (candidateBytes > controller.snapshotBytesLimit) {
+      return reject(
+        EntityGraphDevtoolsHistoryImportInspectionRejectionReason
+            .byteLimitExceeded,
+        'Imported snapshots contain $candidateBytes bytes; limit is '
+        '${controller.snapshotBytesLimit}',
+      );
+    }
+    if (controller._importCandidate != null) {
+      return reject(
+        EntityGraphDevtoolsHistoryImportInspectionRejectionReason
+            .candidatePending,
+        'Confirm or invalidate the pending import candidate before inspecting another',
+      );
     }
     final candidateId =
-        'import-${controller.storeId}-'
+        'import-${controller.controllerId}-'
         '${controller._nextImportCandidate++}';
     controller._importCandidate = _ImportedGraphCandidate(
       candidateId: candidateId,

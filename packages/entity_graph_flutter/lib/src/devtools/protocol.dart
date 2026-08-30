@@ -158,6 +158,7 @@ enum EntityGraphDevtoolsCommandName {
   rewind('rewind'),
   returnToLive('return-to-live'),
   inspectHistoryImport('inspect-history-import'),
+  cancelHistoryImport('cancel-history-import'),
   confirmHistoryImport('confirm-history-import'),
   clearHistory('clear-history');
 
@@ -169,11 +170,13 @@ enum EntityGraphDevtoolsCommandName {
 final class EntityGraphDevtoolsCommand extends EntityGraphDevtoolsEnvelope {
   const EntityGraphDevtoolsCommand({
     required super.storeId,
+    required this.controllerId,
     required this.requestId,
     required this.command,
     this.payload,
   });
 
+  final String controllerId;
   final String requestId;
   final EntityGraphDevtoolsCommandName command;
   final Object? payload;
@@ -181,6 +184,7 @@ final class EntityGraphDevtoolsCommand extends EntityGraphDevtoolsEnvelope {
   @override
   Map<String, Object?> toJson() => {
     ...envelopeJson(),
+    'controllerId': controllerId,
     'requestId': requestId,
     'command': command.wireName,
     if (payload != null) 'payload': payload,
@@ -192,13 +196,16 @@ enum EntityGraphDevtoolsProtocolErrorCode {
   invalidPayload('invalid-payload'),
   unsupportedVersion('unsupported-version'),
   wrongStore('wrong-store'),
+  staleController('stale-controller'),
   unsupportedCommand('unsupported-command'),
   entityNotFound('entity-not-found'),
   previewAlreadyActive('preview-already-active'),
   previewNotFound('preview-not-found'),
   snapshotNotFound('snapshot-not-found'),
   timeTravelUnavailable('time-travel-unavailable'),
+  timeTravelActive('time-travel-active'),
   notRewound('not-rewound'),
+  restoreFailed('restore-failed'),
   confirmationRequired('confirmation-required'),
   transportLimitExceeded('transport-limit-exceeded'),
   disposed('disposed');
@@ -348,14 +355,17 @@ final class EntityGraphDevtoolsCapabilities {
 final class EntityGraphDevtoolsStoreDescriptor {
   const EntityGraphDevtoolsStoreDescriptor({
     required this.storeId,
+    required this.controllerId,
     required this.capabilities,
   });
 
   final String storeId;
+  final String controllerId;
   final EntityGraphDevtoolsCapabilities capabilities;
 
   Map<String, Object?> toJson() => {
     'storeId': storeId,
+    'controllerId': controllerId,
     'capabilities': capabilities.toJson(),
   };
 }
@@ -583,14 +593,14 @@ final class EntityGraphDevtoolsActivePreview {
 
 /// Store-level metrics, active previews, and bounded-history status.
 final class EntityGraphDevtoolsSnapshot extends EntityGraphDevtoolsEnvelope {
-  EntityGraphDevtoolsSnapshot({
+  const EntityGraphDevtoolsSnapshot({
     required super.storeId,
     required this.capturedAt,
     required this.counts,
     required this.history,
     required this.snapshots,
-    required Iterable<EntityGraphDevtoolsActivePreview> activePreviews,
-  }) : activePreviews = List.unmodifiable(activePreviews);
+    required this.activePreviews,
+  });
 
   final String capturedAt;
   final EntityGraphDevtoolsCounts counts;
@@ -1500,6 +1510,7 @@ enum EntityGraphDevtoolsHistoryImportInspectionRejectionReason {
   unsupportedVersion('unsupported-version'),
   snapshotLimitExceeded('snapshot-limit-exceeded'),
   byteLimitExceeded('byte-limit-exceeded'),
+  candidatePending('candidate-pending'),
   timeTravelUnavailable('time-travel-unavailable'),
   disposed('disposed');
 
@@ -1540,6 +1551,58 @@ final class EntityGraphDevtoolsConfirmHistoryImport {
     'candidateId': candidateId,
     'cursor': cursor,
     'confirm': true,
+  };
+}
+
+sealed class EntityGraphDevtoolsHistoryImportCancellationResult {
+  const EntityGraphDevtoolsHistoryImportCancellationResult();
+  Map<String, Object?> toJson();
+}
+
+final class EntityGraphDevtoolsHistoryImportCancellationReceipt
+    extends EntityGraphDevtoolsHistoryImportCancellationResult {
+  const EntityGraphDevtoolsHistoryImportCancellationReceipt({
+    required this.candidateId,
+    required this.cancelled,
+  });
+
+  final String candidateId;
+  final bool cancelled;
+
+  @override
+  Map<String, Object?> toJson() => {
+    'status': cancelled ? 'cancelled' : 'not-pending',
+    'candidateId': candidateId,
+    'cancelled': cancelled,
+  };
+}
+
+enum EntityGraphDevtoolsHistoryImportCancellationRejectionReason {
+  candidateMismatch('candidate-mismatch'),
+  timeTravelUnavailable('time-travel-unavailable'),
+  disposed('disposed');
+
+  const EntityGraphDevtoolsHistoryImportCancellationRejectionReason(
+    this.wireName,
+  );
+  final String wireName;
+}
+
+final class EntityGraphDevtoolsHistoryImportCancellationRejectedReceipt
+    extends EntityGraphDevtoolsHistoryImportCancellationResult {
+  const EntityGraphDevtoolsHistoryImportCancellationRejectedReceipt({
+    required this.reason,
+    required this.message,
+  });
+
+  final EntityGraphDevtoolsHistoryImportCancellationRejectionReason reason;
+  final String message;
+
+  @override
+  Map<String, Object?> toJson() => {
+    'status': 'rejected',
+    'reason': reason.wireName,
+    'message': message,
   };
 }
 

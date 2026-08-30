@@ -1,7 +1,7 @@
 name: entity_graph_flutter_devtools_extension
 description: Private build workspace for the entity_graph_flutter DevTools companion.
 publish_to: none
-version: 3.0.4
+version: 3.0.5
 
 environment:
   sdk: ">=3.12.0 <4.0.0"

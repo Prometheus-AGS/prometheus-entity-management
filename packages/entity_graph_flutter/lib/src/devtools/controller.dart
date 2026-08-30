@@ -28,6 +28,7 @@ final class EntityGraphDevtoolsController {
   EntityGraphDevtoolsController._({
     required EntityGraph graph,
     required this.storeId,
+    required this.controllerId,
     required this.valuePolicy,
     required this.schema,
     required this.vmServiceEnabled,
@@ -51,6 +52,7 @@ final class EntityGraphDevtoolsController {
             EntityGraphDevtoolsCommandName.rewind,
             EntityGraphDevtoolsCommandName.returnToLive,
             EntityGraphDevtoolsCommandName.inspectHistoryImport,
+            EntityGraphDevtoolsCommandName.cancelHistoryImport,
             EntityGraphDevtoolsCommandName.confirmHistoryImport,
           ]
         : const <EntityGraphDevtoolsCommandName>[];
@@ -102,6 +104,9 @@ final class EntityGraphDevtoolsController {
   /// Stable wire identity for this controller while its graph is attached.
   final String storeId;
 
+  /// Unique identity for this attachment generation of [storeId].
+  final String controllerId;
+
   /// Host-owned policy applied before values enter history or inspection.
   final EntityGraphDevtoolsValuePolicy valuePolicy;
 
@@ -127,6 +132,7 @@ final class EntityGraphDevtoolsController {
   final List<int> _historySizes = [];
   final Map<String, int> _entityRevisions = {};
   final Map<String, int> _entityValueRevisions = {};
+  final Map<String, int> _entityPatchRevisions = {};
   final List<_RetainedGraphSnapshot> _retainedSnapshots = [];
   final Map<int, EntityGraphDevtoolsUnavailableSnapshotReference>
   _unavailableSnapshots = {};
@@ -137,6 +143,7 @@ final class EntityGraphDevtoolsController {
   void Function()? _stopPublicationObservation;
   void Function()? _stopVmService;
   var _sequence = 0;
+  var _disposing = false;
   var _disposed = false;
   var _retainedEventBytes = 0;
   var _retainedSnapshotBytes = 0;
@@ -153,11 +160,9 @@ final class EntityGraphDevtoolsController {
   var _nextPreviewNumber = 1;
   var _internalReplayDepth = 0;
   var _projectionFailureRevision = 0;
-  var _pendingDisposal = false;
-  var _disposeInProgress = false;
 
   /// Whether the final binding has detached and released this controller.
-  bool get isDisposed => _disposed;
+  bool get isDisposed => _disposing || _disposed;
 
   /// Whether snapshot retention and time travel are enabled.
   bool get timeTravelEnabled => snapshotLimit > 0 && snapshotBytesLimit > 0;
@@ -178,7 +183,7 @@ final class EntityGraphDevtoolsController {
         _deliverLifecycle(listener, event);
       }
     }
-    if (_disposed) return _noop;
+    if (isDisposed) return _noop;
     _lifecycleListeners.add(listener);
     var subscribed = true;
     return () {
@@ -198,7 +203,7 @@ final class EntityGraphDevtoolsController {
         _deliverEvent(listener, event);
       }
     }
-    if (_disposed) return _noop;
+    if (isDisposed) return _noop;
     _eventListeners.add(listener);
     var subscribed = true;
     return () {
@@ -215,16 +220,18 @@ final class EntityGraphDevtoolsController {
     counts: _collectCounts(_graph.captureSnapshot()),
     history: getHistoryStatus(),
     snapshots: getSnapshotHistoryStatus(),
-    activePreviews: _previewReceipts.values.map(
-      (receipt) => EntityGraphDevtoolsActivePreview(
-        previewId: receipt.previewId,
-        entity: EntityGraphDevtoolsViewMembership(
-          type: receipt.type,
-          id: receipt.id,
-        ),
-        appliedAt: receipt.appliedAt,
-      ),
-    ),
+    activePreviews: _previewReceipts.values
+        .map(
+          (receipt) => EntityGraphDevtoolsActivePreview(
+            previewId: receipt.previewId,
+            entity: EntityGraphDevtoolsViewMembership(
+              type: receipt.type,
+              id: receipt.id,
+            ),
+            appliedAt: receipt.appliedAt,
+          ),
+        )
+        .toList(growable: false),
   );
 
   /// Copy of retained bounded semantic history.
@@ -263,7 +270,9 @@ final class EntityGraphDevtoolsController {
   ) => _restoreEntityPreview(this, previewId);
 
   EntityGraphDevtoolsRewindResult? rewind(int cursor) {
-    if (!timeTravelEnabled || _disposed) return null;
+    if (!timeTravelEnabled || isDisposed || _previewReceipts.isNotEmpty) {
+      return null;
+    }
     final retained = _retainedSnapshots
         .where((snapshot) => snapshot.reference.cursor == cursor)
         .firstOrNull;
@@ -292,9 +301,15 @@ final class EntityGraphDevtoolsController {
     );
   }
 
-  EntityGraphDevtoolsReturnToLiveReceipt? returnToLive() {
+  EntityGraphDevtoolsReturnToLiveReceipt? returnToLive() =>
+      _returnToLive(allowDisposing: false);
+
+  EntityGraphDevtoolsReturnToLiveReceipt? _returnToLive({
+    required bool allowDisposing,
+  }) {
     if (!timeTravelEnabled ||
         _disposed ||
+        (_disposing && !allowDisposing) ||
         _historyMode != EntityGraphDevtoolsHistoryMode.rewound ||
         _protectedLiveHead == null ||
         _activeSnapshotCursor == null ||
@@ -326,13 +341,56 @@ final class EntityGraphDevtoolsController {
       previousSource: previousSource,
       changedAt: event.observedAt,
     );
-    if (_pendingDisposal && !_disposeInProgress) _dispose();
     return receipt;
   }
 
   EntityGraphDevtoolsHistoryImportInspectionResult inspectHistoryImport(
     Object? candidate,
   ) => _inspectHistoryImport(this, candidate);
+
+  EntityGraphDevtoolsHistoryImportCancellationResult cancelHistoryImport(
+    String candidateId,
+  ) {
+    EntityGraphDevtoolsHistoryImportCancellationRejectedReceipt reject(
+      EntityGraphDevtoolsHistoryImportCancellationRejectionReason reason,
+      String message,
+    ) => EntityGraphDevtoolsHistoryImportCancellationRejectedReceipt(
+      reason: reason,
+      message: message,
+    );
+    if (isDisposed) {
+      return reject(
+        EntityGraphDevtoolsHistoryImportCancellationRejectionReason.disposed,
+        'DevTools controller is disposed',
+      );
+    }
+    if (!timeTravelEnabled) {
+      return reject(
+        EntityGraphDevtoolsHistoryImportCancellationRejectionReason
+            .timeTravelUnavailable,
+        'Time travel is disabled for this controller',
+      );
+    }
+    final candidate = _importCandidate;
+    if (candidate == null) {
+      return EntityGraphDevtoolsHistoryImportCancellationReceipt(
+        candidateId: candidateId,
+        cancelled: false,
+      );
+    }
+    if (candidate.candidateId != candidateId) {
+      return reject(
+        EntityGraphDevtoolsHistoryImportCancellationRejectionReason
+            .candidateMismatch,
+        'Import candidate $candidateId is not the pending candidate',
+      );
+    }
+    _importCandidate = null;
+    return EntityGraphDevtoolsHistoryImportCancellationReceipt(
+      candidateId: candidateId,
+      cancelled: true,
+    );
+  }
 
   EntityGraphDevtoolsHistoryImportRestoreResult confirmHistoryImport(
     String candidateId,
@@ -345,7 +403,7 @@ final class EntityGraphDevtoolsController {
       reason: reason,
       message: message,
     );
-    if (_disposed) {
+    if (isDisposed) {
       return reject(
         EntityGraphDevtoolsHistoryImportRestoreRejectionReason.disposed,
         'DevTools controller is disposed',
@@ -414,6 +472,7 @@ final class EntityGraphDevtoolsController {
 
   /// Clear event and snapshot retention without altering the current graph.
   void clearHistory() {
+    if (isDisposed) return;
     _history.clear();
     _historySizes.clear();
     _retainedEventBytes = 0;
@@ -442,7 +501,7 @@ final class EntityGraphDevtoolsController {
   }
 
   void _observePublication(GraphPublication publication) {
-    if (_disposed || _internalReplayDepth > 0) return;
+    if (isDisposed || _internalReplayDepth > 0) return;
     final watch = Stopwatch()..start();
     late final List<EntityGraphDevtoolsChange> changes;
     try {
@@ -618,13 +677,16 @@ final class EntityGraphDevtoolsController {
     final sequence = ++_sequence;
     return (
       sequence: sequence,
-      eventId: '$storeId:$sequence',
+      eventId: '$controllerId:$sequence',
       observedAt: DateTime.now().toUtc().toIso8601String(),
     );
   }
 
   void _publishEvent(EntityGraphDevtoolsEvent candidate) {
-    if (_disposed) return;
+    if (_disposed ||
+        (_disposing && candidate is! EntityGraphDevtoolsLifecycleEvent)) {
+      return;
+    }
     final event = _boundEvent(this, candidate);
     _retainEvent(this, event);
     for (final listener in List.of(_eventListeners)) {
@@ -633,42 +695,61 @@ final class EntityGraphDevtoolsController {
   }
 
   void _dispose() {
-    if (_disposed || _disposeInProgress) return;
-    _pendingDisposal = true;
-    _disposeInProgress = true;
-    try {
-      if (_historyMode == EntityGraphDevtoolsHistoryMode.rewound &&
-          returnToLive() == null) {
-        return;
+    if (isDisposed) return;
+    _disposing = true;
+    void attempt(void Function() cleanup) {
+      try {
+        cleanup();
+      } on Object {
+        // Final detach must release debugger resources even when graph cleanup
+        // cannot be completed safely.
       }
-      for (final receipt in List.of(_previewReceipts.values)) {
-        final result = _restoreEntityPreview(this, receipt.previewId);
-        if (result is EntityGraphDevtoolsPreviewConflictReceipt) return;
-      }
-      _stopPublicationObservation?.call();
-      _stopPublicationObservation = null;
-      _stopViewObservation?.call();
-      _stopViewObservation = null;
-      _publishLifecycle(EntityGraphDevtoolsLifecycleState.disposed);
-      _stopVmService?.call();
-      _stopVmService = null;
-      _disposed = true;
-      _pendingDisposal = false;
-      _lifecycleListeners.clear();
-      _eventListeners.clear();
-      _history.clear();
-      _historySizes.clear();
-      _retainedSnapshots.clear();
-      _unavailableSnapshots.clear();
-      _previewReceipts.clear();
-      _activePreviewByEntity.clear();
-      _entityRevisions.clear();
-      _entityValueRevisions.clear();
-      _importCandidate = null;
-      _protectedLiveHead = null;
-    } finally {
-      _disposeInProgress = false;
     }
+
+    if (_historyMode == EntityGraphDevtoolsHistoryMode.rewound) {
+      attempt(() => _returnToLive(allowDisposing: true));
+    }
+    for (final receipt in List.of(_previewReceipts.values)) {
+      attempt(
+        () => _restoreEntityPreview(
+          this,
+          receipt.previewId,
+          allowDisposing: true,
+        ),
+      );
+    }
+    attempt(() => _stopPublicationObservation?.call());
+    _stopPublicationObservation = null;
+    attempt(() => _stopViewObservation?.call());
+    _stopViewObservation = null;
+    attempt(
+      () => _publishLifecycle(EntityGraphDevtoolsLifecycleState.disposed),
+    );
+    attempt(() => _stopVmService?.call());
+    _stopVmService = null;
+    _disposed = true;
+    _disposing = false;
+    _lifecycleListeners.clear();
+    _eventListeners.clear();
+    _history.clear();
+    _historySizes.clear();
+    _retainedSnapshots.clear();
+    _unavailableSnapshots.clear();
+    _previewReceipts.clear();
+    _activePreviewByEntity.clear();
+    _entityRevisions.clear();
+    _entityValueRevisions.clear();
+    _entityPatchRevisions.clear();
+    _importCandidate = null;
+    _protectedLiveHead = null;
+    _lastUnavailableSnapshot = null;
+    _retainedEventBytes = 0;
+    _retainedSnapshotBytes = 0;
+    _latestSnapshotCursor = 0;
+    _baselineSnapshotCursor = null;
+    _clearedThroughSnapshotCursor = 0;
+    _activeSnapshotCursor = null;
+    _activeSnapshotSource = null;
   }
 
   static void _deliverLifecycle(
@@ -719,6 +800,10 @@ final class EntityGraphDevtoolsBinding {
   static final Expando<_EntityGraphDevtoolsSlot> _slots =
       Expando<_EntityGraphDevtoolsSlot>('entity-graph-devtools');
   static var _nextStoreNumber = 1;
+  static var _nextControllerGeneration = 1;
+  static final String _isolateEpoch =
+      '${DateTime.now().microsecondsSinceEpoch.toRadixString(36)}-'
+      '${identityHashCode(Object()).toRadixString(36)}';
 
   /// Attach development tooling to [graph].
   ///
@@ -754,9 +839,20 @@ final class EntityGraphDevtoolsBinding {
         !entry.controller._owns(graph)) {
       final resolvedStoreId =
           storeId ?? (slot.generatedStoreId ??= 'graph-${_nextStoreNumber++}');
+      final existingVmController = _vmControllers[resolvedStoreId];
+      if (vmServiceEnabled &&
+          existingVmController != null &&
+          !existingVmController.isDisposed &&
+          !existingVmController._disposing) {
+        throw StateError(
+          'VM-service storeId $resolvedStoreId is already attached',
+        );
+      }
       final controller = EntityGraphDevtoolsController._(
         graph: graph,
         storeId: resolvedStoreId,
+        controllerId:
+            '$resolvedStoreId:$_isolateEpoch:${_nextControllerGeneration++}',
         valuePolicy: valuePolicy,
         schema: schema,
         vmServiceEnabled: vmServiceEnabled,
@@ -773,9 +869,6 @@ final class EntityGraphDevtoolsBinding {
     }
 
     final retainedEntry = entry;
-    if (retainedEntry.references == 0) {
-      retainedEntry.controller._pendingDisposal = false;
-    }
     retainedEntry.references += 1;
     var detached = false;
     return EntityGraphDevtoolsBinding._(
@@ -791,9 +884,8 @@ final class EntityGraphDevtoolsBinding {
         }
         if (current.references > 0) current.references -= 1;
         if (current.references != 0) return;
-        current.controller._dispose();
-        if (!current.controller.isDisposed) return;
         if (identical(slot.entry, current)) slot.entry = null;
+        current.controller._dispose();
       },
     );
   }

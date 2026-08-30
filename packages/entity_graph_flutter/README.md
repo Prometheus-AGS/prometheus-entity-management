@@ -17,7 +17,7 @@ Provides a **normalized, reactive entity graph store** for Flutter with:
 
 ## Flutter DevTools companion
 
-Version `3.0.4` includes an official package extension under
+Version `3.0.5` includes an official package extension under
 `extension/devtools`. In a debug application,
 attach an `EntityGraphDevtoolsController` to every graph that should be
 inspectable. Dart DevTools then discovers the **Entity Graph** tab, where it can
@@ -62,7 +62,7 @@ caches or call transport APIs directly.
 
 ## Optional DevTools controller
 
-> This entry is published in `3.0.4`; `package:entity_graph_flutter/devtools.dart`
+> This entry is published in `3.0.5`; `package:entity_graph_flutter/devtools.dart`
 > remains separate from the ordinary application barrel.
 
 Import the optional library only from development tooling or a host-controlled
@@ -117,14 +117,14 @@ reported separately and are not inferred from the controller receipt.
 
 ```yaml
 dependencies:
-  entity_graph_flutter: ^3.0.4
+  entity_graph_flutter: ^3.0.5
   flutter_riverpod: ^3.3.2
 ```
 
 Or add it from the command line:
 
 ```bash
-flutter pub add entity_graph_flutter:^3.0.4
+flutter pub add entity_graph_flutter:^3.0.5
 ```
 
 ### 2. Wrap your app with `ProviderScope`
@@ -370,7 +370,7 @@ every widget watching `Invoice` entities rebuilds in the same frame.
   function, action, tenant, and entity validation.
 - The optional DevTools controller passed its complete
   Flutter/Riverpod/VM-service acceptance flow with two isolated graphs and 28
-  versioned events. Version `3.0.4` also includes the official, validated
+  versioned events. Version `3.0.5` also includes the official, validated
   Flutter DevTools extension UI.
 - Physical devices, store submission, signing, and a cross-ecosystem stable
   release bundle are not claimed.

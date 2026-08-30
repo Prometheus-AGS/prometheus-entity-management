@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1",
   "package": "entity_graph_flutter",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "library": "package:entity_graph_flutter/devtools.dart",
   "generatedPartsIncluded": false,
   "publication": {
@@ -152,6 +152,26 @@
     },
     {
       "name": "EntityGraphDevtoolsGraphData",
+      "kind": "class",
+      "source": "lib/src/devtools/protocol.dart"
+    },
+    {
+      "name": "EntityGraphDevtoolsHistoryImportCancellationReceipt",
+      "kind": "class",
+      "source": "lib/src/devtools/protocol.dart"
+    },
+    {
+      "name": "EntityGraphDevtoolsHistoryImportCancellationRejectedReceipt",
+      "kind": "class",
+      "source": "lib/src/devtools/protocol.dart"
+    },
+    {
+      "name": "EntityGraphDevtoolsHistoryImportCancellationRejectionReason",
+      "kind": "enum",
+      "source": "lib/src/devtools/protocol.dart"
+    },
+    {
+      "name": "EntityGraphDevtoolsHistoryImportCancellationResult",
       "kind": "class",
       "source": "lib/src/devtools/protocol.dart"
     },

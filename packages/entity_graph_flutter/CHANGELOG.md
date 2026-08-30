@@ -1,5 +1,19 @@
 # Changelog
 
+## 3.0.5
+
+- Make VM-service controller generations explicit so stale debugger clients
+  cannot target a replacement graph that reuses the same store ID.
+- Contain disposal callback failures, preserve reentrant attachment, and reject
+  every direct preview, rewind, import, and cancellation mutation while a
+  controller is disposing.
+- Deeply isolate preview values, detect patch ABA conflicts, and keep history
+  import inspection side-effect-free under count and byte ceilings.
+- Add candidate-bound, non-destructive history-import cancellation so one
+  abandoned DevTools client cannot block another client.
+- Extend the assembled Flutter/Riverpod/VM-service acceptance flow to two
+  debugger clients and prove cancellation preserves retained history.
+
 ## 3.0.4
 
 - Recover active preview receipts after DevTools reconnects and bind every

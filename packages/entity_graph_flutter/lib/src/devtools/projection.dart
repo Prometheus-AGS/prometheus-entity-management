@@ -366,6 +366,7 @@ void _advanceEntityRevisions(
 ) {
   final touched = <String>{};
   final valueTouched = <String>{};
+  final patchTouched = <String>{};
   for (final change in changes) {
     if ((change.category == EntityGraphDevtoolsChangeCategory.entity ||
             change.category == EntityGraphDevtoolsChangeCategory.patch) &&
@@ -373,6 +374,9 @@ void _advanceEntityRevisions(
       final key = _entityIdentityKey(change.key, change.id!);
       touched.add(key);
       valueTouched.add(key);
+      if (change.category == EntityGraphDevtoolsChangeCategory.patch) {
+        patchTouched.add(key);
+      }
     } else if (change.category ==
             EntityGraphDevtoolsChangeCategory.entityState ||
         change.category == EntityGraphDevtoolsChangeCategory.sync) {
@@ -388,6 +392,10 @@ void _advanceEntityRevisions(
   for (final key in valueTouched) {
     controller._entityValueRevisions[key] =
         (controller._entityValueRevisions[key] ?? 0) + 1;
+  }
+  for (final key in patchTouched) {
+    controller._entityPatchRevisions[key] =
+        (controller._entityPatchRevisions[key] ?? 0) + 1;
   }
 }
 

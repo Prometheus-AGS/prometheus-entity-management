@@ -23,19 +23,28 @@ abstract final class EntityGraphDevtoolsVmService {
 
   /// Active store identities advertised by [listStoresMethod].
   static List<String> get activeStoreIds {
-    final storeIds = _vmControllers.keys.toList()..sort();
+    final storeIds =
+        _vmControllers.values
+            .where((controller) => !controller.isDisposed)
+            .map((controller) => controller.storeId)
+            .toList()
+          ..sort();
     return List.unmodifiable(storeIds);
   }
 }
 
 EntityGraphDevtoolsStoreRegistry _vmStoreRegistry() {
-  final controllers = _vmControllers.values.toList()
-    ..sort((left, right) => left.storeId.compareTo(right.storeId));
+  final controllers =
+      _vmControllers.values
+          .where((controller) => !controller.isDisposed)
+          .toList()
+        ..sort((left, right) => left.storeId.compareTo(right.storeId));
   return EntityGraphDevtoolsStoreRegistry(
     capturedAt: DateTime.now().toUtc().toIso8601String(),
     stores: controllers.map(
       (controller) => EntityGraphDevtoolsStoreDescriptor(
         storeId: controller.storeId,
+        controllerId: controller.controllerId,
         capabilities: controller.capabilities,
       ),
     ),
@@ -117,6 +126,7 @@ Future<developer.ServiceExtensionResponse> _dispatchVmCommand(
   }
   final envelope = _stringMap(decoded);
   final requestedStoreId = envelope?['storeId'];
+  final requestedControllerId = envelope?['controllerId'];
   final requestId = envelope?['requestId'] is String
       ? envelope!['requestId']! as String
       : 'invalid';
@@ -135,6 +145,15 @@ Future<developer.ServiceExtensionResponse> _dispatchVmCommand(
       requestId: requestId,
       code: EntityGraphDevtoolsProtocolErrorCode.wrongStore,
       message: 'No active graph is registered as $requestedStoreId',
+    );
+  }
+  if (requestedControllerId is! String ||
+      requestedControllerId != controller.controllerId) {
+    return _vmProtocolError(
+      storeId: requestedStoreId,
+      requestId: requestId,
+      code: EntityGraphDevtoolsProtocolErrorCode.staleController,
+      message: 'Command targets an inactive controller generation',
     );
   }
   final result = controller.handleCommand(decoded);
@@ -179,13 +198,15 @@ void Function() _attachVmController(EntityGraphDevtoolsController controller) {
   if (!_vmServiceAvailable) return EntityGraphDevtoolsController._noop;
   _ensureVmServiceRegistered();
   final existing = _vmControllers[controller.storeId];
-  if (existing != null && !identical(existing, controller)) {
+  if (existing != null &&
+      !identical(existing, controller) &&
+      !existing._disposing) {
     throw StateError(
       'VM-service storeId ${controller.storeId} is already attached',
     );
   }
-  _vmControllers[controller.storeId] = controller;
   final stopEvents = controller.subscribe(_postVmEvent);
+  _vmControllers[controller.storeId] = controller;
   _vmControllerSubscriptions[controller] = stopEvents;
   var attached = true;
   return () {

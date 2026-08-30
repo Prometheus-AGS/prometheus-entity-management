@@ -7,6 +7,17 @@ import 'package:flutter/material.dart';
 
 const _listStoresMethod = 'ext.entity_graph_flutter.devtoolsV1.listStores';
 const _commandMethod = 'ext.entity_graph_flutter.devtoolsV1.command';
+
+final class _DevtoolsCommandException implements Exception {
+  const _DevtoolsCommandException(this.code, this.message);
+
+  final String code;
+  final String message;
+
+  @override
+  String toString() => message;
+}
+
 const _protocol = 'prometheus.entity-graph.devtools';
 
 void main() => runApp(const EntityGraphDevToolsExtension());
@@ -55,6 +66,8 @@ class _InspectorPageState extends State<InspectorPage> {
   List<Object?> relationships = const [];
   List<Object?> events = const [];
   final previewIds = <({String storeId, String type, String id}), String>{};
+  final controllerIds = <String, String>{};
+  final expiredSnapshotCursors = <String>{};
   String? actionError;
   bool actionBusy = false;
   late final String _requestPrefix =
@@ -84,22 +97,22 @@ class _InspectorPageState extends State<InspectorPage> {
     return value.cast<String, Object?>();
   }
 
-  Future<Map<String, Object?>> _command(String command, [Object? payload]) {
-    final selected = storeId;
-    if (selected == null) throw StateError('No graph store is selected');
-    return _commandFor(selected, command, payload);
-  }
-
   Future<Map<String, Object?>> _commandFor(
     String selected,
     String command, [
     Object? payload,
+    String? controllerIdOverride,
   ]) async {
+    final controllerId = controllerIdOverride ?? controllerIds[selected];
+    if (controllerId == null) {
+      throw StateError('The selected store generation is no longer active.');
+    }
     final requestId = 'flutter-devtools-$_requestPrefix-${_requestSequence++}';
     final envelope = <String, Object?>{
       'protocol': _protocol,
       'version': 1,
       'storeId': selected,
+      'controllerId': controllerId,
       'requestId': requestId,
       'command': command,
       'payload': ?payload,
@@ -119,7 +132,8 @@ class _InspectorPageState extends State<InspectorPage> {
     }
     if (response['ok'] != true) {
       final failure = response['error'];
-      throw StateError(
+      throw _DevtoolsCommandException(
+        failure is Map ? '${failure['code']}' : 'unknown',
         failure is Map ? '${failure['message']}' : 'DevTools command failed',
       );
     }
@@ -147,31 +161,73 @@ class _InspectorPageState extends State<InspectorPage> {
             stores = listed;
             storeId = null;
             previewIds.clear();
+            controllerIds.clear();
             connection = _ConnectionState.disconnected;
           });
         }
         return;
       }
-      final selected = listed.any((entry) => entry['storeId'] == storeId)
-          ? storeId
-          : listed.first['storeId'] as String;
-      if (selected == null) return;
-      final capabilities = await _commandFor(selected, 'get-capabilities');
+      final currentStoreId = storeId;
+      final selected =
+          currentStoreId != null &&
+              listed.any((entry) => entry['storeId'] == currentStoreId)
+          ? currentStoreId
+          : listed.first['storeId'];
+      if (selected is! String) {
+        throw StateError('The VM service returned an invalid store registry');
+      }
+      final nextControllerIds = <String, String>{};
+      for (final entry in listed) {
+        final listedStoreId = entry['storeId'];
+        final listedControllerId = entry['controllerId'];
+        if (listedStoreId is! String || listedControllerId is! String) {
+          throw StateError('The VM service returned an invalid store registry');
+        }
+        nextControllerIds[listedStoreId] = listedControllerId;
+      }
+      final controllerChanged =
+          controllerIds[selected] != null &&
+          controllerIds[selected] != nextControllerIds[selected];
+      final selectedControllerId = nextControllerIds[selected]!;
+      final capabilities = await _commandFor(
+        selected,
+        'get-capabilities',
+        null,
+        selectedControllerId,
+      );
       if (capabilities['protocolVersion'] != 1) {
         if (mounted && generation == _refreshGeneration) {
-          setState(() => connection = _ConnectionState.incompatible);
+          setState(() {
+            controllerIds
+              ..clear()
+              ..addAll(nextControllerIds);
+            if (controllerChanged) {
+              previewIds.removeWhere((key, _) => key.storeId == selected);
+              expiredSnapshotCursors.clear();
+            }
+            stores = listed;
+            storeId = selected;
+            connection = _ConnectionState.incompatible;
+          });
         }
         return;
       }
       final results = await Future.wait([
-        _commandFor(selected, 'get-snapshot'),
-        _commandFor(selected, 'get-entity-records'),
-        _commandFor(selected, 'get-views'),
-        _commandFor(selected, 'get-relationships'),
-        _commandFor(selected, 'get-history'),
+        _commandFor(selected, 'get-snapshot', null, selectedControllerId),
+        _commandFor(selected, 'get-entity-records', null, selectedControllerId),
+        _commandFor(selected, 'get-views', null, selectedControllerId),
+        _commandFor(selected, 'get-relationships', null, selectedControllerId),
+        _commandFor(selected, 'get-history', null, selectedControllerId),
       ]);
       if (!mounted || generation != _refreshGeneration) return;
       setState(() {
+        controllerIds
+          ..clear()
+          ..addAll(nextControllerIds);
+        if (controllerChanged) {
+          previewIds.removeWhere((key, _) => key.storeId == selected);
+          expiredSnapshotCursors.clear();
+        }
         stores = listed;
         storeId = selected;
         snapshot = results[0];
@@ -236,6 +292,9 @@ class _InspectorPageState extends State<InspectorPage> {
                   if (decoded is! Map) {
                     throw const FormatException('Patch must be a JSON object');
                   }
+                  if (decoded.isEmpty) {
+                    throw const FormatException('Patch must not be empty');
+                  }
                   Navigator.pop(context, decoded.cast<String, Object?>());
                 } on FormatException catch (caught) {
                   setDialogState(() => dialogError = caught.message);
@@ -252,11 +311,24 @@ class _InspectorPageState extends State<InspectorPage> {
     final selected = storeId;
     if (selected == null) return;
     await _runAction(() async {
-      final receipt = await _command('preview-entity-patch', {
-        'type': type,
-        'id': id,
-        'patch': patch,
-      });
+      late final Map<String, Object?> receipt;
+      try {
+        receipt = await _commandFor(selected, 'preview-entity-patch', {
+          'type': type,
+          'id': id,
+          'patch': patch,
+        });
+      } on _DevtoolsCommandException catch (error) {
+        await _reconcileControllerError(error);
+        if (error.code == 'preview-already-active') {
+          await _refresh();
+          throw StateError('This entity already has an active preview.');
+        }
+        if (error.code == 'time-travel-active') {
+          throw StateError('Return to live before applying a preview.');
+        }
+        rethrow;
+      }
       final previewId = receipt['previewId'];
       if (previewId is String) {
         previewIds[_previewKey(selected, type, id)] = previewId;
@@ -276,7 +348,14 @@ class _InspectorPageState extends State<InspectorPage> {
     final snapshot = payload is Map ? payload['snapshot'] : null;
     if (snapshot is! Map || snapshot['status'] != 'retained') return null;
     final cursor = snapshot['cursor'];
-    return cursor is int ? cursor : null;
+    if (cursor is! int) return null;
+    final selected = storeId;
+    final controllerId = selected == null ? null : controllerIds[selected];
+    if (controllerId == null ||
+        expiredSnapshotCursors.contains('$controllerId:$cursor')) {
+      return null;
+    }
+    return cursor;
   }
 
   Future<void> _runAction(Future<void> Function() action) async {
@@ -294,6 +373,14 @@ class _InspectorPageState extends State<InspectorPage> {
     }
   }
 
+  Future<void> _reconcileControllerError(
+    _DevtoolsCommandException error,
+  ) async {
+    if (error.code == 'stale-controller' || error.code == 'wrong-store') {
+      await _refresh();
+    }
+  }
+
   Future<void> _restoreEntity(Map<Object?, Object?> entity) async {
     final selected = storeId;
     final type = entity['type'];
@@ -303,12 +390,31 @@ class _InspectorPageState extends State<InspectorPage> {
     final previewId = previewIds[key];
     if (previewId == null) return;
     await _runAction(() async {
-      final result = await _commandFor(selected, 'restore-entity-preview', {
-        'previewId': previewId,
-      });
-      previewIds.remove(key);
-      await _refresh();
-      if (result['status'] != 'restored') {
+      late final Map<String, Object?> result;
+      try {
+        result = await _commandFor(selected, 'restore-entity-preview', {
+          'previewId': previewId,
+        });
+      } on _DevtoolsCommandException catch (error) {
+        await _reconcileControllerError(error);
+        if (error.code == 'preview-not-found') {
+          previewIds.remove(key);
+          await _refresh();
+        }
+        throw StateError(
+          error.code == 'preview-not-found'
+              ? 'That preview is no longer active.'
+              : error.message,
+        );
+      }
+      if (result['status'] == 'restored') {
+        previewIds.remove(key);
+        await _refresh();
+      } else {
+        if (result['status'] == 'conflict') {
+          previewIds.remove(key);
+          await _refresh();
+        }
         throw StateError(
           result['status'] == 'conflict'
               ? 'Preview was not restored because the entity changed after the preview.'
@@ -323,15 +429,41 @@ class _InspectorPageState extends State<InspectorPage> {
     final cursor = _snapshotCursor(event);
     if (selected == null || cursor == null) return;
     await _runAction(() async {
-      final result = await _commandFor(selected, 'rewind', {'cursor': cursor});
-      await _refresh();
+      late final Map<String, Object?> result;
+      try {
+        result = await _commandFor(selected, 'rewind', {'cursor': cursor});
+      } on _DevtoolsCommandException catch (error) {
+        await _reconcileControllerError(error);
+        if (error.code == 'snapshot-not-found') {
+          final controllerId = controllerIds[selected];
+          if (controllerId != null) {
+            expiredSnapshotCursors.add('$controllerId:$cursor');
+          }
+          await _refresh();
+        }
+        throw StateError(switch (error.code) {
+          'snapshot-not-found' =>
+            'That snapshot is no longer retained and cannot be rewound.',
+          'preview-already-active' =>
+            'Restore active previews before rewinding.',
+          _ => error.message,
+        });
+      }
       if (result['status'] != 'rewound') {
+        if (result['status'] == 'expired-history') {
+          final controllerId = controllerIds[selected];
+          if (controllerId != null) {
+            expiredSnapshotCursors.add('$controllerId:$cursor');
+          }
+          await _refresh();
+        }
         throw StateError(
           result['status'] == 'expired-history'
               ? 'That snapshot is no longer retained and cannot be rewound.'
               : 'Rewind did not complete.',
         );
       }
+      await _refresh();
     });
   }
 
@@ -350,11 +482,23 @@ class _InspectorPageState extends State<InspectorPage> {
     final selected = storeId;
     if (selected == null) return Future.value();
     return _runAction(() async {
-      final result = await _commandFor(selected, 'return-to-live');
-      await _refresh();
+      late final Map<String, Object?> result;
+      try {
+        result = await _commandFor(selected, 'return-to-live');
+      } on _DevtoolsCommandException catch (error) {
+        await _reconcileControllerError(error);
+        throw StateError(
+          error.code == 'not-rewound'
+              ? 'The graph is already live.'
+              : error.code == 'restore-failed'
+              ? 'Return to live failed; the graph is still rewound.'
+              : error.message,
+        );
+      }
       if (result['status'] != 'live') {
         throw StateError('Return to live did not complete.');
       }
+      await _refresh();
     });
   }
 

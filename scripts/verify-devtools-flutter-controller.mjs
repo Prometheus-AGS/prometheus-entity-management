@@ -17,6 +17,7 @@ const eventKind = "prometheus.entity-graph.devtools.v1";
 const acceptanceStepMethod = "ext.entity_graph_flutter.acceptanceV1.step";
 const protocol = "prometheus.entity-graph.devtools";
 const protocolVersion = 1;
+const controllerIds = new Map();
 const storeA = "flutter-acceptance-a";
 const storeB = "flutter-acceptance-b";
 const secretSentinel = "PEM_DEVTOOLS_SECRET_SENTINEL";
@@ -118,6 +119,38 @@ function sourceCommit() {
   return result.stdout.trim();
 }
 
+async function sourceArtifactReceipt() {
+  const paths = [
+    "packages/entity_graph_flutter/lib/src/devtools/commands.dart",
+    "packages/entity_graph_flutter/lib/src/devtools/controller.dart",
+    "packages/entity_graph_flutter/lib/src/devtools/history.dart",
+    "packages/entity_graph_flutter/lib/src/devtools/preview.dart",
+    "packages/entity_graph_flutter/lib/src/devtools/projection.dart",
+    "packages/entity_graph_flutter/lib/src/devtools/protocol.dart",
+    "packages/entity_graph_flutter/lib/src/devtools/vm_service.dart",
+    "tool/entity_graph_flutter_devtools_extension/lib/main.dart",
+    "examples/flutter-riverpod/integration_test/devtools_controller_acceptance_host.dart",
+    "scripts/verify-devtools-flutter-controller.mjs",
+  ];
+  const files = {};
+  for (const path of paths) {
+    files[path] = sha256(await readFile(resolve(repositoryRoot, path)));
+  }
+  const diff = spawnSync("git", ["diff", "--binary", "--", ...paths], {
+    cwd: repositoryRoot,
+    encoding: "utf8",
+    shell: false,
+    maxBuffer: 16 * 1024 * 1024,
+  });
+  if (diff.status !== 0) throw new Error("Unable to hash the acceptance source diff");
+  return {
+    commit: sourceCommit(),
+    trackedDirty: diff.stdout.length > 0,
+    trackedDiffSha256: sha256(diff.stdout),
+    files,
+  };
+}
+
 function resolveDevice(flutterExecutable, requestedDevice) {
   if (requestedDevice) return requestedDevice;
   const result = spawnSync(flutterExecutable, ["devices", "--machine"], {
@@ -210,11 +243,18 @@ class VmServiceClient {
   }
 }
 
-function commandEnvelope(storeId, requestId, command, payload = undefined) {
+function commandEnvelope(
+  storeId,
+  requestId,
+  command,
+  payload = undefined,
+  controllerId = controllerIds.get(storeId) ?? 'unknown',
+) {
   return {
     protocol,
     version: protocolVersion,
     storeId,
+    controllerId,
     requestId,
     command,
     ...(payload === undefined ? {} : { payload }),
@@ -316,6 +356,7 @@ async function main() {
   let machineMessageCount = 0;
   let flutter;
   let client;
+  let secondClient;
   let appId;
 
   try {
@@ -426,6 +467,13 @@ async function main() {
       initialRegistry.stores.map((store) => store.storeId),
       [storeA, storeB],
     );
+    for (const store of initialRegistry.stores) {
+      assert.equal(typeof store.controllerId, "string");
+      controllerIds.set(store.storeId, store.controllerId);
+    }
+    const originalControllerA = controllerIds.get(storeA);
+    const duplicateStore = await acceptanceStep(client, isolateId, "duplicate-store-id");
+    assert.equal(duplicateStore.duplicateStoreRejected, true);
 
     await acceptanceStep(client, isolateId, "seed");
     await waitUntil(
@@ -608,6 +656,15 @@ async function main() {
     assert.equal(preview.result.entity.type, "AcceptanceTask");
     assert.equal(preview.result.entity.id, "task-1");
     assert.equal(preview.result.appliedPatch.status, "preview");
+    const activePreviewSnapshot = await command(
+      client,
+      isolateId,
+      storeA,
+      "active-preview-snapshot",
+      "get-snapshot",
+    );
+    assert.equal(activePreviewSnapshot.result.activePreviews.length, 1);
+    assert.equal(activePreviewSnapshot.result.activePreviews[0].previewId, preview.result.previewId);
 
     const duplicatePreview = await command(
       client,
@@ -648,6 +705,50 @@ async function main() {
       { previewId: preview.result.previewId },
     );
     assert.equal(canonicalSafeRestore.result.status, "restored");
+    const restoredPreviewSnapshot = await command(
+      client,
+      isolateId,
+      storeA,
+      "restored-preview-snapshot",
+      "get-snapshot",
+    );
+    assert.deepEqual(restoredPreviewSnapshot.result.activePreviews, []);
+
+    const abaPreview = await command(
+      client,
+      isolateId,
+      storeA,
+      "aba-preview",
+      "preview-entity-patch",
+      { type: "AcceptanceTask", id: "task-1", patch: { status: "preview" } },
+    );
+    assert.equal(abaPreview.ok, true);
+    const directPreviewRewind = await acceptanceStep(
+      client,
+      isolateId,
+      "direct-rewind-while-preview",
+    );
+    assert.equal(directPreviewRewind.directPreviewRewindRejected, true);
+    await acceptanceStep(client, isolateId, "preview-aba");
+    const abaRestore = await command(
+      client,
+      isolateId,
+      storeA,
+      "aba-preview-restore",
+      "restore-entity-preview",
+      { previewId: abaPreview.result.previewId },
+    );
+    assert.equal(abaRestore.ok, true);
+    assert.equal(abaRestore.result.status, "conflict");
+    const nestedPreview = await acceptanceStep(client, isolateId, "direct-nested-preview");
+    assert.equal(typeof nestedPreview.nestedPreviewId, "string");
+    assert.equal(nestedPreview.nestedGraphValue, "original");
+    const nestedRestore = await acceptanceStep(
+      client,
+      isolateId,
+      "restore-direct-nested-preview",
+    );
+    assert.equal(nestedRestore.nestedPreviewRestored, true);
 
     const conflictPreview = await command(
       client,
@@ -669,16 +770,14 @@ async function main() {
     );
     assert.equal(restore.result.status, "conflict");
     assert.equal(restore.result.reason, "entity-changed-since-preview");
-    await acceptanceStep(client, isolateId, "resolve-preview-conflict");
-    const recoveredRestore = await command(
+    const conflictSnapshot = await command(
       client,
       isolateId,
       storeA,
-      "restore-after-conflict",
-      "restore-entity-preview",
-      { previewId: conflictPreview.result.previewId },
+      "conflict-preview-snapshot",
+      "get-snapshot",
     );
-    assert.equal(recoveredRestore.result.status, "restored");
+    assert.deepEqual(conflictSnapshot.result.activePreviews, []);
 
     await acceptanceStep(client, isolateId, "update");
     const travelStatus = await command(
@@ -689,6 +788,310 @@ async function main() {
       "get-time-travel-status",
     );
     assert.ok(travelStatus.result.retainedSnapshots >= 2);
+    const importInspection = await command(
+      client,
+      isolateId,
+      storeA,
+      "inspect-history-import",
+      "inspect-history-import",
+      {
+        candidate: {
+          protocol,
+          version: protocolVersion,
+          storeId: storeA,
+          exportedAt: new Date().toISOString(),
+          snapshots: [
+            {
+              cursor: 1,
+              capturedAt: new Date().toISOString(),
+              eventSequence: null,
+              data: {
+                entities: {},
+                patches: {},
+                entityStates: {},
+                syncMetadata: {},
+                lists: {},
+              },
+            },
+          ],
+        },
+      },
+    );
+    assert.equal(importInspection.ok, true);
+    assert.equal(importInspection.result.status, "awaiting-confirmation");
+    const travelStatusAfterInspection = await command(
+      client,
+      isolateId,
+      storeA,
+      "travel-status-after-import-inspection",
+      "get-time-travel-status",
+    );
+    assert.equal(
+      travelStatusAfterInspection.result.retainedSnapshots,
+      travelStatus.result.retainedSnapshots,
+      "history inspection must not evict retained snapshots before confirmation",
+    );
+    assert.equal(travelStatusAfterInspection.result.oldestCursor, travelStatus.result.oldestCursor);
+    assert.equal(travelStatusAfterInspection.result.newestCursor, travelStatus.result.newestCursor);
+    const countLimitedInspection = await command(
+      client,
+      isolateId,
+      storeA,
+      "inspect-history-import-count-limit",
+      "inspect-history-import",
+      {
+        candidate: {
+          protocol,
+          version: protocolVersion,
+          storeId: storeA,
+          exportedAt: new Date().toISOString(),
+          snapshots: Array.from({ length: 33 }, (_, index) => ({
+            cursor: index + 1,
+            capturedAt: new Date().toISOString(),
+            eventSequence: null,
+            data: {
+              entities: {},
+              patches: {},
+              entityStates: {},
+              syncMetadata: {},
+              lists: {},
+            },
+          })),
+        },
+      },
+    );
+    assert.equal(countLimitedInspection.result.status, "rejected");
+    assert.equal(countLimitedInspection.result.reason, "snapshot-limit-exceeded");
+    const byteLimitedInspection = await command(
+      client,
+      isolateId,
+      storeA,
+      "inspect-history-import-byte-limit",
+      "inspect-history-import",
+      {
+        candidate: {
+          protocol,
+          version: protocolVersion,
+          storeId: storeA,
+          exportedAt: new Date().toISOString(),
+          snapshots: [
+            {
+              cursor: 1,
+              capturedAt: new Date().toISOString(),
+              eventSequence: null,
+              data: {
+                entities: { Blob: { one: { id: "one", payload: "x".repeat(70 * 1024) } } },
+                patches: {},
+                entityStates: {},
+                syncMetadata: {},
+                lists: {},
+              },
+            },
+          ],
+        },
+      },
+    );
+    assert.equal(byteLimitedInspection.result.status, "rejected");
+    assert.equal(byteLimitedInspection.result.reason, "byte-limit-exceeded");
+    const travelStatusAfterRejectedImports = await command(
+      client,
+      isolateId,
+      storeA,
+      "travel-status-after-rejected-imports",
+      "get-time-travel-status",
+    );
+    assert.equal(
+      travelStatusAfterRejectedImports.result.retainedSnapshots,
+      travelStatus.result.retainedSnapshots,
+    );
+    const secondValidInspection = await command(
+      client,
+      isolateId,
+      storeA,
+      "inspect-second-valid-history-import",
+      "inspect-history-import",
+      {
+        candidate: {
+          protocol,
+          version: protocolVersion,
+          storeId: storeA,
+          exportedAt: new Date().toISOString(),
+          snapshots: [
+            {
+              cursor: 2,
+              capturedAt: new Date().toISOString(),
+              eventSequence: null,
+              data: {
+                entities: {},
+                patches: {},
+                entityStates: {},
+                syncMetadata: {},
+                lists: {},
+              },
+            },
+          ],
+        },
+      },
+    );
+    assert.equal(secondValidInspection.result.status, "rejected");
+    assert.equal(secondValidInspection.result.reason, "candidate-pending");
+    const historyBeforeCandidateCancellation = await command(
+      client,
+      isolateId,
+      storeA,
+      "history-before-candidate-cancellation",
+      "get-history",
+    );
+    const statusBeforeCandidateCancellation = await command(
+      client,
+      isolateId,
+      storeA,
+      "status-before-candidate-cancellation",
+      "get-time-travel-status",
+    );
+    secondClient = new VmServiceClient();
+    await secondClient.connect(wsUri);
+    const secondClientRegistry = await secondClient.request(listStoresMethod, {
+      isolateId,
+    });
+    assert.equal(
+      secondClientRegistry.stores.find((store) => store.storeId === storeA)
+        ?.controllerId,
+      controllerIds.get(storeA),
+    );
+    const secondClientStatus = await command(
+      secondClient,
+      isolateId,
+      storeA,
+      "second-client-import-candidate-status",
+      "get-time-travel-status",
+    );
+    assert.equal(
+      secondClientStatus.result.importCandidate.candidateId,
+      importInspection.result.candidateId,
+    );
+    const mismatchedCancellation = await command(
+      client,
+      isolateId,
+      storeA,
+      "cancel-mismatched-import-candidate",
+      "cancel-history-import",
+      {
+        candidateId: `${importInspection.result.candidateId}-other`,
+      },
+    );
+    assert.equal(mismatchedCancellation.result.status, "rejected");
+    assert.equal(mismatchedCancellation.result.reason, "candidate-mismatch");
+    const cancelledOriginalCandidate = await command(
+      secondClient,
+      isolateId,
+      storeA,
+      "cancel-original-import-candidate",
+      "cancel-history-import",
+      { candidateId: importInspection.result.candidateId },
+    );
+    assert.equal(cancelledOriginalCandidate.result.status, "cancelled");
+    const repeatedCancellation = await command(
+      secondClient,
+      isolateId,
+      storeA,
+      "repeat-import-candidate-cancellation",
+      "cancel-history-import",
+      { candidateId: importInspection.result.candidateId },
+    );
+    assert.equal(repeatedCancellation.result.status, "not-pending");
+    const historyAfterCandidateCancellation = await command(
+      secondClient,
+      isolateId,
+      storeA,
+      "history-after-candidate-cancellation",
+      "get-history",
+    );
+    const statusAfterCandidateCancellation = await command(
+      secondClient,
+      isolateId,
+      storeA,
+      "status-after-candidate-cancellation",
+      "get-time-travel-status",
+    );
+    assert.deepEqual(
+      historyAfterCandidateCancellation.result,
+      historyBeforeCandidateCancellation.result,
+      "candidate cancellation must not alter retained event history",
+    );
+    for (const key of [
+      "mode",
+      "cursor",
+      "source",
+      "retainedSnapshots",
+      "retainedBytes",
+      "snapshotLimit",
+      "byteLimit",
+      "baselineCursor",
+      "oldestCursor",
+      "newestCursor",
+      "latestCursor",
+      "lastUnavailable",
+    ]) {
+      assert.deepEqual(
+        statusAfterCandidateCancellation.result[key],
+        statusBeforeCandidateCancellation.result[key],
+        `candidate cancellation must preserve snapshot status field ${key}`,
+      );
+    }
+    assert.equal(statusAfterCandidateCancellation.result.importCandidate, null);
+    const inspectionAfterCancellation = await command(
+      secondClient,
+      isolateId,
+      storeA,
+      "inspect-history-import-after-cancellation",
+      "inspect-history-import",
+      {
+        candidate: {
+          protocol,
+          version: protocolVersion,
+          storeId: storeA,
+          exportedAt: new Date().toISOString(),
+          snapshots: [
+            {
+              cursor: 3,
+              capturedAt: new Date().toISOString(),
+              eventSequence: null,
+              data: {
+                entities: {},
+                patches: {},
+                entityStates: {},
+                syncMetadata: {},
+                lists: {},
+              },
+            },
+          ],
+        },
+      },
+    );
+    assert.equal(inspectionAfterCancellation.result.status, "awaiting-confirmation");
+    const confirmedReplacementCandidate = await command(
+      secondClient,
+      isolateId,
+      storeA,
+      "confirm-replacement-import-candidate",
+      "confirm-history-import",
+      {
+        candidateId: inspectionAfterCancellation.result.candidateId,
+        cursor: 3,
+        confirm: true,
+      },
+    );
+    assert.equal(confirmedReplacementCandidate.result.status, "rewound");
+    assert.equal(confirmedReplacementCandidate.result.source, "import");
+    const liveAfterImportedCandidate = await command(
+      client,
+      isolateId,
+      storeA,
+      "return-live-after-import-candidate",
+      "return-to-live",
+    );
+    assert.equal(liveAfterImportedCandidate.result.status, "live");
     const rewind = await command(client, isolateId, storeA, "rewind", "rewind", {
       cursor: travelStatus.result.oldestCursor,
     });
@@ -701,6 +1104,16 @@ async function main() {
       "get-snapshot",
     );
     assert.equal(rewoundSnapshot.result.snapshots.mode, "rewound");
+    const previewWhileRewound = await command(
+      client,
+      isolateId,
+      storeA,
+      "preview-while-rewound",
+      "preview-entity-patch",
+      { type: "AcceptanceTask", id: "task-1", patch: { status: "not-allowed" } },
+    );
+    assert.equal(previewWhileRewound.ok, false);
+    assert.equal(previewWhileRewound.error.code, "time-travel-active");
     const live = await command(
       client,
       isolateId,
@@ -795,9 +1208,178 @@ async function main() {
     assert.equal(disposedStore.ok, false);
     assert.equal(disposedStore.error.code, "wrong-store");
 
-    await acceptanceStep(client, isolateId, "dispose-store-a");
+    const disposalPreview = await command(
+      client,
+      isolateId,
+      storeA,
+      "disposal-preview",
+      "preview-entity-patch",
+      { type: "AcceptanceTask", id: "task-1", patch: { status: "preview" } },
+    );
+    assert.equal(disposalPreview.ok, true);
+    await acceptanceStep(client, isolateId, "preview-conflict");
+    const originalDisposal = await acceptanceStep(client, isolateId, "dispose-store-a");
+    assert.equal(originalDisposal.disposalMutationsRejected, true);
+    const replacementRegistry = await client.request(listStoresMethod, { isolateId });
+    assert.deepEqual(replacementRegistry.stores.map((store) => store.storeId), [storeA]);
+    const replacementControllerA = replacementRegistry.stores[0].controllerId;
+    assert.notEqual(replacementControllerA, originalControllerA);
+    controllerIds.set(storeA, replacementControllerA);
+    const staleGeneration = await client.request(commandMethod, {
+      isolateId,
+      command: JSON.stringify(
+        commandEnvelope(
+          storeA,
+          "stale-controller",
+          "get-snapshot",
+          undefined,
+          originalControllerA,
+        ),
+      ),
+    });
+    assert.equal(staleGeneration.ok, false);
+    assert.equal(staleGeneration.error.code, "stale-controller");
+    const replacementSnapshot = await command(
+      client,
+      isolateId,
+      storeA,
+      "replacement-controller",
+      "get-snapshot",
+    );
+    assert.equal(replacementSnapshot.ok, true);
+    const replacementEntities = await command(
+      client,
+      isolateId,
+      storeA,
+      "replacement-entities",
+      "get-entity-records",
+    );
+    assert.equal(
+      findEntity(replacementEntities.result, "AcceptanceTask", "task-1").patch.status,
+      "conflict",
+      "a disposal callback cannot overwrite the conflict-preserved patch",
+    );
+    const replacementPreview = await command(
+      client,
+      isolateId,
+      storeA,
+      "replacement-preview",
+      "preview-entity-patch",
+      { type: "AcceptanceTask", id: "task-1", patch: { status: "replacement-preview" } },
+    );
+    assert.equal(replacementPreview.ok, true);
+    assert.notEqual(replacementPreview.result.previewId, disposalPreview.result.previewId);
+    const stalePreviewRestore = await command(
+      client,
+      isolateId,
+      storeA,
+      "stale-preview-restore",
+      "restore-entity-preview",
+      { previewId: disposalPreview.result.previewId },
+    );
+    assert.equal(stalePreviewRestore.ok, false);
+    assert.equal(stalePreviewRestore.error.code, "preview-not-found");
+    const replacementPreviewSnapshot = await command(
+      client,
+      isolateId,
+      storeA,
+      "replacement-preview-snapshot",
+      "get-snapshot",
+    );
+    assert.deepEqual(
+      replacementPreviewSnapshot.result.activePreviews.map((preview) => preview.previewId),
+      [replacementPreview.result.previewId],
+    );
+    const replacementPreviewRestore = await command(
+      client,
+      isolateId,
+      storeA,
+      "replacement-preview-restore",
+      "restore-entity-preview",
+      { previewId: replacementPreview.result.previewId },
+    );
+    assert.equal(replacementPreviewRestore.ok, true);
+    assert.equal(replacementPreviewRestore.result.status, "restored");
+    const mutationEventsBeforeReplacementMutation = client.extensionEvents.filter(
+      (event) => event?.storeId === storeA && event?.type === "mutation",
+    ).length;
+    await acceptanceStep(client, isolateId, "mutate-after-reattach");
+    await waitUntil(
+      () =>
+        client.extensionEvents.filter(
+          (event) => event?.storeId === storeA && event?.type === "mutation",
+        ).length > mutationEventsBeforeReplacementMutation,
+      "replacement controller mutation",
+    );
+    assert.equal(
+      client.extensionEvents.filter(
+        (event) => event?.storeId === storeA && event?.type === "mutation",
+      ).length,
+      mutationEventsBeforeReplacementMutation + 1,
+      "the detached controller must not duplicate replacement-controller events",
+    );
+    await acceptanceStep(client, isolateId, "dispose-store-a-replacement");
     const emptyRegistry = await client.request(listStoresMethod, { isolateId });
     assert.deepEqual(emptyRegistry.stores, []);
+    const eventsAfterFinalDetach = client.extensionEvents.length;
+    await acceptanceStep(client, isolateId, "mutate-after-final-detach");
+    await delay(250);
+    assert.equal(
+      client.extensionEvents.length,
+      eventsAfterFinalDetach,
+      "final detach must remove publication and VM-event observers",
+    );
+    const differentGraphAttach = await acceptanceStep(
+      client,
+      isolateId,
+      "attach-new-graph-store-a",
+    );
+    assert.equal(differentGraphAttach.storeCActive, true);
+    const differentGraphRegistry = await client.request(listStoresMethod, { isolateId });
+    assert.deepEqual(differentGraphRegistry.stores.map((store) => store.storeId), [storeA]);
+    const differentGraphControllerA = differentGraphRegistry.stores[0].controllerId;
+    assert.notEqual(differentGraphControllerA, originalControllerA);
+    assert.notEqual(differentGraphControllerA, replacementControllerA);
+    controllerIds.set(storeA, differentGraphControllerA);
+    const staleReplacementGeneration = await client.request(commandMethod, {
+      isolateId,
+      command: JSON.stringify(
+        commandEnvelope(
+          storeA,
+          "stale-replacement-controller",
+          "get-snapshot",
+          undefined,
+          replacementControllerA,
+        ),
+      ),
+    });
+    assert.equal(staleReplacementGeneration.ok, false);
+    assert.equal(staleReplacementGeneration.error.code, "stale-controller");
+    const differentGraphPreview = await command(
+      client,
+      isolateId,
+      storeA,
+      "different-graph-preview",
+      "preview-entity-patch",
+      { type: "AcceptanceTask", id: "task-1", patch: { status: "different-preview" } },
+    );
+    assert.notEqual(
+      differentGraphPreview.result.previewId,
+      replacementPreview.result.previewId,
+    );
+    const staleReplacementPreview = await command(
+      client,
+      isolateId,
+      storeA,
+      "stale-replacement-preview",
+      "restore-entity-preview",
+      { previewId: replacementPreview.result.previewId },
+    );
+    assert.equal(staleReplacementPreview.ok, false);
+    assert.equal(staleReplacementPreview.error.code, "preview-not-found");
+    await acceptanceStep(client, isolateId, "dispose-new-graph-store-a");
+    const finalRegistry = await client.request(listStoresMethod, { isolateId });
+    assert.deepEqual(finalRegistry.stores, []);
 
     const receipt = {
       schemaVersion: 1,
@@ -805,6 +1387,7 @@ async function main() {
       status: "pass",
       executedAt: new Date().toISOString(),
       sourceCommit: sourceCommit(),
+      sourceArtifact: await sourceArtifactReceipt(),
       device,
       fixtures,
       stores: [storeA, storeB],
@@ -820,10 +1403,25 @@ async function main() {
         "entity, dirty, error, view, and relationship projections are complete",
         "host redaction removes the sentinel before history and VM serialization",
         "remote commands cannot escalate value policy or exceed request bounds",
-        "preview restore refuses a post-preview conflict",
+        "preview ownership is discoverable, duplicate-safe, canonical-update-safe, and released after a true patch conflict",
+        "preview restoration detects patch ABA changes without rejecting canonical-only updates",
+        "preview receipts deeply isolate nested caller-owned patch values",
+        "direct and VM-service rewind paths both reject active previews",
         "retained rewind returns exactly to the protected live head",
+        "history import inspection is side-effect-free until explicit confirmation",
+        "history import count and byte ceilings reject candidates without evicting retained history",
+        "rejected import inspections do not invalidate another client's pending candidate",
+        "a second valid inspection cannot overwrite another client's pending candidate",
+        "candidate-bound import cancellation is mismatch-safe, idempotent, and unblocks another client without clearing history",
+        "entity previews are rejected while the graph is rewound",
         "the first real graph mutation after rewind returns history mode to live before publication",
-        "final detach removes every active store from discovery",
+        "reentrant attach during a throwing disposal callback creates an independent active controller",
+        "direct preview, rewind, and history-import mutations are rejected during disposal callbacks",
+        "controller generations reject stale commands and prevent preview-receipt collisions after same-store replacement",
+        "controller generations remain unique when a different graph reuses the same explicit store ID",
+        "duplicate live VM store IDs fail before a controller or graph observer is attached",
+        "the detached controller does not duplicate replacement-controller publication events",
+        "final detach removes discovery, publication, and VM-event observers even when preview cleanup conflicts",
       ],
     };
     await mkdir(dirname(reportPath), { recursive: true });
@@ -839,6 +1437,7 @@ async function main() {
     }
     throw error;
   } finally {
+    await secondClient?.close();
     await client?.close();
     await stopFlutter(flutter, appId);
   }
