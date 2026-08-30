@@ -2,9 +2,11 @@
 
 ## Disposition
 
-Automated implementation and integration evidence pass. Archive certification
-does not pass because the accepted UI specification requires a retained
-formative study with 12 developers, and no participant results exist.
+Automated implementation and integration evidence pass. The operator revised
+the unstarted 12-developer study into optional post-release research through
+signed KBD decision `v3-devtools-usability-gate-revised`. The zero-participant
+report remains retained and blocked; it is not represented as a pass, and no
+human-usability or “world class” certification claim is made.
 
 ## Verified automated surface
 
@@ -44,13 +46,13 @@ retained packet-provenance warnings, and one duplication suggestion. The
 strict anti-theater screen passed at score 0.0. Resolutions are retained beside
 the findings instead of rewriting the critic's record.
 
-## Remaining gate
+## Deferred research
 
-Run the accepted seeded dirty-entity and registered-view tasks with 12
-developers across first-time and oriented cohorts. At least 10 of 12 retained
-participants must complete both without assistance and each cohort median must
-remain under 10 seconds. Until that evidence is attached, neither Artifact
-Refiner convergence nor KBD archive completion is truthful.
+The seeded dirty-entity and registered-view protocol remains available for a
+future 12-developer study. If run, at least 10 of 12 retained participants must
+complete both without assistance and each cohort median must remain under 10
+seconds before a narrowly scoped human-usability claim can be considered. The
+study is no longer an archive or release gate.
 
 The repository now retains a disposable packed study fixture, facilitator
 protocol, privacy-limited participant schema/template, named recruitment owner,
@@ -58,5 +60,10 @@ and deterministic non-cherry-picking evaluator. Study-kit readiness passes, but
 the generated evaluation report records 0 participants. No recruitment message
 was sent by the coding agent and no automated run was counted as a developer.
 
-The refreshed `v3-devtools-react-inspector/2` assembled gate passed 6/6
+Artifact Refiner terminated at its five-iteration cap with 5/6 constraints.
+The external claim-truthfulness review completed three decision attempts and
+three revised-packet attempts, remained BLOCK, and was accepted with explicit
+warning under the E-4 soft cap. All findings remain retained; this is not a
+clean adversarial-review PASS. The refreshed
+`v3-devtools-react-inspector/2` assembled gate passed 6/6
 scenarios at clean source commit `cbb39460813b44110dfd5984f10be5abad26d59f`.

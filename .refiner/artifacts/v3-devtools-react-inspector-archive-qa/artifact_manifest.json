@@ -1,12 +1,12 @@
 {
   "artifact_type": "ui",
-  "generated_at": "2026-08-30T03:06:41Z",
+  "generated_at": "2026-08-30T12:02:52Z",
   "variants": [
     {
       "name": "archive-qa-report",
       "file": "dist/archive-qa-report.md",
       "format": "markdown",
-      "description": "Truthful automated certification and remaining human gate."
+      "description": "Truthful automated certification and deferred optional human research."
     },
     {
       "name": "causal-inspector",
@@ -43,7 +43,7 @@
     "has_request_failures": false,
     "notes": [
       "Screenshots and Playwright traces were captured from the complete packed Vite/Next/Chromium integration runtime; that temporary packed runtime is intentionally not preserved as a standalone HTML preview.",
-      "Six assembled browser scenarios and five automated blocking constraints pass; formative-usability remains blocked pending retained results from 12 developers."
+      "Six assembled browser scenarios pass. Artifact Refiner terminated at its five-iteration cap with 5/6; the external claim-truthfulness review was accepted with warning after the E-4 soft cap, with all BLOCK findings retained."
     ]
   }
 }

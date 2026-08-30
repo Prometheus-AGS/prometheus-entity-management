@@ -1,22 +1,21 @@
 {
   "phase": "reflect",
-  "iteration": 4,
+  "iteration": 5,
   "delta": [
-    "The automated implementation, public-surface, packed-browser, accessibility, performance, and independent-review gates are complete, but the accepted 12-developer formative usability gate has no retained participant evidence.",
+    "The prior artifact remained blocked at its iteration cap because it treated an unstarted 12-developer study as mandatory; the operator has now explicitly revised that product decision.",
     "The final isolated reviewer could not see already-committed source/spec changes because its cumulative diff baseline began after commit 47c017b; its provenance warnings are retained with evidence-backed resolutions.",
     "Impeccable was requested first but was not available in installed skill roots or searched local paths."
   ],
   "rootCause": [
-    "Automated browser acceptance cannot produce independent human discoverability and task-timing evidence.",
+    "Automated browser acceptance cannot produce independent human discoverability and task-timing evidence, so those claims remain unavailable even though the study no longer blocks archive.",
     "Diff-isolated review deliberately omits content before its baseline, so generated evidence can refer to a clean commit the packet does not repeat."
   ],
   "correctiveActions": [
-    "Retain the non-waivable human study as a blocking constraint and keep refinement convergence running.",
+    "Retain the zero-participant report, reclassify the study as optional research, and prohibit human-usability or world-class certification claims.",
     "Record source commit, dirty-scope result, gate version, threshold snapshot, hashes, critic findings, and explicit resolutions in the archive packet.",
-    "Do not mark KBD task 12 complete or archive the change until participant evidence satisfies the accepted criterion."
+    "Complete KBD task 12 only after the revised documentation receives a fresh isolated review and sycophancy screen."
   ],
-  "decision": "continue",
+  "decision": "terminate-at-cap-pending-external-review",
   "constraintsSatisfied": 5,
   "constraintsTotal": 6
 }
-

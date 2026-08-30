@@ -8,7 +8,7 @@ import { useEntityGraphDevtools } from "./provider";
 
 interface ModelBinding {
   controller: NonNullable<ReturnType<typeof useEntityGraphDevtools>["controller"]>;
-  store: ReturnType<typeof useEntityGraphDevtools>["store"];
+  store: NonNullable<ReturnType<typeof useEntityGraphDevtools>["store"]>;
   model: EntityGraphInspectorModelStore;
 }
 
@@ -21,7 +21,7 @@ export function useEntityGraphInspectorModel(): EntityGraphInspectorModel | null
   const [binding, setBinding] = useState<ModelBinding | null>(null);
 
   useEffect(() => {
-    if (!runtime.controller) return;
+    if (!runtime.controller || !runtime.store) return;
     const model = createEntityGraphInspectorModelStore(runtime.controller, runtime.store);
     const next: ModelBinding = {
       controller: runtime.controller,
@@ -32,9 +32,9 @@ export function useEntityGraphInspectorModel(): EntityGraphInspectorModel | null
     return model.dispose;
   }, [runtime.controller, runtime.store]);
 
-  const current = binding?.controller === runtime.controller && binding.store === runtime.store
-    ? binding.model
-    : null;
+  const current = runtime.inspectorModel ?? (
+    binding?.controller === runtime.controller && binding.store === runtime.store ? binding.model : null
+  );
 
   return useSyncExternalStore(
     current?.subscribe ?? subscribeToNothing,

@@ -1,0 +1,57 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "openai/gpt-5.6-sol",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-react-inspector/usability-study/operator-revision-receipt.json",
+      "claim": "The entire unblock of a previously non-waivable release gate rests on a self-authored receipt whose signature, integrity hash, and referenced KBD decision `v3-devtools-usability-gate-revised` (revision 437, phase revision 439) cannot be verified against any artifact in the packet or the file tree.",
+      "evidence": "The receipt asserts `signerKeyId`, `signature`, and `source: prometheus kbd audit --json`, but the file_tree shows `.kbd-orchestrator` containing only `changes`, `phases`, `current-waypoint.json/md`, `hooks.log.jsonl`, `model-preflight.json`, `position-reminder.txt`, `position.json`, and `project.json` \u2014 no decisions ledger, audit log, or key material against which revision 437/439 or the ed25519 signature can be checked. A receipt that happens to exactly resolve the agent's own blocking condition, with no independently verifiable provenance in the packet, is precisely the class of evidence that must not be taken at face value.",
+      "suggested_fix": "Include (or cite with verifiable path) the signed KBD decision record and audit-log entry in the repository, and require the verification step to re-validate the signature/hash against that ledger before the constraint can pass."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-react-inspector/usability-study/certification-blocker.md",
+      "claim": "The diff changes the criterion the prior spec declared changeable only after 'a new explicit design decision and adversarial review', but performs the change first and defers the adversarial review to a future step, inverting the required sequencing.",
+      "evidence": "Removed text: 'The human criterion is non-waivable under `ui-spec.md`; changing or removing it requires a new explicit design decision and adversarial review.' New text: 'Task 12 may complete only after the revised packet receives a fresh isolated adversarial review and sycophancy screen' \u2014 i.e., the spec and all downstream artifacts (constraints.json, validation.json, state.json, archive-qa-report.md) are rewritten now, with the review still pending (`formative-usability-claim` status `pending-review` in validation.json/state.json).",
+      "suggested_fix": "Keep the spec and artifact statuses at their pre-revision blocked state until the fresh isolated review and sycophancy screen are attached as completed evidence, or explicitly record this packet as the review under adjudication and leave task 12 unchecked until it concludes."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".refiner/artifacts/v3-devtools-react-inspector-archive-qa/constraints.json",
+      "claim": "The termination condition is edited to declare 'All six blocking truthfulness and automated-product constraints are satisfied' while the sixth blocking constraint (`formative-usability-claim`, severity `blocking`) is in `pending-review`, so the refiner terminated without satisfying its own rewritten termination condition.",
+      "evidence": "constraints.json termination_conditions hunk replaces 'All six blocking constraints are satisfied.' with 'All six blocking truthfulness and automated-product constraints are satisfied.'; validation.json shows `\"status\": \"terminated-at-cap-pending-external-review\"`, `\"constraintsSatisfied\": 5`, `\"constraintsTotal\": 6` with the sixth constraint `\"status\": \"pending-review\"`.",
+      "suggested_fix": "Either mark the sixth constraint satisfied only after the external review passes, or amend the termination conditions to explicitly enumerate the five automated constraints and name the claim-truthfulness constraint as externally owned, so the recorded termination is honest."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".refiner/artifacts/v3-devtools-react-inspector-archive-qa/constraints.json",
+      "claim": "The validation method for the `formative-usability-claim` blocking constraint is circular: the evidence to be inspected is the operator decision and receipt produced inside the same change being validated.",
+      "evidence": "constraints.json: `\"validation_method\": \"Inspect the retained zero-participant report, operator decision, and public/archive claims for truthful non-certification.\"`; validation.json evidence for the same constraint cites `operator-revision-receipt.json`, a new file added by this very diff.",
+      "suggested_fix": "Require the distinct-model external review to validate claim truthfulness against sources outside this diff (e.g., the signed KBD ledger and published docs), and record that external verdict as the constraint's evidence."
+    },
+    {
+      "severity": "WARNING",
+      "file": ".kbd-orchestrator/phases/v3-devtools-parity/ui-spec.md",
+      "claim": "The review-history section retroactively neutralizes a prior blocking verdict ('rejected a waivable usability study ... the usability gate is non-waivable') by asserting the operator revision resolves it, without any new adversarial review having occurred at the time of the edit.",
+      "evidence": "ui-spec.md hunk: 'Review round 3 ... rejected a waivable usability study. This revision names the owning KBD changes ... the usability gate is non-waivable.' is replaced by '...That review accurately governed the prior revision. On 2026-08-30 the operator explicitly revised the product decision...' \u2014 rewriting a recorded non-waivable rejection into a historically-scoped observation in the same commit that lifts the gate.",
+      "suggested_fix": "Preserve the round-3 verdict verbatim as applying to the current state until the mandated fresh review concludes, and append the operator revision as a pending disposition rather than a resolution."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": ".refiner/artifacts/v3-devtools-react-inspector-archive-qa/dist/validation.json",
+      "claim": "Status vocabulary is inconsistent across artifacts for the same condition: `terminated-at-cap-pending-external-review` (validation.json, reflection.json decision) versus `terminated-at-iteration-cap` (state.json convergence_status).",
+      "evidence": "validation.json `\"status\": \"terminated-at-cap-pending-external-review\"`; state.json `\"convergence_status\": \"terminated-at-iteration-cap\"` \u2014 the latter omits the pending-external-review qualifier that is the load-bearing part of the disposition.",
+      "suggested_fix": "Use one canonical status string everywhere so downstream tooling cannot read `terminated-at-iteration-cap` as ordinary convergence."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

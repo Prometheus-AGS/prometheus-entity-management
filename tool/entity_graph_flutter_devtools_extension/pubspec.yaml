@@ -1,0 +1,20 @@
+name: entity_graph_flutter_devtools_extension
+description: Private build workspace for the entity_graph_flutter DevTools companion.
+publish_to: none
+version: 3.0.2
+
+environment:
+  sdk: ">=3.12.0 <4.0.0"
+
+resolution: workspace
+
+dependencies:
+  devtools_extensions: 0.5.1
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: 6.0.0
+
+flutter:
+  uses-material-design: true

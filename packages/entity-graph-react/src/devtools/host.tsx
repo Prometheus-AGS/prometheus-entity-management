@@ -61,6 +61,7 @@ export interface EntityGraphDevtoolsProps {
   preferenceKey?: string;
   shortcut?: EntityGraphDevtoolsShortcut | false;
   stateAdapter?: EntityGraphInspectorStateAdapter;
+  enableWindowBridge?: boolean;
 }
 
 /** SSR-safe explicit host that isolates the opt-in launcher and lazy inspector in one Shadow Root. */
@@ -73,6 +74,7 @@ export function EntityGraphDevtools({
   preferenceKey = ENTITY_GRAPH_DEVTOOLS_PREFERENCE_KEY,
   shortcut = DEFAULT_ENTITY_GRAPH_DEVTOOLS_SHORTCUT,
   stateAdapter,
+  enableWindowBridge = true,
 }: EntityGraphDevtoolsProps) {
   const enabled = isEntityGraphDevtoolsEnabled(mode);
   const hostRef = useRef<HTMLDivElement | null>(null);
@@ -96,7 +98,12 @@ export function EntityGraphDevtools({
     "div",
     { ref: hostRef, "data-pem-devtools-host": "" },
     shadowRoot && createPortal(
-      <EntityGraphDevtoolsProvider store={store} stores={stores} options={options}>
+      <EntityGraphDevtoolsProvider
+        store={store}
+        stores={stores}
+        options={options}
+        enableWindowBridge={enableWindowBridge}
+      >
         <EntityGraphDevtoolsSurface
           fallback={fallback}
           preferenceKey={preferenceKey}

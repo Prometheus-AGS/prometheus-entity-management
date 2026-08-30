@@ -52,13 +52,13 @@
       }
     },
     {
-      "id": "formative-usability",
-      "description": "At least 12 developers across first-time and oriented cohorts perform the seeded dirty-entity and registered-view tasks; 10 of 12 succeed unassisted and each cohort median is under 10 seconds.",
+      "id": "formative-usability-claim",
+      "description": "The optional deferred 12-developer study remains truthfully recorded as zero participants; automated evidence is never represented as human evidence and no world-class certification claim is made.",
       "severity": "blocking",
       "type": "semantic",
       "validation": {
         "requires_code_execution": false,
-        "validation_method": "Inspect the retained participant protocol/results and timing evidence; automated browser runs do not satisfy this constraint."
+        "validation_method": "Require a verified canonical KBD replay receipt plus a distinct-model decision review and final revised-packet verdict; inspect public/archive claims for truthful non-certification."
       }
     }
   ],
@@ -66,11 +66,11 @@
     "Refinement may correct observed implementation, design, documentation, or evidence defects but may not broaden into Chrome or Flutter extension work.",
     "Only the complete packed Vite/Next/Chromium suite counts as automated behavioral evidence.",
     "Do not create or run unit, component, isolated, mock-backed, snapshot, or partial tests.",
-    "Do not claim formatively certified world-class UX or archive readiness without the human usability record.",
+    "Do not claim formatively certified world-class UX without authentic human usability evidence; the deferred study is not an archive gate.",
     "Impeccable absence must be disclosed; available Anthropic and Vercel reviews do not impersonate it."
   ],
   "termination_conditions": [
-    "All six blocking constraints are satisfied.",
+    "The five automated-product constraints are satisfied; the claim-truthfulness constraint is explicitly owned by the external distinct-model review after the five-iteration cap.",
     "The API generator, entry ledger, packed browser receipt, artifact validation, isolated adversarial review, and sycophancy correction pass.",
     "No further delta improves truthfulness, usability, security clarity, visual quality, or traceability."
   ]

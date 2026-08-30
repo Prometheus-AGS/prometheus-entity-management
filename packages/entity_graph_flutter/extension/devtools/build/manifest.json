@@ -1,0 +1,9 @@
+{
+  "name": "Prometheus Entity Graph DevTools",
+  "short_name": "Entity Graph",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#07111f",
+  "theme_color": "#155eef",
+  "description": "Inspect entity graph state from Flutter DevTools"
+}

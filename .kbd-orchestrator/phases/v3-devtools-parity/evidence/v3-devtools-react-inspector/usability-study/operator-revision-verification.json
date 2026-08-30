@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "status": "pass",
+  "verifier": "scripts/verify-devtools-study-decision.mjs",
+  "runtime": "prometheus 1.7.0",
+  "command": "prometheus kbd status --json + prometheus kbd audit --since 437 --json",
+  "runtimeReplayContract": "KBD status/audit call Runtime::replay before returning local state/events; replay verifies the signed event chain and rejects invalid signatures.",
+  "verifiedDecision": {
+    "commandId": "codex-devtools-study-gate-operator-override-20260830",
+    "decisionId": "v3-devtools-usability-gate-revised",
+    "revision": 437,
+    "eventId": "4a784d30-df44-4ba5-8f1c-20615501c8ee",
+    "integrityHash": "f47ba8945a624bfc9691bc5b68a4f193f376bd1ba07cbf07bbd834bcedd742ad",
+    "signerKeyId": "ed25519:2c27c749aebaedf4ffa5dfe5b5021f360eb1356153f34a2f490883cfa7c32349"
+  },
+  "foldedState": {
+    "revision": 439,
+    "planRevision": 10,
+    "decisionCommandRevision": 437,
+    "signerAuthority": "active-operator-key"
+  }
+}

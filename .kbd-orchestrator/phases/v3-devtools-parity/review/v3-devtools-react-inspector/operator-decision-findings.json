@@ -1,0 +1,48 @@
+{
+  "mode": "decision",
+  "verdict": "BLOCK",
+  "judge_model": "openai/gpt-5.6-sol",
+  "isolation_mode": "harness-native",
+  "producer_model": "openai/gpt-5.6-sol",
+  "cross_model_check": "same-family-fallback-after-rest-gateway-unavailable",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "Falsifier",
+      "line": 0,
+      "claim": "The falsifier does not test whether deferring the usability study makes release unacceptable, so the decision's product-risk premise is unfalsifiable in practice.",
+      "evidence": "Every trigger concerns authorization, artifact wording, external requirements, or existing integration evidence; none defines a usability outcome, measurement, threshold, or timeframe that would reopen the decision after users encounter the released product.",
+      "suggested_fix": "Define a measurable post-release usability checkpoint with a deadline, population, task-success threshold, severity threshold, and explicit reopen or rollback action."
+    },
+    {
+      "severity": "WARNING",
+      "file": "Assumptions",
+      "line": 0,
+      "claim": "A checkable, load-bearing compliance assumption is asserted without evidence and deferred into a too-late falsifier.",
+      "evidence": "The document states, 'The study is not a legal, security, privacy, registry, or interoperability requirement,' but identifies no authority or completed check; the falsifier waits until an external release authority requires this study, which may be discovered only after archive or release.",
+      "suggested_fix": "Name the applicable release authorities and record a pre-commit verification that none requires the study."
+    },
+    {
+      "severity": "WARNING",
+      "file": "Decision and Consequence if accepted",
+      "line": 0,
+      "claim": "The decision treats pre-release deferral as reversible without addressing that post-release research cannot prevent release-time usability harm or recreate a pre-release gate.",
+      "evidence": "The study becomes optional post-release product research, while acceptance allows Task 12 to close and the Chrome extension to start; no rollback, staged-release boundary, remediation owner, or cost-of-being-wrong analysis is stated.",
+      "suggested_fix": "State the irreversible consequence explicitly and define a release rollback or remediation path if post-release usability evidence crosses the specified threshold."
+    },
+    {
+      "severity": "WARNING",
+      "file": "Decision",
+      "line": 0,
+      "claim": "Only full deferral is considered, so the document does not demonstrate that the chosen scope change is preferable to lower-cost ways of preserving some pre-release human evidence.",
+      "evidence": "The document names no alternatives such as a smaller time-boxed formative sample, staged release, archive-with-release-gate separation, or a committed post-release study; it moves directly from operator authority to full optional deferral.",
+      "suggested_fix": "Record the feasible alternatives, their schedule impact, and why the operator-directed outcome requires rejecting each one."
+    }
+  ],
+  "checked_classes": [],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

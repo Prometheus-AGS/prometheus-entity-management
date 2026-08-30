@@ -6,6 +6,7 @@ environment:
 
 workspace:
   - packages/entity_graph_flutter
+  - tool/entity_graph_flutter_devtools_extension
   - examples/flutter-riverpod
 
 dev_dependencies:

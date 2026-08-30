@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "decisionId": "v3-devtools-usability-gate-revised",
+  "commandId": "codex-devtools-study-gate-operator-override-20260830",
+  "revision": 437,
+  "planRevisionAfterRevision": 10,
+  "timestamp": "2026-08-30T12:01:03.480758Z",
+  "eventId": "4a784d30-df44-4ba5-8f1c-20615501c8ee",
+  "integrityHash": "f47ba8945a624bfc9691bc5b68a4f193f376bd1ba07cbf07bbd834bcedd742ad",
+  "signerKeyId": "ed25519:2c27c749aebaedf4ffa5dfe5b5021f360eb1356153f34a2f490883cfa7c32349",
+  "signature": "rx9Ckiaed/QdfVBHW/niK3RRUDwUM4ufWRJL5Mthnmg5HvKfjVbkPGEC0rANAFljEs45oY4PxaXqaRWvlAh5Cw==",
+  "summary": "Operator directed phase completion. The twelve-person usability study is removed as a phase archive and release blocker. No study pass or world-class usability certification is claimed; retained automated evidence remains authoritative and the study is deferred as optional product research.",
+  "phaseResume": {
+    "commandId": "codex-devtools-phase-resume-after-study-revision-20260830",
+    "revision": 439,
+    "eventId": "84d2efd5-9ac2-40cb-867e-2f8d490af5bd",
+    "integrityHash": "d4142bd043c5518e819b284b0c0643e04149ab6284259eebd5fd4073b46b866e",
+    "from": "blocked",
+    "to": "in_progress"
+  },
+  "source": "prometheus kbd audit --json"
+}

@@ -1,0 +1,71 @@
+{
+  "mode": "decision",
+  "verdict": "BLOCK",
+  "judge_model": "k3",
+  "producer_model": "openai/gpt-5.6-sol",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "verified-distinct",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "Falsifier",
+      "claim": "The post-release reopen conditions depend on the very study this decision makes optional, and no owner is assigned to ever run it, so the falsifier can never be checked.",
+      "evidence": "The decision converts the study into 'optional post-release product research,' then the falsifier requires 'the first 12 voluntary developer sessions using the retained protocol' to trigger reopening. Optional research with no named recruiting/running owner (only a 'remediation owner' who acts after evidence exists) means the 12 sessions will likely never occur, and the alternative trigger \u2014 'two independent filed issues' \u2014 requires a user base for a surface that 'consumers must explicitly import' and that has no registry publication.",
+      "suggested_fix": "Name the owner and recruitment channel for the post-release sessions as a condition of archive, or replace the reopen trigger with one that does not depend on the deferred study (e.g., a scheduled forced review with a stated default action when session count is zero)."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "Falsifier",
+      "claim": "The 30-day checkpoint has no stated default outcome when fewer than 12 (including zero) sessions exist, so it is a review that cannot conclude anything and therefore cannot falsify the decision.",
+      "evidence": "'Review this checkpoint 30 days after the first release containing the DevTools entries, even if fewer than 12 sessions exist.' If zero sessions exist, neither reopen condition (1) nor (2) can be evaluated, and the document says nothing about what the review must decide in that case. A checkpoint with no data and no default action exists to look rigorous rather than to be checked.",
+      "suggested_fix": "State the default: e.g., 'if fewer than 12 sessions exist at day 30, the auto-bootstrap entry is disabled until the sessions complete' or 'the study becomes a blocker again for the next release.'"
+    },
+    {
+      "severity": "WARNING",
+      "file": "Alternatives considered",
+      "claim": "The smaller pre-release sample is rejected using the 12-person threshold that this same decision abolishes \u2014 circular reasoning that reveals the alternatives were rationalised, not engaged.",
+      "evidence": "'A smaller pre-release sample would not satisfy the old 12-person threshold and would still delay the operator-directed phase closure.' If the threshold no longer binds (the entire point of the decision), a 3\u20135 person hallway study does not need to 'satisfy' it; the live question is whether any human evaluation de-risks shipping a developer-facing UI. That option is dismissed with the gate being removed as the justification. The 'staged rollout' alternative is likewise declared 'already inherent' rather than considered as an alternative.",
+      "suggested_fix": "Engage the real question \u2014 does zero human evaluation before archive create unacceptable risk for early adopters? \u2014 and compare a small informal study on cost/evidence merits, not on compliance with the retired threshold."
+    },
+    {
+      "severity": "WARNING",
+      "file": "Authority and verification",
+      "claim": "The verification chain proves signature integrity, not authorization: the signer identity and authority of KBD revision 437 is never stated, and `kbd audit` replaying valid signatures cannot establish that the operator (rather than the system recording its own log) authorized removing the gate.",
+      "evidence": "'KBD event revision 437 records that instruction as an immutable signed decision... KBD runtime replay rejects invalid event signatures.' Rejecting invalid signatures proves the event is unaltered; it says nothing about who signed it or whether that key carries authority to revise product-evidence thresholds. The load-bearing assumption 'The operator owns this product-evidence threshold and may revise it' is checkable now (inspect the revision-437 signer key against an operator key registry) and is asserted rather than checked.",
+      "suggested_fix": "State the signer identity of revision 437 and the key-authority mapping that binds it to the operator, or drop the 'immutable signed decision' rhetoric and rest the decision on the documented operator instruction alone."
+    },
+    {
+      "severity": "WARNING",
+      "file": "Decision / prior context",
+      "claim": "The decision supersedes the original 12-person pre-release usability gate without ever engaging why that gate was established, so the original rationale may still apply unaddressed.",
+      "evidence": "The decision references a prior signed gate (`v3-devtools-usability-gate-revised` implies an original gate it revises; plan revision 10 'records the course correction') but never states the original gate's rationale \u2014 e.g., if it existed to prevent shipping developer-facing UI with zero human testing, deferral relocates rather than refutes that risk, and early adopters of `./devtools/auto` absorb it.",
+      "suggested_fix": "Quote the original gate decision's stated purpose and show specifically why it no longer applies at a source/archive boundary, or acknowledge the risk transfer to early adopters explicitly in 'Consequence if accepted.'"
+    },
+    {
+      "severity": "WARNING",
+      "file": "Falsifier",
+      "claim": "The reopen clock is anchored to 'the first release containing the DevTools entries,' but this phase explicitly excludes all registry publication, so the falsifier's timeframe is controlled by a future event outside this decision's scope with no fallback.",
+      "evidence": "'npm, pub.dev, and Chrome Web Store publication are explicitly excluded from this phase and remain separately gated' combined with 'Review this checkpoint 30 days after the first release containing the DevTools entries' means the only bounded reopen mechanism starts whenever some separately-gated future release ships \u2014 which could be never, with the archive decision standing unfalsified indefinitely.",
+      "suggested_fix": "Add a time-boxed fallback independent of release (e.g., 'or 90 days after archive, whichever comes first') with the day-30 default-action problem fixed."
+    },
+    {
+      "severity": "WARNING",
+      "file": "Consequence if accepted",
+      "claim": "The cost-of-being-wrong analysis omits downstream coupling: the Chrome extension 'may then start' on top of a human-unvalidated inspector, and the stated reversibility (drop the import) does not cover a shipped extension or the planned breaking remediation.",
+      "evidence": "'The Chrome extension may then start. The cost of being wrong is a confusing optional debugging surface... can be removed by dropping the explicit import.' Yet the remediation plan itself includes 'a severe obstruction disables the explicit auto-bootstrap entry in that patch' \u2014 a breaking change for anyone who adopted it \u2014 and nothing states that the extension phase's gates do not assume the inspector already carries human-usability evidence. That downstream-independence assumption is load-bearing and unstated.",
+      "suggested_fix": "Add the assumption 'no downstream phase (Chrome extension, registry release) treats the inspector as human-validated' and verify it against the extension phase's gate list before archive."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "Falsifier",
+      "claim": "The reopen thresholds (10 of 12 unassisted completions, 10-second cohort median, two filed issues) have no stated source, so there is no way to tell whether they are calibrated to the actual risk or chosen to be comfortably unreachable.",
+      "evidence": "'fewer than 10 unassisted completions or either cohort median is 10 seconds or longer... two independent filed issues' \u2014 no derivation, baseline, or citation accompanies any of these numbers, and the 10-second figure is meaningless without the task it measures being named here.",
+      "suggested_fix": "Cite the source of each threshold (pilot data, the retained protocol's task definition, or an explicit judgment call labeled as such) and name the measured task for the 10-second median."
+    }
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

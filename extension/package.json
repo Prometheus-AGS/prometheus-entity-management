@@ -1,0 +1,20 @@
+{
+  "name": "@prometheus-ags/entity-graph-chrome-devtools",
+  "version": "3.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "package": "node scripts/build.mjs --zip"
+  },
+  "dependencies": {
+    "@prometheus-ags/entity-graph-core": "workspace:*",
+    "@prometheus-ags/prometheus-entity-management": "workspace:*",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "sharp": "0.35.0",
+    "tsup": "8.5.1"
+  }
+}

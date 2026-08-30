@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "changeId": "v3-devtools-chrome-extension",
+  "gate": "assembled-build-manifest-package",
+  "status": "passed",
+  "packageVersion": "3.1.0",
+  "manifestVersion": 3,
+  "permissions": [],
+  "hostPermissions": [],
+  "contentMatches": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "zipSha256": "d31733bb69ef2799b0630f2a2ed7dc872edeae63114aefb4dc527970c791f31c",
+  "sharpVersion": "0.35.0",
+  "libvipsVersion": "8.18.3",
+  "pnpmLockSha256": "e8830fc1eba8e6856e0ffae5bfd95bee670e15e0a52462a246e1a08eeb0fe9c5",
+  "deterministicRebuilds": 2,
+  "checks": [
+    "core package build",
+    "React package build",
+    "bundled DevTools panel",
+    "manifest entry and asset inventory",
+    "no permissions or host_permissions manifest keys; declarative HTTP(S) content-script access recorded",
+    "no eval or Function constructor",
+    "byte-identical ZIP rebuild"
+  ],
+  "notClaimed": [
+    "Chrome Web Store publication",
+    "persistent-Chromium multi-tab certification",
+    "human usability certification"
+  ]
+}

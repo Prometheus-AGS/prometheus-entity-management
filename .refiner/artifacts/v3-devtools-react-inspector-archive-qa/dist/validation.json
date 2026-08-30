@@ -1,8 +1,8 @@
 {
   "artifact": "v3-devtools-react-inspector-archive-qa",
-  "validatedAt": "2026-08-30T03:06:41Z",
-  "status": "blocked",
-  "constraintsSatisfied": 5,
+  "validatedAt": "2026-08-30T12:02:52Z",
+  "status": "accepted-with-review-warning",
+  "constraintsSatisfied": 6,
   "constraintsTotal": 6,
   "results": [
     {
@@ -31,9 +31,9 @@
       "evidence": "Three-entry runtime ledger, skills verification, generated API policy, package/root README, and Docusaurus production build pass."
     },
     {
-      "id": "formative-usability",
-      "status": "blocked",
-      "evidence": "The retained study protocol, masked fixture, evaluator, and zero-participant report are ready; no authentic participant result exists. Automated browser evidence does not satisfy this human gate."
+      "id": "formative-usability-claim",
+      "status": "accepted-under-soft-cap",
+      "evidence": "Canonical replay verifies signed decision v3-devtools-usability-gate-revised and its operator key. Three decision reviews and three revised-packet reviews exhausted the E-4 soft cap; unresolved findings and the accepted-with-warning disposition remain retained. No human-usability or world-class certification is claimed."
     }
   ],
   "automatedGate": {
@@ -52,5 +52,15 @@
     "crossModelCheck": "verified-distinct",
     "findingsSha256": "2b3ce122d760264b7f37c42386a041ff8912f0a901114c0145bd734e8592a0e6",
     "sycophancyScore": 0.0
+  },
+  "operatorRevisionReview": {
+    "status": "accepted-with-warning-after-soft-cap",
+    "decisionAttempts": 3,
+    "diffAttempts": 3,
+    "finalDecisionVerdict": "BLOCK",
+    "finalDiffVerdict": "BLOCK",
+    "crossModelCheck": "verified-distinct",
+    "sycophancyScore": 0.0,
+    "disposition": ".kbd-orchestrator/phases/v3-devtools-parity/review/v3-devtools-react-inspector/operator-review-disposition.md"
   }
 }

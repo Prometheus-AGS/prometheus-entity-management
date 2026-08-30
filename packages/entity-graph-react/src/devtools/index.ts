@@ -1,11 +1,14 @@
 export {
   EntityGraphDevtoolsProvider,
+  EntityGraphDevtoolsRemoteProvider,
   useEntityGraphDevtools,
   useEntityGraphDevtoolsSnapshot,
 } from "./provider";
 export type {
   EntityGraphDevtoolsContextValue,
   EntityGraphDevtoolsProviderProps,
+  EntityGraphDevtoolsRemoteConnection,
+  EntityGraphDevtoolsRemoteProviderProps,
   EntityGraphDevtoolsStoreDefinition,
   EntityGraphDevtoolsStoreDescriptor,
   EntityGraphDevtoolsValuePolicyMode,
@@ -45,8 +48,12 @@ export {
   isEntityGraphDevtoolsEnabled,
 } from "./mode";
 export type { EntityGraphDevtoolsMode } from "./mode";
+export { ENTITY_GRAPH_DEVTOOLS_STYLES } from "./styles";
 export { EntityGraphInspectorShell } from "./inspector-shell";
-export { createEntityGraphInspectorModelStore } from "./model";
+export {
+  createEntityGraphInspectorModelStore,
+  createRemoteEntityGraphInspectorModelStore,
+} from "./model";
 export type {
   EntityGraphInspectorModel,
   EntityGraphInspectorModelStore,

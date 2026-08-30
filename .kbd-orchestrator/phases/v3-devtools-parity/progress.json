@@ -1,25 +1,26 @@
 {
   "schemaVersion": "2",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 436,
-  "derivedRevision": 436,
+  "projectionContractVersion": 2,
+  "sourceRevision": 489,
+  "derivedRevision": 489,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 436
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 489
   },
-  "conflictCount": 0,
+  "conflictCount": 6,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
   "parentPhase": null,
-  "last_updated": "2026-08-30T03:11:17.163875Z",
+  "last_updated": "2026-08-30T13:08:56.045125Z",
   "last_updated_by": "kbd-runtime",
   "changes_total": 9,
-  "changes_completed": 5,
+  "changes_completed": 6,
   "implementation_total": 9,
-  "implementation_completed": 5,
+  "implementation_completed": 6,
   "completion": {
     "primaryCounter": "implementation",
     "implementation": {
-      "completed": 5,
+      "completed": 6,
       "total": 9,
       "status": "IN_PROGRESS"
     },
@@ -46,9 +47,9 @@
       "status": "DONE",
       "implementation_status": "COMPLETE",
       "tasks_total": 11,
-      "tasks_done": 8,
+      "tasks_done": 11,
       "last_task_completed": "Update API and skills ledgers, package documentation, evidence and security-boundary notes; run artifact-refiner and isolated adversarial review, then archive the change when both gates pass.",
-      "next_task_pending": "Add targeted event-completeness, batch/coalescing, multi-store, multi-client, disabled-mode, and teardown tests.",
+      "next_task_pending": null,
       "blockers": []
     },
     {
@@ -57,9 +58,9 @@
       "status": "DONE",
       "implementation_status": "COMPLETE",
       "tasks_total": 10,
-      "tasks_done": 7,
+      "tasks_done": 10,
       "last_task_completed": "Synchronize public API and skills ledgers, inspection semantics documentation, shared fixtures, security/evidence receipts, artifact-refiner, and artifact-only adversarial review; verify and archive only after both gates pass.",
-      "next_task_pending": "Add multi-store tests for projections, membership, relationships, preview propagation, successful restore, and conflict refusal.",
+      "next_task_pending": null,
       "blockers": []
     },
     {
@@ -68,9 +69,9 @@
       "status": "DONE",
       "implementation_status": "COMPLETE",
       "tasks_total": 10,
-      "tasks_done": 7,
+      "tasks_done": 10,
       "last_task_completed": "Synchronize public API and skills ledgers, history documentation, fixtures, security/evidence receipts, artifact-refiner, and artifact-only adversarial review; verify and archive only after both gates pass.",
-      "next_task_pending": "Add targeted multi-store, retention, stale cursor, rewind/live, mutation ordering, import, and compatibility tests.",
+      "next_task_pending": null,
       "blockers": []
     },
     {
@@ -79,9 +80,9 @@
       "status": "DONE",
       "implementation_status": "COMPLETE",
       "tasks_total": 12,
-      "tasks_done": 8,
-      "last_task_completed": "After the complete UI is wired, run one packed Vite/Next/browser acceptance gate proving production exclusion, automatic development activation, hide/restore, dirty/original/view/history workflows, responsive layouts, keyboard and screen-reader accessibility, and responsive 500-event interaction without unit, isolated, mock-backed, snapshot, or partial test evidence.",
-      "next_task_pending": "Add static layering, SSR/disabled, store-isolation, keyboard, responsive, axe, and packed-root-exclusion tests.",
+      "tasks_done": 12,
+      "last_task_completed": "Synchronize public API, skills, docs, screenshots and evidence with ui-spec; run artifact-refiner, isolated adversarial review, and sycophancy correction; verify and archive only when those gates pass.",
+      "next_task_pending": null,
       "blockers": []
     },
     {
@@ -98,34 +99,34 @@
     {
       "id": "v3-devtools-chrome-extension",
       "title": "v3-devtools-chrome-extension — Secure tab-isolated MV3 extension",
-      "status": "PENDING",
-      "implementation_status": "PENDING",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
       "tasks_total": 9,
-      "tasks_done": 0,
-      "last_task_completed": null,
-      "next_task_pending": "Confirm the React inspector is complete and inventory the existing extension scaffold from a clean `origin/main` worktree.",
+      "tasks_done": 9,
+      "last_task_completed": "Update install/security/troubleshooting docs and coverage ledgers, then capture sanitized evidence and isolated review before archive.",
+      "next_task_pending": null,
       "blockers": []
     },
     {
       "id": "v3-devtools-flutter-extension",
       "title": "v3-devtools-flutter-extension — Official Flutter DevTools companion",
-      "status": "PENDING",
-      "implementation_status": "PENDING",
+      "status": "IN_PROGRESS",
+      "implementation_status": "IN_PROGRESS",
       "tasks_total": 8,
-      "tasks_done": 0,
-      "last_task_completed": null,
-      "next_task_pending": "Confirm the Flutter controller/VM-service contract and official package-extension layout.",
+      "tasks_done": 7,
+      "last_task_completed": "Run T0 analysis/targeted tests and T2 official validation/web build at change completion; reserve connected smoke/device work for T3.",
+      "next_task_pending": "Update Flutter API/skills/coverage docs and record sanitized evidence plus isolated review before archive.",
       "blockers": []
     },
     {
       "id": "v3-devtools-docs-examples",
       "title": "v3-devtools-docs-examples — Guides, scenarios, README parity, and evidence",
-      "status": "PENDING",
-      "implementation_status": "PENDING",
+      "status": "IN_PROGRESS",
+      "implementation_status": "IN_PROGRESS",
       "tasks_total": 9,
-      "tasks_done": 0,
-      "last_task_completed": null,
-      "next_task_pending": "Start from a clean `origin/main` worktree and verify the existing Docusaurus/Pages baseline named in the assessment.",
+      "tasks_done": 7,
+      "last_task_completed": "Update `examples/coverage.json` and create allowlisted, hashed, responsive, sanitized evidence receipts/assets.",
+      "next_task_pending": "Run T0/T1 locally and full docs/example T2 gates at completion; reserve deployed Pages/Lighthouse probes for T3.",
       "blockers": []
     },
     {

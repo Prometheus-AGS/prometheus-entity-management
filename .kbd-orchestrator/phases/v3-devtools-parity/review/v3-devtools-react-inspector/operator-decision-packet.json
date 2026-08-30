@@ -1,0 +1,28 @@
+{
+  "packet_version": 1,
+  "mode": "decision",
+  "phase": "",
+  "target": ".kbd-orchestrator/phases/v3-devtools-parity/review/v3-devtools-react-inspector/operator-revision-decision.md",
+  "producer_model": "openai/gpt-5.6-sol",
+  "constraints": null,
+  "file_tree": ".\n./archive-findings.json\n./archive-packet.json\n./archive-resolutions.md\n./final-findings.json\n./final-packet.json\n./operator-revision-decision.md\n./operator-revision-findings-r2.json\n./operator-revision-findings-r3.json\n./operator-revision-findings.json\n./operator-revision-intent.md\n./operator-revision-packet-r2.json\n./operator-revision-packet-r3.json\n./operator-revision-packet.json\n./round-1-findings.json\n./round-1-packet.json\n./round-2-findings.json\n./round-2-packet.json\n",
+  "decision_document": "# Decision under review: defer the unstarted usability study\n\n## Decision\n\nHonor signed KBD decision `v3-devtools-usability-gate-revised`: the unstarted\n12-developer formative study becomes optional post-release product research and\ndoes not block React inspector archive or the phase. Preserve the zero-\nparticipant report as blocked, never count automated runs as participants, and\nmake no human-usability or \u201cworld class\u201d certification claim.\n\n## Authority and verification\n\nThe operator explicitly directed the phase to finish. KBD event revision 437\nrecords that instruction as an immutable signed decision, plan revision 10\nrecords the course correction, and revision 439 resumes the phase. The retained\nreceipt is checked against the canonical runtime by\n`scripts/verify-devtools-study-decision.mjs`; `prometheus kbd status` and\n`prometheus kbd audit` replay the journal before returning state/events, and KBD\nruntime replay rejects invalid event signatures.\n\n## Assumptions\n\n- The operator owns this product-evidence threshold and may revise it.\n- The study is not a legal, security, privacy, registry, or interoperability\n  requirement.\n- Existing packed Vite/Next/Chromium evidence supports only the functional,\n  accessibility, performance, and security claims it directly exercises.\n- Deferral does not erase or convert the historical zero-participant result.\n\n## Falsifier\n\nReject this decision if the signed event fails canonical KBD replay, if any\npublic/archive artifact calls the study passed or calls the UI human-certified\nor \u201cworld class,\u201d if an external release authority requires this study, or if\nthe assembled integration evidence cited for the remaining claims is invalid.\n\n## Consequence if accepted\n\nTask 12 may close only after this decision review and a final revised-packet\ndiff review pass their sycophancy screens. The Chrome extension may then start.\n",
+  "decision_fields": {
+    "decision": "Honor signed KBD decision `v3-devtools-usability-gate-revised`: the unstarted\n12-developer formative study becomes optional post-release product research and\ndoes not block React inspector archive or the phase. Preserve the zero-\nparticipant report as blocked, never count automated runs as participants, and\nmake no human-usability or \u201cworld class\u201d certification claim.",
+    "assumptions": [
+      "The operator owns this product-evidence threshold and may revise it.",
+      "The study is not a legal, security, privacy, registry, or interoperability",
+      "Existing packed Vite/Next/Chromium evidence supports only the functional,",
+      "Deferral does not erase or convert the historical zero-participant result."
+    ],
+    "falsifier": "Reject this decision if the signed event fails canonical KBD replay, if any\npublic/archive artifact calls the study passed or calls the UI human-certified\nor \u201cworld class,\u201d if an external release authority requires this study, or if\nthe assembled integration evidence cited for the remaining claims is invalid.",
+    "missing_fields": []
+  },
+  "prior_decisions": "[flint-forge-p16-release-closure-sync-and-worktree-handoff] Flint Forge p16 Release Closure Sync and Worktree Handoff \u2014 tags: flint-forge, release-closure, kbd-orchestrator, worktree-handoff, git-sync, process-debt\n[flint-forge-p15-pr-25-pgrx-worktree-and-vault-test-fixes] Flint Forge p15 PR 25: pgrx Worktree and Vault Test Fixes \u2014 tags: flint-forge, production-readiness, pgrx, postgres, ci, worktree, ext-flint-vault\n[karpathy-session-591bfa6ec0826532] Karpathy session 591bfa6ec082 \u2014 tags: karpathy, session-learning\n[karpathy-session-28c436e3077b1e74] Karpathy session 28c436e3077b \u2014 tags: karpathy, session-learning\n[karpathy-session-6a27aad2dd7803f6] Karpathy session 6a27aad2dd78 \u2014 tags: karpathy, session-learning\n",
+  "original_intent": "# Operator intent\n\nFinish the current phase, perform reflection, commit, push, and archive. The\noperator explicitly authorized doing what is necessary to finish after being\nshown that the only React archive blocker was the unstarted 12-person usability\nstudy. Preserve truthful evidence and do not claim the study occurred or passed.\n",
+  "truncation": {
+    "cap_bytes_per_field": 40000,
+    "any_truncated": false,
+    "fields": []
+  }
+}

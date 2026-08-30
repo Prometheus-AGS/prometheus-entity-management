@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "changeId": "v3-devtools-flutter-extension",
+  "status": "passed",
+  "sourceVersion": "3.0.2",
+  "devtoolsExtensionsVersion": "0.5.1",
+  "flutterToolchain": "3.48.0-0.1.pre",
+  "protocolVersion": 1,
+  "sourceSha256": "19ccb9023d7e8f20cf97e4d5aa2424d44545411e6775101b4075ffaeebf9d862",
+  "packageManifestSha256": "81ea1b3a2bcdc0895d0e7092cce901c3deeb4f4beb7372ae1a4b2e8b494b413c",
+  "extensionConfigSha256": "86c813c68cf656e588c6904e5c700f64039abf05fe307fc78cb91a47bc46710b",
+  "buildInventorySha256": "cb632f22c603029ddd389746997adf7e8bc31c8866f3be8af003467afaaf7ec8",
+  "buildFileCount": 44,
+  "checks": [
+    "scoped Dart analyzer with no issues",
+    "official devtools_extensions build_and_copy release web build",
+    "official devtools_extensions package validation",
+    "publishable config.yaml and build inventory"
+  ],
+  "surfaces": [
+    "overview and store selection",
+    "entities including dirty state",
+    "views and relationships",
+    "event activity",
+    "local entity preview and conflict-safe receipt restore",
+    "snapshot rewind and return to live",
+    "loading, disconnected, incompatible, error, and ready states",
+    "narrow and wide navigation"
+  ],
+  "notClaimed": [
+    "pub.dev publication after this source change",
+    "connected DevTools host certification",
+    "human usability certification"
+  ]
+}

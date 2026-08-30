@@ -1,13 +1,14 @@
 {
   "schemaVersion": "1",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 436,
-  "derivedRevision": 436,
+  "projectionContractVersion": 2,
+  "sourceRevision": 489,
+  "derivedRevision": 489,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 436
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 489
   },
-  "conflictCount": 0,
-  "updatedAt": "2026-08-30T03:11:17.163875Z",
+  "conflictCount": 6,
+  "updatedAt": "2026-08-30T13:08:56.045125Z",
   "cursor": [
     "v3-devtools-parity"
   ],
@@ -16,7 +17,7 @@
     "id": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
     "status": "running",
     "progress": {
-      "done": 37,
+      "done": 38,
       "total": 63
     },
     "children": [
@@ -585,9 +586,9 @@
         "type": "phase",
         "id": "v3-devtools-parity",
         "canonicalId": "v3-devtools-parity",
-        "status": "BLOCKED",
+        "status": "IN_PROGRESS",
         "progress": {
-          "done": 5,
+          "done": 6,
           "total": 9
         },
         "children": [
@@ -596,7 +597,7 @@
             "id": "v3-devtools-core-observability",
             "status": "COMPLETE",
             "progress": {
-              "done": 8,
+              "done": 11,
               "total": 11
             }
           },
@@ -605,7 +606,7 @@
             "id": "v3-devtools-entity-inspection",
             "status": "COMPLETE",
             "progress": {
-              "done": 7,
+              "done": 10,
               "total": 10
             }
           },
@@ -614,7 +615,7 @@
             "id": "v3-devtools-time-travel",
             "status": "COMPLETE",
             "progress": {
-              "done": 7,
+              "done": 10,
               "total": 10
             }
           },
@@ -623,7 +624,7 @@
             "id": "v3-devtools-react-inspector",
             "status": "COMPLETE",
             "progress": {
-              "done": 8,
+              "done": 12,
               "total": 12
             }
           },
@@ -639,27 +640,27 @@
           {
             "type": "change",
             "id": "v3-devtools-chrome-extension",
-            "status": "PENDING",
+            "status": "COMPLETE",
             "progress": {
-              "done": 0,
+              "done": 9,
               "total": 9
             }
           },
           {
             "type": "change",
             "id": "v3-devtools-flutter-extension",
-            "status": "PENDING",
+            "status": "IN_PROGRESS",
             "progress": {
-              "done": 0,
+              "done": 7,
               "total": 8
             }
           },
           {
             "type": "change",
             "id": "v3-devtools-docs-examples",
-            "status": "PENDING",
+            "status": "IN_PROGRESS",
             "progress": {
-              "done": 0,
+              "done": 7,
               "total": 9
             }
           },

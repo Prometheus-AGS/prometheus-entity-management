@@ -5,9 +5,9 @@
 **Dispatched to:** SELF through `/kbd-apply`
 **Backend entrypoint:** `/kbd-apply <change-id>`
 **Source plan:** `.kbd-orchestrator/phases/v3-devtools-parity/plan.md`
-**Canonical authority:** signed KBD runtime revision 277, plan revision 6
-**Current position:** change 1 of 9, revised task 1 of 3 (`task 9`)
-**Exact next command:** `/kbd-apply v3-devtools-core-observability`
+**Canonical authority:** signed KBD runtime revision 439, plan revision 10
+**Current position:** change 4 of 9, task 12; implementation and automated acceptance complete
+**Exact next command:** `/kbd-apply v3-devtools-react-inspector`
 
 ## Execution contract
 
@@ -43,15 +43,13 @@ Historical signed tasks 2–5 for core observability are not accepted as impleme
 
 ## Blockers and authority gates
 
-- React inspector implementation is complete, but its certification/archive
-  gate is blocked on the accepted formative study: 12 retained developer
-  sessions, at least 10 unassisted successes, and a sub-10-second median in
-  both first-time and oriented cohorts. The retained report currently contains
-  zero participants. Automated runs do not count.
-- The ordered Chrome change cannot start until the React inspector is archived;
-  KBD records the phase as blocked rather than bypassing the dependency or
-  weakening the UI specification. Task 12 remains `in_progress` because the
-  runtime's task-level `blocked` transition also rewrites the already-complete
-  implementation status; the retained blocker artifact is the certification
-  authority until KBD models that dimension independently.
+- The React inspector implementation and automated acceptance are complete.
+  At signed revision 437 and plan revision 10, the operator removed the
+  unstarted 12-person study as an archive/release blocker and retained it as
+  optional post-release research. The zero-participant report remains retained
+  evidence and is not represented as a pass; no human-study or “world class”
+  certification claim is made.
+- The phase resumed at signed revision 439. React task 12 may close after its
+  revised documentation and isolated-review record are complete, after which
+  the ordered Chrome change may start.
 - Chrome Web Store submission, npm/pub.dev publication, tag movement, signing, and protected-environment operations require their explicit release task and external authority; this phase does not silently perform them.

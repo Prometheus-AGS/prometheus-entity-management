@@ -6,10 +6,8 @@
  */
 
 chrome.devtools.panels.create(
-  "Entity Explorer",
+  "Entity Graph",
   "icons/icon16.png",
   "panel.html",
-  (panel) => {
-    // Panel created — panel.html will connect via chrome.runtime.connect()
-  }
+  () => {}
 );

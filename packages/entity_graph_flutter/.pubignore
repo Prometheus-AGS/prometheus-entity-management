@@ -1,4 +1,8 @@
 .dart_tool/
 build/
+!extension/
+!extension/devtools/
+!extension/devtools/build/
+!extension/devtools/build/**
 pubspec.lock
 test/failures/

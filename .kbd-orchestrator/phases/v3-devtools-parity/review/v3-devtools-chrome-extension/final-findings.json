@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "review": "artifact-only isolated adversarial review",
+  "status": "passed",
+  "critical": 0,
+  "warnings": 0,
+  "suggestions": 0,
+  "correctionsBeforePass": [
+    "bound protocol messages to content-document epochs",
+    "added bounded navigation handshake retries",
+    "made handshake initialization single-flight and generation-local",
+    "serialized remote model refreshes",
+    "made content-script access wording explicit",
+    "pinned cross-platform icon generation"
+  ],
+  "sycophancyScreen": {
+    "status": "passed",
+    "score": 0.0
+  }
+}

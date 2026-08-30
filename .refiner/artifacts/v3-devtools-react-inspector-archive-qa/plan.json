@@ -12,7 +12,7 @@
       { "constraint_id": "causal-and-dirty-truth", "validation_method": "Packed dirty/view/history/Graph Pulse workflow.", "execution_required": true },
       { "constraint_id": "interaction-quality", "validation_method": "Packed accessibility, responsive, and 500-event performance lanes plus screenshots.", "execution_required": true },
       { "constraint_id": "public-record-parity", "validation_method": "Three-entry export ledger and generated API policy gates.", "execution_required": true },
-      { "constraint_id": "formative-usability", "validation_method": "Retained 12-participant human study.", "execution_required": false }
+      { "constraint_id": "formative-usability-claim", "validation_method": "Verify the zero-participant report remains retained and no human-usability pass or world-class claim is made.", "execution_required": false }
     ],
     "template": ".agents/skills/artifact-refiner/assets/templates/ui-report.template.html"
   }

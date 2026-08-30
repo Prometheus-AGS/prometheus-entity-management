@@ -5,11 +5,11 @@ description: Activate the optional React inspector and trace entities, dirty val
 
 # DevTools & Graph Pulse
 
-:::caution Unreleased package entries
+:::info Current versions
 
-The inspector is implemented in repository source after npm `3.0.5` and will
-ship in the next minor release. The published `3.0.5` tarball does not expose
-`./devtools` or `./devtools/auto`.
+React DevTools ships in npm `3.1.0` through `./devtools` and
+`./devtools/auto`. Flutter `3.0.1` is the current pub.dev release; the controller
+and official Flutter DevTools companion documented below ship in `3.0.2`.
 
 :::
 
@@ -140,6 +140,31 @@ The older root-level `createDevtoolsEventBus`, store registry, and snapshot
 helpers remain available for compatibility, but new inspection UIs should use
 the store-scoped controller contract.
 
+## Chrome DevTools panel
+
+The private Manifest V3 workspace in `extension/` packages this same inspector
+as an **Entity Graph** panel. Build it with
+`pnpm --filter @prometheus-ags/entity-graph-chrome-devtools package`, load
+`extension/dist` as an unpacked extension, and open DevTools on an application
+that renders `<EntityGraphDevtools />`.
+
+The panel reconnects across navigation and worker restart, routes each inspected
+tab independently, and retains the host controller's metadata/redaction policy.
+Its declarative content script runs on HTTP(S) pages; the page-visible bridge is
+not an authentication boundary and should remain a development-only opt-in.
+
+## Flutter DevTools companion
+
+Flutter `3.0.2` includes `extension/devtools/config.yaml` plus the compiled
+official package extension. Attach an `EntityGraphDevtoolsController` from
+`package:entity_graph_flutter/devtools.dart` in a debug app. Dart DevTools then
+discovers overview, entities, views/relationships, and activity workspaces with
+explicit loading, disconnected, incompatible, error, and ready states.
+
+The VM-service methods are absent in product mode, store selection is explicit,
+and values stay metadata-only unless the app supplies an include/redaction
+policy. The extension cannot weaken that policy.
+
 ## Evidence Boundary
 
 The packed React gate exercises clean Vite and Next consumers plus Chromium
@@ -151,7 +176,7 @@ accessibility, responsive layouts, and a sustained 500-event interaction.
 pnpm run verify:devtools-react-inspector
 ```
 
-The retained phase receipt records the exact machine and timings. A separate
-12-developer formative study is still required before describing the UX as
-formatively certified “world class”; automated evidence does not substitute
-for that product-usability gate.
+The retained phase receipt records the exact machine and timings. The unstarted
+12-developer formative study is retained as optional post-release research and
+is not represented as passed. No “world class” usability-certification claim is
+made from automated evidence.

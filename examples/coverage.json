@@ -863,7 +863,8 @@
       "stability": "stable",
       "artifactIds": [
         "npm-core",
-        "npm-react"
+        "npm-react",
+        "dart-flutter"
       ],
       "scenarioIds": [
         "example.transport.rest-graphql-equivalence"
@@ -1337,6 +1338,54 @@
             ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/task-3-verification.json"
           ],
           "applicability": "Proves cache-miss Suspense resolution, nearest-boundary error containment, live graph diagnostics, and zero serious or critical axe violations."
+        },
+        {
+          "kind": "browser",
+          "status": "implemented",
+          "ownerChange": "v3-devtools-react-inspector",
+          "command": "pnpm run verify:devtools-react-inspector",
+          "paths": [
+            ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-react-inspector/task-11-packed-browser-acceptance.json",
+            ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-react-inspector/task-11-browser-evidence.json",
+            ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-react-inspector/task-11-causal-inspector.png",
+            ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-react-inspector/task-11-responsive-500-events.png"
+          ],
+          "applicability": "Certifies the opt-in React inspector in clean packed Vite and Next consumers, including development activation, production exclusion, dirty/original/view/history causality, keyboard access, responsive layouts, and a sustained 500-event interaction."
+        },
+        {
+          "kind": "browser",
+          "status": "implemented",
+          "ownerChange": "v3-devtools-chrome-extension",
+          "command": "pnpm --filter @prometheus-ags/entity-graph-chrome-devtools package",
+          "paths": [
+            ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-chrome-extension/task-8-package-gate.json",
+            ".kbd-orchestrator/phases/v3-devtools-parity/review/v3-devtools-chrome-extension/final-findings.json",
+            "extension/prometheus-entity-graph-devtools-3.1.0.zip"
+          ],
+          "applicability": "Certifies a deterministic least-permission Manifest V3 package that reuses the shared inspector with bounded, versioned, tab-isolated routing; Chrome Web Store publication is not claimed."
+        },
+        {
+          "kind": "integration",
+          "status": "implemented",
+          "ownerChange": "v3-devtools-flutter-controller",
+          "command": "pnpm run verify:devtools-flutter-controller",
+          "paths": [
+            ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-flutter-controller/task-8-assembled-acceptance.json",
+            ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-flutter-controller/task-8-assembled-acceptance.md"
+          ],
+          "applicability": "Certifies the Flutter/Riverpod controller from outside the isolate across the real VM-service transport, two graph stores, inspection, preview/restore, bounded history, rewind, return-to-live, redaction, and teardown."
+        },
+        {
+          "kind": "platform",
+          "status": "implemented",
+          "ownerChange": "v3-devtools-flutter-extension",
+          "command": "dart run devtools_extensions validate --package=packages/entity_graph_flutter",
+          "paths": [
+            "tool/entity_graph_flutter_devtools_extension/lib/main.dart",
+            "packages/entity_graph_flutter/extension/devtools/config.yaml",
+            ".kbd-orchestrator/phases/v3-devtools-parity/evidence/v3-devtools-flutter-extension/task-7-official-build.json"
+          ],
+          "applicability": "Certifies the analyzer-clean official Flutter DevTools package-extension build and package layout for 3.0.2; a connected DevTools host and human usability study are not claimed."
         }
       ]
     },

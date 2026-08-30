@@ -17,6 +17,7 @@ import {
   type GraphDevtoolsController,
   type GraphDevtoolsSnapshot,
 } from "@prometheus-ags/entity-graph-core/devtools";
+import type { EntityGraphInspectorModelStore } from "./model";
 import { useGraphStoreApi } from "../graph-store";
 import { observeRenderedGraphViews } from "../view/view-registration";
 
@@ -65,13 +66,15 @@ interface AttachedRuntimeSet {
 
 export interface EntityGraphDevtoolsContextValue {
   status: ProviderStatus;
-  store: GraphStore;
+  store: GraphStore | null;
   storeId: string | null;
   stores: readonly EntityGraphDevtoolsStoreDescriptor[];
   selectStore(storeId: string): void;
   valuePolicyMode: EntityGraphDevtoolsValuePolicyMode;
   controller: GraphDevtoolsController | null;
   client: GraphDevtoolsClient | null;
+  /** Precomputed projection for serialized remote clients. */
+  inspectorModel: EntityGraphInspectorModelStore | null;
 }
 
 interface InternalEntityGraphDevtoolsContextValue extends EntityGraphDevtoolsContextValue {
@@ -169,6 +172,15 @@ export interface EntityGraphDevtoolsProviderProps {
   stores?: readonly EntityGraphDevtoolsStoreDefinition[];
   enabled?: boolean;
   options?: Omit<AttachGraphDevtoolsOptions, "enabled">;
+  enableWindowBridge?: boolean;
+}
+
+export interface EntityGraphDevtoolsRemoteConnection {
+  storeId: string;
+  label: string;
+  valuePolicyMode: EntityGraphDevtoolsValuePolicyMode;
+  client: GraphDevtoolsClient;
+  model: EntityGraphInspectorModelStore;
 }
 
 /** Attach reference-counted controllers and select one explicit graph store for inspection. */
@@ -178,6 +190,7 @@ export function EntityGraphDevtoolsProvider({
   stores,
   enabled = true,
   options,
+  enableWindowBridge = false,
 }: EntityGraphDevtoolsProviderProps) {
   const inheritedStore = useGraphStoreApi();
   const fallbackStore = store ?? inheritedStore;
@@ -223,6 +236,62 @@ export function EntityGraphDevtoolsProvider({
   const current = currentSet?.runtimes.find(
     (runtime) => runtime.controller.storeId === selectedStoreId,
   ) ?? currentSet?.runtimes[0] ?? null;
+
+  useEffect(() => {
+    if (!enableWindowBridge || !currentSet || typeof window === "undefined") return;
+    const source = "prometheus.entity-graph.devtools.extension";
+    const bridgeVersion = 1;
+    let acceptedEpoch: string | null = null;
+    const maximumResponseBytes = 8 * 1024 * 1024;
+    const post = (epoch: string, message: Record<string, unknown>) => {
+      const envelope = { source, direction: "page-to-extension", bridgeVersion, epoch, ...message };
+      if (new TextEncoder().encode(JSON.stringify(envelope)).byteLength <= maximumResponseBytes) {
+        window.postMessage(envelope, window.location.origin);
+      }
+    };
+    const unsubscriptions = currentSet.runtimes.map((runtime) => (
+      runtime.controller.subscribe((event) => {
+        if (acceptedEpoch) post(acceptedEpoch, { kind: "event", storeId: runtime.controller.storeId, event });
+      })
+    ));
+    const onMessage = (event: MessageEvent) => {
+      if (event.source !== window || event.origin !== window.location.origin) return;
+      const message = event.data as Record<string, unknown> | null;
+      if (!message || message.source !== source || message.direction !== "extension-to-page" || message.bridgeVersion !== bridgeVersion || typeof message.epoch !== "string") return;
+      if (message.kind === "handshake") {
+        acceptedEpoch = message.epoch;
+        post(acceptedEpoch, {
+          kind: "handshake",
+          requestId: message.requestId,
+          stores: currentSet.runtimes.map((runtime) => ({
+            storeId: runtime.controller.storeId,
+            label: runtime.label,
+            valuePolicyMode: runtime.options.values?.mode === "include" ? "include" : "metadata-only",
+            capabilities: runtime.controller.capabilities,
+          })),
+        });
+        return;
+      }
+      if (message.kind !== "request" || message.epoch !== acceptedEpoch || typeof message.storeId !== "string") return;
+      const runtime = currentSet.runtimes.find((candidate) => candidate.controller.storeId === message.storeId);
+      if (!runtime) {
+        post(acceptedEpoch, { kind: "response", requestId: message.requestId, error: "Unknown graph store" });
+        return;
+      }
+      void runtime.client.request(message.command as Parameters<GraphDevtoolsClient["request"]>[0], message.payload)
+        .then((result) => post(acceptedEpoch!, { kind: "response", requestId: message.requestId, result }))
+        .catch((error: unknown) => post(acceptedEpoch!, {
+          kind: "response",
+          requestId: message.requestId,
+          error: error instanceof Error ? error.message : "DevTools request failed",
+        }));
+    };
+    window.addEventListener("message", onMessage);
+    return () => {
+      window.removeEventListener("message", onMessage);
+      for (const unsubscribe of unsubscriptions) unsubscribe();
+    };
+  }, [currentSet, enableWindowBridge]);
   const selectStore = useCallback((storeId: string) => {
     if (currentSet?.runtimes.some((runtime) => runtime.controller.storeId === storeId)) {
       setSelectedStoreId(storeId);
@@ -246,6 +315,7 @@ export function EntityGraphDevtoolsProvider({
     controller: current?.controller ?? null,
     client: current?.client ?? null,
     snapshots: current?.snapshots ?? null,
+    inspectorModel: null,
   }), [current, definitions, descriptors, enabled, fallbackStore, selectStore]);
 
   return (
@@ -253,6 +323,47 @@ export function EntityGraphDevtoolsProvider({
       {children}
     </EntityGraphDevtoolsContext.Provider>
   );
+}
+
+export interface EntityGraphDevtoolsRemoteProviderProps {
+  children: ReactNode;
+  connections: readonly EntityGraphDevtoolsRemoteConnection[];
+}
+
+/** Drive the shared inspector from serialized clients such as a browser DevTools panel. */
+export function EntityGraphDevtoolsRemoteProvider({
+  children,
+  connections,
+}: EntityGraphDevtoolsRemoteProviderProps) {
+  const [selectedStoreId, setSelectedStoreId] = useState<string | null>(connections[0]?.storeId ?? null);
+  const current = connections.find((connection) => connection.storeId === selectedStoreId)
+    ?? connections[0]
+    ?? null;
+  useEffect(() => {
+    if (!current && connections[0]) setSelectedStoreId(connections[0].storeId);
+  }, [connections, current]);
+  const selectStore = useCallback((storeId: string) => {
+    if (connections.some((connection) => connection.storeId === storeId)) setSelectedStoreId(storeId);
+  }, [connections]);
+  const descriptors = useMemo(() => connections.map((connection) => ({
+    storeId: connection.storeId,
+    label: connection.label,
+    selected: connection === current,
+    valuePolicyMode: connection.valuePolicyMode,
+  })), [connections, current]);
+  const value = useMemo<InternalEntityGraphDevtoolsContextValue>(() => ({
+    status: current ? "ready" : "connecting",
+    store: null,
+    storeId: current?.storeId ?? null,
+    stores: descriptors,
+    selectStore,
+    valuePolicyMode: current?.valuePolicyMode ?? "metadata-only",
+    controller: null,
+    client: current?.client ?? null,
+    snapshots: null,
+    inspectorModel: current?.model ?? null,
+  }), [current, descriptors, selectStore]);
+  return <EntityGraphDevtoolsContext.Provider value={value}>{children}</EntityGraphDevtoolsContext.Provider>;
 }
 
 /** Resolve the selected store-scoped DevTools controller and protocol client. */

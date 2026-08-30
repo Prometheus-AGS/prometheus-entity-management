@@ -15,6 +15,19 @@ Provides a **normalized, reactive entity graph store** for Flutter with:
 - **Typed errors** — `TerminalError` (4xx / permanent) and `TransientError` (5xx / retryable), mirroring `entity-graph-core`'s `errors.ts`
 - **Optional development tooling** — a separate `devtools.dart` entry provides a per-graph controller, bounded history, inspection, preview/restore, time travel, and a store-isolated VM-service bridge without entering the ordinary application barrel
 
+## Flutter DevTools companion
+
+Version `3.0.2` includes an official package extension under
+`extension/devtools`. In a debug application,
+attach an `EntityGraphDevtoolsController` to every graph that should be
+inspectable. Dart DevTools then discovers the **Entity Graph** tab, where it can
+switch stores and inspect counts, entities, dirty state, views, relationships,
+and event history.
+
+The VM-service protocol is absent from product mode. Values remain
+metadata-only unless the application configures an explicit include/redaction
+policy; the extension cannot weaken that host-owned policy.
+
 ## Canonical ownership and imported history
 
 This directory is the sole canonical Dart graph package in the 3.0 release inventory. Reusable KnowMe source history is retained separately under `provenance/imports/knowme-flutter` as a non-buildable, non-workspace, non-public review boundary; it is not another package and must never be compiled or published.
@@ -49,9 +62,8 @@ caches or call transport APIs directly.
 
 ## Optional DevTools controller
 
-> This entry is implemented in repository source after the published `3.0.1`
-> archive and will ship in the next Flutter package release. Pub.dev `3.0.1`
-> does not contain `package:entity_graph_flutter/devtools.dart`.
+> This entry is available in `3.0.2`. Pub.dev `3.0.1` does not contain
+> `package:entity_graph_flutter/devtools.dart`.
 
 Import the optional library only from development tooling or a host-controlled
 debug bootstrap. The ordinary `entity_graph_flutter.dart` entry does not export
@@ -94,8 +106,10 @@ JSON-RPC, and drives the production controller through real Riverpod views:
 pnpm run verify:devtools-flutter-controller
 ```
 
-This certifies the controller and VM-service bridge, not the still-pending
-official Flutter DevTools extension UI or a pub.dev release.
+This certifies the controller and VM-service bridge. The official Flutter
+DevTools UI has a separate static analyzer, package-build, and extension
+validation gate; connected-host certification and pub.dev publication are
+reported separately and are not inferred from the controller receipt.
 
 ## Setup
 
@@ -103,14 +117,14 @@ official Flutter DevTools extension UI or a pub.dev release.
 
 ```yaml
 dependencies:
-  entity_graph_flutter: ^3.0.1
+  entity_graph_flutter: ^3.0.2
   flutter_riverpod: ^3.3.2
 ```
 
 Or add it from the command line:
 
 ```bash
-flutter pub add entity_graph_flutter:^3.0.1
+flutter pub add entity_graph_flutter:^3.0.2
 ```
 
 ### 2. Wrap your app with `ProviderScope`
@@ -354,10 +368,10 @@ every widget watching `Invoice` entities rebuilds in the same frame.
 - The Flutter showcase accepts strict A2UI 1.0-RC surfaces and normalizes them
   to the published GenUI 0.10.2 renderer only after catalog, component,
   function, action, tenant, and entity validation.
-- The repository-source optional DevTools controller passed its complete
+- The optional DevTools controller passed its complete
   Flutter/Riverpod/VM-service acceptance flow with two isolated graphs and 28
-  versioned events. This does not change the contents of pub.dev `3.0.1` or
-  certify the pending Flutter DevTools extension UI.
+  versioned events. Version `3.0.2` also includes the official, validated
+  Flutter DevTools extension UI.
 - Physical devices, store submission, signing, and a cross-ecosystem stable
   release bundle are not claimed.
 - realtime coalescing or durable peer convergence.

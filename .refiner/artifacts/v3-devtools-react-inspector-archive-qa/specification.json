@@ -12,7 +12,7 @@
       "Serialized transports must remain metadata-only unless a host explicitly includes and redacts values.",
       "The UI must retain semantic controls, keyboard and screen-reader workflows, visible focus, responsive layouts, deferred search, virtualization, bounded cadence, and reduced motion.",
       "The three React runtime entries, skills, package README, root README, Docusaurus pages, and generated API reference must agree.",
-      "The mandatory 12-developer formative usability gate cannot be replaced by automated evidence."
+      "The optional 12-developer formative study cannot be represented as passed by automated evidence and does not block archive or release."
     ],
     "target_state": {
       "description": "A deterministic artifact packet with truthful automated evidence and an explicit archive decision for every blocking ui-spec criterion.",
@@ -22,20 +22,20 @@
         "Generated API documentation passes its stable-export coverage policy.",
         "Screenshots visibly demonstrate the causal inspector and responsive 500-event surface.",
         "Adversarial and sycophancy reviews contain no unresolved blocking finding.",
-        "At least 10 of 12 retained study participants complete both seeded tasks without assistance and each cohort median is under 10 seconds."
+        "No human-usability or world-class certification claim is made until authentic retained study evidence exists."
       ],
       "measurable_outcomes": [
-        { "metric": "packed browser scenarios", "threshold": "5/5 pass" },
+        { "metric": "packed browser scenarios", "threshold": "6/6 pass" },
         { "metric": "inspector-attributable tasks over 50 ms", "threshold": "0" },
         { "metric": "retained events", "threshold": "<= 500 and <= 5 MiB" },
         { "metric": "runtime export mismatches", "threshold": "0" },
         { "metric": "unresolved blocking review findings", "threshold": "0" },
-        { "metric": "unassisted usability completions", "threshold": ">= 10 of 12" }
+        { "metric": "unsupported human-usability claims", "threshold": "0" }
       ]
     },
     "content_type": "direct:react",
     "unknowns": [
-      "No retained formative-study participant record has been found; archive readiness therefore remains provisional until that human gate exists.",
+      "No retained formative-study participant record has been found; the operator explicitly deferred that research and prohibited inferring a pass.",
       "Impeccable was requested first but no installed skill/package was discoverable in the available skill roots or searched local paths."
     ],
     "requires_code_execution": true,

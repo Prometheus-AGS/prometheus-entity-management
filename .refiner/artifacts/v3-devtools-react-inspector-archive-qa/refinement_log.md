@@ -84,3 +84,14 @@
   at clean commit `cbb39460813b44110dfd5984f10be5abad26d59f`, including
   the masked study fixture. Search p95 was 16.8 ms, preloaded open p95 was
   12.7 ms, no inspector task exceeded 50 ms, and retention remained 500.
+
+### Operator revision and convergence — 2026-08-30T12:02:52Z
+
+- Signed KBD decision `v3-devtools-usability-gate-revised` changed the study
+  from a release/archive gate to optional post-release product research.
+- Preserved the zero-participant blocked evaluation and prohibited any inferred
+  human-study pass or “world class” certification claim.
+- Reframed the sixth blocking constraint as claim truthfulness. Artifact
+  Refiner terminates at its five-iteration cap with 5/6 constraints passed;
+  the sixth awaits a fresh distinct-model review outside the refinement loop.
+- No production implementation or automated acceptance receipt was regenerated.

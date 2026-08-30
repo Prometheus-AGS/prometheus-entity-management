@@ -19,8 +19,9 @@ graph access, A2UI 1.0-RC React/Flutter compatibility, and AG-UI 0.0.59
 activity support. `3.0.0` shipped with an
 unresolved pnpm `workspace:` protocol in its manifests and is deprecated; `3.0.1`
 and `3.0.2` were corrective republications. `3.0.4` was published with stale
-build artifacts and is deprecated in favor of `3.1.0`. Flutter is public on pub.dev as
-`entity_graph_flutter@3.0.1`; React and A2UI React remain at npm `3.1.0`.
+build artifacts and is deprecated in favor of `3.1.0`. Flutter `3.0.2` adds the
+optional controller and official DevTools companion; React and A2UI React remain
+at npm `3.1.0`.
 The production documentation is available at
 [prometheus-ags.github.io/prometheus-entity-management](https://prometheus-ags.github.io/prometheus-entity-management/).
 
@@ -159,7 +160,7 @@ hydration so server markup remains unchanged. See the
 Install the public Flutter package from pub.dev:
 
 ```bash
-flutter pub add entity_graph_flutter:^3.0.1
+flutter pub add entity_graph_flutter:^3.0.2
 ```
 
 <!-- BEGIN GENERATED:NATIVE_RELEASES -->
@@ -179,12 +180,11 @@ example uses generated Riverpod families, optimistic/offline CRUD,
 relationships, realtime invalidation, policy-gated GenUI, responsive layouts,
 and an optional FFI transport.
 
-The repository source also implements an optional, metadata-first Flutter
-DevTools controller and store-isolated VM-service bridge. It was added after
-the published `3.0.1` archive and will ship in the next Flutter package release;
-do not import `package:entity_graph_flutter/devtools.dart` from pub.dev `3.0.1`.
-The assembled controller gate passes, while the separate official Flutter
-DevTools extension UI remains a later phase change.
+Flutter `3.0.2` ships an optional, metadata-first DevTools controller,
+store-isolated VM-service bridge, and official responsive DevTools package
+extension. Import `package:entity_graph_flutter/devtools.dart` only from a
+debug bootstrap; the ordinary package entry and product-mode builds remain
+free of the debugging surface.
 
 ## Frameworks, transports, and platforms
 
@@ -268,7 +268,7 @@ paths, and token-shaped content.
 | pnpm | `>=10.33.0 <12` | pnpm 10.33.0 is pinned; pnpm 11 consumer workspaces are supported |
 | React | 19.x | vanilla core remains React-free |
 | Next.js | App Router / 16.x example | one graph per server request |
-| Flutter | 3.44.8 | `entity_graph_flutter@3.0.1`; Riverpod 3 generated providers; A2UI 1.0-RC compatibility via GenUI 0.10.2 |
+| Flutter | 3.44.8+ | `entity_graph_flutter@3.0.2`; Riverpod 3 generated providers; official DevTools companion; A2UI 1.0-RC compatibility via GenUI 0.10.2 |
 | Tauri | 2.x | shared desktop/mobile application and native plugin |
 | npm module formats | ESM + CommonJS + loader-specific declarations | verified from packed tarballs |
 

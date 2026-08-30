@@ -1,0 +1,5 @@
+name: entity_graph_flutter
+issueTracker: https://github.com/Prometheus-AGS/prometheus-entity-management/issues
+version: 3.0.2
+materialIconCodePoint: "0xe335"
+requiresConnection: true

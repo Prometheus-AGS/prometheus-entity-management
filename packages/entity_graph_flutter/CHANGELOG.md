@@ -1,5 +1,18 @@
 # Changelog
 
+## 3.0.2
+
+- Add the optional store-scoped DevTools controller, bounded semantic history,
+  entity/view/relationship inspection, preview/restore, and stable-cursor time
+  travel without importing DevTools from the ordinary package entry.
+- Add the versioned, store-isolated VM-service bridge with metadata-only values
+  by default and host-owned redaction when values are explicitly included.
+- Ship the official Flutter DevTools package companion with responsive overview,
+  entity, view/relationship, and activity workspaces plus explicit connection
+  states.
+- Retain A2UI 1.0-RC input compatibility through the validated GenUI 0.10.2
+  renderer boundary.
+
 ## 3.0.1
 
 - Refresh the public package guide with the verified pub.dev installation path,
