@@ -2196,3 +2196,17 @@
   prior Documentation workflow deployed and certified routes, search,
   accessibility, visuals, and mobile Lighthouse on GitHub Pages. Sovereign sync
   was not touched.
+
+## 2026-08-30 — DevTools skills-ledger release correction
+
+- Remote CI exposed three React `./devtools` exports absent from the canonical
+  skills ledger: `ENTITY_GRAPH_DEVTOOLS_STYLES`,
+  `EntityGraphDevtoolsRemoteProvider`, and
+  `createRemoteEntityGraphInspectorModelStore`. The ledger now matches all 24
+  runtime exports.
+- The same gate exposed a stale Flutter DevTools publication marker. The
+  generated ledger now records the published `entity_graph_flutter@3.0.5`
+  archive; its 104 declarations and the root library's 93 declarations were
+  unchanged.
+- The complete cross-package skills/export gate passes. Sovereign sync was not
+  touched.
