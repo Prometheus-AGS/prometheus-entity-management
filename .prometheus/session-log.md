@@ -1932,3 +1932,21 @@
   test, or build ran; full assembled integration remains task 8.
 - The local signed KBD runtime remains authoritative. Optional sovereign-sync
   sharing remains intentionally disabled and was not changed.
+
+## 2026-08-30 — Flutter controller task 3/9
+
+- Added a weak, per-`EntityGraph` DevTools controller slot plus the public
+  `EntityGraphDevtoolsBinding.attach` lifecycle through the optional Dart
+  DevTools entry.
+- Enabled attachments share one controller and increment one reference;
+  disabled attachments are inert; each detach is idempotent; and only the last
+  detach emits disposal, clears tooling listeners, and removes the live entry.
+- Added stable generated graph identities, non-retaining active-controller
+  lookup, and replayable protocol-v1 `attached`/`disposed` lifecycle records.
+- Development-tooling listeners are isolated at the actual tool boundary so
+  an inspector exception cannot interrupt graph behavior. Lifecycle records
+  contain metadata only and retain no entity values.
+- Formatter parsing, static lifecycle/source assertions, optional-root
+  exclusion, and diff whitespace checks passed. No analyzer, compiler, test,
+  or build ran; assembled integration remains task 8.
+- Optional sovereign-sync sharing was not enabled or changed.

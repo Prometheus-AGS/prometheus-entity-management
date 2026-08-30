@@ -5,4 +5,5 @@
 /// entry remains free of DevTools API reachability.
 library;
 
+export 'src/devtools/controller.dart';
 export 'src/devtools/protocol.dart';
