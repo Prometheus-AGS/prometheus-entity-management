@@ -1,6 +1,6 @@
 {
   "artifact": "v3-devtools-react-inspector-archive-qa",
-  "validatedAt": "2026-08-30T00:04:32Z",
+  "validatedAt": "2026-08-30T03:06:41Z",
   "status": "blocked",
   "constraintsSatisfied": 5,
   "constraintsTotal": 6,
@@ -33,16 +33,16 @@
     {
       "id": "formative-usability",
       "status": "blocked",
-      "evidence": "No retained 12-developer participant protocol/results were found. Automated browser evidence does not satisfy this human gate."
+      "evidence": "The retained study protocol, masked fixture, evaluator, and zero-participant report are ready; no authentic participant result exists. Automated browser evidence does not satisfy this human gate."
     }
   ],
   "automatedGate": {
     "status": "pass",
-    "sourceCommit": "47c017ba91e6f3924eed62b46fc9d4c912b56825",
+    "sourceCommit": "cbb39460813b44110dfd5984f10be5abad26d59f",
     "dirtyTaskFiles": false,
-    "scenarios": "5/5",
-    "gateVersion": "v3-devtools-react-inspector/1",
-    "receiptSha256": "8c28a09d3809275ca426af408c9f3d27158beb5ed08f154800bb77539888a9d3"
+    "scenarios": "6/6",
+    "gateVersion": "v3-devtools-react-inspector/2",
+    "receiptSha256": "f277c4d0822dd86f36dbc919da998efa40417698214c81ac7c2433ae865337ed"
   },
   "isolatedReview": {
     "status": "pass",
@@ -54,4 +54,3 @@
     "sycophancyScore": 0.0
   }
 }
-

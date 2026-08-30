@@ -2093,3 +2093,11 @@
 - React implementation remains complete, but canonical Task 12 and Artifact
   Refiner certification remain open. Phase implementation remains 5/9 and
   project implementation remains 37/63. Sovereign sync was not touched.
+- The first refreshed assembled run exposed an evidence assertion that expected
+  the latest causal event to summarize all registered views. The entity detail,
+  not a single membership event, owns that complete membership answer; the gate
+  now asserts all three concrete registered view IDs there.
+- The corrected version-2 packed Vite/Next/Chromium gate passed 6/6 scenarios
+  at clean commit `cbb39460813b44110dfd5984f10be5abad26d59f`.
+  Search p95 was 16.8 ms, preloaded open p95 12.7 ms, no inspector-attributable
+  task exceeded 50 ms, and retention remained 500 events.

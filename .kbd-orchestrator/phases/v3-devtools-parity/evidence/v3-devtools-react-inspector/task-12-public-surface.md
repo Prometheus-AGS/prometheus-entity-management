@@ -50,6 +50,10 @@ use a different package ledger.
 - `pnpm run devtools:study:check` passes the study-kit readiness contract.
 - `pnpm run devtools:study:evaluate` truthfully exits blocked with 0/12
   participants and writes `usability-study/evaluation-report.json`.
+- The refreshed `v3-devtools-react-inspector/2` packed
+  Vite/Next/Chromium acceptance gate passes 6/6 scenarios at clean source
+  commit `cbb39460813b44110dfd5984f10be5abad26d59f`; its study-fixture lane
+  records `countsAsParticipant: false`.
 - Automated browser evidence remains excluded from the participant count. Task
   12 and Artifact Refiner convergence remain open until authentic results pass
   the accepted 10-of-12 and per-cohort median thresholds.

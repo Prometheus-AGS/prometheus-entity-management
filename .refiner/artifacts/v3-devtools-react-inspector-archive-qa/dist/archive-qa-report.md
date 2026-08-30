@@ -20,8 +20,11 @@ formative study with 12 developers, and no participant results exist.
 - Keyboard, responsive, and screen-reader paths pass. Axe reports no serious
   or critical violation in the assembled workflow.
 - The versioned load gate produced 5,000 semantic publications on its 500/s
-  schedule. Search p95 was 14 ms, preloaded-open p95 11.7 ms, no
+  schedule. Search p95 was 16.8 ms, preloaded-open p95 12.7 ms, no
   inspector-attributable task exceeded 50 ms, and retention remained 500.
+- The packed study surface masks host answers while retaining the seeded dirty
+  entity and three registered views. This automated readiness lane explicitly
+  counts as zero participants.
 - Runtime ledgers, skills, generated API references, README files, and
   Docusaurus agree that these entries are repository/unreleased after npm
   3.0.5 and require a future minor release.
@@ -54,3 +57,6 @@ protocol, privacy-limited participant schema/template, named recruitment owner,
 and deterministic non-cherry-picking evaluator. Study-kit readiness passes, but
 the generated evaluation report records 0 participants. No recruitment message
 was sent by the coding agent and no automated run was counted as a developer.
+
+The refreshed `v3-devtools-react-inspector/2` assembled gate passed 6/6
+scenarios at clean source commit `cbb39460813b44110dfd5984f10be5abad26d59f`.

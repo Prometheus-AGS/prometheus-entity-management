@@ -80,3 +80,7 @@
   participants, so the formative-usability constraint remains unsatisfied.
 - The refinement iteration cap is exhausted on an external human-evidence gate;
   neither Artifact Refiner convergence nor KBD archive is claimed.
+- The refreshed version-2 packed Vite/Next/Chromium gate passed 6/6 scenarios
+  at clean commit `cbb39460813b44110dfd5984f10be5abad26d59f`, including
+  the masked study fixture. Search p95 was 16.8 ms, preloaded open p95 was
+  12.7 ms, no inspector task exceeded 50 ms, and retention remained 500.

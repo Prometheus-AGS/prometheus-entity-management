@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "gateVersion": "v3-devtools-react-inspector/1",
-  "gateStartedAt": "2026-08-30T00:00:39.245Z",
-  "generatedAt": "2026-08-30T00:01:23.128Z",
+  "gateVersion": "v3-devtools-react-inspector/2",
+  "gateStartedAt": "2026-08-30T03:05:24.280Z",
+  "generatedAt": "2026-08-30T03:06:05.679Z",
   "boundary": "packed-vite-next-browser-acceptance",
   "source": {
-    "commit": "47c017ba91e6f3924eed62b46fc9d4c912b56825",
+    "commit": "cbb39460813b44110dfd5984f10be5abad26d59f",
     "dirtyTaskFiles": false
   },
   "thresholdSnapshot": {
@@ -21,7 +21,7 @@
     "core": {
       "build": "pass",
       "pack": "pass",
-      "sha256": "174a66221bafc4dd6162982f9783f85b4832a182b0a637afb9c7ab8a3c7c02d8"
+      "sha256": "60136c2fe9bed81711ad77ecf5c3620d01a204a06bc6fd340d4723c7c6105276"
     },
     "react": {
       "build": "pass",
@@ -41,9 +41,9 @@
     "status": "pass",
     "receipt": {
       "schemaVersion": 1,
-      "gateVersion": "v3-devtools-react-inspector/1",
+      "gateVersion": "v3-devtools-react-inspector/2",
       "change": "v3-devtools-react-inspector",
-      "recordedAt": "2026-08-30T00:01:22.736Z",
+      "recordedAt": "2026-08-30T03:06:05.332Z",
       "status": "pass",
       "evidenceKind": "packed-vite-next-development-production-browser",
       "countsAsPackedPackageEvidence": true,
@@ -72,6 +72,15 @@
             "viteAutoEntryVisible": true,
             "nextPostHydrationHostVisible": true,
             "nextHydrationErrors": 0
+          }
+        },
+        "human-study-fixture-readiness": {
+          "status": "pass",
+          "proof": {
+            "hostAnswersMasked": true,
+            "dirtyEntitySeeded": "Order/o-1042",
+            "registeredViewsSeeded": 3,
+            "countsAsParticipant": false
           }
         },
         "hide-restore-layout-accessibility": {
@@ -131,10 +140,10 @@
               "memoryGiB": 32
             },
             "emittedEvents": 5000,
-            "durationMs": 10025.10000000149,
-            "achievedEventsPerSecond": 498.7481421630963,
-            "searchLatencyP95Ms": 14,
-            "preloadedPanelOpenP95Ms": 11.699999999254942,
+            "durationMs": 10027.60000000149,
+            "achievedEventsPerSecond": 498.623798316572,
+            "searchLatencyP95Ms": 16.799999997019768,
+            "preloadedPanelOpenP95Ms": 12.699999995529652,
             "inspectorLongTasksOver50Ms": 0,
             "retainedEvents": 500,
             "thresholds": {

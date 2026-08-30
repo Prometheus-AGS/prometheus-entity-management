@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "gateVersion": "v3-devtools-react-inspector/1",
+  "gateVersion": "v3-devtools-react-inspector/2",
   "change": "v3-devtools-react-inspector",
-  "recordedAt": "2026-08-30T00:01:22.736Z",
+  "recordedAt": "2026-08-30T03:06:05.332Z",
   "status": "pass",
   "evidenceKind": "packed-vite-next-development-production-browser",
   "countsAsPackedPackageEvidence": true,
@@ -31,6 +31,15 @@
         "viteAutoEntryVisible": true,
         "nextPostHydrationHostVisible": true,
         "nextHydrationErrors": 0
+      }
+    },
+    "human-study-fixture-readiness": {
+      "status": "pass",
+      "proof": {
+        "hostAnswersMasked": true,
+        "dirtyEntitySeeded": "Order/o-1042",
+        "registeredViewsSeeded": 3,
+        "countsAsParticipant": false
       }
     },
     "hide-restore-layout-accessibility": {
@@ -90,10 +99,10 @@
           "memoryGiB": 32
         },
         "emittedEvents": 5000,
-        "durationMs": 10025.10000000149,
-        "achievedEventsPerSecond": 498.7481421630963,
-        "searchLatencyP95Ms": 14,
-        "preloadedPanelOpenP95Ms": 11.699999999254942,
+        "durationMs": 10027.60000000149,
+        "achievedEventsPerSecond": 498.623798316572,
+        "searchLatencyP95Ms": 16.799999997019768,
+        "preloadedPanelOpenP95Ms": 12.699999995529652,
         "inspectorLongTasksOver50Ms": 0,
         "retainedEvents": 500,
         "thresholds": {

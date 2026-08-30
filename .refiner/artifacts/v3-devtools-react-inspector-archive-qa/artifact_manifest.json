@@ -1,6 +1,6 @@
 {
   "artifact_type": "ui",
-  "generated_at": "2026-08-30T00:04:32Z",
+  "generated_at": "2026-08-30T03:06:41Z",
   "variants": [
     {
       "name": "archive-qa-report",
@@ -43,7 +43,7 @@
     "has_request_failures": false,
     "notes": [
       "Screenshots and Playwright traces were captured from the complete packed Vite/Next/Chromium integration runtime; that temporary packed runtime is intentionally not preserved as a standalone HTML preview.",
-      "Five automated blocking constraints pass; formative-usability remains blocked pending retained results from 12 developers."
+      "Six assembled browser scenarios and five automated blocking constraints pass; formative-usability remains blocked pending retained results from 12 developers."
     ]
   }
 }
