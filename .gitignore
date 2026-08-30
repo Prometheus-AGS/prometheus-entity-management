@@ -102,6 +102,8 @@ packages/entity-graph-tauri/rust-plugin/target/
 **/.dart_tool/
 build/
 **/build/
+!packages/entity_graph_flutter/extension/devtools/build/
+!packages/entity_graph_flutter/extension/devtools/build/**
 .flutter-plugins
 .flutter-plugins-dependencies
 

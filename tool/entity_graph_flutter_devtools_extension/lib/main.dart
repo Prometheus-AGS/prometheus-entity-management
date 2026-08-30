@@ -55,6 +55,8 @@ class _InspectorPageState extends State<InspectorPage> {
   List<Object?> relationships = const [];
   List<Object?> events = const [];
   final previewIds = <String, String>{};
+  String? actionError;
+  bool actionBusy = false;
   late final String _requestPrefix =
       '${DateTime.now().microsecondsSinceEpoch}-${Random.secure().nextInt(1 << 32)}';
   int _requestSequence = 0;
@@ -174,71 +176,114 @@ class _InspectorPageState extends State<InspectorPage> {
     final id = entity['id'];
     if (type is! String || id is! String) return;
     final controller = TextEditingController(text: '{}');
+    String? dialogError;
     final patch = await showDialog<Map<String, Object?>>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Preview $type:$id'),
-        content: TextField(
-          controller: controller,
-          autofocus: true,
-          maxLines: 8,
-          decoration: const InputDecoration(
-            labelText: 'Local JSON patch',
-            helperText: 'Preview only; this does not commit to a server.',
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: Text('Preview $type:$id'),
+          content: TextField(
+            controller: controller,
+            autofocus: true,
+            maxLines: 8,
+            decoration: InputDecoration(
+              labelText: 'Local JSON patch',
+              helperText: 'Preview only; this does not commit to a server.',
+              errorText: dialogError,
+            ),
           ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            FilledButton(
+              onPressed: () {
+                try {
+                  final decoded = jsonDecode(controller.text);
+                  if (decoded is! Map) {
+                    throw const FormatException('Patch must be a JSON object');
+                  }
+                  Navigator.pop(context, decoded.cast<String, Object?>());
+                } on FormatException catch (caught) {
+                  setDialogState(() => dialogError = caught.message);
+                }
+              },
+              child: const Text('Apply preview'),
+            ),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            onPressed: () {
-              final decoded = jsonDecode(controller.text);
-              if (decoded is! Map) {
-                throw const FormatException('Patch must be a JSON object');
-              }
-              Navigator.pop(context, decoded.cast<String, Object?>());
-            },
-            child: const Text('Apply preview'),
-          ),
-        ],
       ),
     );
     controller.dispose();
     if (patch == null) return;
-    final receipt = await _command('preview-entity-patch', {
-      'type': type,
-      'id': id,
-      'patch': patch,
+    await _runAction(() async {
+      final receipt = await _command('preview-entity-patch', {
+        'type': type,
+        'id': id,
+        'patch': patch,
+      });
+      final previewId = receipt['previewId'];
+      if (previewId is String) {
+        previewIds[_previewKey(storeId!, type, id)] = previewId;
+      }
+      await _refresh();
     });
-    final previewId = receipt['previewId'];
-    if (previewId is String) previewIds['$type:$id'] = previewId;
-    await _refresh();
   }
 
-  Future<void> _restoreEntity(Map<Object?, Object?> entity) async {
-    final key = '${entity['type']}:${entity['id']}';
-    final previewId = previewIds[key];
-    if (previewId == null) return;
-    await _command('restore-entity-preview', {'previewId': previewId});
-    previewIds.remove(key);
-    await _refresh();
-  }
+  String _previewKey(String selectedStoreId, String type, String id) =>
+      '$selectedStoreId:$type:$id';
 
-  Future<void> _rewind(Object? event) async {
+  int? _snapshotCursor(Object? event) {
     final payload = event is Map ? event['payload'] : null;
     final snapshot = payload is Map ? payload['snapshot'] : null;
     final cursor = snapshot is Map ? snapshot['cursor'] : null;
-    if (cursor is! int) return;
-    await _command('rewind', {'cursor': cursor});
-    await _refresh();
+    return cursor is int ? cursor : null;
   }
 
-  Future<void> _returnLive() async {
+  Future<void> _runAction(Future<void> Function() action) async {
+    if (actionBusy) return;
+    setState(() {
+      actionBusy = true;
+      actionError = null;
+    });
+    try {
+      await action();
+    } catch (caught) {
+      if (mounted) setState(() => actionError = '$caught');
+    } finally {
+      if (mounted) setState(() => actionBusy = false);
+    }
+  }
+
+  Future<void> _restoreEntity(Map<Object?, Object?> entity) async {
+    final selected = storeId;
+    final type = entity['type'];
+    final id = entity['id'];
+    if (selected == null || type is! String || id is! String) return;
+    final key = _previewKey(selected, type, id);
+    final previewId = previewIds[key];
+    if (previewId == null) return;
+    await _runAction(() async {
+      await _command('restore-entity-preview', {'previewId': previewId});
+      previewIds.remove(key);
+      await _refresh();
+    });
+  }
+
+  Future<void> _rewind(Object? event) async {
+    final cursor = _snapshotCursor(event);
+    if (cursor == null) return;
+    await _runAction(() async {
+      await _command('rewind', {'cursor': cursor});
+      await _refresh();
+    });
+  }
+
+  Future<void> _returnLive() => _runAction(() async {
     await _command('return-to-live');
     await _refresh();
-  }
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -248,9 +293,17 @@ class _InspectorPageState extends State<InspectorPage> {
         actions: [
           if (connection == _ConnectionState.ready)
             TextButton.icon(
-              onPressed: _returnLive,
+              onPressed: actionBusy ? null : _returnLive,
               icon: const Icon(Icons.play_arrow),
               label: const Text('Live'),
+            ),
+          if (actionBusy)
+            const Padding(
+              padding: EdgeInsets.all(14),
+              child: SizedBox.square(
+                dimension: 18,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
             ),
           IconButton(
             onPressed: _refresh,
@@ -321,16 +374,22 @@ class _InspectorPageState extends State<InspectorPage> {
         records: entities,
         actions: (record) {
           if (record is! Map) return const [];
-          final key = '${record['type']}:${record['id']}';
+          final type = record['type'];
+          final id = record['id'];
+          if (type is! String || id is! String) return const [];
+          final key = _previewKey(storeId!, type, id);
+          final hasPreview = previewIds.containsKey(key);
           return [
             TextButton.icon(
-              onPressed: () => _previewEntity(record),
+              onPressed: actionBusy || hasPreview
+                  ? null
+                  : () => _previewEntity(record),
               icon: const Icon(Icons.edit_outlined),
               label: const Text('Preview'),
             ),
-            if (previewIds.containsKey(key))
+            if (hasPreview)
               TextButton.icon(
-                onPressed: () => _restoreEntity(record),
+                onPressed: actionBusy ? null : () => _restoreEntity(record),
                 icon: const Icon(Icons.restore),
                 label: const Text('Restore'),
               ),
@@ -344,21 +403,38 @@ class _InspectorPageState extends State<InspectorPage> {
       _ => _RecordList(
         title: 'Entity activity',
         records: events.reversed.toList(),
-        actions: (record) => [
-          TextButton.icon(
-            onPressed: () => _rewind(record),
-            icon: const Icon(Icons.history),
-            label: const Text('Rewind'),
-          ),
-        ],
+        actions: (record) => _snapshotCursor(record) == null
+            ? const []
+            : [
+                TextButton.icon(
+                  onPressed: actionBusy ? null : () => _rewind(record),
+                  icon: const Icon(Icons.history),
+                  label: const Text('Rewind'),
+                ),
+              ],
       ),
     };
+    final resolvedContent = Column(
+      children: [
+        if (actionError != null)
+          MaterialBanner(
+            content: Text(actionError!),
+            actions: [
+              TextButton(
+                onPressed: () => setState(() => actionError = null),
+                child: const Text('Dismiss'),
+              ),
+            ],
+          ),
+        Expanded(child: content),
+      ],
+    );
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth < 720) {
           return Column(
             children: [
-              Expanded(child: content),
+              Expanded(child: resolvedContent),
               NavigationBar(
                 selectedIndex: section,
                 onDestinationSelected: (value) =>
@@ -384,7 +460,7 @@ class _InspectorPageState extends State<InspectorPage> {
                   .toList(),
             ),
             const VerticalDivider(width: 1),
-            Expanded(child: content),
+            Expanded(child: resolvedContent),
           ],
         );
       },

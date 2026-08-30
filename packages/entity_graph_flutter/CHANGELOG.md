@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.0.3
+
+- Scope preview receipts by graph store and prevent a second preview from
+  hiding the receipt required to restore the first preview.
+- Validate preview JSON in the dialog, surface debugger action failures, and
+  show rewind only when an activity record has a retained snapshot cursor.
+- Correlate every concurrent VM-service response with a collision-resistant,
+  monotonically sequenced request ID.
+
 ## 3.0.2
 
 - Add the optional store-scoped DevTools controller, bounded semantic history,
