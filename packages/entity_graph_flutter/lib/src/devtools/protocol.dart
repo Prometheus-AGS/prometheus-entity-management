@@ -1579,8 +1579,8 @@ final class EntityGraphDevtoolsPreviewAppliedReceipt {
   final String previewId;
   final EntityGraphDevtoolsViewMembership entity;
   final Object? priorPatch;
-  final Object previewPatch;
-  final Object appliedPatch;
+  final Object? previewPatch;
+  final Object? appliedPatch;
   final int baselineRevision;
   final int previewRevision;
   final String appliedAt;

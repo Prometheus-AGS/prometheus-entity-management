@@ -199,6 +199,44 @@ final class EntityGraphSnapshot {
     required this.listTypes,
   });
 
+  /// Create a snapshot from already validated graph data.
+  factory EntityGraphSnapshot.fromData({
+    required Map<String, Map<String, Map<String, Object?>>> entities,
+    required Map<String, Map<String, Map<String, Object?>>> patches,
+    required Map<String, EntityState> entityStates,
+    required Map<String, EntitySyncMetadata> syncMetadata,
+    required Map<String, ListState> lists,
+    Map<String, String> listTypes = const {},
+  }) => EntityGraphSnapshot._(
+    entities: Map.unmodifiable({
+      for (final type in entities.entries)
+        type.key: Map.unmodifiable({
+          for (final entity in type.value.entries)
+            entity.key: Map.unmodifiable({
+              for (final field in entity.value.entries)
+                field.key: EntityGraph._copySnapshotValue(field.value),
+            }),
+        }),
+    }),
+    patches: Map.unmodifiable({
+      for (final type in patches.entries)
+        type.key: Map.unmodifiable({
+          for (final patch in type.value.entries)
+            patch.key: Map.unmodifiable({
+              for (final field in patch.value.entries)
+                field.key: EntityGraph._copySnapshotValue(field.value),
+            }),
+        }),
+    }),
+    entityStates: Map.unmodifiable(entityStates),
+    syncMetadata: Map.unmodifiable(syncMetadata),
+    lists: Map.unmodifiable({
+      for (final entry in lists.entries)
+        entry.key: EntityGraph._copyListState(entry.value),
+    }),
+    listTypes: Map.unmodifiable(listTypes),
+  );
+
   final Map<String, Map<String, Map<String, Object?>>> entities;
   final Map<String, Map<String, Map<String, Object?>>> patches;
   final Map<String, EntityState> entityStates;
@@ -445,6 +483,53 @@ class EntityGraph {
     }),
     listTypes: Map.unmodifiable(_listTypes),
   );
+
+  /// Capture the complete graph-owned data needed for local DevTools rewind.
+  ///
+  /// The returned value is immutable and remains local to the process unless
+  /// an explicitly attached DevTools controller serializes it under its host
+  /// value policy.
+  EntityGraphSnapshot captureSnapshot() => _snapshot();
+
+  /// Restore one graph-owned snapshot through the normal publication boundary.
+  void restoreSnapshot(EntityGraphSnapshot snapshot) {
+    _write(() {
+      _entities
+        ..clear()
+        ..addAll({
+          for (final type in snapshot.entities.entries)
+            type.key: {
+              for (final entity in type.value.entries)
+                entity.key: Map<String, Object?>.of(entity.value),
+            },
+        });
+      _patches
+        ..clear()
+        ..addAll({
+          for (final type in snapshot.patches.entries)
+            type.key: {
+              for (final patch in type.value.entries)
+                patch.key: Map<String, Object?>.of(patch.value),
+            },
+        });
+      _entityStates
+        ..clear()
+        ..addAll(snapshot.entityStates);
+      _syncMetadata
+        ..clear()
+        ..addAll(snapshot.syncMetadata);
+      _lists
+        ..clear()
+        ..addAll({
+          for (final entry in snapshot.lists.entries)
+            entry.key: _copyListState(entry.value),
+        });
+      _listTypes
+        ..clear()
+        ..addAll(snapshot.listTypes);
+      _notifyReset();
+    });
+  }
 
   static ListState _copyListState(ListState state) => ListState(
     ids: List.unmodifiable(state.ids),
@@ -835,6 +920,24 @@ class EntityGraph {
   void clearPatch(String type, String id) {
     _write(() {
       _patches[type]?.remove(id);
+      _notifyEntity(type, id);
+    });
+  }
+
+  /// Replace the exact local patch for one entity in a single publication.
+  ///
+  /// This is used by conflict-safe DevTools preview restoration so returning
+  /// to the prior patch cannot expose an intermediate cleared state.
+  void replaceEntityPatch(String type, String id, Map<String, Object?>? patch) {
+    _write(() {
+      if (patch == null || patch.isEmpty) {
+        final bucket = _patches[type];
+        bucket?.remove(id);
+        if (bucket != null && bucket.isEmpty) _patches.remove(type);
+      } else {
+        _patches.putIfAbsent(type, () => {});
+        _patches[type]![id] = Map<String, Object?>.of(patch);
+      }
       _notifyEntity(type, id);
     });
   }

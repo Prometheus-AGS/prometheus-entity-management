@@ -1970,3 +1970,24 @@
   assertions, root-layering checks, and diff whitespace checks passed. No
   analyzer, compiler, test, or build ran; full integration remains task 8.
 - Optional sovereign-sync sharing was not enabled or changed.
+
+## 2026-08-30 — Flutter controller task 5/9
+
+- Added immutable graph capture/restore and one-publication exact patch
+  replacement through the existing shared Dart graph-write boundary.
+- Implemented protocol-v1 semantic projections, counts, entity revisions,
+  canonical/patch/merged dirty inspection, registered-view/list statistics,
+  optional IR relationship projection, and affected entity/view causality.
+- Added per-graph bounded event and snapshot histories with metadata-first
+  redaction, per-event truncation, stable cursors, expired reasons, rewind,
+  exact return-to-live, and live-before-mutation event ordering.
+- Added local preview receipts with exact value-revision conflict refusal, plus
+  inert store/version/shape/count/byte-validated history import and one-shot
+  confirmation.
+- Recursively froze imported entity data at the actual tooling trust boundary;
+  metadata-only remains the default and host redaction precedes history or
+  inspection exposure.
+- Formatter/parser, static source/layering assertions, fixture equality/JSON,
+  SHA-256, and scoped diff whitespace checks passed. No analyzer, compiler,
+  test, or build ran; the assembled integration gate remains task 8.
+- Optional sovereign-sync sharing was not enabled or changed.

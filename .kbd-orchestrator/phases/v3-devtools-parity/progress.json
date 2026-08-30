@@ -1,16 +1,16 @@
 {
   "schemaVersion": "2",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 407,
-  "derivedRevision": 407,
+  "sourceRevision": 412,
+  "derivedRevision": 412,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 407
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 412
   },
   "conflictCount": 0,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
   "parentPhase": null,
-  "last_updated": "2026-08-30T00:44:20.892353Z",
+  "last_updated": "2026-08-30T01:00:59.919697Z",
   "last_updated_by": "kbd-runtime",
   "changes_total": 9,
   "changes_completed": 4,
@@ -90,9 +90,9 @@
       "status": "IN_PROGRESS",
       "implementation_status": "IN_PROGRESS",
       "tasks_total": 9,
-      "tasks_done": 4,
-      "last_task_completed": "Instrument the shared Dart graph-write boundary and register Riverpod/list/view lifecycles without duplicate events.",
-      "next_task_pending": "Implement equivalent projections, local conflict-safe preview/restore, per-graph history, rewind, and return-to-live.",
+      "tasks_done": 5,
+      "last_task_completed": "Implement equivalent projections, local conflict-safe preview/restore, per-graph history, rewind, and return-to-live.",
+      "next_task_pending": "Register bounded/versioned VM service methods and events with strict command/store/value-policy validation.",
       "blockers": []
     },
     {
