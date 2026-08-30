@@ -289,6 +289,7 @@ const REEXPORT_SOURCES = Object.freeze({
     ...Object.fromEntries(timeTravelNames.map((name) => [name, TIME_TRAVEL_SOURCE])),
     EntityGraphDevtools: "packages/entity-graph-react/src/devtools/host.tsx",
     EntityGraphDevtoolsProvider: "packages/entity-graph-react/src/devtools/provider.tsx",
+    EntityGraphDevtoolsRemoteProvider: "packages/entity-graph-react/src/devtools/provider.tsx",
     EntityGraphInspectorShell: "packages/entity-graph-react/src/devtools/inspector-shell.tsx",
     preloadEntityGraphDevtools: "packages/entity-graph-react/src/devtools/host.tsx",
     useEntityGraphDevtools: "packages/entity-graph-react/src/devtools/provider.tsx",

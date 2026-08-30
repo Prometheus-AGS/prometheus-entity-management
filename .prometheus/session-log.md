@@ -2210,3 +2210,9 @@
   unchanged.
 - The complete cross-package skills/export gate passes. Sovereign sync was not
   touched.
+- The first ledger-corrected Node 24 build then exposed a TypeDoc named-reexport
+  gap for `EntityGraphDevtoolsRemoteProvider`: the public component already had
+  source JSDoc, but the strict generator did not recover it through the DevTools
+  barrel. Added the source mapping; the exact `--skip-artifacts` generator path
+  and the complete secondary Docusaurus production build pass without generated
+  API drift. Sovereign sync was not touched.
