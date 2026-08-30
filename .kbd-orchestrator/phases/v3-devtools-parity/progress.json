@@ -1,16 +1,16 @@
 {
   "schemaVersion": "2",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 432,
-  "derivedRevision": 432,
+  "sourceRevision": 436,
+  "derivedRevision": 436,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 432
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 436
   },
   "conflictCount": 0,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
   "parentPhase": null,
-  "last_updated": "2026-08-30T02:49:07.675173Z",
+  "last_updated": "2026-08-30T03:11:17.163875Z",
   "last_updated_by": "kbd-runtime",
   "changes_total": 9,
   "changes_completed": 5,

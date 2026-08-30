@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 432,
-  "derivedRevision": 432,
+  "sourceRevision": 436,
+  "derivedRevision": 436,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 432
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 436
   },
   "conflictCount": 0,
-  "updatedAt": "2026-08-30T02:49:07.675173Z",
+  "updatedAt": "2026-08-30T03:11:17.163875Z",
   "cursor": [
     "v3-devtools-parity"
   ],
@@ -585,7 +585,7 @@
         "type": "phase",
         "id": "v3-devtools-parity",
         "canonicalId": "v3-devtools-parity",
-        "status": "IN_PROGRESS",
+        "status": "BLOCKED",
         "progress": {
           "done": 5,
           "total": 9

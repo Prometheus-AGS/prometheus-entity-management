@@ -43,5 +43,15 @@ Historical signed tasks 2–5 for core observability are not accepted as impleme
 
 ## Blockers and authority gates
 
-- No current implementation blocker is recorded.
+- React inspector implementation is complete, but its certification/archive
+  gate is blocked on the accepted formative study: 12 retained developer
+  sessions, at least 10 unassisted successes, and a sub-10-second median in
+  both first-time and oriented cohorts. The retained report currently contains
+  zero participants. Automated runs do not count.
+- The ordered Chrome change cannot start until the React inspector is archived;
+  KBD records the phase as blocked rather than bypassing the dependency or
+  weakening the UI specification. Task 12 remains `in_progress` because the
+  runtime's task-level `blocked` transition also rewrites the already-complete
+  implementation status; the retained blocker artifact is the certification
+  authority until KBD models that dimension independently.
 - Chrome Web Store submission, npm/pub.dev publication, tag movement, signing, and protected-environment operations require their explicit release task and external authority; this phase does not silently perform them.

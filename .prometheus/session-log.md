@@ -2101,3 +2101,25 @@
   at clean commit `cbb39460813b44110dfd5984f10be5abad26d59f`.
   Search p95 was 16.8 ms, preloaded open p95 12.7 ms, no inspector-attributable
   task exceeded 50 ms, and retention remained 500 events.
+
+## 2026-08-30 — React inspector external certification blocker
+
+- Audited the phase execution dependency contract after completing the study
+  kit. Chrome explicitly requires the React inspector to be archived, and the
+  ordered phase does not permit skipping ahead to the Flutter extension.
+- The retained evaluator still records 0/12 authentic developers. Automation
+  and coding agents do not count, recruitment communication was not authorized,
+  and the UI-spec declares the criterion non-waivable.
+- Recorded the exact unblock procedure and prepared signed KBD task/phase
+  blocked transitions without reopening the completed React implementation
+  counter. Phase implementation remains 5/9 and project implementation 37/63.
+- Sovereign sync was not touched.
+- The task-level blocked transition unexpectedly conflated certification with
+  implementation, changing React implementation to blocked and dropping the
+  counters to 4/9 and 36/63. The runtime rejected a direct blocked-to-complete
+  correction, so Task 12 was returned to `in_progress` before restoring the
+  parent change to `complete`.
+- Signed revision 436 now preserves the intended state: phase `blocked`, React
+  implementation `complete`, Task 12 `in_progress`, phase implementation 5/9,
+  project implementation 37/63, exact next work unchanged. A postmortem records
+  the control-plane modeling defect and prevention rule.
