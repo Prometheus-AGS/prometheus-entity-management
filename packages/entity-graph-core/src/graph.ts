@@ -284,6 +284,23 @@ interface SnapshotCacheEntry {
 
 const snapshotCache = new Map<string, SnapshotCacheEntry>();
 
+/**
+ * Merged-read cache for `readEntity`, mirroring `snapshotCache`'s shape.
+ *
+ * Without it, `readEntity` allocated `{ ...base, ...patch }` on EVERY call
+ * whenever a patch existed — so two consecutive reads of an unchanged entity
+ * returned different references, defeating `useShallow`/memo comparison in
+ * every React consumer and re-rendering subscribers on unrelated store
+ * writes. The identity contract is now: same `base` + same `patch` (by
+ * reference) ⇒ same returned object.
+ */
+interface MergedReadCacheEntry {
+  base: Record<string, unknown>;
+  patch: Record<string, unknown>;
+  merged: Record<string, unknown>;
+}
+const mergedReadCache = new Map<string, MergedReadCacheEntry>();
+
 function readCachedEntitySnapshot<T extends Record<string, unknown>>(
   type: EntityType,
   id: EntityId,
@@ -410,9 +427,16 @@ export function createGraphStore() {
         for (const target of options.lists ?? []) {
           const existing = s.lists[target.key] ?? defaultListState();
           const targetIds = target.ids ?? ids;
+          // Dedupe on BOTH paths. The append arm always deduped; the replace
+          // arm passed fetched ids through verbatim, so a transport whose
+          // backend returned two physical rows for one logical id rendered
+          // the entity twice in every list consumer (observed 2026-09-01:
+          // graph-explorer's rail doubled after a store-level id defect —
+          // the store bug was real, but a list of entity ids must never
+          // contain the same id twice regardless of what a fetch returned).
           const nextIds = target.mode === "append"
             ? Array.from(new Set([...existing.ids, ...targetIds]))
-            : targetIds;
+            : Array.from(new Set(targetIds));
           s.lists[target.key] = {
             ...existing,
             ...(target.meta ?? {}),
@@ -584,9 +608,20 @@ export function createGraphStore() {
       }),
       invalidateType: (type) => { get().invalidateEntity(type); get().invalidateLists(type); },
       readEntity: <T>(type: EntityType, id: EntityId): T | null => {
-        const s = get(); const base = s.entities[type]?.[id]; if (!base) return null;
+        const s = get(); const base = s.entities[type]?.[id];
+        if (!base) { mergedReadCache.delete(ek(type, id)); return null; }
         const patch = s.patches[type]?.[id];
-        return (patch ? { ...base, ...patch } : base) as T;
+        // No patch: the stored object IS the read — already referentially
+        // stable, nothing to cache.
+        if (!patch) return base as T;
+        const key = ek(type, id);
+        const cached = mergedReadCache.get(key);
+        if (cached && cached.base === base && cached.patch === patch) {
+          return cached.merged as T;
+        }
+        const merged = { ...base, ...patch };
+        mergedReadCache.set(key, { base, patch, merged });
+        return merged as T;
       },
       readEntitySnapshot: <T>(type: EntityType, id: EntityId): EntitySnapshot<T & Record<string, unknown>> | null => {
         const s = get();

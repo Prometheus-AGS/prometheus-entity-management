@@ -143,3 +143,32 @@ with safe quoting.
   state before/after.
 - A cancellation command that clears all history is not a safe escape hatch.
   Bind cancellation to the candidate ID and preserve event/snapshot retention.
+
+## 2026-09-01 · Read-identity contract differs per binding — and `useEntities` shipped without a subscription
+
+Found during graph-explorer's architectural review (AR5), fixed same day in
+the React binding; recorded here because the same *class* of defect reads
+differently per binding and the next binding author will face it again.
+
+- **React, `useEntities` (fixed):** `items` was a `useMemo` over
+  `storeApi.getState()` keyed on `listState.ids` — no subscription to entity
+  data, so mutating an entity already in a list did not re-render its
+  consumers. **Under-rendering: a correctness defect.** Fix adopts
+  `useEntityList`'s shape: store-subscribed selector under `useShallow`
+  reading the cached `readEntitySnapshot`.
+- **Core, `readEntity` (fixed):** allocated `{...base, ...patch}` per call
+  whenever a patch existed — unstable identities defeated every shallow
+  comparison downstream. Now cached (same `base` + same `patch` ⇒ same
+  object), mirroring `snapshotCache`.
+- **Core, `ingestFetchedList` (fixed):** the replace path did not dedupe
+  fetched ids (append did). A backend returning two physical rows for one
+  logical id rendered twice in every consumer.
+- **Flutter, `EntityGraph.readEntity`/`readEntitySnapshot` (finding, NO
+  change):** every read allocates a fresh `Map.unmodifiable` — even
+  patchless reads — so identities are never stable across reads. Verified
+  2026-09-01 against `lib/src/graph.dart:579-610`. The failure direction is
+  the OPPOSITE of the React defect: publication-driven rebuilds still fire,
+  so consumers can only over-rebuild, never miss an update. No observed
+  problem, so no change (evidentiary standard); if profiling ever shows
+  rebuild churn on large lists, the fix is the same merged-read cache the TS
+  core now has, invalidated on `base`/`patch` identity.

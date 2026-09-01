@@ -106,7 +106,7 @@ function SuspenseTask({ errorRun }: { errorRun: number }) {
 }
 
 export function ReleaseShowcasePage() {
-  const { state, view, selected, patch, projects, devtools, runOptimistic, reassign } =
+  const { state, view, live, selected, patch, projects, devtools, runOptimistic, reassign } =
     useReleaseShowcase();
   const [errorRun, setErrorRun] = useState(0);
 
@@ -153,6 +153,23 @@ export function ReleaseShowcasePage() {
             <Button asChild variant="link" size="sm">
               <Link to="/tasks">Open full create/edit/delete workspace</Link>
             </Button>
+          </ScenarioCard>
+
+          <ScenarioCard
+            id="example.hooks.use-entities-subscribed"
+            title="useEntities subscribes to entity data"
+            description="The thin 5-field hook. Mutate a task below — these rows repaint from the graph subscription, with no refetch and no remount."
+          >
+            <ul className="space-y-1 text-sm">
+              {live.items.slice(0, 5).map((task) => (
+                <li key={task.id} className="flex justify-between gap-2 rounded bg-muted px-2 py-1">
+                  <span className="font-mono text-xs">{task.id}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {task.title} · <strong>{task.status}</strong>
+                  </span>
+                </li>
+              ))}
+            </ul>
           </ScenarioCard>
 
           <ScenarioCard

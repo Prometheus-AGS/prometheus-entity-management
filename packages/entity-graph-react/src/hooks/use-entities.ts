@@ -20,11 +20,12 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useStore } from "zustand";
+import { useShallow } from "zustand/react/shallow";
 import { EMPTY_LIST_STATE } from "@prometheus-ags/entity-graph-core";
 import { serializeKey, getEngineOptions } from "@prometheus-ags/entity-graph-core";
 import { getEntityTransport } from "@prometheus-ags/entity-graph-core";
 import { TerminalError, TransientError, toEntityError } from "@prometheus-ags/entity-graph-core";
-import type { EntityType } from "@prometheus-ags/entity-graph-core";
+import type { EntityType, GraphState } from "@prometheus-ags/entity-graph-core";
 import type { ListQuery } from "@prometheus-ags/entity-graph-core";
 import type { FilterSpec, SortSpec } from "@prometheus-ags/entity-graph-core";
 import { useGraphStoreApi } from "../graph-store";
@@ -97,13 +98,40 @@ export function useEntities<T extends object>(
     useCallback((s) => s.lists[queryKey] ?? EMPTY_LIST_STATE, [queryKey]),
   );
 
-  // --- resolve entity rows from graph in render ----------------------------
-  const items = useMemo((): T[] => {
-    const state = storeApi.getState();
-    return listState.ids
-      .map((id) => state.readEntity<T>(type, id))
-      .filter((item): item is T => item !== null);
-  }, [listState.ids, storeApi, type]);
+  // --- resolve entity rows from graph, SUBSCRIBED --------------------------
+  //
+  // This was a `useMemo` over `storeApi.getState()` keyed on `listState.ids`
+  // — no subscription to entity DATA, so mutating an entity already in the
+  // list did not re-render (defect recorded 2026-09-01 in graph-explorer's
+  // architectural review; the shipped symptom was a row that updated only on
+  // remount). The fix adopts `useEntityList`'s proven shape (hooks.ts):
+  // a store-subscribed selector under `useShallow`, reading through the
+  // CACHED `readEntitySnapshot` so unchanged rows keep their identity and
+  // `useShallow` can actually cut re-renders. `readEntity` is deliberately
+  // not used here: it allocates a fresh merge per call whenever a patch
+  // exists, which would defeat shallow comparison and re-render every
+  // subscriber on every store write.
+  //
+  // Return-shape note, decided consciously: snapshots carry `$synced`,
+  // `$origin`, `$updatedAt` in addition to the entity fields. That is
+  // additive — property reads through `T` are unchanged — and it makes
+  // `useEntities` agree with `useEntityList` and `useEntityQuery`, which
+  // already return snapshots.
+  const items = useStore(
+    storeApi,
+    useShallow(
+      useCallback(
+        (state: GraphState): T[] => {
+          const ids = state.lists[queryKey]?.ids ?? [];
+          return ids
+            .map((id) => state.readEntitySnapshot<T & Record<string, unknown>>(type, id))
+            .filter((item) => item !== null)
+            .map((item) => item as unknown as T);
+        },
+        [queryKey, type],
+      ),
+    ),
+  );
 
   // --- main fetch effect ---------------------------------------------------
   useEffect(() => {

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo } from "react";
 import {
+  useEntities,
   useEntity,
   useEntityAugment,
   useEntityQuery,
@@ -34,6 +35,11 @@ export function useReleaseShowcase() {
     normalize: normalizeTask,
   });
   const augment = useEntityAugment<Task>("Task", state.selectedTaskId);
+  // The thin 5-field hook, rendered beside the rich view so a mutation's
+  // propagation into BOTH is visible. This is the surface that proves the
+  // 2026-09-01 fix: before it, useEntities did not subscribe to entity data
+  // and a status change here would not repaint until remount.
+  const live = useEntities<Task>("Task");
   const projects = useProjectsList();
   const devtools = useGraphDevTools();
   const { refetch: refetchView, setSearch: setViewSearch } = view;
@@ -76,6 +82,7 @@ export function useReleaseShowcase() {
   return {
     state,
     view,
+    live,
     selected,
     patch: augment.patch,
     projects: projects.items,
