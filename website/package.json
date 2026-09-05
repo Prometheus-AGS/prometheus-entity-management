@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/entity-management-docs",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "description": "Prometheus Entity Management documentation site",
   "scripts": {
@@ -25,7 +25,6 @@
   },
   "dependencies": {
     "@prometheus-ags/entity-graph-core": "workspace:*",
-    "@prometheus-ags/prometheus-entity-management": "workspace:*",
     "@docusaurus/core": "3.10.2",
     "@docusaurus/preset-classic": "3.10.2",
     "@docusaurus/theme-mermaid": "3.10.2",
@@ -36,7 +35,8 @@
     "clsx": "2.1.1",
     "prism-react-renderer": "2.4.1",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "@prometheus-ags/entity-graph-react": "workspace:*"
   },
   "devDependencies": {
     "@docusaurus/faster": "3.10.2",
