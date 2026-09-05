@@ -16,7 +16,7 @@ import {
   startLocalFirstGraph,
   type GraphPersistenceAdapter,
   type LocalFirstGraphRuntime,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import { getBridge } from "../platform";
 import { isTauriHost } from "../platform/bridge";
 

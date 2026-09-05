@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { GraphStore } from "@prometheus-ags/entity-graph-core";
 
 type EntityGraphDevtoolsHost = typeof import(
-  "@prometheus-ags/prometheus-entity-management/devtools"
+  "@prometheus-ags/entity-graph-react/devtools"
 )["EntityGraphDevtools"];
 
 export function NextEntityGraphDevtools({ store }: { store: GraphStore }) {
@@ -13,7 +13,7 @@ export function NextEntityGraphDevtools({ store }: { store: GraphStore }) {
   useEffect(() => {
     if (process.env.NODE_ENV === "production") return;
     let active = true;
-    void import("@prometheus-ags/prometheus-entity-management/devtools").then((module) => {
+    void import("@prometheus-ags/entity-graph-react/devtools").then((module) => {
       if (active) setHost(() => module.EntityGraphDevtools);
     });
     return () => {

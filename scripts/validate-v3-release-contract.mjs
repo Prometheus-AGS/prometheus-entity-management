@@ -348,8 +348,8 @@ export function validateReleaseContract(contract) {
   const artifacts = Array.isArray(contract.artifacts) ? contract.artifacts : [];
   const npmArtifacts = artifacts.filter(({ ecosystem }) => ecosystem === "npm");
   const requiredRegistries = contract.registryScope?.requiredForStable ?? [];
-  if (artifacts.length !== 16) errors.push(`contract must declare exactly 16 artifacts; found ${artifacts.length}`);
-  if (npmArtifacts.length !== 12) errors.push(`contract must declare exactly 12 npm packages; found ${npmArtifacts.length}`);
+  if (artifacts.length !== 17) errors.push(`contract must declare exactly 17 artifacts; found ${artifacts.length}`);
+  if (npmArtifacts.length !== 13) errors.push(`contract must declare exactly 13 npm packages; found ${npmArtifacts.length}`);
 
   for (const id of duplicates(artifacts.map(({ id }) => id))) errors.push(`duplicate artifact id ${id}`);
   for (const coordinate of duplicates(artifacts.map(({ ecosystem, packageName }) => `${ecosystem}:${packageName}`))) {
@@ -366,9 +366,13 @@ export function validateReleaseContract(contract) {
     if (identity.name !== artifact.packageName) {
       errors.push(`${artifact.id}: contract package ${artifact.packageName} differs from manifest ${identity.name}`);
     }
+    // Derived from the contract's own versionPolicy rather than hardcoded, so
+    // a deliberate major bump is a one-line contract edit instead of a hunt
+    // through the validator.
+    const declaredMajor = parse(contract.versionPolicy?.npm?.version ?? "")?.major;
     const version = parse(identity.version ?? "");
-    if (!version || version.major !== 3) {
-      errors.push(`${artifact.id}: manifest version ${identity.version ?? "missing"} is not aligned to major 3`);
+    if (!version || version.major !== declaredMajor) {
+      errors.push(`${artifact.id}: manifest version ${identity.version ?? "missing"} is not aligned to major ${declaredMajor}`);
     }
   }
 

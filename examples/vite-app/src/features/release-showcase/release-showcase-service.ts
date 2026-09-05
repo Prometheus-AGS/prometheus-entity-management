@@ -9,7 +9,7 @@ import {
   startLocalFirstGraph,
   toGraphQLVariables,
   toRestParams,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import type {
   ChangeSet,
   EntityTransport,
@@ -18,7 +18,7 @@ import type {
   LocalFirstGraphRuntime,
   RealtimeAdapter,
   ViewDescriptor,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import {
   createLoroLoopbackNetwork,
   createLoroProvider,

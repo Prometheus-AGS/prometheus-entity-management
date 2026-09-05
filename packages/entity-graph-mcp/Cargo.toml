@@ -1,6 +1,6 @@
 [package]
 name = "entity-graph-mcp"
-version = "3.0.0-alpha.0"
+version = "4.0.0"
 edition = "2021"
 description = "MCP server for the Prometheus entity-graph ecosystem — exposes entity resources and tools over stdio and Streamable HTTP."
 license = "MIT"

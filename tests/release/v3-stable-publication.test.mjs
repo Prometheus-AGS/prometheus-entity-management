@@ -324,7 +324,7 @@ test("stable publication live verification rejects an unpromoted latest tag", as
   const { verifyStablePublicationLive } = await import("../../scripts/verify-stable-publication.mjs");
   const runView = async (packageName, args) => {
     if (args.includes("dist-tags")) {
-      return packageName === "@prometheus-ags/prometheus-entity-management"
+      return packageName === "@prometheus-ags/entity-graph-react"
         ? { latest: "2.2.0" }
         : { latest: LIVE_TARGET };
     }

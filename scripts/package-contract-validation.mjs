@@ -38,11 +38,16 @@ export function validateTarballFileList(publicPackage, files) {
     "README.md",
     "CHANGELOG.md",
     "dist/index.mjs",
-    "dist/index.cjs",
     "dist/index.d.ts",
-    "dist/index.d.cts",
   ]) {
     assert(files.includes(required), `${publicPackage.name}: tarball is missing ${required}`);
+  }
+
+  // ESM-only as of 4.0.0. A stray .cjs or .d.cts means a package escaped the
+  // shared tsup config and is shipping a format the exports map does not
+  // declare — silently unreachable, and a lie in the tarball.
+  for (const cjsArtifact of files.filter((f) => /\.(cjs|d\.cts)$/.test(f))) {
+    assert(false, `${publicPackage.name}: ESM-only, but tarball ships ${cjsArtifact}`);
   }
 
   const forbidden = files.filter(

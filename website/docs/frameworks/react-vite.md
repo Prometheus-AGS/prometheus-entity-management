@@ -19,7 +19,7 @@ Install the published stable `3.2.0` pair:
 
 ```bash
 pnpm add @prometheus-ags/entity-graph-core \
-  @prometheus-ags/prometheus-entity-management \
+  @prometheus-ags/entity-graph-react \
   react@19 react-dom@19
 ```
 

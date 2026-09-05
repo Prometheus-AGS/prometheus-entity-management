@@ -4,7 +4,7 @@
  * Relation schemas mirroring examples/vite-app/src/schema/index.ts so cascade
  * invalidation behaves identically in every 3.0 showcase (design D-1).
  */
-import { registerSchema } from "@prometheus-ags/prometheus-entity-management";
+import { registerSchema } from "@prometheus-ags/entity-graph-react";
 
 export function registerDomainSchemas(): void {
   registerSchema({

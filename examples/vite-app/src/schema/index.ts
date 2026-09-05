@@ -5,7 +5,7 @@
  * Cascade invalidation fires automatically when any entity is mutated
  * via useEntityCRUD — no per-mutation invalidation boilerplate needed.
  */
-import { registerSchema } from "@prometheus-ags/prometheus-entity-management";
+import { registerSchema } from "@prometheus-ags/entity-graph-react";
 
 registerSchema({
   type: "Project",

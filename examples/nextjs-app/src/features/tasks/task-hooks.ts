@@ -3,8 +3,8 @@ import {
   useEntityCRUD,
   useEntityList,
   useEntityMutation,
-} from "@prometheus-ags/prometheus-entity-management";
-import type { ViewDescriptor } from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
+import type { ViewDescriptor } from "@prometheus-ags/entity-graph-react";
 import { taskStore } from "./task-store";
 import type { TaskListParams } from "@/features/demo-backend/demo-backend-store";
 import type { Task } from "@/types";

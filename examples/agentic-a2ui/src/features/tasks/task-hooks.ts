@@ -7,7 +7,7 @@
  * stable between unrelated writes.
  */
 import { useMemo } from "react";
-import { useGraphStore } from "@prometheus-ags/prometheus-entity-management";
+import { useGraphStore } from "@prometheus-ags/entity-graph-react";
 import { LIST_KEYS, type DemoComment, type DemoProject, type DemoTask } from "../../lib/demo-data";
 import { useTaskFeatureStore, type RealtimeDemoStats } from "./task-store";
 

@@ -75,8 +75,13 @@ try {
       "exec",
       "attw",
       tarballPath,
+      // ESM-only as of 4.0.0. The `strict` profile fails any package a
+      // CommonJS `require` cannot resolve, which is the defining property of
+      // an ESM-only package rather than a defect in one. `esm-only` keeps
+      // every other check — export map correctness, declaration resolution,
+      // node10 and bundler resolution — and drops only CJSResolvesToESM.
       "--profile",
-      "strict",
+      "esm-only",
       "--no-color",
     ];
     if (publicPackage.attwExcludeEntrypoints?.length) {
@@ -121,17 +126,12 @@ try {
 
   const cjs = await run("node", ["consumer.cjs"], { cwd: consumerDirectory });
   process.stdout.write(cjs.stdout);
-  report.consumers.nodeCommonJs = "pass";
+  report.consumers.nodeCommonJsDynamicImport = "pass";
 
   await run("pnpm", ["exec", "tsc", "-p", "tsconfig.esm.json"], {
     cwd: consumerDirectory,
   });
   report.consumers.typescriptNodeNext = "pass";
-
-  await run("pnpm", ["exec", "tsc", "-p", "tsconfig.cjs.json"], {
-    cwd: consumerDirectory,
-  });
-  report.consumers.typescriptNode16 = "pass";
 
   await run("pnpm", ["exec", "tsc", "-p", "tsconfig.bundler.json"], {
     cwd: consumerDirectory,
@@ -139,7 +139,7 @@ try {
   report.consumers.typescriptBundler = "pass";
 
   process.stdout.write(
-    `\n[package-contract] PASS: ${PUBLIC_PACKAGES.length} tarballs; ESM, CommonJS, NodeNext, Node16, and Bundler consumers.\n`,
+    `\n[package-contract] PASS: ${PUBLIC_PACKAGES.length} tarballs; ESM-only — ESM, CommonJS-via-dynamic-import, NodeNext, and Bundler consumers.\n`,
   );
 
   if (reportPath) {
@@ -180,18 +180,21 @@ async function writeConsumerFixture(directory, tarballsByName) {
     `${domPrelude("esm")}\n${esmImports}\n${esmAssertions}\nconsole.log("[package-contract] Node ESM consumer passed");\n`,
   );
 
+  // ESM-only as of 4.0.0: a CommonJS file cannot `require` these packages.
+  // The supported CJS path is `await import(...)`, so that is what is proven —
+  // dropping the check entirely would leave CJS consumers unverified.
   const cjsImports = names
-    .map((name, index) => `const package${index} = require(${JSON.stringify(name)});`)
+    .map((name, index) => `  const package${index} = await import(${JSON.stringify(name)});`)
     .join("\n");
   const cjsAssertions = names
     .map(
       (name, index) =>
-        `if (Object.keys(package${index}).length === 0) throw new Error(${JSON.stringify(`${name} has no CommonJS exports`)});`,
+        `  if (Object.keys(package${index}).length === 0) throw new Error(${JSON.stringify(`${name} has no exports via dynamic import`)});`,
     )
     .join("\n");
   await writeFile(
     join(directory, "consumer.cjs"),
-    `${domPrelude("cjs")}\n${cjsImports}\n${cjsAssertions}\nconsole.log("[package-contract] Node CommonJS consumer passed");\n`,
+    `${domPrelude("cjs")}\n(async () => {\n${cjsImports}\n${cjsAssertions}\n  console.log("[package-contract] Node CommonJS dynamic-import consumer passed");\n})().catch((error) => { console.error(error); process.exit(1); });\n`,
   );
 
   const typeImports = names
@@ -199,7 +202,6 @@ async function writeConsumerFixture(directory, tarballsByName) {
     .join("\n");
   const typeUses = names.map((_, index) => `void package${index};`).join("\n");
   await writeFile(join(directory, "consumer.mts"), `${typeImports}\n${typeUses}\n`);
-  await writeFile(join(directory, "consumer.cts"), `${typeImports}\n${typeUses}\n`);
   await writeFile(join(directory, "consumer.ts"), `${typeImports}\n${typeUses}\n`);
 
   const baseCompilerOptions = {
@@ -214,10 +216,6 @@ async function writeConsumerFixture(directory, tarballsByName) {
   await writeFile(
     join(directory, "tsconfig.esm.json"),
     `${JSON.stringify({ compilerOptions: { ...baseCompilerOptions, module: "NodeNext", moduleResolution: "NodeNext" }, files: ["consumer.mts"] }, null, 2)}\n`,
-  );
-  await writeFile(
-    join(directory, "tsconfig.cjs.json"),
-    `${JSON.stringify({ compilerOptions: { ...baseCompilerOptions, module: "Node16", moduleResolution: "Node16" }, files: ["consumer.cts"] }, null, 2)}\n`,
   );
   await writeFile(
     join(directory, "tsconfig.bundler.json"),

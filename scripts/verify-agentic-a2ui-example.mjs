@@ -85,7 +85,7 @@ run("a2a-external-endpoint-policy", "pnpm", [
 ]);
 run("react-package-build", "pnpm", [
   "--filter",
-  "@prometheus-ags/prometheus-entity-management",
+  "@prometheus-ags/entity-graph-react",
   "build",
 ]);
 run("a2ui-package-build", "pnpm", [

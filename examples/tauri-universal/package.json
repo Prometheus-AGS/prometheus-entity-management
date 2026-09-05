@@ -1,6 +1,6 @@
 {
   "name": "prometheus-tauri-universal-example",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "type": "module",
   "scripts": {
@@ -16,13 +16,13 @@
   "dependencies": {
     "@prometheus-ags/entity-graph-core": "workspace:*",
     "@prometheus-ags/entity-graph-tauri": "workspace:*",
-    "@prometheus-ags/prometheus-entity-management": "workspace:*",
     "@tauri-apps/api": "2.11.1",
     "@tauri-apps/plugin-deep-link": "2.4.9",
     "@tauri-apps/plugin-sql": "2.4.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "zustand": "5.0.14"
+    "zustand": "5.0.14",
+    "@prometheus-ags/entity-graph-react": "workspace:*"
   },
   "devDependencies": {
     "@tauri-apps/cli": "2.11.4",

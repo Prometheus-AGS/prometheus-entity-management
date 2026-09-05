@@ -1,23 +1,17 @@
 {
   "name": "@prometheus-ags/entity-graph-web-components",
-  "version": "3.2.0",
+  "version": "4.0.0",
   "description": "Lit 3 custom elements (<entity-list>, <entity-detail>, <entity-form>) using ReactiveController to subscribe to the core entity graph. Framework-agnostic.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.mjs"
-      },
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      }
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.mjs"
     }
   },
   "sideEffects": false,
@@ -30,7 +24,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "node ../../scripts/build-web-components-package.mjs",
+    "build": "tsup",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run",
     "refresh:exports": "pnpm run build && node ../../scripts/refresh-exports-ledger.mjs --pkg web-components",

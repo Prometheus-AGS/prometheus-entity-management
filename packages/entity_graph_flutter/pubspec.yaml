@@ -3,7 +3,7 @@ description: >
   Flutter/Dart mirror of the Prometheus entity graph — normalized, reactive
   entity store with generated Riverpod 3 provider families, optimistic CRUD,
   local/remote/hybrid views and pluggable transports.
-version: 3.1.0
+version: 4.0.0
 homepage: https://github.com/Prometheus-AGS/prometheus-entity-management
 
 environment:
@@ -15,19 +15,25 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  # Bounded ranges retain the newest Riverpod generation line that resolves on
-  # Flutter 3.44 stable. The 3.4/4.0.6 line targets the newer Flutter test
-  # dependency matrix and cannot resolve against Flutter 3.44.8.
-  flutter_riverpod: ">=3.3.2 <3.4.0"
-  riverpod_annotation: ">=4.0.3 <4.0.5"
+  # hooks_riverpod is a superset of flutter_riverpod: it re-exports the whole
+  # flutter_riverpod surface and adds HookConsumerWidget, so existing
+  # ConsumerWidget consumers are unaffected by the swap.
+  #
+  # Caret ranges, not exact pins. This is a LIBRARY — an exact pin here forces
+  # one version on every consumer and makes the package hard to combine with
+  # anything else depending on Riverpod. The dev_dependencies below stay exact,
+  # because the analyzer/codegen graph genuinely is a coherent set that has to
+  # move together.
+  hooks_riverpod: ^3.4.3
+  flutter_hooks: ^0.21.3
+  riverpod_annotation: ^4.0.7
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  # build_runner 2.15.2+ forces analyzer 13.3+, while Riverpod generator
-  # 4.0.4 uses analyzer 12 and remains compatible with Flutter 3.44.8.
-  build_runner: 2.15.1
-  riverpod_generator: 4.0.4
+  build_runner: 2.16.1
+  riverpod_generator: 4.0.9
+  riverpod_lint: 3.1.9
   flutter_lints: ^6.0.0
 
 flutter:

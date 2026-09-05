@@ -31,7 +31,7 @@ if (prepareStudyFlag >= 0 && !prepareStudyPath) throw new Error("--prepare-study
 if (prepareStudyPath && reportPath) throw new Error("--prepare-study and --report cannot be combined");
 
 const corePackage = requirePackage("@prometheus-ags/entity-graph-core");
-const reactPackage = requirePackage("@prometheus-ags/prometheus-entity-management");
+const reactPackage = requirePackage("@prometheus-ags/entity-graph-react");
 const retainedStudyRoot = prepareStudyPath ? resolve(workspaceRoot, prepareStudyPath) : null;
 const temporaryRoot = retainedStudyRoot ?? await mkdtemp(join(tmpdir(), "prometheus-react-devtools-"));
 const tarballDirectory = join(temporaryRoot, "tarballs");
@@ -285,7 +285,7 @@ async function writeConsumerWorkspace(root, coreTarball, reactTarball) {
 
   const sharedDependencies = {
     "@prometheus-ags/entity-graph-core": `file:${coreTarball}`,
-    "@prometheus-ags/prometheus-entity-management": `file:${reactTarball}`,
+    "@prometheus-ags/entity-graph-react": `file:${reactTarball}`,
     react: "19.2.8",
     "react-dom": "19.2.8",
   };
@@ -404,10 +404,10 @@ import {
   graphStore,
   serializeKey,
   useEntityList,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 
 if (import.meta.env.DEV) {
-  void import("@prometheus-ags/prometheus-entity-management/devtools/auto");
+  void import("@prometheus-ags/entity-graph-react/devtools/auto");
 }
 
 type Order = { id: string; status: string; total: number; customerId: string };
@@ -535,7 +535,7 @@ import {
   GraphStoreProvider,
   serializeKey,
   useEntityList,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import type { GraphStore } from "@prometheus-ags/entity-graph-core";
 
 type DevtoolsHost = ComponentType<{ mode: "auto"; store: GraphStore }>;
@@ -556,7 +556,7 @@ function Runtime() {
   useEffect(() => {
     if (process.env.NODE_ENV === "production") return;
     let active = true;
-    void import("@prometheus-ags/prometheus-entity-management/devtools").then((module) => {
+    void import("@prometheus-ags/entity-graph-react/devtools").then((module) => {
       if (active) setHost(() => module.EntityGraphDevtools as DevtoolsHost);
     });
     return () => { active = false; };

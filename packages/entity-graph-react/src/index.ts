@@ -402,6 +402,7 @@ export {
   SortHeader,
 } from "./ui/columns";
 export type {
+  EntityColumnDef,
   EntityColumnMeta,
   ColumnFilterType,
   ActionItem,

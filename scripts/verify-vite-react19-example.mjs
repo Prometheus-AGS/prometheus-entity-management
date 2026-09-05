@@ -75,7 +75,7 @@ mkdirSync(evidenceDirectory, { recursive: true });
 
 run("react-typecheck", "pnpm", [
   "--filter",
-  "@prometheus-ags/prometheus-entity-management",
+  "@prometheus-ags/entity-graph-react",
   "typecheck",
 ]);
 run("vite-typecheck", "pnpm", [
@@ -85,7 +85,7 @@ run("vite-typecheck", "pnpm", [
 ]);
 run("entity-query-unit", "pnpm", [
   "--filter",
-  "@prometheus-ags/prometheus-entity-management",
+  "@prometheus-ags/entity-graph-react",
   "exec",
   "vitest",
   "run",
@@ -101,7 +101,7 @@ run("core-package-build", "pnpm", [
 ]);
 run("react-package-build", "pnpm", [
   "--filter",
-  "@prometheus-ags/prometheus-entity-management",
+  "@prometheus-ags/entity-graph-react",
   "build",
 ]);
 run("sync-package-build", "pnpm", [

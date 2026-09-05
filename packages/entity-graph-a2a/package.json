@@ -1,33 +1,21 @@
 {
   "name": "@prometheus-ags/entity-graph-a2a",
-  "version": "3.2.0",
+  "version": "4.0.0",
   "description": "Policy-gated A2A v1 JSON-RPC and streaming SSE for the Prometheus entity graph, with deterministic A2UI artifacts.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.mjs"
-      },
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      }
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.mjs"
     },
     "./legacy": {
-      "import": {
-        "types": "./dist/legacy.d.ts",
-        "default": "./dist/legacy.mjs"
-      },
-      "require": {
-        "types": "./dist/legacy.d.cts",
-        "default": "./dist/legacy.cjs"
-      }
+      "types": "./dist/legacy.d.ts",
+      "default": "./dist/legacy.mjs"
     }
   },
   "typesVersions": {
@@ -47,7 +35,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsup && node ../../scripts/fix-a2a-cjs-declarations.mjs",
+    "build": "tsup",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run",
     "refresh:exports": "node ../../scripts/refresh-exports-ledger.mjs --a2a",

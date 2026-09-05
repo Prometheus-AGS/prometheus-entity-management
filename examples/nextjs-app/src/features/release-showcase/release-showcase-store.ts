@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { registerEntityTransport } from "@prometheus-ags/prometheus-entity-management";
-import type { CompletenessMode } from "@prometheus-ags/prometheus-entity-management";
+import { registerEntityTransport } from "@prometheus-ags/entity-graph-react";
+import type { CompletenessMode } from "@prometheus-ags/entity-graph-react";
 import type { Task } from "@/types";
 import {
   createShowcaseTaskTransport,

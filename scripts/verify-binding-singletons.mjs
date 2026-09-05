@@ -23,7 +23,7 @@ const shortTemporaryRoot = process.platform === "win32" ? tmpdir() : "/tmp";
 const bindings = [
   {
     id: "react",
-    packageName: "@prometheus-ags/prometheus-entity-management",
+    packageName: "@prometheus-ags/entity-graph-react",
     directory: "entity-graph-react",
   },
   {
@@ -312,7 +312,7 @@ globalThis.Element = dom.window.Element;
 globalThis.Node = dom.window.Node;
 
 const core = await import(${JSON.stringify(corePackageName)});
-const reactBinding = await import("@prometheus-ags/prometheus-entity-management");
+const reactBinding = await import("@prometheus-ags/entity-graph-react");
 const svelteBinding = await import("@prometheus-ags/entity-graph-svelte");
 const solidBinding = await import("@prometheus-ags/entity-graph-solid");
 const { createRoot } = await import("solid-js");
@@ -426,15 +426,23 @@ console.log(JSON.stringify(result));
 }
 
 async function verifyIncompatiblePeerFailure(directory, artifacts) {
+  // The real core's major, read from the packed artifact.
+  const realCoreMajor =
+    parseInt(artifacts.get(corePackageName)?.manifest?.version ?? "0", 10) || 0;
   const fakeCoreDirectory = join(directory, "fake-core");
   const fakeTarballs = join(directory, "fake-tarballs");
   await mkdir(fakeCoreDirectory, { recursive: true });
   await mkdir(fakeTarballs, { recursive: true });
   await writeFile(
     join(fakeCoreDirectory, "package.json"),
+    // Deliberately incompatible: one major AHEAD of the release, so the
+    // bindings' `^<release>` core peer cannot be satisfied. Derived from the
+    // release rather than hardcoded — a literal went stale the moment the real
+    // packages reached that same major, and the negative test silently passed
+    // by installing successfully.
     `${JSON.stringify({
       name: corePackageName,
-      version: "4.0.0",
+      version: `${realCoreMajor + 1}.0.0`,
       type: "module",
       main: "index.js",
       exports: "./index.js",
@@ -463,7 +471,7 @@ async function verifyIncompatiblePeerFailure(directory, artifacts) {
       packageManager: "pnpm@10.33.0",
       dependencies: {
         [corePackageName]: `file:${fakeCoreTarball}`,
-        "@prometheus-ags/prometheus-entity-management": `file:${artifacts.get("@prometheus-ags/prometheus-entity-management").tarballPath}`,
+        "@prometheus-ags/entity-graph-react": `file:${artifacts.get("@prometheus-ags/entity-graph-react").tarballPath}`,
         react: "19.2.8",
         "react-dom": "19.2.8",
       },
@@ -488,7 +496,7 @@ async function verifyIncompatiblePeerFailure(directory, artifacts) {
     status: "pass",
     suppliedVersion: "4.0.0",
     expectedRange:
-      artifacts.get("@prometheus-ags/prometheus-entity-management").manifest
+      artifacts.get("@prometheus-ags/entity-graph-react").manifest
         .peerDependencies[corePackageName],
     diagnosticIncludesPackage: true,
     diagnosticIncludesPeerContext: true,

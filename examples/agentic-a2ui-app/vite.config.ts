@@ -23,7 +23,7 @@ export default defineConfig({
         import.meta.dirname,
         "../../packages/entity-graph-core/src/index.ts",
       ),
-      "@prometheus-ags/prometheus-entity-management": path.resolve(
+      "@prometheus-ags/entity-graph-react": path.resolve(
         import.meta.dirname,
         "../../packages/entity-graph-react/src/index.ts",
       ),

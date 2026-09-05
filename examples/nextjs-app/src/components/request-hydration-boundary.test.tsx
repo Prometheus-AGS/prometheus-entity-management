@@ -5,7 +5,7 @@ import {
   createGraphStore,
   graphStore,
   GraphStoreProvider,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import { RequestHydrationBoundary } from "./request-hydration-boundary";
 
 describe("RequestHydrationBoundary", () => {

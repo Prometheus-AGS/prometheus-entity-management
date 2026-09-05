@@ -113,7 +113,7 @@ test("the generated package index lists every artifact exactly once", () => {
   const artifacts = [
     ...NPM_SLUGS.map((slug) =>
       slug === "prometheus-entity-management"
-        ? "@prometheus-ags/prometheus-entity-management"
+        ? "@prometheus-ags/entity-graph-react"
         : `@prometheus-ags/${slug}`,
     ),
     "entity_graph_flutter",

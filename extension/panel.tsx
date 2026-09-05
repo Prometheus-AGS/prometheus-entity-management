@@ -12,7 +12,7 @@ import {
   EntityGraphInspectorShell,
   ENTITY_GRAPH_DEVTOOLS_STYLES,
   type EntityGraphDevtoolsRemoteConnection,
-} from "@prometheus-ags/prometheus-entity-management/devtools";
+} from "@prometheus-ags/entity-graph-react/devtools";
 
 declare const chrome: any;
 

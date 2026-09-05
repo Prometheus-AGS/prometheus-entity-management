@@ -73,7 +73,7 @@ const FIXTURES = [
   },
   {
     file: "react-hook-entry.tsx",
-    tokens: ["useGraphStore", "@prometheus-ags/prometheus-entity-management"],
+    tokens: ["useGraphStore", "@prometheus-ags/entity-graph-react"],
     documentedIn: "v2-to-v3",
   },
   {

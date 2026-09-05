@@ -5,7 +5,7 @@ import {
   graphStore,
   toGraphQLVariables,
   toRestParams,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import type {
   ChangeSet,
   EntityTransport,
@@ -13,7 +13,7 @@ import type {
   ListResult,
   RealtimeAdapter,
   ViewDescriptor,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import { delay, useDemoBackendStore } from "@/features/demo-backend/demo-backend-store";
 import { recordDemoRead } from "@/lib/fetch-metrics";
 import { taskStore } from "@/features/tasks/task-store";

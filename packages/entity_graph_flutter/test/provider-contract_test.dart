@@ -4,7 +4,7 @@
 import 'dart:async';
 
 import 'package:entity_graph_flutter/entity_graph_flutter.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 final class User {

@@ -89,7 +89,7 @@ test("the example consumes the library through package exports, not source alias
   const pkg = JSON.parse(readFileSync(join(appRoot, "package.json"), "utf8"));
   for (const dep of [
     "@prometheus-ags/entity-graph-core",
-    "@prometheus-ags/prometheus-entity-management",
+    "@prometheus-ags/entity-graph-react",
     "@prometheus-ags/a2ui-react",
     "@prometheus-ags/entity-graph-a2a",
   ]) {

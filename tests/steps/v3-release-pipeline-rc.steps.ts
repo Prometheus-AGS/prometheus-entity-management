@@ -137,7 +137,7 @@ Then("the declared artifacts are selected in dependency order", function () {
   const order = evidence.artifacts.dependencyOrder;
   assert.ok(
     order.indexOf("@prometheus-ags/entity-graph-core") <
-      order.indexOf("@prometheus-ags/prometheus-entity-management"),
+      order.indexOf("@prometheus-ags/entity-graph-react"),
   );
 });
 

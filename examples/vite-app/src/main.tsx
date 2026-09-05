@@ -10,7 +10,7 @@ import "./schema";
 // Explicit debug opt-in. Vite replaces this condition and removes the import
 // from production builds; the public auto entry mounts the development FAB.
 if (import.meta.env.DEV) {
-  void import("@prometheus-ags/prometheus-entity-management/devtools/auto");
+  void import("@prometheus-ags/entity-graph-react/devtools/auto");
 }
 
 const queryClient = new QueryClient({

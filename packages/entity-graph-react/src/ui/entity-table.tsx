@@ -5,9 +5,12 @@
  * inline cell editing, load-more / page pagination, skeleton loading, empty state.
  */
 import React, { useState, useCallback, useMemo } from "react";
-import { useReactTable, getCoreRowModel, getSortedRowModel, flexRender, type ColumnDef, type SortingState, type RowSelectionState, type VisibilityState } from "@tanstack/react-table";
+import { useTable, type SortingState, type RowSelectionState, type ColumnVisibilityState } from "@tanstack/react-table";
+import { flexRender } from "@tanstack/react-table/flex-render";
+import { entityTableFeatures, type EntityTableFeatures } from "./table-features";
 import { Search, X, RefreshCw, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "./utils";
+import type { EntityColumnDef } from "./columns";
 import type { UseEntityViewResult } from "../view/use-entity-view";
 
 // ---------------------------------------------------------------------------
@@ -29,7 +32,7 @@ export function InlineCellEditor({ initialValue, onCommit, onCancel, className }
 // ---------------------------------------------------------------------------
 export interface EntityTableProps<T extends object> {
   viewResult: UseEntityViewResult<T>;
-  columns: ColumnDef<T>[];
+  columns: EntityColumnDef<T>[];
   getRowId?: (row: T) => string;
   selectedId?: string | null;
   onRowClick?: (row: T) => void;
@@ -49,7 +52,7 @@ export function EntityTable<T extends object>({ viewResult, columns, getRowId = 
   const { items, isLoading, isFetching, isRemoteFetching, isShowingLocalPending, hasNextPage, fetchNextPage, isFetchingMore, viewTotal, setSort, setSearch, refetch } = viewResult;
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-  const [colVis, setColVis] = useState<VisibilityState>({});
+  const [colVis, setColVis] = useState<ColumnVisibilityState>({});
   const [search, setSearchLocal] = useState("");
   const [editingCell, setEditingCell] = useState<{ rowId: string; field: string; value: string } | null>(null);
   const [page, setPage] = useState(1);
@@ -65,11 +68,12 @@ export function EntityTable<T extends object>({ viewResult, columns, getRowId = 
   const pagedItems = useMemo(() => paginationMode === "pages" ? items.slice((page - 1) * pageSize, page * pageSize) : items, [items, paginationMode, page, pageSize]);
   const totalPages = Math.ceil(items.length / pageSize);
 
-  const table = useReactTable<T>({
+  const table = useTable<EntityTableFeatures, T>({
+    features: entityTableFeatures,
     data: pagedItems, columns, getRowId, manualSorting: true,
     state: { sorting, rowSelection, columnVisibility: colVis },
     onSortingChange: handleSort, onRowSelectionChange: setRowSelection, onColumnVisibilityChange: setColVis,
-    getCoreRowModel: getCoreRowModel(), getSortedRowModel: getSortedRowModel(), enableRowSelection: true,
+    enableRowSelection: true,
   });
 
   const selectedRows = table.getSelectedRowModel().rows.map(r => r.original);

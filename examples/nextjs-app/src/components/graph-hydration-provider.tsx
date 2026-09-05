@@ -18,7 +18,7 @@
  */
 
 import { useState } from "react";
-import { GraphStoreProvider } from "@prometheus-ags/prometheus-entity-management";
+import { GraphStoreProvider } from "@prometheus-ags/entity-graph-react";
 import { NextEntityGraphDevtools } from "@/components/entity-graph-devtools";
 import {
   hydrateGraphStore,

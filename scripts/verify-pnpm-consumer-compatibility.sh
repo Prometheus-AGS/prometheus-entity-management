@@ -26,7 +26,7 @@ CI=true COREPACK_HOME="$corepack_cache" corepack pnpm install --frozen-lockfile
 
 PATH="$pnpm11_bin:$PATH" node "$pnpm11_entry" --version | grep -x '11.15.0'
 PATH="$pnpm11_bin:$PATH" node "$pnpm11_entry" exec turbo run build --force \
-  --filter=@prometheus-ags/prometheus-entity-management...
+  --filter=@prometheus-ags/entity-graph-react...
 
 printf '%s\n' \
   '{' \

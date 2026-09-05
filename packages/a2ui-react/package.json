@@ -1,11 +1,11 @@
 {
   "name": "@prometheus-ags/a2ui-react",
-  "version": "3.2.0",
+  "version": "4.0.0",
   "description": "A2UI v1.0-RC compatibility for React over the official renderer, with policy-gated entity graph actions and AG-UI 0.0.59 activity support.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "typesVersions": {
@@ -17,24 +17,12 @@
   },
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.mjs"
-      },
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      }
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.mjs"
     },
     "./ag-ui": {
-      "import": {
-        "types": "./dist/ag-ui.d.ts",
-        "default": "./dist/ag-ui.mjs"
-      },
-      "require": {
-        "types": "./dist/ag-ui.d.cts",
-        "default": "./dist/ag-ui.cjs"
-      }
+      "types": "./dist/ag-ui.d.ts",
+      "default": "./dist/ag-ui.mjs"
     }
   },
   "sideEffects": false,
@@ -47,7 +35,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsup && node ../../scripts/fix-a2ui-cjs-declarations.mjs",
+    "build": "tsup",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run",
     "refresh:exports": "pnpm run build && node ../../scripts/refresh-exports-ledger.mjs --a2ui",

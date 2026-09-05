@@ -11,7 +11,7 @@
       "required":["version","channel","owner","repository","license"],
       "properties":{
         "name":{"type":"string","minLength":1},
-        "version":{"pattern":"^3\\.[0-9]+\\.[0-9]+$"},
+        "version":{"pattern":"^4\\.[0-9]+\\.[0-9]+$"},
         "channel":{"const":"stable"},
         "owner":{"type":"string","minLength":1},
         "repository":{"type":"string","format":"uri"},
@@ -21,8 +21,8 @@
     },
     "artifacts": {
       "type":"array",
-      "minItems":16,
-      "maxItems":16,
+      "minItems":17,
+      "maxItems":17,
       "items": {
         "type":"object",
         "required":["id","ecosystem","packageName","path","owner","registry","registryDecision","versionPolicy","stability","role"],

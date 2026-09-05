@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useGraphStore } from "@prometheus-ags/prometheus-entity-management";
+import { useGraphStore } from "@prometheus-ags/entity-graph-react";
 
 export type BridgeDemoPost = { id: string; title: string };
 

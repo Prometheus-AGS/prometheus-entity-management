@@ -28,7 +28,7 @@ import { useEffect, useRef, useState } from "react";
  * It is NOT a UI component and does not violate the "Components never touch
  * stores directly" rule from CLAUDE.md.
  */
-import { useGraphStoreApi } from "@prometheus-ags/prometheus-entity-management";
+import { useGraphStoreApi } from "@prometheus-ags/entity-graph-react";
 import type { HydrationPayload } from "@/lib/hydration-payload";
 
 interface RequestHydrationBoundaryProps {

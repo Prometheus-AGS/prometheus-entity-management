@@ -18,7 +18,7 @@ verified registry snapshot has all twelve npm packages public at stable
 
 | Package | Install | Current `latest` |
 | --- | --- | --- |
-| `@prometheus-ags/prometheus-entity-management` (React) | `pnpm add @prometheus-ags/prometheus-entity-management` | `3.2.0` |
+| `@prometheus-ags/entity-graph-react` (React) | `pnpm add @prometheus-ags/entity-graph-react` | `3.2.0` |
 | `@prometheus-ags/entity-graph-core` | `pnpm add @prometheus-ags/entity-graph-core` | `3.2.0` |
 | Other ten `@prometheus-ags/*` packages | `pnpm add <package>` | `3.2.0` |
 | `entity_graph_flutter` | pub.dev `3.1.0` | `3.1.0` |

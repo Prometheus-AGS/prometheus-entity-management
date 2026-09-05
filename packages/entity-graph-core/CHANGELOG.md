@@ -1,5 +1,67 @@
 # @prometheus-ags/entity-graph-core
 
+## 4.0.0
+
+### Major Changes
+
+- **ESM-only.** Every package now ships ESM exclusively — no `.cjs`, no
+  `.d.cts`, no `require` condition. CommonJS consumers must switch to
+  `await import(...)`.
+
+  The trigger was `@tanstack/react-table` v9, which is itself ESM-only
+  (`"type": "module"`, a single `exports` entry, no CJS build). A CommonJS
+  declaration file cannot `require` an ESM dependency's types — TypeScript
+  raises TS1479 — so the React binding could not both re-export v9's types and
+  ship a `.d.cts`. Rather than special-case one package and leave the workspace
+  half-dual, the whole set moved.
+
+  **`@tanstack/react-table` v8 → v9** in the React binding. v9 requires an
+  explicit feature set and registers row models as feature slots. `stockFeatures`
+  is deliberately not used — TanStack documents it as a migration shortcut rather
+  than a production end state, and taking it would forfeit v9's tree-shaking.
+
+  **`EntityColumnDef<T>` is unchanged for consumers.** v9 widened
+  `ColumnDef<TData, TValue>` to `ColumnDef<TFeatures, TData, TValue>`. The public
+  alias supplies `TFeatures`, so existing column definitions compile untouched —
+  a type-level regression test asserts a hand-written v8-shaped column literal
+  still assigns.
+
+  **React bindings publish as `@prometheus-ags/entity-graph-react`**, matching
+  every other framework binding. `@prometheus-ags/prometheus-entity-management`
+  continues to publish as a compatibility alias re-exporting all three
+  entrypoints, so existing installs keep resolving under the new name.
+
+  Also in this release:
+  - `@electric-sql/pglite` moves from a pinned `0.5.4` devDependency to `^0.5.8`,
+    verified against the PGlite persistence adapter.
+  - `entity_graph_flutter` moves to `hooks_riverpod` and the current Riverpod
+    toolchain, and gains `useEntity`, `useEntityList` and `useEntityQuery`
+    helpers mirroring the React surface.
+
+### Patch Changes
+
+- d1588d8: Reactive read-path fixes from graph-explorer's architectural review (AR5).
+
+  **`useEntities` now subscribes to entity data.** Its `items` were computed in
+  a `useMemo` over `getState()` keyed on the list's ids — no subscription — so
+  mutating an entity already in the list did not re-render consumers until a
+  remount. `items` is now a store-subscribed selector under `useShallow`,
+  reading through the cached `readEntitySnapshot`. Return-shape note: items now
+  carry `$synced` / `$origin` / `$updatedAt` like `useEntityList` and
+  `useEntityQuery` already did — additive, and the three hooks now agree.
+
+  **`readEntity` has a stable identity contract.** It allocated a fresh
+  `{...base, ...patch}` merge on every call whenever a patch existed, defeating
+  shallow comparison in every React consumer. Reads are now cached: same `base`
+  - same `patch` (by reference) returns the same object, mirroring
+    `readEntitySnapshot`'s cache.
+
+  **`ingestFetchedList` dedupes ids on the replace path.** The append path
+  always deduped; the replace path passed fetched ids through verbatim, so a
+  backend returning two physical rows for one logical id rendered the entity
+  twice in every list consumer. A list of entity ids never contains the same id
+  twice, regardless of what a fetch returned.
+
 ## 3.2.0
 
 ### Minor Changes

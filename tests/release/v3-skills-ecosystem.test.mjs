@@ -70,7 +70,7 @@ test("every public npm package plus Dart has a registered export ledger", () => 
   }
   // Root gates chain every ledger-bearing package.
   for (const name of [
-    "@prometheus-ags/prometheus-entity-management",
+    "@prometheus-ags/entity-graph-react",
     "@prometheus-ags/entity-graph-core",
     "@prometheus-ags/entity-graph-sync",
     "@prometheus-ags/a2ui-react",
@@ -142,7 +142,7 @@ test("the bundle index covers the full 3.0 surface", () => {
   const index = readFileSync(join(skillsRoot, "SKILLS.md"), "utf8");
   const required = [
     "@prometheus-ags/entity-graph-core",
-    "@prometheus-ags/prometheus-entity-management",
+    "@prometheus-ags/entity-graph-react",
     "@prometheus-ags/entity-graph-svelte",
     "@prometheus-ags/entity-graph-solid",
     "@prometheus-ags/entity-graph-alpine",

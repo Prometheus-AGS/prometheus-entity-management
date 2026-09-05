@@ -3,16 +3,17 @@ import { defineConfig, type Options } from "tsup";
 /**
  * Create the build contract shared by every public npm package.
  *
- * Keeping the extensions here is deliberate: these files are the physical
- * side of the conditional `exports` contract in each package manifest.
+ * Keeping the extension here is deliberate: this file is the physical side of
+ * the `exports` contract in each package manifest.
  */
 export function definePackageConfig(options: Options = {}) {
   return defineConfig({
     entry: ["src/index.ts"],
-    format: ["esm", "cjs"],
+    // ESM-only as of 4.0.0 — see PACKAGE_ENTRYPOINT_CONTRACT for why.
+    format: ["esm"],
     dts: true,
-    outExtension({ format }) {
-      return { js: format === "esm" ? ".mjs" : ".cjs" };
+    outExtension() {
+      return { js: ".mjs" };
     },
     treeshake: true,
     sourcemap: true,

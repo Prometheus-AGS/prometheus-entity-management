@@ -211,6 +211,11 @@
       "source": "lib/src/providers.dart"
     },
     {
+      "name": "EntityQueryResult",
+      "kind": "class",
+      "source": "lib/src/hooks/use_entity_query.dart"
+    },
+    {
       "name": "EntityRemovalSnapshot",
       "kind": "class",
       "source": "lib/src/graph.dart"
@@ -464,6 +469,21 @@
       "name": "TransientError",
       "kind": "class",
       "source": "lib/src/errors.dart"
+    },
+    {
+      "name": "useEntity",
+      "kind": "function",
+      "source": "lib/src/hooks/use_entity.dart"
+    },
+    {
+      "name": "useEntityList",
+      "kind": "function",
+      "source": "lib/src/hooks/use_entity_list.dart"
+    },
+    {
+      "name": "useEntityQuery",
+      "kind": "function",
+      "source": "lib/src/hooks/use_entity_query.dart"
     },
     {
       "name": "ViewCompleteness",

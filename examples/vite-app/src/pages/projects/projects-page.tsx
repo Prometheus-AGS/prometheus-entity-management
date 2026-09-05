@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { type ColumnDef } from "@tanstack/react-table";
+import { type EntityColumnDef } from "@prometheus-ags/entity-graph-react";
 import { PageHeader } from "@/components/shared/ui";
 import {
   ProjectStatusBadge,
@@ -34,7 +34,7 @@ function buildColumns(
   onEdit: (p: Project) => void,
   onDelete: (p: Project) => void,
   onView: (p: Project) => void
-): ColumnDef<Project>[] {
+): EntityColumnDef<Project>[] {
   return [
     {
       id: "name",

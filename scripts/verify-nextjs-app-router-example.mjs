@@ -51,7 +51,7 @@ try {
   ]);
   run("react-package-build", "pnpm", [
     "--filter",
-    "@prometheus-ags/prometheus-entity-management",
+    "@prometheus-ags/entity-graph-react",
     "build",
   ]);
 
@@ -96,7 +96,7 @@ try {
     dependencies: {
       ...sourceManifest.dependencies,
       "@prometheus-ags/entity-graph-core": `file:${coreTarball}`,
-      "@prometheus-ags/prometheus-entity-management": `file:${reactTarball}`,
+      "@prometheus-ags/entity-graph-react": `file:${reactTarball}`,
     },
     packageManager: rootManifest.packageManager,
     pnpm: {

@@ -1,6 +1,6 @@
 [package]
 name = "entity-graph-tauri"
-version = "3.0.0-alpha.0"
+version = "4.0.0"
 edition = "2021"
 description = "Tauri v2 plugin exposing entity-graph commands and events with tauri-specta v2 TypeScript binding generation."
 license = "MIT"

@@ -22,7 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useReleaseShowcase, useShowcaseSuspenseTask } from "@/features/release-showcase/release-showcase-hooks";
 import type { ShowcaseTransportMode } from "@/features/release-showcase/release-showcase-service";
-import type { CompletenessMode } from "@prometheus-ags/prometheus-entity-management";
+import type { CompletenessMode } from "@prometheus-ags/entity-graph-react";
 
 const transportModes: ShowcaseTransportMode[] = [
   "demo-rest",

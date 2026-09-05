@@ -16,7 +16,7 @@ import {
   type RealtimeAdapter,
   type SubscriptionConfig,
   type UnsubscribeFn,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import { SEED_TASKS } from "../domain/seed";
 import type { Task } from "../domain/types";
 import { getBridge } from "../platform";

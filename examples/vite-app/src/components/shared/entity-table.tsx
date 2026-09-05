@@ -1,14 +1,30 @@
 import { useState, useCallback, useMemo, type ReactNode } from "react";
 import {
-  useReactTable,
-  getCoreRowModel,
-  getSortedRowModel,
-  flexRender,
+  useTable,
+  tableFeatures,
+  rowSortingFeature,
+  rowSelectionFeature,
+  columnVisibilityFeature,
+  columnSizingFeature,
+  createSortedRowModel,
   type ColumnDef,
   type SortingState,
   type RowSelectionState,
-  type VisibilityState,
+  type ColumnVisibilityState,
 } from "@tanstack/react-table";
+import { flexRender } from "@tanstack/react-table/flex-render";
+
+// v9 requires an explicit feature set; row models are registered as feature
+// slots rather than table options. Declared at module scope because the type
+// parameterises every column, cell and row type.
+const exampleTableFeatures = tableFeatures({
+  rowSortingFeature,
+  rowSelectionFeature,
+  columnVisibilityFeature,
+  columnSizingFeature,
+  sortedRowModel: createSortedRowModel(),
+});
+type ExampleTableFeatures = typeof exampleTableFeatures;
 import {
   Search, X, RefreshCw,
   ArrowUp, ArrowDown, ChevronsUpDown,
@@ -16,8 +32,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { UseEntityViewResult } from "@prometheus-ags/prometheus-entity-management";
-import type { SortSpec } from "@prometheus-ags/prometheus-entity-management";
+import type { UseEntityViewResult } from "@prometheus-ags/entity-graph-react";
+import type { SortSpec } from "@prometheus-ags/entity-graph-react";
 
 const SKELETON_ROW_KEYS = [
   "skeleton-row-1",
@@ -82,7 +98,7 @@ function SkeletonRow({ cols }: { cols: number }) {
 
 interface EntityTableProps<T extends Record<string, unknown>> {
   viewResult: UseEntityViewResult<T>;
-  columns: ColumnDef<T>[];
+  columns: ColumnDef<ExampleTableFeatures, T>[];
   getRowId?: (row: T) => string;
   selectedId?: string | null;
   onRowClick?: (row: T) => void;
@@ -123,7 +139,7 @@ export function EntityTable<T extends Record<string, unknown>>({
 
   const [sorting, setSorting]     = useState<SortingState>([]);
   const [rowSelection]            = useState<RowSelectionState>({});
-  const [colVis]                  = useState<VisibilityState>({});
+  const [colVis]                  = useState<ColumnVisibilityState>({});
   const [search, setSearchLocal]  = useState("");
   const [page, setPage]           = useState(1);
 
@@ -155,15 +171,14 @@ export function EntityTable<T extends Record<string, unknown>>({
 
   const totalPages = Math.ceil(items.length / pageSize);
 
-  const table = useReactTable<T>({
+  const table = useTable<ExampleTableFeatures, T>({
+    features: exampleTableFeatures,
     data: pagedItems,
     columns,
     getRowId,
     manualSorting: true,
     state: { sorting, rowSelection, columnVisibility: colVis },
     onSortingChange: handleSort,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
   });
 
   return (

@@ -1,5 +1,5 @@
-import { useEntity, useEntityCRUD, useEntityList } from "@prometheus-ags/prometheus-entity-management";
-import type { ViewDescriptor } from "@prometheus-ags/prometheus-entity-management";
+import { useEntity, useEntityCRUD, useEntityList } from "@prometheus-ags/entity-graph-react";
+import type { ViewDescriptor } from "@prometheus-ags/entity-graph-react";
 import { projectStore } from "./project-store";
 import { taskStore } from "@/features/tasks/task-store";
 import type {

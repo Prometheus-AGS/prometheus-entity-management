@@ -19,7 +19,7 @@ if (reportFlag >= 0 && !reportPath) throw new Error("--report requires a file pa
 
 const selected = [
   PUBLIC_PACKAGES.find(({ name }) => name === "@prometheus-ags/entity-graph-core"),
-  PUBLIC_PACKAGES.find(({ name }) => name === "@prometheus-ags/prometheus-entity-management"),
+  PUBLIC_PACKAGES.find(({ name }) => name === "@prometheus-ags/entity-graph-react"),
 ];
 if (selected.some((entry) => !entry)) throw new Error("core/React package inventory is incomplete");
 
@@ -105,14 +105,14 @@ try {
 async function writeConsumer(directory, tarballs) {
   await mkdir(directory, { recursive: true });
   const coreTarball = tarballs["@prometheus-ags/entity-graph-core"];
-  const reactTarball = tarballs["@prometheus-ags/prometheus-entity-management"];
+  const reactTarball = tarballs["@prometheus-ags/entity-graph-react"];
   const manifest = {
     name: "prometheus-devtools-core-packed-consumer",
     private: true,
     type: "module",
     dependencies: {
       "@prometheus-ags/entity-graph-core": coreTarball,
-      "@prometheus-ags/prometheus-entity-management": reactTarball,
+      "@prometheus-ags/entity-graph-react": reactTarball,
       "@types/node": "25.5.0",
       "@types/react": "19.2.18",
       "@types/react-dom": "19.2.4",
@@ -123,7 +123,7 @@ async function writeConsumer(directory, tarballs) {
     pnpm: {
       overrides: {
         "@prometheus-ags/entity-graph-core": coreTarball,
-        "@prometheus-ags/prometheus-entity-management": reactTarball,
+        "@prometheus-ags/entity-graph-react": reactTarball,
       },
     },
   };
@@ -148,7 +148,7 @@ import {
   unregisterSubscriber,
 } from "@prometheus-ags/entity-graph-core";
 import * as coreRoot from "@prometheus-ags/entity-graph-core";
-import * as reactRoot from "@prometheus-ags/prometheus-entity-management";
+import * as reactRoot from "@prometheus-ags/entity-graph-react";
 import {
   GRAPH_DEVTOOLS_PROTOCOL,
   GRAPH_DEVTOOLS_PROTOCOL_VERSION,
@@ -425,7 +425,7 @@ console.log(JSON.stringify({
 const assert = require("node:assert/strict");
 const core = require("@prometheus-ags/entity-graph-core");
 const devtools = require("@prometheus-ags/entity-graph-core/devtools");
-const react = require("@prometheus-ags/prometheus-entity-management");
+const react = require("@prometheus-ags/entity-graph-react");
 const store = core.createGraphStore();
 const attachment = devtools.attachGraphDevtools(store, { storeId: "cjs-store" });
 store.getState().upsertEntity("Task", "cjs", { id: "cjs" });
@@ -439,7 +439,7 @@ console.log("[devtools-core] packed CommonJS runtime acceptance passed");
 
   await writeFile(join(directory, "consumer.mts"), `
 import { createGraphStore, subscribeSubscriberStats } from "@prometheus-ags/entity-graph-core";
-import { useGraphDevTools } from "@prometheus-ags/prometheus-entity-management";
+import { useGraphDevTools } from "@prometheus-ags/entity-graph-react";
 import {
   attachGraphDevtools,
   createGraphDevtoolsClient,

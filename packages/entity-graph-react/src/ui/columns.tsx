@@ -6,7 +6,29 @@
  * The metadata drives both rendering AND the filter toolbar.
  */
 import type { ReactNode } from "react";
-import type { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef, RowData, TableFeatures } from "@tanstack/react-table";
+import type { EntityTableFeatures } from "./table-features";
+
+/**
+ * The column type this package exposes to consumers.
+ *
+ * Every public column builder returns `EntityColumnDef<T>`, and
+ * `EntityTableProps.columns` accepts it.
+ *
+ * This indirection earned its keep at the v8 to v9 upgrade. v9 widened
+ * `ColumnDef<TData, TValue>` to `ColumnDef<TFeatures, TData, TValue>`, where
+ * `TFeatures` threads the chosen feature set through every column, cell,
+ * header and row type. Supplying `EntityTableFeatures` here means consumers
+ * keep writing `EntityColumnDef<Task>` exactly as before — the widening stops
+ * at this package boundary instead of propagating to every call site.
+ *
+ * `ColumnDef` stays exported for anyone importing it directly; that one is
+ * TanStack's own type and does carry v9's three parameters.
+ */
+export type EntityColumnDef<T extends RowData> = ColumnDef<
+  EntityTableFeatures,
+  T
+>;
 
 export type ColumnFilterType = "text" | "number" | "date" | "dateRange" | "boolean" | "enum" | "relation" | "none";
 
@@ -19,9 +41,13 @@ export interface EntityColumnMeta<TEntity> {
   hideable?: boolean;
 }
 
-declare module "@tanstack/react-table" {
-  // biome-ignore lint/correctness/noUnusedVariables: TValue must match @tanstack/react-table ColumnMeta
-  interface ColumnMeta<TData, TValue> {
+// v9 moved the augmentable declarations to `@tanstack/table-core` and added a
+// leading `TFeatures` parameter to `ColumnMeta`. Module augmentation matches on
+// arity, so the v8 two-parameter form would silently stop applying and
+// `meta.entityMeta` would lose its typing — the filter toolbar reads it.
+declare module "@tanstack/table-core" {
+  // biome-ignore lint/correctness/noUnusedVariables: TFeatures and TValue must match the upstream ColumnMeta signature
+  interface ColumnMeta<TFeatures extends TableFeatures, TData extends RowData, TValue> {
     entityMeta?: EntityColumnMeta<TData>;
   }
 }
@@ -45,7 +71,7 @@ export function SortHeader({ column, label }: { column: { getIsSorted: () => fal
 // ---------------------------------------------------------------------------
 // Selection column
 // ---------------------------------------------------------------------------
-export function selectionColumn<T>(): ColumnDef<T> {
+export function selectionColumn<T extends RowData>(): EntityColumnDef<T> {
   return {
     id: "__select__", size: 40, enableSorting: false, enableHiding: false,
     header: ({ table }) => (
@@ -76,7 +102,7 @@ export function selectionColumn<T>(): ColumnDef<T> {
 // ---------------------------------------------------------------------------
 // Column builders
 // ---------------------------------------------------------------------------
-export function textColumn<T>(opts: { field: keyof T & string; header: string; size?: number; editable?: boolean; filterType?: ColumnFilterType; cell?: (v: string, row: T) => ReactNode }): ColumnDef<T> {
+export function textColumn<T extends RowData>(opts: { field: keyof T & string; header: string; size?: number; editable?: boolean; filterType?: ColumnFilterType; cell?: (v: string, row: T) => ReactNode }): EntityColumnDef<T> {
   const { field, header, size = 200, editable = false, filterType = "text", cell } = opts;
   return {
     id: field, accessorKey: field, size,
@@ -86,7 +112,7 @@ export function textColumn<T>(opts: { field: keyof T & string; header: string; s
   };
 }
 
-export function numberColumn<T>(opts: { field: keyof T & string; header: string; size?: number; format?: (v: number) => string; editable?: boolean }): ColumnDef<T> {
+export function numberColumn<T extends RowData>(opts: { field: keyof T & string; header: string; size?: number; format?: (v: number) => string; editable?: boolean }): EntityColumnDef<T> {
   const { field, header, size = 100, format = v => v.toLocaleString(), editable = false } = opts;
   return {
     id: field, accessorKey: field, size,
@@ -96,7 +122,7 @@ export function numberColumn<T>(opts: { field: keyof T & string; header: string;
   };
 }
 
-export function dateColumn<T>(opts: { field: keyof T & string; header: string; size?: number; format?: Intl.DateTimeFormatOptions }): ColumnDef<T> {
+export function dateColumn<T extends RowData>(opts: { field: keyof T & string; header: string; size?: number; format?: Intl.DateTimeFormatOptions }): EntityColumnDef<T> {
   const { field, header, size = 140, format = { year: "numeric", month: "short", day: "numeric" } } = opts;
   return {
     id: field, accessorKey: field, size,
@@ -106,7 +132,7 @@ export function dateColumn<T>(opts: { field: keyof T & string; header: string; s
   };
 }
 
-export function booleanColumn<T>(opts: { field: keyof T & string; header: string; size?: number; trueLabel?: string; falseLabel?: string }): ColumnDef<T> {
+export function booleanColumn<T extends RowData>(opts: { field: keyof T & string; header: string; size?: number; trueLabel?: string; falseLabel?: string }): EntityColumnDef<T> {
   const { field, header, size = 80, trueLabel = "Yes", falseLabel = "No" } = opts;
   return {
     id: field, accessorKey: field, size, header,
@@ -115,7 +141,7 @@ export function booleanColumn<T>(opts: { field: keyof T & string; header: string
   };
 }
 
-export function enumColumn<T>(opts: { field: keyof T & string; header: string; options: Array<{ value: string; label: string; className?: string }>; size?: number; editable?: boolean }): ColumnDef<T> {
+export function enumColumn<T extends RowData>(opts: { field: keyof T & string; header: string; options: Array<{ value: string; label: string; className?: string }>; size?: number; editable?: boolean }): EntityColumnDef<T> {
   const { field, header, options, size = 120, editable = false } = opts;
   const map = new Map(options.map(o => [o.value, o]));
   return {
@@ -128,7 +154,7 @@ export function enumColumn<T>(opts: { field: keyof T & string; header: string; o
 
 export interface ActionItem<T> { label: string; icon?: React.ComponentType<{ className?: string }>; onClick: (row: T) => void; destructive?: boolean; separator?: boolean; hidden?: (row: T) => boolean; disabled?: (row: T) => boolean; }
 
-export function actionsColumn<T>(actions: ActionItem<T>[]): ColumnDef<T> {
+export function actionsColumn<T extends RowData>(actions: ActionItem<T>[]): EntityColumnDef<T> {
   return {
     id: "__actions__", size: 48, enableSorting: false, enableHiding: false, header: () => null,
     cell: ({ row }) => (

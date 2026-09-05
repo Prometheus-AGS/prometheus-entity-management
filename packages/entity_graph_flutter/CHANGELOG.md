@@ -1,5 +1,24 @@
 # Changelog
 
+## 4.0.0
+
+- **`hooks_riverpod` replaces `flutter_riverpod`.** `hooks_riverpod` re-exports
+  the whole `flutter_riverpod` surface and adds `HookConsumerWidget`, so
+  existing `ConsumerWidget` consumers are unaffected. Consumers who imported
+  `package:flutter_riverpod/flutter_riverpod.dart` directly should switch to
+  `package:hooks_riverpod/hooks_riverpod.dart`.
+- **New hook helpers** — `useEntity`, `useEntityList` and `useEntityQuery` —
+  mirroring the React binding's hook surface. `useEntityQuery` owns a mutable
+  `ListQuery`: changing search, sort or filter clears the pagination cursor,
+  since a cursor points into a result set the new query no longer produces.
+- **Riverpod toolchain moved to current**: `hooks_riverpod` 3.4.3,
+  `flutter_hooks` 0.21.3+1, `riverpod_annotation` 4.0.7,
+  `riverpod_generator` 4.0.9, `build_runner` 2.16.1, `riverpod_lint` 3.1.9.
+  This ends a skew in which the library pinned below what its own consumers
+  used.
+- Version aligned to the 4.0.0 release train shared with the npm packages,
+  which moved to ESM-only in the same release.
+
 ## 3.1.0
 
 - Consolidate the complete optional DevTools controller and official companion in a minor release, including store isolation, dirty/original inspection, previews, time travel, and multi-client history cancellation.

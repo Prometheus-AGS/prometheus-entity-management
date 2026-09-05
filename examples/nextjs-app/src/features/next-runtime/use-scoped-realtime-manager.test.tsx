@@ -6,7 +6,7 @@ import {
   GraphStoreProvider,
   type ChangeSet,
   type RealtimeAdapter,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import { useScopedRealtimeManager } from "./use-scoped-realtime-manager";
 
 function createAdapter() {

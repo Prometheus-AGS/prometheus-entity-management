@@ -8,7 +8,7 @@ import type {
   RealtimeAdapter,
   SubscriptionConfig,
   UnsubscribeFn,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 
 export class DemoRealtimeAdapter implements RealtimeAdapter {
   readonly name = "demo-realtime";

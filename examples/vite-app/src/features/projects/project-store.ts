@@ -1,4 +1,4 @@
-import type { ListResponse } from "@prometheus-ags/prometheus-entity-management";
+import type { ListResponse } from "@prometheus-ags/entity-graph-react";
 import { delay, useDemoBackendStore } from "@/features/demo-backend/demo-backend-store";
 import type { ProjectListParams } from "@/features/demo-backend/demo-backend-store";
 import type { Project } from "@/types";

@@ -5,7 +5,7 @@ import { validateBindingSingletonPolicy } from "../../scripts/verify-binding-sin
 
 const corePackageName = "@prometheus-ags/entity-graph-core";
 const bindingNames = [
-  "@prometheus-ags/prometheus-entity-management",
+  "@prometheus-ags/entity-graph-react",
   "@prometheus-ags/entity-graph-svelte",
   "@prometheus-ags/entity-graph-solid",
   "@prometheus-ags/entity-graph-web-components",

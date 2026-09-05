@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { type ColumnDef } from "@tanstack/react-table";
+import { type EntityColumnDef } from "@prometheus-ags/entity-graph-react";
 import { PageHeader } from "@/components/shared/ui";
 import { EntityTable, SortHeader } from "@/components/shared/entity-table";
 import { Sheet, ConfirmDialog, Field, Input, Select } from "@/components/shared/sheet";
@@ -84,7 +84,7 @@ function MemberCell({ user }: { user: User }) {
 function buildColumns(
   onEdit: (u: User) => void,
   onDelete: (u: User) => void
-): ColumnDef<User>[] {
+): EntityColumnDef<User>[] {
   return [
     {
       id: "name",

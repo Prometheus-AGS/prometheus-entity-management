@@ -7,7 +7,7 @@ sidebar_position: 1
 
 Start with `@prometheus-ags/entity-graph-core`, then add exactly the binding and
 integration packages your application uses. React applications add
-`@prometheus-ags/prometheus-entity-management`; local-first peer sync adds
+`@prometheus-ags/entity-graph-react`; local-first peer sync adds
 `@prometheus-ags/entity-graph-sync`; A2UI and A2A stay independent so agent
 protocols cannot silently become graph authority.
 
@@ -17,7 +17,7 @@ against the release contract.
 | Package | Add it when you need | Runtime boundary |
 | --- | --- | --- |
 | `@prometheus-ags/entity-graph-core` | normalized entities, ID-only lists, views, CRUD, persistence, or realtime | framework-neutral; owns the graph |
-| `@prometheus-ags/prometheus-entity-management` | React 19 hooks, providers, tables, detail/form sheets, and presets | React binding; application owns the core peer |
+| `@prometheus-ags/entity-graph-react` | React 19 hooks, providers, tables, detail/form sheets, and presets | React binding; application owns the core peer |
 | `@prometheus-ags/entity-graph-sdl` | one schema contract for code generation and validation | build/runtime schema tools |
 | `@prometheus-ags/entity-graph-sync` | PGlite, Loro, Yjs, or peer convergence | local-first transport and merge policy |
 | `@prometheus-ags/entity-graph-svelte` | Svelte 5 reactive graph projections | binding only; no private graph copy |
@@ -46,7 +46,7 @@ React 19 applications install the stable pair:
 
 ```bash
 pnpm add @prometheus-ags/entity-graph-core \
-  @prometheus-ags/prometheus-entity-management \
+  @prometheus-ags/entity-graph-react \
   react@19 react-dom@19
 ```
 

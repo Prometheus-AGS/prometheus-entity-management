@@ -24,8 +24,8 @@ const gateResults = JSON.parse(
 test("the checked-in release contract passes schema and workspace validation", () => {
   const result = validateReleaseContract(baseline);
   assert.deepEqual(result.errors, []);
-  assert.equal(result.summary.artifacts, 16);
-  assert.equal(result.summary.npmPackages, 12);
+  assert.equal(result.summary.artifacts, 17);
+  assert.equal(result.summary.npmPackages, 13);
   assert.equal(result.summary.requiredRegistries, 3);
   assert.equal(result.summary.plannedShowcases, 0);
   assert.equal(result.summary.partialShowcases, 0);
@@ -186,7 +186,7 @@ test("duplicate artifact identities and package coordinates are rejected", () =>
   const candidate = structuredClone(baseline);
   candidate.artifacts.push(structuredClone(candidate.artifacts[0]));
   const result = validateReleaseContract(candidate);
-  assert.match(result.errors.join("\n"), /exactly 16 artifacts/);
+  assert.match(result.errors.join("\n"), /exactly 17 artifacts/);
   assert.match(result.errors.join("\n"), /duplicate artifact id npm-core/);
   assert.match(result.errors.join("\n"), /duplicate npm coordinate @prometheus-ags\/entity-graph-core/);
 });

@@ -31,3 +31,8 @@ export 'src/sdl.dart';
 
 // Riverpod providers
 export 'src/providers.dart';
+
+// Hook helpers (flutter_hooks + hooks_riverpod), mirroring the React binding
+export 'src/hooks/use_entity.dart';
+export 'src/hooks/use_entity_list.dart';
+export 'src/hooks/use_entity_query.dart';

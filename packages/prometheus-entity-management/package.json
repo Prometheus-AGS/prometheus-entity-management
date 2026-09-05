@@ -1,0 +1,75 @@
+{
+  "name": "@prometheus-ags/prometheus-entity-management",
+  "version": "4.0.0",
+  "description": "Compatibility alias for @prometheus-ags/entity-graph-react. The React bindings publish under that name; this package re-exports them so existing installs keep resolving.",
+  "author": "Travis James <travis@prometheus.dev>",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "devtools": [
+        "dist/devtools.d.ts"
+      ],
+      "devtools/auto": [
+        "dist/devtools/auto.d.ts"
+      ]
+    }
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.mjs"
+    },
+    "./devtools": {
+      "types": "./dist/devtools.d.ts",
+      "default": "./dist/devtools.mjs"
+    },
+    "./devtools/auto": {
+      "types": "./dist/devtools/auto.d.ts",
+      "default": "./dist/devtools/auto.mjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": [
+    "./dist/devtools/auto.mjs"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@prometheus-ags/entity-graph-react": "workspace:^"
+  },
+  "peerDependencies": {
+    "react": ">=19.0.0 <20.0.0",
+    "react-dom": ">=19.0.0 <20.0.0"
+  },
+  "engines": {
+    "node": "^22.14.0 || ^24.0.0 || >=26.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Prometheus-AGS/prometheus-entity-management",
+    "directory": "packages/prometheus-entity-management"
+  },
+  "bugs": {
+    "url": "https://github.com/prometheus-ags/prometheus-entity-management/issues"
+  },
+  "homepage": "https://github.com/prometheus-ags/prometheus-entity-management/tree/main/packages/prometheus-entity-management#readme",
+  "keywords": [
+    "entity-graph",
+    "react",
+    "alias",
+    "deprecated"
+  ]
+}

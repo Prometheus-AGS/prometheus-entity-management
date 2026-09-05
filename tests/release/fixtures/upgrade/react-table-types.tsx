@@ -5,7 +5,7 @@
  * site/docs/migration/v2-to-v3.mdx ("React presentation types"): column
  * builders, action items, and empty-state configuration are imported from the
  * React package. The headless table engine stays in core; the React-only
- * presentation surface ships from `@prometheus-ags/prometheus-entity-management`.
+ * presentation surface ships from `@prometheus-ags/entity-graph-react`.
  */
 import {
   actionsColumn,
@@ -14,7 +14,7 @@ import {
   EmptyState,
   type ActionItem,
   type EmptyStateConfig,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 
 interface Project {
   id: string;

@@ -1,5 +1,5 @@
 import { useStore } from "zustand";
-import { useGraphStore } from "@prometheus-ags/prometheus-entity-management";
+import { useGraphStore } from "@prometheus-ags/entity-graph-react";
 import { actionAuditStore } from "./action-audit-store";
 import { agentSessionStore, agentTransportConfiguration } from "./agent-session-store";
 import { approvalStore } from "./approval-store";

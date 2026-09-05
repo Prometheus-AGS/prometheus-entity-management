@@ -4,7 +4,7 @@ import {
   startGarbageCollector,
   stopGarbageCollector,
   useGraphDevTools,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import { PageHeader } from "@/components/shared/ui";
 import { Btn } from "@/components/shared/entity-badges";
 import { cn } from "@/lib/utils";

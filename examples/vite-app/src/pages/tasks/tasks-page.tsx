@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
-import { type ColumnDef } from "@tanstack/react-table";
-import { useEntityAugment } from "@prometheus-ags/prometheus-entity-management";
+import { type EntityColumnDef } from "@prometheus-ags/entity-graph-react";
+import { useEntityAugment } from "@prometheus-ags/entity-graph-react";
 import { PageHeader } from "@/components/shared/ui";
 import { TaskStatusBadge, PriorityBadge, UserAvatar } from "@/components/shared/entity-badges";
 import { EntityTable, SortHeader } from "@/components/shared/entity-table";
@@ -113,7 +113,7 @@ function AssigneeCell({ assigneeId }: { assigneeId: string | null }) {
 function buildTaskColumns(
   onEdit: (t: Task) => void,
   onDelete: (t: Task) => void
-): ColumnDef<Task>[] {
+): EntityColumnDef<Task>[] {
   return [
     {
       id: "title",

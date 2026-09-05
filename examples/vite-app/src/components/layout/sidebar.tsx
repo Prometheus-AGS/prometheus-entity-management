@@ -63,7 +63,7 @@ export function Sidebar() {
       {/* Footer */}
       <div className="px-4 py-3 bg-muted/35">
         <p className="text-[10px] text-muted-foreground font-mono leading-snug break-all">
-          @prometheus-ags/prometheus-entity-management
+          @prometheus-ags/entity-graph-react
         </p>
         <p className="text-[10px] text-muted-foreground">v3.0.0-rc.1 · Vite 8 + React 19</p>
       </div>

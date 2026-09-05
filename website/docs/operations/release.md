@@ -29,7 +29,7 @@ Registry snapshot: 2026-08-30T22:54:50.026Z. Expected candidate: `3.2.0`.
 | `@prometheus-ags/entity-graph-sync` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
 | `@prometheus-ags/entity-graph-tauri` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
 | `@prometheus-ags/entity-graph-web-components` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
-| `@prometheus-ags/prometheus-entity-management` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
+| `@prometheus-ags/entity-graph-react` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
 | `@prometheus-ags/a2ui-react` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
 | `@prometheus-ags/entity-graph-a2a` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |
 | `@prometheus-ags/entity-graph-alpine` | `3.2.0` | `3.0.0-alpha.0` | `3.2.0` | published |

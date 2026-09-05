@@ -16,13 +16,13 @@ import {
   deleteAction,
   TableStorageProvider,
   ZustandPersistAdapter,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import type {
   PureColumnDef,
   ItemDescriptor,
   BatchActionDef,
   EmptyStateConfig,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import { Users, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/shared/ui";

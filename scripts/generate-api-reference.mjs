@@ -54,7 +54,7 @@ const reportPath = reportFlag >= 0 ? args[reportFlag + 1] : null;
 /** The 12 publishable npm packages: slug, directory, ledger, entry points. */
 const NPM_PACKAGES = [
   { slug: "entity-graph-core", name: "@prometheus-ags/entity-graph-core", directory: "entity-graph-core", ledger: "core-library-exports.json", entries: ["src/index.ts", "src/devtools/index.ts"] },
-  { slug: "prometheus-entity-management", name: "@prometheus-ags/prometheus-entity-management", directory: "entity-graph-react", ledger: "library-exports.json", entries: ["src/index.ts", "src/devtools/index.ts", "src/devtools/auto.tsx"] },
+  { slug: "prometheus-entity-management", name: "@prometheus-ags/entity-graph-react", directory: "entity-graph-react", ledger: "library-exports.json", entries: ["src/index.ts", "src/devtools/index.ts", "src/devtools/auto.tsx"] },
   { slug: "entity-graph-sync", name: "@prometheus-ags/entity-graph-sync", directory: "entity-graph-sync", ledger: "sync-library-exports.json", entries: ["src/index.ts"] },
   { slug: "entity-graph-svelte", name: "@prometheus-ags/entity-graph-svelte", directory: "entity-graph-svelte", ledger: "svelte-library-exports.json", entries: ["src/index.ts"] },
   { slug: "entity-graph-solid", name: "@prometheus-ags/entity-graph-solid", directory: "entity-graph-solid", ledger: "solid-library-exports.json", entries: ["src/index.ts"] },
@@ -560,8 +560,8 @@ for (const pkg of NPM_PACKAGES) {
         "",
         "| Entry | Contract |",
         "| ----- | -------- |",
-        "| `@prometheus-ags/prometheus-entity-management/devtools` | Side-effect-free explicit provider, host, hooks, state adapters, and lazy inspector. |",
-        "| `@prometheus-ags/prometheus-entity-management/devtools/auto` | Side-effectful development opt-in that mounts the automatic floating launcher only in an enabled browser host. |",
+        "| `@prometheus-ags/entity-graph-react/devtools` | Side-effect-free explicit provider, host, hooks, state adapters, and lazy inspector. |",
+        "| `@prometheus-ags/entity-graph-react/devtools/auto` | Side-effectful development opt-in that mounts the automatic floating launcher only in an enabled browser host. |",
         "",
         "The normal package root excludes the inspector. Vite applications can import",
         "`./devtools/auto` behind `import.meta.env.DEV`; Next.js applications should",

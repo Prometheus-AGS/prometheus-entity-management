@@ -6,7 +6,7 @@ const workspaceRoot = fileURLToPath(new URL("../..", import.meta.url));
 const nextConfig: NextConfig = {
   // The library resolves via the workspace dependency (built dist);
   // transpilePackages lets Next compile it as part of the app graph.
-  transpilePackages: ["@prometheus-ags/prometheus-entity-management"],
+  transpilePackages: ["@prometheus-ags/entity-graph-react"],
   turbopack: {
     root: workspaceRoot,
   },

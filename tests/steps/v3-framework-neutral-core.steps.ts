@@ -66,7 +66,7 @@ function ensureReactCompatibility(): string {
     "pnpm",
     [
       "--filter",
-      "@prometheus-ags/prometheus-entity-management",
+      "@prometheus-ags/entity-graph-react",
       "exec",
       "vitest",
       "run",

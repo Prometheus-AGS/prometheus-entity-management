@@ -159,7 +159,7 @@ if (report.lanes.staticBuild === "pass") {
     const artifacts = [
       ...NPM_SLUGS.map((slug) => ({
         name: slug === "prometheus-entity-management"
-          ? "@prometheus-ags/prometheus-entity-management"
+          ? "@prometheus-ags/entity-graph-react"
           : `@prometheus-ags/${slug}`,
       })),
       { name: "entity_graph_flutter" },

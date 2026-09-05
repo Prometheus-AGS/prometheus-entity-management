@@ -11,7 +11,7 @@ import {
   useEntityCRUD,
   useEntityList,
   useGraphStore,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import type { Task, TaskStatus } from "../domain/types";
 import { SEED_PROJECTS } from "../domain/seed";
 import { advanceTaskStatus, listTasks, mirrorTask, mirrorTaskRemoval, simulateRemoteTaskChange } from "./task-service";

@@ -9,7 +9,7 @@ export default defineConfig({
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
       "@prometheus-ags/entity-graph-core": `${workspaceRoot}/packages/entity-graph-core/src/index.ts`,
-      "@prometheus-ags/prometheus-entity-management": `${workspaceRoot}/packages/entity-graph-react/src/index.ts`,
+      "@prometheus-ags/entity-graph-react": `${workspaceRoot}/packages/entity-graph-react/src/index.ts`,
       "@prometheus-ags/entity-graph-tauri": `${workspaceRoot}/packages/entity-graph-tauri/src/index.ts`,
     },
   },

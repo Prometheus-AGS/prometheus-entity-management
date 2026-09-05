@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { type ColumnDef } from "@tanstack/react-table";
+import { type EntityColumnDef } from "@prometheus-ags/entity-graph-react";
 import {
   textColumn,
   numberColumn,
   dateColumn,
   enumColumn,
   actionsColumn,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import { PageHeader } from "@/components/shared/ui";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -41,7 +41,7 @@ function buildDemoColumns(
   onView: (t: Task) => void,
   onEdit: (t: Task) => void,
   onDelete: (t: Task) => void,
-): ColumnDef<Task>[] {
+): EntityColumnDef<Task>[] {
   return [
     textColumn<Task>({
       field: "title",
@@ -195,7 +195,7 @@ export function UIDemoPage() {
 
 // ── Tab: Column Helpers ───────────────────────────────────────────────────
 
-function ColumnsDemo({ columns, crud }: { columns: ColumnDef<Task>[]; crud: ReturnType<typeof useTasksCrud> }) {
+function ColumnsDemo({ columns, crud }: { columns: EntityColumnDef<Task>[]; crud: ReturnType<typeof useTasksCrud> }) {
   return (
     <div className="overflow-y-auto h-full">
       <div className="max-w-4xl mx-auto px-6 py-6 flex flex-col gap-6">
@@ -288,7 +288,7 @@ function ColumnsDemo({ columns, crud }: { columns: ColumnDef<Task>[]; crud: Retu
 
 // ── Tab: EntityTable ──────────────────────────────────────────────────────
 
-function TableDemo({ crud, columns }: { crud: ReturnType<typeof useTasksCrud>; columns: ColumnDef<Task>[] }) {
+function TableDemo({ crud, columns }: { crud: ReturnType<typeof useTasksCrud>; columns: EntityColumnDef<Task>[] }) {
   return (
     <div className="flex flex-col h-full">
       <div className="px-4 py-3 bg-muted/40 shrink-0">

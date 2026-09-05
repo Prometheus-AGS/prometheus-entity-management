@@ -1,11 +1,11 @@
 {
-  "name": "@prometheus-ags/prometheus-entity-management",
-  "version": "3.2.0",
+  "name": "@prometheus-ags/entity-graph-react",
+  "version": "4.0.0",
   "description": "Normalized, globally-reactive entity graph store for React — the React bindings over @prometheus-ags/entity-graph-core. Re-exports the full core surface plus React hooks, CRUD, UI, and devtools.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "typesVersions": {
@@ -20,34 +20,16 @@
   },
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.mjs"
-      },
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      }
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.mjs"
     },
     "./devtools": {
-      "import": {
-        "types": "./dist/devtools.d.ts",
-        "default": "./dist/devtools.mjs"
-      },
-      "require": {
-        "types": "./dist/devtools.d.cts",
-        "default": "./dist/devtools.cjs"
-      }
+      "types": "./dist/devtools.d.ts",
+      "default": "./dist/devtools.mjs"
     },
     "./devtools/auto": {
-      "import": {
-        "types": "./dist/devtools/auto.d.ts",
-        "default": "./dist/devtools/auto.mjs"
-      },
-      "require": {
-        "types": "./dist/devtools/auto.d.cts",
-        "default": "./dist/devtools/auto.cjs"
-      }
+      "types": "./dist/devtools/auto.d.ts",
+      "default": "./dist/devtools/auto.mjs"
     }
   },
   "publishConfig": {
@@ -59,8 +41,7 @@
     "CHANGELOG.md"
   ],
   "sideEffects": [
-    "./dist/devtools/auto.mjs",
-    "./dist/devtools/auto.cjs"
+    "./dist/devtools/auto.mjs"
   ],
   "scripts": {
     "build": "tsup",
@@ -93,13 +74,14 @@
     }
   },
   "dependencies": {
-    "@tanstack/react-table": "^8.21.3",
+    "@tanstack/react-table": "^9.2.4",
     "@tanstack/react-virtual": "^3.14.9",
     "clsx": ">=2",
     "immer": "^11.1.15",
     "lucide-react": "^1.28.0",
     "tailwind-merge": "^3.6.0",
-    "zustand": "^5.0.14"
+    "zustand": "^5.0.14",
+    "@tanstack/table-core": "^9.2.4"
   },
   "devDependencies": {
     "@prometheus-ags/entity-graph-core": "workspace:*",

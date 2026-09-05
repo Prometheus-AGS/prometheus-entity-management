@@ -13,6 +13,10 @@ export const PUBLIC_PACKAGES = Object.freeze([
   { directory: "packages/entity-graph-htmx", name: "@prometheus-ags/entity-graph-htmx" },
   {
     directory: "packages/entity-graph-react",
+    name: "@prometheus-ags/entity-graph-react",
+  },
+  {
+    directory: "packages/prometheus-entity-management",
     name: "@prometheus-ags/prometheus-entity-management",
   },
   { directory: "packages/entity-graph-sdl", name: "@prometheus-ags/entity-graph-sdl" },
@@ -32,18 +36,22 @@ export const PACKAGE_REPOSITORY_URL =
 export const PACKAGE_BUGS_URL =
   "https://github.com/prometheus-ags/prometheus-entity-management/issues";
 
+// ESM-only as of 4.0.0.
+//
+// The dual-format contract ended when @tanstack/react-table v9 shipped
+// ESM-only ("type": "module", a single exports entry, no CJS build). A CJS
+// declaration file cannot `require` an ESM dependency's types — TS1479 — so
+// the React binding could not both re-export v9's types and ship a .d.cts.
+//
+// Rather than special-case one package, every package is ESM. That is a
+// breaking change for CommonJS consumers and is why 4.0.0 is a major.
 export const PACKAGE_ENTRYPOINT_CONTRACT = Object.freeze({
-  main: "./dist/index.cjs",
+  type: "module",
+  main: "./dist/index.mjs",
   module: "./dist/index.mjs",
   types: "./dist/index.d.ts",
   exports: {
-    import: {
-      types: "./dist/index.d.ts",
-      default: "./dist/index.mjs",
-    },
-    require: {
-      types: "./dist/index.d.cts",
-      default: "./dist/index.cjs",
-    },
+    types: "./dist/index.d.ts",
+    default: "./dist/index.mjs",
   },
 });

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { RealtimeManager, useGraphDevTools } from "@prometheus-ags/prometheus-entity-management";
+import { RealtimeManager, useGraphDevTools } from "@prometheus-ags/entity-graph-react";
 import type {
   AdapterStatus,
   ChangeSet,
@@ -7,7 +7,7 @@ import type {
   RealtimeAdapter,
   SubscriptionConfig,
   UnsubscribeFn,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import { PageHeader, Badge, StatCard } from "@/components/shared/ui";
 import { TaskStatusBadge } from "@/components/shared/entity-badges";
 import { Button } from "@/components/ui/button";

@@ -5,7 +5,7 @@ import {
   useEntityQuery,
   useGraphDevTools,
   useSuspenseEntity,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import { useProjectsList } from "@/features/projects/project-hooks";
 import { taskStore } from "@/features/tasks/task-store";
 import type { Task } from "@/types";

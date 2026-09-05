@@ -322,7 +322,7 @@ final class EntityListProvider<T extends Object>
   }
 }
 
-String _$entityListHash() => r'd1a7005a5b4570de5ab7b0abf10319fe48bb364e';
+String _$entityListHash() => r'0855ae6f1e0172fd55369c66007a63172aa72591';
 
 /// Generated Riverpod family for normalized local, remote, and hybrid lists.
 
@@ -525,7 +525,7 @@ final class EntityProvider<T extends Object>
   }
 }
 
-String _$entityHash() => r'd21d6c958b98054991ed1ad480fc0ac66edc867e';
+String _$entityHash() => r'0c78079b4d7761fb5d5ecba5e6d948f5cccc7f59';
 
 /// Generated Riverpod family for a single normalized entity.
 
@@ -716,7 +716,7 @@ final class EntityCrudProvider<T extends Object>
   }
 }
 
-String _$entityCrudHash() => r'01717bfc13974b53a62667e0dd6c86dcad6edb56';
+String _$entityCrudHash() => r'2b05d0830575e22bb237c4deeec7336550cc8223';
 
 /// Generated per-entity CRUD controller with isolated edits and optimistic
 /// graph feedback.

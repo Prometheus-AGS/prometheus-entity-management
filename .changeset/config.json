@@ -5,7 +5,7 @@
   "fixed": [
     [
       "@prometheus-ags/entity-graph-core",
-      "@prometheus-ags/prometheus-entity-management",
+      "@prometheus-ags/entity-graph-react",
       "@prometheus-ags/entity-graph-sdl",
       "@prometheus-ags/entity-graph-sync",
       "@prometheus-ags/entity-graph-svelte",
@@ -15,7 +15,8 @@
       "@prometheus-ags/entity-graph-htmx",
       "@prometheus-ags/entity-graph-a2a",
       "@prometheus-ags/a2ui-react",
-      "@prometheus-ags/entity-graph-tauri"
+      "@prometheus-ags/entity-graph-tauri",
+      "@prometheus-ags/prometheus-entity-management"
     ]
   ],
   "linked": [],
@@ -25,5 +26,8 @@
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
   },
-  "ignore": ["prometheus-entity-management-vite", "prometheus-entity-management-nextjs"]
+  "ignore": [
+    "prometheus-entity-management-vite",
+    "prometheus-entity-management-nextjs"
+  ]
 }

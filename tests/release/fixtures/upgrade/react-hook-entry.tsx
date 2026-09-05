@@ -4,13 +4,13 @@
  * Proves the "after" state of the migration documented in
  * site/docs/migration/v2-to-v3.mdx ("React hook import"): React consumers keep
  * a callable `useGraphStore(selector)` hook, imported from the React package
- * (`@prometheus-ags/prometheus-entity-management`), which subscribes to the
+ * (`@prometheus-ags/entity-graph-react`), which subscribes to the
  * same vanilla singleton that core exposes imperatively.
  */
 import {
   graphStore,
   useGraphStore,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 
 export function ProjectName(props: { id: string }) {
   const project = useGraphStore((state) =>

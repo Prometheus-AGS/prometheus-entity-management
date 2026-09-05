@@ -17,11 +17,11 @@
  *   normalize: (raw) => ({ id: raw.id, data: raw }),
  * });
  *
- * const table = useReactTable({
+ * const table = useTable({
+ *   features: tableFeatures({ rowSortingFeature }),
  *   data: tableProps.data,
  *   rowCount: tableProps.rowCount,
  *   columns,
- *   getCoreRowModel: getCoreRowModel(),
  * });
  * ```
  */

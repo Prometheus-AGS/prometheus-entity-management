@@ -26,7 +26,7 @@ import {
   useReleaseShowcase,
   useShowcaseSuspenseTask,
 } from "@/features/release-showcase/release-showcase-hooks";
-import type { CompletenessMode } from "@prometheus-ags/prometheus-entity-management";
+import type { CompletenessMode } from "@prometheus-ags/entity-graph-react";
 
 export interface IsolationProof {
   requestId: string;

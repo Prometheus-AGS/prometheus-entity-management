@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { useGraphStore, useGraphSyncStatus } from "@prometheus-ags/prometheus-entity-management";
+import { useGraphStore, useGraphSyncStatus } from "@prometheus-ags/entity-graph-react";
 import { useShallow } from "zustand/react/shallow";
 import {
   ENTITY_TYPES,

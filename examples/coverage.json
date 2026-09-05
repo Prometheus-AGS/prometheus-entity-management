@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "release": "3.2.0",
+  "release": "4.0.0",
   "contract": "release/v3-release-contract.json",
   "status": "in-progress",
   "semanticContract": {
@@ -440,6 +440,7 @@
       "artifactIds": [
         "npm-core",
         "npm-react",
+        "npm-react-alias",
         "npm-svelte",
         "npm-solid",
         "npm-web-components",
@@ -497,6 +498,7 @@
       "artifactIds": [
         "npm-core",
         "npm-react",
+        "npm-react-alias",
         "dart-flutter"
       ],
       "scenarioIds": [
@@ -549,6 +551,7 @@
       "artifactIds": [
         "npm-core",
         "npm-react",
+        "npm-react-alias",
         "dart-flutter"
       ],
       "scenarioIds": [
@@ -615,6 +618,7 @@
       "artifactIds": [
         "npm-core",
         "npm-react",
+        "npm-react-alias",
         "dart-flutter"
       ],
       "scenarioIds": [
@@ -655,6 +659,7 @@
       "artifactIds": [
         "npm-core",
         "npm-react",
+        "npm-react-alias",
         "npm-svelte",
         "npm-solid",
         "npm-web-components",
@@ -712,6 +717,7 @@
       "artifactIds": [
         "npm-core",
         "npm-react",
+        "npm-react-alias",
         "npm-htmx",
         "dart-flutter"
       ],
@@ -864,6 +870,7 @@
       "artifactIds": [
         "npm-core",
         "npm-react",
+        "npm-react-alias",
         "dart-flutter"
       ],
       "scenarioIds": [
@@ -904,6 +911,7 @@
       "artifactIds": [
         "npm-core",
         "npm-react",
+        "npm-react-alias",
         "npm-svelte",
         "npm-solid",
         "npm-web-components",
@@ -1032,6 +1040,7 @@
       "artifactIds": [
         "npm-core",
         "npm-react",
+        "npm-react-alias",
         "npm-htmx"
       ],
       "scenarioIds": [
@@ -1307,7 +1316,8 @@
       "stability": "stable",
       "artifactIds": [
         "npm-core",
-        "npm-react"
+        "npm-react",
+        "npm-react-alias"
       ],
       "scenarioIds": [
         "example.runtime.lifecycle-security"

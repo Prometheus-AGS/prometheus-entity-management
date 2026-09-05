@@ -11,7 +11,7 @@ export default defineConfig({
       "@prometheus-ags/a2ui-react": `${workspaceRoot}/packages/a2ui-react/src/index.ts`,
       "@prometheus-ags/entity-graph-a2a": `${workspaceRoot}/packages/entity-graph-a2a/src/index.ts`,
       "@prometheus-ags/entity-graph-core": `${workspaceRoot}/packages/entity-graph-core/src/index.ts`,
-      "@prometheus-ags/prometheus-entity-management": `${workspaceRoot}/packages/entity-graph-react/src/index.ts`,
+      "@prometheus-ags/entity-graph-react": `${workspaceRoot}/packages/entity-graph-react/src/index.ts`,
     },
   },
   test: {

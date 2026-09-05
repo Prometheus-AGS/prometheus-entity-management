@@ -6,12 +6,12 @@ import {
   useEntity,
   useEntityMutation,
   useGraphStoreApi,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import type {
   ChangeSet,
   RealtimeAdapter,
   UnsubscribeFn,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import { confirmTaskUpdate } from "./task-actions";
 import type { Task } from "@/types";
 

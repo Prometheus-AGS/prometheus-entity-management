@@ -5,7 +5,7 @@ import {
   RealtimeManager,
   useGraphStoreApi,
   type ManagerOptions,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 
 export function useScopedRealtimeManager(options: Omit<ManagerOptions, "store">) {
   const store = useGraphStoreApi();

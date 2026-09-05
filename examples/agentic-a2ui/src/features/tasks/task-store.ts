@@ -7,7 +7,7 @@ import { graphStore } from "@prometheus-ags/entity-graph-core";
 import {
   getRealtimeManager,
   resetRealtimeManager,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 import { create } from "zustand";
 import { LIST_KEYS, demoTasks } from "../../lib/demo-data";
 import { auditLog } from "../../lib/audit-store";

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import {
   useGraphStore,
   useGraphStoreApi,
-} from "@prometheus-ags/prometheus-entity-management";
+} from "@prometheus-ags/entity-graph-react";
 
 export type BridgeDemoPost = { id: string; title: string };
 

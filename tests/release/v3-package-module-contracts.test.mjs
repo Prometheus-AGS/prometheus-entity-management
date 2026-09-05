@@ -11,7 +11,6 @@ import {
   validateTarballFileList,
 } from "../../scripts/package-contract-validation.mjs";
 import { PUBLIC_PACKAGES } from "../../scripts/public-packages.mjs";
-import { rewriteLitCjsDeclarations } from "../../scripts/rewrite-lit-cjs-declarations.mjs";
 
 const root = process.cwd();
 const requiredFiles = [
@@ -19,9 +18,7 @@ const requiredFiles = [
   "README.md",
   "CHANGELOG.md",
   "dist/index.mjs",
-  "dist/index.cjs",
   "dist/index.d.ts",
-  "dist/index.d.cts",
 ];
 
 async function readManifest(publicPackage) {
@@ -30,9 +27,9 @@ async function readManifest(publicPackage) {
   );
 }
 
-test("all twelve public manifests satisfy the shared package contract", async () => {
-  assert.equal(PUBLIC_PACKAGES.length, 12);
-  assert.equal(new Set(PUBLIC_PACKAGES.map(({ name }) => name)).size, 12);
+test("all thirteen public manifests satisfy the shared package contract", async () => {
+  assert.equal(PUBLIC_PACKAGES.length, 13);
+  assert.equal(new Set(PUBLIC_PACKAGES.map(({ name }) => name)).size, 13);
 
   for (const publicPackage of PUBLIC_PACKAGES) {
     validateManifest(publicPackage, await readManifest(publicPackage));
@@ -48,7 +45,7 @@ test("loader and declaration drift fails with a package-specific error", async (
   assert.throws(() => validateManifest(publicPackage, wrongMain), /invalid main/);
 
   const sharedTypes = structuredClone(baseline);
-  sharedTypes.exports["."].require.types = "./dist/index.d.ts";
+  sharedTypes.exports["."].types = "./dist/index.d.cts";
   assert.throws(
     () => validateManifest(publicPackage, sharedTypes),
     /conditional exports do not match the release contract/,
@@ -59,13 +56,19 @@ test("loader and declaration drift fails with a package-specific error", async (
   assert.throws(() => validateManifest(publicPackage, missingReadme), /README must be packed/);
 });
 
-test("tarball allowlists require both loaders and both declarations", () => {
+test("tarball allowlists require the ESM loader and reject CommonJS artifacts", () => {
   const publicPackage = PUBLIC_PACKAGES[0];
   validateTarballFileList(publicPackage, requiredFiles);
 
   assert.throws(
-    () => validateTarballFileList(publicPackage, requiredFiles.filter((file) => file !== "dist/index.cjs")),
-    /tarball is missing dist\/index\.cjs/,
+    () => validateTarballFileList(publicPackage, requiredFiles.filter((file) => file !== "dist/index.mjs")),
+    /tarball is missing dist\/index\.mjs/,
+  );
+  // ESM-only as of 4.0.0: a stray CJS artifact means a package escaped the
+  // shared tsup config and ships a format its exports map does not declare.
+  assert.throws(
+    () => validateTarballFileList(publicPackage, [...requiredFiles, "dist/index.cjs"]),
+    /ESM-only, but tarball ships dist\/index\.cjs/,
   );
   assert.throws(
     () => validateTarballFileList(publicPackage, [...requiredFiles, "src/index.ts"]),
@@ -174,7 +177,7 @@ test("the React package installs its unconditional TanStack Table runtime", asyn
   assert.ok(reactPackage);
   const manifest = await readManifest(reactPackage);
 
-  assert.equal(manifest.dependencies?.["@tanstack/react-table"], "^8.21.3");
+  assert.equal(manifest.dependencies?.["@tanstack/react-table"], "^9.2.4");
   assert.equal(manifest.peerDependencies?.["@tanstack/react-table"], undefined);
   assert.equal(manifest.peerDependenciesMeta?.["@tanstack/react-table"], undefined);
 
@@ -192,34 +195,6 @@ test("every tsup config consumes the central loader-extension contract", async (
   }
 
   const shared = await readFile(join(root, "scripts", "tsup-package-config.ts"), "utf8");
-  assert.match(shared, /format === "esm" \? "\.mjs" : "\.cjs"/);
-});
-
-test("the Lit CommonJS declaration rewrite is explicit and fail-closed", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "lit-declaration-test-"));
-  const declaration = join(directory, "index.d.cts");
-  const header = [
-    "import * as lit from 'lit';",
-    "import { ReactiveController, ReactiveControllerHost, LitElement, nothing } from 'lit';",
-  ].join("\n");
-
-  try {
-    await writeFile(
-      declaration,
-      `${header}\ndeclare class Example extends LitElement { static styles: lit.CSSResult; render(): typeof nothing | lit.TemplateResult<1>; }\n`,
-    );
-    await rewriteLitCjsDeclarations(declaration);
-    const rewritten = await readFile(declaration, "utf8");
-    assert.doesNotMatch(rewritten, /^import .* from 'lit';/m);
-    assert.match(rewritten, /"resolution-mode": "import"/);
-    assert.doesNotMatch(rewritten, /\blit\./);
-
-    await writeFile(declaration, "import { LitElement } from 'lit';\n");
-    await assert.rejects(
-      rewriteLitCjsDeclarations(declaration),
-      /generated Lit declaration header changed/,
-    );
-  } finally {
-    await rm(directory, { recursive: true, force: true });
-  }
+  assert.match(shared, /format: \["esm"\]/);
+  assert.match(shared, /js: "\.mjs"/);
 });

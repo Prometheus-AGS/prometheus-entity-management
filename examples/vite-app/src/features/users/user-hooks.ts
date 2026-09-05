@@ -1,5 +1,5 @@
-import { useEntity, useEntityCRUD, useEntityList } from "@prometheus-ags/prometheus-entity-management";
-import type { ViewDescriptor } from "@prometheus-ags/prometheus-entity-management";
+import { useEntity, useEntityCRUD, useEntityList } from "@prometheus-ags/entity-graph-react";
+import type { ViewDescriptor } from "@prometheus-ags/entity-graph-react";
 import { userStore } from "./user-store";
 import type { UserListParams } from "@/features/demo-backend/demo-backend-store";
 import type { User } from "@/types";
