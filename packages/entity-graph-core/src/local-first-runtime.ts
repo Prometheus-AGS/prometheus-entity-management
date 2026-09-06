@@ -43,12 +43,25 @@ export interface PersistGraphToStorageOptions {
   key: string;
   store?: GraphStore;
   pendingActions?: GraphActionRecord[];
+  /**
+   * The runtime whose status this write reports to. Omit for standalone calls,
+   * which fall back to the process-wide status store.
+   */
+  scope?: RuntimeScope;
 }
 
 export interface HydrateGraphFromStorageOptions {
   storage: GraphPersistenceAdapter;
   key: string;
   store?: GraphStore;
+  /**
+   * The runtime that owns the pending-action set this hydrate populates.
+   *
+   * Without a scope, hydrate writes into the process-wide fallback set — which
+   * is what made a second runtime's hydrate erase the first runtime's
+   * un-settled actions. A runtime always passes its own scope.
+   */
+  scope?: RuntimeScope;
 }
 
 /**
@@ -84,6 +97,11 @@ export interface StartLocalFirstGraphOptions {
   persistDebounceMs?: number;
   /** Retry-with-backoff policy for offline action replay. */
   retryPolicy?: ReplayRetryPolicy;
+  /**
+   * Pre-built scope for this runtime. Omit and one is created — the normal
+   * case. Supply one only to share state deliberately (e.g. in a test).
+   */
+  scope?: RuntimeScope;
 }
 
 export interface LocalFirstGraphRuntime {
@@ -92,6 +110,11 @@ export interface LocalFirstGraphRuntime {
   persistNow: () => Promise<void>;
   hydrate: () => Promise<Awaited<ReturnType<typeof hydrateGraphFromStorage>>>;
   getStatus: () => GraphSyncStatus;
+  /**
+   * This runtime's own state. Read `scope.statusStore` for status isolated from
+   * every other runtime in the process.
+   */
+  scope: RuntimeScope;
 }
 
 const DEFAULT_STORAGE_KEY = "prometheus:graph";
@@ -116,7 +139,67 @@ export const graphSyncStatusStore = createStore<{ status: GraphSyncStatus; setSt
     })),
 }));
 
-const pendingActions = new Map<string, GraphActionRecord>();
+/**
+ * Per-runtime state: the pending-action set and the status store that runtime
+ * publishes to.
+ *
+ * Both were previously module-level singletons shared by every runtime in the
+ * process. That was not merely shared state — `hydrateGraphFromStorage` clears
+ * the pending set before repopulating it, so a second runtime hydrating erased
+ * the first runtime's un-settled actions. On an account or practice switch that
+ * is silent write loss, which is why this is scoped per runtime (ADR-009 G1).
+ */
+export interface RuntimeScope {
+  pendingActions: Map<string, GraphActionRecord>;
+  statusStore: GraphSyncStatusStore;
+}
+
+export type GraphSyncStatusStore = ReturnType<typeof createGraphSyncStatusStore>;
+
+/** Create an independent sync-status store. Each runtime owns one. */
+export function createGraphSyncStatusStore() {
+  return createStore<{
+    status: GraphSyncStatus;
+    setStatus: (status: Partial<GraphSyncStatus>) => void;
+  }>()((set) => ({
+    status: {
+      phase: "idle",
+      isOnline: true,
+      isSynced: true,
+      pendingActions: 0,
+      lastHydratedAt: null,
+      lastPersistedAt: null,
+      storageKey: null,
+      error: null,
+    },
+    setStatus: (status) =>
+      set((state) => ({ status: { ...state.status, ...status } })),
+  }));
+}
+
+/** Create an isolated runtime scope. */
+export function createRuntimeScope(): RuntimeScope {
+  return {
+    pendingActions: new Map<string, GraphActionRecord>(),
+    statusStore: createGraphSyncStatusStore(),
+  };
+}
+
+/**
+ * Process-wide fallback scope, used only by standalone calls to the exported
+ * `persistGraphToStorage` / `hydrateGraphFromStorage` helpers that pass no
+ * `scope`. Runtimes never use it. It also backs the legacy
+ * `graphSyncStatusStore` export so existing consumers keep working.
+ */
+const fallbackScope: RuntimeScope = {
+  pendingActions: new Map<string, GraphActionRecord>(),
+  statusStore: graphSyncStatusStore,
+};
+
+/** Resolve the scope for an operation, defaulting to the process-wide one. */
+function resolveScope(scope?: RuntimeScope): RuntimeScope {
+  return scope ?? fallbackScope;
+}
 
 export function getGraphSyncStatus() {
   return graphSyncStatusStore.getState().status;
@@ -124,15 +207,16 @@ export function getGraphSyncStatus() {
 
 export async function persistGraphToStorage(opts: PersistGraphToStorageOptions) {
   const storeApi = opts.store ?? graphStore;
+  const scope = resolveScope(opts.scope);
   const payload: GraphSnapshotPayload = {
     version: 1,
     snapshot: cloneGraphSnapshot(storeApi),
-    pendingActions: opts.pendingActions ?? Array.from(pendingActions.values()),
+    pendingActions: opts.pendingActions ?? Array.from(scope.pendingActions.values()),
   };
   const json = JSON.stringify(payload);
   await opts.storage.set(opts.key, json);
   const persistedAt = new Date().toISOString();
-  graphSyncStatusStore.getState().setStatus({
+  scope.statusStore.getState().setStatus({
     lastPersistedAt: persistedAt,
     storageKey: opts.key,
     pendingActions: payload.pendingActions.length,
@@ -147,6 +231,7 @@ export async function persistGraphToStorage(opts: PersistGraphToStorageOptions) 
 
 export async function hydrateGraphFromStorage(opts: HydrateGraphFromStorageOptions) {
   const storeApi = opts.store ?? graphStore;
+  const scope = resolveScope(opts.scope);
   const raw = await opts.storage.get(opts.key);
   if (!raw) {
     return {
@@ -161,13 +246,15 @@ export async function hydrateGraphFromStorage(opts: HydrateGraphFromStorageOptio
   try {
     const parsed = JSON.parse(raw) as GraphSnapshotPayload;
     storeApi.setState(parsed.snapshot as Partial<ReturnType<typeof graphStore.getState>>);
-    pendingActions.clear();
-    for (const action of parsed.pendingActions ?? []) pendingActions.set(action.id, action);
+    // Scoped: this clears only THIS runtime's pending set. Before scoping, a
+    // second runtime hydrating wiped the first runtime's un-settled actions.
+    scope.pendingActions.clear();
+    for (const action of parsed.pendingActions ?? []) scope.pendingActions.set(action.id, action);
     const hydratedAt = new Date().toISOString();
-    graphSyncStatusStore.getState().setStatus({
+    scope.statusStore.getState().setStatus({
       lastHydratedAt: hydratedAt,
       storageKey: opts.key,
-      pendingActions: pendingActions.size,
+      pendingActions: scope.pendingActions.size,
       error: null,
     });
     return {
@@ -177,11 +264,11 @@ export async function hydrateGraphFromStorage(opts: HydrateGraphFromStorageOptio
       entityCounts: Object.fromEntries(
         Object.entries(parsed.snapshot.entities).map(([type, entities]) => [type, Object.keys(entities).length]),
       ),
-      pendingActions: Array.from(pendingActions.values()),
+      pendingActions: Array.from(scope.pendingActions.values()),
     };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    graphSyncStatusStore.getState().setStatus({
+    scope.statusStore.getState().setStatus({
       phase: "error",
       error: message,
       storageKey: opts.key,
@@ -200,8 +287,22 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
   const storeApi = opts.store ?? graphStore;
   const key = opts.key ?? DEFAULT_STORAGE_KEY;
   const persistDebounceMs = opts.persistDebounceMs ?? 50;
-  const statusStore = graphSyncStatusStore.getState();
-  statusStore.setStatus({
+  // This runtime's own state. Two runtimes in one process no longer share a
+  // pending set, so neither can erase the other's un-settled actions (G1).
+  const scope = opts.scope ?? createRuntimeScope();
+  const { pendingActions } = scope;
+  // Mirror status to the legacy process-wide store as well, so existing
+  // consumers of `graphSyncStatusStore` / `useGraphSyncStatus` keep observing
+  // a runtime's status when only one runtime exists. With several runtimes the
+  // last writer wins there, which is why per-runtime status is read through
+  // `runtime.getStatus()` or the scope's own store.
+  const setStatus = (status: Partial<GraphSyncStatus>) => {
+    scope.statusStore.getState().setStatus(status);
+    if (scope.statusStore !== graphSyncStatusStore) {
+      graphSyncStatusStore.getState().setStatus(status);
+    }
+  };
+  setStatus({
     phase: "hydrating",
     storageKey: key,
     isOnline: opts.onlineSource?.getIsOnline() ?? getDefaultOnlineSource().getIsOnline(),
@@ -213,7 +314,7 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
   const schedulePersist = () => {
     if (persistTimer) clearTimeout(persistTimer);
     persistTimer = setTimeout(() => {
-      void persistGraphToStorage({ storage: opts.storage, key, store: storeApi });
+      void persistGraphToStorage({ storage: opts.storage, key, store: storeApi, scope });
     }, persistDebounceMs);
   };
 
@@ -224,7 +325,7 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
   const actionUnsub = subscribeGraphActionEvents((event) => {
     if (event.type === "enqueued") pendingActions.set(event.record.id, event.record);
     if (event.type === "settled") pendingActions.delete(event.record.id);
-    graphSyncStatusStore.getState().setStatus({
+    setStatus({
       pendingActions: pendingActions.size,
       isSynced: pendingActions.size === 0,
     });
@@ -233,16 +334,16 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
 
   const onlineSource = opts.onlineSource ?? getDefaultOnlineSource();
   const onlineUnsub = onlineSource.subscribe((online) => {
-    graphSyncStatusStore.getState().setStatus({
+    setStatus({
       isOnline: online,
       phase: online ? "ready" : "offline",
     });
   });
 
   const ready = (async () => {
-    const hydrated = await hydrateGraphFromStorage({ storage: opts.storage, key, store: storeApi });
+    const hydrated = await hydrateGraphFromStorage({ storage: opts.storage, key, store: storeApi, scope });
     if (opts.replayPendingActions && hydrated.ok && pendingActions.size > 0) {
-      graphSyncStatusStore.getState().setStatus({
+      setStatus({
         phase: "syncing",
         isSynced: false,
       });
@@ -253,11 +354,11 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
         // poison handler (if any) owns escalation from here.
         pendingActions.delete(action.id);
       }
-      await persistGraphToStorage({ storage: opts.storage, key, store: storeApi });
+      await persistGraphToStorage({ storage: opts.storage, key, store: storeApi, scope });
     }
 
     const online = onlineSource.getIsOnline();
-    graphSyncStatusStore.getState().setStatus({
+    setStatus({
       phase: online ? "ready" : "offline",
       isOnline: online,
       isSynced: pendingActions.size === 0,
@@ -274,14 +375,16 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
       if (persistTimer) clearTimeout(persistTimer);
     },
     async persistNow() {
-      await persistGraphToStorage({ storage: opts.storage, key, store: storeApi });
+      await persistGraphToStorage({ storage: opts.storage, key, store: storeApi, scope });
     },
     hydrate() {
-      return hydrateGraphFromStorage({ storage: opts.storage, key, store: storeApi });
+      return hydrateGraphFromStorage({ storage: opts.storage, key, store: storeApi, scope });
     },
     getStatus() {
-      return graphSyncStatusStore.getState().status;
+      // This runtime's own status, not whichever runtime wrote last.
+      return scope.statusStore.getState().status;
     },
+    scope,
   };
 }
 

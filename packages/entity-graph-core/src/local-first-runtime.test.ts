@@ -166,3 +166,97 @@ describe("scoped local-first persistence", () => {
     expect(graphStore.getState().readEntity("Replay", "r1")).toBeNull();
   });
 });
+
+/**
+ * ADR-009 G1 — runtime-scoped state.
+ *
+ * These are regressions for a data-loss defect, not a style preference.
+ * `pendingActions` and the sync-status store were module-level singletons, so
+ * two runtimes in one process shared them. `hydrateGraphFromStorage` clears the
+ * pending set before repopulating it, which meant a second runtime hydrating
+ * **erased the first runtime's un-settled actions** — silent write loss on an
+ * account or practice switch.
+ */
+describe("runtime-scoped state (ADR-009 G1)", () => {
+  /** A storage adapter over a plain map, one per test. */
+  function memoryStorage(seed: Record<string, string> = {}) {
+    const map = new Map<string, string>(Object.entries(seed));
+    return {
+      get: (key: string) => map.get(key) ?? null,
+      set: (key: string, value: string) => void map.set(key, value),
+      map,
+    };
+  }
+
+  /** A persisted payload carrying one pending action. */
+  function snapshotWithPending(id: string): string {
+    return JSON.stringify({
+      version: 1,
+      snapshot: { entities: {}, patches: {}, entityStates: {}, syncMetadata: {}, lists: {} },
+      pendingActions: [{ id, key: "demo", input: {}, enqueuedAt: "now" }],
+    });
+  }
+
+  it("gives two runtimes independent pending sets", async () => {
+    const a = startLocalFirstGraph({ storage: memoryStorage(), store: createGraphStore(), key: "a" });
+    const b = startLocalFirstGraph({ storage: memoryStorage(), store: createGraphStore(), key: "b" });
+    await Promise.all([a.ready, b.ready]);
+
+    expect(a.scope.pendingActions).not.toBe(b.scope.pendingActions);
+    expect(a.scope.statusStore).not.toBe(b.scope.statusStore);
+
+    a.scope.pendingActions.set("only-a", action);
+    expect(b.scope.pendingActions.has("only-a")).toBe(false);
+
+    a.dispose();
+    b.dispose();
+  });
+
+  it("does not let one runtime's hydrate erase another's pending actions", async () => {
+    // The defect this change exists to fix. Runtime A holds an un-settled
+    // action; runtime B then hydrates. Before scoping, B's hydrate called
+    // pendingActions.clear() on the shared map and A's action vanished.
+    const a = startLocalFirstGraph({ storage: memoryStorage(), store: createGraphStore(), key: "a" });
+    await a.ready;
+    a.scope.pendingActions.set("a-unsettled", action);
+
+    const b = startLocalFirstGraph({
+      storage: memoryStorage({ b: snapshotWithPending("b-pending") }),
+      store: createGraphStore(),
+      key: "b",
+    });
+    await b.ready;
+    await b.hydrate();
+
+    expect(a.scope.pendingActions.has("a-unsettled")).toBe(true);
+    expect(b.scope.pendingActions.has("a-unsettled")).toBe(false);
+    expect(b.scope.pendingActions.has("b-pending")).toBe(true);
+
+    a.dispose();
+    b.dispose();
+  });
+
+  it("reports each runtime's own status, not whichever wrote last", async () => {
+    const a = startLocalFirstGraph({ storage: memoryStorage(), store: createGraphStore(), key: "key-a" });
+    const b = startLocalFirstGraph({ storage: memoryStorage(), store: createGraphStore(), key: "key-b" });
+    await Promise.all([a.ready, b.ready]);
+
+    expect(a.getStatus().storageKey).toBe("key-a");
+    expect(b.getStatus().storageKey).toBe("key-b");
+
+    a.dispose();
+    b.dispose();
+  });
+
+  it("keeps standalone helpers working without a scope", async () => {
+    // The exported helpers are public API and are called outside any runtime.
+    // They fall back to a process-wide scope rather than requiring one.
+    const storage = memoryStorage();
+    const store = createGraphStore();
+    const persisted = await persistGraphToStorage({ storage, key: "standalone", store });
+    expect(persisted.ok).toBe(true);
+
+    const hydrated = await hydrateGraphFromStorage({ storage, key: "standalone", store });
+    expect(hydrated.ok).toBe(true);
+  });
+});

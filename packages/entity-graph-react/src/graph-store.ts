@@ -118,9 +118,18 @@ export const useGraphStore = new Proxy(useBoundGraphStore, {
   },
 }) as unknown as BoundGraphStore;
 
-/** React subscription hook for the framework-neutral sync status store. */
-export function useGraphSyncStatus(): GraphSyncStatus {
-  return useStore(graphSyncStatusStore, (state) => state.status);
+/**
+ * React subscription hook for sync status.
+ *
+ * Pass a runtime to observe **that runtime's** status. Called with no argument
+ * it reads the process-wide store, which is correct for a single-runtime app
+ * but reports whichever runtime wrote last when several coexist — so an app
+ * that switches account or practice should pass its runtime (ADR-009 G1).
+ */
+export function useGraphSyncStatus(
+  runtime?: { scope: { statusStore: typeof graphSyncStatusStore } },
+): GraphSyncStatus {
+  return useStore(runtime?.scope.statusStore ?? graphSyncStatusStore, (state) => state.status);
 }
 
 export { createGraphStore, graphStore, graphSyncStatusStore };

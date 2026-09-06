@@ -75,12 +75,15 @@ export type { GraphSnapshotExportOptions, GraphToolContext, SchemaGraphToolConte
 
 // ── Local-first runtime ───────────────────────────────────────────────────
 export {
-  startLocalFirstGraph, hydrateGraphFromStorage, persistGraphToStorage,
+  startLocalFirstGraph,
+  createRuntimeScope,
+  createGraphSyncStatusStore, hydrateGraphFromStorage, persistGraphToStorage,
   replayActionWithRetry, graphSyncStatusStore, getGraphSyncStatus,
 } from "./local-first-runtime";
 export type {
   GraphPersistenceAdapter, GraphSyncStatus, GraphSnapshotPayload,
   StartLocalFirstGraphOptions, LocalFirstGraphRuntime, ReplayRetryPolicy,
+  RuntimeScope, GraphSyncStatusStore,
 } from "./local-first-runtime";
 
 // ── Engine ────────────────────────────────────────────────────────────────
