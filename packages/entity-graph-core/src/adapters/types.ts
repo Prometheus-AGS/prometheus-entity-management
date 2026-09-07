@@ -25,6 +25,19 @@ export interface ChangeSet<T = Record<string, unknown>> {
   changes: EntityChange<T>[];
   affectedListKeys?: string[];
   timestamp?: string;
+  /**
+   * The transport's resume position for this batch, when it has one.
+   *
+   * For ElectricSQL this is the shape handle plus the offset of the last
+   * message in the batch — the pair a consumer echoes back to resume. It is
+   * **batch-level, not per-change**: a resume position describes a boundary
+   * between batches, not a point inside one.
+   *
+   * Absent for transports with no resume semantics (a Postgres LISTEN/NOTIFY
+   * frame, for instance, carries no Electric offset). Absent is meaningful —
+   * it means "this batch cannot be checkpointed", not "offset zero".
+   */
+  cursor?: { handle: string; offset: string };
 }
 
 // ---------------------------------------------------------------------------

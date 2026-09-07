@@ -159,7 +159,11 @@ export { createElectricAdapter, getRealtimeManager as getElectricRealtimeManager
 export type { ElectricAdapterOptions, ElectricTableConfig } from "./adapters/electricsql";
 export { createTenantScopedElectricAdapter, buildTenantWhere } from "./adapters/electricsql-tenant";
 export type { TenantClaim, TenantScopedAdapterOptions, TenantScopedTableConfig } from "./adapters/electricsql-tenant";
-export { createPGlitePersistenceAdapter } from "./adapters/pglite-persistence";
+export { createPGlitePersistenceAdapter, evaluateResume } from "./adapters/pglite-persistence";
+export type {
+  ReplicaCheckpoint, CheckpointedWrite, CheckpointingPersistenceAdapter,
+  ResumeDecision, ResumeRejection,
+} from "./adapters/pglite-persistence";
 export type { PGlitePersistenceClient, CreatePGlitePersistenceAdapterOptions } from "./adapters/pglite-persistence";
 export { createTauriSqlPersistenceAdapter } from "./adapters/tauri-sql-persistence";
 export type { TauriSqlClient, CreateTauriSqlPersistenceAdapterOptions } from "./adapters/tauri-sql-persistence";

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { createPGlitePersistenceAdapter, type PGlitePersistenceClient } from "./pglite-persistence";
+import { createPGlitePersistenceAdapter, evaluateResume, type PGlitePersistenceClient } from "./pglite-persistence";
 
 interface RecordedCall {
   kind: "query" | "exec";
@@ -76,5 +76,114 @@ describe("createPGlitePersistenceAdapter", () => {
     const delCall = calls.find((c) => c.kind === "query" && /DELETE FROM/.test(c.sql));
     expect(delCall).toBeDefined();
     expect(delCall?.params).toEqual(["k"]);
+  });
+});
+
+/**
+ * ADR-009 G3 — rows and resume checkpoint commit together.
+ *
+ * The window this closes: `set(rows)` then `setCheckpoint(pos)` is two
+ * transactions, and a crash between them leaves rows whose resume position is
+ * unknown. Resuming such a replica silently mixes two generations.
+ */
+describe("checkpoint atomicity (ADR-009 G3)", () => {
+  it("writes rows and checkpoint in ONE statement", async () => {
+    const { client, calls } = makeMockPGlite();
+    const adapter = await createPGlitePersistenceAdapter(client);
+
+    await adapter.setWithCheckpoint({
+      key: "replica",
+      value: "{}",
+      checkpoint: { handle: "h-1", offset: "42", generation: 1 },
+    });
+
+    // One statement carrying both. Two writes here would be the defect.
+    const writes = calls.filter(
+      (c) => c.kind === "query" && /INSERT INTO/.test(c.sql),
+    );
+    expect(writes).toHaveLength(1);
+    expect(writes[0]?.sql).toMatch(/checkpoint_handle/);
+    expect(writes[0]?.params).toEqual(["replica", "{}", "h-1", "42", 1]);
+  });
+
+  it("adds checkpoint columns to an existing table", async () => {
+    // An installed base already has the table; the columns must migrate in
+    // place rather than requiring a drop.
+    const { client, calls } = makeMockPGlite();
+    await createPGlitePersistenceAdapter(client);
+
+    const alter = calls.find((c) => c.kind === "exec" && /ALTER TABLE/.test(c.sql));
+    expect(alter?.sql).toMatch(/ADD COLUMN IF NOT EXISTS checkpoint_handle/);
+  });
+
+  it("reports no checkpoint for a row written by plain set", async () => {
+    // "Rows exist, position unknown" — which must read as rebuild, not as
+    // offset zero.
+    const { client } = makeMockPGlite([
+      { checkpoint_handle: null, checkpoint_offset: null, checkpoint_generation: null },
+    ]);
+    const adapter = await createPGlitePersistenceAdapter(client);
+    await expect(adapter.getCheckpoint("replica")).resolves.toBeNull();
+  });
+
+  it("round-trips a stored checkpoint", async () => {
+    const { client } = makeMockPGlite([
+      { checkpoint_handle: "h-9", checkpoint_offset: "17", checkpoint_generation: 3 },
+    ]);
+    const adapter = await createPGlitePersistenceAdapter(client);
+    await expect(adapter.getCheckpoint("replica")).resolves.toEqual({
+      handle: "h-9",
+      offset: "17",
+      generation: 3,
+    });
+  });
+});
+
+describe("evaluateResume (ADR-009 G3)", () => {
+  const checkpoint = { handle: "h-1", offset: "42", generation: 1 };
+
+  it("resumes when value, generation and handle all agree", () => {
+    expect(
+      evaluateResume({ value: "{}", checkpoint }, { generation: 1, handle: "h-1" }),
+    ).toEqual({ action: "resume", checkpoint });
+  });
+
+  it("rebuilds when rows exist without a checkpoint", () => {
+    // The interruption case: a crash after the rows landed but before a
+    // checkpoint could describe them.
+    expect(evaluateResume({ value: "{}", checkpoint: null }, { generation: 1 })).toEqual({
+      action: "rebuild",
+      reason: "no-checkpoint",
+    });
+  });
+
+  it("rebuilds when the checkpoint belongs to an earlier generation", () => {
+    expect(
+      evaluateResume({ value: "{}", checkpoint }, { generation: 2 }),
+    ).toEqual({ action: "rebuild", reason: "stale-generation" });
+  });
+
+  it("rebuilds when the server issued a new shape handle", () => {
+    // Old offsets are meaningless against a new handle; resuming would apply
+    // them to a different stream.
+    expect(
+      evaluateResume({ value: "{}", checkpoint }, { generation: 1, handle: "h-2" }),
+    ).toEqual({ action: "rebuild", reason: "handle-changed" });
+  });
+
+  it("reports a cold start as a rebuild, not a fault", () => {
+    expect(evaluateResume({ value: null, checkpoint: null }, { generation: 1 })).toEqual({
+      action: "rebuild",
+      reason: "no-value",
+    });
+  });
+
+  it("does not compare a handle the caller has not got yet", () => {
+    // Resuming before the server has issued a handle is legitimate; only a
+    // *mismatch* invalidates.
+    expect(evaluateResume({ value: "{}", checkpoint }, { generation: 1 })).toEqual({
+      action: "resume",
+      checkpoint,
+    });
   });
 });

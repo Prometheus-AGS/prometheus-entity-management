@@ -29,6 +29,13 @@ interface ShapeMessage<T = Record<string, unknown>> {
 interface ShapeStream<T = Record<string, unknown>> {
   subscribe(onMsg: (msgs: ShapeMessage<T>[]) => void, onErr?: (e: Error) => void): () => void;
   isUpToDate: boolean; lastOffset: string;
+  /**
+   * Electric's handle for this shape. Optional because this is a structural
+   * type over the real client and older streams may not expose it — a batch
+   * without a handle yields no cursor rather than a half-formed one, since a
+   * resume needs BOTH handle and offset.
+   */
+  shapeHandle?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -76,7 +83,14 @@ export function createElectricAdapter(opts: ElectricAdapterOptions): SyncAdapter
     shapeUnsubs.push(tc.shapeStream.subscribe((msgs) => {
       if (!globalHandler) return;
       const changes = msgs.map((m) => toChange(tc as ElectricTableConfig<Record<string, unknown>>, m as ShapeMessage<Record<string, unknown>>)).filter((c): c is EntityChange => c !== null);
-      if (changes.length > 0) globalHandler({ changes, timestamp: new Date().toISOString() });
+      // Carry the batch's resume position. `toChange` drops `msg.offset`
+      // because an offset describes a batch boundary, not an individual row —
+      // so it is taken from the LAST message and attached to the ChangeSet.
+      // Without this the consumer has rows it cannot checkpoint (ADR-009 G3).
+      const last = msgs.at(-1) as ShapeMessage<Record<string, unknown>> | undefined;
+      const handle = tc.shapeStream.shapeHandle;
+      const cursor = handle && last?.offset ? { handle, offset: last.offset } : undefined;
+      if (changes.length > 0) globalHandler({ changes, timestamp: new Date().toISOString(), cursor });
       if (tc.shapeStream.isUpToDate) { syncedTables.add(tc.table); checkAllSynced(); }
     }, (e) => { console.error(`[Electric] ${tc.table}:`, e); for (const cb of statusCbs) cb("error"); }));
   }
@@ -87,6 +101,10 @@ export function createElectricAdapter(opts: ElectricAdapterOptions): SyncAdapter
         if (!globalHandler) return;
         try {
           const parsed: { op: string; row: Record<string, unknown> } = JSON.parse(payload);
+          // A local trigger notification is NOT an Electric shape message and
+          // has no offset of its own. The empty string is a placeholder for the
+          // unused ShapeMessage field, and no cursor is emitted — this batch
+          // genuinely cannot be checkpointed.
           const change = toChange(tc as ElectricTableConfig<Record<string, unknown>>, { headers: { operation: parsed.op as "insert"|"update"|"delete" }, offset: "", key: String(parsed.row[tc.idColumn ?? "id"]), value: parsed.row });
           if (change) globalHandler({ changes: [change] });
         } catch { /* non-JSON frame */ }
