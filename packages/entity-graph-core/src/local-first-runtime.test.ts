@@ -260,3 +260,128 @@ describe("runtime-scoped state (ADR-009 G1)", () => {
     expect(hydrated.ok).toBe(true);
   });
 });
+
+/**
+ * ADR-009 G2 — the disposal barrier.
+ *
+ * `dispose()` used to clear the debounce timer and return. A write already in
+ * flight kept running with its promise discarded (`void persistGraphToStorage`),
+ * so it could land after teardown. These assert that awaiting disposal means
+ * quiescence, not merely "the timer is cancelled".
+ */
+describe("dispose drains in-flight persistence (ADR-009 G2)", () => {
+  /** Storage whose writes block until the test releases them. */
+  function blockingStorage() {
+    const settled: string[] = [];
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    return {
+      settled,
+      release,
+      adapter: {
+        get: () => null,
+        set: async (key: string) => {
+          await gate;
+          settled.push(key);
+        },
+      },
+    };
+  }
+
+  it("does not resolve until an in-flight write settles", async () => {
+    const storage = blockingStorage();
+    const runtime = startLocalFirstGraph({
+      storage: storage.adapter,
+      store: createGraphStore(),
+      key: "drain",
+      persistDebounceMs: 0,
+    });
+    await runtime.ready;
+
+    // Start a write and leave it hanging inside storage.set.
+    const persisting = runtime.persistNow();
+
+    let disposed = false;
+    const disposal = runtime.dispose().then(() => {
+      disposed = true;
+    });
+
+    // The write has not settled, so disposal must not have resolved either.
+    await Promise.resolve();
+    expect(disposed).toBe(false);
+
+    storage.release();
+    await disposal;
+    await persisting;
+
+    expect(disposed).toBe(true);
+    expect(storage.settled).toContain("drain");
+  });
+
+  it("covers a write started immediately before disposal", async () => {
+    const storage = blockingStorage();
+    const runtime = startLocalFirstGraph({
+      storage: storage.adapter,
+      store: createGraphStore(),
+      key: "race",
+      persistDebounceMs: 0,
+    });
+    await runtime.ready;
+
+    // No await between these two lines — the race the barrier must cover.
+    const persisting = runtime.persistNow();
+    const disposal = runtime.dispose();
+
+    storage.release();
+    await disposal;
+    await persisting;
+
+    // Settled before the barrier resolved, not after it.
+    expect(storage.settled).toContain("race");
+  });
+
+  it("is idempotent — a second dispose shares the first teardown", async () => {
+    // What makes a StrictMode double-unmount safe: two calls must not start
+    // two teardowns.
+    const storage = blockingStorage();
+    const runtime = startLocalFirstGraph({
+      storage: storage.adapter,
+      store: createGraphStore(),
+      key: "twice",
+      persistDebounceMs: 0,
+    });
+    await runtime.ready;
+
+    const first = runtime.dispose();
+    const second = runtime.dispose();
+    expect(first).toBe(second);
+
+    storage.release();
+    await first;
+  });
+
+  it("schedules no further write after disposal", async () => {
+    const storage = blockingStorage();
+    const store = createGraphStore();
+    const runtime = startLocalFirstGraph({
+      storage: storage.adapter,
+      store,
+      key: "post",
+      persistDebounceMs: 0,
+    });
+    await runtime.ready;
+
+    storage.release();
+    await runtime.dispose();
+    const countAtDisposal = storage.settled.length;
+
+    // A store mutation after teardown must not reach storage: the subscription
+    // is gone and scheduling is refused.
+    store.getState().ingestFetchedList("Post", [{ id: "p1", data: { v: 1 } }], {});
+    await new Promise((resolve) => setTimeout(resolve, 5));
+
+    expect(storage.settled.length).toBe(countAtDisposal);
+  });
+});

@@ -106,7 +106,15 @@ export interface StartLocalFirstGraphOptions {
 
 export interface LocalFirstGraphRuntime {
   ready: Promise<void>;
-  dispose: () => void;
+  /**
+   * Tear down and drain. The returned promise resolves only once every
+   * in-flight persist has settled, so `await dispose()` guarantees no further
+   * write from this runtime lands (ADR-009 G2).
+   *
+   * Callers that do not await it get the old fire-and-forget behaviour, which
+   * is why the ASO session manager awaits it before opening a replacement.
+   */
+  dispose: () => Promise<void>;
   persistNow: () => Promise<void>;
   hydrate: () => Promise<Awaited<ReturnType<typeof hydrateGraphFromStorage>>>;
   getStatus: () => GraphSyncStatus;
@@ -311,10 +319,40 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
   });
 
   let persistTimer: ReturnType<typeof setTimeout> | null = null;
+  /**
+   * Persist writes that have started but not settled.
+   *
+   * `dispose()` clearing the debounce timer stops a *scheduled* write, but a
+   * write already in flight kept running with its promise discarded (`void`),
+   * so it could land after teardown — the "late open resurrects a disposed
+   * session" hazard. Tracking the promise is what makes an await possible
+   * (ADR-009 G2).
+   */
+  const inFlight = new Set<Promise<unknown>>();
+  /** Memoized so repeated dispose() calls share one teardown. */
+  let disposePromise: Promise<void> | null = null;
+  /** Set once dispose starts, so no new write is scheduled after teardown. */
+  let disposed = false;
+
+  const runPersist = () => {
+    const write = persistGraphToStorage({ storage: opts.storage, key, store: storeApi, scope })
+      // A failed persist must not reject the disposal barrier — disposal is
+      // about *quiescence*, not success. The error is already reported through
+      // the status store by persistGraphToStorage itself.
+      .catch(() => undefined)
+      .finally(() => {
+        inFlight.delete(write);
+      });
+    inFlight.add(write);
+    return write;
+  };
+
   const schedulePersist = () => {
+    if (disposed) return;
     if (persistTimer) clearTimeout(persistTimer);
     persistTimer = setTimeout(() => {
-      void persistGraphToStorage({ storage: opts.storage, key, store: storeApi, scope });
+      persistTimer = null;
+      void runPersist();
     }, persistDebounceMs);
   };
 
@@ -368,14 +406,35 @@ export function startLocalFirstGraph(opts: StartLocalFirstGraphOptions): LocalFi
 
   return {
     ready,
+    /**
+     * Tear down, and do not resolve until this runtime is quiescent.
+     *
+     * Unsubscribes first so no further work is queued, cancels a scheduled
+     * write, then awaits every write already in flight. Callers that await
+     * this are guaranteed no persist from this runtime lands afterwards.
+     *
+     * Idempotent: a second call returns the same promise rather than starting
+     * a second teardown, which is what makes a StrictMode double-unmount safe.
+     */
     dispose() {
+      if (disposePromise) return disposePromise;
+      disposed = true;
       graphUnsub();
       actionUnsub();
       onlineUnsub();
-      if (persistTimer) clearTimeout(persistTimer);
+      if (persistTimer) {
+        clearTimeout(persistTimer);
+        persistTimer = null;
+      }
+      // Snapshot: `finally` mutates the set as writes settle, and awaiting a
+      // live collection would race with its own drainage.
+      disposePromise = Promise.all([...inFlight]).then(() => undefined);
+      return disposePromise;
     },
     async persistNow() {
-      await persistGraphToStorage({ storage: opts.storage, key, store: storeApi, scope });
+      // Tracked like any other write: a caller that persists and immediately
+      // disposes must still see the barrier cover this write.
+      await runPersist();
     },
     hydrate() {
       return hydrateGraphFromStorage({ storage: opts.storage, key, store: storeApi, scope });
