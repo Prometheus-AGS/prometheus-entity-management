@@ -98,7 +98,8 @@ Then("every candidate passes strict Publint and Are The Types Wrong", function (
 });
 
 Then("every candidate has loader-specific runtime and declaration files", function () {
-  const required = ["dist/index.mjs", "dist/index.cjs", "dist/index.d.ts", "dist/index.d.cts"];
+  // ESM-only as of 4.0.0 (f3c02502): no .cjs / .d.cts are emitted.
+  const required = ["dist/index.mjs", "dist/index.d.ts"];
   for (const candidate of ensureReport().packages) {
     for (const path of required) assert.ok(candidate.files.includes(path), `${candidate.name}: ${path}`);
   }
@@ -164,15 +165,19 @@ Then("all twelve package builds use the shared tsup package contract", function 
 
 Then("the shared build emits mjs for ESM and cjs for CommonJS", function () {
   const config = readFileSync(join(root, "scripts/tsup-package-config.ts"), "utf8");
-  assert.match(config, /format === "esm" \? "\.mjs" : "\.cjs"/);
+  // ESM-only as of 4.0.0 (f3c02502): the config no longer branches on format.
+  assert.match(config, /\.mjs/);
 });
 
 Then("the web-components CommonJS declarations preserve import-mode Lit types", function () {
-  const build = readFileSync(join(root, "packages/entity-graph-web-components/package.json"), "utf8");
-  const rewrite = readFileSync(join(root, "scripts/rewrite-lit-cjs-declarations.mjs"), "utf8");
-  assert.match(build, /build-web-components-package\.mjs/);
-  assert.match(rewrite, /"resolution-mode": "import"/);
-  assert.match(rewrite, /generated Lit declaration header changed/);
+  // ESM-only as of 4.0.0 (f3c02502): scripts/rewrite-lit-cjs-declarations.mjs and
+  // build-web-components-package.mjs were both deleted with the CJS build, so
+  // there are no CommonJS Lit declarations left to preserve. The package now
+  // ships a single ESM declaration; its shape is covered by package-contracts.
+  const manifest = JSON.parse(
+    readFileSync(join(root, "packages/entity-graph-web-components/package.json"), "utf8"),
+  );
+  assert.equal(manifest.type, "module");
 });
 
 Then("the coverage ledger maps the packed-package quality gate to its evidence", function () {

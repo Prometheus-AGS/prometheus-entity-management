@@ -92,15 +92,14 @@ test("A2UI docs, skills, coverage, and both runtime entry points stay synchroniz
 
 test("the packed verifier uses tarballs and forbids workspace aliases", async () => {
   const verifier = await read("scripts/verify-a2ui-protocol-bridge.mjs");
-  const declarationFix = await read("scripts/fix-a2ui-cjs-declarations.mjs");
   assert.match(verifier, /pack-destination/);
   assert.match(verifier, /packed official root separation passed/);
   assert.match(verifier, /packed AG-UI compatibility subpath passed/);
   assert.match(verifier, /NodeNext/);
   assert.match(verifier, /Node16/);
   assert.doesNotMatch(verifier, /workspace:\*/);
-  assert.match(declarationFix, /resolution-mode/);
-  assert.match(declarationFix, /import type/);
+  // scripts/fix-a2ui-cjs-declarations.mjs was deleted in the 4.0.0 ESM-only
+  // release (f3c02502); there are no .d.cts declarations left to fix.
 });
 
 test("visual evidence is nonempty, hashed, accessible, and tied to the built artifact", async () => {

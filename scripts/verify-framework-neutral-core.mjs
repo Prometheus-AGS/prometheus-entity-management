@@ -92,13 +92,14 @@ export async function verifyFrameworkNeutralCore({ reportPath } = {}) {
       : resolve(workspaceRoot, packResult.filename);
 
     const manifest = JSON.parse(await extract(tarballPath, "package/package.json"));
+    // ESM-only as of 4.0.0 (f3c02502): no dist/index.cjs, no dist/index.d.cts.
+    // The React-neutrality assertions below still run over every artifact the
+    // package actually ships.
     const runtimeFiles = {
       "dist/index.mjs": await extract(tarballPath, "package/dist/index.mjs"),
-      "dist/index.cjs": await extract(tarballPath, "package/dist/index.cjs"),
     };
     const declarationFiles = {
       "dist/index.d.ts": await extract(tarballPath, "package/dist/index.d.ts"),
-      "dist/index.d.cts": await extract(tarballPath, "package/dist/index.d.cts"),
     };
 
     await writeConsumerFixture(consumerDirectory, tarballPath);
@@ -121,6 +122,9 @@ export async function verifyFrameworkNeutralCore({ reportPath } = {}) {
     await assertMissing(join(consumerDirectory, "node_modules", "@types", "react"));
 
     const esm = await run("node", ["consumer.mjs"], { cwd: consumerDirectory });
+    // No require() consumer: the package is ESM-only, so `require(...)` cannot
+    // resolve it. CommonJS consumers reach it via dynamic import, which
+    // package-contract-validation.mjs exercises as its own consumer matrix.
     const cjs = await run("node", ["consumer.cjs"], { cwd: consumerDirectory });
     await run("pnpm", ["exec", "tsc", "-p", "tsconfig.json"], { cwd: consumerDirectory });
 
@@ -195,15 +199,15 @@ async function writeConsumerFixture(directory, tarballPath) {
 
   await writeFile(
     join(directory, "writer.cjs"),
-    `const { graphStore } = require(${JSON.stringify(corePackageName)});\nexports.writeSharedEntity = function () { graphStore.getState().upsertEntity("Project", "shared-cjs", { name: "Prometheus CJS" }); };\n`,
+    `exports.writeSharedEntity = async function () { const { graphStore } = await import(${JSON.stringify(corePackageName)}); graphStore.getState().upsertEntity("Project", "shared-cjs", { name: "Prometheus CJS" }); };\n`,
   );
   await writeFile(
     join(directory, "reader.cjs"),
-    `const { graphStore } = require(${JSON.stringify(corePackageName)});\nexports.readSharedEntity = function () { return graphStore.getState().readEntity("Project", "shared-cjs"); };\n`,
+    `exports.readSharedEntity = async function () { const { graphStore } = await import(${JSON.stringify(corePackageName)}); return graphStore.getState().readEntity("Project", "shared-cjs"); };\n`,
   );
   await writeFile(
     join(directory, "consumer.cjs"),
-    `const assert = require("node:assert/strict");\nconst { createGraphStore, graphStore, useGraphStore } = require(${JSON.stringify(corePackageName)});\nconst { writeSharedEntity } = require("./writer.cjs");\nconst { readSharedEntity } = require("./reader.cjs");\nassert.equal(useGraphStore, graphStore);\nwriteSharedEntity();\nassert.equal(readSharedEntity().name, "Prometheus CJS");\nconst first = createGraphStore();\nconst second = createGraphStore();\nfirst.getState().upsertEntity("Project", "isolated-cjs", { name: "First CJS" });\nassert.equal(second.getState().readEntity("Project", "isolated-cjs"), null);\nconsole.log("CommonJS shared graph passed");\n`,
+    `const assert = require("node:assert/strict");\nconst { writeSharedEntity } = require("./writer.cjs");\nconst { readSharedEntity } = require("./reader.cjs");\nasync function main() {\n  const { createGraphStore, graphStore, useGraphStore } = await import(${JSON.stringify(corePackageName)});\n  assert.equal(useGraphStore, graphStore);\n  await writeSharedEntity();\n  assert.equal((await readSharedEntity()).name, "Prometheus CJS");\n  const first = createGraphStore();\n  const second = createGraphStore();\n  first.getState().upsertEntity("Project", "isolated-cjs", { name: "First CJS" });\n  assert.equal(second.getState().readEntity("Project", "isolated-cjs"), null);\n  console.log("CommonJS shared graph passed");\n}\nmain().catch((error) => { console.error(error); process.exit(1); });\n`,
   );
 
   await writeFile(

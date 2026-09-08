@@ -243,20 +243,23 @@ runtime.dispose();
 
   await writeFile(
     join(directory, "consumer.cts"),
-    `import {
-  PROMETHEUS_A2UI_PROTOCOL_VERSION,
-  createPrometheusA2uiRuntime,
-  type A2uiClientCapabilities,
-} from "@prometheus-ags/a2ui-react";
-import { EntityChat, type StreamEvent } from "@prometheus-ags/a2ui-react/ag-ui";
-const runtime = createPrometheusA2uiRuntime();
-const capabilities: A2uiClientCapabilities = runtime.getClientCapabilities();
-const event: StreamEvent = { type: "DONE" };
-void EntityChat;
-void capabilities;
-void event;
-if (PROMETHEUS_A2UI_PROTOCOL_VERSION !== "v0.9.1") throw new Error("protocol mismatch");
-runtime.dispose();
+    `import type { A2uiClientCapabilities } from "@prometheus-ags/a2ui-react" with { "resolution-mode": "import" };
+import type { StreamEvent } from "@prometheus-ags/a2ui-react/ag-ui" with { "resolution-mode": "import" };
+async function main(): Promise<void> {
+  const { PROMETHEUS_A2UI_PROTOCOL_VERSION, createPrometheusA2uiRuntime } = await import(
+    "@prometheus-ags/a2ui-react"
+  );
+  const { EntityChat } = await import("@prometheus-ags/a2ui-react/ag-ui");
+  const runtime = createPrometheusA2uiRuntime();
+  const capabilities: A2uiClientCapabilities = runtime.getClientCapabilities();
+  const event: StreamEvent = { type: "DONE" };
+  void EntityChat;
+  void capabilities;
+  void event;
+  if (PROMETHEUS_A2UI_PROTOCOL_VERSION !== "v0.9.1") throw new Error("protocol mismatch");
+  runtime.dispose();
+}
+void main;
 `,
   );
 

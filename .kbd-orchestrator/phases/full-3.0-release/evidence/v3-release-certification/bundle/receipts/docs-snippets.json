@@ -3,11 +3,11 @@
   "category": "docs",
   "mandatory": true,
   "command": "pnpm run verify:docs-snippets",
-  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
-  "startedAt": "2026-08-23T12:35:54.488Z",
-  "durationMs": 7771,
-  "exitCode": 0,
+  "sourceSha": "f812f1d571260d2c8824d9b4a7518702df036fd2",
+  "startedAt": "2026-09-08T13:53:51.584Z",
+  "durationMs": 9136,
+  "exitCode": 1,
   "logFile": "logs/docs-snippets.log",
-  "logSha256": "e5f5cd6f1e9a4f2743e180a79c5b7f7a79094b413812783ee058e1434605ad7c",
-  "logBytes": 516
+  "logSha256": "e45b289f5aafd5e0a2164a9cb28c4d56ec6d40df777bdb85affb3fa99c8f2593",
+  "logBytes": 27438
 }

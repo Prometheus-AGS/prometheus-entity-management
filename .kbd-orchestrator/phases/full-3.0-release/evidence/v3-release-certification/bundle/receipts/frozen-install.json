@@ -3,11 +3,11 @@
   "category": "install",
   "mandatory": true,
   "command": "pnpm install --frozen-lockfile",
-  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
-  "startedAt": "2026-08-23T12:30:19.716Z",
-  "durationMs": 1670,
+  "sourceSha": "f812f1d571260d2c8824d9b4a7518702df036fd2",
+  "startedAt": "2026-09-08T13:48:09.427Z",
+  "durationMs": 1687,
   "exitCode": 0,
   "logFile": "logs/frozen-install.log",
-  "logSha256": "529db2421d90610521ab196863bfa9e4d5be83d68ca303784283bf0bc9438c03",
-  "logBytes": 1026
+  "logSha256": "48c9cb2fd949304f6d3a03684f12fe3d195bbf29f7941e29fd47fc84c2f262ef",
+  "logBytes": 137
 }

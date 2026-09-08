@@ -3,11 +3,11 @@
   "category": "examples",
   "mandatory": true,
   "command": "pnpm run verify:example-coverage",
-  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
-  "startedAt": "2026-08-23T12:34:01.203Z",
-  "durationMs": 418,
-  "exitCode": 0,
+  "sourceSha": "f812f1d571260d2c8824d9b4a7518702df036fd2",
+  "startedAt": "2026-09-08T13:51:33.419Z",
+  "durationMs": 434,
+  "exitCode": 1,
   "logFile": "logs/example-coverage.log",
-  "logSha256": "ad8d6f4efafcc4f2352c2c464eb68d78d91dc4ab82a45fff16dcf2f857316910",
-  "logBytes": 5044
+  "logSha256": "abf045d5a40f237aade2df071ee18d02b0d7592ad936add36d3cbf4cccb31a73",
+  "logBytes": 7011
 }

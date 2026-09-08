@@ -516,8 +516,8 @@ async function verifyRootPayloadExclusion(consumerDirectory) {
     }
   }
 
+  // ESM-only as of 4.0.0 (f3c02502): there is no dist/index.cjs to inspect.
   await inspect("dist/index.mjs");
-  await inspect("dist/index.cjs");
 }
 
 async function run(command, args, options = {}) {

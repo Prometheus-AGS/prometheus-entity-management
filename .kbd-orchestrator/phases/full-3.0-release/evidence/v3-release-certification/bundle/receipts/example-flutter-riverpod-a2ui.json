@@ -3,11 +3,11 @@
   "category": "dart-flutter",
   "mandatory": true,
   "command": "pnpm run verify:flutter-riverpod-a2ui",
-  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
-  "startedAt": "2026-08-23T12:43:12.225Z",
-  "durationMs": 40933,
-  "exitCode": 0,
+  "sourceSha": "f812f1d571260d2c8824d9b4a7518702df036fd2",
+  "startedAt": "2026-09-08T13:52:51.049Z",
+  "durationMs": 401,
+  "exitCode": 1,
   "logFile": "logs/example-flutter-riverpod-a2ui.log",
-  "logSha256": "7ebb6db2055f1c716e12909781cbc92d8cdf97ddb228d2bb69d7914483752e2b",
-  "logBytes": 13638
+  "logSha256": "2636b83e796513d2b06609915a1c596441a16ddb35db78d40e7254df81250f87",
+  "logBytes": 1429
 }

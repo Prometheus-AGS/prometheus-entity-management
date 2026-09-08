@@ -71,11 +71,10 @@ try {
       if (packedManifest.dependencies?.["@a2a-js/sdk"] !== "1.0.1") {
         throw new Error("packed A2A package must pin @a2a-js/sdk@1.0.1");
       }
+      // ESM-only as of 4.0.0 (f3c02502): no .cjs / .d.cts are emitted.
       for (const required of [
         "dist/legacy.mjs",
-        "dist/legacy.cjs",
         "dist/legacy.d.ts",
-        "dist/legacy.d.cts",
       ]) {
         if (!files.includes(required)) throw new Error(`packed A2A package is missing ${required}`);
       }
@@ -308,19 +307,19 @@ if (TaskState.TASK_STATE_COMPLETED !== 3) throw new Error("enum mismatch");
 
   await writeFile(
     join(directory, "consumer.cts"),
-    `import {
-  A2A_PROTOCOL_VERSION,
-  buildAgentCard,
-  createA2AServer,
-  type A2AServer,
-  type AgentCard,
-} from "@prometheus-ags/entity-graph-a2a";
-import { createLegacyA2AAdapter } from "@prometheus-ags/entity-graph-a2a/legacy";
-const card: AgentCard = buildAgentCard({ url: "http://localhost/a2a" });
-const server: A2AServer = createA2AServer({ card });
-const adapter = createLegacyA2AAdapter({ server });
-void adapter;
-if (A2A_PROTOCOL_VERSION !== "1.0") throw new Error("protocol mismatch");
+    `import type { A2AServer, AgentCard } from "@prometheus-ags/entity-graph-a2a" with { "resolution-mode": "import" };
+async function main(): Promise<void> {
+  const { A2A_PROTOCOL_VERSION, buildAgentCard, createA2AServer } = await import(
+    "@prometheus-ags/entity-graph-a2a"
+  );
+  const { createLegacyA2AAdapter } = await import("@prometheus-ags/entity-graph-a2a/legacy");
+  const card: AgentCard = buildAgentCard({ url: "http://localhost/a2a" });
+  const server: A2AServer = createA2AServer({ card });
+  const adapter = createLegacyA2AAdapter({ server });
+  void adapter;
+  if (A2A_PROTOCOL_VERSION !== "1.0") throw new Error("protocol mismatch");
+}
+void main;
 `,
   );
 

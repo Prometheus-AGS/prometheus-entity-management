@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "change": "v3-docs-github-pages",
-  "generatedAt": "2026-08-23T12:50:07.018Z",
+  "generatedAt": "2026-09-08T13:56:02.031Z",
   "evidenceBoundary": {
     "kind": "local-build-and-workflow-contract",
     "countsAsPackedPackageEvidence": false,
@@ -11,24 +11,28 @@
     {
       "label": "workflow-contract",
       "command": "node --test tests/release/v3-docs-github-pages.test.mjs",
-      "exitCode": 0
+      "exitCode": 1
     },
     {
       "label": "static-build",
       "command": "pnpm --filter @prometheus-ags/entity-graph-docs-site build",
-      "exitCode": 0
-    },
-    {
-      "label": "quality-gates",
-      "command": "node scripts/verify-docs-pages-quality.mjs --report .kbd-orchestrator/phases/full-3.0-release/evidence/v3-docs-github-pages/quality.json",
-      "exitCode": 0
+      "exitCode": 1
     }
   ],
   "lanes": {
-    "workflowContract": "pass",
-    "staticBuild": "pass",
-    "qualityGates": "pass"
+    "workflowContract": "fail",
+    "staticBuild": "fail",
+    "qualityGates": "pending"
   },
-  "failures": [],
-  "result": "pass"
+  "failures": [
+    {
+      "lane": "workflowContract",
+      "message": "release test failed"
+    },
+    {
+      "lane": "staticBuild",
+      "message": "docusaurus build failed (broken links/anchors throw)"
+    }
+  ],
+  "result": "fail"
 }

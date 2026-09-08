@@ -114,10 +114,9 @@ try {
   ).stdout.trim().length > 0;
   const candidateArtifacts = {};
   for (const relativePath of [
+    // ESM-only as of 4.0.0 (f3c02502): no .cjs / .d.cts artifacts are emitted.
     "packages/entity-graph-a2a/dist/index.mjs",
-    "packages/entity-graph-a2a/dist/index.cjs",
     "packages/entity-graph-a2a/dist/index.d.ts",
-    "packages/entity-graph-a2a/dist/index.d.cts",
   ]) {
     const contents = await readFile(join(root, relativePath));
     candidateArtifacts[relativePath] = {

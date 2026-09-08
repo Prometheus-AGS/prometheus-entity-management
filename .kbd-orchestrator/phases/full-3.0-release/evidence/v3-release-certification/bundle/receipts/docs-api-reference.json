@@ -3,11 +3,11 @@
   "category": "docs",
   "mandatory": true,
   "command": "pnpm run verify:docs-api-reference",
-  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
-  "startedAt": "2026-08-23T12:34:58.194Z",
-  "durationMs": 56273,
-  "exitCode": 0,
+  "sourceSha": "f812f1d571260d2c8824d9b4a7518702df036fd2",
+  "startedAt": "2026-09-08T13:53:02.476Z",
+  "durationMs": 49089,
+  "exitCode": 1,
   "logFile": "logs/docs-api-reference.log",
-  "logSha256": "94024c92e0a0ccabcf2756884d099e7da6eecf5a149e4f00db382d7542e4afd9",
-  "logBytes": 1367
+  "logSha256": "9f02070ef855e524953650951ac428bd0e68cb8e7dc436c5d6dcd934118e4d28",
+  "logBytes": 2346
 }

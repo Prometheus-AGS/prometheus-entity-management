@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
   "change": "v3-docs-api-reference",
-  "generatedAt": "2026-08-23T12:47:29.104Z",
+  "generatedAt": "2026-09-08T13:53:02.782Z",
   "packages": {
     "entity-graph-core": {
-      "exports": 123,
-      "documented": 76,
+      "exports": 138,
+      "documented": 91,
       "undocumented": 47
     },
     "prometheus-entity-management": {
-      "exports": 201,
-      "documented": 82,
-      "undocumented": 119
+      "exports": 229,
+      "documented": 137,
+      "undocumented": 92
     },
     "entity-graph-sync": {
       "exports": 16,
@@ -25,8 +25,8 @@
     },
     "entity-graph-solid": {
       "exports": 8,
-      "documented": 7,
-      "undocumented": 1
+      "documented": 4,
+      "undocumented": 4
     },
     "entity-graph-alpine": {
       "exports": 4,
@@ -44,8 +44,8 @@
       "undocumented": 3
     },
     "a2ui-react": {
-      "exports": 27,
-      "documented": 11,
+      "exports": 28,
+      "documented": 12,
       "undocumented": 16
     },
     "entity-graph-a2a": {
@@ -64,14 +64,24 @@
       "undocumented": 1
     },
     "entity_graph_flutter": {
-      "exports": 81,
+      "exports": 201,
+      "libraries": {
+        "package:entity_graph_flutter/entity_graph_flutter.dart": 97,
+        "package:entity_graph_flutter/devtools.dart": 104
+      },
       "documented": null,
       "undocumented": null
     }
   },
   "policy": {
     "vanished": [],
-    "newUndocumented": [],
+    "newUndocumented": [
+      "prometheus-entity-management:createGraphStore",
+      "prometheus-entity-management:graphStore",
+      "entity-graph-solid:TerminalError",
+      "entity-graph-solid:TransientError",
+      "entity-graph-solid:graphStore"
+    ],
     "tightenRequired": []
   },
   "artifacts": {
@@ -80,5 +90,5 @@
     "entity-graph-cli": "generated",
     "entity-graph-mcp": "generated"
   },
-  "result": "pass"
+  "result": "fail"
 }

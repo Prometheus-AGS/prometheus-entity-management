@@ -3,11 +3,11 @@
   "category": "tests",
   "mandatory": true,
   "command": "pnpm run ci:test",
-  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
-  "startedAt": "2026-08-23T12:45:34.855Z",
-  "durationMs": 599455,
+  "sourceSha": "f812f1d571260d2c8824d9b4a7518702df036fd2",
+  "startedAt": "2026-09-08T13:48:20.364Z",
+  "durationMs": 60755,
   "exitCode": 0,
   "logFile": "logs/test.log",
-  "logSha256": "8981b6748760b74d8fad0cd8aad821ee765e255ad27b0cd75a3c5bd8723dcb77",
-  "logBytes": 123363
+  "logSha256": "6e59162a4e4c9fa6594ad43a63bfc750ad715ce38be6a7f941ba8f61eb8dbf28",
+  "logBytes": 3453
 }

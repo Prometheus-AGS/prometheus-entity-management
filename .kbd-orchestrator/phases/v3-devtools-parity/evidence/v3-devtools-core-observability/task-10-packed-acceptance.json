@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-29T15:55:05.225Z",
+  "generatedAt": "2026-09-08T13:37:06.872Z",
   "boundary": "assembled-packed-consumer",
   "packages": {
     "@prometheus-ags/entity-graph-core": {
       "payload": "pass",
       "manifest": "pass",
-      "files": 19
+      "files": 15
     },
-    "@prometheus-ags/prometheus-entity-management": {
+    "@prometheus-ags/entity-graph-react": {
       "payload": "pass",
       "manifest": "pass",
-      "files": 9
+      "files": 22
     }
   },
   "consumers": {

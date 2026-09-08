@@ -3,11 +3,11 @@
   "category": "typecheck",
   "mandatory": true,
   "command": "pnpm run ci:typecheck",
-  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
-  "startedAt": "2026-08-23T12:30:29.759Z",
-  "durationMs": 797,
+  "sourceSha": "f812f1d571260d2c8824d9b4a7518702df036fd2",
+  "startedAt": "2026-09-08T13:48:19.464Z",
+  "durationMs": 881,
   "exitCode": 0,
   "logFile": "logs/typecheck.log",
-  "logSha256": "28daebebbc93f2375ad06cc9f8a825fe8ae26a7171caa7b32d569743e1c78bff",
-  "logBytes": 23772
+  "logSha256": "ec3583b24a84e2793ab4051333714d6918024e6a903d1e31a8b6834f6cdaa9ce",
+  "logBytes": 23248
 }

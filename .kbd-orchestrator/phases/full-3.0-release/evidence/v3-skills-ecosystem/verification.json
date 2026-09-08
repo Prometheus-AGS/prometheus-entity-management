@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "change": "v3-skills-ecosystem",
-  "generatedAt": "2026-09-08T13:03:38.300Z",
+  "generatedAt": "2026-09-08T13:51:13.129Z",
   "evidenceBoundary": {
     "kind": "packed-consumer",
     "countsAsPackedPackageEvidence": true,
@@ -11,7 +11,7 @@
     {
       "label": "export-ledgers",
       "command": "pnpm run verify:skills",
-      "exitCode": 1
+      "exitCode": 0
     },
     {
       "label": "snippet-compile",
@@ -35,7 +35,7 @@
     }
   ],
   "lanes": {
-    "exportLedgers": "fail",
+    "exportLedgers": "pass",
     "snippetCompile": "fail",
     "releaseGate": "fail",
     "rustTooling": "pass"

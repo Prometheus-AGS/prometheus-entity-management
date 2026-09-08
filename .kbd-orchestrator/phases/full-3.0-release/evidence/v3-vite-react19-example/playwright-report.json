@@ -1,14 +1,14 @@
 {
   "config": {
     "argv": [
-      "/Applications/Kimi.app/Contents/Resources/resources/runtime/node",
-      "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/node_modules/@playwright/test/cli.js",
+      "/Users/gqadonis/.local/share/fnm/node-versions/v26.5.0/installation/bin/node",
+      "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/node_modules/@playwright/test/cli.js",
       "test",
       "--config",
       "tests/browser/v3-vite-react19-example.playwright.config.ts"
     ],
-    "configFile": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/tests/browser/v3-vite-react19-example.playwright.config.ts",
-    "rootDir": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/tests/browser",
+    "configFile": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/tests/browser/v3-vite-react19-example.playwright.config.ts",
+    "rootDir": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/tests/browser",
     "failOnFlakyTests": false,
     "forbidOnly": false,
     "fullyParallel": false,
@@ -24,7 +24,7 @@
     "preserveOutput": "always",
     "projects": [
       {
-        "outputDir": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/playwright-artifacts",
+        "outputDir": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/playwright-artifacts",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
@@ -32,7 +32,7 @@
         },
         "id": "chromium-desktop",
         "name": "chromium-desktop",
-        "testDir": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/tests/browser",
+        "testDir": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/tests/browser",
         "testIgnore": [],
         "testMatch": [
           "v3-vite-react19-example.spec.ts"
@@ -49,7 +49,7 @@
       [
         "json",
         {
-          "outputFile": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/playwright-report.json"
+          "outputFile": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/playwright-report.json"
         }
       ]
     ],
@@ -93,18 +93,18 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1292,
+                  "duration": 1170,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-23T12:55:17.546Z",
+                  "startTime": "2026-09-08T13:51:50.040Z",
                   "annotations": [],
                   "attachments": [
                     {
                       "name": "trace",
                       "contentType": "application/zip",
-                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/playwright-artifacts/v3-vite-react19-example-no-73518-odes-and-REST-GraphQL-seams-chromium-desktop/trace.zip"
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/playwright-artifacts/v3-vite-react19-example-no-73518-odes-and-REST-GraphQL-seams-chromium-desktop/trace.zip"
                     }
                   ]
                 }
@@ -133,18 +133,18 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2591,
+                  "duration": 2497,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-23T12:55:19.190Z",
+                  "startTime": "2026-09-08T13:51:51.557Z",
                   "annotations": [],
                   "attachments": [
                     {
                       "name": "trace",
                       "contentType": "application/zip",
-                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/playwright-artifacts/v3-vite-react19-example-op-f8f42-ade-and-realtime-coalescing-chromium-desktop/trace.zip"
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/playwright-artifacts/v3-vite-react19-example-op-f8f42-ade-and-realtime-coalescing-chromium-desktop/trace.zip"
                     }
                   ]
                 }
@@ -173,18 +173,18 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 11568,
+                  "duration": 11567,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-23T12:55:21.902Z",
+                  "startTime": "2026-09-08T13:51:54.172Z",
                   "annotations": [],
                   "attachments": [
                     {
                       "name": "trace",
                       "contentType": "application/zip",
-                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-skill-pack/skills/imported/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/playwright-artifacts/v3-vite-react19-example-PG-1be77--DevTools-and-accessibility-chromium-desktop/trace.zip"
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/full-3.0-release/evidence/v3-vite-react19-example/playwright-artifacts/v3-vite-react19-example-PG-1be77--DevTools-and-accessibility-chromium-desktop/trace.zip"
                     }
                   ]
                 }
@@ -202,8 +202,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-08-23T12:55:16.360Z",
-    "duration": 17812.046000000002,
+    "startTime": "2026-09-08T13:51:48.864Z",
+    "duration": 17553.828,
     "expected": 3,
     "skipped": 0,
     "unexpected": 0,

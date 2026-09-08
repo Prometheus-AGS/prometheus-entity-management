@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "change": "v3-docs-github-pages",
-  "generatedAt": "2026-08-23T12:50:36.585Z",
+  "generatedAt": "2026-09-08T13:55:21.876Z",
   "basePath": "/prometheus-entity-management/",
   "probeRoutes": [
     "/prometheus-entity-management/",
@@ -34,12 +34,12 @@
       "budgetChecks": [
         {
           "resourceType": "total",
-          "actualKiB": 685,
+          "actualKiB": 690,
           "budgetKiB": 5120
         },
         {
           "resourceType": "script",
-          "actualKiB": 474,
+          "actualKiB": 477,
           "budgetKiB": 3072
         },
         {
@@ -67,7 +67,7 @@
     },
     "docs/guides/quickstart-react/": {
       "scores": {
-        "performance": 0.86,
+        "performance": 0.71,
         "accessibility": 1,
         "best-practices": 1,
         "seo": 1,
@@ -76,12 +76,12 @@
       "budgetChecks": [
         {
           "resourceType": "total",
-          "actualKiB": 1021,
+          "actualKiB": 1034,
           "budgetKiB": 5120
         },
         {
           "resourceType": "script",
-          "actualKiB": 564,
+          "actualKiB": 568,
           "budgetKiB": 3072
         },
         {
@@ -118,12 +118,12 @@
       "budgetChecks": [
         {
           "resourceType": "total",
-          "actualKiB": 1253,
+          "actualKiB": 1259,
           "budgetKiB": 5120
         },
         {
           "resourceType": "script",
-          "actualKiB": 572,
+          "actualKiB": 576,
           "budgetKiB": 3072
         },
         {

@@ -3,11 +3,11 @@
   "category": "persistence",
   "mandatory": true,
   "command": "pnpm run verify:sync-persistence",
-  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
-  "startedAt": "2026-08-23T12:32:21.907Z",
-  "durationMs": 5704,
+  "sourceSha": "f812f1d571260d2c8824d9b4a7518702df036fd2",
+  "startedAt": "2026-09-08T13:50:10.116Z",
+  "durationMs": 6078,
   "exitCode": 0,
   "logFile": "logs/sync-persistence.log",
-  "logSha256": "54f207461f1df0f17db43231bdd721a82254f3055944e593433336f45892bf10",
-  "logBytes": 2212
+  "logSha256": "c05f4bc9fff48f3b327850a0b97113779dca54ba8508943bd75cfd6c64163562",
+  "logBytes": 2585
 }

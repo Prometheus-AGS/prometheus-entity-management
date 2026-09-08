@@ -3,11 +3,11 @@
   "category": "protocol-bridges",
   "mandatory": true,
   "command": "pnpm run verify:a2ui-bridge",
-  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
-  "startedAt": "2026-08-23T12:32:27.633Z",
-  "durationMs": 21130,
-  "exitCode": 0,
+  "sourceSha": "f812f1d571260d2c8824d9b4a7518702df036fd2",
+  "startedAt": "2026-09-08T13:50:16.213Z",
+  "durationMs": 10994,
+  "exitCode": 1,
   "logFile": "logs/a2ui-bridge.log",
-  "logSha256": "77e12003f0f88fc38e84042bcd79e2c9a72278e9173759f930c2dab491f3adcb",
-  "logBytes": 3121
+  "logSha256": "445ffbc3e73c2e497ea72601b8e3e275993f2c63f0ebaf92aa0c604456e340d0",
+  "logBytes": 4046
 }

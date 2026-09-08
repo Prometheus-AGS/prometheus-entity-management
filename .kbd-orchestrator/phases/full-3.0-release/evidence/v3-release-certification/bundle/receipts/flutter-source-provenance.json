@@ -3,11 +3,11 @@
   "category": "provenance",
   "mandatory": true,
   "command": "pnpm run verify:flutter-source-provenance",
-  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
-  "startedAt": "2026-08-23T12:32:57.057Z",
-  "durationMs": 652,
+  "sourceSha": "f812f1d571260d2c8824d9b4a7518702df036fd2",
+  "startedAt": "2026-09-08T13:50:35.703Z",
+  "durationMs": 663,
   "exitCode": 0,
   "logFile": "logs/flutter-source-provenance.log",
-  "logSha256": "2556bf72f58e132bba159f00506f40f52a526bc9f9404e3c33adcfd115db0d4d",
-  "logBytes": 493
+  "logSha256": "16bd4b9e4da0bd634e4b159cda9031a50fa388b7676782d5761e61296f299f04",
+  "logBytes": 455
 }

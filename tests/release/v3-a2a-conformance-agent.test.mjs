@@ -36,7 +36,6 @@ test("the BDD contract covers official lifecycle, policy, packaging, and truthfu
 
 test("the packed verifier exercises both module systems, declarations, and the isolated migration seam", async () => {
   const verifier = await read("scripts/verify-a2a-conformance.mjs");
-  const declarationFix = await read("scripts/fix-a2a-cjs-declarations.mjs");
   assert.match(verifier, /pack-destination/);
   assert.match(verifier, /validatePackedManifestData/);
   assert.match(verifier, /@a2a-js\/sdk.*1\.0\.1/);
@@ -47,8 +46,9 @@ test("the packed verifier exercises both module systems, declarations, and the i
   assert.match(verifier, /createExternalA2AExecutor/);
   assert.match(verifier, /packed external JSON-RPC executor passed/);
   assert.doesNotMatch(verifier, /workspace:\*/);
-  assert.match(declarationFix, /resolution-mode/);
-  assert.match(declarationFix, /import type/);
+  // scripts/fix-a2a-cjs-declarations.mjs was deleted in the 4.0.0 ESM-only
+  // release (f3c02502). There are no .d.cts declarations left to fix, so the
+  // assertions that read that script are gone with it.
 });
 
 test("TCK fixture routing is test-only and does not leak magic scenario IDs into production", async () => {

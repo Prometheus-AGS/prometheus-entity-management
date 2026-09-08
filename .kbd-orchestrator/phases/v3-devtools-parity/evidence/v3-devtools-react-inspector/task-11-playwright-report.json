@@ -1,7 +1,7 @@
 {
   "config": {
     "argv": [
-      "/Users/gqadonis/.nvm/versions/node/v24.16.0/bin/node",
+      "/Users/gqadonis/.local/share/fnm/node-versions/v26.5.0/installation/bin/node",
       "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/node_modules/@playwright/test/cli.js",
       "test",
       "--config",
@@ -88,12 +88,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 618,
+                  "duration": 534,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-30T22:44:24.089Z",
+                  "startTime": "2026-09-08T14:01:22.154Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -128,12 +128,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 797,
+                  "duration": 743,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-30T22:44:25.003Z",
+                  "startTime": "2026-09-08T14:01:23.037Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -168,12 +168,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 999,
+                  "duration": 963,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-30T22:44:25.824Z",
+                  "startTime": "2026-09-08T14:01:23.794Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -208,12 +208,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1639,
+                  "duration": 1380,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-30T22:44:26.861Z",
+                  "startTime": "2026-09-08T14:01:24.789Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -248,12 +248,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2537,
+                  "duration": 1717,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-30T22:44:28.628Z",
+                  "startTime": "2026-09-08T14:01:26.282Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -288,12 +288,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 13324,
+                  "duration": 12900,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-08-30T22:44:31.539Z",
+                  "startTime": "2026-09-08T14:01:28.063Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -317,8 +317,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-08-30T22:44:18.359Z",
-    "duration": 27069.704999999998,
+    "startTime": "2026-09-08T14:01:14.063Z",
+    "duration": 27328.949999999997,
     "expected": 6,
     "skipped": 0,
     "unexpected": 0,

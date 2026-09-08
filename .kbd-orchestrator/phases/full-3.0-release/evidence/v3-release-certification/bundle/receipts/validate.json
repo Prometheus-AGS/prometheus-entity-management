@@ -3,11 +3,11 @@
   "category": "hygiene",
   "mandatory": true,
   "command": "pnpm run ci:validate",
-  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
-  "startedAt": "2026-08-23T12:30:21.412Z",
-  "durationMs": 1162,
-  "exitCode": 0,
+  "sourceSha": "f812f1d571260d2c8824d9b4a7518702df036fd2",
+  "startedAt": "2026-09-08T13:48:11.133Z",
+  "durationMs": 1405,
+  "exitCode": 1,
   "logFile": "logs/validate.log",
-  "logSha256": "792084190a07407aacb986b965f256e233200f975c156db5d41ce58475a8e526",
-  "logBytes": 6045
+  "logSha256": "d69317de5672a9110d2cfe4b70a4380eb2b2f1cd525e4e7cf87fb689c1f5a132",
+  "logBytes": 8054
 }

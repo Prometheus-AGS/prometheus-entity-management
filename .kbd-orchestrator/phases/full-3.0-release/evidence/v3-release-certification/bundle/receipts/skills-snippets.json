@@ -3,11 +3,11 @@
   "category": "skills",
   "mandatory": true,
   "command": "pnpm run verify:skills-snippets",
-  "sourceSha": "55dc8dc7a156453c0d44a18f74aa4cfbd2fa15df",
-  "startedAt": "2026-08-23T12:33:45.008Z",
-  "durationMs": 5408,
-  "exitCode": 0,
+  "sourceSha": "f812f1d571260d2c8824d9b4a7518702df036fd2",
+  "startedAt": "2026-09-08T13:51:07.810Z",
+  "durationMs": 5022,
+  "exitCode": 1,
   "logFile": "logs/skills-snippets.log",
-  "logSha256": "e5810c714a9faf36557fe174ca8431eead5a237f5390ca8e7c4cc70b44ad45eb",
-  "logBytes": 380
+  "logSha256": "ca72b33285acfb65ee226073052e628b03cb14b26055d1d45e0d0aca08af746c",
+  "logBytes": 10442
 }
