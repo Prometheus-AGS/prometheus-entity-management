@@ -1,5 +1,20 @@
 # @prometheus-ags/entity-graph-core
 
+## 4.0.2
+
+### Patch Changes
+
+- **Republish of 4.0.1 with the workspace protocol resolved.** 4.0.1 was
+  published with `npm publish`, which does not rewrite pnpm's `workspace:`
+  protocol. 11 of the 13 packages therefore shipped literal
+  `"@prometheus-ags/entity-graph-core": "workspace:^"` specifiers, which npm
+  cannot resolve — installing those packages fails.
+
+  4.0.2 is the same code, published with `pnpm publish` so the specifiers are
+  rewritten to real version ranges. **Use 4.0.2; 4.0.1 is deprecated.**
+
+  No source changes between 4.0.1 and 4.0.2.
+
 ## 4.0.1
 
 ### Patch Changes

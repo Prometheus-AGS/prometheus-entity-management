@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/prometheus-entity-management",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Compatibility alias for @prometheus-ags/entity-graph-react. The React bindings publish under that name; this package re-exports them so existing installs keep resolving.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
