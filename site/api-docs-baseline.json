@@ -144,9 +144,7 @@
     ],
     "entity-graph-sync": [],
     "entity-graph-svelte": [],
-    "entity-graph-solid": [
-      "useGraphStore"
-    ],
+    "entity-graph-solid": [],
     "entity-graph-alpine": [],
     "entity-graph-htmx": [],
     "entity-graph-web-components": [

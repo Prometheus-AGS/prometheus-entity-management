@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-08T13:55:04.411Z",
+  "generatedAt": "2026-09-08T14:31:34.925Z",
   "docsRoot": "tests/release/fixtures/upgrade",
   "evidenceBoundary": {
     "kind": "packed-consumer",
@@ -22,11 +22,12 @@
     "@prometheus-ags/entity-graph-svelte",
     "@prometheus-ags/entity-graph-sync",
     "@prometheus-ags/entity-graph-tauri",
-    "@prometheus-ags/entity-graph-web-components"
+    "@prometheus-ags/entity-graph-web-components",
+    "@prometheus-ags/prometheus-entity-management"
   ],
   "lanes": {
     "pack": "pass",
     "consumerInstall": "pass",
-    "snippetCompile": "fail"
+    "snippetCompile": "pass"
   }
 }

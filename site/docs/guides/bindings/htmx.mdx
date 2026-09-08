@@ -19,8 +19,13 @@ pnpm add @prometheus-ags/entity-graph-htmx
 import { createHtmxSseServer } from "@prometheus-ags/entity-graph-htmx";
 import { parseSdlJson } from "@prometheus-ags/entity-graph-sdl";
 
+import type { IncomingMessage, ServerResponse } from "node:http";
+
 declare const schemaJson: string;
-declare function listen(handler: (req: unknown, res: unknown) => void, port: number): void;
+declare function listen(
+  handler: (req: IncomingMessage, res: ServerResponse) => void,
+  port: number,
+): void;
 
 const ir = parseSdlJson(schemaJson);
 const sseServer = createHtmxSseServer({ ir });

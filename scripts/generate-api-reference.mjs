@@ -334,14 +334,39 @@ function namedReexportsFrom(sourcePath, moduleSpecifier) {
   return names;
 }
 
-const REACT_CORE_REEXPORTS = namedReexportsFrom(
-  "packages/entity-graph-react/src/index.ts",
-  "@prometheus-ags/entity-graph-core",
-);
+// Packages that re-export core symbols verbatim. A binding that forwards a core
+// export inherits the core doc comment — the symbol is documented, just not at
+// the re-export site, and TypeDoc cannot see through the forward.
+//
+// `prometheus-entity-management` re-exports the React binding with `export *`,
+// so its core-sourced names are the ones the React binding forwards.
+const CORE_REEXPORTERS = Object.freeze({
+  "prometheus-entity-management": namedReexportsFrom(
+    "packages/entity-graph-react/src/index.ts",
+    "@prometheus-ags/entity-graph-core",
+  ),
+  "entity-graph-solid": namedReexportsFrom(
+    "packages/entity-graph-solid/src/index.ts",
+    "@prometheus-ags/entity-graph-core",
+  ),
+  "entity-graph-svelte": namedReexportsFrom(
+    "packages/entity-graph-svelte/src/index.ts",
+    "@prometheus-ags/entity-graph-core",
+  ),
+  "entity-graph-alpine": namedReexportsFrom(
+    "packages/entity-graph-alpine/src/index.ts",
+    "@prometheus-ags/entity-graph-core",
+  ),
+  "entity-graph-react": namedReexportsFrom(
+    "packages/entity-graph-react/src/index.ts",
+    "@prometheus-ags/entity-graph-core",
+  ),
+});
 const CORE_SYMBOLS = collectTopLevel(models.get("entity-graph-core"));
 
 function canonicalReexportDoc(packageSlug, name) {
-  if (packageSlug !== "prometheus-entity-management" || !REACT_CORE_REEXPORTS.has(name)) return "";
+  if (packageSlug === "entity-graph-core") return "";
+  if (!CORE_REEXPORTERS[packageSlug]?.has(name)) return "";
   const coreSymbol = CORE_SYMBOLS.get(name);
   const coreDoc = commentText(coreSymbol?.comment) ||
     commentText(coreSymbol?.signatures?.[0]?.comment) ||

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "change": "v3-docs-api-reference",
-  "generatedAt": "2026-09-08T13:53:02.782Z",
+  "generatedAt": "2026-09-08T14:37:16.441Z",
   "packages": {
     "entity-graph-core": {
       "exports": 138,
@@ -10,8 +10,8 @@
     },
     "prometheus-entity-management": {
       "exports": 229,
-      "documented": 137,
-      "undocumented": 92
+      "documented": 139,
+      "undocumented": 90
     },
     "entity-graph-sync": {
       "exports": 16,
@@ -25,8 +25,8 @@
     },
     "entity-graph-solid": {
       "exports": 8,
-      "documented": 4,
-      "undocumented": 4
+      "documented": 8,
+      "undocumented": 0
     },
     "entity-graph-alpine": {
       "exports": 4,
@@ -75,13 +75,7 @@
   },
   "policy": {
     "vanished": [],
-    "newUndocumented": [
-      "prometheus-entity-management:createGraphStore",
-      "prometheus-entity-management:graphStore",
-      "entity-graph-solid:TerminalError",
-      "entity-graph-solid:TransientError",
-      "entity-graph-solid:graphStore"
-    ],
+    "newUndocumented": [],
     "tightenRequired": []
   },
   "artifacts": {
@@ -90,5 +84,5 @@
     "entity-graph-cli": "generated",
     "entity-graph-mcp": "generated"
   },
-  "result": "fail"
+  "result": "pass"
 }

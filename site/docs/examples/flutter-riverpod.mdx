@@ -47,6 +47,14 @@ flutter run                      # attach a device or emulator
 ## Test commands
 
 ```bash
+pnpm run verify:flutter-riverpod-a2ui   # full showcase gate
+pnpm run bdd:flutter-riverpod-a2ui      # scenario-level BDD evidence
+```
+
+The gate wraps the Flutter commands below; run them directly when iterating on
+the example itself:
+
+```bash
 flutter analyze lib/features/a2ui test/a2ui_contract_test.dart
 flutter test test/a2ui_contract_test.dart
 ```

@@ -41,6 +41,10 @@ const reportPath = reportFlag >= 0 ? process.argv[reportFlag + 1] : null;
 const CORE_PACK = [
   "entity-graph-core",
   "entity-graph-react",
+  // The published compatibility alias for the React binding. Docs snippets
+  // import it by name, so it has to be in the consumer or every one of those
+  // snippets fails to resolve the module.
+  "prometheus-entity-management",
   "entity-graph-sync",
   "entity-graph-a2a",
   "a2ui-react",
@@ -62,6 +66,7 @@ const CONSUMER_DEPS = {
   react: "19.2.8",
   "react-dom": "19.2.8",
   "@types/react": "19.2.18",
+  "@types/node": "^22.10.2",
   "@tanstack/react-table": "^8.21.3",
   "loro-crdt": "1.13.9",
   typescript: "6.0.2",
@@ -163,6 +168,14 @@ try {
   report.packages = Object.keys(tarballs).sort();
 
   await mkdir(join(consumerDir, "src"), { recursive: true });
+
+  // Vite's `import.meta.env` ambient shape. A bundler-target consumer gets this
+  // from `vite/client`; declaring it here keeps the fixture free of a Vite
+  // dependency while still letting snippets use the documented API.
+  await writeFile(
+    join(consumerDir, "src", "env.d.ts"),
+    `interface ImportMetaEnv {\n  readonly DEV: boolean;\n  readonly PROD: boolean;\n  readonly MODE: string;\n  readonly [key: string]: unknown;\n}\ninterface ImportMeta {\n  readonly env: ImportMetaEnv;\n}\n`,
+  );
   await writeFile(
     join(consumerDir, "package.json"),
     JSON.stringify({
@@ -191,7 +204,10 @@ try {
         noUnusedParameters: false,
         skipLibCheck: true,
         noEmit: true,
-        types: [],
+        // Snippets legitimately use `process.env` (Node) and `import.meta.env`
+        // (Vite) — every real consumer app has these ambient types. Without
+        // them the snippet is marked broken for using a documented API.
+        types: ["node"],
         ...(allPackages ? { lib: ["es2022", "DOM", "DOM.Iterable"] } : {}),
       },
       include: ["src"],

@@ -81,7 +81,11 @@ test("tutorial gates exist as root scripts and CI exercises the suite", () => {
     assert.ok(text.includes(`pnpm run ${gate}`), `${slug} must document its gate command`);
   }
   const ci = readFileSync(join(root, ".github/workflows/ci.yml"), "utf8");
-  assert.ok(ci.includes("ci:test"), "ci.yml must run the test gate that includes release tests");
+  const runsIntegrationGate = ["ci:test", "ci:integration"].some((alias) => ci.includes(alias));
+  assert.ok(
+    runsIntegrationGate,
+    "ci.yml must run the integration gate that includes release tests (ci:test / ci:integration)",
+  );
 });
 
 test("runnable-source links resolve to real example directories", () => {
