@@ -1,134 +1,134 @@
 {
-  "changes": [
-    {
-      "blockers": [],
-      "id": "v2-crdt-merge-strategy-port",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v2-crdt-merge-strategy-port"
-    },
-    {
-      "blockers": [],
-      "id": "v2-tauri-sqlite-persistence",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v2-tauri-sqlite-persistence"
-    },
-    {
-      "blockers": [],
-      "id": "v2-devtools-time-travel",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v2-devtools-time-travel"
-    },
-    {
-      "blockers": [],
-      "id": "v2-incremental-query-spike",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v2-incremental-query-spike"
-    },
-    {
-      "blockers": [],
-      "id": "v2-eslint-layering-rule",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v2-eslint-layering-rule"
-    },
-    {
-      "blockers": [],
-      "id": "v2-agui-ingestion-bridge",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v2-agui-ingestion-bridge"
-    },
-    {
-      "blockers": [],
-      "id": "v2-flint-realtime-adapter",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v2-flint-realtime-adapter"
-    },
-    {
-      "blockers": [],
-      "id": "v2-devtools-graph-visualization",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v2-devtools-graph-visualization"
-    }
-  ],
-  "changes_completed": 8,
-  "changes_total": 8,
-  "children": {},
-  "completion": {
-    "certification": {
-      "blockers": [],
-      "status": "PENDING",
-      "summary": null
-    },
-    "evidence": {
-      "blockers": [],
-      "status": "PENDING",
-      "summary": null
-    },
-    "implementation": {
-      "completed": 8,
-      "status": "COMPLETE",
-      "total": 8
-    },
-    "primaryCounter": "implementation",
-    "publication": {
-      "blockers": [],
-      "status": "PENDING",
-      "summary": null
-    }
+  "schemaVersion": "2",
+  "generatedBy": "kbd-runtime",
+  "sourceRevision": 353,
+  "derivedRevision": 353,
+  "frontier": {
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 353
   },
   "conflictCount": 0,
-  "derivedRevision": 28,
-  "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 28
-  },
-  "generatedBy": "kbd-runtime",
-  "implementation_completed": 8,
-  "implementation_total": 8,
-  "last_updated": "2026-08-03T08:14:05.069372Z",
-  "last_updated_by": "kbd-runtime",
-  "migrationStatus": null,
-  "parentPhase": null,
   "phase": "phase-v2-realtime-fabric-parity",
   "phaseId": "phase-v2-realtime-fabric-parity",
-  "schemaVersion": "2",
-  "sourceRevision": 28
+  "parentPhase": null,
+  "last_updated": "2026-08-29T22:01:30.676159Z",
+  "last_updated_by": "kbd-runtime",
+  "changes_total": 8,
+  "changes_completed": 8,
+  "implementation_total": 8,
+  "implementation_completed": 8,
+  "completion": {
+    "primaryCounter": "implementation",
+    "implementation": {
+      "completed": 8,
+      "total": 8,
+      "status": "COMPLETE"
+    },
+    "evidence": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    },
+    "certification": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    },
+    "publication": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    }
+  },
+  "changes": [
+    {
+      "id": "v2-crdt-merge-strategy-port",
+      "title": "v2-crdt-merge-strategy-port",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v2-tauri-sqlite-persistence",
+      "title": "v2-tauri-sqlite-persistence",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v2-devtools-time-travel",
+      "title": "v2-devtools-time-travel",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v2-incremental-query-spike",
+      "title": "v2-incremental-query-spike",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v2-eslint-layering-rule",
+      "title": "v2-eslint-layering-rule",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v2-agui-ingestion-bridge",
+      "title": "v2-agui-ingestion-bridge",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v2-flint-realtime-adapter",
+      "title": "v2-flint-realtime-adapter",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v2-devtools-graph-visualization",
+      "title": "v2-devtools-graph-visualization",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    }
+  ],
+  "children": {},
+  "migrationStatus": null
 }

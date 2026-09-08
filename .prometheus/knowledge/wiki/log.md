@@ -1,6 +1,37 @@
 # Update Log
 
+## 2026-09-01
+* **Update**: [v3 Devtools Parity Executor Complete with Unknown Change](/v3-devtools-parity-executor-completion-unknown-change.md)
+* **Ingest**: [Karpathy session 529cf0267e7c](/karpathy-session-529cf0267e7cfd80.md)
+* **Update**: [v3 Devtools Parity Executor Completion Unknown Change](/v3-devtools-parity-executor-completion-unknown-change.md)
+* **Ingest**: [Karpathy session 6e809e91a325](/karpathy-session-6e809e91a325e4dd.md)
+* **Update**: [v3 Devtools Parity Executor Completion Unknown Change](/v3-devtools-parity-executor-completion-unknown-change.md)
+* **Ingest**: [Karpathy session 88c35ecbd607](/karpathy-session-88c35ecbd6070757.md)
+* **Update**: [v3 Devtools Parity Executor Completion Unknown Change](/v3-devtools-parity-executor-completion-unknown-change.md)
+* **Ingest**: [Karpathy session 0e5e87c3a27f](/karpathy-session-0e5e87c3a27fa1f4.md)
+
+## 2026-08-29
+* **Ingest**: [Karpathy session ca5a656f9a6a](/karpathy-session-ca5a656f9a6ad2b3.md)
+* **Ingest**: [Karpathy session b37107803c17](/karpathy-session-b37107803c17e3fd.md)
+* **Ingest**: [Karpathy session ac4254b23b99](/karpathy-session-ac4254b23b99d53a.md)
+* **Update**: [v3 Devtools Parity Executor Completion Unknown Change](/v3-devtools-parity-executor-completion-unknown-change.md)
+* **Creation**: [v3 Devtools Parity Executor Completion Unknown Change](/v3-devtools-parity-executor-completion-unknown-change.md)
+
+## 2026-08-28
+* **Ingest**: [Karpathy session cc54009bf163](/karpathy-session-cc54009bf1630b7e.md)
+* **Creation**: [Full 3.0 Release Executor Completion Unknown Change](/full-3-0-release-executor-completion-unknown-change.md)
+
+## 2026-08-25
+* **Ingest**: [Karpathy session bbb82fa96dc8](/karpathy-session-bbb82fa96dc8d091.md)
+* **Ingest**: [Karpathy session a6c857e1649c](/karpathy-session-a6c857e1649c2cab.md)
+* **Ingest**: [Karpathy session 6a27aad2dd78](/karpathy-session-6a27aad2dd7803f6.md)
+* **Ingest**: [Karpathy session 5f74b4abdb6c](/karpathy-session-5f74b4abdb6cdd65.md)
+* **Ingest**: [Karpathy session 591bfa6ec082](/karpathy-session-591bfa6ec0826532.md)
+* **Ingest**: [Karpathy session 28c436e3077b](/karpathy-session-28c436e3077b1e74.md)
+
 ## 2026-08-24
+* **Creation**: [Full 3.0 Release Executor Session Complete, Change Unknown](/full-3-0-release-executor-session-complete-change-unknown.md)
+* **Creation**: [Full 3.0 Release Executor Session Complete, Change Unknown](/full-3-0-release-executor-session-complete-change-unknown.md)
 * **Creation**: [Full 3.0 Release Executor Completion Marker Unknown Change](/full-3-0-release-executor-completion-marker-unknown-change.md)
 * **Ingest**: [Karpathy session 5e6b552ea1cb](/karpathy-session-5e6b552ea1cb35d6.md)
 * **Ingest**: [Karpathy session 13f0b79f765b](/karpathy-session-13f0b79f765b9b67.md)

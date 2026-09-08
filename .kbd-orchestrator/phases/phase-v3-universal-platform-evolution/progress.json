@@ -1,233 +1,233 @@
 {
-  "changes": [
-    {
-      "blockers": [],
-      "id": "v3-monorepo-and-tooling",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-monorepo-and-tooling"
-    },
-    {
-      "blockers": [],
-      "id": "v3-core-extraction",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-core-extraction"
-    },
-    {
-      "blockers": [],
-      "id": "v3-sdl-spec",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-sdl-spec"
-    },
-    {
-      "blockers": [],
-      "id": "v3-electricsql-react-extract",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-electricsql-react-extract"
-    },
-    {
-      "blockers": [],
-      "id": "v3-react-parity",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-react-parity"
-    },
-    {
-      "blockers": [],
-      "id": "v3-svelte-bindings",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-svelte-bindings"
-    },
-    {
-      "blockers": [],
-      "id": "v3-solid-bindings",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-solid-bindings"
-    },
-    {
-      "blockers": [],
-      "id": "v3-sync-providers",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-sync-providers"
-    },
-    {
-      "blockers": [],
-      "id": "v3-lit-webcomponents",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-lit-webcomponents"
-    },
-    {
-      "blockers": [],
-      "id": "v3-alpine-plugin",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-alpine-plugin"
-    },
-    {
-      "blockers": [],
-      "id": "v3-htmx-server-adapter",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-htmx-server-adapter"
-    },
-    {
-      "blockers": [],
-      "id": "v3-rust-cli",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-rust-cli"
-    },
-    {
-      "blockers": [],
-      "id": "v3-mcp-server",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-mcp-server"
-    },
-    {
-      "blockers": [],
-      "id": "v3-a2a-server",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-a2a-server"
-    },
-    {
-      "blockers": [],
-      "id": "v3-tauri-plugin",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-tauri-plugin"
-    },
-    {
-      "blockers": [],
-      "id": "v3-flutter-package",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-flutter-package"
-    },
-    {
-      "blockers": [],
-      "id": "v3-a2ui-react",
-      "implementation_status": "COMPLETE",
-      "last_task_completed": null,
-      "next_task_pending": null,
-      "status": "DONE",
-      "tasks_done": 0,
-      "tasks_total": 0,
-      "title": "v3-a2ui-react"
-    }
-  ],
-  "changes_completed": 17,
-  "changes_total": 17,
-  "children": {},
-  "completion": {
-    "certification": {
-      "blockers": [],
-      "status": "PENDING",
-      "summary": null
-    },
-    "evidence": {
-      "blockers": [],
-      "status": "PENDING",
-      "summary": null
-    },
-    "implementation": {
-      "completed": 17,
-      "status": "COMPLETE",
-      "total": 17
-    },
-    "primaryCounter": "implementation",
-    "publication": {
-      "blockers": [],
-      "status": "PENDING",
-      "summary": null
-    }
+  "schemaVersion": "2",
+  "generatedBy": "kbd-runtime",
+  "sourceRevision": 353,
+  "derivedRevision": 353,
+  "frontier": {
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 353
   },
   "conflictCount": 0,
-  "derivedRevision": 28,
-  "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 28
-  },
-  "generatedBy": "kbd-runtime",
-  "implementation_completed": 17,
-  "implementation_total": 17,
-  "last_updated": "2026-08-03T08:14:05.069372Z",
-  "last_updated_by": "kbd-runtime",
-  "migrationStatus": null,
-  "parentPhase": null,
   "phase": "phase-v3-universal-platform-evolution",
   "phaseId": "phase-v3-universal-platform-evolution",
-  "schemaVersion": "2",
-  "sourceRevision": 28
+  "parentPhase": null,
+  "last_updated": "2026-08-29T22:01:30.676159Z",
+  "last_updated_by": "kbd-runtime",
+  "changes_total": 17,
+  "changes_completed": 17,
+  "implementation_total": 17,
+  "implementation_completed": 17,
+  "completion": {
+    "primaryCounter": "implementation",
+    "implementation": {
+      "completed": 17,
+      "total": 17,
+      "status": "COMPLETE"
+    },
+    "evidence": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    },
+    "certification": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    },
+    "publication": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    }
+  },
+  "changes": [
+    {
+      "id": "v3-monorepo-and-tooling",
+      "title": "v3-monorepo-and-tooling",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v3-core-extraction",
+      "title": "v3-core-extraction",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v3-sdl-spec",
+      "title": "v3-sdl-spec",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v3-electricsql-react-extract",
+      "title": "v3-electricsql-react-extract",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v3-react-parity",
+      "title": "v3-react-parity",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v3-svelte-bindings",
+      "title": "v3-svelte-bindings",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v3-solid-bindings",
+      "title": "v3-solid-bindings",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v3-sync-providers",
+      "title": "v3-sync-providers",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v3-lit-webcomponents",
+      "title": "v3-lit-webcomponents",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v3-alpine-plugin",
+      "title": "v3-alpine-plugin",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v3-htmx-server-adapter",
+      "title": "v3-htmx-server-adapter",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v3-rust-cli",
+      "title": "v3-rust-cli",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v3-mcp-server",
+      "title": "v3-mcp-server",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v3-a2a-server",
+      "title": "v3-a2a-server",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v3-tauri-plugin",
+      "title": "v3-tauri-plugin",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v3-flutter-package",
+      "title": "v3-flutter-package",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "v3-a2ui-react",
+      "title": "v3-a2ui-react",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 0,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": null,
+      "blockers": []
+    }
+  ],
+  "children": {},
+  "migrationStatus": null
 }

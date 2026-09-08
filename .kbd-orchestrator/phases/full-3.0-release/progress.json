@@ -1,16 +1,16 @@
 {
   "schemaVersion": "2",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 261,
-  "derivedRevision": 261,
+  "sourceRevision": 353,
+  "derivedRevision": 353,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 261
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 353
   },
   "conflictCount": 0,
   "phase": "full-3.0-release",
   "phaseId": "full-3.0-release",
   "parentPhase": null,
-  "last_updated": "2026-08-29T10:36:34.538255Z",
+  "last_updated": "2026-08-29T22:01:30.676159Z",
   "last_updated_by": "kbd-runtime",
   "changes_total": 29,
   "changes_completed": 7,
@@ -351,12 +351,12 @@
     {
       "id": "fix-scoped-imperative-store-access",
       "title": "Resolve issue #42 and publish 3.0.4",
-      "status": "DONE",
-      "implementation_status": "COMPLETE",
-      "tasks_total": 9,
-      "tasks_done": 9,
-      "last_task_completed": "Run T2 certification, release verification, archive, and 3.0.4 release gates.",
-      "next_task_pending": null,
+      "status": "PENDING",
+      "implementation_status": "PENDING",
+      "tasks_total": 5,
+      "tasks_done": 0,
+      "last_task_completed": null,
+      "next_task_pending": "Add focused scoped-versus-singleton React regressions and bounded diagnostic coverage.",
       "blockers": []
     }
   ],

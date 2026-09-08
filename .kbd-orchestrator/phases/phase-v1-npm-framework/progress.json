@@ -1,45 +1,45 @@
 {
-  "changes": [],
-  "changes_completed": 0,
-  "changes_total": 0,
-  "children": {},
-  "completion": {
-    "certification": {
-      "blockers": [],
-      "status": "PENDING",
-      "summary": null
-    },
-    "evidence": {
-      "blockers": [],
-      "status": "PENDING",
-      "summary": null
-    },
-    "implementation": {
-      "completed": 0,
-      "status": "PENDING",
-      "total": 0
-    },
-    "primaryCounter": "implementation",
-    "publication": {
-      "blockers": [],
-      "status": "PENDING",
-      "summary": null
-    }
+  "schemaVersion": "2",
+  "generatedBy": "kbd-runtime",
+  "sourceRevision": 353,
+  "derivedRevision": 353,
+  "frontier": {
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 353
   },
   "conflictCount": 0,
-  "derivedRevision": 28,
-  "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 28
-  },
-  "generatedBy": "kbd-runtime",
-  "implementation_completed": 0,
-  "implementation_total": 0,
-  "last_updated": "2026-08-03T08:14:05.069372Z",
-  "last_updated_by": "kbd-runtime",
-  "migrationStatus": "legacy-read-only",
-  "parentPhase": null,
   "phase": "phase-v1-npm-framework",
   "phaseId": "phase-v1-npm-framework",
-  "schemaVersion": "2",
-  "sourceRevision": 28
+  "parentPhase": null,
+  "last_updated": "2026-08-29T22:01:30.676159Z",
+  "last_updated_by": "kbd-runtime",
+  "changes_total": 0,
+  "changes_completed": 0,
+  "implementation_total": 0,
+  "implementation_completed": 0,
+  "completion": {
+    "primaryCounter": "implementation",
+    "implementation": {
+      "completed": 0,
+      "total": 0,
+      "status": "PENDING"
+    },
+    "evidence": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    },
+    "certification": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    },
+    "publication": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    }
+  },
+  "changes": [],
+  "children": {},
+  "migrationStatus": "legacy-read-only"
 }
