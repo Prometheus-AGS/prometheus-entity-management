@@ -1,5 +1,17 @@
 # @prometheus-ags/prometheus-entity-management
 
+## 4.0.1
+
+### Patch Changes
+
+- **`useGraphSyncStatus(runtime?)` accepts a runtime.** Called with no argument
+  it reads the shared status store exactly as before. Passed a runtime, it reads
+  that runtime's own status, so two runtimes in one app no longer report each
+  other's state.
+
+- Updated dependency: `@prometheus-ags/entity-graph-core@4.0.1`.
+
+
 ## 4.0.0
 
 ### Minor Changes

@@ -1,5 +1,39 @@
 # @prometheus-ags/entity-graph-core
 
+## 4.0.1
+
+### Patch Changes
+
+- **Scope pending actions and sync status per runtime.** `startLocalFirstGraph`
+  kept pending actions and sync status in module-level state, so two runtimes in
+  one process shared and clobbered each other's status. Each runtime now owns a
+  `RuntimeScope`. The `graphSyncStatusStore` export still works and remains
+  last-writer-wins under multiple runtimes; per-runtime status is the new path.
+
+- **`dispose()` drains in-flight persistence.** Disposal returned without
+  awaiting writes already in flight, so a caller could tear a runtime down mid-
+  write and lose the tail of a batch. `dispose()` is now async, tracks in-flight
+  writes, and drains them before resolving. It is memoized, so repeat calls
+  return the same promise rather than starting a second drain.
+
+  Note for React callers: effect cleanup is synchronous and cannot await this.
+  Hand the disposal promise to whatever opens the next runtime, so the next open
+  awaits the previous close.
+
+- **Commit replica rows and their resume checkpoint atomically.** Rows and the
+  checkpoint that describes them were written separately, so an interruption
+  between the two left a replica whose checkpoint disagreed with its contents —
+  and the disagreement was silent, producing a resume from a position that never
+  matched what was stored. `setWithCheckpoint()` now writes value and checkpoint
+  columns in a single statement, and `evaluateResume()` reports `resume` or
+  `rebuild` rather than assuming the checkpoint is trustworthy.
+
+- **Carry the Electric cursor through change sets.** `toChange` read
+  `msg.offset` and discarded it, so no offset reached a consumer by any path.
+  `ChangeSet.cursor` now carries `{handle, offset}` from the batch's last
+  message. The empty offset on the LISTEN/NOTIFY path is correct and unchanged —
+  such a frame genuinely has no Electric offset.
+
 ## 4.0.0
 
 ### Major Changes
