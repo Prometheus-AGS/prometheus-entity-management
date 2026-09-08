@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "change": "v3-skills-ecosystem",
-  "generatedAt": "2026-08-23T12:54:14.620Z",
+  "generatedAt": "2026-09-08T13:03:38.300Z",
   "evidenceBoundary": {
     "kind": "packed-consumer",
     "countsAsPackedPackageEvidence": true,
@@ -11,17 +11,17 @@
     {
       "label": "export-ledgers",
       "command": "pnpm run verify:skills",
-      "exitCode": 0
+      "exitCode": 1
     },
     {
       "label": "snippet-compile",
       "command": "node scripts/verify-skills-snippets.mjs",
-      "exitCode": 0
+      "exitCode": 1
     },
     {
       "label": "release-gate",
       "command": "node --test tests/release/v3-skills-ecosystem.test.mjs",
-      "exitCode": 0
+      "exitCode": 1
     },
     {
       "label": "rust-cli-tests",
@@ -35,14 +35,14 @@
     }
   ],
   "lanes": {
-    "exportLedgers": "pass",
-    "snippetCompile": "pass",
-    "releaseGate": "pass",
+    "exportLedgers": "fail",
+    "snippetCompile": "fail",
+    "releaseGate": "fail",
     "rustTooling": "pass"
   },
   "limits": {
     "rustTooling": "cargo test lanes prove the CLI/MCP crates build and pass unit tests; they are not published-crate evidence.",
     "externalMarketplace": "The official agentskills.io validator (skills-ref) is not vendored; leaf-skill packaging validation remains a manual step before external marketplace submission."
   },
-  "result": "pass"
+  "result": "fail"
 }
