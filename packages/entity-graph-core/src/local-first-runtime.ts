@@ -8,23 +8,7 @@ export interface GraphPersistenceAdapter {
   remove?: (key: string) => Promise<void> | void;
 }
 
-export interface GraphActionRecord {
-  id: string;
-  key: string;
-  input: unknown;
-  enqueuedAt: string;
-}
 
-export interface GraphSyncStatus {
-  phase: "idle" | "hydrating" | "syncing" | "ready" | "offline" | "error";
-  isOnline: boolean;
-  isSynced: boolean;
-  pendingActions: number;
-  lastHydratedAt: string | null;
-  lastPersistedAt: string | null;
-  storageKey: string | null;
-  error: string | null;
-}
 
 export interface GraphSnapshotPayload {
   version: 1;
@@ -76,14 +60,6 @@ export interface HydrateGraphFromStorageOptions {
  * Defaults: 5 attempts, starting at 500ms, doubling up to 30s, with
  * "equal" jitter (random in `[delay/2, delay]`).
  */
-export interface ReplayRetryPolicy {
-  maxAttempts?: number;
-  initialDelayMs?: number;
-  maxDelayMs?: number;
-  backoffFactor?: number;
-  jitter?: "full" | "equal" | "none";
-  poisonHandler?: (action: GraphActionRecord, error: unknown) => void | Promise<void>;
-}
 
 export interface StartLocalFirstGraphOptions {
   storage: GraphPersistenceAdapter;
@@ -125,6 +101,32 @@ export interface LocalFirstGraphRuntime {
   scope: RuntimeScope;
 }
 
+// Runtime scope + status store live in ./runtime-scope; re-exported here so the
+// package's public surface is unchanged by the split.
+export type {
+  GraphActionRecord,
+  GraphSyncStatus,
+  ReplayRetryPolicy,
+} from "./local-first-types";
+export {
+  createGraphSyncStatusStore,
+  type GraphSyncStatusStore,
+} from "./runtime-scope";
+export { createRuntimeScope };
+export type { RuntimeScope };
+import { createRuntimeScope } from "./runtime-scope";
+import type {
+  GraphActionRecord,
+  GraphSyncStatus,
+  ReplayRetryPolicy,
+} from "./local-first-types";
+import {
+  computeDelay,
+  resolveRetryPolicy,
+  type ResolvedRetryPolicy,
+} from "./replay-retry";
+import type { RuntimeScope as RuntimeScope } from "./runtime-scope";
+
 const DEFAULT_STORAGE_KEY = "prometheus:graph";
 
 export const graphSyncStatusStore = createStore<{ status: GraphSyncStatus; setStatus: (status: Partial<GraphSyncStatus>) => void }>()((set) => ({
@@ -146,52 +148,6 @@ export const graphSyncStatusStore = createStore<{ status: GraphSyncStatus; setSt
       },
     })),
 }));
-
-/**
- * Per-runtime state: the pending-action set and the status store that runtime
- * publishes to.
- *
- * Both were previously module-level singletons shared by every runtime in the
- * process. That was not merely shared state — `hydrateGraphFromStorage` clears
- * the pending set before repopulating it, so a second runtime hydrating erased
- * the first runtime's un-settled actions. On an account or practice switch that
- * is silent write loss, which is why this is scoped per runtime (ADR-009 G1).
- */
-export interface RuntimeScope {
-  pendingActions: Map<string, GraphActionRecord>;
-  statusStore: GraphSyncStatusStore;
-}
-
-export type GraphSyncStatusStore = ReturnType<typeof createGraphSyncStatusStore>;
-
-/** Create an independent sync-status store. Each runtime owns one. */
-export function createGraphSyncStatusStore() {
-  return createStore<{
-    status: GraphSyncStatus;
-    setStatus: (status: Partial<GraphSyncStatus>) => void;
-  }>()((set) => ({
-    status: {
-      phase: "idle",
-      isOnline: true,
-      isSynced: true,
-      pendingActions: 0,
-      lastHydratedAt: null,
-      lastPersistedAt: null,
-      storageKey: null,
-      error: null,
-    },
-    setStatus: (status) =>
-      set((state) => ({ status: { ...state.status, ...status } })),
-  }));
-}
-
-/** Create an isolated runtime scope. */
-export function createRuntimeScope(): RuntimeScope {
-  return {
-    pendingActions: new Map<string, GraphActionRecord>(),
-    statusStore: createGraphSyncStatusStore(),
-  };
-}
 
 /**
  * Process-wide fallback scope, used only by standalone calls to the exported
@@ -456,42 +412,6 @@ function cloneGraphSnapshot(storeApi: GraphStore) {
     syncMetadata: structuredClone(state.syncMetadata),
     lists: structuredClone(state.lists),
   };
-}
-
-interface ResolvedRetryPolicy {
-  maxAttempts: number;
-  initialDelayMs: number;
-  maxDelayMs: number;
-  backoffFactor: number;
-  jitter: "full" | "equal" | "none";
-  poisonHandler?: (action: GraphActionRecord, error: unknown) => void | Promise<void>;
-}
-
-function resolveRetryPolicy(policy?: ReplayRetryPolicy): ResolvedRetryPolicy {
-  return {
-    maxAttempts: policy?.maxAttempts ?? 5,
-    initialDelayMs: policy?.initialDelayMs ?? 500,
-    maxDelayMs: policy?.maxDelayMs ?? 30_000,
-    backoffFactor: policy?.backoffFactor ?? 2,
-    jitter: policy?.jitter ?? "equal",
-    poisonHandler: policy?.poisonHandler,
-  };
-}
-
-function computeDelay(policy: ResolvedRetryPolicy, attempt: number): number {
-  const base = Math.min(
-    policy.initialDelayMs * Math.pow(policy.backoffFactor, Math.max(0, attempt - 1)),
-    policy.maxDelayMs,
-  );
-  switch (policy.jitter) {
-    case "none":
-      return base;
-    case "full":
-      return Math.random() * base;
-    case "equal":
-    default:
-      return base / 2 + Math.random() * (base / 2);
-  }
 }
 
 /** Internal — sleep helper that respects test environments. */
