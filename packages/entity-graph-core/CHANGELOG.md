@@ -1,5 +1,30 @@
 # @prometheus-ags/entity-graph-core
 
+## 4.1.0
+
+### Minor Changes
+
+- **Garbage collection no longer empties mounted lists** ([#43](https://github.com/Prometheus-AGS/prometheus-entity-management/issues/43)).
+  GC evicted every entity without a per-entity subscriber once `lastFetched`
+  passed `defaultGcTime`, then stripped its id from every list. List bindings
+  register no per-entity subscribers, so mounted `useEntityList` /
+  `useEntities` lists (and the Solid, Svelte, Alpine and web-components list
+  bindings) emptied about 5–6 minutes after load and never refetched.
+
+  GC now treats list membership as a reference: an entity held by any list of
+  its type, or by an untyped list, is never collected, and GC no longer edits
+  lists. An entity dropped from every list by a refetch becomes collectable.
+
+- **`ListState.entityType`** (optional, additive). `ingestFetchedList` records
+  the entity type on the lists and projections it writes.
+
+### Patch Changes
+
+- **`removeIdFromAllLists(type, id)` respects `type`.** It previously removed
+  the id from lists of every type, so deleting `Task:"1"` also removed `"1"`
+  from `Project` lists. Typed lists of another type are now left intact;
+  untyped lists keep the previous behavior.
+
 ## 4.0.2
 
 ### Patch Changes
