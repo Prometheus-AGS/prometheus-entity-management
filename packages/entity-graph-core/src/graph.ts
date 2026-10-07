@@ -67,6 +67,11 @@ export interface ListState {
   stale: boolean;
   currentPage: number | null;
   pageSize: number | null;
+  /**
+   * Entity type of the ids this list holds, recorded by `ingestFetchedList`. Absent on lists
+   * written only through key-based actions; untyped lists are treated as holding any type.
+   */
+  entityType?: EntityType | null;
 }
 
 /** Pagination and lifecycle metadata accepted by successful list writes. */
@@ -219,7 +224,7 @@ export interface GraphState {
   appendListResult: (key: QueryKey, ids: EntityId[], meta: Partial<Omit<ListState, "ids" | "isFetching" | "isFetchingMore" | "error" | "stale">>) => void;
   /** Prepend ids (e.g. “new item at top”) with optional meta merge. */
   prependListResult: (key: QueryKey, ids: EntityId[], meta?: Partial<ListState>) => void;
-  /** After deletes, keep every list consistent by removing an id everywhere it appears and decrementing `total` when tracked. */
+  /** After deletes, remove an id from every list that holds `type` (or is untyped) and decrement `total` when tracked. */
   removeIdFromAllLists: (type: EntityType, id: EntityId) => void;
   /**
    * Insert or move an id in one list. If the id already exists, it is removed first then re-inserted at `position`.
@@ -447,6 +452,7 @@ export function createGraphStore() {
             lastError: null,
             stale: false,
             lastFetched: fetchedAt,
+            entityType: type,
           };
         }
 
@@ -482,8 +488,9 @@ export function createGraphStore() {
                 lastError: null,
                 stale: false,
                 lastFetched: fetchedAt,
+                entityType: type,
               }
-            : { ...existing, ids: nextIds };
+            : { ...existing, ids: nextIds, entityType: type };
         }
 
         for (const key of options.finishListFetches ?? []) {
@@ -554,9 +561,11 @@ export function createGraphStore() {
         const ex = s.lists[key] ?? defaultListState();
         s.lists[key] = { ...ex, ...(meta ?? {}), ids: Array.from(new Set([...ids, ...ex.ids])), isFetching: false, isFetchingMore: false, error: null, lastError: null, stale: false, lastFetched: Date.now() };
       }),
-      removeIdFromAllLists: (_type, id) => set((s) => {
+      removeIdFromAllLists: (type, id) => set((s) => {
         for (const key of Object.keys(s.lists)) {
-          const list = s.lists[key]; const idx = list.ids.indexOf(id);
+          const list = s.lists[key];
+          if (list.entityType && list.entityType !== type) continue;
+          const idx = list.ids.indexOf(id);
           if (idx !== -1) { list.ids.splice(idx, 1); if (list.total !== null) list.total -= 1; }
         }
       }),

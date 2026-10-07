@@ -1,5 +1,5 @@
 import { graphStore } from "./graph";
-import type { EntityType, EntityId, GraphStore } from "./graph";
+import type { EntityType, EntityId, GraphStore, ListState } from "./graph";
 import {
   emitLegacyDevtoolsEvent,
   subscribeLegacyDevtoolsEvent,
@@ -247,21 +247,41 @@ export function notifyDevtools(event: DevtoolsEvent): void {
 const gcIntervalsByStore = new Map<GraphStore, ReturnType<typeof setInterval>>();
 
 /**
- * One GC pass: removes entities that are unobserved, older than `defaultGcTime`, not fetching,
- * and have no non-empty local patches; then strips their ids from all lists.
+ * Ids held by any list, per entity type. Untyped lists (`entityType` absent) are recorded under
+ * `null` and retain a matching id of every type.
+ */
+function collectListReferences(lists: Record<string, ListState>): Map<EntityType | null, Set<EntityId>> {
+  const refs = new Map<EntityType | null, Set<EntityId>>();
+  for (const list of Object.values(lists)) {
+    const type = list.entityType ?? null;
+    let ids = refs.get(type);
+    if (!ids) refs.set(type, (ids = new Set()));
+    for (const id of list.ids) ids.add(id);
+  }
+  return refs;
+}
+
+/**
+ * One GC pass: removes entities that are unobserved, referenced by no list, older than
+ * `defaultGcTime`, not fetching, and have no non-empty local patches. Lists are never edited:
+ * list membership is a reference, so a collected entity is by definition in no list.
  */
 function runGarbageCollection(storeApi: GraphStore = graphStore): void {
   const store = storeApi.getState();
   const { defaultGcTime: gcTime } = getEngineOptions();
   const now = Date.now();
+  const listRefs = collectListReferences(store.lists);
+  const untypedRefs = listRefs.get(null);
   const toRemove: Array<{ type: EntityType; id: EntityId }> = [];
 
   for (const type of Object.keys(store.entities)) {
     const bucket = store.entities[type];
     if (!bucket) continue;
+    const typedRefs = listRefs.get(type);
     for (const id of Object.keys(bucket)) {
       const key = `${type}:${id}`;
       if (hasSubscribers(key, storeApi)) continue;
+      if (typedRefs?.has(id) || untypedRefs?.has(id)) continue;
       const patch = store.patches[type]?.[id];
       if (patch !== undefined && Object.keys(patch).length > 0) continue;
       const entityState = store.entityStates[key];
@@ -273,10 +293,7 @@ function runGarbageCollection(storeApi: GraphStore = graphStore): void {
     }
   }
 
-  for (const { type, id } of toRemove) {
-    store.removeEntity(type, id);
-    store.removeIdFromAllLists(type, id);
-  }
+  for (const { type, id } of toRemove) store.removeEntity(type, id);
 }
 
 /**
