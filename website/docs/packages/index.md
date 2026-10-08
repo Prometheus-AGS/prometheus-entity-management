@@ -6,15 +6,15 @@ sidebar_position: 6
 
 # Package family
 
-The 3.0 contract contains twelve npm packages plus native Dart and Rust
+The 4.x contract contains thirteen npm packages (twelve libraries plus the `@prometheus-ags/prometheus-entity-management` compatibility alias) plus native Dart and Rust
 deliverables. The framework-neutral core owns the graph. Bindings consume a
 compatible application-owned core peer so they cannot create hidden graph
 singletons. Generated API pages are built from packed public artifacts rather
 than source-only aliases.
 
 Use the [package chooser](chooser.md) to select a binding or integration. The
-verified registry snapshot has all twelve npm packages public at stable
-`3.2.0`:
+verified registry snapshot has all thirteen npm packages public at stable
+`4.1.0`:
 
 | Package | Install | Current `latest` |
 | --- | --- | --- |
@@ -31,4 +31,4 @@ and consumer-verified, although pub.dev has not yet associated the package
 with a verified publisher.
 
 [Browse the generated TypeScript API reference](https://prometheus-ags.github.io/prometheus-entity-management/api/).
-It is generated from the declarations inside all twelve packed npm tarballs.
+It is generated from the declarations inside all thirteen packed npm tarballs.

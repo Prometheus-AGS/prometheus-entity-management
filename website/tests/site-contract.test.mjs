@@ -74,7 +74,7 @@ test('keeps install guidance in registry-snapshot parity', () => {
   const releaseSearch = searchIndex.records.find(({route}) => route === '/docs/3.x/operations/release/');
   assert.ok(releaseSearch, 'release guide is missing from the generated search index');
   assert.equal(npmRegistryStatus.releaseStatus, 'stable-published');
-  assert.equal(published.length, 12);
+  assert.equal(published.length, 13);
   assert.equal(staged.length, 0);
   for (const [name, tags] of npmEntries) {
     const values = [tags.latest ?? 'absent', tags.alpha ?? 'absent', tags.next ?? 'absent', tags.candidateState];
@@ -85,10 +85,10 @@ test('keeps install guidance in registry-snapshot parity', () => {
   for (const [name, tags] of published) assert.equal(tags.latest, npmRegistryStatus.expectedCandidate, name);
   const installGuidance = [packageChooser, reactGuide, flutterGuide].join('\n');
   assert.doesNotMatch(installGuidance, /@next/, 'stable install guidance must not pin the archived RC channel');
-  assert.match(config, /all twelve npm packages are public/);
-  assert.match(packageIndex, new RegExp('all twelve npm packages public at stable\\s+`' + escapeRegex(npmRegistryStatus.expectedCandidate) + '`'));
+  assert.match(config, /all thirteen npm packages are public/);
+  assert.match(packageIndex, new RegExp('all thirteen npm packages public at stable\\s+`' + escapeRegex(npmRegistryStatus.expectedCandidate) + '`'));
   assert.match(reactGuide, /pnpm add @prometheus-ags\/entity-graph-core/);
-  assert.match(reactGuide, /pnpm add @prometheus-ags\/entity-graph-core \\?\n?\s*@prometheus-ags\/prometheus-entity-management/);
+  assert.match(reactGuide, /pnpm add @prometheus-ags\/entity-graph-core \\?\n?\s*@prometheus-ags\/entity-graph-react/);
   assert.equal(pubdevRegistryStatus.releaseStatus, 'published');
   assert.equal(pubdevRegistryStatus.consumerVerification, 'passed');
   assert.equal(pubdevRegistryStatus.publisherId, null);
@@ -113,7 +113,7 @@ test('keeps the package chooser and packed reference in release-contract parity'
   const expected = contract.artifacts
     .filter(({ecosystem}) => ecosystem === 'npm')
     .map(({packageName}) => packageName);
-  assert.equal(expected.length, 12);
+  assert.equal(expected.length, 13);
   assert.deepEqual(
     inventory.packages.map(({name}) => name).toSorted(),
     expected.toSorted(),
