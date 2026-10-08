@@ -10,6 +10,7 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
       "@prometheus-ags/a2ui-react": `${workspaceRoot}/packages/a2ui-react/src/index.ts`,
       "@prometheus-ags/entity-graph-a2a": `${workspaceRoot}/packages/entity-graph-a2a/src/index.ts`,
+      "@prometheus-ags/entity-graph-core/devtools": `${workspaceRoot}/packages/entity-graph-core/src/devtools/index.ts`,
       "@prometheus-ags/entity-graph-core": `${workspaceRoot}/packages/entity-graph-core/src/index.ts`,
       "@prometheus-ags/entity-graph-react": `${workspaceRoot}/packages/entity-graph-react/src/index.ts`,
     },

@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-agentic-a2ui-example",
+  "task": 5,
+  "recordedAt": "2026-10-08T11:22:38.322Z",
+  "status": "running",
+  "note": "The clean verifier writes this non-passing receipt before the self-referential coverage check and overwrites it only after every gate succeeds.",
+  "commands": [
+    {
+      "label": "frozen-install",
+      "command": "pnpm install --frozen-lockfile",
+      "startedAt": "2026-10-08T11:21:48.600Z",
+      "completedAt": "2026-10-08T11:21:51.981Z",
+      "exitCode": 0
+    },
+    {
+      "label": "agentic-typecheck",
+      "command": "pnpm run typecheck:agentic-a2ui",
+      "startedAt": "2026-10-08T11:21:51.981Z",
+      "completedAt": "2026-10-08T11:21:54.411Z",
+      "exitCode": 0
+    },
+    {
+      "label": "agentic-lint",
+      "command": "pnpm exec eslint examples/agentic-a2ui-app/src examples/agentic-a2ui-app/vite.config.ts examples/agentic-a2ui-app/vitest.config.ts tests/browser/v3-agentic-a2ui-example.playwright.config.ts tests/browser/v3-agentic-a2ui-example.spec.ts scripts/verify-agentic-a2ui-example.mjs --max-warnings 0",
+      "startedAt": "2026-10-08T11:21:54.411Z",
+      "completedAt": "2026-10-08T11:21:56.366Z",
+      "exitCode": 0
+    },
+    {
+      "label": "agentic-unit",
+      "command": "pnpm run test:agentic-a2ui:unit",
+      "startedAt": "2026-10-08T11:21:56.366Z",
+      "completedAt": "2026-10-08T11:22:03.777Z",
+      "exitCode": 0
+    },
+    {
+      "label": "core-package-build",
+      "command": "pnpm --filter @prometheus-ags/entity-graph-core build",
+      "startedAt": "2026-10-08T11:22:03.777Z",
+      "completedAt": "2026-10-08T11:22:06.937Z",
+      "exitCode": 0
+    },
+    {
+      "label": "a2ui-atomic-message-batch",
+      "command": "pnpm --filter @prometheus-ags/a2ui-react exec vitest run src/official-a2ui.test.tsx -t rejects an invalid batch without partially updating an existing surface",
+      "startedAt": "2026-10-08T11:22:06.937Z",
+      "completedAt": "2026-10-08T11:22:10.434Z",
+      "exitCode": 0
+    },
+    {
+      "label": "a2a-external-endpoint-policy",
+      "command": "pnpm --filter @prometheus-ags/entity-graph-a2a exec vitest run src/a2a-server.test.ts -t plaintext external endpoints|non-HTTP schemes|credential-bearing external endpoints|allows HTTP only",
+      "startedAt": "2026-10-08T11:22:10.434Z",
+      "completedAt": "2026-10-08T11:22:12.245Z",
+      "exitCode": 0
+    },
+    {
+      "label": "react-package-build",
+      "command": "pnpm --filter @prometheus-ags/entity-graph-react build",
+      "startedAt": "2026-10-08T11:22:12.245Z",
+      "completedAt": "2026-10-08T11:22:18.536Z",
+      "exitCode": 0
+    },
+    {
+      "label": "a2ui-package-build",
+      "command": "pnpm --filter @prometheus-ags/a2ui-react build",
+      "startedAt": "2026-10-08T11:22:18.536Z",
+      "completedAt": "2026-10-08T11:22:22.173Z",
+      "exitCode": 0
+    },
+    {
+      "label": "a2a-package-build",
+      "command": "pnpm --filter @prometheus-ags/entity-graph-a2a build",
+      "startedAt": "2026-10-08T11:22:22.173Z",
+      "completedAt": "2026-10-08T11:22:24.897Z",
+      "exitCode": 0
+    },
+    {
+      "label": "a2ui-export-ledger",
+      "command": "pnpm --filter @prometheus-ags/a2ui-react run verify:skills",
+      "startedAt": "2026-10-08T11:22:24.897Z",
+      "completedAt": "2026-10-08T11:22:25.786Z",
+      "exitCode": 0
+    },
+    {
+      "label": "a2a-export-ledger",
+      "command": "pnpm --filter @prometheus-ags/entity-graph-a2a run verify:skills",
+      "startedAt": "2026-10-08T11:22:25.786Z",
+      "completedAt": "2026-10-08T11:22:26.365Z",
+      "exitCode": 0
+    },
+    {
+      "label": "agentic-production-build",
+      "command": "pnpm run build:agentic-a2ui",
+      "startedAt": "2026-10-08T11:22:26.365Z",
+      "completedAt": "2026-10-08T11:22:28.019Z",
+      "exitCode": 0
+    },
+    {
+      "label": "agentic-production-browser",
+      "command": "pnpm exec playwright test --config tests/browser/v3-agentic-a2ui-example.playwright.config.ts",
+      "startedAt": "2026-10-08T11:22:28.019Z",
+      "completedAt": "2026-10-08T11:22:38.322Z",
+      "exitCode": 0
+    }
+  ]
+}
