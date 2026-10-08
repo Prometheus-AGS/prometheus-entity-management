@@ -345,7 +345,8 @@ export function useEntityGraphInspectorViewModel(
   const causalViewIds = useMemo(() => new Set(
     selectedEvent ? affectedViewIdsForEvent(selectedEvent) : [],
   ), [selectedEvent]);
-  const snapshotReferences = model?.snapshotReferences ?? [];
+  const modelSnapshotReferences = model?.snapshotReferences;
+  const snapshotReferences = useMemo(() => modelSnapshotReferences ?? [], [modelSnapshotReferences]);
   const rewindCursor = selectedRewindCursor !== null &&
     snapshotReferences.some((reference) => reference.cursor === selectedRewindCursor)
     ? selectedRewindCursor
