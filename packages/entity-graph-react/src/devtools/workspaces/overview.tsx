@@ -69,8 +69,8 @@ export function OverviewWorkspace({
 
       <div className="pem-metric-grid" aria-label="Graph health summary">
         <Metric label="Entities" value={model.snapshot.counts.entities} />
-        <Metric label="Dirty" value={dirty} tone={dirty ? "attention" : undefined} />
-        <Metric label="Errors" value={errors} tone={errors ? "attention" : undefined} />
+        <Metric label="Dirty" value={dirty} tone={dirty ? "dirty" : undefined} />
+        <Metric label="Errors" value={errors} tone={errors ? "error" : undefined} />
         <Metric label="Fetching" value={fetching} />
         <Metric label="Registered views" value={model.views.length} />
         <Metric label="Rendered subscribers" value={subscribers} />
@@ -128,7 +128,7 @@ function Metric({
 }: {
   label: string;
   value: number | string;
-  tone?: "attention";
+  tone?: "dirty" | "error";
 }) {
   return (
     <div className="pem-metric" data-tone={tone}>
