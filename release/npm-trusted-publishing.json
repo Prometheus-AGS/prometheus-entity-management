@@ -11,6 +11,7 @@
   },
   "packages": [
     "@prometheus-ags/entity-graph-core",
+    "@prometheus-ags/entity-graph-react",
     "@prometheus-ags/prometheus-entity-management",
     "@prometheus-ags/entity-graph-sdl",
     "@prometheus-ags/entity-graph-sync",
