@@ -180,7 +180,7 @@ test("hide, restore, layouts, keyboard navigation, and accessibility work throug
   await page.getByRole("button", { name: "Configure Graph DevTools launcher" }).click();
   await page.getByRole("button", { name: "Hide until reload" }).click();
   await expect(page.getByRole("button", { name: /Open Prometheus Graph DevTools/ })).toHaveCount(0);
-  await page.keyboard.press("Control+Shift+G");
+  await page.keyboard.press("Alt+Shift+E");
   await expect(page.getByRole("dialog", { name: "Prometheus Graph DevTools" })).toBeVisible();
   await closeInspector(page);
 
@@ -188,7 +188,7 @@ test("hide, restore, layouts, keyboard navigation, and accessibility work throug
   await page.getByRole("button", { name: "Hide for this browser" }).click();
   await page.reload();
   await expect(page.getByRole("button", { name: /Open Prometheus Graph DevTools/ })).toHaveCount(0);
-  await page.keyboard.press("Control+Shift+G");
+  await page.keyboard.press("Alt+Shift+E");
   await expect(page.getByRole("dialog", { name: "Prometheus Graph DevTools" })).toBeVisible();
 
   await page.getByRole("button", { name: "Configure Graph DevTools panel" }).click();
