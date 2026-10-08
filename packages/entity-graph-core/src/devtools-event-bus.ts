@@ -208,7 +208,8 @@ export function createDevtoolsEventBus(opts?: DevtoolsEventBusOptions): Devtools
           try { entry.unsubscribeSrc(); } catch { /* ignore */ }
         }
       }
-      registries.delete(bus);
+      // Keep the registry so inactive entries stay visible to getRegisteredStores()
+      // after destroy; registerStore() already allows re-registering an inactive name.
       _busInjectMap.delete(bus);
     },
   };

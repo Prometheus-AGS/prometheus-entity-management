@@ -10,6 +10,9 @@ import {
   configureTimeTravel,
   __resetTimeTravel,
 } from "./devtools-time-travel";
+// The root time-travel API is a facade over the optional per-store controller; importing
+// the devtools entry registers the factory that attaches one on first use.
+import "./devtools";
 
 describe("G4: true time-travel (rewind + replay the live graph)", () => {
   beforeEach(() => {
