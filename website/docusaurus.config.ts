@@ -78,7 +78,7 @@ const config: Config = {
     announcementBar: {
       id: 'v4_stable',
       content:
-        '<strong>4.1.1 stable</strong> — all thirteen npm packages are public on npm at 4.1.1, including the optional React DevTools inspector and the entity-graph-react binding. Flutter 4.0.0 is public on pub.dev with its official DevTools companion.',
+        '<strong>4.1.1 stable</strong> — all thirteen npm packages are public on npm at 4.1.1, including the optional React DevTools inspector. Flutter 4.0.0 is public on pub.dev with its official DevTools companion.',
       backgroundColor: '#0B0F14',
       textColor: '#FFFFFF',
       isCloseable: false,
