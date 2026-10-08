@@ -37,7 +37,7 @@ test("the checked-in semantic contract executes every required outcome", () => {
     scenarios: 13,
     scenariosPassed: 13,
     capabilities: 16,
-    stableArtifacts: 16,
+    stableArtifacts: 17,
     showcases: 5,
     overallCoverageStatus: "in-progress",
     releaseCertified: false,

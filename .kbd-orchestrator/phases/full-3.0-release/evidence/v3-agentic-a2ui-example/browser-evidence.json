@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "change": "v3-agentic-a2ui-example",
+  "status": "pass",
+  "evidenceKind": "source-workspace-production-browser",
+  "countsAsPackedPackageEvidence": false,
+  "flows": {
+    "happy-policy-approval": {
+      "lifecycle": "completed",
+      "surfaceRendered": true,
+      "normalizedCrossViewStatus": "archived",
+      "allowedAction": "executed",
+      "authorizationDenial": "unauthorized",
+      "invalidContext": "invalid-context",
+      "undeclaredAction": "unknown-action",
+      "humanApproval": [
+        "denied",
+        "approved"
+      ]
+    },
+    "malformed-artifact": {
+      "lifecycle": "validation-failed",
+      "surfaceRendered": false,
+      "graphMutated": false
+    },
+    "cancelled-task": {
+      "lifecycle": "cancelled",
+      "artifactDelivered": false,
+      "graphMutated": false
+    }
+  },
+  "accessibility": {
+    "status": "pass",
+    "serious": 0,
+    "critical": 0,
+    "flows": {
+      "happy-policy-approval": {
+        "serious": 0,
+        "critical": 0
+      },
+      "malformed-artifact": {
+        "serious": 0,
+        "critical": 0
+      },
+      "cancelled-task": {
+        "serious": 0,
+        "critical": 0
+      }
+    }
+  },
+  "artifacts": {
+    "screenshots": [
+      "browser-happy-policy-approval.png",
+      "browser-malformed-artifact.png",
+      "browser-cancelled-task.png"
+    ],
+    "tracePolicy": "on",
+    "playwrightReport": "playwright-report.json",
+    "playwrightOutput": "playwright-artifacts"
+  }
+}
