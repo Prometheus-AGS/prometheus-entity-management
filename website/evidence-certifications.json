@@ -42,19 +42,19 @@
     {
       "assetId": "next-ssr-hydration",
       "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/task-3-nextjs-ssr-hydration.png",
-      "sourceSha256": "de0e5002ed0fceacb9e6c6253aec92e2b9f8de5260274fe3604214534535d38b",
+      "sourceSha256": "6da2ae1477582cdd7c355dc4f4fd7fcb10e7f8e238d7477661a6a49181cb89dc",
       "scenarioIds": [
         "example.runtime.ssr-isolation-hydration",
         "example.graph.normalized-cross-view"
       ],
       "executionReceipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-nextjs-app-router-example/browser-evidence.json",
-      "executionReceiptSha256": "61e6850611de77cffa75fe9ee97630ae1be9a784db68005fb5263bb74a601978",
+      "executionReceiptSha256": "fac7d7a9e5299401a628d30b8e58b3db16381135e334f3bd7b5c8c8588d7baae",
       "certificationStatus": "verified-browser"
     },
     {
       "assetId": "a2ui-policy-approval",
       "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-happy-policy-approval.png",
-      "sourceSha256": "0ab64925a1f97a93459cf210eb73036bc83a9254bb50a558bdf8e3aa58f09ba2",
+      "sourceSha256": "19d3f410635a663d214ed38e0adec5268ec291a832a82656db42d2f7a3f5dcfe",
       "scenarioIds": [
         "example.protocol.a2a-a2ui-policy",
         "example.crud.optimistic-confirm"
@@ -66,7 +66,7 @@
     {
       "assetId": "a2ui-malformed-denial",
       "sourcePath": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-agentic-a2ui-example/browser-malformed-artifact.png",
-      "sourceSha256": "a81aedab564384d2a22e0ac28f96d3c358dc6463b4f789f2bfd63e4a8e6ef537",
+      "sourceSha256": "029c904f98872f02b9f0351c9bdc3aa98843dd6983ac489dca676876a1476e62",
       "scenarioIds": [
         "example.protocol.a2a-a2ui-policy",
         "example.runtime.lifecycle-security"

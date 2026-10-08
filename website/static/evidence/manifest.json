@@ -1,10 +1,10 @@
 {
   "schemaVersion": "1.0.0",
   "certificationReceipt": "website/evidence-certifications.json",
-  "certificationReceiptSha256": "172b1d6631db00bfe1fbb07b827e85d5eba2d7e8919cd25eaab65c16b975ce19",
+  "certificationReceiptSha256": "1b684b62977ecd177ebbb8f21099d5db28bc2006a0f2837a84a64f82342ca1f8",
   "gallerySha256": "225cfdf1dbd6ef3a1077b288566e2117e8e5a7963c61e5b5ea7df89ce649d4ce",
   "artifactFileCount": 44,
-  "artifactAggregateSha256": "9cc0267f68c95e607387afd40cc0258135bc325d6df09a26f0f253090bd82e89",
+  "artifactAggregateSha256": "3f9d073544532a0605a1340012342730684b02989eb639f3b62b9dbc7db2a070",
   "assets": [
     {
       "assetId": "react-graph-transports",
@@ -135,8 +135,8 @@
         "field": "status",
         "equals": "pass"
       },
-      "sourceSha256": "de0e5002ed0fceacb9e6c6253aec92e2b9f8de5260274fe3604214534535d38b",
-      "receiptSha256": "61e6850611de77cffa75fe9ee97630ae1be9a784db68005fb5263bb74a601978",
+      "sourceSha256": "6da2ae1477582cdd7c355dc4f4fd7fcb10e7f8e238d7477661a6a49181cb89dc",
+      "receiptSha256": "fac7d7a9e5299401a628d30b8e58b3db16381135e334f3bd7b5c8c8588d7baae",
       "visualReview": [
         "no-visible-secrets",
         "no-internal-paths",
@@ -144,7 +144,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-browser",
-      "sourceGitBlobSha": "da603607b80512ab346e4f5ddf8c223b5ed6a33d",
+      "sourceGitBlobSha": "8fbd38ceaaaf22a81b8e165c1e975081fd080f17",
       "width": 1280,
       "height": 720,
       "variants": [
@@ -157,7 +157,7 @@
           "path": "next-ssr-hydration-1280.webp"
         }
       ],
-      "sha256": "8add483b09ff1d77ccf65deda934e516825c17ff2a064512337e61025d0d1e4f"
+      "sha256": "87e4e28472cf8214efc5deb6c5297e1ada086ffea3831805f8f6b0af999da531"
     },
     {
       "assetId": "a2ui-policy-approval",
@@ -173,7 +173,7 @@
         "field": "status",
         "equals": "pass"
       },
-      "sourceSha256": "0ab64925a1f97a93459cf210eb73036bc83a9254bb50a558bdf8e3aa58f09ba2",
+      "sourceSha256": "19d3f410635a663d214ed38e0adec5268ec291a832a82656db42d2f7a3f5dcfe",
       "receiptSha256": "745980c30ae9f53cfb9dacc5396c758baaa35e054f2d92a98f31afbe13f58495",
       "visualReview": [
         "no-visible-secrets",
@@ -182,7 +182,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-browser",
-      "sourceGitBlobSha": "e4c085acae87fd4abc279e84354359639b8efce6",
+      "sourceGitBlobSha": "58d1d81eb22e746b9e3125dae62b212cdd4cf473",
       "width": 1280,
       "height": 2193,
       "variants": [
@@ -195,7 +195,7 @@
           "path": "a2ui-policy-approval-1280.webp"
         }
       ],
-      "sha256": "e65d43777b637c28ffd2166ba3b1d807b34a337b6fccfb93f5bae80598ef684f"
+      "sha256": "ed205459c845644db68f9610f4c97858582357786086fe5466d8681d77ac0b18"
     },
     {
       "assetId": "a2ui-malformed-denial",
@@ -211,7 +211,7 @@
         "field": "status",
         "equals": "pass"
       },
-      "sourceSha256": "a81aedab564384d2a22e0ac28f96d3c358dc6463b4f789f2bfd63e4a8e6ef537",
+      "sourceSha256": "029c904f98872f02b9f0351c9bdc3aa98843dd6983ac489dca676876a1476e62",
       "receiptSha256": "745980c30ae9f53cfb9dacc5396c758baaa35e054f2d92a98f31afbe13f58495",
       "visualReview": [
         "no-visible-secrets",
@@ -220,7 +220,7 @@
         "not-icon"
       ],
       "certificationStatus": "verified-browser",
-      "sourceGitBlobSha": "87cedfb5bbec0bb43b11382002252229b40d39a9",
+      "sourceGitBlobSha": "ad879386f6a6bbfcba2ea0d5f0ade4b5dbe793d6",
       "width": 1280,
       "height": 1535,
       "variants": [
@@ -233,7 +233,7 @@
           "path": "a2ui-malformed-denial-1280.webp"
         }
       ],
-      "sha256": "56eeab31e4c1452e949e4430559b6434fada9e0c974cbcb8487ec9a29ff09b93"
+      "sha256": "9b123a6dd89cb0e382c4b8438edc5fca676b98c4d807c87ff5d9bcde16fb7341"
     },
     {
       "assetId": "flutter-cross-view-initial",
