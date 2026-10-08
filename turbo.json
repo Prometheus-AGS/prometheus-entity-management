@@ -3,17 +3,51 @@
   "ui": "stream",
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
     },
     "typecheck": {
-      "dependsOn": ["^build"],
-      "outputs": [".cache/typescript/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".cache/typescript/**"
+      ]
     },
     "test": {
-      "dependsOn": ["^build"],
-      "outputs": ["coverage/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "coverage/**"
+      ]
     },
-    "lint": {}
+    "lint": {},
+    "@prometheus-ags/entity-graph-docs-site#build": {
+      "dependsOn": [
+        "^build",
+        "@prometheus-ags/entity-graph-core#build",
+        "@prometheus-ags/entity-graph-react#build",
+        "@prometheus-ags/prometheus-entity-management#build",
+        "@prometheus-ags/entity-graph-sync#build",
+        "@prometheus-ags/entity-graph-svelte#build",
+        "@prometheus-ags/entity-graph-solid#build",
+        "@prometheus-ags/entity-graph-alpine#build",
+        "@prometheus-ags/entity-graph-htmx#build",
+        "@prometheus-ags/entity-graph-web-components#build",
+        "@prometheus-ags/a2ui-react#build",
+        "@prometheus-ags/entity-graph-a2a#build",
+        "@prometheus-ags/entity-graph-tauri#build",
+        "@prometheus-ags/entity-graph-sdl#build"
+      ],
+      "outputs": [
+        "build/**",
+        ".docusaurus/**"
+      ]
+    }
   }
 }
