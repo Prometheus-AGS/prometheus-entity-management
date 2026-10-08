@@ -1,51 +1,140 @@
 {
   "schemaVersion": "1.0.0",
-  "assessedOn": "2026-08-01",
-  "threshold": ["critical", "high"],
+  "assessedOn": "2026-10-08",
+  "threshold": [
+    "critical",
+    "high"
+  ],
   "acceptedAdvisories": [
     {
-      "id": 1138115,
-      "package": "js-yaml",
+      "id": 1240991,
+      "package": "http-cache-semantics",
       "owner": "Travis James",
-      "expiresOn": "2026-11-21",
-      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (postcss-loader > cosmiconfig); not shipped in any published package runtime tree. Reassess at next Docusaurus upgrade."
+      "expiresOn": "2027-01-08",
+      "rationale": "No patched release exists (advisory lists patched <0.0.0). Build-time-only transitive dependency of the Docusaurus docs toolchain (update-notifier > got > cacheable-request); runs only during the docs build's update check against the npm registry and is not shipped in any published package runtime tree. Reassess when a fixed release or a Docusaurus upgrade drops update-notifier."
     },
     {
-      "id": 1138808,
-      "package": "image-size",
+      "id": 1240992,
+      "package": "braces",
       "owner": "Travis James",
-      "expiresOn": "2026-11-21",
-      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (@docusaurus/mdx-loader); processes only first-party docs images at build time. Not shipped in any published package runtime tree."
-    },
-    {
-      "id": 1138809,
-      "package": "image-size",
-      "owner": "Travis James",
-      "expiresOn": "2026-11-21",
-      "rationale": "Build-time-only transitive dependency of the Docusaurus docs toolchain (@docusaurus/mdx-loader); processes only first-party docs images at build time. Not shipped in any published package runtime tree."
-    },
-    {
-      "id": 1139427,
-      "package": "nanoid",
-      "owner": "Travis James",
-      "expiresOn": "2026-11-21",
-      "rationale": "Build-time-only transitive dependency of the Next.js example app (next > postcss); bundler internals, not shipped in any published package runtime tree. Reassess at next Next.js example upgrade."
+      "expiresOn": "2027-01-08",
+      "rationale": "No patched release exists (3.0.3 is the latest; advisory lists patched <0.0.0). Developer-tooling-only transitive dependency of @changesets/cli (micromatch) that globs first-party workspace paths; not shipped in any published package runtime tree. Reassess when braces publishes a fix."
     }
   ],
   "resolvedAdvisories": [
     {
-      "ids": [1116375, 1117930, 1118938, 1118949, 1118953, 1118955, 1118959, 1118961, 1124170, 1124171, 1124184, 1124192, 1124066, 1124252, 1124288],
-      "packages": ["next", "sharp", "postcss"],
+      "ids": [
+        1241332,
+        1241279,
+        1241331,
+        1241496,
+        1241260,
+        1241261,
+        1241207,
+        1241208,
+        1241210,
+        1241221,
+        1241209,
+        1158521,
+        1158524,
+        1158527,
+        1158530,
+        1239943,
+        1240041,
+        1240050,
+        1240040,
+        1240049,
+        1240104,
+        1240108,
+        1240107,
+        1240111,
+        1239765,
+        1239766,
+        1193736,
+        1153171,
+        1153172,
+        1193727,
+        1193726,
+        1138115,
+        1138114,
+        1240870,
+        1240872,
+        1240874,
+        1139427
+      ],
+      "packages": [
+        "shell-quote",
+        "joi",
+        "sharp",
+        "next",
+        "tinypool",
+        "seroval",
+        "proxy-addr",
+        "compression",
+        "source-map-js",
+        "fast-uri",
+        "undici",
+        "brace-expansion",
+        "image-size",
+        "svgo",
+        "browserslist",
+        "js-yaml",
+        "devalue",
+        "nanoid"
+      ],
+      "action": "2026-10-08 advisory wave: pin every transitive package with a patched release through root pnpm overrides in pnpm-workspace.yaml (shell-quote 1.12.0, joi 17.13.8, sharp 0.35.5, tinypool 2.1.2 scoped to @docusaurus/core, seroval 1.6.3, proxy-addr 2.0.8, compression 1.8.2, source-map-js 1.2.2, fast-uri 3.1.7, undici 7.29.1/8.10.2, brace-expansion 1.1.20/5.0.11, image-size 2.0.3, svgo 3.3.5, browserslist 4.28.7, js-yaml 4.3.2/3.15.2, devalue 5.9.3, nanoid 3.3.18) and upgrade the Next.js example to 16.3.8. seroval also reached the published entity-graph-solid package through solid-js, so that pin is a runtime fix, not docs hygiene."
+    },
+    {
+      "ids": [
+        1116375,
+        1117930,
+        1118938,
+        1118949,
+        1118953,
+        1118955,
+        1118959,
+        1118961,
+        1124170,
+        1124171,
+        1124184,
+        1124192,
+        1124066,
+        1124252,
+        1124288
+      ],
+      "packages": [
+        "next",
+        "sharp",
+        "postcss"
+      ],
       "action": "Upgrade Next.js to 16.2.12 and use root pnpm overrides for PostCSS 8.5.25 and Sharp 0.35.0 because Next 16.2.12 still declares vulnerable exact/ranged transitive releases."
     },
     {
-      "ids": [1124299],
-      "packages": ["seroval"],
+      "ids": [
+        1124299
+      ],
+      "packages": [
+        "seroval"
+      ],
       "action": "Upgrade @tanstack/react-router to 1.170.18 so router-core resolves patched seroval."
     },
     {
-      "ids": [1117870, 1117884, 1123898, 1123911, 1123999, 1124064, 1130178, 1130591],
-      "packages": ["fast-uri", "brace-expansion", "js-yaml", "hono"],
+      "ids": [
+        1117870,
+        1117884,
+        1123898,
+        1123911,
+        1123999,
+        1124064,
+        1130178,
+        1130591
+      ],
+      "packages": [
+        "fast-uri",
+        "brace-expansion",
+        "js-yaml",
+        "hono"
+      ],
       "action": "Remove the shadcn scaffolding CLI from application production dependencies; generated components do not import the CLI at runtime."
     }
   ],
