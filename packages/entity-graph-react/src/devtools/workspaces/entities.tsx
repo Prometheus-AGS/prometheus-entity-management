@@ -172,8 +172,8 @@ function EntityDetail(props: EntitiesWorkspaceProps & { selected: GraphDevtoolsE
         </div>
         <div className="pem-detail-tools">
           <div className="pem-status-cluster" aria-label="Entity status">
-            {entity.dirty && <span data-tone="attention">◆ Dirty</span>}
-            {entity.entityState.error && <span data-tone="attention">! Error</span>}
+            {entity.dirty && <span data-tone="dirty">◆ Dirty</span>}
+            {entity.entityState.error && <span data-tone="error">! Error</span>}
             {entity.entityState.isFetching && <span>↻ Fetching</span>}
             {entity.entityState.stale && <span>◷ Stale</span>}
             {!entity.sync.synced && <span>⇅ Unsynced</span>}
@@ -295,7 +295,7 @@ function EntityDetail(props: EntitiesWorkspaceProps & { selected: GraphDevtoolsE
                     <button type="button" onClick={() => props.onSelectIdentity(other.type, other.id)}>
                       <span>{relationship.direction === "outgoing" ? "→" : "←"} {relationship.relation}</span>
                       <code translate="no">{other.type}/{other.id}</code>
-                      <small data-tone={relationship.status === "missing-target" ? "attention" : undefined}>
+                      <small data-tone={relationship.status === "missing-target" ? "error" : undefined}>
                         {relationship.status}
                       </small>
                     </button>

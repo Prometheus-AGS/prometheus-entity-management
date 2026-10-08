@@ -85,8 +85,8 @@ export function EntityGraphInspectorShell({
           <span data-state={model.snapshot.snapshots.mode}>
             {model.snapshot.snapshots.mode === "live" ? "● Live" : `◉ Rewound ${model.snapshot.snapshots.cursor}`}
           </span>
-          <span data-tone={dirty ? "attention" : undefined}>◆ {dirty} dirty</span>
-          <span data-tone={errors ? "attention" : undefined}>! {errors} errors</span>
+          <span data-tone={dirty ? "dirty" : undefined}>◆ {dirty} dirty</span>
+          <span data-tone={errors ? "error" : undefined}>! {errors} errors</span>
         </div>
       </header>
 
