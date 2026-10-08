@@ -3,7 +3,7 @@
   "schemaVersion": "1.0.0",
   "release": {
     "name": "Prometheus Entity Management",
-    "version": "4.0.0",
+    "version": "4.1.0",
     "channel": "stable",
     "owner": "Prometheus AGS",
     "repository": "https://github.com/Prometheus-AGS/prometheus-entity-management",
