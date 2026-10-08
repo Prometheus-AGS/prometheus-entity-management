@@ -3,13 +3,13 @@
   "sourceFiles": [
     {
       "path": "packages/entity-graph-cli/Cargo.lock",
-      "sha256": "e072ae2a79d393956ef8f645fa1bfa9d92c343ae5b08e15fd39cdbf40e181da4",
-      "bytes": 30691
+      "sha256": "0490aa035f6742b8a3b30d850228827e2ef884ffbd3be3a025ae6839702ebc81",
+      "bytes": 30683
     },
     {
       "path": "packages/entity-graph-cli/Cargo.toml",
-      "sha256": "287c6c5b61f8bb151d75f85f7196871cf577d06c1e99ae0de253f7dfac19f58f",
-      "bytes": 922
+      "sha256": "851ad94eb43c8d7f1940d156dd394a964d1f67519b20c195bbf3331e21ae953c",
+      "bytes": 914
     },
     {
       "path": "packages/entity-graph-cli/src/commands/generate.rs",
@@ -48,13 +48,13 @@
     },
     {
       "path": "packages/entity-graph-mcp/Cargo.lock",
-      "sha256": "b9d43f9120e5c7793156daeea611e6dad69a05e3c57a64a5fca2359eb8b3ee3b",
-      "bytes": 35953
+      "sha256": "07a33754380bc42c448e1200d1e5ae7fdbf9c34b40792e18e6417db1f4008061",
+      "bytes": 35945
     },
     {
       "path": "packages/entity-graph-mcp/Cargo.toml",
-      "sha256": "f026fef46f491327c875d23bdab2d8b823a691e2615088eab9ebe30bfd9d791e",
-      "bytes": 1775
+      "sha256": "8aed6b5146918bd45e660f60474ba00661adcc84f1b0faa4e2d577acddb1cead",
+      "bytes": 1767
     },
     {
       "path": "packages/entity-graph-mcp/src/cli.rs",
@@ -88,13 +88,13 @@
     },
     {
       "path": "packages/entity-graph-tauri/rust-plugin/Cargo.lock",
-      "sha256": "668d5d6fa8b0d2a9f51c6fb46bc1ed408518561e1f8596bea45ed374d2ea9864",
-      "bytes": 96323
+      "sha256": "6914974c0cf646a3b804bf32b226c99ce8fcbba894e9d4b137b755f3b8d5deb4",
+      "bytes": 96315
     },
     {
       "path": "packages/entity-graph-tauri/rust-plugin/Cargo.toml",
-      "sha256": "fb261377dd01c3dab047c013ccb3f51ee6ab9405a547f34d0399f322bb114f73",
-      "bytes": 1362
+      "sha256": "2f88570df0c9e53ef689c3ac0d58dffac07e2181309f7467b27007e7fc17ab1d",
+      "bytes": 1354
     },
     {
       "path": "packages/entity-graph-tauri/rust-plugin/src/bin/generate-bindings.rs",
@@ -143,8 +143,8 @@
     },
     {
       "path": "packages/entity_graph_flutter/lib/entity_graph_flutter.dart",
-      "sha256": "dceb92ecc2ee580c7dd72175b7b40ae1c66bc8e7c52e06e8031989daecbfa384",
-      "bytes": 940
+      "sha256": "5d6e87b8b1bceb313bf582981799750cf364bea3dff8f1db491cfdab9f803a43",
+      "bytes": 1138
     },
     {
       "path": "packages/entity_graph_flutter/lib/src/devtools/commands.dart",
@@ -197,13 +197,28 @@
       "bytes": 40013
     },
     {
+      "path": "packages/entity_graph_flutter/lib/src/hooks/use_entity.dart",
+      "sha256": "aa628fedbfa1baaf502e934f57d7103ce68137f704241aeac948d42f509f76b6",
+      "bytes": 2002
+    },
+    {
+      "path": "packages/entity_graph_flutter/lib/src/hooks/use_entity_list.dart",
+      "sha256": "66f7c4e65914f019d062715b4f2cd4396f184d373e525d147892d90d0bdb3ceb",
+      "bytes": 2366
+    },
+    {
+      "path": "packages/entity_graph_flutter/lib/src/hooks/use_entity_query.dart",
+      "sha256": "0aa0aac03e29e9bf26ffa65c1d93e22fea7510a886b6faa97809df38759ce47d",
+      "bytes": 4684
+    },
+    {
       "path": "packages/entity_graph_flutter/lib/src/providers.dart",
       "sha256": "4e296663c6402c591d14f2aef0794a7954363ce79cc250adead5aaabc8ab2ffd",
       "bytes": 25176
     },
     {
       "path": "packages/entity_graph_flutter/lib/src/providers.g.dart",
-      "sha256": "7a1c417c318d59c6180c415c0f50c6948120f53806c969190c421f593ea717a4",
+      "sha256": "3310dff92854ffd82ed24c9c8906cf491a6538cebf1490b6c9367c0470b1f14a",
       "bytes": 27610
     },
     {
@@ -223,16 +238,16 @@
     },
     {
       "path": "packages/entity_graph_flutter/pubspec.yaml",
-      "sha256": "f5f43731180818f595b82e5cb9b63664883b042823ceefeacba58369faa6029a",
-      "bytes": 1094
+      "sha256": "a8aac64b8ac48c3c1965188e8f237fbfaeef84749f771e382d29a4474fba8077",
+      "bytes": 1302
     },
     {
       "path": "website/native-api-pubspec.lock",
-      "sha256": "f6581ae2fe023d3a423ee9b401432fe3c9d9fdbc627ee1769fd5983b038358d0",
-      "bytes": 15514
+      "sha256": "d61303c8ae40e1e389b89771d4cb328a89ccbdf7978a8a8a1cae4f64569cd1cc",
+      "bytes": 11301
     }
   ],
-  "sourceAggregateSha256": "e52784453411f2b06082c48f456906340ed1c6b6d2066eb0cbc5d2e50f9df456",
-  "artifactFileCount": 1503,
-  "artifactAggregateSha256": "c4c8e41d416623b825dd417ba1b8dd469620eb8400ca57b952e1f17c796ab458"
+  "sourceAggregateSha256": "50c7ce5e90781263bf8d39fa992e35a717214ed6f91d47996791a750a684aada",
+  "artifactFileCount": 1545,
+  "artifactAggregateSha256": "1982791ef9937a216ed2aa40e266301ff36e71d88dafdde77f9ad80b2a446a19"
 }

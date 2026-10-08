@@ -54,7 +54,7 @@
 
     <section class="multi-line-signature">
       
-<span class="returntype"><a href="https://pub.dev/documentation/riverpod_annotation/4.0.3/riverpod_annotation/Override-class.html">Override</a></span>
+<span class="returntype"><a href="https://pub.dev/documentation/riverpod_annotation/4.0.7/riverpod_annotation/Override-class.html">Override</a></span>
 <span class="name ">overrideWithValue</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="overrideWithValue-param-value"><span class="type-annotation"><a href="../../entity_graph_flutter/EntityMutationState-class.html">EntityMutationState</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span> <span class="parameter-name">value</span></span></li>
 </ol>)
 
@@ -66,15 +66,15 @@
   <p>Overrides a provider with a value, ejecting the default behavior.</p>
 <p>This will also disable the auto-scoping mechanism, meaning that if the
 overridden provider specified <code>dependencies</code>, it will have no effect.</p>
-<p>The main difference between <a href="https://pub.dev/documentation/riverpod_annotation/4.0.3/riverpod_annotation/$NotifierProvider/overrideWith.html">overrideWith</a> and <a href="../../entity_graph_flutter/EntityMutationsProvider/overrideWithValue.html">overrideWithValue</a> is:</p>
+<p>The main difference between <a href="../../entity_graph_flutter/EntityMutationsProvider/overrideWith.html">overrideWith</a> and <a href="../../entity_graph_flutter/EntityMutationsProvider/overrideWithValue.html">overrideWithValue</a> is:</p>
 <ul>
-<li><a href="https://pub.dev/documentation/riverpod_annotation/4.0.3/riverpod_annotation/$NotifierProvider/overrideWith.html">overrideWith</a> allows you to replace the implementation of a provider.
-This gives full access to <a href="https://pub.dev/documentation/riverpod/3.3.2/riverpod/Ref-class.html">Ref</a>, and the result will be cached by Riverpod.
+<li><a href="../../entity_graph_flutter/EntityMutationsProvider/overrideWith.html">overrideWith</a> allows you to replace the implementation of a provider.
+This gives full access to <a href="https://pub.dev/documentation/riverpod/3.4.3/riverpod/Ref-class.html">Ref</a>, and the result will be cached by Riverpod.
 The override can never change.</li>
 <li><a href="../../entity_graph_flutter/EntityMutationsProvider/overrideWithValue.html">overrideWithValue</a> allows you to replace the result of a provider.
 If the overridden value ever changes, notifiers will be updated.</li>
 </ul>
-<p>Alongside the typical use-cases of <a href="https://pub.dev/documentation/riverpod_annotation/4.0.3/riverpod_annotation/$NotifierProvider/overrideWith.html">overrideWith</a>, <a href="../../entity_graph_flutter/EntityMutationsProvider/overrideWithValue.html">overrideWithValue</a>
+<p>Alongside the typical use-cases of <a href="../../entity_graph_flutter/EntityMutationsProvider/overrideWith.html">overrideWith</a>, <a href="../../entity_graph_flutter/EntityMutationsProvider/overrideWithValue.html">overrideWithValue</a>
 has is particularly useful for converting <code>BuildContext</code> values to providers.</p>
 <p>For example, we can make a provider that represents <code>ThemeData</code> from Flutter:</p>
 <pre class="language-dart"><code class="language-dart">final themeProvider = Provider&lt;ThemeData&gt;((ref) =&gt; throw UnimplementedError());
@@ -96,7 +96,7 @@ has is particularly useful for converting <code>BuildContext</code> values to pr
   },
 );
 </code></pre>
-<p>The benefit of using <a href="../../entity_graph_flutter/EntityMutationsProvider/overrideWithValue.html">overrideWithValue</a> over <a href="https://pub.dev/documentation/riverpod_annotation/4.0.3/riverpod_annotation/$NotifierProvider/overrideWith.html">overrideWith</a> in this scenario
+<p>The benefit of using <a href="../../entity_graph_flutter/EntityMutationsProvider/overrideWithValue.html">overrideWithValue</a> over <a href="../../entity_graph_flutter/EntityMutationsProvider/overrideWith.html">overrideWith</a> in this scenario
 is that if the theme ever changes, then <code>themeProvider</code> will be updated.</p>
 </section>
 
@@ -137,7 +137,7 @@ is that if the theme ever changes, then <code>themeProvider</code> will be updat
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.1.0
+      4.0.0
   </span>
   
 </footer>
