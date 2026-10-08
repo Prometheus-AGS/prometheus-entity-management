@@ -1,5 +1,27 @@
 # @prometheus-ags/entity-graph-core
 
+## 4.1.1
+
+### Patch Changes
+
+- **DevTools inspector refinement** (React inspector; the Chrome extension
+  renders the same component). Correctness: diff-table body rows were
+  unstyled; value tabs are a real ARIA tablist; the toggle shortcut is now
+  **Alt+Shift+E** (the previous Ctrl/Cmd+Shift+G collided with the browser's
+  "Find previous" and fired while typing; configured legacy shortcuts keep
+  working); stable live regions; a height-bounded membership list; no
+  dangling `aria-controls`. Theme: one `:host` token block (3 surface depths,
+  amber accent, add/mod/del) overridable through `--pem-devtools-*`, with the
+  seven pre-existing override names still honoured; dirty and error states no
+  longer share one colour; container-query layout so docked panels adapt to
+  their own width; every control ≥ 32px (44px touch); contrast failures
+  fixed. Flow: with a dirty entity the inspector lands on Entities with the
+  dirty filter and the first dirty entity's diff; status chips and Overview
+  metrics are buttons; event titles name the affected identity; rewound
+  state is visible in every workspace; Pause reads "Resume · N new".
+- Core devtools: `DevtoolsEventBus.destroy()` keeps inactive registry entries
+  visible to `getRegisteredStores()`.
+
 ## 4.1.0
 
 ### Minor Changes
