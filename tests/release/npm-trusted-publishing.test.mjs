@@ -14,9 +14,9 @@ import {
   validateAuthorityManifest,
 } from "../../scripts/npm-trust.mjs";
 
-test("authority manifest covers exactly the twelve public npm packages", async () => {
+test("authority manifest covers exactly the thirteen public npm packages", async () => {
   const manifest = validateAuthorityManifest(await loadAuthorityManifest());
-  assert.equal(manifest.packages.length, 12);
+  assert.equal(manifest.packages.length, 13);
   assert.deepEqual(new Set(manifest.packages), new Set(PUBLIC_PACKAGES.map(({name}) => name)));
   assert.equal(manifest.permissions.directPublish, true);
   assert.equal(manifest.permissions.stagePublish, true);
