@@ -12,6 +12,7 @@ import type { InspectorActivePreview } from "../view-model";
 import type { EntityGraphDevtoolsValuePolicyMode } from "../provider";
 import { InspectorVirtualList } from "../components/virtual-list";
 import { InspectorDiff, InspectorValue } from "../components/value-inspector";
+import { EntityValueTabs, valueTabId } from "./value-tabs";
 import { inspectorEntityIdentity } from "../entity-identity";
 import {
   affectedEntitiesForEvent,
@@ -211,21 +212,19 @@ function EntityDetail(props: EntitiesWorkspaceProps & { selected: GraphDevtoolsE
         </div>
       )}
 
-      <div className="pem-value-tabs" role="tablist" aria-label="Entity value projection">
-        {valueTabs.map((tab) => (
-          <button
-            type="button"
-            role="tab"
-            key={tab}
-            aria-selected={props.valueTab === tab}
-            onClick={() => props.onValueTab(tab)}
-          >
-            {tab}
-            {tab === "diff" && props.diff.length > 0 ? ` ${props.diff.length}` : ""}
-          </button>
-        ))}
-      </div>
-      <div className="pem-value-panel" role="tabpanel">
+      <EntityValueTabs
+        tabs={valueTabs}
+        value={props.valueTab}
+        onChange={props.onValueTab}
+        diffCount={props.diff.length}
+        panelId="pem-value-panel"
+      />
+      <div
+        className="pem-value-panel"
+        role="tabpanel"
+        id="pem-value-panel"
+        aria-labelledby={valueTabId("pem-value-panel", props.valueTab)}
+      >
         {props.valueTab === "diff"
           ? <InspectorDiff rows={props.diff} />
           : <InspectorValue value={currentValue} label={`${props.valueTab} entity value`} />}
