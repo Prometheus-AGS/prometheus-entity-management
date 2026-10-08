@@ -676,16 +676,16 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   border-top: 1px solid #252e32;
 }
 .pem-diff-row:first-child { border-top: 0; }
-.pem-diff-row > span {
+.pem-diff-row > * {
   min-width: 0;
   padding: 7px 9px;
   overflow-wrap: anywhere;
   font: 10px/1.4 var(--pem-devtools-font-mono, ui-monospace, monospace);
 }
 .pem-diff-head { color: var(--pem-muted); background: #161c1f; font-weight: 700; }
-.pem-diff-row[data-kind="changed"] > span:first-child,
-.pem-diff-row[data-kind="added"] > span:first-child,
-.pem-diff-row[data-kind="removed"] > span:first-child { color: var(--pem-attention); }
+.pem-diff-row[data-kind="changed"] > :first-child,
+.pem-diff-row[data-kind="added"] > :first-child,
+.pem-diff-row[data-kind="removed"] > :first-child { color: var(--pem-attention); }
 
 .pem-detail-grid {
   display: grid;

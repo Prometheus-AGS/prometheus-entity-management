@@ -24,6 +24,7 @@ import {
   DEFAULT_ENTITY_GRAPH_DEVTOOLS_SHORTCUT,
   ENTITY_GRAPH_DEVTOOLS_PREFERENCE_KEY,
   entityGraphDevtoolsAriaShortcut,
+  isEditableShortcutTarget,
   matchesEntityGraphDevtoolsShortcut,
   readEntityGraphDevtoolsPreferences,
   writeEntityGraphDevtoolsPreferences,
@@ -190,13 +191,14 @@ function EntityGraphDevtoolsSurface({
   useEffect(() => {
     if (!resolvedShortcut) return;
     const onKeyDown = (event: KeyboardEvent) => {
+      if (isEditableShortcutTarget(event.target)) return;
       if (!matchesEntityGraphDevtoolsShortcut(event, resolvedShortcut)) return;
       event.preventDefault();
       if (panelOpen && visible) closePanel();
       else openPanel();
     };
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, [closePanel, openPanel, panelOpen, resolvedShortcut, visible]);
 
   useEffect(() => {

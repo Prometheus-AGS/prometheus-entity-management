@@ -78,30 +78,43 @@ export function writeEntityGraphDevtoolsPreferences(
 
 export interface EntityGraphDevtoolsShortcut {
   key?: string;
-  modifier?: "mod" | "control" | "meta";
+  modifier?: "mod" | "control" | "meta" | "alt";
   shiftKey?: boolean;
 }
 
-/** Default cross-platform restore/toggle shortcut: Ctrl/Cmd+Shift+G. */
+/**
+ * Default cross-platform restore/toggle shortcut: Alt+Shift+E.
+ * The previous Ctrl/Cmd+Shift+G default collided with the browser's "Find previous" on macOS.
+ */
 export const DEFAULT_ENTITY_GRAPH_DEVTOOLS_SHORTCUT: Required<EntityGraphDevtoolsShortcut> = {
-  key: "g",
-  modifier: "mod",
+  key: "e",
+  modifier: "alt",
   shiftKey: true,
 };
+
+/** Whether a keyboard event originates from an element that consumes typed keys. */
+export function isEditableShortcutTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof Element)) return false;
+  const tag = target.tagName;
+  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return true;
+  const editable = target.closest("[contenteditable]")?.getAttribute("contenteditable");
+  return editable !== undefined && editable !== null && editable !== "false";
+}
 
 /** Return whether a keyboard event matches the configured DevTools shortcut. */
 export function matchesEntityGraphDevtoolsShortcut(
   event: KeyboardEvent,
   shortcut: Required<EntityGraphDevtoolsShortcut>,
 ): boolean {
-  const modifierMatches = shortcut.modifier === "control"
-    ? event.ctrlKey && !event.metaKey
-    : shortcut.modifier === "meta"
-      ? event.metaKey && !event.ctrlKey
-      : event.ctrlKey !== event.metaKey;
+  const modifierMatches = shortcut.modifier === "alt"
+    ? event.altKey && !event.ctrlKey && !event.metaKey
+    : shortcut.modifier === "control"
+      ? event.ctrlKey && !event.metaKey && !event.altKey
+      : shortcut.modifier === "meta"
+        ? event.metaKey && !event.ctrlKey && !event.altKey
+        : event.ctrlKey !== event.metaKey && !event.altKey;
   return modifierMatches &&
     event.shiftKey === shortcut.shiftKey &&
-    !event.altKey &&
     event.key.toLocaleLowerCase() === shortcut.key.toLocaleLowerCase();
 }
 
@@ -109,11 +122,13 @@ export function matchesEntityGraphDevtoolsShortcut(
 export function entityGraphDevtoolsAriaShortcut(
   shortcut: Required<EntityGraphDevtoolsShortcut>,
 ): string {
-  const prefix = shortcut.modifier === "control"
-    ? "Control"
-    : shortcut.modifier === "meta"
-      ? "Meta"
-      : "Control";
+  const prefix = shortcut.modifier === "alt"
+    ? "Alt"
+    : shortcut.modifier === "control"
+      ? "Control"
+      : shortcut.modifier === "meta"
+        ? "Meta"
+        : "Control";
   const ariaShortcut = [prefix, ...(shortcut.shiftKey ? ["Shift"] : []), shortcut.key.toLocaleUpperCase()].join("+");
   if (shortcut.modifier !== "mod") return ariaShortcut;
   return `${ariaShortcut} ${ariaShortcut.replace("Control", "Meta")}`;
