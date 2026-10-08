@@ -299,6 +299,15 @@ factories. New code normally passes these fields directly to
   Generated Riverpod family for a single normalized entity.
 </dd>
 
+          <dt id="EntityQueryResult">
+  <span class="name "><a href="../entity_graph_flutter/EntityQueryResult-class.html">EntityQueryResult</a><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  What <a href="../entity_graph_flutter/useEntityQuery.html">useEntityQuery</a> returns: the current snapshot plus the setters that
+change the query driving it.
+</dd>
+
           <dt id="EntityRemovalSnapshot">
   <span class="name "><a href="../entity_graph_flutter/EntityRemovalSnapshot-class.html">EntityRemovalSnapshot</a></span> 
 
@@ -742,7 +751,7 @@ graph's state ownership.
       <h2>Functions</h2>
       <dl class="callables">
           <dt id="entityGraph" class="callable">
-  <span class="name"><a href="../entity_graph_flutter/entityGraph.html">entityGraph</a></span><span class="signature">(<wbr><span class="parameter" id="entityGraph-param-ref"><span class="type-annotation"><a href="https://pub.dev/documentation/riverpod/3.3.2/riverpod/Ref-class.html">Ref</a></span> <span class="parameter-name">ref</span></span>)
+  <span class="name"><a href="../entity_graph_flutter/entityGraph.html">entityGraph</a></span><span class="signature">(<wbr><span class="parameter" id="entityGraph-param-ref"><span class="type-annotation"><a href="https://pub.dev/documentation/riverpod/3.4.3/riverpod/Ref-class.html">Ref</a></span> <span class="parameter-name">ref</span></span>)
     <span class="returntype parameter">&#8594; <a href="../entity_graph_flutter/EntityGraph-class.html">EntityGraph</a></span>
   </span>
   
@@ -782,7 +791,7 @@ or a deliberately scoped application graph.
 </dd>
 
           <dt id="entityTransportRegistry" class="callable">
-  <span class="name"><a href="../entity_graph_flutter/entityTransportRegistry.html">entityTransportRegistry</a></span><span class="signature">(<wbr><span class="parameter" id="entityTransportRegistry-param-ref"><span class="type-annotation"><a href="https://pub.dev/documentation/riverpod/3.3.2/riverpod/Ref-class.html">Ref</a></span> <span class="parameter-name">ref</span></span>)
+  <span class="name"><a href="../entity_graph_flutter/entityTransportRegistry.html">entityTransportRegistry</a></span><span class="signature">(<wbr><span class="parameter" id="entityTransportRegistry-param-ref"><span class="type-annotation"><a href="https://pub.dev/documentation/riverpod/3.4.3/riverpod/Ref-class.html">Ref</a></span> <span class="parameter-name">ref</span></span>)
     <span class="returntype parameter">&#8594; <a href="../entity_graph_flutter/EntityTransportRegistry-class.html">EntityTransportRegistry</a></span>
   </span>
   
@@ -844,6 +853,45 @@ a validated <a href="../entity_graph_flutter/EntityGraphIR-class.html">EntityGra
 </dt>
 <dd>
   Convert an arbitrary exception to a typed <a href="../entity_graph_flutter/EntityGraphError-class.html">EntityGraphError</a>.
+  
+
+</dd>
+
+          <dt id="useEntity" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/useEntity.html">useEntity</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="useEntity-param-ref"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_riverpod/3.4.3/flutter_riverpod/WidgetRef-class.html">WidgetRef</a></span> <span class="parameter-name">ref</span>, {</span><span class="parameter" id="useEntity-param-type"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="useEntity-param-id"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">id</span>, </span><span class="parameter" id="useEntity-param-fromGraph"><span>required</span> <span class="type-annotation"><a href="../entity_graph_flutter/EntityDecoder.html">EntityDecoder</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span> <span class="parameter-name">fromGraph</span>, </span><span class="parameter" id="useEntity-param-toGraph"><span class="type-annotation"><a href="../entity_graph_flutter/EntityEncoder.html">EntityEncoder</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span>?</span> <span class="parameter-name">toGraph</span>, </span><span class="parameter" id="useEntity-param-enabled"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enabled</span> = <span class="default-value">true</span>, </span><span class="parameter" id="useEntity-param-subscribe"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">subscribe</span> = <span class="default-value">true</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://pub.dev/documentation/riverpod/3.4.3/riverpod/AsyncValue-class.html">AsyncValue</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../entity_graph_flutter/EntitySnapshot-class.html">EntitySnapshot</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Watches one entity at <code>type + id</code>.
+  
+
+</dd>
+
+          <dt id="useEntityList" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/useEntityList.html">useEntityList</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="useEntityList-param-ref"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_riverpod/3.4.3/flutter_riverpod/WidgetRef-class.html">WidgetRef</a></span> <span class="parameter-name">ref</span>, {</span><span class="parameter" id="useEntityList-param-type"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="useEntityList-param-queryKey"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">queryKey</span>, </span><span class="parameter" id="useEntityList-param-fromGraph"><span>required</span> <span class="type-annotation"><a href="../entity_graph_flutter/EntityDecoder.html">EntityDecoder</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span> <span class="parameter-name">fromGraph</span>, </span><span class="parameter" id="useEntityList-param-toGraph"><span class="type-annotation"><a href="../entity_graph_flutter/EntityEncoder.html">EntityEncoder</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span>?</span> <span class="parameter-name">toGraph</span>, </span><span class="parameter" id="useEntityList-param-query"><span class="type-annotation"><a href="../entity_graph_flutter/ListQuery-class.html">ListQuery</a></span> <span class="parameter-name">query</span> = <span class="default-value">const ListQuery()</span>, </span><span class="parameter" id="useEntityList-param-completeness"><span class="type-annotation"><a href="../entity_graph_flutter/ViewCompleteness.html">ViewCompleteness</a></span> <span class="parameter-name">completeness</span> = <span class="default-value">ViewCompleteness.remote</span>, </span><span class="parameter" id="useEntityList-param-enabled"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enabled</span> = <span class="default-value">true</span>, </span><span class="parameter" id="useEntityList-param-subscribe"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">subscribe</span> = <span class="default-value">true</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://pub.dev/documentation/riverpod/3.4.3/riverpod/AsyncValue-class.html">AsyncValue</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../entity_graph_flutter/EntityListSnapshot-class.html">EntityListSnapshot</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Watches a normalized list identified by <code>type + queryKey</code>.
+  
+
+</dd>
+
+          <dt id="useEntityQuery" class="callable">
+  <span class="name"><a href="../entity_graph_flutter/useEntityQuery.html">useEntityQuery</a></span><span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span><span class="signature">(<wbr><span class="parameter" id="useEntityQuery-param-ref"><span class="type-annotation"><a href="https://pub.dev/documentation/flutter_riverpod/3.4.3/flutter_riverpod/WidgetRef-class.html">WidgetRef</a></span> <span class="parameter-name">ref</span>, {</span><span class="parameter" id="useEntityQuery-param-type"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="useEntityQuery-param-queryKey"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">queryKey</span>, </span><span class="parameter" id="useEntityQuery-param-fromGraph"><span>required</span> <span class="type-annotation"><a href="../entity_graph_flutter/EntityDecoder.html">EntityDecoder</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span> <span class="parameter-name">fromGraph</span>, </span><span class="parameter" id="useEntityQuery-param-toGraph"><span class="type-annotation"><a href="../entity_graph_flutter/EntityEncoder.html">EntityEncoder</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span>?</span> <span class="parameter-name">toGraph</span>, </span><span class="parameter" id="useEntityQuery-param-initialQuery"><span class="type-annotation"><a href="../entity_graph_flutter/ListQuery-class.html">ListQuery</a></span> <span class="parameter-name">initialQuery</span> = <span class="default-value">const ListQuery()</span>, </span><span class="parameter" id="useEntityQuery-param-completeness"><span class="type-annotation"><a href="../entity_graph_flutter/ViewCompleteness.html">ViewCompleteness</a></span> <span class="parameter-name">completeness</span> = <span class="default-value">ViewCompleteness.remote</span>, </span><span class="parameter" id="useEntityQuery-param-enabled"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enabled</span> = <span class="default-value">true</span>, </span><span class="parameter" id="useEntityQuery-param-subscribe"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">subscribe</span> = <span class="default-value">true</span></span>})
+    <span class="returntype parameter">&#8594; <a href="../entity_graph_flutter/EntityQueryResult-class.html">EntityQueryResult</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Watches a normalized list under a query this hook owns and mutates.
   
 
 </dd>
@@ -1010,7 +1058,7 @@ a validated <a href="../entity_graph_flutter/EntityGraphIR-class.html">EntityGra
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.1.0
+      4.0.0
   </span>
   
 </footer>

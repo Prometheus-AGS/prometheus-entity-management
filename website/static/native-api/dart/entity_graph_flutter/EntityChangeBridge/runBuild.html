@@ -56,11 +56,11 @@
       
   <div>
     <ol class="annotation-list">
-        <li>@<a href="https://pub.dev/documentation/riverpod_annotation/4.0.3/riverpod_annotation/$mustCallSuper-constant.html">$mustCallSuper</a></li>
+        <li>@<a href="https://pub.dev/documentation/riverpod_annotation/4.0.7/riverpod_annotation/$mustCallSuper-constant.html">$mustCallSuper</a></li>
         <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
     </ol>
   </div>
-<span class="returntype">WhenComplete?</span>
+<span class="returntype"><a href="https://pub.dev/documentation/riverpod_annotation/4.0.7/riverpod_annotation/WhenComplete.html">WhenComplete</a>?</span>
 <span class="name ">runBuild</span>(<wbr>)
 
       <div class="features"><span class="feature">inherited</span></div>
@@ -68,17 +68,18 @@
     </section>
     
 <section class="desc markdown">
-  <p>Executes <a href="https://pub.dev/documentation/riverpod/3.3.2/riverpod/Notifier/build.html">Notifier.build</a>.</p>
+  <p>Executes <a href="https://pub.dev/documentation/riverpod/3.4.3/riverpod/Notifier/build.html">Notifier.build</a>.</p>
 <p>This is called by Riverpod, and should not be called manually.
 The purpose of this method is to allow mixins to perform logic
 before/after the <code>build</code> method of a notifier.</p>
 <p>For example, you could implement a mixin that logs state changes:</p>
 <pre class="language-dart"><code class="language-dart">mixin LoggingMixin&lt;T&gt; on AnyNotifier&lt;T&gt; {
   @override
-  void runBuild() {
+  WhenComplete runBuild() {
     print('Will build $this');
-    super.runBuild();
+    final result = super.runBuild();
     print('Did build $this');
+    return result;
   }
 }
 </code></pre>
@@ -131,7 +132,7 @@ WhenComplete runBuild() {
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      3.1.0
+      4.0.0
   </span>
   
 </footer>
