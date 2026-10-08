@@ -14,7 +14,7 @@ than source-only aliases.
 
 Use the [package chooser](chooser.md) to select a binding or integration. The
 verified registry snapshot has all thirteen npm packages public at stable
-`4.1.0`:
+`4.1.1`:
 
 | Package | Install | Current `latest` |
 | --- | --- | --- |

@@ -12,7 +12,7 @@ testing, deployment, troubleshooting, skills, release recovery, and partial
 publication. Stable promotion remains a human-reviewed operation over an
 immutable certification bundle.
 
-All thirteen npm packages are public at stable `4.1.0` on `latest` (the broken
+All thirteen npm packages are public at stable `4.1.1` on `latest` (the broken
 `3.0.0` manifests are deprecated). Documentation deployment and example tests
 never authorize or perform registry mutations. Registry trust, approval,
 package integrity, and post-publish consumer gates remain in force for future

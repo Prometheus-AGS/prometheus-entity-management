@@ -1,115 +1,115 @@
 {
   "schemaVersion": "1.0.0",
-  "revision": "6a27c20576e6de6b33c500500ef6e9ba83d248fd",
-  "fingerprint": "289ddd2a1ac1c5487d425427a9c8445b1838d80755e9dd30b5c4ae67894f9999",
+  "revision": "c5a3a101e73cbd421d987e53a199ba223748c092",
+  "fingerprint": "ffc963a659ea570773bfaf141f78af71b69d346791ce40d4afabfc9c1fc25baf",
   "apiInputFileCount": 52,
-  "apiInputAggregateSha256": "8063afca33336d9f0458ccac03af461ac35021a66a556793587bf277585d81aa",
+  "apiInputAggregateSha256": "bd16a67b52661c147bb722d39822d6b9bb1d1e31702ecc2909da583fa8b116b6",
   "artifactFileCount": 1681,
-  "artifactAggregateSha256": "d73779fb1cbd54cec5073c531101b810a7aea7ef25179135b6a87215143d0368",
+  "artifactAggregateSha256": "4008a2064862442eaff0947ae6d2941a8ac02859336e5b2edb0b056baa22d006",
   "packages": [
     {
       "name": "@prometheus-ags/a2ui-react",
-      "version": "4.1.0",
+      "version": "4.1.1",
       "role": "A2UI v1.0-RC compatibility for React over the official renderer, with policy-gated entity graph actions and AG-UI 0.0.59 activity support.",
       "types": "./dist/index.d.ts",
-      "tarballSha256": "82f7d768f107c8403b2c6de6afdc7f463dc765b0ed78c7f4a79309cb358420b3",
-      "tarballIntegrity": "sha512-AP5sTWJni7spB72cvucKvWcQ+yYPupfNBLaKU5iTutBGhDj1ijBQrpBXo9E7ngzAofLiuPHfuVdlXL7nP90Iww=="
+      "tarballSha256": "a58af22eec67a0d4cd0dbf784d79cb6e54a3861152655bf7b91b2259cc28dcb8",
+      "tarballIntegrity": "sha512-frUcDusOZqcWKOeD1XtjYWGR/KPdjkbKAYdQB/uHOGI9rHZNk3DlyTySLwvJRVYP9+7bETSob8m4ZLF9Rzi8CQ=="
     },
     {
       "name": "@prometheus-ags/entity-graph-a2a",
-      "version": "4.1.0",
+      "version": "4.1.1",
       "role": "Policy-gated A2A v1 JSON-RPC and streaming SSE for the Prometheus entity graph, with deterministic A2UI artifacts.",
       "types": "./dist/index.d.ts",
-      "tarballSha256": "6fbb45d03417e98d2627dc496c5c66060e4df8b5cbfd5db2232cfa1a51e36e42",
-      "tarballIntegrity": "sha512-EmbBaH1EslghuNE9M4/ScnQqY/g84tC0WNvBkWmjtz9pm33L0fnmr05vffaMwxBrA9k+rNJJPnzq/K9JloAemw=="
+      "tarballSha256": "cd4d28b3a986afc9294f5fcdd08f132603f5bd8fc310b308d56239dea62c9c53",
+      "tarballIntegrity": "sha512-qHrFmK55wpx2XaVUJopVlG7lPNvTADm6BWoWrGZVn5mXuwj021n3SDC+sD2rBlr2prdK0QAIH8wnsNrlN5G8SQ=="
     },
     {
       "name": "@prometheus-ags/entity-graph-alpine",
-      "version": "4.1.0",
+      "version": "4.1.1",
       "role": "Alpine.js plugin exposing $entity(type,id) and $entityList(type,query) magics — wires @prometheus-ags/entity-graph-core into Alpine.effect().",
       "types": "./dist/index.d.ts",
-      "tarballSha256": "016b557a7c53c1bf783e097d6b9d88399433897304c9123da28be3cee4096fb8",
-      "tarballIntegrity": "sha512-4U8rsxuYXJBKnG/Ve1hAgK1AhbQ7rwECx4EycPM6y3fqQTlH/ujVowQnN4YIrO9FXVErMaKCAM3TG0gz4g3CDw=="
+      "tarballSha256": "a5a7b7fd9fb3c5800696f47d3bc82ac1ba16261671254eedc8d158baaedbdd02",
+      "tarballIntegrity": "sha512-sdKkZpaqA3jJe2XOjzqdhqXO/2xP40LOs55JSJZkeCGLH99Dh6DWl8OB9gBq+TRMD3qVyLKo+HT9vcqmBlDeBQ=="
     },
     {
       "name": "@prometheus-ags/entity-graph-core",
-      "version": "4.1.0",
+      "version": "4.1.1",
       "role": "Framework-agnostic normalized entity graph store (zero React) — the core of the Prometheus entity-graph ecosystem.",
       "types": "./dist/index.d.ts",
-      "tarballSha256": "fdbe62ba43c46bdd9ed09a11e1c277f827297337abea7977eb0ef97651aaf755",
-      "tarballIntegrity": "sha512-oOeD/VTVIGYBgfnIoI9OwqOro8y54E2QxriyR4n0CuKyEctnR+u7Rw9sCRolSEY9nkuyjXY2cLwMZmLqBb1NlQ=="
+      "tarballSha256": "66a95adabee112094e6f2c6c2048df4c57460d3dadaaf7cfecf5da2cf9e90c6b",
+      "tarballIntegrity": "sha512-WLFM94+KdhE8R76n9wbVDuJZsQakCzn6wzpI9kJs8eJK/zkx/c3Iw9JgeyAdMnkdvE2C20WnjkZEg64MHqu+zA=="
     },
     {
       "name": "@prometheus-ags/entity-graph-htmx",
-      "version": "4.1.0",
+      "version": "4.1.1",
       "role": "Node.js SSE fragment server for HTMX — streams HTML entity fragments over Server-Sent Events with idiomorph/morph swaps, backed by the Prometheus entity graph.",
       "types": "./dist/index.d.ts",
-      "tarballSha256": "3625b99b0677416ec55a510b6cf50637f9b4e7125e9b0b75609e144b547a589d",
-      "tarballIntegrity": "sha512-EHwRzS7i3uFkKKGx7pPm/TMwr1J6J/hZR39LPrJHSwp0mzBnUMIHWWc2eXfv9E61hr7zBYMIxOdL98xhPsLksQ=="
+      "tarballSha256": "ba6714e9faa82fdf3ae4cfffd18c3b2f0115034114204859e9131a02858b280b",
+      "tarballIntegrity": "sha512-SWJiIBNirrtSzWuck6hDZejrrJbd1RCnCnHAuSkDBkJdiH0pGabSuYEqsUX669arsTavzqszzUhgejjLI4zqjw=="
     },
     {
       "name": "@prometheus-ags/entity-graph-react",
-      "version": "4.1.0",
+      "version": "4.1.1",
       "role": "Normalized, globally-reactive entity graph store for React — the React bindings over @prometheus-ags/entity-graph-core. Re-exports the full core surface plus React hooks, CRUD, UI, and devtools.",
       "types": "./dist/index.d.ts",
-      "tarballSha256": "29308f9edcc8d5e7ac93d3f38dfe3458e8cd7ff3d8e10915028c662edda25ef4",
-      "tarballIntegrity": "sha512-bSLwlSUJstlczXYXIPN7lgdKXX1ExkOvPJS4OtoeUtTpCua7ZAI2KVTEnpXPMrjy++kCzkktxBCHRmsUkc7YGw=="
+      "tarballSha256": "2445879ca47d82950d6346be5614a0c8181e1f12251465e89765044717c86d07",
+      "tarballIntegrity": "sha512-6Knj+cKQtLL3nvkPHb8gpanfWiPbc6qdFgABe6LuAEfFDMm3UOAYdRIFtD+wWL7YzaCpAlheGqOTL35QpZioFQ=="
     },
     {
       "name": "@prometheus-ags/prometheus-entity-management",
-      "version": "4.1.0",
+      "version": "4.1.1",
       "role": "Compatibility alias for @prometheus-ags/entity-graph-react. The React bindings publish under that name; this package re-exports them so existing installs keep resolving.",
       "types": "./dist/index.d.ts",
-      "tarballSha256": "8a5610a6cba86b2d7dcd49134e35ae9ad7994408bafbbb5001d287809386fc49",
-      "tarballIntegrity": "sha512-rBz66TB7RtuZ/o/Y+XRs/Yc4p7SW/GRwLtDTex7HwHCjAjiyuZbNQpHLDXUE5Cw+K0tiN2RwFb153ziY5b6zMw=="
+      "tarballSha256": "585816ca5a210f2898ba0a2e2f311ed09c4985d4a9b85936cea338372a1fff98",
+      "tarballIntegrity": "sha512-I0DptDEDoNpKml29y3tkRE1EEvVIXGXF2C1p06XDbs7raS7dxqpWcSJAh+u6ycW4wUU91JqXgO0Gn6/VG3jCOQ=="
     },
     {
       "name": "@prometheus-ags/entity-graph-sdl",
-      "version": "4.1.0",
+      "version": "4.1.1",
       "role": "Schema Definition Language (SDL) for the entity graph — the shared contract every code generator (Rust CLI, Flutter, framework bindings) consumes.",
       "types": "./dist/index.d.ts",
-      "tarballSha256": "97a8bb709244492c9b5c13e4071562284d38195d976e1894a2a7267abc7e396a",
-      "tarballIntegrity": "sha512-KmK2IDbr8QLNgTOWalA+hqJ72m0M43PxiWfcd0WqChkToUzo4i0x71Q3wf/4ne7sk/nU8dnOHjqFluoL7WWm0Q=="
+      "tarballSha256": "b922409f2e764f57664a74fc2f6d06e596cf52fc59d8bcf2143f633cc777c38e",
+      "tarballIntegrity": "sha512-nVjQQFcEUEbNHc5SRorsd7FZndHE9vsCoIg0kSohd1S7jiEr0DUCw7NXLtQNromYMeAtY25r/bUlgZdjlgYpEw=="
     },
     {
       "name": "@prometheus-ags/entity-graph-solid",
-      "version": "4.1.0",
+      "version": "4.1.1",
       "role": "SolidJS bindings for @prometheus-ags/entity-graph-core — fine-grained reactive entity and list primitives over the normalized entity graph.",
       "types": "./dist/index.d.ts",
-      "tarballSha256": "6ceef646684cd7b2fb2ddad80063f2a933f93b9936772d20a7a9694fd928ce2b",
-      "tarballIntegrity": "sha512-bz99fVN17dNTPpbJAlJR1uy0UkUbJ+QUub6Payf/0Dk8wZXd+NvZJG+16eJ3w8k42VsvEaL/9cssmtYikalNMg=="
+      "tarballSha256": "3e2b9860cba1ce7a6b74c55a96b658e6317d94ee125939290974e212aed75287",
+      "tarballIntegrity": "sha512-YMo6rRRWA9qNPPQOuc81A2D0tZtv5xAcx71KIactZc3v7RsmfTHf8gKN4DeyRPWRTUmZOLk2QMZJX4/1xmvUjQ=="
     },
     {
       "name": "@prometheus-ags/entity-graph-svelte",
-      "version": "4.1.0",
+      "version": "4.1.1",
       "role": "Svelte 5 runes bindings for the Prometheus entity graph — reactive $state stores that subscribe to the core graph.",
       "types": "./dist/index.d.ts",
-      "tarballSha256": "5a6efba5a30dfbbb2a9fa2f86bbb50c1720eab3cf77aff7aaddd706e9cd0e945",
-      "tarballIntegrity": "sha512-8UBLafGHCT/YdwNId42FbdmIZEUmIYyqnrLXyMY6fJD3nwLDflvHzz3ClR0WC0jMFM2ERCor04GcE8ItN65CEQ=="
+      "tarballSha256": "ad436fd863d105fd9aaddd5f6e24271fa20e9b6120e7f5da31c10700f3a828db",
+      "tarballIntegrity": "sha512-bkFgDnarLDKct3SDpLWQQLpJ775izjCgbXqcYAkVAPDMAozwacbKc58uHqw3yFcU89/8xllULr7XRJCwnA9w+w=="
     },
     {
       "name": "@prometheus-ags/entity-graph-sync",
-      "version": "4.1.0",
+      "version": "4.1.1",
       "role": "Pluggable peer-sync providers for the entity graph — ships Yjs (WebSocket + WebRTC) and Loro CRDT providers that bridge the core entity graph with collaborative editing engines.",
       "types": "./dist/index.d.ts",
-      "tarballSha256": "c9b1bfbc217a86cc6929fb5f5995cb0c59298a37db552a74f90587e93fb30d7b",
-      "tarballIntegrity": "sha512-O0phwoJSPGc6oyMIiI2Fb+mb1+hS3RkQ5PTUklYbiFoh1tqGVu4m+0leZtdms76rvZUED5ORcrAksU3fnoDcZg=="
+      "tarballSha256": "4a08e5e482e4223e3dfaff01b5cb81d935910c801fe49ffe6e4ea371b4d43b5d",
+      "tarballIntegrity": "sha512-mNVkd/Dkf8nLdmSafNBAegaJhGfxdXIVrUy62sTIdXe+IHiS8Co3Xrwew4oYJVZnyOTubEyrEL5Sc3fx1PNyww=="
     },
     {
       "name": "@prometheus-ags/entity-graph-tauri",
-      "version": "4.1.0",
+      "version": "4.1.1",
       "role": "Tauri v2 entity-graph plugin with generated TypeScript bindings, least-privilege capabilities, and bundled Rust, Android, and iOS sources.",
       "types": "./dist/index.d.ts",
-      "tarballSha256": "cb70af7a9c5e1d6b13a8f99bbc23b84640277db0d4cb76d61d589941e1e327c9",
-      "tarballIntegrity": "sha512-T/PLV3QmsGm1tQn+jrjDtWgv8ch6PvVEEsBXbPWcfEMCruFiloMdtdu/ZW7zKlXbXjp6+GLCdNefasANZYyJWw=="
+      "tarballSha256": "1833c740133fbafa98fd76c040295b20d0e9b8fe519cd333d21fe029c4a55468",
+      "tarballIntegrity": "sha512-/JjnWxoUfpgUFu9SCWW2Gr2L+2k2eoRhDNWbDsPQedtePYzy0qMJyGj52mLVhqswnKZiV//+Gg337DGw3xMAug=="
     },
     {
       "name": "@prometheus-ags/entity-graph-web-components",
-      "version": "4.1.0",
+      "version": "4.1.1",
       "role": "Lit 3 custom elements (<entity-list>, <entity-detail>, <entity-form>) using ReactiveController to subscribe to the core entity graph. Framework-agnostic.",
       "types": "./dist/index.d.ts",
-      "tarballSha256": "9220bcaf7c0bceb3b440c6f87b4205a32a155cc9d99ce1bc13b79deea2f24a24",
-      "tarballIntegrity": "sha512-RVKqAbyhxzuDKJq75vA+EonShjWW2OlEBhqKsL1IdwOPt6h212H4ceeI5uQsMA4y5KK/vKt12tTwSAB9CA26gw=="
+      "tarballSha256": "3a81b4879063b44261782b970c0461d9b585272986f473c9e5ba97aeadee9b92",
+      "tarballIntegrity": "sha512-jWhyuc8/i+JJO24ilropQO+QZ9+xpFmg8B9vFA6pSrnt5FNWBE2RFCbkHtd5T/UuKeSQGv4v35CKo04HFuAAUg=="
     }
   ]
 }

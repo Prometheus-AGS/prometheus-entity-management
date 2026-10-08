@@ -2,9 +2,9 @@
 
 ## 4.x status: stable published
 
-**Update 2026-10-08: 4.1.0 stable is published.** All thirteen
-`@prometheus-ags/*` npm packages are public at `4.1.0` with both `latest` and
-`next` pointing at it (tag `v4.1.0`). `4.0.0` moved every package to ESM-only
+**Update 2026-10-08: 4.1.1 stable is published.** All thirteen
+`@prometheus-ags/*` npm packages are public at `4.1.1` with both `latest` and
+`next` pointing at it (tag `v4.1.1`). `4.0.0` moved every package to ESM-only
 output and published the React binding as `@prometheus-ags/entity-graph-react`,
 keeping `@prometheus-ags/prometheus-entity-management` as a compatibility alias;
 `4.0.1` shipped with an unresolved pnpm `workspace:` protocol and is deprecated;
