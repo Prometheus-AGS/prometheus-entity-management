@@ -1,0 +1,1046 @@
+<!DOCTYPE html><html class="default" lang="en" data-base="../"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@prometheus-ags/entity-graph-react | Prometheus Entity Management API</title><meta name="description" content="Documentation for Prometheus Entity Management API"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><link rel="stylesheet" href="../assets/custom.css"/><script defer src="../assets/main.js"></script><script async src="../assets/icons.js" id="tsd-icons-script"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script><script async src="../assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container"><a href="../index.html" class="title">Prometheus Entity Management API</a>
+<div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/>
+<ul role="listbox" id="tsd-search-results"></ul>
+<div id="tsd-search-status" aria-live="polite" aria-atomic="true">
+<div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-menu"></use></svg></a></div></header>
+<div class="container container-main">
+<div class="col-content">
+<div class="tsd-page-title">
+<ul class="tsd-breadcrumb" aria-label="Breadcrumb">
+<li><a href="" aria-current="page">@prometheus-ags/entity-graph-react</a></li></ul>
+<h1>Module @prometheus-ags/entity-graph-react</h1></div>
+<section class="tsd-panel tsd-typography"><h1 id="prometheus-agsprometheus-entity-management" class="tsd-anchor-link">@prometheus-ags/prometheus-entity-management<a href="#prometheus-agsprometheus-entity-management" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h1>
+<p><strong>Normalized, globally-reactive entity graph store for React</strong></p>
+<p>Update a post in one screen and every list row, detail panel, and badge that reads that entity updates automatically—without hand-maintained query keys. Normalization is built around your <code>type</code> + <code>id</code> + <code>normalize</code> function, not a separate cache product. The same graph holds data from <strong>REST</strong>, <strong>GraphQL</strong>, <strong>WebSocket / Supabase / Convex</strong>, <strong>Prisma-shaped APIs</strong>, and <strong>ElectricSQL + PGlite</strong> local-first sync.</p>
+<h2 id="30-react-release" class="tsd-anchor-link">3.0 React release<a href="#30-react-release" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>The <code>3.2.0</code> package line and its React 19/Vite 8
+source-workspace showcase is implemented. The production-browser gate covers
+normalized cross-view updates, optimistic confirm/rollback, relationships,
+view completeness modes, REST/GraphQL seams, realtime coalescing, PGlite/Loro,
+Suspense/error containment, DevTools, and accessibility.</p>
+<p>See the <a href="../../release/vite-react19-example.md">React 19/Vite 8 release guide</a>
+for the assembled example evidence. Install the matching stable core and React
+pair with:</p>
+<pre><code class="bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">@prometheus-ags/entity-graph-core@3.2.0</span><span class="hl-1"> </span><span class="hl-16">\</span><br/><span class="hl-1">  </span><span class="hl-2">@prometheus-ags/prometheus-entity-management@3.2.0</span><span class="hl-1"> </span><span class="hl-16">\</span><br/><span class="hl-1">  </span><span class="hl-2">react@^19</span><span class="hl-1"> </span><span class="hl-2">react-dom@^19</span>
+</code><button type="button">Copy</button></pre>
+
+<blockquote>
+<p><strong>Release boundary:</strong> npm <code>3.2.0</code> includes the optional <code>./devtools</code> and
+development-only <code>./devtools/auto</code> inspector entries documented below. The
+ordinary package root remains inspector-free.</p>
+</blockquote>
+<h3 id="documentation-map" class="tsd-anchor-link">Documentation map<a href="#documentation-map" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Doc</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../../docs/tanstack-query-and-table.md">../../docs/tanstack-query-and-table.md</a></td>
+<td>How this library fits with TanStack Query and TanStack Table</td>
+</tr>
+<tr>
+<td><a href="../../docs/tanstack-comparison.md">../../docs/tanstack-comparison.md</a></td>
+<td>Detailed comparison against TanStack DB, Query, Table, AI, and Intent</td>
+</tr>
+<tr>
+<td><a href="../../docs/advanced.md">../../docs/advanced.md</a></td>
+<td>Engine, GC, Suspense, DevTools, SSR, testing</td>
+</tr>
+<tr>
+<td><a href="../../RELEASING.md">../../RELEASING.md</a></td>
+<td>Versioning, <code>prepublishOnly</code>, npm publish</td>
+</tr>
+<tr>
+<td><a href="../media/CHANGELOG.md">CHANGELOG.md</a></td>
+<td>Release history</td>
+</tr>
+<tr>
+<td><a href="../../release/binding-singleton-contract.md">../../release/binding-singleton-contract.md</a></td>
+<td>Core peer ownership and packed singleton verification</td>
+</tr>
+<tr>
+<td><a href="../../release/vite-react19-example.md">../../release/vite-react19-example.md</a></td>
+<td>React 19/Vite 8 showcase scenarios, commands, and evidence boundary</td>
+</tr>
+<tr>
+<td><a href="../../prometheus-entity-skills/_shared/references/devtools-react-inspector.md">../../prometheus-entity-skills/_shared/references/devtools-react-inspector.md</a></td>
+<td>Optional React inspector entries, activation, privacy, and workflow contract</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="quick-start" class="tsd-anchor-link">Quick start<a href="#quick-start" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="1-install" class="tsd-anchor-link">1. Install<a href="#1-install" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<pre><code class="bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">@prometheus-ags/entity-graph-core</span><span class="hl-1"> </span><span class="hl-2">@prometheus-ags/prometheus-entity-management</span><span class="hl-1"> </span><span class="hl-2">react</span><span class="hl-1"> </span><span class="hl-2">react-dom</span>
+</code><button type="button">Copy</button></pre>
+
+<p>(<code>npm install</code> works for consumers too; this repository itself is <code>pnpm</code>-only.)</p>
+<p><code>@prometheus-ags/entity-graph-core</code> is a required peer: install it explicitly so the application owns the one compatible graph instance. The React package must not install a private core copy. See the <a href="../../release/binding-singleton-contract.md">binding singleton contract</a>.</p>
+<h3 id="2-define-an-entity-type" class="tsd-anchor-link">2. Define an entity type<a href="#2-define-an-entity-type" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<pre><code class="ts"><span class="hl-5">type</span><span class="hl-1"> </span><span class="hl-10">Post</span><span class="hl-1"> = { </span><span class="hl-4">id</span><span class="hl-1">: </span><span class="hl-10">string</span><span class="hl-1">; </span><span class="hl-4">title</span><span class="hl-1">: </span><span class="hl-10">string</span><span class="hl-1">; </span><span class="hl-4">status</span><span class="hl-1">: </span><span class="hl-10">string</span><span class="hl-1"> };</span>
+</code><button type="button">Copy</button></pre>
+
+<h3 id="3-fetch-and-render" class="tsd-anchor-link">3. Fetch and render<a href="#3-fetch-and-render" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<pre><code class="tsx"><span class="hl-3">import</span><span class="hl-1"> { </span><span class="hl-4">useEntity</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/prometheus-entity-management&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-3">export</span><span class="hl-1"> </span><span class="hl-5">function</span><span class="hl-1"> </span><span class="hl-0">PostCard</span><span class="hl-1">({ </span><span class="hl-4">postId</span><span class="hl-1"> }: { </span><span class="hl-4">postId</span><span class="hl-1">: </span><span class="hl-10">string</span><span class="hl-1"> }) {</span><br/><span class="hl-1">  </span><span class="hl-5">const</span><span class="hl-1"> { </span><span class="hl-6">data</span><span class="hl-1">, </span><span class="hl-6">isLoading</span><span class="hl-1">, </span><span class="hl-6">error</span><span class="hl-1"> } = </span><span class="hl-0">useEntity</span><span class="hl-1">&lt;</span><span class="hl-10">Post</span><span class="hl-1">, </span><span class="hl-10">Post</span><span class="hl-1">&gt;({</span><br/><span class="hl-1">    </span><span class="hl-4">type:</span><span class="hl-1"> </span><span class="hl-2">&quot;Post&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-4">id:</span><span class="hl-1"> </span><span class="hl-4">postId</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-0">fetch</span><span class="hl-4">:</span><span class="hl-1"> </span><span class="hl-5">async</span><span class="hl-1"> (</span><span class="hl-4">id</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">res</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-0">fetch</span><span class="hl-1">(</span><span class="hl-2">`/api/posts/</span><span class="hl-5">${</span><span class="hl-4">id</span><span class="hl-5">}</span><span class="hl-2">`</span><span class="hl-1">);</span><br/><span class="hl-1">      </span><span class="hl-3">if</span><span class="hl-1"> (!</span><span class="hl-4">res</span><span class="hl-1">.</span><span class="hl-4">ok</span><span class="hl-1">) </span><span class="hl-3">throw</span><span class="hl-1"> </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-0">Error</span><span class="hl-1">(</span><span class="hl-0">String</span><span class="hl-1">(</span><span class="hl-4">res</span><span class="hl-1">.</span><span class="hl-4">status</span><span class="hl-1">));</span><br/><span class="hl-1">      </span><span class="hl-3">return</span><span class="hl-1"> </span><span class="hl-4">res</span><span class="hl-1">.</span><span class="hl-0">json</span><span class="hl-1">() </span><span class="hl-3">as</span><span class="hl-1"> </span><span class="hl-10">Post</span><span class="hl-1">;</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">    </span><span class="hl-0">normalize</span><span class="hl-4">:</span><span class="hl-1"> (</span><span class="hl-4">raw</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-4">raw</span><span class="hl-1">,</span><br/><span class="hl-1">  });</span><br/><br/><span class="hl-1">  </span><span class="hl-3">if</span><span class="hl-1"> (</span><span class="hl-4">isLoading</span><span class="hl-1">) </span><span class="hl-3">return</span><span class="hl-1"> </span><span class="hl-9">&lt;</span><span class="hl-12">p</span><span class="hl-9">&gt;</span><span class="hl-1">Loading…</span><span class="hl-9">&lt;/</span><span class="hl-12">p</span><span class="hl-9">&gt;</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-3">if</span><span class="hl-1"> (</span><span class="hl-4">error</span><span class="hl-1">) </span><span class="hl-3">return</span><span class="hl-1"> </span><span class="hl-9">&lt;</span><span class="hl-12">p</span><span class="hl-9">&gt;</span><span class="hl-5">{</span><span class="hl-4">error</span><span class="hl-5">}</span><span class="hl-9">&lt;/</span><span class="hl-12">p</span><span class="hl-9">&gt;</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-3">if</span><span class="hl-1"> (!</span><span class="hl-4">data</span><span class="hl-1">) </span><span class="hl-3">return</span><span class="hl-1"> </span><span class="hl-5">null</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-3">return</span><span class="hl-1"> </span><span class="hl-9">&lt;</span><span class="hl-12">article</span><span class="hl-9">&gt;</span><span class="hl-5">{</span><span class="hl-4">data</span><span class="hl-8">.</span><span class="hl-4">title</span><span class="hl-5">}</span><span class="hl-9">&lt;/</span><span class="hl-12">article</span><span class="hl-9">&gt;</span><span class="hl-1">;</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Any other component that calls <code>useEntity</code> with the same <code>type</code> and <code>id</code> reads the <strong>same</strong> normalized record from the graph.</p>
+<hr>
+<h2 id="core-concepts" class="tsd-anchor-link">Core concepts<a href="#core-concepts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="entities-live-exactly-once" class="tsd-anchor-link">Entities live exactly once<a href="#entities-live-exactly-once" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Each <code>(entityType, id)</code> maps to a single canonical object in the Zustand graph (<code>entities[type][id]</code>). Lists and detail views never keep their own full copies; they resolve through that node.</p>
+<h3 id="queries-are-instructions-not-containers" class="tsd-anchor-link">Queries are instructions, not containers<a href="#queries-are-instructions-not-containers" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><code>useEntity</code>, <code>useEntityList</code>, and GraphQL hooks describe <strong>how</strong> to load data and <strong>how</strong> to normalize it into the graph. They do not own isolated cache entries the way query-key–scoped caches do.</p>
+<h3 id="lists-store-ids-not-data" class="tsd-anchor-link">Lists store IDs, not data<a href="#lists-store-ids-not-data" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>List state keeps ordered <strong>IDs</strong> plus pagination metadata. Rows are <code>items</code> joined from <code>entities</code> at render time, so when <code>Post:123</code> changes, every list that includes that ID re-renders consistently.</p>
+<h3 id="three-layer-model" class="tsd-anchor-link">Three-layer model<a href="#three-layer-model" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Data flows <strong>up</strong> into the graph; UI reads <strong>down</strong> through hooks (see <a href="#architecture">Architecture</a>).</p>
+<pre><code><span class="hl-1">┌─────────────────────────────────────────────────────────────┐</span><br/><span class="hl-1">│ </span><span class="hl-4">Layer</span><span class="hl-1"> </span><span class="hl-13">3</span><span class="hl-1">: </span><span class="hl-6">UI</span><span class="hl-1"> </span><span class="hl-0">Components</span><span class="hl-1"> (</span><span class="hl-4">optional</span><span class="hl-1">, </span><span class="hl-4">users</span><span class="hl-1"> </span><span class="hl-4">can</span><span class="hl-1"> </span><span class="hl-4">build</span><span class="hl-1"> </span><span class="hl-4">their</span><span class="hl-1"> </span><span class="hl-4">own</span><span class="hl-1">)│</span><br/><span class="hl-1">│ </span><span class="hl-4">src</span><span class="hl-1">/</span><span class="hl-4">ui</span><span class="hl-1">/                                                      │</span><br/><span class="hl-1">│ </span><span class="hl-4">EntityTable</span><span class="hl-1"> · </span><span class="hl-4">EntityDetailSheet</span><span class="hl-1"> · </span><span class="hl-4">EntityFormSheet</span><span class="hl-1"> · </span><span class="hl-4">columns</span><span class="hl-1"> │</span><br/><span class="hl-1">├─────────────────────────────────────────────────────────────┤</span><br/><span class="hl-1">│ </span><span class="hl-4">Layer</span><span class="hl-1"> </span><span class="hl-13">2</span><span class="hl-1">: </span><span class="hl-4">Access</span><span class="hl-1"> </span><span class="hl-0">Patterns</span><span class="hl-1"> (</span><span class="hl-4">hooks</span><span class="hl-1"> - </span><span class="hl-4">how</span><span class="hl-1"> </span><span class="hl-4">components</span><span class="hl-1"> </span><span class="hl-4">read</span><span class="hl-1"> </span><span class="hl-4">data</span><span class="hl-1">) │</span><br/><span class="hl-1">│ </span><span class="hl-4">src</span><span class="hl-1">/</span><span class="hl-4">hooks</span><span class="hl-1">.</span><span class="hl-4">ts</span><span class="hl-1">, </span><span class="hl-4">src</span><span class="hl-1">/</span><span class="hl-4">graphql</span><span class="hl-1">/</span><span class="hl-4">hooks</span><span class="hl-1">.</span><span class="hl-4">ts</span><span class="hl-1">, </span><span class="hl-4">src</span><span class="hl-1">/</span><span class="hl-4">crud</span><span class="hl-1">/               │</span><br/><span class="hl-1">│ </span><span class="hl-4">useEntity</span><span class="hl-1"> · </span><span class="hl-4">useEntityList</span><span class="hl-1"> · </span><span class="hl-4">useEntityView</span><span class="hl-1"> · </span><span class="hl-4">useEntityCRUD</span><span class="hl-1">   │</span><br/><span class="hl-1">│ </span><span class="hl-4">useGQLEntity</span><span class="hl-1"> · </span><span class="hl-4">useEntityMutation</span><span class="hl-1"> · </span><span class="hl-4">useEntityAugment</span><span class="hl-1">         │</span><br/><span class="hl-1">├─────────────────────────────────────────────────────────────┤</span><br/><span class="hl-1">│ </span><span class="hl-4">Layer</span><span class="hl-1"> </span><span class="hl-13">1</span><span class="hl-1">: </span><span class="hl-4">Entity</span><span class="hl-1"> </span><span class="hl-0">Graph</span><span class="hl-1"> (</span><span class="hl-4">Zustand</span><span class="hl-1"> </span><span class="hl-4">store</span><span class="hl-1"> - </span><span class="hl-4">canonical</span><span class="hl-1"> </span><span class="hl-4">data</span><span class="hl-1">)      │</span><br/><span class="hl-1">│ </span><span class="hl-4">src</span><span class="hl-1">/</span><span class="hl-4">graph</span><span class="hl-1">.</span><span class="hl-4">ts</span><span class="hl-1">                                                 │</span><br/><span class="hl-1">│ </span><span class="hl-4">entities</span><span class="hl-1">[</span><span class="hl-4">type</span><span class="hl-1">][</span><span class="hl-4">id</span><span class="hl-1">] · </span><span class="hl-4">patches</span><span class="hl-1">[</span><span class="hl-4">type</span><span class="hl-1">][</span><span class="hl-4">id</span><span class="hl-1">] · </span><span class="hl-4">lists</span><span class="hl-1">[</span><span class="hl-4">queryKey</span><span class="hl-1">]     │</span><br/><span class="hl-1">└─────────────────────────────────────────────────────────────┘</span><br/><span class="hl-1">              ▲           ▲           ▲           ▲</span><br/><span class="hl-1">         </span><span class="hl-6">REST</span><span class="hl-1"> </span><span class="hl-4">fetch</span><span class="hl-1">   </span><span class="hl-4">GraphQL</span><span class="hl-1">    </span><span class="hl-4">WebSocket</span><span class="hl-1">    </span><span class="hl-4">ElectricSQL</span>
+</code><button>Copy</button></pre>
+
+<hr>
+<h2 id="v13-additions" class="tsd-anchor-link">v1.3 additions<a href="#v13-additions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>Eight focused additions across three patch releases for tenant-scoped,
+PGlite-backed local-first apps. All backward compatible; no new runtime
+dependencies.</p>
+<h3 id="v130-new-apis" class="tsd-anchor-link">v1.3.0 — new APIs<a href="#v130-new-apis" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>createPGlitePersistenceAdapter(pglite, options?)</code></td>
+<td><code>src/adapters/pglite-persistence.ts</code></td>
+<td><code>GraphPersistenceAdapter</code> that stores the snapshot in a PGlite table (<code>_graph_snapshot</code> by default)</td>
+</tr>
+<tr>
+<td><code>createTenantScopedElectricAdapter(opts)</code></td>
+<td><code>src/adapters/electricsql-tenant.ts</code></td>
+<td>Refuses to attach Electric shapes that lack a <code>tenantColumn</code>; builds the <code>WHERE</code> from a validated <code>{ companyId }</code> claim so shape predicates can never widen past RLS</td>
+</tr>
+<tr>
+<td><code>registerEntityFromSql({ entityType, createTableSql, overrides })</code></td>
+<td><code>src/schema-from-sql.ts</code></td>
+<td>Generates and registers a JSON Schema directly from a Postgres <code>CREATE TABLE</code> block — no hand-maintained TypeScript schema duplicates</td>
+</tr>
+<tr>
+<td><code>useEntityListAsTable(opts)</code></td>
+<td><code>src/table/use-entity-list-as-table.ts</code></td>
+<td>Wraps <code>useEntityList</code> for TanStack Table — returns a referentially-stable <code>data</code> array and <code>rowCount</code>; no TanStack Table dep required</td>
+</tr>
+<tr>
+<td><code>startLocalFirstGraph({ ..., retryPolicy })</code></td>
+<td><code>src/local-first-runtime.ts</code></td>
+<td>Retry-with-backoff for pending offline action replay; exhausted actions go to an opt-in <code>poisonHandler</code> instead of looping forever</td>
+</tr>
+</tbody>
+</table>
+<h3 id="v131-stability-fix" class="tsd-anchor-link">v1.3.1 — stability fix<a href="#v131-stability-fix" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul>
+<li><strong><code>useEntityList</code></strong> return shape is now <code>useMemo</code>-stabilised. React 19's
+<code>useSyncExternalStore</code> was detecting a fresh object on every render and
+emitting an infinite-loop warning. Identity-stable <code>items</code> + stable
+pagination state means no more perpetual loading skeletons from hook
+composition chains.</li>
+</ul>
+<h3 id="v132-error-handling" class="tsd-anchor-link">v1.3.2 — error handling<a href="#v132-error-handling" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul>
+<li><strong><code>isError: boolean</code></strong> added to both <code>UseEntityListResult</code> and
+<code>UseEntityViewResult</code> as a convenience alias for <code>error !== null</code>,
+matching TanStack Query's hook ergonomics.</li>
+<li><strong><code>setListError</code></strong> now stamps <code>lastFetched</code> and clears <code>stale</code>, closing
+a terminal-error retry loop where a 404 on a missing table triggered an
+infinite refetch storm.</li>
+<li><strong><code>useEntityView</code></strong> writes errors to the base key (the one <code>isLoading</code>
+reads from) and defaults <code>isLoading</code> to <code>false</code> when no list state
+exists, so a failed first fetch no longer leaves consumers stuck in a
+perpetual loading state.</li>
+</ul>
+<hr>
+<h2 id="new-in-v12" class="tsd-anchor-link">New in v1.2<a href="#new-in-v12" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>The graph runtime now exposes a focused set of non-hook helpers for loaders, workflows, and orchestration:</p>
+<ul>
+<li><code>queryOnce(...)</code> / <code>selectGraph(...)</code> for one-shot graph snapshots without a live subscription</li>
+<li>nested <code>include</code> projections over normalized graph data</li>
+<li><code>createGraphTransaction(...)</code> / <code>createGraphAction(...)</code> for explicit optimistic graph writes with rollback</li>
+<li>sync-aware snapshot metadata: <code>$synced</code>, <code>$origin</code>, <code>$updatedAt</code></li>
+<li><code>createGraphEffect(...)</code> for enter/update/exit reactions over graph query results</li>
+<li><code>createGraphTool(...)</code> / <code>exportGraphSnapshot(...)</code> for AI interoperability without bundling an AI runtime</li>
+<li><code>startLocalFirstGraph(...)</code>, <code>hydrateGraphFromStorage(...)</code>, and <code>persistGraphToStorage(...)</code> for PWA/PGlite-friendly graph persistence and replay</li>
+<li>schema-driven entity rendering via <code>registerEntityJsonSchema(...)</code>, <code>buildEntityFieldsFromSchema(...)</code>, and <code>useSchemaEntityFields(...)</code></li>
+<li>built-in markdown-aware schema fields plus schema-aware graph export helpers for A2UI/runtime-generated entity models</li>
+</ul>
+<p>These additions are intentionally graph-native. They extend the entity graph for orchestration use cases without changing the core <code>Components → Hooks → Stores → APIs/Realtime</code> architecture.</p>
+<hr>
+<h2 id="feature-comparison" class="tsd-anchor-link">Feature comparison<a href="#feature-comparison" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th><code>@prometheus-ags/prometheus-entity-management</code></th>
+<th>TanStack Query</th>
+<th>Apollo Client</th>
+<th>SWR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Normalized cache</td>
+<td>Yes (automatic)</td>
+<td>No (manual)</td>
+<td>Yes (manual config)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Cross-view reactivity</td>
+<td>Yes</td>
+<td>No</td>
+<td>Partial</td>
+<td>No</td>
+</tr>
+<tr>
+<td>REST support</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GraphQL support</td>
+<td>Yes</td>
+<td>No (separate client)</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Realtime / WebSocket</td>
+<td>Yes (built-in adapters)</td>
+<td>No (manual)</td>
+<td>Yes (subscriptions)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Local-first (ElectricSQL)</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Prisma integration</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>CRUD lifecycle</td>
+<td>Yes (<code>useEntityCRUD</code>)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Relation schemas</td>
+<td>Yes (cascade invalidation)</td>
+<td>No</td>
+<td>Yes (type policies)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Suspense hooks</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>SSR hydration</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Garbage collection</td>
+<td>Yes (automatic, configurable)</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Bundle size</td>
+<td>See <a href="#bundle-size">Bundle size</a></td>
+<td>~39KB</td>
+<td>~130KB</td>
+<td>~4KB</td>
+</tr>
+</tbody>
+</table>
+<p>Peer dependencies (<code>react</code> and <code>react-dom</code>) are <strong>not</strong> included in any column.
+The package installs <code>@tanstack/react-table</code> because the root entry exports the
+built-in table components that use it at runtime. Published <code>dist</code> sizes change
+with each release—measure before quoting numbers in docs or talks.</p>
+<h3 id="bundle-size" class="tsd-anchor-link">Bundle size<a href="#bundle-size" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>The npm package ships a <strong>single large entry</strong> (<code>dist/index.mjs</code>) that re-exports the full surface (hooks, GraphQL, CRUD, view, UI, adapters). <strong>Your</strong> app’s gzipped cost depends on <strong>tree-shaking</strong>, <strong>minification</strong>, and <strong>which imports you use</strong>.</p>
+<p><strong>Maintainers:</strong> after <code>pnpm run build</code>, a rough gzip size of the ESM bundle is:</p>
+<pre><code class="bash"><span class="hl-0">gzip</span><span class="hl-1"> </span><span class="hl-5">-c</span><span class="hl-1"> </span><span class="hl-2">dist/index.mjs</span><span class="hl-1"> | </span><span class="hl-0">wc</span><span class="hl-1"> </span><span class="hl-5">-c</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Compare against peers only when measurement methodology matches (minified vs unminified, gzip vs brotli, ESM vs CJS).</p>
+<hr>
+<h2 id="api-reference-brief" class="tsd-anchor-link">API reference (brief)<a href="#api-reference-brief" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="core" class="tsd-anchor-link">Core<a href="#core" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Export</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>createGraphStore</code> / <code>graphStore</code></td>
+<td>Create an isolated vanilla graph or access the default core singleton.</td>
+</tr>
+<tr>
+<td><code>GraphStoreProvider</code></td>
+<td>Scope all descendant React hooks to an application-owned <code>GraphStore</code>; use one request graph per SSR render and one hydrated graph per mounted browser tree.</td>
+</tr>
+<tr>
+<td><code>useGraphStoreApi</code></td>
+<td>Resolve the nearest provider-owned graph, falling back to the public singleton. React-hook ownership reference-counts focus/reconnect listeners and GC, releasing them after the final hook unmounts.</td>
+</tr>
+<tr>
+<td><code>useGraphStore</code></td>
+<td>React hook subscribed to the nearest scoped graph. Deprecated compatibility <code>getState</code>, <code>setState</code>, <code>getInitialState</code>, and <code>subscribe</code> delegates remain singleton-only throughout 3.x and emit one development diagnostic per method. Prefer domain hooks in components.</td>
+</tr>
+<tr>
+<td><code>configureEngine</code></td>
+<td>App-wide defaults: stale time, retries, GC interval, GC time, etc.</td>
+</tr>
+<tr>
+<td><code>getEngineOptions</code></td>
+<td>Read merged engine options.</td>
+</tr>
+<tr>
+<td><code>serializeKey</code></td>
+<td>Stable string key for list <code>queryKey</code> serialization.</td>
+</tr>
+<tr>
+<td><code>fetchEntity</code></td>
+<td>Imperative single-entity fetch with dedupe and graph write (for custom hooks/adapters).</td>
+</tr>
+<tr>
+<td><code>fetchList</code></td>
+<td>Imperative list fetch with dedupe and graph write.</td>
+</tr>
+<tr>
+<td><code>dedupe</code></td>
+<td>Process-global in-flight promise deduplication helper.</td>
+</tr>
+<tr>
+<td><code>startGarbageCollector(storeApi?)</code> / <code>stopGarbageCollector(storeApi?)</code></td>
+<td>Periodic eviction of unsubscribed, stale entities in the selected graph; omitting the store targets the compatibility singleton.</td>
+</tr>
+<tr>
+<td><code>attachGlobalListeners(storeApi?)</code></td>
+<td>Reference-count focus/reconnect listeners and GC for one graph; call the returned disposer to release the attachment. React hooks manage this automatically.</td>
+</tr>
+</tbody>
+</table>
+<p><code>useGraphStore</code>'s imperative surface (<code>getState</code> / <code>setState</code> / <code>subscribe</code> /
+<code>getInitialState</code>) resolves the <strong>active</strong> graph on every call, so store actions,
+module-level helpers, and mutation callbacks honour a mounted
+<code>GraphStoreProvider</code> without being rewritten as hooks. Resolution order is:</p>
+<ol>
+<li>the request scope opened by <code>runWithGraphStore(store, fn)</code>,</li>
+<li>the module-level store published by a mounted <code>GraphStoreProvider</code>,</li>
+<li>the package singleton.</li>
+</ol>
+<p>With no provider and no request scope this is exactly the pre-3.0.5 behaviour,
+so existing imperative callers are unaffected.</p>
+<p><strong>Server code must open a request scope.</strong> <code>GraphStoreProvider</code> is React context
+and cannot scope Server Components or module-level functions, and a
+module-level store would leak across concurrent requests. Wrap each request:</p>
+<pre><code class="ts"><span class="hl-3">import</span><span class="hl-1"> { </span><span class="hl-4">createGraphStore</span><span class="hl-1">, </span><span class="hl-4">runWithGraphStore</span><span class="hl-1">, </span><span class="hl-4">prepareGraphStoreScope</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/entity-graph-core&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-7">// Once at startup — REQUIRED under pure ESM, where there is no synchronous</span><br/><span class="hl-7">// `require` to load node:async_hooks. Without it request scoping degrades to</span><br/><span class="hl-7">// the module-level store and warns.</span><br/><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-0">prepareGraphStoreScope</span><span class="hl-1">();</span><br/><br/><span class="hl-7">// Per request</span><br/><span class="hl-0">runWithGraphStore</span><span class="hl-1">(</span><span class="hl-0">createGraphStore</span><span class="hl-1">(), () </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-0">renderThisRequest</span><span class="hl-1">());</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Capturing <code>useGraphStoreApi()</code> during render is still the most explicit option
+inside React, and injecting a <code>GraphStore</code> parameter remains available for code
+that wants no ambient resolution at all.</p>
+<h3 id="graph-runtime" class="tsd-anchor-link">Graph runtime<a href="#graph-runtime" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Export</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>queryOnce</code> / <code>selectGraph</code></td>
+<td>One-shot graph snapshot queries with local filtering, sorting, and nested includes.</td>
+</tr>
+<tr>
+<td><code>createGraphTransaction</code></td>
+<td>Explicit graph write transaction with commit / rollback.</td>
+</tr>
+<tr>
+<td><code>createGraphAction</code></td>
+<td>Higher-level optimistic action wrapper around graph transactions.</td>
+</tr>
+<tr>
+<td><code>createGraphEffect</code></td>
+<td>Subscribe to graph query results with <code>onEnter</code>, <code>onUpdate</code>, and <code>onExit</code>.</td>
+</tr>
+<tr>
+<td><code>createGraphTool</code></td>
+<td>Typed graph-backed helper for AI or workflow integrations.</td>
+</tr>
+<tr>
+<td><code>createSchemaGraphTool</code></td>
+<td>Schema-aware graph tool helper for AI workflows built around dynamic entity schemas.</td>
+</tr>
+<tr>
+<td><code>exportGraphSnapshot</code></td>
+<td>Serialize graph data for prompts, exports, and non-React workflows.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="schema-driven-entities" class="tsd-anchor-link">Schema-driven entities<a href="#schema-driven-entities" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Export</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>registerEntityJsonSchema</code> / <code>registerRuntimeSchema</code></td>
+<td>Register static or runtime-generated JSON Schemas for an entity type or JSON column.</td>
+</tr>
+<tr>
+<td><code>registerEntityFromSql</code></td>
+<td>Generate and register a JSON Schema from a Postgres <code>CREATE TABLE</code> block — eliminates hand-maintained TypeScript schema duplicates.</td>
+</tr>
+<tr>
+<td><code>getEntityJsonSchema</code></td>
+<td>Resolve the active schema by entity type, schema id, or field.</td>
+</tr>
+<tr>
+<td><code>buildEntityFieldsFromSchema</code></td>
+<td>Generate entity field descriptors from JSON Schema for dynamic forms and detail views.</td>
+</tr>
+<tr>
+<td><code>useSchemaEntityFields</code></td>
+<td>Hook that resolves a registered schema and returns generated field descriptors.</td>
+</tr>
+<tr>
+<td><code>MarkdownFieldRenderer</code> / <code>MarkdownFieldEditor</code></td>
+<td>Built-in markdown-aware schema field renderer and editor.</td>
+</tr>
+<tr>
+<td><code>exportGraphSnapshotWithSchemas</code></td>
+<td>Serialize graph data together with resolved entity schemas.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="local-first-runtime" class="tsd-anchor-link">Local-first runtime<a href="#local-first-runtime" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Export</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>startLocalFirstGraph</code></td>
+<td>Starts a higher-level local-first runtime for graph hydration, persistence, action replay, and sync status. Accepts optional <code>retryPolicy</code> for offline action replay.</td>
+</tr>
+<tr>
+<td><code>hydrateGraphFromStorage</code></td>
+<td>Restore graph state from a storage adapter using a JSON-serializable snapshot payload.</td>
+</tr>
+<tr>
+<td><code>persistGraphToStorage</code></td>
+<td>Persist graph state and pending action metadata through a storage adapter.</td>
+</tr>
+<tr>
+<td><code>useGraphSyncStatus</code></td>
+<td>Hook exposing online/offline/hydrating/syncing/ready state for PWAs and IPC-safe hosts.</td>
+</tr>
+<tr>
+<td><code>getGraphSyncStatus</code> / <code>graphSyncStatusStore</code></td>
+<td>Imperative reader and vanilla store for non-component local-first orchestration.</td>
+</tr>
+<tr>
+<td><code>replayActionWithRetry</code></td>
+<td>Replay a single pending action with configurable exponential-backoff retry.</td>
+</tr>
+<tr>
+<td><code>createPGlitePersistenceAdapter</code></td>
+<td>PGlite-backed <code>GraphPersistenceAdapter</code>; stores the snapshot in a PGlite table alongside synced data.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hooks-rest-oriented" class="tsd-anchor-link">Hooks (REST-oriented)<a href="#hooks-rest-oriented" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Export</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>useEntity</code></td>
+<td>Subscribe to one entity; fetch/normalize into graph; SWR + subscriber-aware refetch. Returns <code>{ data, isLoading, isError, error, refetch }</code>.</td>
+</tr>
+<tr>
+<td><code>useEntityList</code></td>
+<td>Subscribe to a list query key; stores IDs; merges row data from graph. Returns <code>{ items, isLoading, isError, error, isFetching, fetchNextPage, refetch }</code>.</td>
+</tr>
+<tr>
+<td><code>useEntityView</code></td>
+<td>Filter/sort/search with local/remote/hybrid completeness modes. Returns <code>{ items, isLoading, isError, error, setFilter, setSort, setSearch }</code>.</td>
+</tr>
+<tr>
+<td><code>useEntityMutation</code></td>
+<td>Mutate with optional optimistic updates and list invalidation hooks.</td>
+</tr>
+<tr>
+<td><code>useEntityAugment</code></td>
+<td>Patch UI-only fields merged at read time across all subscribers.</td>
+</tr>
+<tr>
+<td><code>useEntityListAsTable</code></td>
+<td>Wraps <code>useEntityList</code> with a referentially-stable <code>data</code> array + <code>rowCount</code> for TanStack Table.</td>
+</tr>
+<tr>
+<td><code>useSuspenseEntity</code></td>
+<td>Suspense variant of <code>useEntity</code> (non-null <code>id</code> required).</td>
+</tr>
+<tr>
+<td><code>useSuspenseEntityList</code></td>
+<td>Suspense variant of <code>useEntityList</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="view" class="tsd-anchor-link">View<a href="#view" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Export</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FilterSpec</code>, <code>SortSpec</code></td>
+<td>Transport-agnostic filter and sort AST types.</td>
+</tr>
+<tr>
+<td><code>toRestParams</code></td>
+<td>Compile view → REST query params.</td>
+</tr>
+<tr>
+<td><code>toSQLClauses</code></td>
+<td>Compile view → SQL-style WHERE / ORDER BY fragments.</td>
+</tr>
+<tr>
+<td><code>toGraphQLVariables</code></td>
+<td>Compile view → common GraphQL variable shapes.</td>
+</tr>
+<tr>
+<td><code>toPrismaWhere</code> / <code>toPrismaOrderBy</code></td>
+<td>Compile view → Prisma-style <code>where</code> / <code>orderBy</code> objects.</td>
+</tr>
+<tr>
+<td><code>applyView</code>, <code>compareEntities</code>, <code>matchesFilter</code>, <code>matchesSearch</code>, <code>checkCompleteness</code></td>
+<td>Local evaluation and completeness helpers.</td>
+</tr>
+<tr>
+<td><code>flattenClauses</code>, <code>hasCustomPredicates</code></td>
+<td>Filter introspection utilities.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="crud" class="tsd-anchor-link">CRUD<a href="#crud" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Export</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>useEntityCRUD</code></td>
+<td>Unified list + detail + edit + create flow, edit buffer, dirty tracking, optimistic helpers.</td>
+</tr>
+<tr>
+<td><code>registerSchema</code></td>
+<td>Register entity relations for cascade invalidation after mutations.</td>
+</tr>
+<tr>
+<td><code>getSchema</code>, <code>readRelations</code>, <code>cascadeInvalidation</code></td>
+<td>Introspection and imperative cascade invalidation.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="realtime" class="tsd-anchor-link">Realtime<a href="#realtime" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Export</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RealtimeManager</code></td>
+<td>Registers adapters, coalesces changes (16 ms window), writes to graph.</td>
+</tr>
+<tr>
+<td><code>getRealtimeManager</code>, <code>resetRealtimeManager</code></td>
+<td>Singleton access and test resets.</td>
+</tr>
+<tr>
+<td><code>createWebSocketAdapter</code></td>
+<td>Generic WebSocket → graph changes.</td>
+</tr>
+<tr>
+<td><code>createSupabaseRealtimeAdapter</code></td>
+<td>Supabase Realtime payloads → graph.</td>
+</tr>
+<tr>
+<td><code>createConvexAdapter</code></td>
+<td>Convex-shaped streams → graph.</td>
+</tr>
+<tr>
+<td><code>createGraphQLSubscriptionAdapter</code></td>
+<td>GraphQL over WebSocket subscriptions → graph.</td>
+</tr>
+<tr>
+<td><code>createFlintAdapter</code></td>
+<td>Flint <code>watchEntities</code> stream → graph through the structural client contract.</td>
+</tr>
+<tr>
+<td><code>publishFlintMutation</code></td>
+<td>Publish one entity record through the caller-owned Flint client.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="graphql" class="tsd-anchor-link">GraphQL<a href="#graphql" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Export</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>createGQLClient</code></td>
+<td>Configure endpoint, fetcher, and entity descriptors for normalization.</td>
+</tr>
+<tr>
+<td><code>GQLClient</code></td>
+<td>Client class instance type.</td>
+</tr>
+<tr>
+<td><code>normalizeGQLResponse</code> / <code>executeGQL</code></td>
+<td>Normalize and execute with the same descriptor model.</td>
+</tr>
+<tr>
+<td><code>useGQLEntity</code>, <code>useGQLList</code></td>
+<td>Graph-backed entity and list hooks.</td>
+</tr>
+<tr>
+<td><code>useGQLMutation</code>, <code>useGQLSubscription</code></td>
+<td>GraphQL mutation and subscription hooks tied to the graph.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="prisma" class="tsd-anchor-link">Prisma<a href="#prisma" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Export</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>createPrismaEntityConfig</code></td>
+<td>Factory for REST endpoints that speak Prisma-style <code>where</code> / <code>orderBy</code> query params.</td>
+</tr>
+<tr>
+<td><code>prismaRelationsToSchema</code></td>
+<td>Convert Prisma-style relation map → <code>EntitySchema</code> for <code>registerSchema</code>.</td>
+</tr>
+<tr>
+<td><code>toPrismaInclude</code></td>
+<td>Build an <code>include</code> map from relation descriptors.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="local-first-adapters" class="tsd-anchor-link">Local-first adapters<a href="#local-first-adapters" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Export</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>createElectricAdapter</code></td>
+<td>ElectricSQL / PGlite shape changes → graph.</td>
+</tr>
+<tr>
+<td><code>createTenantScopedElectricAdapter</code></td>
+<td>Safety wrapper: refuses to attach a shape unless it declares a <code>tenantColumn</code>; builds the <code>WHERE</code> clause from a validated <code>{ companyId }</code> claim.</td>
+</tr>
+<tr>
+<td><code>useLocalFirst</code></td>
+<td>Hook for local-first workflows with the adapter.</td>
+</tr>
+<tr>
+<td><code>usePGliteQuery</code></td>
+<td>Run queries against PGlite in sync with the graph story.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="devtools" class="tsd-anchor-link">DevTools<a href="#devtools" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>The ordinary package root keeps the lightweight legacy <code>useGraphDevTools</code>
+hook and does not import or mount the inspector. The full inspector ships in
+<code>3.2.0</code> behind two optional subpaths:</p>
+<table>
+<thead>
+<tr>
+<th>Entry/export</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>./devtools/auto</code></td>
+<td>Side-effectful debug opt-in that detects development mode, waits for the browser, and mounts the launcher.</td>
+</tr>
+<tr>
+<td><code>EntityGraphDevtools</code> from <code>./devtools</code></td>
+<td>SSR-safe explicit host for provider-owned or Next.js graphs.</td>
+</tr>
+<tr>
+<td><code>EntityGraphDevtoolsProvider</code> and inspector hooks from <code>./devtools</code></td>
+<td>Advanced multi-store, custom host, and state-adapter integration.</td>
+</tr>
+</tbody>
+</table>
+<p>For Vite, add one debug-only dynamic import near the client entry:</p>
+<pre><code class="ts"><span class="hl-3">if</span><span class="hl-1"> (</span><span class="hl-3">import</span><span class="hl-1">.</span><span class="hl-4">meta</span><span class="hl-1">.</span><span class="hl-4">env</span><span class="hl-1">.</span><span class="hl-6">DEV</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-5">void</span><span class="hl-1"> </span><span class="hl-5">import</span><span class="hl-1">(</span><span class="hl-2">&quot;@prometheus-ags/prometheus-entity-management/devtools/auto&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<p>For Next.js, mount the explicit host from a client component after hydration
+and pass the same provider-owned graph used by the application:</p>
+<pre><code class="tsx"><span class="hl-2">&quot;use client&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-3">import</span><span class="hl-1"> { </span><span class="hl-4">useEffect</span><span class="hl-1">, </span><span class="hl-4">useState</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;react&quot;</span><span class="hl-1">;</span><br/><span class="hl-3">import</span><span class="hl-1"> </span><span class="hl-3">type</span><span class="hl-1"> { </span><span class="hl-4">GraphStore</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/entity-graph-core&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">type</span><span class="hl-1"> </span><span class="hl-10">Host</span><span class="hl-1"> = </span><span class="hl-5">typeof</span><span class="hl-1"> </span><span class="hl-0">import</span><span class="hl-1">(</span><br/><span class="hl-1">  </span><span class="hl-2">&quot;@prometheus-ags/prometheus-entity-management/devtools&quot;</span><br/><span class="hl-1">)[</span><span class="hl-2">&quot;EntityGraphDevtools&quot;</span><span class="hl-1">];</span><br/><br/><span class="hl-3">export</span><span class="hl-1"> </span><span class="hl-5">function</span><span class="hl-1"> </span><span class="hl-0">DevelopmentGraphTools</span><span class="hl-1">({ </span><span class="hl-4">store</span><span class="hl-1"> }: { </span><span class="hl-4">store</span><span class="hl-1">: </span><span class="hl-10">GraphStore</span><span class="hl-1"> }) {</span><br/><span class="hl-1">  </span><span class="hl-5">const</span><span class="hl-1"> [</span><span class="hl-6">Host</span><span class="hl-1">, </span><span class="hl-6">setHost</span><span class="hl-1">] = </span><span class="hl-0">useState</span><span class="hl-1">&lt;</span><span class="hl-10">Host</span><span class="hl-1"> | </span><span class="hl-10">null</span><span class="hl-1">&gt;(</span><span class="hl-5">null</span><span class="hl-1">);</span><br/><span class="hl-1">  </span><span class="hl-0">useEffect</span><span class="hl-1">(() </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-3">if</span><span class="hl-1"> (</span><span class="hl-4">process</span><span class="hl-1">.</span><span class="hl-4">env</span><span class="hl-1">.</span><span class="hl-6">NODE_ENV</span><span class="hl-1"> === </span><span class="hl-2">&quot;production&quot;</span><span class="hl-1">) </span><span class="hl-3">return</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-5">let</span><span class="hl-1"> </span><span class="hl-4">active</span><span class="hl-1"> = </span><span class="hl-5">true</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-5">void</span><span class="hl-1"> </span><span class="hl-5">import</span><span class="hl-1">(</span><span class="hl-2">&quot;@prometheus-ags/prometheus-entity-management/devtools&quot;</span><span class="hl-1">)</span><br/><span class="hl-1">      .</span><span class="hl-0">then</span><span class="hl-1">((</span><span class="hl-4">module</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">        </span><span class="hl-3">if</span><span class="hl-1"> (</span><span class="hl-4">active</span><span class="hl-1">) </span><span class="hl-0">setHost</span><span class="hl-1">(() </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-10">module</span><span class="hl-1">.</span><span class="hl-4">EntityGraphDevtools</span><span class="hl-1">);</span><br/><span class="hl-1">      });</span><br/><span class="hl-1">    </span><span class="hl-3">return</span><span class="hl-1"> () </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-4">active</span><span class="hl-1"> = </span><span class="hl-5">false</span><span class="hl-1">;</span><br/><span class="hl-1">    };</span><br/><span class="hl-1">  }, []);</span><br/><span class="hl-1">  </span><span class="hl-3">return</span><span class="hl-1"> </span><span class="hl-4">Host</span><span class="hl-1"> ? </span><span class="hl-9">&lt;</span><span class="hl-10">Host</span><span class="hl-1"> </span><span class="hl-11">mode</span><span class="hl-1">=</span><span class="hl-2">&quot;auto&quot;</span><span class="hl-1"> </span><span class="hl-11">store</span><span class="hl-1">=</span><span class="hl-5">{</span><span class="hl-4">store</span><span class="hl-5">}</span><span class="hl-1"> </span><span class="hl-9">/&gt;</span><span class="hl-1"> : </span><span class="hl-5">null</span><span class="hl-1">;</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<p>After opt-in, development mode shows a floating <strong>Graph</strong> launcher. Open it to
+inspect Overview, Entities, Views, Activity, Graph Pulse causality, canonical
+originals, local patches, merged live values, registered rendered-view
+membership, retained entity history, and controller-owned time travel. The
+display menu can move or compact the launcher, dock the inspector, hide it
+until reload, or hide it for the browser. Restore/toggle it with
+<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>G</kbd>.</p>
+<p>Serialized/remote inspection remains metadata-only unless the host explicitly
+enables an include/redact value policy. The same-origin embedded inspector can
+read the selected local store without sending values over a transport. The
+optional Loro adapter is loaded only when a consumer uses that integration.</p>
+<h3 id="ui-optional" class="tsd-anchor-link">UI (optional)<a href="#ui-optional" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Export</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EntityTable</code>, <code>InlineCellEditor</code></td>
+<td>Table + inline cell editing wired to the graph / view layer.</td>
+</tr>
+<tr>
+<td><code>EntityDetailSheet</code>, <code>EntityFormSheet</code>, <code>Sheet</code></td>
+<td>CRUD-oriented sheet primitives.</td>
+</tr>
+<tr>
+<td><code>selectionColumn</code>, <code>textColumn</code>, <code>numberColumn</code>, <code>dateColumn</code>, <code>enumColumn</code>, <code>booleanColumn</code>, <code>actionsColumn</code>, <code>SortHeader</code></td>
+<td>Column helpers with filter metadata for tooling.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="types-high-level" class="tsd-anchor-link">Types (high level)<a href="#types-high-level" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><code>GraphState</code>, <code>EntityState</code>, <code>ListState</code>, <code>EntityType</code>, <code>EntityId</code>, <code>EntitySyncMetadata</code>, <code>EntitySnapshot</code>, <code>EngineOptions</code>, <code>EntityQueryOptions</code>, <code>ListQueryOptions</code>, <code>ViewDescriptor</code>, <code>EntitySchema</code>, <code>RelationDescriptor</code>, realtime adapter types, GraphQL types, CRUD types, and column meta types are all exported from the package entry.</p>
+<hr>
+<h2 id="migration-from-tanstack-query" class="tsd-anchor-link">Migration from TanStack Query<a href="#migration-from-tanstack-query" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="single-record-→" class="tsd-anchor-link">Single record: <code>useQuery</code> → <code>useEntity</code><a href="#single-record-→" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><strong>Before (TanStack Query)</strong></p>
+<pre><code class="tsx"><span class="hl-5">const</span><span class="hl-1"> { </span><span class="hl-6">data</span><span class="hl-1">, </span><span class="hl-6">isLoading</span><span class="hl-1"> } = </span><span class="hl-0">useQuery</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">queryKey:</span><span class="hl-1"> [</span><span class="hl-2">&quot;post&quot;</span><span class="hl-1">, </span><span class="hl-4">id</span><span class="hl-1">],</span><br/><span class="hl-1">  </span><span class="hl-0">queryFn</span><span class="hl-4">:</span><span class="hl-1"> () </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-0">fetch</span><span class="hl-1">(</span><span class="hl-2">`/api/posts/</span><span class="hl-5">${</span><span class="hl-4">id</span><span class="hl-5">}</span><span class="hl-2">`</span><span class="hl-1">).</span><span class="hl-0">then</span><span class="hl-1">((</span><span class="hl-4">r</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-4">r</span><span class="hl-1">.</span><span class="hl-0">json</span><span class="hl-1">()),</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>After (entity graph)</strong></p>
+<pre><code class="tsx"><span class="hl-5">const</span><span class="hl-1"> { </span><span class="hl-6">data</span><span class="hl-1">, </span><span class="hl-6">isLoading</span><span class="hl-1"> } = </span><span class="hl-0">useEntity</span><span class="hl-1">&lt;</span><span class="hl-10">Post</span><span class="hl-1">, </span><span class="hl-10">Post</span><span class="hl-1">&gt;({</span><br/><span class="hl-1">  </span><span class="hl-4">type:</span><span class="hl-1"> </span><span class="hl-2">&quot;Post&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">id</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">fetch</span><span class="hl-4">:</span><span class="hl-1"> (</span><span class="hl-4">postId</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-0">fetch</span><span class="hl-1">(</span><span class="hl-2">`/api/posts/</span><span class="hl-5">${</span><span class="hl-4">postId</span><span class="hl-5">}</span><span class="hl-2">`</span><span class="hl-1">).</span><span class="hl-0">then</span><span class="hl-1">((</span><span class="hl-4">r</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-4">r</span><span class="hl-1">.</span><span class="hl-0">json</span><span class="hl-1">()),</span><br/><span class="hl-1">  </span><span class="hl-0">normalize</span><span class="hl-4">:</span><span class="hl-1"> (</span><span class="hl-4">raw</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-4">raw</span><span class="hl-1">,</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>Difference:</strong> the graph key is <code>(type, id)</code>, not an opaque query key. Anything else that uses the same <code>type</code>/<code>id</code> shares that record—no <code>setQueryData</code> across keys.</p>
+<h3 id="lists-key-→" class="tsd-anchor-link">Lists: <code>useQuery</code> + key → <code>useEntityList</code><a href="#lists-key-→" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><strong>Before</strong></p>
+<pre><code class="tsx"><span class="hl-5">const</span><span class="hl-1"> { </span><span class="hl-6">data</span><span class="hl-1"> } = </span><span class="hl-0">useQuery</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">queryKey:</span><span class="hl-1"> [</span><span class="hl-2">&quot;posts&quot;</span><span class="hl-1">, { </span><span class="hl-4">status</span><span class="hl-1"> }],</span><br/><span class="hl-1">  </span><span class="hl-0">queryFn</span><span class="hl-4">:</span><span class="hl-1"> () </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-4">api</span><span class="hl-1">.</span><span class="hl-4">posts</span><span class="hl-1">.</span><span class="hl-0">list</span><span class="hl-1">({ </span><span class="hl-4">status</span><span class="hl-1"> }),</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>After</strong></p>
+<pre><code class="tsx"><span class="hl-5">const</span><span class="hl-1"> { </span><span class="hl-6">items</span><span class="hl-1">, </span><span class="hl-6">isLoading</span><span class="hl-1"> } = </span><span class="hl-0">useEntityList</span><span class="hl-1">&lt;</span><span class="hl-10">Post</span><span class="hl-1">, </span><span class="hl-10">Post</span><span class="hl-1">&gt;({</span><br/><span class="hl-1">  </span><span class="hl-4">type:</span><span class="hl-1"> </span><span class="hl-2">&quot;Post&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">queryKey:</span><span class="hl-1"> [</span><span class="hl-2">&quot;posts&quot;</span><span class="hl-1">, { </span><span class="hl-4">status</span><span class="hl-1"> }],</span><br/><span class="hl-1">  </span><span class="hl-0">fetch</span><span class="hl-4">:</span><span class="hl-1"> (</span><span class="hl-4">p</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-4">api</span><span class="hl-1">.</span><span class="hl-4">posts</span><span class="hl-1">.</span><span class="hl-0">list</span><span class="hl-1">({ </span><span class="hl-4">status</span><span class="hl-1">, </span><span class="hl-4">page:</span><span class="hl-1"> </span><span class="hl-4">p</span><span class="hl-1">.</span><span class="hl-4">page</span><span class="hl-1">, </span><span class="hl-4">pageSize:</span><span class="hl-1"> </span><span class="hl-4">p</span><span class="hl-1">.</span><span class="hl-4">pageSize</span><span class="hl-1">, </span><span class="hl-4">cursor:</span><span class="hl-1"> </span><span class="hl-4">p</span><span class="hl-1">.</span><span class="hl-4">cursor</span><span class="hl-1"> }),</span><br/><span class="hl-1">  </span><span class="hl-0">normalize</span><span class="hl-4">:</span><span class="hl-1"> (</span><span class="hl-4">row</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> ({ </span><span class="hl-4">id:</span><span class="hl-1"> </span><span class="hl-4">row</span><span class="hl-1">.</span><span class="hl-4">id</span><span class="hl-1">, </span><span class="hl-4">data:</span><span class="hl-1"> </span><span class="hl-4">row</span><span class="hl-1"> }),</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>Difference:</strong> the list stores <strong>IDs</strong>; row objects are always read through the normalized <code>Post</code> map, so updates propagate everywhere.</p>
+<h3 id="tanstack-table-data-prop-→" class="tsd-anchor-link">TanStack Table: <code>useQuery</code> data prop → <code>useEntityListAsTable</code><a href="#tanstack-table-data-prop-→" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>If you wire <code>useEntityList</code> directly into TanStack Table's <code>data</code> prop, the table treats a
+new array reference as new data on every render. Use <code>useEntityListAsTable</code> instead—it
+returns a referentially-stable <code>data</code> array that only changes when the underlying items
+actually change.</p>
+<p><strong>Before</strong></p>
+<pre><code class="tsx"><span class="hl-5">const</span><span class="hl-1"> { </span><span class="hl-6">data</span><span class="hl-1"> = [] } = </span><span class="hl-0">useQuery</span><span class="hl-1">&lt;</span><span class="hl-10">Post</span><span class="hl-1">[]&gt;({</span><br/><span class="hl-1">  </span><span class="hl-4">queryKey:</span><span class="hl-1"> [</span><span class="hl-2">&quot;posts&quot;</span><span class="hl-1">],</span><br/><span class="hl-1">  </span><span class="hl-0">queryFn</span><span class="hl-4">:</span><span class="hl-1"> () </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-4">api</span><span class="hl-1">.</span><span class="hl-4">posts</span><span class="hl-1">.</span><span class="hl-0">list</span><span class="hl-1">(),</span><br/><span class="hl-1">});</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">table</span><span class="hl-1"> = </span><span class="hl-0">useReactTable</span><span class="hl-1">({ </span><span class="hl-4">data</span><span class="hl-1">, </span><span class="hl-4">columns</span><span class="hl-1">, </span><span class="hl-4">getCoreRowModel:</span><span class="hl-1"> </span><span class="hl-0">getCoreRowModel</span><span class="hl-1">() });</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>After</strong></p>
+<pre><code class="tsx"><span class="hl-3">import</span><span class="hl-1"> { </span><span class="hl-4">useEntityListAsTable</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/prometheus-entity-management&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> { </span><span class="hl-6">data</span><span class="hl-1">, </span><span class="hl-6">rowCount</span><span class="hl-1">, </span><span class="hl-6">isLoading</span><span class="hl-1">, </span><span class="hl-6">isError</span><span class="hl-1">, </span><span class="hl-6">error</span><span class="hl-1"> } = </span><span class="hl-0">useEntityListAsTable</span><span class="hl-1">&lt;</span><span class="hl-10">Post</span><span class="hl-1">, </span><span class="hl-10">Post</span><span class="hl-1">&gt;({</span><br/><span class="hl-1">  </span><span class="hl-4">type:</span><span class="hl-1"> </span><span class="hl-2">&quot;Post&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">fetch</span><span class="hl-4">:</span><span class="hl-1"> (</span><span class="hl-4">p</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-4">api</span><span class="hl-1">.</span><span class="hl-4">posts</span><span class="hl-1">.</span><span class="hl-0">list</span><span class="hl-1">(</span><span class="hl-4">p</span><span class="hl-1">),</span><br/><span class="hl-1">  </span><span class="hl-0">normalize</span><span class="hl-4">:</span><span class="hl-1"> (</span><span class="hl-4">row</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> ({ </span><span class="hl-4">id:</span><span class="hl-1"> </span><span class="hl-4">row</span><span class="hl-1">.</span><span class="hl-4">id</span><span class="hl-1">, </span><span class="hl-4">data:</span><span class="hl-1"> </span><span class="hl-4">row</span><span class="hl-1"> }),</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">table</span><span class="hl-1"> = </span><span class="hl-0">useReactTable</span><span class="hl-1">({ </span><span class="hl-4">data</span><span class="hl-1">, </span><span class="hl-4">rowCount</span><span class="hl-1">, </span><span class="hl-4">columns</span><span class="hl-1">, </span><span class="hl-4">getCoreRowModel:</span><span class="hl-1"> </span><span class="hl-0">getCoreRowModel</span><span class="hl-1">() });</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>Difference:</strong> <code>data</code> identity is stable across renders where items haven't changed, so
+TanStack Table's memoization works correctly and row state (selection, expansion) is
+preserved between refetches.</p>
+<h3 id="mutations-→" class="tsd-anchor-link">Mutations: <code>useMutation</code> → <code>useEntityMutation</code><a href="#mutations-→" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><strong>Before</strong></p>
+<pre><code class="tsx"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">qc</span><span class="hl-1"> = </span><span class="hl-0">useQueryClient</span><span class="hl-1">();</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">mutation</span><span class="hl-1"> = </span><span class="hl-0">useMutation</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-0">mutationFn</span><span class="hl-4">:</span><span class="hl-1"> (</span><span class="hl-4">id</span><span class="hl-1">: </span><span class="hl-10">string</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-4">api</span><span class="hl-1">.</span><span class="hl-4">posts</span><span class="hl-1">.</span><span class="hl-0">archive</span><span class="hl-1">(</span><span class="hl-4">id</span><span class="hl-1">),</span><br/><span class="hl-1">  </span><span class="hl-0">onSuccess</span><span class="hl-4">:</span><span class="hl-1"> () </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-4">qc</span><span class="hl-1">.</span><span class="hl-0">invalidateQueries</span><span class="hl-1">({ </span><span class="hl-4">queryKey:</span><span class="hl-1"> [</span><span class="hl-2">&quot;posts&quot;</span><span class="hl-1">] });</span><br/><span class="hl-1">    </span><span class="hl-4">qc</span><span class="hl-1">.</span><span class="hl-0">invalidateQueries</span><span class="hl-1">({ </span><span class="hl-4">queryKey:</span><span class="hl-1"> [</span><span class="hl-2">&quot;post&quot;</span><span class="hl-1">] });</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>After</strong></p>
+<pre><code class="tsx"><span class="hl-3">import</span><span class="hl-1"> { </span><span class="hl-4">serializeKey</span><span class="hl-1">, </span><span class="hl-4">useEntityMutation</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/prometheus-entity-management&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> { </span><span class="hl-6">mutate</span><span class="hl-1"> } = </span><span class="hl-0">useEntityMutation</span><span class="hl-1">&lt;</span><span class="hl-10">string</span><span class="hl-1">, </span><span class="hl-10">Post</span><span class="hl-1">, </span><span class="hl-10">Post</span><span class="hl-1">&gt;({</span><br/><span class="hl-1">  </span><span class="hl-4">type:</span><span class="hl-1"> </span><span class="hl-2">&quot;Post&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">mutate</span><span class="hl-4">:</span><span class="hl-1"> (</span><span class="hl-4">id</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-4">api</span><span class="hl-1">.</span><span class="hl-4">posts</span><span class="hl-1">.</span><span class="hl-0">archive</span><span class="hl-1">(</span><span class="hl-4">id</span><span class="hl-1">),</span><br/><span class="hl-1">  </span><span class="hl-0">normalize</span><span class="hl-4">:</span><span class="hl-1"> (</span><span class="hl-4">raw</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> ({ </span><span class="hl-4">id:</span><span class="hl-1"> </span><span class="hl-4">raw</span><span class="hl-1">.</span><span class="hl-4">id</span><span class="hl-1">, </span><span class="hl-4">data:</span><span class="hl-1"> </span><span class="hl-4">raw</span><span class="hl-1"> }),</span><br/><span class="hl-1">  </span><span class="hl-0">optimistic</span><span class="hl-4">:</span><span class="hl-1"> (</span><span class="hl-4">id</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> ({ </span><span class="hl-4">id</span><span class="hl-1">, </span><span class="hl-4">patch:</span><span class="hl-1"> { </span><span class="hl-4">status:</span><span class="hl-1"> </span><span class="hl-2">&quot;archived&quot;</span><span class="hl-1"> } }),</span><br/><span class="hl-1">  </span><span class="hl-4">invalidateLists:</span><span class="hl-1"> [</span><span class="hl-0">serializeKey</span><span class="hl-1">([</span><span class="hl-2">&quot;posts&quot;</span><span class="hl-1">])],</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>Difference:</strong> optimistic updates target the <strong>entity</strong>; optional list invalidation is declarative. Cross-view consistency comes from normalization, not from remembering every query key.</p>
+<hr>
+<h2 id="migration-from-apollo-client" class="tsd-anchor-link">Migration from Apollo Client<a href="#migration-from-apollo-client" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="query-→--" class="tsd-anchor-link">Query: <code>useQuery</code> → <code>useGQLEntity</code> / <code>useGQLList</code><a href="#query-→--" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><strong>Before (Apollo)</strong></p>
+<pre><code class="tsx"><span class="hl-5">const</span><span class="hl-1"> { </span><span class="hl-6">data</span><span class="hl-1"> } = </span><span class="hl-0">useQuery</span><span class="hl-1">(</span><span class="hl-6">GET_POST</span><span class="hl-1">, { </span><span class="hl-4">variables:</span><span class="hl-1"> { </span><span class="hl-4">id</span><span class="hl-1"> } });</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>After</strong></p>
+<pre><code class="tsx"><span class="hl-5">const</span><span class="hl-1"> { </span><span class="hl-6">data</span><span class="hl-1"> } = </span><span class="hl-0">useGQLEntity</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">client:</span><span class="hl-1"> </span><span class="hl-4">gqlClient</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">document:</span><span class="hl-1"> </span><span class="hl-6">GET_POST</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">variables:</span><span class="hl-1"> {},</span><br/><span class="hl-1">  </span><span class="hl-4">type:</span><span class="hl-1"> </span><span class="hl-2">&quot;Post&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">id</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">descriptor:</span><span class="hl-1"> </span><span class="hl-4">postDescriptor</span><span class="hl-1">,</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Use <code>useGQLList</code> with <code>document</code>, <code>queryKey</code>, <code>descriptor</code>, and <code>getItems</code> to map the response into rows.</p>
+<p><strong>Difference:</strong> you describe entities with <strong>descriptors</strong> (how to normalize IDs and nested types) once; you do not maintain a parallel universe of type policies and merge functions for every edge case.</p>
+<h3 id="mutation-→" class="tsd-anchor-link">Mutation: <code>useMutation</code> → <code>useGQLMutation</code><a href="#mutation-→" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><strong>Before</strong></p>
+<pre><code class="tsx"><span class="hl-5">const</span><span class="hl-1"> [</span><span class="hl-6">mutate</span><span class="hl-1">] = </span><span class="hl-0">useMutation</span><span class="hl-1">(</span><span class="hl-6">UPDATE_POST</span><span class="hl-1">);</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>After</strong></p>
+<pre><code class="tsx"><span class="hl-5">const</span><span class="hl-1"> { </span><span class="hl-6">mutate</span><span class="hl-1"> } = </span><span class="hl-0">useGQLMutation</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">client:</span><span class="hl-1"> </span><span class="hl-4">gqlClient</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">document:</span><span class="hl-1"> </span><span class="hl-6">UPDATE_POST</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">type:</span><span class="hl-1"> </span><span class="hl-2">&quot;Post&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">descriptors:</span><span class="hl-1"> [</span><span class="hl-4">postDescriptor</span><span class="hl-1">],</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Descriptors tell the client how to write normalized entities from the mutation payload—no Apollo-style type policies.</p>
+<h3 id="subscriptions-→" class="tsd-anchor-link">Subscriptions: <code>useSubscription</code> → <code>useGQLSubscription</code><a href="#subscriptions-→" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><strong>Before</strong></p>
+<pre><code class="tsx"><span class="hl-0">useSubscription</span><span class="hl-1">(</span><span class="hl-6">POST_UPDATED</span><span class="hl-1">, { </span><span class="hl-4">variables:</span><span class="hl-1"> { </span><span class="hl-4">id</span><span class="hl-1"> } });</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>After</strong></p>
+<pre><code class="tsx"><span class="hl-0">useGQLSubscription</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">client:</span><span class="hl-1"> </span><span class="hl-4">gqlClient</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">wsClient:</span><span class="hl-1"> </span><span class="hl-4">gqlWsClient</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">document:</span><span class="hl-1"> </span><span class="hl-6">POST_UPDATED_SUB</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">variables:</span><span class="hl-1"> { </span><span class="hl-4">id</span><span class="hl-1"> },</span><br/><span class="hl-1">  </span><span class="hl-4">descriptors:</span><span class="hl-1"> [</span><span class="hl-4">postDescriptor</span><span class="hl-1">],</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>Difference:</strong> GraphQL, REST, and realtime adapters can all write the <strong>same</strong> entity graph, so mixed stacks do not need two caches.</p>
+<hr>
+<h2 id="prisma-integration" class="tsd-anchor-link">Prisma integration<a href="#prisma-integration" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p><code>createPrismaEntityConfig</code> targets REST APIs that accept Prisma-style <code>where</code> and <code>orderBy</code> as JSON query parameters (typical for Prisma-backed route handlers).</p>
+<pre><code class="typescript"><span class="hl-3">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">createPrismaEntityConfig</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">registerSchema</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">useEntity</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">useEntityList</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/prometheus-entity-management&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">type</span><span class="hl-1"> </span><span class="hl-10">Post</span><span class="hl-1"> = { </span><span class="hl-4">id</span><span class="hl-1">: </span><span class="hl-10">string</span><span class="hl-1">; </span><span class="hl-4">title</span><span class="hl-1">: </span><span class="hl-10">string</span><span class="hl-1">; </span><span class="hl-4">authorId</span><span class="hl-1">: </span><span class="hl-10">string</span><span class="hl-1"> };</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">Posts</span><span class="hl-1"> = </span><span class="hl-0">createPrismaEntityConfig</span><span class="hl-1">&lt;</span><span class="hl-10">Post</span><span class="hl-1">&gt;({</span><br/><span class="hl-1">  </span><span class="hl-4">type:</span><span class="hl-1"> </span><span class="hl-2">&quot;Post&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">endpoint:</span><span class="hl-1"> </span><span class="hl-2">&quot;/api/posts&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">relations:</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-4">author:</span><span class="hl-1"> { </span><span class="hl-4">type:</span><span class="hl-1"> </span><span class="hl-2">&quot;User&quot;</span><span class="hl-1">, </span><span class="hl-4">foreignKey:</span><span class="hl-1"> </span><span class="hl-2">&quot;authorId&quot;</span><span class="hl-1">, </span><span class="hl-4">relation:</span><span class="hl-1"> </span><span class="hl-2">&quot;belongsTo&quot;</span><span class="hl-1"> },</span><br/><span class="hl-1">    </span><span class="hl-4">comments:</span><span class="hl-1"> { </span><span class="hl-4">type:</span><span class="hl-1"> </span><span class="hl-2">&quot;Comment&quot;</span><span class="hl-1">, </span><span class="hl-4">foreignKey:</span><span class="hl-1"> </span><span class="hl-2">&quot;postId&quot;</span><span class="hl-1">, </span><span class="hl-4">relation:</span><span class="hl-1"> </span><span class="hl-2">&quot;hasMany&quot;</span><span class="hl-1"> },</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-7">// Register cascade rules once (e.g. app init)</span><br/><span class="hl-4">Posts</span><span class="hl-1">.</span><span class="hl-0">schemas</span><span class="hl-1">().</span><span class="hl-0">forEach</span><span class="hl-1">(</span><span class="hl-4">registerSchema</span><span class="hl-1">);</span>
+</code><button type="button">Copy</button></pre>
+
+<pre><code class="tsx"><span class="hl-5">function</span><span class="hl-1"> </span><span class="hl-0">PostDetail</span><span class="hl-1">({ </span><span class="hl-4">postId</span><span class="hl-1"> }: { </span><span class="hl-4">postId</span><span class="hl-1">: </span><span class="hl-10">string</span><span class="hl-1"> }) {</span><br/><span class="hl-1">  </span><span class="hl-5">const</span><span class="hl-1"> { </span><span class="hl-6">data</span><span class="hl-1"> } = </span><span class="hl-0">useEntity</span><span class="hl-1">(</span><span class="hl-4">Posts</span><span class="hl-1">.</span><span class="hl-0">entity</span><span class="hl-1">(</span><span class="hl-4">postId</span><span class="hl-1">));</span><br/><span class="hl-1">  </span><span class="hl-3">return</span><span class="hl-1"> </span><span class="hl-4">data</span><span class="hl-1"> ? </span><span class="hl-9">&lt;</span><span class="hl-12">h1</span><span class="hl-9">&gt;</span><span class="hl-5">{</span><span class="hl-4">data</span><span class="hl-8">.</span><span class="hl-4">title</span><span class="hl-5">}</span><span class="hl-9">&lt;/</span><span class="hl-12">h1</span><span class="hl-9">&gt;</span><span class="hl-1"> : </span><span class="hl-5">null</span><span class="hl-1">;</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-5">function</span><span class="hl-1"> </span><span class="hl-0">PostList</span><span class="hl-1">() {</span><br/><span class="hl-1">  </span><span class="hl-5">const</span><span class="hl-1"> { </span><span class="hl-6">items</span><span class="hl-1"> } = </span><span class="hl-0">useEntityList</span><span class="hl-1">(</span><br/><span class="hl-1">    </span><span class="hl-4">Posts</span><span class="hl-1">.</span><span class="hl-0">list</span><span class="hl-1">({</span><br/><span class="hl-1">      </span><span class="hl-4">filter:</span><span class="hl-1"> [{ </span><span class="hl-4">field:</span><span class="hl-1"> </span><span class="hl-2">&quot;status&quot;</span><span class="hl-1">, </span><span class="hl-4">op:</span><span class="hl-1"> </span><span class="hl-2">&quot;eq&quot;</span><span class="hl-1">, </span><span class="hl-4">value:</span><span class="hl-1"> </span><span class="hl-2">&quot;published&quot;</span><span class="hl-1"> }],</span><br/><span class="hl-1">      </span><span class="hl-4">sort:</span><span class="hl-1"> [{ </span><span class="hl-4">field:</span><span class="hl-1"> </span><span class="hl-2">&quot;createdAt&quot;</span><span class="hl-1">, </span><span class="hl-4">direction:</span><span class="hl-1"> </span><span class="hl-2">&quot;desc&quot;</span><span class="hl-1"> }],</span><br/><span class="hl-1">    })</span><br/><span class="hl-1">  );</span><br/><span class="hl-1">  </span><span class="hl-3">return</span><span class="hl-1"> (</span><br/><span class="hl-1">    </span><span class="hl-9">&lt;</span><span class="hl-12">ul</span><span class="hl-9">&gt;</span><br/><span class="hl-1">      </span><span class="hl-5">{</span><span class="hl-4">items</span><span class="hl-8">.</span><span class="hl-0">map</span><span class="hl-8">((</span><span class="hl-4">p</span><span class="hl-8">) </span><span class="hl-5">=&gt;</span><span class="hl-8"> (</span><br/><span class="hl-8">        </span><span class="hl-9">&lt;</span><span class="hl-12">li</span><span class="hl-8"> </span><span class="hl-11">key</span><span class="hl-1">=</span><span class="hl-5">{</span><span class="hl-4">p</span><span class="hl-8">.</span><span class="hl-4">id</span><span class="hl-5">}</span><span class="hl-9">&gt;</span><span class="hl-5">{</span><span class="hl-4">p</span><span class="hl-8">.</span><span class="hl-4">title</span><span class="hl-5">}</span><span class="hl-9">&lt;/</span><span class="hl-12">li</span><span class="hl-9">&gt;</span><br/><span class="hl-8">      ))</span><span class="hl-5">}</span><br/><span class="hl-1">    </span><span class="hl-9">&lt;/</span><span class="hl-12">ul</span><span class="hl-9">&gt;</span><br/><span class="hl-1">  );</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Use <code>Posts.crud()</code> with <code>useEntityCRUD</code> when you want the full list + detail + forms pipeline against the same endpoints.</p>
+<hr>
+<h2 id="examples" class="tsd-anchor-link">Examples<a href="#examples" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<table>
+<thead>
+<tr>
+<th>Example</th>
+<th>Path</th>
+<th>What it demonstrates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Vite app</strong></td>
+<td><a href="../../examples/vite-app/"><code>examples/vite-app/</code></a></td>
+<td>Full CRUD, realtime adapters, <strong>TanStack Query → graph bridge</strong> (<code>/tanstack-bridge</code>), <code>EntityTable</code> / sheets, mock API with latency</td>
+</tr>
+<tr>
+<td><strong>Next.js app</strong></td>
+<td><a href="../../examples/nextjs-app/"><code>examples/nextjs-app/</code></a></td>
+<td>Next.js 16 App Router with a new <code>createGraphStore()</code> per document request, serializable RSC snapshot, one hydrated <code>GraphStoreProvider</code>, zero duplicate client fetches, route persistence, validated Server Action mutation, and client-only realtime takeover.</td>
+</tr>
+</tbody>
+</table>
+<p>From the repo root (this monorepo uses <strong>pnpm</strong>):</p>
+<pre><code class="bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">install</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">dev:vite</span><span class="hl-1">   </span><span class="hl-7"># http://localhost:5173</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">dev:next</span><span class="hl-1">   </span><span class="hl-7"># http://localhost:3000</span>
+</code><button type="button">Copy</button></pre>
+
+<hr>
+<h2 id="architecture" class="tsd-anchor-link">Architecture<a href="#architecture" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="data-flow-rules" class="tsd-anchor-link">Data flow rules<a href="#data-flow-rules" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul>
+<li><strong>Components → Hooks → Stores → APIs / realtime</strong> — UI uses hooks only; hooks orchestrate; network and adapters update the graph.</li>
+<li><strong>Up into the graph:</strong> fetches, mutations, and realtime events call into the Zustand store.</li>
+<li><strong>Down from hooks:</strong> <code>useEntity</code>, <code>useEntityList</code>, <code>useEntityView</code>, GraphQL hooks, and CRUD read merged <code>entities</code> + <code>patches</code>.</li>
+</ul>
+<h3 id="graph-structures-" class="tsd-anchor-link">Graph structures (<code>src/graph.ts</code>)<a href="#graph-structures-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ol>
+<li><strong><code>entities</code></strong> — Canonical server-shaped records per <code>(type, id)</code>.</li>
+<li><strong><code>patches</code></strong> — Local-only overlays (<code>_selected</code>, <code>_loading</code>, …) merged at read time.</li>
+<li><strong><code>lists</code></strong> — Ordered <code>ids[]</code>, pagination, and fetch flags — <strong>not</strong> duplicated row payloads.</li>
+<li><strong><code>syncMetadata</code></strong> — Per-entity sync/provenance state layered into snapshot reads as <code>$synced</code>, <code>$origin</code>, and <code>$updatedAt</code>.</li>
+</ol>
+<h3 id="engine-" class="tsd-anchor-link">Engine (<code>src/engine.ts</code>)<a href="#engine-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>In-flight deduplication, retries, subscriber ref-counting, stale-while-revalidate, optional periodic garbage collection for entities without subscribers.</p>
+<h3 id="realtime-" class="tsd-anchor-link">Realtime (<code>src/adapters/realtime-manager.ts</code>)<a href="#realtime-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Adapters emit a shared change shape; the manager batches updates per animation frame to avoid UI thrash.</p>
+<h3 id="view-layer-" class="tsd-anchor-link">View layer (<code>src/view/</code>)<a href="#view-layer-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>One <code>FilterSpec</code> / <code>SortSpec</code> can compile to REST, SQL, GraphQL variables, or Prisma shapes, and can run locally when the graph already holds enough data.</p>
+<h3 id="crud-" class="tsd-anchor-link">CRUD (<code>src/crud/</code>)<a href="#crud-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><code>useEntityCRUD</code> keeps the edit buffer in React state so other views stay on committed data until save; <code>registerSchema</code> drives relation-aware cascade invalidation.</p>
+<hr>
+<h2 id="development-this-repository" class="tsd-anchor-link">Development (this repository)<a href="#development-this-repository" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<pre><code class="bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">install</span><br/><br/><span class="hl-7"># Examples</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">dev:vite</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">dev:next</span><br/><br/><span class="hl-7"># Typecheck</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">typecheck</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">typecheck:vite</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">typecheck:next</span><br/><br/><span class="hl-7"># Production builds of examples</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">build:vite</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">build:next</span><br/><br/><span class="hl-7"># Clean artifacts</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">clean</span>
+</code><button type="button">Copy</button></pre>
+
+<p>The library is consumed from source via path aliases in examples during development (no separate build step required for local hacking).</p>
+<hr>
+<h2 id="license" class="tsd-anchor-link">License<a href="#license" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>MIT © Prometheus AGS / KnowMe LLC</p>
+</section>
+<details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Modules"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h2 class="tsd-anchor-link" id="modules">Modules<a href="#modules" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary><dl class="tsd-member-summaries"><dt class="tsd-member-summary" id="_"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><a href="_prometheus-ags_entity-graph-react..html"></a><a href="#_" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="devtools-1"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><a href="_prometheus-ags_entity-graph-react.devtools.html">devtools</a><a href="#devtools-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="devtoolsauto"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><a href="_prometheus-ags_entity-graph-react.devtools_auto.html">devtools/auto</a><a href="#devtoolsauto" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd></dl></details></div>
+<div class="col-sidebar">
+<div class="page-menu">
+<div class="tsd-navigation settings">
+<details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div>
+<div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>On This Page</h3></summary>
+<div class="tsd-accordion-details"><a href="#prometheus-agsprometheus-entity-management"><span>@prometheus-<wbr/>ags/prometheus-<wbr/>entity-<wbr/>management</span></a>
+<ul>
+<li><a href="#30-react-release"><span>3.0 <wbr/>React release</span></a></li>
+<li>
+<ul>
+<li><a href="#documentation-map"><span>Documentation map</span></a></li></ul></li>
+<li><a href="#quick-start"><span>Quick start</span></a></li>
+<li>
+<ul>
+<li><a href="#1-install"><span>1. <wbr/>Install</span></a></li>
+<li><a href="#2-define-an-entity-type"><span>2. <wbr/>Define an entity type</span></a></li>
+<li><a href="#3-fetch-and-render"><span>3. <wbr/>Fetch and render</span></a></li></ul></li>
+<li><a href="#core-concepts"><span>Core concepts</span></a></li>
+<li>
+<ul>
+<li><a href="#entities-live-exactly-once"><span>Entities live exactly once</span></a></li>
+<li><a href="#queries-are-instructions-not-containers"><span>Queries are instructions, not containers</span></a></li>
+<li><a href="#lists-store-ids-not-data"><span>Lists store <wbr/>I<wbr/>Ds, not data</span></a></li>
+<li><a href="#three-layer-model"><span>Three-<wbr/>layer model</span></a></li></ul></li>
+<li><a href="#v13-additions"><span>v1.3 additions</span></a></li>
+<li>
+<ul>
+<li><a href="#v130-new-apis"><span>v1.3.0 — new <wbr/>AP<wbr/>Is</span></a></li>
+<li><a href="#v131-stability-fix"><span>v1.3.1 — stability fix</span></a></li>
+<li><a href="#v132-error-handling"><span>v1.3.2 — error handling</span></a></li></ul></li>
+<li><a href="#new-in-v12"><span>New in v1.2</span></a></li>
+<li><a href="#feature-comparison"><span>Feature comparison</span></a></li>
+<li>
+<ul>
+<li><a href="#bundle-size"><span>Bundle size</span></a></li></ul></li>
+<li><a href="#api-reference-brief"><span>API reference (brief)</span></a></li>
+<li>
+<ul>
+<li><a href="#core"><span>Core</span></a></li>
+<li><a href="#graph-runtime"><span>Graph runtime</span></a></li>
+<li><a href="#schema-driven-entities"><span>Schema-<wbr/>driven entities</span></a></li>
+<li><a href="#local-first-runtime"><span>Local-<wbr/>first runtime</span></a></li>
+<li><a href="#hooks-rest-oriented"><span>Hooks (<wbr/>REST-<wbr/>oriented)</span></a></li>
+<li><a href="#view"><span>View</span></a></li>
+<li><a href="#crud"><span>CRUD</span></a></li>
+<li><a href="#realtime"><span>Realtime</span></a></li>
+<li><a href="#graphql"><span>Graph<wbr/>QL</span></a></li>
+<li><a href="#prisma"><span>Prisma</span></a></li>
+<li><a href="#local-first-adapters"><span>Local-<wbr/>first adapters</span></a></li>
+<li><a href="#devtools"><span>Dev<wbr/>Tools</span></a></li>
+<li><a href="#ui-optional"><span>UI (optional)</span></a></li>
+<li><a href="#types-high-level"><span>Types (high level)</span></a></li></ul></li>
+<li><a href="#migration-from-tanstack-query"><span>Migration from <wbr/>Tan<wbr/>Stack <wbr/>Query</span></a></li>
+<li>
+<ul>
+<li><a href="#single-record-→"><span>Single record:  → </span></a></li>
+<li><a href="#lists-key-→"><span>Lists:  + key → </span></a></li>
+<li><a href="#tanstack-table-data-prop-→"><span>Tan<wbr/>Stack <wbr/>Table:  data prop → </span></a></li>
+<li><a href="#mutations-→"><span>Mutations:  → </span></a></li></ul></li>
+<li><a href="#migration-from-apollo-client"><span>Migration from <wbr/>Apollo <wbr/>Client</span></a></li>
+<li>
+<ul>
+<li><a href="#query-→--"><span>Query:  →  / </span></a></li>
+<li><a href="#mutation-→"><span>Mutation:  → </span></a></li>
+<li><a href="#subscriptions-→"><span>Subscriptions:  → </span></a></li></ul></li>
+<li><a href="#prisma-integration"><span>Prisma integration</span></a></li>
+<li><a href="#examples"><span>Examples</span></a></li>
+<li><a href="#architecture"><span>Architecture</span></a></li>
+<li>
+<ul>
+<li><a href="#data-flow-rules"><span>Data flow rules</span></a></li>
+<li><a href="#graph-structures-"><span>Graph structures ()</span></a></li>
+<li><a href="#engine-"><span>Engine ()</span></a></li>
+<li><a href="#realtime-"><span>Realtime ()</span></a></li>
+<li><a href="#view-layer-"><span>View layer ()</span></a></li>
+<li><a href="#crud-"><span>CRUD ()</span></a></li></ul></li>
+<li><a href="#development-this-repository"><span>Development (this repository)</span></a></li>
+<li><a href="#license"><span>License</span></a></li></ul>
+<details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Modules"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Modules</summary>
+<div><a href="#_"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><span></span></a><a href="#devtools-1"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><span>devtools</span></a><a href="#devtoolsauto"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><span>devtools/auto</span></a></div></details></div></details></div>
+<div class="site-menu">
+<nav class="tsd-navigation"><a href="../index.html">Prometheus Entity Management API</a>
+<ul class="tsd-small-nested-navigation" id="tsd-nav-container">
+<li>Loading...</li></ul></nav></div></div></div><footer>
+<p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer>
+<div class="overlay"></div></body></html>

@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0.0",
-  "verifiedAt": "2026-08-30T22:55:17.910Z",
+  "verifiedAt": "2026-10-08T10:38:40.000Z",
   "registry": "https://pub.dev",
   "packageName": "entity_graph_flutter",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "releaseStatus": "published",
-  "publishedAt": "2026-08-30T22:50:00.407947Z",
-  "archiveSha256": "f79c5a97a9994769cb152c68b47bca1c59e1ebb3d0ba343af8c257fca92ba1cb",
-  "sourceSha": "4780a27128683a946f45d098e7eded19a3ff98cc",
+  "publishedAt": "2026-09-05T13:06:03.642746Z",
+  "archiveSha256": "5db1a741dc1663b9a661a5f8769338edb23595266864de9a73a3139c300dd3c1",
+  "sourceSha": "f3c0250264b706fe904edfa76c52392c3cf3ef51",
   "packageUrl": "https://pub.dev/packages/entity_graph_flutter",
   "publisherId": null,
   "consumerVerification": "passed",
@@ -16,5 +16,5 @@
     "package:entity_graph_flutter/entity_graph_flutter.dart",
     "package:entity_graph_flutter/devtools.dart"
   ],
-  "certifiedPackageSourceSha": "d7dff293a79d9d3cba26fa3a0c0fbb47e8d07944"
+  "certifiedPackageSourceSha": "f3c0250264b706fe904edfa76c52392c3cf3ef51"
 }

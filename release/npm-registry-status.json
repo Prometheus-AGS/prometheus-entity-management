@@ -1,86 +1,91 @@
 {
   "schemaVersion": "1.1.0",
-  "verifiedAt": "2026-08-30T22:54:50.026Z",
+  "verifiedAt": "2026-10-08T10:34:51.000Z",
   "registry": "https://registry.npmjs.org/",
-  "expectedCandidate": "3.2.0",
-  "candidateSourceSha": "4780a27128683a946f45d098e7eded19a3ff98cc",
+  "expectedCandidate": "4.1.0",
+  "candidateSourceSha": "6a27c20576e6de6b33c500500ef6e9ba83d248fd",
   "releaseStatus": "stable-published",
-  "releaseUrl": "https://github.com/Prometheus-AGS/prometheus-entity-management/releases/tag/v3.2.0",
+  "releaseUrl": "https://github.com/Prometheus-AGS/prometheus-entity-management/releases/tag/v4.1.0",
   "provenance": "absent-manual-publication",
   "packages": {
     "@prometheus-ags/entity-graph-core": {
       "alpha": "3.0.0-alpha.0",
-      "next": "3.2.0",
-      "latest": "3.2.0",
+      "next": "4.1.0",
+      "latest": "4.1.0",
+      "candidateState": "published"
+    },
+    "@prometheus-ags/entity-graph-react": {
+      "next": "4.1.0",
+      "latest": "4.1.0",
       "candidateState": "published"
     },
     "@prometheus-ags/entity-graph-sdl": {
       "alpha": "3.0.0-alpha.0",
-      "next": "3.2.0",
-      "latest": "3.2.0",
+      "next": "4.1.0",
+      "latest": "4.1.0",
       "candidateState": "published"
     },
     "@prometheus-ags/entity-graph-solid": {
       "alpha": "3.0.0-alpha.0",
-      "next": "3.2.0",
-      "latest": "3.2.0",
+      "next": "4.1.0",
+      "latest": "4.1.0",
       "candidateState": "published"
     },
     "@prometheus-ags/entity-graph-svelte": {
       "alpha": "3.0.0-alpha.0",
-      "next": "3.2.0",
-      "latest": "3.2.0",
+      "next": "4.1.0",
+      "latest": "4.1.0",
       "candidateState": "published"
     },
     "@prometheus-ags/entity-graph-sync": {
       "alpha": "3.0.0-alpha.0",
-      "next": "3.2.0",
-      "latest": "3.2.0",
+      "next": "4.1.0",
+      "latest": "4.1.0",
       "candidateState": "published"
     },
     "@prometheus-ags/entity-graph-tauri": {
       "alpha": "3.0.0-alpha.0",
-      "next": "3.2.0",
-      "latest": "3.2.0",
+      "next": "4.1.0",
+      "latest": "4.1.0",
       "candidateState": "published"
     },
     "@prometheus-ags/entity-graph-web-components": {
       "alpha": "3.0.0-alpha.0",
-      "next": "3.2.0",
-      "latest": "3.2.0",
+      "next": "4.1.0",
+      "latest": "4.1.0",
       "candidateState": "published"
     },
     "@prometheus-ags/prometheus-entity-management": {
       "alpha": "3.0.0-alpha.0",
-      "next": "3.2.0",
-      "latest": "3.2.0",
+      "next": "4.1.0",
+      "latest": "4.1.0",
       "candidateState": "published"
     },
     "@prometheus-ags/a2ui-react": {
       "alpha": "3.0.0-alpha.0",
-      "next": "3.2.0",
-      "latest": "3.2.0",
+      "next": "4.1.0",
+      "latest": "4.1.0",
       "candidateState": "published"
     },
     "@prometheus-ags/entity-graph-a2a": {
       "alpha": "3.0.0-alpha.0",
-      "next": "3.2.0",
-      "latest": "3.2.0",
+      "next": "4.1.0",
+      "latest": "4.1.0",
       "candidateState": "published"
     },
     "@prometheus-ags/entity-graph-alpine": {
       "alpha": "3.0.0-alpha.0",
-      "next": "3.2.0",
-      "latest": "3.2.0",
+      "next": "4.1.0",
+      "latest": "4.1.0",
       "candidateState": "published"
     },
     "@prometheus-ags/entity-graph-htmx": {
       "alpha": "3.0.0-alpha.0",
-      "next": "3.2.0",
-      "latest": "3.2.0",
+      "next": "4.1.0",
+      "latest": "4.1.0",
       "candidateState": "published"
     }
   },
   "publicationMethod": "manual-pnpm-publish",
-  "certifiedPackageSourceSha": "d7dff293a79d9d3cba26fa3a0c0fbb47e8d07944"
+  "certifiedPackageSourceSha": "6a27c20576e6de6b33c500500ef6e9ba83d248fd"
 }

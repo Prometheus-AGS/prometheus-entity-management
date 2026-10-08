@@ -24,7 +24,7 @@ useEntityQuery<Client>(&quot;Client&quot;, { view: defaultView });</p>
 </div></section>
 <div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">UseEntityQueryOptions</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#enabled">enabled</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#initialids">initialIds</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#initialtotal">initialTotal</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#mode">mode</a><span class="tsd-signature-symbol">?:</span> <a href="../types/_prometheus-ags_prometheus-entity-management..CompletenessMode.html" class="tsd-signature-type tsd-kind-type-alias">CompletenessMode</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#remotedebounce">remoteDebounce</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#view">view</a><span class="tsd-signature-symbol">?:</span> <a href="_prometheus-ags_prometheus-entity-management..ViewDescriptor.html" class="tsd-signature-type tsd-kind-interface">ViewDescriptor</a><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/prometheus-entity-management/dist/index.d.ts:74</li></ul></aside>
+<li>Defined in packages/entity-graph-react/dist/index.d.ts:75</li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -48,42 +48,42 @@ useEntityQuery<Client>(&quot;Client&quot;, { view: defaultView });</p>
 <div class="tsd-comment tsd-typography"><p>Skip all fetching when false. <code>isLoading</code> is immediately <code>false</code>.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/prometheus-entity-management/dist/index.d.ts:80</li></ul></aside></section>
+<li>Defined in packages/entity-graph-react/dist/index.d.ts:81</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="initialids"><code class="tsd-tag">Optional</code><span>initial<wbr/>Ids</span><a href="#initialids" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">initialIds</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 <div class="tsd-comment tsd-typography"><p>SSR-seed ids for the base list slot (avoids flash-of-empty-state).</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/prometheus-entity-management/dist/index.d.ts:82</li></ul></aside></section>
+<li>Defined in packages/entity-graph-react/dist/index.d.ts:83</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="initialtotal"><code class="tsd-tag">Optional</code><span>initial<wbr/>Total</span><a href="#initialtotal" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">initialTotal</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span></div>
 <div class="tsd-comment tsd-typography"><p>SSR-seed total for completeness heuristics.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/prometheus-entity-management/dist/index.d.ts:84</li></ul></aside></section>
+<li>Defined in packages/entity-graph-react/dist/index.d.ts:85</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="mode"><code class="tsd-tag">Optional</code><span>mode</span><a href="#mode" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">mode</span><span class="tsd-signature-symbol">?:</span> <a href="../types/_prometheus-ags_prometheus-entity-management..CompletenessMode.html" class="tsd-signature-type tsd-kind-type-alias">CompletenessMode</a></div>
 <div class="tsd-comment tsd-typography"><p>Force a completeness mode instead of auto-detecting.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/prometheus-entity-management/dist/index.d.ts:78</li></ul></aside></section>
+<li>Defined in packages/entity-graph-react/dist/index.d.ts:79</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="remotedebounce"><code class="tsd-tag">Optional</code><span>remote<wbr/>Debounce</span><a href="#remotedebounce" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">remoteDebounce</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span></div>
 <div class="tsd-comment tsd-typography"><p>Debounce delay (ms) for view changes before a remote re-fetch fires.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/prometheus-entity-management/dist/index.d.ts:86</li></ul></aside></section>
+<li>Defined in packages/entity-graph-react/dist/index.d.ts:87</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="view"><code class="tsd-tag">Optional</code><span>view</span><a href="#view" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">view</span><span class="tsd-signature-symbol">?:</span> <a href="_prometheus-ags_prometheus-entity-management..ViewDescriptor.html" class="tsd-signature-type tsd-kind-interface">ViewDescriptor</a></div>
 <div class="tsd-comment tsd-typography"><p>Initial view descriptor (filter/sort/search).</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/prometheus-entity-management/dist/index.d.ts:76</li></ul></aside></section></section></details></div>
+<li>Defined in packages/entity-graph-react/dist/index.d.ts:77</li></ul></aside></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

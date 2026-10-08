@@ -12,33 +12,9 @@
 <li><a href="../modules/_prometheus-ags_prometheus-entity-management..html"></a></li>
 <li><a href="" aria-current="page">PGlitePersistenceClient</a></li></ul>
 <h1>Interface PGlitePersistenceClient</h1></div>
-<section class="tsd-panel tsd-comment">
-<div class="tsd-comment tsd-typography"><p>adapters/pglite-persistence.ts</p>
-<p>PGlite-backed implementation of <a href="_prometheus-ags_prometheus-entity-management..GraphPersistenceAdapter.html" class="tsd-kind-interface">GraphPersistenceAdapter</a>.</p>
-<p>Stores the local-first runtime's graph snapshot inside a PGlite table
-(<code>_graph_snapshot</code> by default) instead of <code>localStorage</code>/<code>IndexedDB</code>.</p>
-<p>Why this exists:</p>
-<ul>
-<li>The app already has a PGlite handle for ElectricSQL sync.</li>
-<li>Putting the graph snapshot alongside synced data means one storage
-surface to back up, clear, and reason about.</li>
-<li>Works in Tauri WebView + Node (PGlite is a WASM Postgres) without
-pulling in browser-only storage.</li>
-</ul>
-<p>Contract:</p>
-<ul>
-<li><code>get(key)</code>    -&gt; returns the stored string or null</li>
-<li><code>set(key, v)</code> -&gt; upserts (insert-or-replace), stamping <code>updated_at</code></li>
-<li><code>remove(key)</code> -&gt; deletes the row (no-op if absent)</li>
-</ul>
-<p>The function lazily ensures the storage table exists on first call.
-That <code>CREATE TABLE IF NOT EXISTS</code> is idempotent so it's safe to retry.</p>
-<p>Self-hosted Supabase only. HotSeatersMVP is the bible. This module does
-not import <code>@electric-sql/pglite</code> — consumers pass a PGlite-shaped handle.</p>
-</div></section>
 <div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">PGlitePersistenceClient</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-call-signature" href="#exec-1">exec</a><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">sql</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#query-1">query</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#queryt">T</a> <span class="tsd-signature-symbol">=</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span><br/>        <span class="tsd-kind-parameter">sql</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>        <span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{</span> <span class="tsd-kind-property">rows</span><span class="tsd-signature-symbol">:</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#queryt">T</a><span class="tsd-signature-symbol">[]</span> <span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:1842</li></ul></aside>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:1994</li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -64,7 +40,7 @@ not import <code>@electric-sql/pglite</code> — consumers pass a PGlite-shaped 
 <li><span><span class="tsd-kind-parameter">sql</span>: <span class="tsd-signature-type">string</span></span></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:1846</li></ul></aside></div></li></ul></section>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:1998</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="query"><span>query</span><a href="#query" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -82,7 +58,7 @@ not import <code>@electric-sql/pglite</code> — consumers pass a PGlite-shaped 
 <li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">params</span>: <span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">[]</span></span></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{</span> <span class="tsd-kind-property">rows</span><span class="tsd-signature-symbol">:</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#queryt">T</a><span class="tsd-signature-symbol">[]</span> <span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:1843</li></ul></aside></div></li></ul></section></section></details></div>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:1995</li></ul></aside></div></li></ul></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

@@ -11,13 +11,14 @@ integration packages your application uses. React applications add
 `@prometheus-ags/entity-graph-sync`; A2UI and A2A stay independent so agent
 protocols cannot silently become graph authority.
 
-This twelve-package inventory and the generated API manifest are checked
+This thirteen-package inventory (twelve libraries plus one compatibility alias) and the generated API manifest are checked
 against the release contract.
 
 | Package | Add it when you need | Runtime boundary |
 | --- | --- | --- |
 | `@prometheus-ags/entity-graph-core` | normalized entities, ID-only lists, views, CRUD, persistence, or realtime | framework-neutral; owns the graph |
 | `@prometheus-ags/entity-graph-react` | React 19 hooks, providers, tables, detail/form sheets, and presets | React binding; application owns the core peer |
+| `@prometheus-ags/prometheus-entity-management` | existing installs that still import the pre-4.0 React package name | compatibility alias; re-exports `entity-graph-react` verbatim |
 | `@prometheus-ags/entity-graph-sdl` | one schema contract for code generation and validation | build/runtime schema tools |
 | `@prometheus-ags/entity-graph-sync` | PGlite, Loro, Yjs, or peer convergence | local-first transport and merge policy |
 | `@prometheus-ags/entity-graph-svelte` | Svelte 5 reactive graph projections | binding only; no private graph copy |
@@ -59,10 +60,10 @@ pnpm add @prometheus-ags/a2ui-react
 Flutter applications install the public stable Dart package:
 
 ```bash
-flutter pub add entity_graph_flutter:^3.1.0
+flutter pub add entity_graph_flutter:^4.0.0
 ```
 
-All twelve npm packages, including the React and A2UI React bindings, are
+All thirteen npm packages, including the React and A2UI React bindings and the compatibility alias, are
 public at stable `3.2.0`; Flutter is public at `3.1.0`. The exact registry state and
 protected tags are recorded in the [release operations
 guide](../operations/release.md).
