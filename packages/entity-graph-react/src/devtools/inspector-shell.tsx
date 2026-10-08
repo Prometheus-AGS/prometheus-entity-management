@@ -6,6 +6,7 @@ import { EntitiesWorkspace } from "./workspaces/entities";
 import { ViewsWorkspace } from "./workspaces/views";
 import { ActivityWorkspace } from "./workspaces/activity";
 import { GraphPulse } from "./components/graph-pulse";
+import { CommandFeedback } from "./components/command-feedback";
 import type { EntityGraphInspectorStateAdapter } from "./state";
 
 type ActivityBoundaryProps = {
@@ -110,19 +111,12 @@ export function EntityGraphInspectorShell({
         ))}
       </nav>
 
-      <div
-        className="pem-command-feedback"
-        data-state={viewModel.command.error ? "error" : viewModel.command.notice ? "success" : "idle"}
-        role={viewModel.command.error ? "alert" : "status"}
-        aria-live="polite"
-      >
-        {viewModel.command.pending && <span>Working: {viewModel.command.pending}…</span>}
-        {viewModel.command.error && <span>{viewModel.command.error}</span>}
-        {viewModel.command.notice && <span>{viewModel.command.notice}</span>}
-        {(viewModel.command.error || viewModel.command.notice) && (
-          <button type="button" aria-label="Dismiss command message" onClick={viewModel.clearCommandFeedback}>×</button>
-        )}
-      </div>
+      <CommandFeedback
+        pending={viewModel.command.pending}
+        error={viewModel.command.error}
+        notice={viewModel.command.notice}
+        onDismiss={viewModel.clearCommandFeedback}
+      />
 
       <main
         id="pem-workspace-panel"

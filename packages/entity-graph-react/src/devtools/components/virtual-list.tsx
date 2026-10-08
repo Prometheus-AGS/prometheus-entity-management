@@ -7,7 +7,7 @@ export interface InspectorVirtualListProps<T> {
   estimateSize?: number;
   ariaLabel: string;
   className?: string;
-  renderItem(item: T): ReactNode;
+  renderItem(item: T, index: number): ReactNode;
 }
 
 export function InspectorVirtualList<T>({
@@ -35,7 +35,7 @@ export function InspectorVirtualList<T>({
   if (items.length <= 50) {
     return (
       <div className={`pem-scroll-list ${className}`} role="list" aria-label={ariaLabel}>
-        {items.map((item) => <div role="listitem" key={getKey(item)}>{renderItem(item)}</div>)}
+        {items.map((item, index) => <div role="listitem" key={getKey(item)}>{renderItem(item, index)}</div>)}
       </div>
     );
   }
@@ -54,7 +54,7 @@ export function InspectorVirtualList<T>({
               className="pem-virtual-row"
               style={{ transform: `translateY(${virtualItem.start}px)` }}
             >
-              {renderItem(item)}
+              {renderItem(item, virtualItem.index)}
             </div>
           );
         })}

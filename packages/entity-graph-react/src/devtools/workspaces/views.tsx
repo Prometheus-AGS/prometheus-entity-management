@@ -138,7 +138,7 @@ export function ViewsWorkspace({
                   estimateSize={38}
                   ariaLabel="View entity membership"
                   className="pem-membership-list"
-                  renderItem={(member) => {
+                  renderItem={(member, index) => {
                     const entity = entityByIdentity.get(`${member.type}\u0000${member.id}`);
                     return (
                       <button
@@ -147,7 +147,7 @@ export function ViewsWorkspace({
                         data-causal={causalViewIds.has(selected.viewId)}
                         onClick={() => onSelectIdentity(member.type, member.id)}
                       >
-                        <span className="pem-membership-position">{selected.membership.indexOf(member) + 1}</span>
+                        <span className="pem-membership-position">{index + 1}</span>
                         <code translate="no">{member.type}/{member.id}</code>
                         <span className="pem-row-signals">
                           {entity?.dirty && <span aria-label="Dirty">◆</span>}
