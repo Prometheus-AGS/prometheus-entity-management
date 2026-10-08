@@ -155,6 +155,13 @@ export function EntitiesWorkspace(props: EntitiesWorkspaceProps) {
   );
 }
 
+/** "N field(s) locally patched · <first path>[, +M more]" from the entity's diff rows. */
+function dirtySummary(diff: readonly EntityFieldDiff[]): string {
+  const count = diff.length;
+  const rest = count - 1;
+  return `${count} field${count === 1 ? "" : "s"} locally patched · ${diff[0].path}${rest > 0 ? `, +${rest} more` : ""}`;
+}
+
 function EntityDetail(props: EntitiesWorkspaceProps & { selected: GraphDevtoolsEntityRecord }) {
   const entity = props.selected;
   const currentValue = props.valueTab === "original"
@@ -169,6 +176,9 @@ function EntityDetail(props: EntitiesWorkspaceProps & { selected: GraphDevtoolsE
         <div>
           <p className="pem-eyebrow">Entity</p>
           <h2><span>{entity.type}</span> <code translate="no">{entity.id}</code></h2>
+          {entity.dirty && props.diff.length > 0 && (
+            <p className="pem-dirty-summary" data-tone="dirty">{dirtySummary(props.diff)}</p>
+          )}
         </div>
         <div className="pem-detail-tools">
           <div className="pem-status-cluster" aria-label="Entity status">

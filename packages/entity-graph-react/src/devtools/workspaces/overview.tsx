@@ -5,6 +5,7 @@ import type {
   EntityGraphDevtoolsStoreDescriptor,
   EntityGraphDevtoolsValuePolicyMode,
 } from "../provider";
+import type { EntityFocusStatus } from "../view-model";
 
 export interface OverviewWorkspaceProps {
   model: EntityGraphInspectorModel;
@@ -15,6 +16,7 @@ export interface OverviewWorkspaceProps {
   onExport(): void;
   exportPending: boolean;
   onSelectEvent(event: GraphDevtoolsEvent): void;
+  onFocusStatus(status: EntityFocusStatus): void;
 }
 
 export function OverviewWorkspace({
@@ -26,6 +28,7 @@ export function OverviewWorkspace({
   onExport,
   exportPending,
   onSelectEvent,
+  onFocusStatus,
 }: OverviewWorkspaceProps) {
   const dirty = model.entities.filter((entity) => entity.dirty).length;
   const errors = model.entities.filter((entity) => entity.entityState.error).length;
@@ -69,8 +72,18 @@ export function OverviewWorkspace({
 
       <div className="pem-metric-grid" aria-label="Graph health summary">
         <Metric label="Entities" value={model.snapshot.counts.entities} />
-        <Metric label="Dirty" value={dirty} tone={dirty ? "dirty" : undefined} />
-        <Metric label="Errors" value={errors} tone={errors ? "error" : undefined} />
+        <Metric
+          label="Dirty"
+          value={dirty}
+          tone={dirty ? "dirty" : undefined}
+          onSelect={dirty ? () => onFocusStatus("dirty") : undefined}
+        />
+        <Metric
+          label="Errors"
+          value={errors}
+          tone={errors ? "error" : undefined}
+          onSelect={errors ? () => onFocusStatus("errors") : undefined}
+        />
         <Metric label="Fetching" value={fetching} />
         <Metric label="Registered views" value={model.views.length} />
         <Metric label="Rendered subscribers" value={subscribers} />
@@ -125,15 +138,27 @@ function Metric({
   label,
   value,
   tone,
+  onSelect,
 }: {
   label: string;
   value: number | string;
   tone?: "dirty" | "error";
+  /** When set, the metric is a button that opens the matching entities. */
+  onSelect?: () => void;
 }) {
+  const formatted = typeof value === "number" ? new Intl.NumberFormat().format(value) : value;
+  if (onSelect) {
+    return (
+      <button type="button" className="pem-metric" data-tone={tone} onClick={onSelect}>
+        <span>{label}</span>
+        <strong>{formatted}</strong>
+      </button>
+    );
+  }
   return (
     <div className="pem-metric" data-tone={tone}>
       <span>{label}</span>
-      <strong>{typeof value === "number" ? new Intl.NumberFormat().format(value) : value}</strong>
+      <strong>{formatted}</strong>
     </div>
   );
 }

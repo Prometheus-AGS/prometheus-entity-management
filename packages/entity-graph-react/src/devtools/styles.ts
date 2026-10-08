@@ -253,6 +253,11 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   font-size: 13px;
   line-height: 1.4;
 }
+.pem-inspector[data-rewound="true"] {
+  grid-template-rows: auto auto auto auto minmax(0, 1fr) auto;
+  outline: 2px solid var(--pem-mod);
+  outline-offset: -2px;
+}
 
 .pem-shell-header {
   display: flex;
@@ -282,7 +287,16 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   font: 700 13px/1 var(--pem-font-mono);
 }
 .pem-shell-status { flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
-.pem-shell-status > span, .pem-status-cluster > span, .pem-live-status, .pem-registered-status {
+.pem-shell-status > span, .pem-shell-status > button {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+}
+.pem-shell-status > button { cursor: pointer; }
+.pem-shell-status > button:disabled { cursor: default; }
+.pem-shell-status > button:not(:disabled):hover { border-color: var(--pem-muted); background: var(--pem-shell); }
+.pem-shell-status > span, .pem-shell-status > button,
+.pem-status-cluster > span, .pem-live-status, .pem-registered-status {
   border: 1px solid var(--pem-line);
   border-radius: 999px;
   padding: 2px 8px;
@@ -342,6 +356,32 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   border-color: var(--pem-accent);
   color: var(--pem-text);
 }
+
+.pem-rewound-bar {
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 16px;
+  border-bottom: 1px solid var(--pem-mod);
+  background: var(--pem-surface);
+  color: var(--pem-mod);
+  font-size: 12px;
+  font-weight: 600;
+}
+.pem-rewound-bar button {
+  min-height: 32px;
+  border: 1px solid var(--pem-mod);
+  border-radius: 999px;
+  padding: 4px 12px;
+  background: var(--pem-shell);
+  color: var(--pem-mod);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.pem-rewound-bar button:hover { background: var(--pem-elevated); color: var(--pem-text); }
+.pem-rewound-bar button:disabled { cursor: default; opacity: .6; }
 
 .pem-command-feedback {
   display: flex;
@@ -456,6 +496,8 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   background: var(--pem-elevated);
 }
 .pem-metric { min-height: 82px; padding: 12px; }
+button.pem-metric { width: 100%; text-align: left; cursor: pointer; }
+button.pem-metric:hover { border-color: var(--pem-muted); background: var(--pem-shell); }
 .pem-metric span { display: block; margin-bottom: 6px; color: var(--pem-muted); font-size: 11px; }
 .pem-metric strong { font-size: 24px; line-height: 1; font-variant-numeric: tabular-nums; }
 .pem-overview-grid {
@@ -639,6 +681,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .pem-activity-detail article > section { content-visibility: auto; contain-intrinsic-size: 120px; }
 .pem-entity-confirmation { margin: -4px 0 12px; font-size: 11px; }
 .pem-detail-header { margin-bottom: 12px; }
+.pem-dirty-summary { margin-top: 4px; font-size: 12px; }
 .pem-detail-tools { display: grid; justify-items: end; gap: 8px; }
 .pem-detail-header h2 code { color: var(--pem-muted); font-size: .75em; font-weight: 500; }
 .pem-error, .pem-expired {
@@ -1015,6 +1058,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   .pem-rail-collapse, .pem-rail-restore,
   .pem-filter-row button, .pem-pause,
   .pem-workspace-tabs button, .pem-value-tabs button,
+  .pem-shell-status > button, .pem-rewound-bar button,
   .pem-command-feedback button, .pem-causal-path button,
   .pem-pulse-segments button, .pem-pulse-toggle,
   .pem-store-select select,

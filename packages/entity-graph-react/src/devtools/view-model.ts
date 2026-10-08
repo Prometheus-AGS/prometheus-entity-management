@@ -61,6 +61,19 @@ export interface InspectorActivePreview {
   receipt: GraphDevtoolsPreviewAppliedReceipt;
 }
 
+export interface InspectorRewoundSnapshot {
+  cursor: number;
+  /** Sequence of the publication that produced the snapshot; null for baselines and imports. */
+  eventSequence: number | null;
+}
+
+/** Status filters that map one-to-one onto the header chips and Overview metrics. */
+export type EntityFocusStatus = Exclude<EntityStatusFilter, "all">;
+
+function entityMatchesStatus(entity: GraphDevtoolsEntityRecord, status: EntityFocusStatus): boolean {
+  return status === "dirty" ? entity.dirty : entity.entityState.error !== null;
+}
+
 function eventTouchesEntity(event: GraphDevtoolsEvent, entity: GraphDevtoolsEntityRecord): boolean {
   return event.type === "mutation" && (
     affectedEntitiesForEvent(event).some((affected) => (
@@ -117,6 +130,8 @@ export interface EntityGraphInspectorViewModel {
   setSearch(value: string): void;
   entityFilter: EntityStatusFilter;
   setEntityFilter(filter: EntityStatusFilter): void;
+  /** Open Entities filtered by `status` with the first matching entity selected. */
+  focusEntityStatus(status: EntityFocusStatus): void;
   entities: readonly GraphDevtoolsEntityRecord[];
   selectedEntity: GraphDevtoolsEntityRecord | null;
   selectEntity(entity: GraphDevtoolsEntityRecord): void;
@@ -145,6 +160,8 @@ export interface EntityGraphInspectorViewModel {
   setActivityFilter(filter: ActivityTypeFilter): void;
   paused: boolean;
   togglePaused(): void;
+  /** Events received since the feed was paused; 0 while live. */
+  pausedNewCount: number;
   events: readonly GraphDevtoolsEvent[];
   selectedEvent: GraphDevtoolsEvent | null;
   selectedEventExpired: boolean;
@@ -158,6 +175,8 @@ export interface EntityGraphInspectorViewModel {
   rewind(): Promise<void>;
   returnToLive(): Promise<void>;
   timeTravelAvailable: boolean;
+  /** The retained snapshot being viewed while rewound; null when live. */
+  rewoundSnapshot: InspectorRewoundSnapshot | null;
   exportGraph(): Promise<void>;
   command: InspectorCommandState;
   clearCommandFeedback(): void;
@@ -197,7 +216,7 @@ export function useEntityGraphInspectorViewModel(
   ));
   const [selectedViewId, setSelectedViewId] = useState<string | null>(initialState?.viewId ?? null);
   const [selectedSequence, setSelectedSequence] = useState<number | null>(initialState?.eventSequence ?? null);
-  const [valueTab, setValueTab] = useState<EntityValueTab>(initialState?.valueTab ?? "original");
+  const [valueTabChoice, setValueTab] = useState<EntityValueTab | null>(initialState?.valueTab ?? null);
   const [activityFilter, setActivityFilter] = useState<ActivityTypeFilter>(initialState?.activityFilter ?? "all");
   const [paused, setPaused] = useState(false);
   const [pausedEvents, setPausedEvents] = useState<readonly GraphDevtoolsEvent[]>([]);
@@ -205,12 +224,29 @@ export function useEntityGraphInspectorViewModel(
   const [previewReceipts, setPreviewReceipts] = useState<Record<string, InspectorActivePreview>>({});
   const [selectedRewindCursor, setSelectedRewindCursor] = useState<number | null>(null);
   const [command, setCommand] = useState<InspectorCommandState>({ pending: null, notice: null, error: null });
+  // A host adapter that names a workspace, filter or entity has already chosen the landing.
+  const [landed, setLanded] = useState(() => Boolean(
+    initialState?.workspace ||
+    initialState?.entityFilter ||
+    (initialState?.entityType && initialState.entityId),
+  ));
 
   useEffect(() => {
     setSelectedRewindCursor(null);
     setNarrowDetailOpen(false);
     setCommand({ pending: null, notice: null, error: null });
   }, [runtime.storeId]);
+
+  // Land on the first dirty entity once, when the first snapshot arrives; later choices win.
+  useEffect(() => {
+    if (landed || !model) return;
+    setLanded(true);
+    const firstDirty = model.entities.find((entity) => entity.dirty);
+    if (!firstDirty) return;
+    setWorkspace("entities");
+    setEntityFilter("dirty");
+    setSelectedEntityKey(inspectorEntityIdentity(firstDirty));
+  }, [landed, model]);
 
   const entities = useMemo(() => (model?.entities ?? []).filter((entity) => {
     if (entityFilter === "dirty" && !entity.dirty) return false;
@@ -224,6 +260,8 @@ export function useEntityGraphInspectorViewModel(
     const all = model?.entities ?? [];
     return all.find((entity) => inspectorEntityIdentity(entity) === selectedEntityKey) ?? entities[0] ?? null;
   }, [entities, model?.entities, selectedEntityKey]);
+
+  const valueTab: EntityValueTab = valueTabChoice ?? (selectedEntity?.dirty ? "diff" : "original");
 
   const views = useMemo(() => model?.views ?? [], [model?.views]);
   const selectedView = useMemo(
@@ -284,6 +322,11 @@ export function useEntityGraphInspectorViewModel(
 
   const liveEvents = useMemo(() => model?.events ?? [], [model?.events]);
   const visibleEvents = paused ? pausedEvents : liveEvents;
+  const pausedNewCount = useMemo(() => {
+    if (!paused) return 0;
+    const lastSeen = pausedEvents[pausedEvents.length - 1]?.sequence ?? 0;
+    return liveEvents.filter((event) => event.sequence > lastSeen).length;
+  }, [liveEvents, paused, pausedEvents]);
   const events = useMemo(
     () => [...visibleEvents]
       .filter((event) => activityFilter === "all" || event.type === activityFilter)
@@ -308,6 +351,12 @@ export function useEntityGraphInspectorViewModel(
     ? selectedRewindCursor
     : snapshotReferences[snapshotReferences.length - 1]?.cursor ?? null;
   const timeTravelAvailable = model?.capabilities.features.includes("time-travel") ?? false;
+  const rewoundSnapshot = useMemo<InspectorRewoundSnapshot | null>(() => {
+    const status = model?.snapshot.snapshots;
+    if (!status || status.mode !== "rewound" || status.cursor === null) return null;
+    const reference = snapshotReferences.find((candidate) => candidate.cursor === status.cursor);
+    return { cursor: status.cursor, eventSequence: reference?.eventSequence ?? null };
+  }, [model?.snapshot.snapshots, snapshotReferences]);
 
   const perform = useCallback(async <T,>(
     kind: InspectorCommandKind,
@@ -336,6 +385,15 @@ export function useEntityGraphInspectorViewModel(
     setPreviewDraft("");
     setWorkspace("entities");
     setNarrowDetailOpen(true);
+  }, [model?.entities]);
+  const focusEntityStatus = useCallback((status: EntityFocusStatus) => {
+    setWorkspace("entities");
+    setEntityFilter(status);
+    setNarrowDetailOpen(false);
+    const entity = model?.entities.find((candidate) => entityMatchesStatus(candidate, status));
+    if (!entity) return;
+    setSelectedEntityKey(inspectorEntityIdentity(entity));
+    setPreviewDraft("");
   }, [model?.entities]);
   const selectView = useCallback((view: GraphDevtoolsViewRecord) => {
     setSelectedViewId(view.viewId);
@@ -565,6 +623,7 @@ export function useEntityGraphInspectorViewModel(
     setSearch,
     entityFilter,
     setEntityFilter,
+    focusEntityStatus,
     entities,
     selectedEntity,
     selectEntity,
@@ -593,6 +652,7 @@ export function useEntityGraphInspectorViewModel(
     setActivityFilter,
     paused,
     togglePaused,
+    pausedNewCount,
     events,
     selectedEvent,
     selectedEventExpired,
@@ -606,6 +666,7 @@ export function useEntityGraphInspectorViewModel(
     rewind,
     returnToLive,
     timeTravelAvailable,
+    rewoundSnapshot,
     exportGraph,
     command,
     clearCommandFeedback,

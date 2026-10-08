@@ -134,6 +134,8 @@ const INTERACTIVE = [
   ".pem-pause",
   ".pem-workspace-tabs button",
   ".pem-value-tabs button",
+  ".pem-shell-status > button",
+  ".pem-rewound-bar button",
   ".pem-command-feedback button",
   ".pem-causal-path button",
   ".pem-pulse-segments button",
