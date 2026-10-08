@@ -24,7 +24,7 @@ export function GraphPulse({
         type="button"
         className="pem-pulse-toggle"
         aria-expanded={!collapsed}
-        aria-controls="pem-pulse-segments"
+        aria-controls={collapsed ? undefined : "pem-pulse-segments"}
         onClick={onToggleCollapsed}
       >
         <span aria-hidden="true">⌁</span> Graph Pulse

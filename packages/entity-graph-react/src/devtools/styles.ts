@@ -745,11 +745,13 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .pem-view-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 12px; }
 .pem-readout { min-height: 70px; }
 .pem-list-health { margin-bottom: 12px; }
+.pem-membership .pem-scroll-list { max-height: min(420px, 50vh); }
 .pem-membership-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 4px;
 }
+.pem-membership-list:has(> .pem-virtual-space) { display: block; }
 .pem-membership-row { border: 1px solid #293337; background: #121719; }
 .pem-membership-position { color: var(--pem-accent); font: 9px var(--pem-devtools-font-mono, ui-monospace, monospace); }
 .pem-last-change { margin-bottom: 12px; }
