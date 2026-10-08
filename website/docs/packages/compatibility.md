@@ -7,8 +7,8 @@ sidebar_position: 2
 
 | Surface | 3.x compatibility | Distribution |
 | --- | --- | --- |
-| Node.js | `^22.14`, `^24`, or `>=26` | all thirteen npm packages public at `4.1.0` |
-| React | React 19 binding, vanilla core underneath | React and core both `4.1.0` on `latest` |
+| Node.js | `^22.14`, `^24`, or `>=26` | all thirteen npm packages public at `4.1.1` |
+| React | React 19 binding, vanilla core underneath | React and core both `4.1.1` on `latest` |
 | Svelte | Svelte 5 peer binding | public at `3.2.0` on `latest` |
 | Solid | Solid 1.x peer binding | public at `3.2.0` on `latest` |
 | Flutter | Flutter 3.44.8 / Riverpod 3 | pub.dev `entity_graph_flutter@3.1.0`; official DevTools companion; A2UI 1.0-RC compatibility via GenUI 0.10.2 |

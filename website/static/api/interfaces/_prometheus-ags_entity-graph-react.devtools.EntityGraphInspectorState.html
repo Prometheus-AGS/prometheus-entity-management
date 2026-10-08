@@ -14,7 +14,7 @@
 <h1>Interface EntityGraphInspectorState</h1></div>
 <div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">EntityGraphInspectorState</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#activityfilter">activityFilter</a><span class="tsd-signature-symbol">:</span><br/>        <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;all&quot;</span><br/>        <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;view&quot;</span><br/>        <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;time-travel&quot;</span><br/>        <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;mutation&quot;</span><br/>        <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;lifecycle&quot;</span><br/>        <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;diagnostic&quot;</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#entityfilter">entityFilter</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;all&quot;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;dirty&quot;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;errors&quot;</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#entityid">entityId</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#entitytype">entityType</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#eventsequence">eventSequence</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#search">search</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#storeid">storeId</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#valuetab">valueTab</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;live&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;patch&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;original&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;diff&quot;</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#version">version</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">1</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#viewid">viewId</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#workspace">workspace</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;entities&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;overview&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;views&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;activity&quot;</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:116</li></ul></aside>
+<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:119</li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -41,57 +41,57 @@
 <h3 class="tsd-anchor-link" id="activityfilter"><span>activity<wbr/>Filter</span><a href="#activityfilter" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">activityFilter</span><span class="tsd-signature-symbol">:</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;all&quot;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;view&quot;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;time-travel&quot;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;mutation&quot;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;lifecycle&quot;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;diagnostic&quot;</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:126</li></ul></aside></section>
+<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:129</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="entityfilter"><span>entity<wbr/>Filter</span><a href="#entityfilter" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">entityFilter</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;all&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;dirty&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;errors&quot;</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:125</li></ul></aside></section>
+<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:128</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="entityid"><span>entity<wbr/>Id</span><a href="#entityid" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">entityId</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">null</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:121</li></ul></aside></section>
+<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:124</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="entitytype"><span>entity<wbr/>Type</span><a href="#entitytype" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">entityType</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">null</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:120</li></ul></aside></section>
+<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:123</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="eventsequence"><span>event<wbr/>Sequence</span><a href="#eventsequence" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">eventSequence</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">null</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:123</li></ul></aside></section>
+<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:126</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="search"><span>search</span><a href="#search" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">search</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:124</li></ul></aside></section>
+<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:127</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="storeid"><span>store<wbr/>Id</span><a href="#storeid" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">storeId</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">null</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:119</li></ul></aside></section>
+<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:122</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="valuetab"><span>value<wbr/>Tab</span><a href="#valuetab" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">valueTab</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;live&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;patch&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;original&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;diff&quot;</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:127</li></ul></aside></section>
+<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:130</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="version"><span>version</span><a href="#version" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">version</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">1</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:117</li></ul></aside></section>
+<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:120</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="viewid"><span>view<wbr/>Id</span><a href="#viewid" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">viewId</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">null</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:122</li></ul></aside></section>
+<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:125</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="workspace"><span>workspace</span><a href="#workspace" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">workspace</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;entities&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;overview&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;views&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;activity&quot;</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:118</li></ul></aside></section></section></details></div>
+<li>Defined in packages/entity-graph-react/dist/devtools.d.ts:121</li></ul></aside></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
