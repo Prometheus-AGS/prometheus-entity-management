@@ -73,9 +73,14 @@ export function EntityGraphInspectorShell({
 
   const dirty = model.entities.filter((entity) => entity.dirty).length;
   const errors = model.entities.filter((entity) => entity.entityState.error).length;
+  const rewound = viewModel.rewoundSnapshot;
 
   return (
-    <section className="pem-inspector" aria-label="Prometheus Entity Graph DevTools">
+    <section
+      className="pem-inspector"
+      aria-label="Prometheus Entity Graph DevTools"
+      data-rewound={rewound !== null}
+    >
       <header className="pem-shell-header">
         <div className="pem-brand">
           <span className="pem-mark" aria-hidden="true">P</span>
@@ -85,8 +90,19 @@ export function EntityGraphInspectorShell({
           <span data-state={model.snapshot.snapshots.mode}>
             {model.snapshot.snapshots.mode === "live" ? "● Live" : `◉ Rewound ${model.snapshot.snapshots.cursor}`}
           </span>
-          <span data-tone={dirty ? "dirty" : undefined}>◆ {dirty} dirty</span>
-          <span data-tone={errors ? "error" : undefined}>! {errors} errors</span>
+          <button
+            type="button"
+            data-tone={dirty ? "dirty" : undefined}
+            disabled={dirty === 0}
+            onClick={() => viewModel.focusEntityStatus("dirty")}
+          >
+            ◆ {dirty} dirty
+          </button>
+          {errors > 0 && (
+            <button type="button" data-tone="error" onClick={() => viewModel.focusEntityStatus("errors")}>
+              ! {errors} errors
+            </button>
+          )}
         </div>
       </header>
 
@@ -111,6 +127,23 @@ export function EntityGraphInspectorShell({
         ))}
       </nav>
 
+      {rewound && (
+        <div className="pem-rewound-bar" role="status">
+          <span>
+            Viewing snapshot {rewound.cursor}
+            {rewound.eventSequence !== null ? ` (event ${rewound.eventSequence})` : ""}
+          </span>
+          {" · "}
+          <button
+            type="button"
+            disabled={viewModel.command.pending !== null}
+            onClick={viewModel.returnToLive}
+          >
+            Return to live
+          </button>
+        </div>
+      )}
+
       <CommandFeedback
         pending={viewModel.command.pending}
         error={viewModel.command.error}
@@ -134,6 +167,7 @@ export function EntityGraphInspectorShell({
             onExport={viewModel.exportGraph}
             exportPending={viewModel.command.pending === "export"}
             onSelectEvent={viewModel.selectEvent}
+            onFocusStatus={viewModel.focusEntityStatus}
           />
         </WorkspacePresence>
         <WorkspacePresence active={viewModel.workspace === "entities"}>
@@ -198,6 +232,7 @@ export function EntityGraphInspectorShell({
             filter={viewModel.activityFilter}
             onFilter={viewModel.setActivityFilter}
             paused={viewModel.paused}
+            pausedNewCount={viewModel.pausedNewCount}
             onTogglePaused={viewModel.togglePaused}
             onSelect={viewModel.selectEvent}
             snapshots={model.snapshot.snapshots}

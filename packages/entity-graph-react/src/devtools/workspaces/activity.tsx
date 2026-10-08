@@ -4,7 +4,7 @@ import type {
   GraphDevtoolsSnapshotHistoryStatus,
 } from "@prometheus-ags/entity-graph-core/devtools";
 import { InspectorVirtualList } from "../components/virtual-list";
-import { eventDetail, eventTitle, formatEventTime } from "../event-format";
+import { eventCorrelationLabel, eventDetail, eventTitle, formatEventTime } from "../event-format";
 import { affectedEntitiesForEvent, affectedViewIdsForEvent } from "../causality";
 import type { ActivityTypeFilter } from "../view-model";
 
@@ -15,6 +15,8 @@ export interface ActivityWorkspaceProps {
   filter: ActivityTypeFilter;
   onFilter(filter: ActivityTypeFilter): void;
   paused: boolean;
+  /** Events received since pausing; shown on the Resume control. */
+  pausedNewCount: number;
   onTogglePaused(): void;
   onSelect(event: GraphDevtoolsEvent): void;
   snapshots: GraphDevtoolsSnapshotHistoryStatus;
@@ -49,7 +51,9 @@ export function ActivityWorkspace(props: ActivityWorkspaceProps) {
         <div className="pem-navigator-heading pem-activity-heading">
           <div><p className="pem-eyebrow">Retained history</p><h2 id="pem-activity-title">Activity</h2></div>
           <button type="button" className="pem-pause" aria-pressed={props.paused} onClick={props.onTogglePaused}>
-            {props.paused ? "▶ Resume" : "Ⅱ Pause"}
+            {props.paused
+              ? `▶ Resume${props.pausedNewCount > 0 ? ` · ${props.pausedNewCount} new` : ""}`
+              : "Ⅱ Pause"}
           </button>
         </div>
         <label className="pem-select-label">
@@ -113,7 +117,7 @@ export function ActivityWorkspace(props: ActivityWorkspaceProps) {
               >
                 <span className="pem-event-sequence">#{event.sequence}</span>
                 <span className="pem-event-copy"><strong>{eventTitle(event)}</strong><small>{eventDetail(event)}</small></span>
-                <code className="pem-correlation" translate="no">{event.correlationId.slice(0, 8)}</code>
+                <code className="pem-correlation" translate="no">{eventCorrelationLabel(event)}</code>
                 <time dateTime={event.observedAt}>{formatEventTime(event)}</time>
               </button>
             )}
@@ -152,7 +156,6 @@ function EventDetail({ event }: { event: GraphDevtoolsEvent }) {
       <dl className="pem-readout-list pem-event-readouts">
         <div><dt>Store</dt><dd><code translate="no">{event.storeId}</code></dd></div>
         <div><dt>Correlation</dt><dd><code translate="no">{event.correlationId}</code></dd></div>
-        <div><dt>Observed</dt><dd>{event.observedAt}</dd></div>
       </dl>
       {event.type === "mutation" ? <MutationDetail event={event} /> : (
         <pre className="pem-value" tabIndex={0}>{JSON.stringify(event.payload, null, 2)}</pre>
