@@ -1,8 +1,14 @@
 import { Catalog as OfficialCatalog } from "@a2ui/web_core/v0_9";
-import type { Catalog } from "@a2ui/web_core/v0_9" with { "resolution-mode": "import" };
+import type {
+  Catalog,
+  ComponentApi,
+  ComponentContext,
+} from "@a2ui/web_core/v0_9" with { "resolution-mode": "import" };
 import {
   basicCatalog,
+  createComponentImplementation,
 } from "@a2ui/react/v0_9";
+import type { FC, ReactNode } from "react";
 import type { PrometheusA2uiComponentImplementation } from "./types.js";
 
 /** The only stable A2UI wire protocol supported by the 3.0 package. */
@@ -71,6 +77,54 @@ export interface PrometheusA2uiCatalogOptions {
   components?: readonly PrometheusA2uiComponentName[];
   /** Function names allowed from the official basic catalog. */
   functions?: readonly PrometheusA2uiFunctionName[];
+  /**
+   * Application implementations that replace the official one of the same
+   * `name`. Each must be built with `createPrometheusA2uiComponent`, and its
+   * name must be listed in `components`.
+   */
+  implementations?: readonly PrometheusA2uiComponentImplementation[];
+}
+
+/** What a custom component's render function receives. */
+export interface PrometheusA2uiComponentRenderProps {
+  /** Resolved properties; data bindings come with a `set<Name>` writer. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  props: Record<string, any>;
+  buildChild: (id: string, basePath?: string) => ReactNode;
+  context: ComponentContext;
+}
+
+/**
+ * The official implementation of a basic component, for use as the `api` of
+ * `createPrometheusA2uiComponent`, which reuses its schema and so keeps the
+ * property names and bindings of the pinned official version.
+ */
+export function getPrometheusA2uiOfficialComponent(
+  name: PrometheusA2uiComponentName,
+): PrometheusA2uiComponentImplementation {
+  const implementation = basicCatalog.components.get(name);
+  if (!implementation) {
+    throw new Error(`Official A2UI component is unavailable: ${name}`);
+  }
+  return implementation;
+}
+
+/**
+ * Build a component on the official renderer bundled in this package.
+ *
+ * This package bundles the official `@a2ui/react` so that CommonJS and ESM
+ * builds agree. A component created with an application's own copy of
+ * `@a2ui/react` therefore cannot share its surface context. Create custom
+ * components here so they run on the same instance as the surface.
+ */
+export function createPrometheusA2uiComponent(
+  api: ComponentApi,
+  render: FC<PrometheusA2uiComponentRenderProps>,
+): PrometheusA2uiComponentImplementation {
+  return createComponentImplementation(
+    api,
+    render as never,
+  ) as PrometheusA2uiComponentImplementation;
 }
 
 /**
@@ -83,7 +137,19 @@ export function createPrometheusA2uiCatalog(
   const componentNames = options.components ?? DEFAULT_PROMETHEUS_A2UI_COMPONENTS;
   const functionNames = options.functions ?? DEFAULT_PROMETHEUS_A2UI_FUNCTIONS;
 
+  const overrides = new Map<string, PrometheusA2uiComponentImplementation>();
+  for (const implementation of options.implementations ?? []) {
+    if (!(componentNames as readonly string[]).includes(implementation.name)) {
+      throw new Error(
+        `Custom A2UI component is not in the allowlist: ${implementation.name}`,
+      );
+    }
+    overrides.set(implementation.name, implementation);
+  }
+
   const components = componentNames.map((name) => {
+    const custom = overrides.get(name);
+    if (custom) return custom;
     const implementation = basicCatalog.components.get(name);
     if (!implementation) {
       throw new Error(`Official A2UI component is unavailable: ${name}`);
