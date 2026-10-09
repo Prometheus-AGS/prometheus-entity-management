@@ -6,6 +6,8 @@ import {
   PROMETHEUS_A2UI_CATALOG_ID,
   PROMETHEUS_A2UI_PROTOCOL_VERSION,
   createPrometheusA2uiCatalog,
+  createPrometheusA2uiComponent,
+  getPrometheusA2uiOfficialComponent,
 } from "./catalog.js";
 
 describe("Prometheus A2UI catalog over official @a2ui 0.12.0", () => {
@@ -39,6 +41,32 @@ describe("Prometheus A2UI catalog over official @a2ui 0.12.0", () => {
     for (const name of DEFAULT_PROMETHEUS_A2UI_FUNCTIONS) {
       expect(catalog.functions.get(name)).toBe(basicCatalog.functions.get(name));
     }
+  });
+
+  it("replaces an official component with a custom one built on the bundled renderer", () => {
+    const custom = createPrometheusA2uiComponent(
+      getPrometheusA2uiOfficialComponent("Text"),
+      () => null,
+    );
+    const catalog = createPrometheusA2uiCatalog({
+      id: "urn:test:catalog",
+      components: ["Text", "Card"],
+      implementations: [custom],
+    });
+
+    expect(custom.name).toBe("Text");
+    expect(catalog.components.get("Text")).toBe(custom);
+    expect(catalog.components.get("Card")).toBe(basicCatalog.components.get("Card"));
+  });
+
+  it("rejects a custom component whose name is not in the allowlist", () => {
+    const custom = createPrometheusA2uiComponent(
+      getPrometheusA2uiOfficialComponent("Text"),
+      () => null,
+    );
+    expect(() =>
+      createPrometheusA2uiCatalog({ components: ["Card"], implementations: [custom] }),
+    ).toThrowError("Custom A2UI component is not in the allowlist: Text");
   });
 
   it("rejects names the official catalog does not provide", () => {
