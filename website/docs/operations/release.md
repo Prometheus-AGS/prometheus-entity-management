@@ -18,23 +18,23 @@ The immutable candidate was staged in GitHub Actions run
 [`31082488746`](https://github.com/Prometheus-AGS/prometheus-entity-management/actions/runs/31082488746).
 
 <!-- BEGIN GENERATED:NPM_REGISTRY_STATUS -->
-Registry snapshot: 2026-10-08T15:30:31.000Z. Expected candidate: `4.1.1`.
+Registry snapshot: 2026-10-08T15:30:31.000Z. Expected candidate: `4.2.0`.
 
 | Package | `latest` | `alpha` | `next` | Release state |
 | --- | --- | --- | --- | --- |
-| `@prometheus-ags/entity-graph-core` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-react` | `4.1.1` | `absent` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-sdl` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-solid` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-svelte` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-sync` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-tauri` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-web-components` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/prometheus-entity-management` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/a2ui-react` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-a2a` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-alpine` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-htmx` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
+| `@prometheus-ags/entity-graph-core` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-react` | `4.1.1` | `absent` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-sdl` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-solid` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-svelte` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-sync` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-tauri` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-web-components` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/prometheus-entity-management` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/a2ui-react` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-a2a` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-alpine` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-htmx` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
 <!-- END GENERATED:NPM_REGISTRY_STATUS -->
 
 <!-- BEGIN GENERATED:PUBDEV_REGISTRY_STATUS -->
