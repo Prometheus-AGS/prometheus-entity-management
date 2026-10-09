@@ -1,5 +1,13 @@
 # Releasing Prometheus Entity Management
 
+## 4.2.0 status: prepared, not published
+
+**Update 2026-10-09: 4.2.0 is prepared and unpublished.** The lockstep minor
+bump moves all thirteen `@prometheus-ags/*` packages from `4.1.1` to `4.2.0`
+and moves `@prometheus-ags/a2ui-react` onto official A2UI 0.12.0. The registry
+still serves `4.1.1` on `latest` and `next`. A dry run and an operator-approved
+publish are still required; do not publish or move dist-tags before then.
+
 ## 4.x status: stable published
 
 **Update 2026-10-08: 4.1.1 stable is published.** All thirteen

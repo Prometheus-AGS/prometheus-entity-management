@@ -5,6 +5,41 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [4.2.0] - unreleased (prepared, not published)
+
+### Changed
+
+- `@prometheus-ags/a2ui-react` now runs on official A2UI 0.12.0:
+  `@a2ui/react` 0.12.0, `@a2ui/web_core` 0.12.0 and `@a2ui/markdown-it` 0.2.0,
+  all pinned exactly. All thirteen npm packages move to 4.2.0 in lockstep.
+
+### Breaking-adjacent (upstream A2UI 0.12.0 changes surfaced by the renderer)
+
+- `@a2ui/web_core` 0.12.0 removed eleven non-spec functions from the v0.9
+  basic catalog (`add`, `subtract`, `multiply`, `divide`, `equals`,
+  `not_equals`, `greater_than`, `less_than`, `contains`, `starts_with`,
+  `ends_with`). They are dropped from `DEFAULT_PROMETHEUS_A2UI_FUNCTIONS`;
+  catalogs that referenced them must stop doing so.
+- The `Catalog` constructor now takes `protocolVersion` as its second argument;
+  the Prometheus catalog declares v0.9.1.
+- Renderer capabilities require `versions`; the renderer uses
+  `getRendererCapabilities` and `getRendererDataModel`.
+- `MessageProcessor.version` no longer exists; read the surface catalog's
+  `protocolVersion` instead.
+- `action.event.context` is validated as v0.9 DynamicValues, so inline object
+  literals are rejected. Pass data bindings instead.
+
+### Fixed
+
+- Default catalog builds no longer throw "Official A2UI function is
+  unavailable: add".
+
+### Tests
+
+- Cover the v1.0-RC bridge (`normalizeA2uiV1Message`) on web_core 0.12.0.
+
+---
+
 ## [3.2.0] — 2026-08-30
 
 ### Added

@@ -30,23 +30,23 @@ The production documentation is available at
 [prometheus-ags.github.io/prometheus-entity-management](https://prometheus-ags.github.io/prometheus-entity-management/).
 
 <!-- BEGIN GENERATED:RELEASE_TAGS -->
-Registry snapshot: 2026-10-08T15:30:31.000Z. Expected candidate: `4.1.1`.
+Registry snapshot: 2026-10-08T15:30:31.000Z. Expected candidate: `4.2.0`.
 
 | Package | `latest` | `alpha` | `next` | Release state |
 | --- | --- | --- | --- | --- |
-| `@prometheus-ags/entity-graph-core` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-react` | `4.1.1` | `absent` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-sdl` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-solid` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-svelte` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-sync` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-tauri` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-web-components` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/prometheus-entity-management` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/a2ui-react` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-a2a` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-alpine` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
-| `@prometheus-ags/entity-graph-htmx` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | published |
+| `@prometheus-ags/entity-graph-core` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-react` | `4.1.1` | `absent` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-sdl` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-solid` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-svelte` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-sync` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-tauri` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-web-components` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/prometheus-entity-management` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/a2ui-react` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-a2a` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-alpine` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
+| `@prometheus-ags/entity-graph-htmx` | `4.1.1` | `3.0.0-alpha.0` | `4.1.1` | pending-publication |
 <!-- END GENERATED:RELEASE_TAGS -->
 
 The stable release is tagged `v4.1.1` and was verified live against the public
@@ -103,19 +103,19 @@ they cannot create hidden graph singletons.
 <!-- BEGIN GENERATED:PACKAGES -->
 | Package | Candidate | Stability | Role |
 | --- | --- | --- | --- |
-| `@prometheus-ags/entity-graph-core` | `4.1.1` | stable | framework-neutral normalized graph |
-| `@prometheus-ags/entity-graph-react` | `4.1.1` | stable | React 19 hooks and UI |
-| `@prometheus-ags/entity-graph-sdl` | `4.1.1` | stable | schema definition language |
-| `@prometheus-ags/entity-graph-sync` | `4.1.1` | stable | local-first and CRDT sync providers |
-| `@prometheus-ags/entity-graph-svelte` | `4.1.1` | stable | Svelte 5 binding |
-| `@prometheus-ags/entity-graph-solid` | `4.1.1` | stable | Solid binding |
-| `@prometheus-ags/entity-graph-web-components` | `4.1.1` | stable | Lit web components |
-| `@prometheus-ags/entity-graph-alpine` | `4.1.1` | stable | Alpine plugin |
-| `@prometheus-ags/entity-graph-htmx` | `4.1.1` | stable | HTMX server adapter |
-| `@prometheus-ags/entity-graph-a2a` | `4.1.1` | stable | A2A reference server |
-| `@prometheus-ags/a2ui-react` | `4.1.1` | stable | A2UI React renderer and graph bridge after AG-UI migration |
-| `@prometheus-ags/entity-graph-tauri` | `4.1.1` | stable | Tauri JavaScript binding and bundled Rust plugin |
-| `@prometheus-ags/prometheus-entity-management` | `4.1.1` | stable | compatibility alias for @prometheus-ags/entity-graph-react |
+| `@prometheus-ags/entity-graph-core` | `4.2.0` | stable | framework-neutral normalized graph |
+| `@prometheus-ags/entity-graph-react` | `4.2.0` | stable | React 19 hooks and UI |
+| `@prometheus-ags/entity-graph-sdl` | `4.2.0` | stable | schema definition language |
+| `@prometheus-ags/entity-graph-sync` | `4.2.0` | stable | local-first and CRDT sync providers |
+| `@prometheus-ags/entity-graph-svelte` | `4.2.0` | stable | Svelte 5 binding |
+| `@prometheus-ags/entity-graph-solid` | `4.2.0` | stable | Solid binding |
+| `@prometheus-ags/entity-graph-web-components` | `4.2.0` | stable | Lit web components |
+| `@prometheus-ags/entity-graph-alpine` | `4.2.0` | stable | Alpine plugin |
+| `@prometheus-ags/entity-graph-htmx` | `4.2.0` | stable | HTMX server adapter |
+| `@prometheus-ags/entity-graph-a2a` | `4.2.0` | stable | A2A reference server |
+| `@prometheus-ags/a2ui-react` | `4.2.0` | stable | A2UI React renderer and graph bridge after AG-UI migration |
+| `@prometheus-ags/entity-graph-tauri` | `4.2.0` | stable | Tauri JavaScript binding and bundled Rust plugin |
+| `@prometheus-ags/prometheus-entity-management` | `4.2.0` | stable | compatibility alias for @prometheus-ags/entity-graph-react |
 <!-- END GENERATED:PACKAGES -->
 
 Package-level READMEs remain the package-specific API sources. The generated
