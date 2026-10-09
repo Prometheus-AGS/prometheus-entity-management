@@ -7,6 +7,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [4.2.0] - unreleased (prepared, not published)
 
+### Added
+
+- `@prometheus-ags/a2ui-react`: `createPrometheusA2uiComponent`,
+  `getPrometheusA2uiOfficialComponent` and the `implementations` catalog option,
+  so an application can supply its own component implementations (for example
+  its design system). The package bundles the official renderer, and a component
+  built with an application's own `@a2ui/react` cannot share the surface
+  context; these build on the bundled instance.
+
 ### Changed
 
 - `@prometheus-ags/a2ui-react` now runs on official A2UI 0.12.0:

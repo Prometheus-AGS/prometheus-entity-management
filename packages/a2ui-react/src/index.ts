@@ -13,9 +13,12 @@ export {
   DEFAULT_PROMETHEUS_A2UI_COMPONENTS,
   DEFAULT_PROMETHEUS_A2UI_FUNCTIONS,
   createPrometheusA2uiCatalog,
+  createPrometheusA2uiComponent,
+  getPrometheusA2uiOfficialComponent,
 } from "./official/catalog.js";
 export type {
   PrometheusA2uiCatalogOptions,
+  PrometheusA2uiComponentRenderProps,
   PrometheusA2uiComponentName,
   PrometheusA2uiFunctionName,
 } from "./official/catalog.js";
