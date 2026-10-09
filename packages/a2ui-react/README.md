@@ -27,9 +27,9 @@ These numbers are related but are not interchangeable:
 | --- | --- |
 | Public A2UI input | `v1.0` RC and `v0.9.1` |
 | Official renderer engine | `v0.9.1` compatibility boundary |
-| `@a2ui/react` distribution | `0.10.2` |
-| `@a2ui/web_core` distribution | `0.10.5` |
-| `@a2ui/markdown-it` distribution | `0.1.0` |
+| `@a2ui/react` distribution | `0.12.0` |
+| `@a2ui/web_core` distribution | `0.12.0` |
+| `@a2ui/markdown-it` distribution | `0.2.0` |
 | AG-UI activity transport | `@ag-ui/core` `0.0.59` |
 
 The published A2UI packages do not expose the documented v1 renderer entry

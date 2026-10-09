@@ -591,14 +591,14 @@ importers:
   packages/a2ui-react:
     dependencies:
       '@a2ui/markdown-it':
-        specifier: 0.1.0
-        version: 0.1.0(@a2ui/web_core@0.10.5)
+        specifier: 0.2.0
+        version: 0.2.0(@a2ui/web_core@0.12.0)
       '@a2ui/react':
-        specifier: 0.10.2
-        version: 0.10.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(zod@3.25.76)
+        specifier: 0.12.0
+        version: 0.12.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(zod@3.25.76)
       '@a2ui/web_core':
-        specifier: 0.10.5
-        version: 0.10.5
+        specifier: 0.12.0
+        version: 0.12.0
       '@prometheus-ags/entity-graph-core':
         specifier: workspace:*
         version: link:../entity-graph-core
@@ -1032,21 +1032,21 @@ packages:
       express:
         optional: true
 
-  '@a2ui/markdown-it@0.1.0':
-    resolution: {integrity: sha512-Iv/4/CzFFVQTgT/qeT7lo/sJlZ3+w2+kD7dMQguZS1iZ95GNN5MILdnh+gqVWe6H9iaj+uyonLWMR7RTLHUxPQ==}
+  '@a2ui/markdown-it@0.2.0':
+    resolution: {integrity: sha512-B1nO5Nh2Vw+P0W1DdwYypIayOoAxj3/Fzohxy/q+0TGDG7t4rD+2roUpOnIWW67L7wvGgNclJ8gLzJTkmTcq/A==}
     peerDependencies:
-      '@a2ui/web_core': ^0.10.3
+      '@a2ui/web_core': ^0.12.0
 
-  '@a2ui/react@0.10.2':
-    resolution: {integrity: sha512-QDVs97a/sihcjE3DMnWbwB8bJKv1z2tn291m6+0w6+lXi8dfwnSiZilAgoQmLWjW4Oikv8OFh532NiQMqL/+nw==}
+  '@a2ui/react@0.12.0':
+    resolution: {integrity: sha512-zGI6kNjus8m0OM4V/A0S3g3YDFodtd82C+f91CECmt9WQniJtFvlSLZqOu6xBz2R3uUh7aviOOZUhTCVft85Ng==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
-      react: ^19.2.7
-      react-dom: ^19.2.7
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
       zod: ^3.25.76
 
-  '@a2ui/web_core@0.10.5':
-    resolution: {integrity: sha512-q+HyK1V/jM8l+/VmuXRbBNCS9yDguqdjsJ7/8aqY9O/WUdRE14FbhkFyQyGWQNqPJa9QbVfQyAjGQIK0B1aQtg==}
+  '@a2ui/web_core@0.12.0':
+    resolution: {integrity: sha512-wEg8954eDM4tx70O+qoUQYSCJbCywEIZEiqOpNXrmQUAKGsMNM47uns/7AE0W0nMfFbmJWE/huBwUVFaq+pDCA==}
 
   '@ag-ui/core@0.0.57':
     resolution: {integrity: sha512-gho1OWjNE6E3Rl7ZEZ1wr2CEpUHjLFU0FqzCZZk439TicLu+BfLCMkMokB07bMGlRmbJ60hM6LW60iOVauCx+Q==}
@@ -3388,6 +3388,9 @@ packages:
 
   '@lit-labs/ssr-dom-shim@1.6.0':
     resolution: {integrity: sha512-VHb0ALPMTlgKjM6yIxxoQNnpKyUKLD04VzeQdsiXkMqkvYlAHxq9glGLmgbb889/1GsohSOAjvQYoiBppXFqrQ==}
+
+  '@lit/context@1.1.6':
+    resolution: {integrity: sha512-M26qDE6UkQbZA2mQ3RjJ3Gzd8TxP+/0obMgE5HfkfLhEEyYE3Bui4A5XHiGPjy0MUGAyxB3QgVuw2ciS0kHn6A==}
 
   '@lit/reactive-element@2.1.2':
     resolution: {integrity: sha512-pbCDiVMnne1lYUIaYNN5wrwQXDtHaYtg7YEFPeW+hws6U47WeFvISGUWekPGKWOP1ygrs0ef0o1VJMk1exos5A==}
@@ -11594,6 +11597,9 @@ packages:
     deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
+  validate-color@2.2.4:
+    resolution: {integrity: sha512-Znolz+b6CwW6eBXYld7MFM3O7funcdyRfjKC/X9hqYV/0VcC5LB/L45mff7m3dIn9wdGdNOAQ/fybNuD5P/HDw==}
+
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
 
@@ -12093,26 +12099,28 @@ snapshots:
     optionalDependencies:
       express: 4.22.2
 
-  '@a2ui/markdown-it@0.1.0(@a2ui/web_core@0.10.5)':
+  '@a2ui/markdown-it@0.2.0(@a2ui/web_core@0.12.0)':
     dependencies:
-      '@a2ui/web_core': 0.10.5
+      '@a2ui/web_core': 0.12.0
       dompurify: 3.4.11
       markdown-it: 14.3.0
 
-  '@a2ui/react@0.10.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(zod@3.25.76)':
+  '@a2ui/react@0.12.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(zod@3.25.76)':
     dependencies:
-      '@a2ui/markdown-it': 0.1.0(@a2ui/web_core@0.10.5)
-      '@a2ui/web_core': 0.10.5
+      '@a2ui/markdown-it': 0.2.0(@a2ui/web_core@0.12.0)
+      '@a2ui/web_core': 0.12.0
       clsx: 2.1.1
       markdown-it: 14.3.0
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
       zod: 3.25.76
 
-  '@a2ui/web_core@0.10.5':
+  '@a2ui/web_core@0.12.0':
     dependencies:
+      '@lit/context': 1.1.6
       '@preact/signals-core': 1.14.4
-      date-fns: 4.4.0
+      lit: 3.3.3
+      validate-color: 2.2.4
       zod: 3.25.76
       zod-to-json-schema: 3.25.2(zod@3.25.76)
 
@@ -16708,6 +16716,10 @@ snapshots:
       - utf-8-validate
 
   '@lit-labs/ssr-dom-shim@1.6.0': {}
+
+  '@lit/context@1.1.6':
+    dependencies:
+      '@lit/reactive-element': 2.1.2
 
   '@lit/reactive-element@2.1.2':
     dependencies:
@@ -25862,6 +25874,8 @@ snapshots:
   uuid@11.1.1: {}
 
   uuid@8.3.2: {}
+
+  validate-color@2.2.4: {}
 
   validate-npm-package-license@3.0.4:
     dependencies:

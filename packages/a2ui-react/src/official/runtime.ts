@@ -324,15 +324,21 @@ export class PrometheusA2uiRuntime {
 
   getClientCapabilities(options?: { includeInlineCatalogs?: boolean }): A2uiClientCapabilities {
     this.assertActive();
-    return this.processor.getClientCapabilities({
+    // web_core 0.12.0 types the result as a version-keyed record; requesting
+    // exactly v0.9.1 yields the `{ "v0.9.1": ... }` v0.9 capabilities shape.
+    return this.processor.getRendererCapabilities({
       ...options,
-      version: PROMETHEUS_A2UI_PROTOCOL_VERSION,
-    });
+      versions: [PROMETHEUS_A2UI_PROTOCOL_VERSION],
+    }) as A2uiClientCapabilities;
   }
 
   getClientDataModel(): A2uiClientDataModel | undefined {
     this.assertActive();
-    return this.processor.getClientDataModel(PROMETHEUS_A2UI_PROTOCOL_VERSION);
+    // With an explicit version, web_core 0.12.0 returns `{ version, surfaces }`
+    // echoing that version, which is the v0.9 client data model shape.
+    return this.processor.getRendererDataModel(PROMETHEUS_A2UI_PROTOCOL_VERSION) as
+      | A2uiClientDataModel
+      | undefined;
   }
 
   subscribe = (listener: () => void): (() => void) => {
@@ -429,7 +435,7 @@ export class PrometheusA2uiRuntime {
   }
 
   private preflight(messages: readonly A2uiMessage[]): void {
-    const shadow = new OfficialMessageProcessor(
+    const shadow = new OfficialMessageProcessor<PrometheusA2uiComponentImplementation>(
       [...this.catalogs],
       async () => undefined,
       { version: PROMETHEUS_A2UI_PROTOCOL_VERSION },

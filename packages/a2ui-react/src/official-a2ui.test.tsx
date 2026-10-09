@@ -77,7 +77,9 @@ describe("official A2UI v0.9.1 runtime", () => {
     runtime.processMessages(messages);
 
     const surface = runtime.getSurface("main");
-    expect(runtime.processor.version).toBe("v0.9.1");
+    // web_core 0.12.0 dropped MessageProcessor.version; the protocol pin now
+    // lives on the catalog that backs the surface.
+    expect(surface?.defaultCatalog.protocolVersion).toBe("v0.9.1");
     expect(surface?.catalog.id).toBe(PROMETHEUS_A2UI_CATALOG_ID);
     expect(surface?.dataModel.get("/heading")).toBe("Official surface");
     expect(runtime.getClientCapabilities()).toEqual({
@@ -496,13 +498,23 @@ describe("application-owned A2UI entity graph policy", () => {
                     entityType: "Order",
                     entityId: "order-rendered",
                     tenantId: "tenant-a",
-                    data: { status: "rendered" },
+                    // v0.9 action context values are DynamicValues; object
+                    // payloads travel as a data binding (enforced since 0.12.0).
+                    data: { path: "/orderData" },
                   },
                 },
               },
             },
             { id: "button-label", component: "Text", text: "Save official order" },
           ],
+        },
+      },
+      {
+        version: "v0.9.1",
+        updateDataModel: {
+          surfaceId: "main",
+          path: "/orderData",
+          value: { status: "rendered" },
         },
       },
     ]);
@@ -519,6 +531,44 @@ describe("application-owned A2UI entity graph policy", () => {
         status: "rendered",
       });
     });
+    runtime.dispose();
+  });
+
+  it("rejects a non-spec object literal in a button action context", () => {
+    const runtime = createPrometheusA2uiRuntime();
+    runtime.processMessages([
+      {
+        version: "v0.9.1",
+        createSurface: { surfaceId: "main", catalogId: PROMETHEUS_A2UI_CATALOG_ID },
+      },
+    ]);
+
+    expect(() =>
+      runtime.processMessages([
+        {
+          version: "v0.9.1",
+          updateComponents: {
+            surfaceId: "main",
+            components: [
+              { id: "root", component: "Column", children: ["action-button"] },
+              {
+                id: "action-button",
+                component: "Button",
+                child: "button-label",
+                action: {
+                  event: {
+                    name: ENTITY_GRAPH_A2UI_ACTIONS.upsert,
+                    context: { data: { status: "inline" } },
+                  },
+                },
+              },
+              { id: "button-label", component: "Text", text: "Inline" },
+            ],
+          },
+        },
+      ]),
+    ).toThrowError(/Validation failed for component 'Button'/);
+    expect(runtime.getSurface("main")?.componentsModel.get("action-button")).toBeUndefined();
     runtime.dispose();
   });
 });

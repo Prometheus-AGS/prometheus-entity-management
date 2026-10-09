@@ -36,22 +36,16 @@ export const DEFAULT_PROMETHEUS_A2UI_COMPONENTS = [
 /**
  * Default pure-function allowlist. `openUrl` is deliberately excluded because
  * navigation is an application-owned side effect and must be opted in.
+ *
+ * Official `@a2ui/web_core@0.12.0` removed the non-spec math and comparison
+ * functions (`add`, `subtract`, `multiply`, `divide`, `equals`, `not_equals`,
+ * `greater_than`, `less_than`, `contains`, `starts_with`, `ends_with`) from the
+ * v0.9 basic catalog, so they are no longer allowlisted here.
  */
 export const DEFAULT_PROMETHEUS_A2UI_FUNCTIONS = [
-  "add",
-  "subtract",
-  "multiply",
-  "divide",
-  "equals",
-  "not_equals",
-  "greater_than",
-  "less_than",
   "and",
   "or",
   "not",
-  "contains",
-  "starts_with",
-  "ends_with",
   "required",
   "regex",
   "length",
@@ -107,6 +101,7 @@ export function createPrometheusA2uiCatalog(
 
   return new OfficialCatalog<PrometheusA2uiComponentImplementation>(
     options.id ?? PROMETHEUS_A2UI_CATALOG_ID,
+    PROMETHEUS_A2UI_PROTOCOL_VERSION,
     components,
     functions,
     basicCatalog.themeSchema,

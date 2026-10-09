@@ -50,9 +50,9 @@ Given("the exact official A2UI v0.9.1 runtime dependencies are installed", funct
   const manifest = JSON.parse(
     readFileSync(join(root, "packages/a2ui-react/package.json"), "utf8"),
   );
-  assert.equal(manifest.dependencies["@a2ui/react"], "0.10.2");
-  assert.equal(manifest.dependencies["@a2ui/web_core"], "0.10.5");
-  assert.equal(manifest.dependencies["@a2ui/markdown-it"], "0.1.0");
+  assert.equal(manifest.dependencies["@a2ui/react"], "0.12.0");
+  assert.equal(manifest.dependencies["@a2ui/web_core"], "0.12.0");
+  assert.equal(manifest.dependencies["@a2ui/markdown-it"], "0.2.0");
   assert.equal(manifest.dependencies.zod, "3.25.76");
 });
 
