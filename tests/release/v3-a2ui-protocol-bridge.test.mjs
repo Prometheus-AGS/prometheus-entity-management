@@ -9,9 +9,9 @@ const read = (path) => readFile(join(root, path), "utf8");
 
 test("the package targets exact official A2UI distributions and protocol entry points", async () => {
   const manifest = JSON.parse(await read("packages/a2ui-react/package.json"));
-  assert.equal(manifest.dependencies["@a2ui/react"], "0.10.2");
-  assert.equal(manifest.dependencies["@a2ui/web_core"], "0.10.5");
-  assert.equal(manifest.dependencies["@a2ui/markdown-it"], "0.1.0");
+  assert.equal(manifest.dependencies["@a2ui/react"], "0.12.0");
+  assert.equal(manifest.dependencies["@a2ui/web_core"], "0.12.0");
+  assert.equal(manifest.dependencies["@a2ui/markdown-it"], "0.2.0");
   assert.equal(manifest.dependencies.zod, "3.25.76");
   assert.ok(manifest.exports["./ag-ui"]);
   const sources = await Promise.all([
