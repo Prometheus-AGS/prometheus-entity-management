@@ -1,5 +1,11 @@
 # Update Log
 
+## 2026-10-25
+* **Ingest**: [Karpathy session 3fe16a89d1c1](/karpathy-session-3fe16a89d1c1d7db.md)
+* **Ingest**: [Karpathy session d520af243f31](/karpathy-session-d520af243f31f028.md)
+* **Ingest**: [Karpathy session d89483e84735](/karpathy-session-d89483e847354f1e.md)
+* **Ingest**: [Karpathy session 24a94f33d3da](/karpathy-session-24a94f33d3dad6b0.md)
+
 ## 2026-09-01
 * **Update**: [v3 Devtools Parity Executor Complete with Unknown Change](/v3-devtools-parity-executor-completion-unknown-change.md)
 * **Ingest**: [Karpathy session 529cf0267e7c](/karpathy-session-529cf0267e7cfd80.md)
