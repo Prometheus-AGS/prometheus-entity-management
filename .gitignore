@@ -117,3 +117,6 @@ site/docs/packages/*.mdx
 !site/docs/packages/overview.md
 site/api-sidebar.generated.json
 site/static/api/
+
+# Serena agent workspace (transient, user-local)
+.serena/
