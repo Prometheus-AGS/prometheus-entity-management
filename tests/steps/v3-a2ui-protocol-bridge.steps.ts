@@ -236,8 +236,9 @@ Then("coverage records implemented official protocol and graph-policy evidence",
 
 Then("the A2UI root and AG-UI compatibility export ledgers match built artifacts", function () {
   const receipt = runPnpm(["--filter", "@prometheus-ags/a2ui-react", "run", "verify:skills"]);
-  assert.match(receipt, /OK: a2ui \.: 18 runtime exports match ledger/);
+  assert.match(receipt, /OK: a2ui \.: 23 runtime exports match ledger/);
   assert.match(receipt, /OK: a2ui \.\/ag-ui: 9 runtime exports match ledger/);
+  assert.match(receipt, /OK: a2ui \.\/headless: 10 runtime exports match ledger/);
 });
 
 Then(
@@ -249,8 +250,8 @@ Then(
       "prometheus-entity-skills/_shared/references/a2ui-protocol-bridge.md",
     ].map((path) => readFileSync(join(root, path), "utf8")).join("\n");
     assert.match(docs, /Protocol validity never grants application authority/);
-    assert.match(docs, /@a2ui\/react@0\.10\.2/);
-    assert.match(docs, /@a2ui\/web_core@0\.10\.5/);
+    assert.match(docs, /@a2ui\/react@0\.12\.0/);
+    assert.match(docs, /@a2ui\/web_core@0\.12\.0/);
     assert.match(docs, /openUrl.*excluded/is);
   },
 );

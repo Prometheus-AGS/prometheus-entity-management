@@ -16,7 +16,8 @@ test("the package targets exact official A2UI distributions and protocol entry p
   assert.ok(manifest.exports["./ag-ui"]);
   const sources = await Promise.all([
     read("packages/a2ui-react/src/official/catalog.ts"),
-    read("packages/a2ui-react/src/official/runtime.ts"),
+    // The official processor is imported by the shared core; runtime.ts is the React subclass of it.
+    read("packages/a2ui-react/src/official/runtime-core.ts"),
     read("packages/a2ui-react/src/react/a2ui-provider.tsx"),
   ]);
   assert.ok(sources.every((source) => /@a2ui\/(react|web_core)\/v0_9/.test(source)));
@@ -27,6 +28,7 @@ test("official and React layers do not own graph I/O or AG-UI parsing", async ()
     await Promise.all([
       read("packages/a2ui-react/src/official/catalog.ts"),
       read("packages/a2ui-react/src/official/runtime.ts"),
+      read("packages/a2ui-react/src/official/runtime-core.ts"),
       read("packages/a2ui-react/src/react/a2ui-provider.tsx"),
     ])
   ).join("\n");
@@ -53,8 +55,9 @@ test("A2UI docs, skills, coverage, and both runtime entry points stay synchroniz
   const ledger = JSON.parse(
     await read("prometheus-entity-skills/_shared/references/a2ui-library-exports.json"),
   );
-  assert.equal(ledger["."].length, 19);
+  assert.equal(ledger["."].length, 23);
   assert.equal(ledger["./ag-ui"].length, 9);
+  assert.equal(ledger["./headless"].length, 10);
   assert.ok(ledger["."].includes("PROMETHEUS_A2UI_RC_PROTOCOL_VERSION"));
   assert.ok(ledger["."].includes("PrometheusA2uiSurface"));
   assert.ok(ledger["."].includes("createEntityGraphA2uiActionPolicy"));

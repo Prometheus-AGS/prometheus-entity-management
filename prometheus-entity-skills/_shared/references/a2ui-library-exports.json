@@ -2,6 +2,7 @@
   ".": [
     "DEFAULT_PROMETHEUS_A2UI_COMPONENTS",
     "DEFAULT_PROMETHEUS_A2UI_FUNCTIONS",
+    "DEFAULT_PROMETHEUS_A2UI_LIMITS",
     "ENTITY_GRAPH_A2UI_ACTIONS",
     "PROMETHEUS_A2UI_CATALOG_ID",
     "PROMETHEUS_A2UI_PROTOCOL_VERSION",
@@ -11,11 +12,14 @@
     "PrometheusA2uiRuntime",
     "PrometheusA2uiSurface",
     "PrometheusA2uiSurfaces",
+    "buildA2uiForwardedProps",
     "createA2uiActionPolicy",
     "createDenyAllA2uiActionPolicy",
     "createEntityGraphA2uiActionPolicy",
     "createPrometheusA2uiCatalog",
+    "createPrometheusA2uiComponent",
     "createPrometheusA2uiRuntime",
+    "getPrometheusA2uiOfficialComponent",
     "usePrometheusA2ui",
     "usePrometheusA2uiRuntime",
     "usePrometheusA2uiSurfaces"
@@ -30,5 +34,17 @@
     "useChatSession",
     "useEntityDiff",
     "useEntityToolProvider"
+  ],
+  "./headless": [
+    "DEFAULT_PROMETHEUS_A2UI_COMPONENTS",
+    "DEFAULT_PROMETHEUS_A2UI_FUNCTIONS",
+    "DEFAULT_PROMETHEUS_A2UI_LIMITS",
+    "PROMETHEUS_A2UI_CATALOG_ID",
+    "PROMETHEUS_A2UI_PROTOCOL_VERSION",
+    "PrometheusA2uiError",
+    "PrometheusA2uiHeadlessRuntime",
+    "buildA2uiForwardedProps",
+    "createPrometheusA2uiHeadlessCatalog",
+    "createPrometheusA2uiHeadlessRuntime"
   ]
 }

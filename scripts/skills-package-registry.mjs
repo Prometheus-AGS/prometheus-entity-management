@@ -33,6 +33,7 @@ export const SKILL_LEDGER_PACKAGES = Object.freeze([
     entryPoints: [
       [".", "index.mjs"],
       ["./ag-ui", "ag-ui.mjs"],
+      ["./headless", "headless.mjs"],
     ],
     legacyFlag: "--a2ui",
   },

@@ -23,6 +23,10 @@
     "./ag-ui": {
       "types": "./dist/ag-ui.d.ts",
       "default": "./dist/ag-ui.mjs"
+    },
+    "./headless": {
+      "types": "./dist/headless.d.ts",
+      "default": "./dist/headless.mjs"
     }
   },
   "sideEffects": false,
@@ -42,7 +46,7 @@
     "verify:skills": "node ../../scripts/verify-skills-exports.mjs --a2ui"
   },
   "peerDependencies": {
-    "@ag-ui/core": ">=0.0.59 <0.1.0",
+    "@ag-ui/core": ">=0.0.59 <0.1.0 || ^1.0.0",
     "@prometheus-ags/entity-graph-core": "workspace:*",
     "react": ">=19.0.0 <20.0.0",
     "react-dom": ">=19.0.0 <20.0.0"
@@ -60,7 +64,7 @@
     "zod": "3.25.76"
   },
   "devDependencies": {
-    "@ag-ui/core": "0.0.59",
+    "@ag-ui/core": "1.0.3",
     "@testing-library/react": "^16.3.2",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",

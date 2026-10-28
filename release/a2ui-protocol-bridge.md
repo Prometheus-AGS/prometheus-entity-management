@@ -56,15 +56,17 @@ implement another renderer or maintain an alternate surface/data model.
 | --- | --- | --- |
 | Public wire input | A2UI `v1.0` RC and `v0.9.1` | RC compatibility without claiming an unpublished v1 renderer |
 | Renderer engine | A2UI `v0.9.1` | Maintained entry point exported by the published packages |
-| Official React package | `@a2ui/react@0.10.2` | Distribution containing the selected renderer entry point |
-| Official core package | `@a2ui/web_core@0.10.5` | Distribution containing protocol processing and schemas |
-| Markdown integration | `@a2ui/markdown-it@0.1.0` | Renderer context used for official Text markdown |
-| AG-UI transport | `@ag-ui/core@0.0.59` | Activity snapshot shape used for A2UI operations |
+| Official React package | `@a2ui/react@0.12.0` | Distribution containing the selected renderer entry point |
+| Official core package | `@a2ui/web_core@0.12.0` | Distribution containing protocol processing and schemas |
+| Markdown integration | `@a2ui/markdown-it@0.2.0` | Renderer context used for official Text markdown |
+| AG-UI transport | `@ag-ui/core` peer `>=0.0.59 <0.1.0 \|\| ^1.0.0` (developed against `1.0.3`) | Activity snapshot, activity delta and messages-snapshot shapes used for A2UI operations |
 | Validation dependency | `zod@3.25.76` | Exact compatible schema runtime |
 
-The `0.10.x` package numbers are distribution versions, not A2UI wire
-versions. Root sources import explicit `/v0_9` entry points because the
-published packages do not export the documented v1 renderer entry points. The
+The `0.12.x` package numbers are distribution versions, not A2UI wire
+versions. Root sources import explicit `/v0_9` entry points because
+`@a2ui/react@0.12.0` exports only `./v0_8` and `./v0_9` (no v1.0 renderer entry
+point); `@a2ui/web_core@0.12.0` does export `./v1_0`, which this package does not
+yet use. The
 runtime validates v1.0-RC envelopes, decomposes embedded surface state for the
 official processor, and keeps response-aware action/function metadata at the
 adapter boundary.
@@ -158,13 +160,60 @@ require approval after authorization. An action context cannot approve itself.
 Evidence is stored under
 `.kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/`.
 
+## AG-UI activity delivery
+
+AG-UI 1.0 defines no version, sequence or idempotency field on activity events.
+The runtime therefore reconciles instead of replaying:
+
+- A held surface is deleted only by an explicit `deleteSurface` operation. A
+  redelivered or restated activity (`replace: true` included) never removes a
+  surface, and a message absent from a `MESSAGES_SNAPSHOT` leaves its surfaces
+  alone.
+- When two deliveries disagree about a data value, the producer wins and
+  `onConflict` reports each leaf the user had also changed.
+- The producer's ordering key rides in the activity `content`:
+  `surfaceVersions: { "<surfaceId>": { "epoch": <integer>, "version": <integer> } }`.
+  `epoch` is raised on every producer restart. A delta without a version is
+  rejected; a version-less snapshot is only protected against identical
+  redelivery.
+- `ACTIVITY_DELTA` uses a deliberately small RFC 6902 subset: `add` to
+  `/a2ui_operations/-`, and `test` on `/surfaceVersions/<surfaceId>/version`
+  (and `/epoch`). A delta applies on top of version N and yields N + 1.
+- Resource caps are enforced by default and can be changed with `limits` or
+  `setLimits()`; a refused input leaves every surface unchanged and is reported
+  through `onProducerFault`.
+
+## Wire contract for other runtimes (including Flutter)
+
+These shapes are what the web runtime sends and accepts. They are stated so a
+Dart or other client can implement the same contract; no such client exists in
+this repository.
+
+| Direction | Location | Shape |
+|---|---|---|
+| Agent to client | activity `content.surfaceVersions` | `{ surfaceId: { epoch, version } }` |
+| Client to agent | `forwardedProps.a2uiAction` | `{ userAction, actionId, heldVersion?, dataModel? }`; `actionId` is a UUIDv7 reused on retry |
+| Client to agent | `forwardedProps.a2uiResync` | `{ held, reason? }` where `held` lists the `(epoch, version)` the client holds per surface |
+
+`actionId` is the idempotency key and is separate from the v1.0 `actionId`
+correlation field inside the action. The `a2uiResync` shape and the way an agent
+returns operations for a stale action are proposals of this runtime and still
+need agreement with the agent side.
+
+## Headless runtime
+
+`@prometheus-ags/a2ui-react/headless` validates agent output with the same
+allowlist, limits and ordering as the React runtime, with no React or DOM.
+`exportSurfaceMessages(surfaceId)` returns messages that rebuild a surface in a
+fresh runtime, pruning components unreachable from `root`.
+
 ## Limits
 
 This change does not prove:
 
 - A2A AgentCard/task/stream/cancel conformance;
 - the complete keyless agentic example and its cancellation/streaming flows;
-- Flutter or native A2UI rendering;
+- Flutter or native A2UI rendering (the wire contract below is stated for a future Dart consumer, not implemented or proven for one);
 - the production Docusaurus/GitHub Pages site;
 - release provenance or registry permissions; or
 - approval to move npm `latest`.

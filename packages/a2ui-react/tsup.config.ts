@@ -4,6 +4,7 @@ export default definePackageConfig({
   entry: {
     index: "src/index.ts",
     "ag-ui": "src/ag-ui/index.ts",
+    headless: "src/headless.ts",
   },
   // The official web_core package is ESM-only while this repository promises a
   // working CommonJS artifact. Bundle the exact official implementation into

@@ -48,8 +48,8 @@ AG-UI state/message events as A2UI surface conformance.
 ## Version rules
 
 - Stable wire target: A2UI `v0.9.1`.
-- Official packages: `@a2ui/react@0.10.2`,
-  `@a2ui/web_core@0.10.5`, and `@a2ui/markdown-it@0.1.0`.
+- Official packages: `@a2ui/react@0.12.0`,
+  `@a2ui/web_core@0.12.0`, and `@a2ui/markdown-it@0.2.0`.
 - Import only official `/v0_9` entry points.
 - Treat package distribution versions and wire versions as separate axes.
 - Do not add v1.0 behavior until a governed version adapter and its evidence
@@ -103,3 +103,16 @@ Flutter/native renderers, documentation deployment, registry authority, or npm
 `latest` promotion. Consult `examples/coverage.json` and the release
 contract before expanding a claim.
 
+
+## AG-UI 1.0 delivery and headless entry
+
+- AG-UI peer range is `>=0.0.59 <0.1.0 || ^1.0.0`. Activities are reconciled,
+  never replayed: only an explicit `deleteSurface` removes a surface, and the
+  producer wins on data conflicts (`onConflict` reports them).
+- Ordering rides in activity `content.surfaceVersions` as `{ epoch, version }`
+  per surface; `ACTIVITY_DELTA` supports `add /a2ui_operations/-` and `test` on
+  the version only.
+- User actions carry a UUIDv7 `forwardedProps.a2uiAction.actionId`, reused on
+  retry. `buildA2uiForwardedProps` is the single builder.
+- `@prometheus-ags/a2ui-react/headless` is the React-free runtime;
+  `exportSurfaceMessages` rebuilds a surface and prunes orphans.

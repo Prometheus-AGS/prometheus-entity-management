@@ -232,3 +232,40 @@ export function normalizeA2uiV1Message(
     actions: [],
   };
 }
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+/**
+ * The inverse of the metadata stripping done when a v1.0 surface is normalized:
+ * put each action's `wantResponse` and `responsePath` back on the `event` of the
+ * component that carries it, where the producer wrote them. A component with no
+ * recorded metadata is returned unchanged, and the input is never mutated.
+ *
+ * Only a `wantResponse` of `true` is recorded when a surface is normalized, so
+ * an explicit `wantResponse: false` is restored as an absent field, which means
+ * the same thing.
+ */
+export function restoreV1ActionMetadata<Component extends Record<string, unknown>>(
+  components: readonly Component[],
+  actions: readonly PrometheusA2uiV1ActionMetadata[],
+): Component[] {
+  const bySource = new Map(actions.map((action) => [action.sourceComponentId, action] as const));
+  return components.map((component) => {
+    const metadata = bySource.get(String(component.id));
+    const action = component.action;
+    if (!metadata || !isRecord(action) || !isRecord(action.event)) return component;
+    return {
+      ...component,
+      action: {
+        ...action,
+        event: {
+          ...action.event,
+          ...(metadata.wantResponse ? { wantResponse: true } : {}),
+          ...(metadata.responsePath ? { responsePath: metadata.responsePath } : {}),
+        },
+      },
+    };
+  });
+}

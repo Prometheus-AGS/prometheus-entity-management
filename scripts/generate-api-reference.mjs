@@ -61,7 +61,7 @@ const NPM_PACKAGES = [
   { slug: "entity-graph-alpine", name: "@prometheus-ags/entity-graph-alpine", directory: "entity-graph-alpine", ledger: "alpine-library-exports.json", entries: ["src/index.ts"] },
   { slug: "entity-graph-htmx", name: "@prometheus-ags/entity-graph-htmx", directory: "entity-graph-htmx", ledger: "htmx-library-exports.json", entries: ["src/index.ts"] },
   { slug: "entity-graph-web-components", name: "@prometheus-ags/entity-graph-web-components", directory: "entity-graph-web-components", ledger: "web-components-library-exports.json", entries: ["src/index.ts"] },
-  { slug: "a2ui-react", name: "@prometheus-ags/a2ui-react", directory: "a2ui-react", ledger: "a2ui-library-exports.json", entries: ["src/index.ts", "src/ag-ui/index.ts"] },
+  { slug: "a2ui-react", name: "@prometheus-ags/a2ui-react", directory: "a2ui-react", ledger: "a2ui-library-exports.json", entries: ["src/index.ts", "src/ag-ui/index.ts", "src/headless.ts"] },
   { slug: "entity-graph-a2a", name: "@prometheus-ags/entity-graph-a2a", directory: "entity-graph-a2a", ledger: "a2a-library-exports.json", entries: ["src/index.ts", "src/legacy/index.ts"] },
   { slug: "entity-graph-tauri", name: "@prometheus-ags/entity-graph-tauri", directory: "entity-graph-tauri", ledger: "tauri-library-exports.json", entries: ["src/index.ts"] },
   { slug: "entity-graph-sdl", name: "@prometheus-ags/entity-graph-sdl", directory: "entity-graph-sdl", ledger: "sdl-library-exports.json", entries: ["src/index.ts"] },

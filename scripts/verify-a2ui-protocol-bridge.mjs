@@ -199,7 +199,8 @@ assert.equal(typeof root.PrometheusA2uiSurface, "function");
 assert.equal("EntityChat" in root, false);
 assert.equal(typeof legacy.EntityChat, "function");
 const runtime = root.createPrometheusA2uiRuntime();
-assert.equal(runtime.processor.version, "v0.9.1");
+// web_core 0.12.0 keeps the wire version in its constructor options, not on the processor.
+assert.equal(root.PROMETHEUS_A2UI_PROTOCOL_VERSION, "v0.9.1");
 runtime.dispose();
 console.log("[a2ui-bridge] packed Node CommonJS root and subpath passed");
 `,

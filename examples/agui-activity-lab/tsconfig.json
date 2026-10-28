@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "types": ["vite/client", "node"],
+    "isolatedModules": true,
+    "noEmit": true,
+    "incremental": true,
+    "tsBuildInfoFile": ".cache/typescript/tsconfig.tsbuildinfo",
+    "jsx": "react-jsx",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@prometheus-ags/a2ui-react": ["../../packages/a2ui-react/src/index.ts"],
+      "@prometheus-ags/entity-graph-core/devtools": ["../../packages/entity-graph-core/src/devtools/index.ts"],
+      "@prometheus-ags/entity-graph-core": ["../../packages/entity-graph-core/src/index.ts"],
+      "@prometheus-ags/entity-graph-react": ["../../packages/entity-graph-react/src/index.ts"]
+    }
+  },
+  "include": ["src", "server"]
+}

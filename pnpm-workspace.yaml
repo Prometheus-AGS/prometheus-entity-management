@@ -5,6 +5,7 @@ packages:
   - "examples/agentic-a2ui"
   - "examples/tauri-app"
   - "examples/agentic-a2ui-app"
+  - "examples/agui-activity-lab"
   - "examples/tauri-universal"
   - "site"
   - "website"

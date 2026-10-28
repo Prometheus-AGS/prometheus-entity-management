@@ -35,6 +35,32 @@ export type {
   PrometheusA2uiMessageInput,
   PrometheusA2uiRendererMessage,
 } from "./official/runtime.js";
+export { buildA2uiForwardedProps } from "./official/forwarded-props.js";
+export type {
+  BuildA2uiForwardedPropsInput,
+  PrometheusA2uiActionEnvelope,
+  PrometheusA2uiActionProps,
+  PrometheusA2uiForwardedProps,
+  PrometheusA2uiHeldVersion,
+  PrometheusA2uiHeldVersions,
+  PrometheusA2uiResyncReason,
+  PrometheusA2uiResyncRequest,
+  PrometheusA2uiResyncSurface,
+  PrometheusA2uiUserAction,
+} from "./official/forwarded-props.js";
+export { DEFAULT_PROMETHEUS_A2UI_LIMITS } from "./official/limits.js";
+export type { PrometheusA2uiDataConflict } from "./official/data-reconcile.js";
+export type {
+  PrometheusA2uiBatchRefusedFault,
+  PrometheusA2uiLimitFault,
+  PrometheusA2uiLimitName,
+  PrometheusA2uiLimits,
+  PrometheusA2uiLimitUsage,
+  PrometheusA2uiLimitUsageEntry,
+  PrometheusA2uiProducerFault,
+  PrometheusA2uiSurfaceMismatchFault,
+  PrometheusA2uiVersionConflictFault,
+} from "./official/limits.js";
 export { PROMETHEUS_A2UI_RC_PROTOCOL_VERSION } from "./official/v1-compat.js";
 export type {
   PrometheusA2uiV1ActionMetadata,

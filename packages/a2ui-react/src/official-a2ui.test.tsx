@@ -319,7 +319,7 @@ describe("A2UI v1.0 RC and AG-UI 0.0.59 compatibility", () => {
     runtime.dispose();
   });
 
-  it("consumes AG-UI A2UI activity snapshots and honors replacement", () => {
+  it("consumes AG-UI A2UI activity snapshots and never deletes a held surface by restatement", () => {
     const runtime = createPrometheusA2uiRuntime();
     expect(runtime.processAgUiEvent({ type: "TEXT_MESSAGE_CONTENT", content: "ignored" })).toBe(false);
     expect(runtime.processAgUiEvent({
@@ -372,7 +372,9 @@ describe("A2UI v1.0 RC and AG-UI 0.0.59 compatibility", () => {
         ],
       },
     });
-    expect(runtime.getSurface("ag-ui-main")).toBeUndefined();
+    // A surface is deleted only by an explicit deleteSurface, so `replace: true`
+    // restating the activity with other surfaces leaves the held one alone.
+    expect(runtime.getSurface("ag-ui-main")).toBeDefined();
     expect(runtime.getSurface("ag-ui-replacement")).toBeDefined();
     runtime.dispose();
   });

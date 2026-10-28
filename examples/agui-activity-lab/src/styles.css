@@ -1,0 +1,21 @@
+:root {
+  color: #f7f4ed;
+  background: #0b0d12;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 1.5rem;
+}
+
+main {
+  display: grid;
+  gap: 1rem;
+  max-width: 60rem;
+}
+
+ol {
+  margin: 0;
+  padding-left: 1.25rem;
+}
