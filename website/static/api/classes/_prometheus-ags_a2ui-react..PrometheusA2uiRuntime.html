@@ -13,13 +13,17 @@
 <li><a href="" aria-current="page">PrometheusA2uiRuntime</a></li></ul>
 <h1>Class PrometheusA2uiRuntime</h1></div>
 <section class="tsd-panel tsd-comment">
-<div class="tsd-comment tsd-typography"><p>Thin lifecycle wrapper around the official A2UI v0.9 MessageProcessor.
-It adds exact-version enforcement, catalog/component allowlisting, policy
-dispatch, and a React-compatible subscription snapshot—never a second
-protocol parser or surface model.</p>
-</div></section><aside class="tsd-sources">
+<div class="tsd-comment tsd-typography"><p>The React runtime: the shared core with the official React catalog as its
+default. Behavior is the core's; only the default catalog is added here.</p>
+</div></section>
+<section class="tsd-panel tsd-hierarchy" data-refl="80936">
+<h4>Hierarchy</h4>
+<ul class="tsd-hierarchy">
+<li class="tsd-hierarchy-item"><span class="tsd-signature-type">PrometheusA2uiRuntimeCore</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_prometheus-ags_a2ui-react..PrometheusA2uiComponentImplementation.html" class="tsd-signature-type tsd-kind-interface">PrometheusA2uiComponentImplementation</a><span class="tsd-signature-symbol">&gt;</span>
+<ul class="tsd-hierarchy">
+<li class="tsd-hierarchy-item"><span class="tsd-hierarchy-target">PrometheusA2uiRuntime</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/index.d.ts:461</li></ul></aside>
+<li>Defined in packages/a2ui-react/dist/index.d.ts:56</li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -31,18 +35,25 @@ protocol parser or surface model.</p>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading tsd-anchor-link" id="properties">Properties<a href="#properties" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-index-list"><a href="#getsurfaces" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>get<wbr/>Surfaces</span></a>
-<a href="#processor" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>processor</span></a>
-<a href="#subscribe" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>subscribe</span></a>
+<div class="tsd-index-list"><a href="#getsurfaces" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>get<wbr/>Surfaces</span></a>
+<a href="#processor" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>processor</span></a>
+<a href="#subscribe" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>subscribe</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading tsd-anchor-link" id="methods">Methods<a href="#methods" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-index-list"><a href="#dispose" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>dispose</span></a>
-<a href="#getclientcapabilities" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Client<wbr/>Capabilities</span></a>
-<a href="#getclientdatamodel" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Client<wbr/>Data<wbr/>Model</span></a>
-<a href="#getsurface" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Surface</span></a>
-<a href="#processaguievent" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>process<wbr/>Ag<wbr/>Ui<wbr/>Event</span></a>
-<a href="#processmessages" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>process<wbr/>Messages</span></a>
+<div class="tsd-index-list"><a href="#applystaleactionrejection" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>apply<wbr/>Stale<wbr/>Action<wbr/>Rejection</span></a>
+<a href="#dispose" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>dispose</span></a>
+<a href="#exportsurfacemessages" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>export<wbr/>Surface<wbr/>Messages</span></a>
+<a href="#getclientcapabilities" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Client<wbr/>Capabilities</span></a>
+<a href="#getclientdatamodel" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Client<wbr/>Data<wbr/>Model</span></a>
+<a href="#getheldversions" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Held<wbr/>Versions</span></a>
+<a href="#getlimitusage" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Limit<wbr/>Usage</span></a>
+<a href="#getresyncforwardedprops" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Resync<wbr/>Forwarded<wbr/>Props</span></a>
+<a href="#getsurface" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Surface</span></a>
+<a href="#processaguievent" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>process<wbr/>Ag<wbr/>Ui<wbr/>Event</span></a>
+<a href="#processmessages" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>process<wbr/>Messages</span></a>
+<a href="#retryaction" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>retry<wbr/>Action</span></a>
+<a href="#setlimits" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>set<wbr/>Limits</span></a>
 </div></section></div></details></section></section>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Constructors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="constructors-1">Constructors<a href="#constructors-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
@@ -51,49 +62,97 @@ protocol parser or surface model.</p>
 <h3 class="tsd-anchor-link" id="constructor"><span>constructor</span><a href="#constructor" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="">
-<div class="tsd-signature tsd-anchor-link" id="constructorprometheusa2uiruntime"><span class="tsd-signature-keyword">new</span> <span class="tsd-kind-constructor-signature">PrometheusA2uiRuntime</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">options</span><span class="tsd-signature-symbol">?:</span> <a href="../interfaces/_prometheus-ags_a2ui-react..CreatePrometheusA2uiRuntimeOptions.html" class="tsd-signature-type tsd-kind-interface">CreatePrometheusA2uiRuntimeOptions</a><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-class">PrometheusA2uiRuntime</a><a href="#constructorprometheusa2uiruntime" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-signature tsd-anchor-link" id="constructorprometheusa2uiruntime"><span class="tsd-signature-keyword">new</span> <span class="tsd-kind-constructor-signature">PrometheusA2uiRuntime</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">options</span><span class="tsd-signature-symbol">?:</span> <a href="../interfaces/_prometheus-ags_a2ui-react..CreatePrometheusA2uiRuntimeOptions.html" class="tsd-signature-type tsd-kind-interface">CreatePrometheusA2uiRuntimeOptions</a><span class="tsd-signature-symbol">&lt;</span><br/>        <a href="../interfaces/_prometheus-ags_a2ui-react..PrometheusA2uiComponentImplementation.html" class="tsd-signature-type tsd-kind-interface">PrometheusA2uiComponentImplementation</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-class">PrometheusA2uiRuntime</a><a href="#constructorprometheusa2uiruntime" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
-<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">options</span>: <a href="../interfaces/_prometheus-ags_a2ui-react..CreatePrometheusA2uiRuntimeOptions.html" class="tsd-signature-type tsd-kind-interface">CreatePrometheusA2uiRuntimeOptions</a></span></li></ul></div>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">options</span>: <a href="../interfaces/_prometheus-ags_a2ui-react..CreatePrometheusA2uiRuntimeOptions.html" class="tsd-signature-type tsd-kind-interface">CreatePrometheusA2uiRuntimeOptions</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_prometheus-ags_a2ui-react..PrometheusA2uiComponentImplementation.html" class="tsd-signature-type tsd-kind-interface">PrometheusA2uiComponentImplementation</a><span class="tsd-signature-symbol">&gt;</span></span></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type tsd-kind-class">PrometheusA2uiRuntime</a></h4><aside class="tsd-sources">
+<p>Overrides PrometheusA2uiRuntimeCore&lt;PrometheusA2uiComponentImplementation&gt;.constructor</p>
 <ul>
-<li>Defined in packages/a2ui-react/dist/index.d.ts:478</li></ul></aside></div></li></ul></section></section></details>
+<li>Defined in packages/a2ui-react/dist/index.d.ts:57</li></ul></aside></div></li></ul></section></section></details>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="properties-1">Properties<a href="#properties-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
-<section class="tsd-panel tsd-member">
+<section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="getsurfaces"><span>get<wbr/>Surfaces</span><a href="#getsurfaces" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">getSurfaces</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">()</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-keyword">readonly</span> <a href="_prometheus-ags_a2ui-react..SurfaceModel.html" class="tsd-signature-type tsd-kind-class">SurfaceModel</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_prometheus-ags_a2ui-react..PrometheusA2uiComponentImplementation.html" class="tsd-signature-type tsd-kind-interface">PrometheusA2uiComponentImplementation</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">getSurfaces</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">()</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-keyword">readonly</span> <a href="_prometheus-ags_a2ui-react..SurfaceModel.html" class="tsd-signature-type tsd-kind-class">SurfaceModel</a><span class="tsd-signature-symbol">&lt;</span><br/>    <a href="../interfaces/_prometheus-ags_a2ui-react..PrometheusA2uiComponentImplementation.html" class="tsd-signature-type tsd-kind-interface">PrometheusA2uiComponentImplementation</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-type">FunctionImplementation</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
+<p>Inherited from PrometheusA2uiRuntimeCore.getSurfaces</p>
 <ul>
-<li>Defined in packages/a2ui-react/dist/index.d.ts:484</li></ul></aside></section>
-<section class="tsd-panel tsd-member">
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:853</li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="processor"><code class="tsd-tag">Readonly</code><span>processor</span><a href="#processor" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">processor</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">MessageProcessor</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_prometheus-ags_a2ui-react..PrometheusA2uiComponentImplementation.html" class="tsd-signature-type tsd-kind-interface">PrometheusA2uiComponentImplementation</a><span class="tsd-signature-symbol">&gt;</span></div><aside class="tsd-sources">
+<p>Inherited from PrometheusA2uiRuntimeCore.processor</p>
 <ul>
-<li>Defined in packages/a2ui-react/dist/index.d.ts:462</li></ul></aside></section>
-<section class="tsd-panel tsd-member">
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:756</li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="subscribe"><span>subscribe</span><a href="#subscribe" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">subscribe</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">listener</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">()</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-symbol">()</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">void</span></div><aside class="tsd-sources">
+<p>Inherited from PrometheusA2uiRuntimeCore.subscribe</p>
 <ul>
-<li>Defined in packages/a2ui-react/dist/index.d.ts:489</li></ul></aside></section></section></details>
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:867</li></ul></aside></section></section></details>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="methods-1">Methods<a href="#methods-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
-<section class="tsd-panel tsd-member">
+<section class="tsd-panel tsd-member tsd-is-inherited">
+<h3 class="tsd-anchor-link" id="applystaleactionrejection"><span>apply<wbr/>Stale<wbr/>Action<wbr/>Rejection</span><a href="#applystaleactionrejection" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
+<div class="tsd-signature tsd-anchor-link" id="applystaleactionrejection-1"><span class="tsd-kind-call-signature">applyStaleActionRejection</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">input</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><a href="#applystaleactionrejection-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Apply what a server returned when it rejected an action as stale: the
+operations since the version the client held, with the versions they bring
+each surface to. They go through the same ordering and limits as any
+activity, so a repeated rejection changes nothing. A rejection that carries
+no operations cannot repair the surface, so it requests a resync. The wire
+shape is documented in <code>stale-action.ts</code>.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">input</span>: <span class="tsd-signature-type">unknown</span></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from PrometheusA2uiRuntimeCore.applyStaleActionRejection</p>
+<ul>
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:877</li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="dispose"><span>dispose</span><a href="#dispose" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="">
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
 <div class="tsd-signature tsd-anchor-link" id="dispose-1"><span class="tsd-kind-call-signature">dispose</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><a href="#dispose-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from PrometheusA2uiRuntimeCore.dispose</p>
 <ul>
-<li>Defined in packages/a2ui-react/dist/index.d.ts:490</li></ul></aside></div></li></ul></section>
-<section class="tsd-panel tsd-member">
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:868</li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
+<h3 class="tsd-anchor-link" id="exportsurfacemessages"><span>export<wbr/>Surface<wbr/>Messages</span><a href="#exportsurfacemessages" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
+<div class="tsd-signature tsd-anchor-link" id="exportsurfacemessages-1"><span class="tsd-kind-call-signature">exportSurfaceMessages</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">surfaceId</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">options</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">SurfaceExportOptions</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">PrometheusA2uiSurfaceExport</span><a href="#exportsurfacemessages-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Export a surface as messages that rebuild it in a fresh runtime: catalog,
+theme, <code>sendDataModel</code>, every component (with its own catalog where it
+differs), the data model and, for a v1.0 surface, its <code>wantResponse</code> and
+<code>responsePath</code> action metadata. Components unreachable from <code>root</code> are
+pruned and reported in <code>orphans</code>; pass <code>{ pruneOrphans: false }</code> to keep
+them. Exporting the rebuilt surface again yields the same messages.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">surfaceId</span>: <span class="tsd-signature-type">string</span></span></li>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">options</span>: <span class="tsd-signature-type">SurfaceExportOptions</span></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">PrometheusA2uiSurfaceExport</span></h4><aside class="tsd-sources">
+<p>Inherited from PrometheusA2uiRuntimeCore.exportSurfaceMessages</p>
+<ul>
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:852</li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="getclientcapabilities"><span>get<wbr/>Client<wbr/>Capabilities</span><a href="#getclientcapabilities" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="">
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
 <div class="tsd-signature tsd-anchor-link" id="getclientcapabilities-1"><span class="tsd-kind-call-signature">getClientCapabilities</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">options</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-symbol">{</span> <span class="tsd-kind-property">includeInlineCatalogs</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span> <span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="../types/_prometheus-ags_a2ui-react..A2uiClientCapabilities.html" class="tsd-signature-type tsd-kind-type-alias">A2uiClientCapabilities</a><a href="#getclientcapabilities-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
 <div class="tsd-parameters">
@@ -101,49 +160,93 @@ protocol parser or surface model.</p>
 <ul class="tsd-parameter-list">
 <li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">options</span>: <span class="tsd-signature-symbol">{</span> <span class="tsd-kind-property">includeInlineCatalogs</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span> <span class="tsd-signature-symbol">}</span></span></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="../types/_prometheus-ags_a2ui-react..A2uiClientCapabilities.html" class="tsd-signature-type tsd-kind-type-alias">A2uiClientCapabilities</a></h4><aside class="tsd-sources">
+<p>Inherited from PrometheusA2uiRuntimeCore.getClientCapabilities</p>
 <ul>
-<li>Defined in packages/a2ui-react/dist/index.d.ts:485</li></ul></aside></div></li></ul></section>
-<section class="tsd-panel tsd-member">
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:854</li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="getclientdatamodel"><span>get<wbr/>Client<wbr/>Data<wbr/>Model</span><a href="#getclientdatamodel" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="">
-<div class="tsd-signature tsd-anchor-link" id="getclientdatamodel-1"><span class="tsd-kind-call-signature">getClientDataModel</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-symbol">{</span><br/>    <span class="tsd-kind-property">surfaces</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><br/>        <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>        <span class="tsd-signature-type">z.objectOutputType</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">z.ZodTypeAny</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">&quot;passthrough&quot;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">;</span><br/>    <span class="tsd-kind-property">version</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;v0.9&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;v0.9.1&quot;</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span><br/><span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">undefined</span><a href="#getclientdatamodel-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
+<div class="tsd-signature tsd-anchor-link" id="getclientdatamodel-1"><span class="tsd-kind-call-signature">getClientDataModel</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-symbol">{</span><br/>    <span class="tsd-kind-property">surfaces</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">;</span><br/>    <span class="tsd-kind-property">version</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;v0.9&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;v0.9.1&quot;</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span><br/><span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">undefined</span><a href="#getclientdatamodel-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
-<h4 class="tsd-returns-title">Returns <br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-symbol">{</span><br/>        <span class="tsd-kind-property">surfaces</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><br/>            <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>            <span class="tsd-signature-type">z.objectOutputType</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">z.ZodTypeAny</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">&quot;passthrough&quot;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span><br/>        <span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">;</span><br/>        <span class="tsd-kind-property">version</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;v0.9&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;v0.9.1&quot;</span><span class="tsd-signature-symbol">;</span><br/>    <span class="tsd-signature-symbol">}</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">undefined</span></h4><aside class="tsd-sources">
+<h4 class="tsd-returns-title">Returns <br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-symbol">{</span><br/>        <span class="tsd-kind-property">surfaces</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">;</span><br/>        <span class="tsd-kind-property">version</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;v0.9&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;v0.9.1&quot;</span><span class="tsd-signature-symbol">;</span><br/>    <span class="tsd-signature-symbol">}</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">undefined</span></h4><aside class="tsd-sources">
+<p>Inherited from PrometheusA2uiRuntimeCore.getClientDataModel</p>
 <ul>
-<li>Defined in packages/a2ui-react/dist/index.d.ts:488</li></ul></aside></div></li></ul></section>
-<section class="tsd-panel tsd-member">
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:857</li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
+<h3 class="tsd-anchor-link" id="getheldversions"><span>get<wbr/>Held<wbr/>Versions</span><a href="#getheldversions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
+<div class="tsd-signature tsd-anchor-link" id="getheldversions-1"><span class="tsd-kind-call-signature">getHeldVersions</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <a href="../types/_prometheus-ags_a2ui-react..PrometheusA2uiHeldVersions.html" class="tsd-signature-type tsd-kind-type-alias">PrometheusA2uiHeldVersions</a><a href="#getheldversions-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>The version held for each surface with versioned state. A host that
+reconnects reports these upstream so the agent resends only what is missing.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <a href="../types/_prometheus-ags_a2ui-react..PrometheusA2uiHeldVersions.html" class="tsd-signature-type tsd-kind-type-alias">PrometheusA2uiHeldVersions</a></h4><aside class="tsd-sources">
+<p>Inherited from PrometheusA2uiRuntimeCore.getHeldVersions</p>
+<ul>
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:825</li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
+<h3 class="tsd-anchor-link" id="getlimitusage"><span>get<wbr/>Limit<wbr/>Usage</span><a href="#getlimitusage" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
+<div class="tsd-signature tsd-anchor-link" id="getlimitusage-1"><span class="tsd-kind-call-signature">getLimitUsage</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <a href="../types/_prometheus-ags_a2ui-react..PrometheusA2uiLimitUsage.html" class="tsd-signature-type tsd-kind-type-alias">PrometheusA2uiLimitUsage</a><a href="#getlimitusage-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Held usage against each state limit, for hosts that show how close they are.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <a href="../types/_prometheus-ags_a2ui-react..PrometheusA2uiLimitUsage.html" class="tsd-signature-type tsd-kind-type-alias">PrometheusA2uiLimitUsage</a></h4><aside class="tsd-sources">
+<p>Inherited from PrometheusA2uiRuntimeCore.getLimitUsage</p>
+<ul>
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:866</li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
+<h3 class="tsd-anchor-link" id="getresyncforwardedprops"><span>get<wbr/>Resync<wbr/>Forwarded<wbr/>Props</span><a href="#getresyncforwardedprops" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
+<div class="tsd-signature tsd-anchor-link" id="getresyncforwardedprops-1"><span class="tsd-kind-call-signature">getResyncForwardedProps</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/_prometheus-ags_a2ui-react..PrometheusA2uiForwardedProps.html" class="tsd-signature-type tsd-kind-interface">PrometheusA2uiForwardedProps</a><a href="#getresyncforwardedprops-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p><code>forwardedProps</code> for the next run input, reporting the held versions.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <a href="../interfaces/_prometheus-ags_a2ui-react..PrometheusA2uiForwardedProps.html" class="tsd-signature-type tsd-kind-interface">PrometheusA2uiForwardedProps</a></h4><aside class="tsd-sources">
+<p>Inherited from PrometheusA2uiRuntimeCore.getResyncForwardedProps</p>
+<ul>
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:827</li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="getsurface"><span>get<wbr/>Surface</span><a href="#getsurface" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="">
-<div class="tsd-signature tsd-anchor-link" id="getsurface-1"><span class="tsd-kind-call-signature">getSurface</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">id</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_a2ui-react..SurfaceModel.html" class="tsd-signature-type tsd-kind-class">SurfaceModel</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_prometheus-ags_a2ui-react..PrometheusA2uiComponentImplementation.html" class="tsd-signature-type tsd-kind-interface">PrometheusA2uiComponentImplementation</a><span class="tsd-signature-symbol">&gt;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">undefined</span><a href="#getsurface-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
+<div class="tsd-signature tsd-anchor-link" id="getsurface-1"><span class="tsd-kind-call-signature">getSurface</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">id</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span><br/>    <span class="tsd-signature-symbol">|</span> <a href="_prometheus-ags_a2ui-react..SurfaceModel.html" class="tsd-signature-type tsd-kind-class">SurfaceModel</a><span class="tsd-signature-symbol">&lt;</span><br/>        <a href="../interfaces/_prometheus-ags_a2ui-react..PrometheusA2uiComponentImplementation.html" class="tsd-signature-type tsd-kind-interface">PrometheusA2uiComponentImplementation</a><span class="tsd-signature-symbol">,</span><br/>        <span class="tsd-signature-type">FunctionImplementation</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-symbol">&gt;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">undefined</span><a href="#getsurface-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li><span><span class="tsd-kind-parameter">id</span>: <span class="tsd-signature-type">string</span></span></li></ul></div>
-<h4 class="tsd-returns-title">Returns <a href="_prometheus-ags_a2ui-react..SurfaceModel.html" class="tsd-signature-type tsd-kind-class">SurfaceModel</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_prometheus-ags_a2ui-react..PrometheusA2uiComponentImplementation.html" class="tsd-signature-type tsd-kind-interface">PrometheusA2uiComponentImplementation</a><span class="tsd-signature-symbol">&gt;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">undefined</span></h4><aside class="tsd-sources">
+<h4 class="tsd-returns-title">Returns <br/>    <span class="tsd-signature-symbol">|</span> <a href="_prometheus-ags_a2ui-react..SurfaceModel.html" class="tsd-signature-type tsd-kind-class">SurfaceModel</a><span class="tsd-signature-symbol">&lt;</span><br/>        <a href="../interfaces/_prometheus-ags_a2ui-react..PrometheusA2uiComponentImplementation.html" class="tsd-signature-type tsd-kind-interface">PrometheusA2uiComponentImplementation</a><span class="tsd-signature-symbol">,</span><br/>        <span class="tsd-signature-type">FunctionImplementation</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-symbol">&gt;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">undefined</span></h4><aside class="tsd-sources">
+<p>Inherited from PrometheusA2uiRuntimeCore.getSurface</p>
 <ul>
-<li>Defined in packages/a2ui-react/dist/index.d.ts:483</li></ul></aside></div></li></ul></section>
-<section class="tsd-panel tsd-member">
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:843</li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="processaguievent"><span>process<wbr/>Ag<wbr/>Ui<wbr/>Event</span><a href="#processaguievent" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="">
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
 <div class="tsd-signature tsd-anchor-link" id="processaguievent-1"><span class="tsd-kind-call-signature">processAgUiEvent</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">input</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><a href="#processaguievent-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Consume the AG-UI 0.0.59 A2UI activity snapshot convention.</p>
+<div class="tsd-comment tsd-typography"><p>Consume the AG-UI A2UI activity convention: <code>ACTIVITY_SNAPSHOT</code>, activity
+type <code>a2ui-surface</code>, operations in <code>content.a2ui_operations</code>. Delivery is
+idempotent: a redelivered activity changes nothing, and a surface is only
+ever deleted by an explicit <code>deleteSurface</code> operation.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li><span><span class="tsd-kind-parameter">input</span>: <span class="tsd-signature-type">unknown</span></span></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
+<p>Inherited from PrometheusA2uiRuntimeCore.processAgUiEvent</p>
 <ul>
-<li>Defined in packages/a2ui-react/dist/index.d.ts:482</li></ul></aside></div></li></ul></section>
-<section class="tsd-panel tsd-member">
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:789</li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="processmessages"><span>process<wbr/>Messages</span><a href="#processmessages" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="">
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
 <div class="tsd-signature tsd-anchor-link" id="processmessages-1"><span class="tsd-kind-call-signature">processMessages</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">input</span><span class="tsd-signature-symbol">:</span> <a href="../types/_prometheus-ags_a2ui-react..PrometheusA2uiMessageInput.html" class="tsd-signature-type tsd-kind-type-alias">PrometheusA2uiMessageInput</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><a href="#processmessages-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Validate and process official v0.9.1 or v1.0 RC messages in order.</p>
@@ -153,8 +256,49 @@ protocol parser or surface model.</p>
 <ul class="tsd-parameter-list">
 <li><span><span class="tsd-kind-parameter">input</span>: <a href="../types/_prometheus-ags_a2ui-react..PrometheusA2uiMessageInput.html" class="tsd-signature-type tsd-kind-type-alias">PrometheusA2uiMessageInput</a></span></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from PrometheusA2uiRuntimeCore.processMessages</p>
 <ul>
-<li>Defined in packages/a2ui-react/dist/index.d.ts:480</li></ul></aside></div></li></ul></section></section></details></div>
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:782</li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
+<h3 class="tsd-anchor-link" id="retryaction"><span>retry<wbr/>Action</span><a href="#retryaction" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
+<div class="tsd-signature tsd-anchor-link" id="retryaction-1"><span class="tsd-kind-call-signature">retryAction</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">actionId</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><a href="#retryaction-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Resend an executed action under the same <code>actionId</code>. The runtime owns the
+retry: a host that resent on its own would mint a new id and defeat the
+server's idempotency. The resent envelope is the original, so its
+<code>heldVersion</code> and data model are those from when the action fired. Returns
+<code>false</code> when the id is unknown (never emitted here, or forgotten past the
+retained-action bound) or no <code>onActionEnvelope</code> handler is installed.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">actionId</span>: <span class="tsd-signature-type">string</span></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Inherited from PrometheusA2uiRuntimeCore.retryAction</p>
+<ul>
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:886</li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
+<h3 class="tsd-anchor-link" id="setlimits"><span>set<wbr/>Limits</span><a href="#setlimits" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
+<div class="tsd-signature tsd-anchor-link" id="setlimits-1"><span class="tsd-kind-call-signature">setLimits</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">overrides</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_prometheus-ags_a2ui-react..PrometheusA2uiLimits.html" class="tsd-signature-type tsd-kind-interface">PrometheusA2uiLimits</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><a href="#setlimits-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Change some limits while the runtime is running. Applies to future calls
+only and never evicts a surface already held. A cap lowered below what is
+held refuses calls that would grow past it, but still allows calls that
+shrink or hold steady, so the host can get back under the cap.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">overrides</span>: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_prometheus-ags_a2ui-react..PrometheusA2uiLimits.html" class="tsd-signature-type tsd-kind-interface">PrometheusA2uiLimits</a><span class="tsd-signature-symbol">&gt;</span></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from PrometheusA2uiRuntimeCore.setLimits</p>
+<ul>
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:864</li></ul></aside></div></li></ul></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -173,9 +317,9 @@ protocol parser or surface model.</p>
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Constructors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Constructors</summary>
 <div><a href="#constructor"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Constructor"><use href="../assets/icons.svg#icon-512"></use></svg><span>constructor</span></a></div></details>
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Properties</summary>
-<div><a href="#getsurfaces"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>get<wbr/>Surfaces</span></a><a href="#processor"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>processor</span></a><a href="#subscribe"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>subscribe</span></a></div></details>
+<div><a href="#getsurfaces" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>get<wbr/>Surfaces</span></a><a href="#processor" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>processor</span></a><a href="#subscribe" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>subscribe</span></a></div></details>
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Methods</summary>
-<div><a href="#dispose"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>dispose</span></a><a href="#getclientcapabilities"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Client<wbr/>Capabilities</span></a><a href="#getclientdatamodel"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Client<wbr/>Data<wbr/>Model</span></a><a href="#getsurface"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Surface</span></a><a href="#processaguievent"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>process<wbr/>Ag<wbr/>Ui<wbr/>Event</span></a><a href="#processmessages"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>process<wbr/>Messages</span></a></div></details></div></details></div>
+<div><a href="#applystaleactionrejection" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>apply<wbr/>Stale<wbr/>Action<wbr/>Rejection</span></a><a href="#dispose" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>dispose</span></a><a href="#exportsurfacemessages" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>export<wbr/>Surface<wbr/>Messages</span></a><a href="#getclientcapabilities" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Client<wbr/>Capabilities</span></a><a href="#getclientdatamodel" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Client<wbr/>Data<wbr/>Model</span></a><a href="#getheldversions" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Held<wbr/>Versions</span></a><a href="#getlimitusage" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Limit<wbr/>Usage</span></a><a href="#getresyncforwardedprops" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Resync<wbr/>Forwarded<wbr/>Props</span></a><a href="#getsurface" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Surface</span></a><a href="#processaguievent" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>process<wbr/>Ag<wbr/>Ui<wbr/>Event</span></a><a href="#processmessages" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>process<wbr/>Messages</span></a><a href="#retryaction" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>retry<wbr/>Action</span></a><a href="#setlimits" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>set<wbr/>Limits</span></a></div></details></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../index.html">Prometheus Entity Management API</a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container">

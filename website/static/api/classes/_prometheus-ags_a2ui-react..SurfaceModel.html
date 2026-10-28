@@ -11,20 +11,25 @@
 <li><a href="../modules/_prometheus-ags_a2ui-react.html">@prometheus-ags/a2ui-react</a></li>
 <li><a href="../modules/_prometheus-ags_a2ui-react..html"></a></li>
 <li><a href="" aria-current="page">SurfaceModel</a></li></ul>
-<h1>Class SurfaceModel&lt;T&gt;</h1></div>
+<h1>Class SurfaceModel&lt;T, F&gt;</h1></div>
 <section class="tsd-panel tsd-comment">
-<div class="tsd-comment tsd-typography"><p>The state model for a single UI surface.</p>
-<p>A surface is the root container for a set of components and their associated data.
-It coordinates data binding, component state, and action dispatching.</p>
+<div class="tsd-comment tsd-typography"><p>State model for a single UI surface.</p>
+<p>Coordinates data binding, component state, and action dispatching.</p>
 </div></section>
 <section class="tsd-panel">
 <h4>Type Parameters</h4>
 <ul class="tsd-type-parameter-list">
 <li><span id="t"><span class="tsd-kind-type-parameter">T</span> <span class="tsd-signature-keyword">extends</span> <span class="tsd-signature-type">ComponentApi</span> = <span class="tsd-signature-type">ComponentApi</span></span>
-<div class="tsd-comment tsd-typography"><p>The concrete type of the ComponentApi from the catalog.</p>
+<div class="tsd-comment tsd-typography"><p>Concrete type of the ComponentApi from the catalog.</p>
+</div></li>
+<li><span id="f"><span class="tsd-kind-type-parameter">F</span> <span class="tsd-signature-keyword">extends</span> <span class="tsd-signature-type">FunctionApi</span> = <span class="tsd-signature-type">FunctionImplementation</span></span>
+<div class="tsd-comment tsd-typography"><p>The catalog's function kind. Every state and messaging
+capability of the surface works with a schema-only catalog
+(<code>SurfaceModel&lt;T, FunctionApi&gt;</code>); only node-tree resolution needs
+implementations.</p>
 </div></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/state/surface-model.d.ts:16</li></ul></aside>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:70</li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -36,19 +41,27 @@ It coordinates data binding, component state, and action dispatching.</p>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading tsd-anchor-link" id="properties">Properties<a href="#properties" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-index-list"><a href="#catalog" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>catalog</span></a>
+<div class="tsd-index-list"><a href="#availablecatalogs" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>available<wbr/>Catalogs</span></a>
 <a href="#componentsmodel" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>components<wbr/>Model</span></a>
 <a href="#datamodel" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>data<wbr/>Model</span></a>
+<a href="#defaultcatalog" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>default<wbr/>Catalog</span></a>
 <a href="#id" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>id</span></a>
 <a href="#onaction" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>on<wbr/>Action</span></a>
 <a href="#onerror" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>on<wbr/>Error</span></a>
+<a href="#onwarning" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>on<wbr/>Warning</span></a>
+<a href="#rootid" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>root<wbr/>Id</span></a>
 <a href="#senddatamodel" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>send<wbr/>Data<wbr/>Model</span></a>
 <a href="#theme" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>theme</span></a>
+</div></section>
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading tsd-anchor-link" id="accessors">Accessors<a href="#accessors" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-index-list"><a href="#catalog" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Accessor"><use href="../assets/icons.svg#icon-262144"></use></svg><span>catalog</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading tsd-anchor-link" id="methods">Methods<a href="#methods" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-index-list"><a href="#dispatchaction" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>dispatch<wbr/>Action</span></a>
 <a href="#dispatcherror" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>dispatch<wbr/>Error</span></a>
+<a href="#dispatchwarning" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>dispatch<wbr/>Warning</span></a>
 <a href="#dispose" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>dispose</span></a>
 </div></section></div></details></section></section>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Constructors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -58,85 +71,151 @@ It coordinates data binding, component state, and action dispatching.</p>
 <h3 class="tsd-anchor-link" id="constructor"><span>constructor</span><a href="#constructor" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-external">
 <li class="tsd-is-external">
-<div class="tsd-signature tsd-anchor-link" id="constructorsurfacemodel"><span class="tsd-signature-keyword">new</span> <span class="tsd-kind-constructor-signature">SurfaceModel</span><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#constructorsurfacemodelt">T</a> <span class="tsd-signature-keyword">extends</span> <span class="tsd-signature-type">ComponentApi</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ZodTypeAny</span><span class="tsd-signature-symbol">&gt;</span> <span class="tsd-signature-symbol">=</span> <span class="tsd-signature-type">ComponentApi</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ZodTypeAny</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">id</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">catalog</span><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_a2ui-react..Catalog.html" class="tsd-signature-type tsd-kind-class">Catalog</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">theme</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">sendDataModel</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-class">SurfaceModel</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">&gt;</span><a href="#constructorsurfacemodel" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-signature tsd-anchor-link" id="constructorsurfacemodel"><span class="tsd-signature-keyword">new</span> <span class="tsd-kind-constructor-signature">SurfaceModel</span><span class="tsd-signature-symbol">&lt;</span><br/>    <a class="tsd-signature-type tsd-kind-type-parameter" href="#constructorsurfacemodelt">T</a> <span class="tsd-signature-keyword">extends</span> <span class="tsd-signature-type">ComponentApi</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ZodTypeAny</span><span class="tsd-signature-symbol">&gt;</span> <span class="tsd-signature-symbol">=</span> <span class="tsd-signature-type">ComponentApi</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ZodTypeAny</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span><br/>    <a class="tsd-signature-type tsd-kind-type-parameter" href="#constructorsurfacemodelf">F</a> <span class="tsd-signature-keyword">extends</span> <span class="tsd-signature-type">FunctionApi</span> <span class="tsd-signature-symbol">=</span> <span class="tsd-signature-type">FunctionImplementation</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">id</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">defaultCatalog</span><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_a2ui-react..Catalog.html" class="tsd-signature-type tsd-kind-class">Catalog</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">,</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#f">F</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">availableCatalogs</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">ReadonlyMap</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <a href="_prometheus-ags_a2ui-react..Catalog.html" class="tsd-signature-type tsd-kind-class">Catalog</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">,</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#f">F</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">theme</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">sendDataModel</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">dataModel</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">DataModel</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">rootId</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-class">SurfaceModel</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">,</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#f">F</a><span class="tsd-signature-symbol">&gt;</span><a href="#constructorsurfacemodel" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Creates a new surface model.</p>
+<div class="tsd-comment tsd-typography"><p>Initializes a new <code>SurfaceModel</code> instance.</p>
 </div>
 <section class="tsd-panel">
 <h4>Type Parameters</h4>
 <ul class="tsd-type-parameter-list">
 <li><span id="constructorsurfacemodelt"><span class="tsd-kind-type-parameter">T</span> <span class="tsd-signature-keyword">extends</span> <span class="tsd-signature-type">ComponentApi</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ZodTypeAny</span><span class="tsd-signature-symbol">&gt;</span> = <span class="tsd-signature-type">ComponentApi</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ZodTypeAny</span><span class="tsd-signature-symbol">&gt;</span></span>
-<div class="tsd-comment tsd-typography"><p>The concrete type of the ComponentApi from the catalog.</p>
+<div class="tsd-comment tsd-typography"><p>Concrete type of the ComponentApi from the catalog.</p>
+</div></li>
+<li><span id="constructorsurfacemodelf"><span class="tsd-kind-type-parameter">F</span> <span class="tsd-signature-keyword">extends</span> <span class="tsd-signature-type">FunctionApi</span> = <span class="tsd-signature-type">FunctionImplementation</span></span>
+<div class="tsd-comment tsd-typography"><p>The catalog's function kind. Every state and messaging
+capability of the surface works with a schema-only catalog
+(<code>SurfaceModel&lt;T, FunctionApi&gt;</code>); only node-tree resolution needs
+implementations.</p>
 </div></li></ul></section>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li><span><span class="tsd-kind-parameter">id</span>: <span class="tsd-signature-type">string</span></span>
-<div class="tsd-comment tsd-typography"><p>The unique identifier for this surface.</p>
+<div class="tsd-comment tsd-typography"><p>Unique identifier for this surface.</p>
 </div></li>
-<li><span><span class="tsd-kind-parameter">catalog</span>: <a href="_prometheus-ags_a2ui-react..Catalog.html" class="tsd-signature-type tsd-kind-class">Catalog</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">&gt;</span></span>
-<div class="tsd-comment tsd-typography"><p>The component catalog used by this surface.</p>
+<li><span><span class="tsd-kind-parameter">defaultCatalog</span>: <a href="_prometheus-ags_a2ui-react..Catalog.html" class="tsd-signature-type tsd-kind-class">Catalog</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">,</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#f">F</a><span class="tsd-signature-symbol">&gt;</span></span>
+<div class="tsd-comment tsd-typography"><p>Catalog that resolves components and functions that
+do not name a catalog explicitly.</p>
+</div></li>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">availableCatalogs</span>: <span class="tsd-signature-type">ReadonlyMap</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <a href="_prometheus-ags_a2ui-react..Catalog.html" class="tsd-signature-type tsd-kind-class">Catalog</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">,</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#f">F</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">null</span></span>
+<div class="tsd-comment tsd-typography"><p>Every catalog a payload on this surface may select
+by <code>catalogId</code>, keyed by that identifier. The message processor populates
+it with the catalogs whose protocol version is compatible with the
+surface's own.</p>
 </div></li>
 <li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">theme</span>: <span class="tsd-signature-type">any</span></span>
-<div class="tsd-comment tsd-typography"><p>The theme to apply to this surface.</p>
+<div class="tsd-comment tsd-typography"><p>Theme to apply to this surface.</p>
 </div></li>
 <li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">sendDataModel</span>: <span class="tsd-signature-type">boolean</span></span>
-<div class="tsd-comment tsd-typography"><p>If true, the client will send the full data model.</p>
+<div class="tsd-comment tsd-typography"><p>Whether the renderer sends the full data model with actions.</p>
+</div></li>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">dataModel</span>: <span class="tsd-signature-type">DataModel</span></span>
+<div class="tsd-comment tsd-typography"><p>Optional custom DataModel instance. If provided, the SurfaceModel assumes
+full ownership of its lifecycle and will dispose it when dispose() is called.</p>
+</div></li>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">rootId</span>: <span class="tsd-signature-type">string</span></span>
+<div class="tsd-comment tsd-typography"><p>Identifier of the root component on this surface (defaults to <code>'root'</code>).</p>
 </div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type tsd-kind-class">SurfaceModel</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type tsd-kind-class">SurfaceModel</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">,</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#f">F</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/state/surface-model.d.ts:39</li></ul></aside></div></li></ul></section></section></details>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:117</li></ul></aside></div></li></ul></section></section></details>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="properties-1">Properties<a href="#properties-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
 <section class="tsd-panel tsd-member tsd-is-external">
-<h3 class="tsd-anchor-link" id="catalog"><code class="tsd-tag">Readonly</code><span>catalog</span><a href="#catalog" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">catalog</span><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_a2ui-react..Catalog.html" class="tsd-signature-type tsd-kind-class">Catalog</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">&gt;</span></div><aside class="tsd-sources">
+<h3 class="tsd-anchor-link" id="availablecatalogs"><code class="tsd-tag">Readonly</code><span>available<wbr/>Catalogs</span><a href="#availablecatalogs" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">availableCatalogs</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ReadonlyMap</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <a href="_prometheus-ags_a2ui-react..Catalog.html" class="tsd-signature-type tsd-kind-class">Catalog</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">,</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#f">F</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
+<div class="tsd-comment tsd-typography"><p>Catalogs available to this surface, keyed by catalog ID.</p>
+<p>Payloads on this surface may select any of these catalogs by <code>catalogId</code>.
+Includes the surface's <a href="#defaultcatalog" class="tsd-kind-property">defaultCatalog</a> under its identifier.</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/state/surface-model.d.ts:18</li></ul></aside></section>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:100</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-external">
 <h3 class="tsd-anchor-link" id="componentsmodel"><code class="tsd-tag">Readonly</code><span>components<wbr/>Model</span><a href="#componentsmodel" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">componentsModel</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">SurfaceComponentsModel</span></div>
-<div class="tsd-comment tsd-typography"><p>The collection of component models for this surface.</p>
+<div class="tsd-comment tsd-typography"><p>Collection of component models for this surface.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/state/surface-model.d.ts:24</li></ul></aside></section>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:84</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-external">
 <h3 class="tsd-anchor-link" id="datamodel"><code class="tsd-tag">Readonly</code><span>data<wbr/>Model</span><a href="#datamodel" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">dataModel</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">DataModel</span></div>
-<div class="tsd-comment tsd-typography"><p>The data model for this surface.</p>
+<div class="tsd-comment tsd-typography"><p>Data model for this surface.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/state/surface-model.d.ts:22</li></ul></aside></section>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:82</li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-external">
+<h3 class="tsd-anchor-link" id="defaultcatalog"><code class="tsd-tag">Readonly</code><span>default<wbr/>Catalog</span><a href="#defaultcatalog" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">defaultCatalog</span><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_a2ui-react..Catalog.html" class="tsd-signature-type tsd-kind-class">Catalog</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">,</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#f">F</a><span class="tsd-signature-symbol">&gt;</span></div>
+<div class="tsd-comment tsd-typography"><p>Catalog that resolves components and functions that do not name a
+catalog explicitly.</p>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:76</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-external">
 <h3 class="tsd-anchor-link" id="id"><code class="tsd-tag">Readonly</code><span>id</span><a href="#id" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">id</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/state/surface-model.d.ts:17</li></ul></aside></section>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:71</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-external">
 <h3 class="tsd-anchor-link" id="onaction"><code class="tsd-tag">Readonly</code><span>on<wbr/>Action</span><a href="#onaction" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">onAction</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">EventSource</span><span class="tsd-signature-symbol">&lt;</span><br/>    <span class="tsd-signature-symbol">{</span><br/>        <span class="tsd-kind-property">context</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">;</span><br/>        <span class="tsd-kind-property">name</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>        <span class="tsd-kind-property">sourceComponentId</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>        <span class="tsd-kind-property">surfaceId</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>        <span class="tsd-kind-property">timestamp</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">&gt;</span></div>
-<div class="tsd-comment tsd-typography"><p>Fires whenever an action is dispatched from this surface.</p>
+<div class="tsd-signature"><span class="tsd-kind-property">onAction</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">EventSource</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ActionPayload</span><span class="tsd-signature-symbol">&gt;</span></div>
+<div class="tsd-comment tsd-typography"><p>Event source firing whenever an action is dispatched from this surface.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/state/surface-model.d.ts:28</li></ul></aside></section>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:89</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-external">
 <h3 class="tsd-anchor-link" id="onerror"><code class="tsd-tag">Readonly</code><span>on<wbr/>Error</span><a href="#onerror" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">onError</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">EventSource</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
-<div class="tsd-comment tsd-typography"><p>Fires whenever an error occurs on this surface.</p>
+<div class="tsd-signature"><span class="tsd-kind-property">onError</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">EventSource</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A2uiErrorPayload</span><span class="tsd-signature-symbol">&gt;</span></div>
+<div class="tsd-comment tsd-typography"><p>Event source firing whenever an error occurs on this surface.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/state/surface-model.d.ts:30</li></ul></aside></section>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:91</li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-external">
+<h3 class="tsd-anchor-link" id="onwarning"><code class="tsd-tag">Readonly</code><span>on<wbr/>Warning</span><a href="#onwarning" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">onWarning</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">EventSource</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A2uiWarningPayload</span><span class="tsd-signature-symbol">&gt;</span></div>
+<div class="tsd-comment tsd-typography"><p>Event source firing whenever a non-fatal warning occurs on this surface.</p>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:93</li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-external">
+<h3 class="tsd-anchor-link" id="rootid"><code class="tsd-tag">Readonly</code><span>root<wbr/>Id</span><a href="#rootid" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">rootId</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+<div class="tsd-comment tsd-typography"><p>Identifier of the root component on this surface (defaults to <code>'root'</code>).</p>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:80</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-external">
 <h3 class="tsd-anchor-link" id="senddatamodel"><code class="tsd-tag">Readonly</code><span>send<wbr/>Data<wbr/>Model</span><a href="#senddatamodel" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">sendDataModel</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/state/surface-model.d.ts:20</li></ul></aside></section>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:78</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-external">
 <h3 class="tsd-anchor-link" id="theme"><code class="tsd-tag">Readonly</code><span>theme</span><a href="#theme" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">theme</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/state/surface-model.d.ts:19</li></ul></aside></section></section></details>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:77</li></ul></aside></section></section></details>
+<details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Accessors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h2 class="tsd-anchor-link" id="accessors-1">Accessors<a href="#accessors-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
+<section>
+<section class="tsd-panel tsd-member tsd-is-external">
+<h3 class="tsd-anchor-link" id="catalog"><span>catalog</span><a href="#catalog" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-external">
+<li>
+<div class="tsd-signature" id="catalogcatalog"><span class="tsd-signature-keyword">get</span> <span class="tsd-kind-get-signature">catalog</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <a href="_prometheus-ags_a2ui-react..Catalog.html" class="tsd-signature-type tsd-kind-class">Catalog</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">,</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#f">F</a><span class="tsd-signature-symbol">&gt;</span></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>The surface's default catalog.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <a href="_prometheus-ags_a2ui-react..Catalog.html" class="tsd-signature-type tsd-kind-class">Catalog</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">,</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#f">F</a><span class="tsd-signature-symbol">&gt;</span></h4>
+<div class="tsd-comment tsd-typography">
+<div class="tsd-tag-deprecated">
+<h4 class="tsd-anchor-link" id="deprecated">Deprecated<a href="#deprecated" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><p>Use <a href="#defaultcatalog" class="tsd-kind-property">defaultCatalog</a>. Renamed for symmetry with the other
+SDKs now that a surface can carry more than one catalog. This alias will
+be removed in a future release.</p>
+</div></div><aside class="tsd-sources">
+<ul>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:132</li></ul></aside></div></li></ul></section></section></details>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="methods-1">Methods<a href="#methods-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
@@ -146,48 +225,71 @@ It coordinates data binding, component state, and action dispatching.</p>
 <li class="tsd-is-external">
 <div class="tsd-signature tsd-anchor-link" id="dispatchaction-1"><span class="tsd-kind-call-signature">dispatchAction</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">payload</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">sourceComponentId</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><a href="#dispatchaction-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Dispatches an action from this surface to listeners.</p>
+<div class="tsd-comment tsd-typography"><p>Dispatches an action from this surface to registered listeners.</p>
+<p>Resolves event action payload details, propagates any explicit <code>catalogId</code>,
+and emits an <code>ActionPayload</code> via <code>onAction</code>. Local function actions (<code>functionCall</code>)
+are executed locally and are not emitted as agent actions.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li><span><span class="tsd-kind-parameter">payload</span>: <span class="tsd-signature-type">any</span></span>
-<div class="tsd-comment tsd-typography"><p>The action payload (name and context) to dispatch.</p>
+<div class="tsd-comment tsd-typography"><p>Action payload (name and context) to dispatch.</p>
 </div></li>
 <li><span><span class="tsd-kind-parameter">sourceComponentId</span>: <span class="tsd-signature-type">string</span></span>
-<div class="tsd-comment tsd-typography"><p>The ID of the component that triggered the action.</p>
+<div class="tsd-comment tsd-typography"><p>Identifier of the component that triggered the action.</p>
 </div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><p>A promise that resolves once all registered listeners have processed the action.</p>
+<aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/state/surface-model.d.ts:46</li></ul></aside></div></li></ul></section>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:144</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-external">
 <h3 class="tsd-anchor-link" id="dispatcherror"><span>dispatch<wbr/>Error</span><a href="#dispatcherror" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-external">
 <li class="tsd-is-external">
-<div class="tsd-signature tsd-anchor-link" id="dispatcherror-1"><span class="tsd-kind-call-signature">dispatchError</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">error</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{</span> <span class="tsd-kind-property">code</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span> <span class="tsd-kind-property">message</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span> <span class="tsd-signature-symbol">[</span><span class="tsd-kind-index-signature">key</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]:</span> <span class="tsd-signature-type">any</span> <span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><a href="#dispatcherror-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-signature tsd-anchor-link" id="dispatcherror-1"><span class="tsd-kind-call-signature">dispatchError</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">error</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">A2uiErrorPayload</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><a href="#dispatcherror-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Dispatches an error from this surface to listeners.</p>
+<div class="tsd-comment tsd-typography"><p>Dispatches an error from this surface to registered listeners.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
-<li><span><span class="tsd-kind-parameter">error</span>: <span class="tsd-signature-symbol">{</span> <span class="tsd-kind-property">code</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span> <span class="tsd-kind-property">message</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span> <span class="tsd-signature-symbol">[</span><span class="tsd-kind-index-signature">key</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]:</span> <span class="tsd-signature-type">any</span> <span class="tsd-signature-symbol">}</span></span>
-<div class="tsd-comment tsd-typography"><p>The error object to dispatch, conforming to client_to_server schema.</p>
+<li><span><span class="tsd-kind-parameter">error</span>: <span class="tsd-signature-type">A2uiErrorPayload</span></span>
+<div class="tsd-comment tsd-typography"><p>Error payload to dispatch, conforming to the renderer-to-agent schema.</p>
 </div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><p>A promise that resolves once all registered listeners have processed the error.</p>
+<aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/state/surface-model.d.ts:52</li></ul></aside></div></li></ul></section>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:151</li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-external">
+<h3 class="tsd-anchor-link" id="dispatchwarning"><span>dispatch<wbr/>Warning</span><a href="#dispatchwarning" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-external">
+<li class="tsd-is-external">
+<div class="tsd-signature tsd-anchor-link" id="dispatchwarning-1"><span class="tsd-kind-call-signature">dispatchWarning</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">warning</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">A2uiWarningPayload</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><a href="#dispatchwarning-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Dispatches a non-fatal warning from this surface to registered listeners.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">warning</span>: <span class="tsd-signature-type">A2uiWarningPayload</span></span>
+<div class="tsd-comment tsd-typography"><p>The warning payload to dispatch.</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><p>Promise that resolves once listeners have handled the warning.</p>
+<aside class="tsd-sources">
+<ul>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:158</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-external">
 <h3 class="tsd-anchor-link" id="dispose"><span>dispose</span><a href="#dispose" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-external">
 <li class="tsd-is-external">
 <div class="tsd-signature tsd-anchor-link" id="dispose-1"><span class="tsd-kind-call-signature">dispose</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><a href="#dispose-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Disposes of the surface and its resources.</p>
+<div class="tsd-comment tsd-typography"><p>Disposes the surface, data model, components, and event emitters.</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/state/surface-model.d.ts:60</li></ul></aside></div></li></ul></section></section></details></div>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/state/surface-model.d.ts:162</li></ul></aside></div></li></ul></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -206,9 +308,11 @@ It coordinates data binding, component state, and action dispatching.</p>
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Constructors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Constructors</summary>
 <div><a href="#constructor" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Constructor"><use href="../assets/icons.svg#icon-512"></use></svg><span>constructor</span></a></div></details>
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Properties</summary>
-<div><a href="#catalog" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>catalog</span></a><a href="#componentsmodel" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>components<wbr/>Model</span></a><a href="#datamodel" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>data<wbr/>Model</span></a><a href="#id" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>id</span></a><a href="#onaction" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>on<wbr/>Action</span></a><a href="#onerror" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>on<wbr/>Error</span></a><a href="#senddatamodel" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>send<wbr/>Data<wbr/>Model</span></a><a href="#theme" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>theme</span></a></div></details>
+<div><a href="#availablecatalogs" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>available<wbr/>Catalogs</span></a><a href="#componentsmodel" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>components<wbr/>Model</span></a><a href="#datamodel" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>data<wbr/>Model</span></a><a href="#defaultcatalog" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>default<wbr/>Catalog</span></a><a href="#id" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>id</span></a><a href="#onaction" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>on<wbr/>Action</span></a><a href="#onerror" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>on<wbr/>Error</span></a><a href="#onwarning" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>on<wbr/>Warning</span></a><a href="#rootid" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>root<wbr/>Id</span></a><a href="#senddatamodel" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>send<wbr/>Data<wbr/>Model</span></a><a href="#theme" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>theme</span></a></div></details>
+<details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Accessors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Accessors</summary>
+<div><a href="#catalog" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Accessor"><use href="../assets/icons.svg#icon-262144"></use></svg><span>catalog</span></a></div></details>
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Methods</summary>
-<div><a href="#dispatchaction" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>dispatch<wbr/>Action</span></a><a href="#dispatcherror" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>dispatch<wbr/>Error</span></a><a href="#dispose" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>dispose</span></a></div></details></div></details></div>
+<div><a href="#dispatchaction" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>dispatch<wbr/>Action</span></a><a href="#dispatcherror" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>dispatch<wbr/>Error</span></a><a href="#dispatchwarning" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>dispatch<wbr/>Warning</span></a><a href="#dispose" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>dispose</span></a></div></details></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../index.html">Prometheus Entity Management API</a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container">

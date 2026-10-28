@@ -18,7 +18,7 @@
 <ul class="tsd-type-parameter-list">
 <li><span id="tcontext"><span class="tsd-kind-type-parameter">TContext</span> <span class="tsd-signature-keyword">extends</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span> = <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/index.d.ts:60</li></ul></aside>
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:600</li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -41,35 +41,35 @@
 <div class="tsd-comment tsd-typography"><p>Tenant/scope/resource authorization. Absence means deny.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/index.d.ts:68</li></ul></aside></section>
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:608</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="contextschema"><span>context<wbr/>Schema</span><a href="#contextschema" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">contextSchema</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ZodType</span><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#tcontext">TContext</a><span class="tsd-signature-symbol">&gt;</span></div>
 <div class="tsd-comment tsd-typography"><p>Application-owned context schema evaluated after official action validation.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/index.d.ts:64</li></ul></aside></section>
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:604</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="destructive"><code class="tsd-tag">Optional</code><span>destructive</span><a href="#destructive" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">destructive</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
 <div class="tsd-comment tsd-typography"><p>Destructive rules require an approval callback before execution.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/index.d.ts:66</li></ul></aside></section>
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:606</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="execute"><span>execute</span><a href="#execute" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">execute</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">action</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{</span><br/>        <span class="tsd-kind-property">context</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">;</span><br/>        <span class="tsd-kind-property">name</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>        <span class="tsd-kind-property">sourceComponentId</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>        <span class="tsd-kind-property">surfaceId</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>        <span class="tsd-kind-property">timestamp</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">context</span><span class="tsd-signature-symbol">:</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#tcontext">TContext</a><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">unknown</span></div>
 <div class="tsd-comment tsd-typography"><p>Store, adapter, or transport operation.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/index.d.ts:70</li></ul></aside></section>
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:610</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="name"><span>name</span><a href="#name" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">name</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 <div class="tsd-comment tsd-typography"><p>Exact official action name. Wildcards are intentionally unsupported.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/index.d.ts:62</li></ul></aside></section></section></details></div>
+<li>Defined in packages/a2ui-react/dist/runtime-core-BIV5m2rL.d.ts:602</li></ul></aside></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

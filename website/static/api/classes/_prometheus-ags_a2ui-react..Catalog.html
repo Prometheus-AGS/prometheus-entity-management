@@ -11,20 +11,28 @@
 <li><a href="../modules/_prometheus-ags_a2ui-react.html">@prometheus-ags/a2ui-react</a></li>
 <li><a href="../modules/_prometheus-ags_a2ui-react..html"></a></li>
 <li><a href="" aria-current="page">Catalog</a></li></ul>
-<h1>Class Catalog&lt;T&gt;</h1></div>
+<h1>Class Catalog&lt;T, F&gt;</h1></div>
 <section class="tsd-panel tsd-comment">
-<div class="tsd-comment tsd-typography"><p>A collection of available components and functions.</p>
+<div class="tsd-comment tsd-typography"><p>Collection of available components and functions.</p>
+<p>The <code>F</code> parameter distinguishes catalogs that carry executable function
+implementations (<code>FunctionImplementation</code>, the default and the only kind a
+renderer should hold) from schema-only catalogs (<code>FunctionApi</code>), whose
+functions are signatures loaded from catalog JSON with no code attached.
+Consumers that need to execute functions, such as <code>NodeResolver</code>, constrain
+<code>F</code> to <code>FunctionImplementation</code> so a schema-only catalog is rejected at
+compile time rather than resolving values to <code>undefined</code> at runtime.</p>
 </div></section>
 <section class="tsd-panel">
 <h4>Type Parameters</h4>
 <ul class="tsd-type-parameter-list">
-<li><span id="t"><span class="tsd-kind-type-parameter">T</span> <span class="tsd-signature-keyword">extends</span> <span class="tsd-signature-type">ComponentApi</span></span></li></ul></section>
+<li><span id="t"><span class="tsd-kind-type-parameter">T</span> <span class="tsd-signature-keyword">extends</span> <span class="tsd-signature-type">ComponentApi</span></span></li>
+<li><span id="f"><span class="tsd-kind-type-parameter">F</span> <span class="tsd-signature-keyword">extends</span> <span class="tsd-signature-type">FunctionApi</span> = <span class="tsd-signature-type">FunctionImplementation</span></span></li></ul></section>
 <section class="tsd-panel">
 <h4>Implements</h4>
 <ul class="tsd-hierarchy">
-<li><span class="tsd-signature-type">CatalogInterface</span><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">&gt;</span></li></ul></section><aside class="tsd-sources">
+<li><span class="tsd-signature-type">CatalogInterface</span><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">,</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#f">F</a><span class="tsd-signature-symbol">&gt;</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/catalog/types.d.ts:66</li></ul></aside>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/catalog/types.d.ts:155</li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -39,8 +47,19 @@
 <div class="tsd-index-list"><a href="#components" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>components</span></a>
 <a href="#functions" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>functions</span></a>
 <a href="#id" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>id</span></a>
+<a href="#instructions" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>instructions?</span></a>
 <a href="#invoker" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>invoker</span></a>
+<a href="#protocolversion" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>protocol<wbr/>Version</span></a>
 <a href="#themeschema" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>theme<wbr/>Schema?</span></a>
+</div></section>
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading tsd-anchor-link" id="accessors">Accessors<a href="#accessors" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-index-list"><a href="#catalogschema" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Accessor"><use href="../assets/icons.svg#icon-262144"></use></svg><span>catalog<wbr/>Schema</span></a>
+<a href="#componentrefmap" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Accessor"><use href="../assets/icons.svg#icon-262144"></use></svg><span>component<wbr/>Ref<wbr/>Map</span></a>
+</div></section>
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading tsd-anchor-link" id="methods">Methods<a href="#methods" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-index-list"><a href="#fromschema" class="tsd-index-link tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>from<wbr/>Schema</span></a>
 </div></section></div></details></section></section>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Constructors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="constructors-1">Constructors<a href="#constructors-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
@@ -49,65 +68,160 @@
 <h3 class="tsd-anchor-link" id="constructor"><span>constructor</span><a href="#constructor" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-external">
 <li class="tsd-is-external">
-<div class="tsd-signature tsd-anchor-link" id="constructorcatalog"><span class="tsd-signature-keyword">new</span> <span class="tsd-kind-constructor-signature">Catalog</span><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#constructorcatalogt">T</a> <span class="tsd-signature-keyword">extends</span> <span class="tsd-signature-type">ComponentApi</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ZodTypeAny</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">id</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">components</span><span class="tsd-signature-symbol">:</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">functions</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">FunctionImplementation</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">themeSchema</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">ZodObject</span><span class="tsd-signature-symbol">&lt;</span><br/>        <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">,</span><br/>        <span class="tsd-signature-type">UnknownKeysParam</span><span class="tsd-signature-symbol">,</span><br/>        <span class="tsd-signature-type">ZodTypeAny</span><span class="tsd-signature-symbol">,</span><br/>        <span class="tsd-signature-symbol">{</span> <span class="tsd-signature-symbol">[</span><span class="tsd-kind-index-signature">key</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]:</span> <span class="tsd-signature-type">any</span> <span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">,</span><br/>        <span class="tsd-signature-symbol">{</span> <span class="tsd-signature-symbol">[</span><span class="tsd-kind-index-signature">key</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]:</span> <span class="tsd-signature-type">any</span> <span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-class">Catalog</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">&gt;</span><a href="#constructorcatalog" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-signature tsd-anchor-link" id="constructorcatalog"><span class="tsd-signature-keyword">new</span> <span class="tsd-kind-constructor-signature">Catalog</span><span class="tsd-signature-symbol">&lt;</span><br/>    <a class="tsd-signature-type tsd-kind-type-parameter" href="#constructorcatalogt">T</a> <span class="tsd-signature-keyword">extends</span> <span class="tsd-signature-type">ComponentApi</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ZodTypeAny</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span><br/>    <a class="tsd-signature-type tsd-kind-type-parameter" href="#constructorcatalogf">F</a> <span class="tsd-signature-keyword">extends</span> <span class="tsd-signature-type">FunctionApi</span> <span class="tsd-signature-symbol">=</span> <span class="tsd-signature-type">FunctionImplementation</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">id</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">protocolVersion</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">&amp;</span> <span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">components</span><span class="tsd-signature-symbol">?:</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">functions</span><span class="tsd-signature-symbol">?:</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#f">F</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">themeSchema</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">ZodTypeAny</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">instructions</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-class">Catalog</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">,</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#f">F</a><span class="tsd-signature-symbol">&gt;</span><a href="#constructorcatalog" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Initializes a new <code>Catalog</code>.</p>
+</div>
 <section class="tsd-panel">
 <h4>Type Parameters</h4>
 <ul class="tsd-type-parameter-list">
-<li><span id="constructorcatalogt"><span class="tsd-kind-type-parameter">T</span> <span class="tsd-signature-keyword">extends</span> <span class="tsd-signature-type">ComponentApi</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ZodTypeAny</span><span class="tsd-signature-symbol">&gt;</span></span></li></ul></section>
+<li><span id="constructorcatalogt"><span class="tsd-kind-type-parameter">T</span> <span class="tsd-signature-keyword">extends</span> <span class="tsd-signature-type">ComponentApi</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ZodTypeAny</span><span class="tsd-signature-symbol">&gt;</span></span></li>
+<li><span id="constructorcatalogf"><span class="tsd-kind-type-parameter">F</span> <span class="tsd-signature-keyword">extends</span> <span class="tsd-signature-type">FunctionApi</span> = <span class="tsd-signature-type">FunctionImplementation</span></span></li></ul></section>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
-<li><span><span class="tsd-kind-parameter">id</span>: <span class="tsd-signature-type">string</span></span></li>
-<li><span><span class="tsd-kind-parameter">components</span>: <a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">[]</span></span></li>
-<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">functions</span>: <span class="tsd-signature-type">FunctionImplementation</span><span class="tsd-signature-symbol">[]</span></span></li>
-<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">themeSchema</span>: <span class="tsd-signature-type">ZodObject</span><span class="tsd-signature-symbol">&lt;</span><br/>    <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-type">UnknownKeysParam</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-type">ZodTypeAny</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-symbol">{</span> <span class="tsd-signature-symbol">[</span><span class="tsd-kind-index-signature">key</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]:</span> <span class="tsd-signature-type">any</span> <span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-symbol">{</span> <span class="tsd-signature-symbol">[</span><span class="tsd-kind-index-signature">key</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]:</span> <span class="tsd-signature-type">any</span> <span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">&gt;</span></span></li></ul></div>
-<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type tsd-kind-class">Catalog</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<li><span><span class="tsd-kind-parameter">id</span>: <span class="tsd-signature-type">string</span></span>
+<div class="tsd-comment tsd-typography"><p>Unique identifier for the catalog, usually a URI.</p>
+</div></li>
+<li><span><span class="tsd-kind-parameter">protocolVersion</span>: <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">&amp;</span> <span class="tsd-signature-symbol">{}</span></span>
+<div class="tsd-comment tsd-typography"><p>Protocol specification version this catalog targets.</p>
+</div></li>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">components</span>: <a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">[]</span></span>
+<div class="tsd-comment tsd-typography"><p>Component definitions to register.</p>
+</div></li>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">functions</span>: <a class="tsd-signature-type tsd-kind-type-parameter" href="#f">F</a><span class="tsd-signature-symbol">[]</span></span>
+<div class="tsd-comment tsd-typography"><p>Function definitions to register.</p>
+</div></li>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">themeSchema</span>: <span class="tsd-signature-type">ZodTypeAny</span></span>
+<div class="tsd-comment tsd-typography"><p>Optional schema for this catalog's theme parameters.</p>
+</div></li>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">instructions</span>: <span class="tsd-signature-type">string</span></span>
+<div class="tsd-comment tsd-typography"><p>Optional system instructions or usage guidelines.</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type tsd-kind-class">Catalog</a><span class="tsd-signature-symbol">&lt;</span><a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">,</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#f">F</a><span class="tsd-signature-symbol">&gt;</span></h4>
+<div class="tsd-comment tsd-typography">
+<div class="tsd-tag-throws">
+<h4 class="tsd-anchor-link" id="throws">Throws<a href="#throws" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><p>If <code>protocolVersion</code> is empty or not provided.</p>
+</div></div><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/catalog/types.d.ts:86</li></ul></aside></div></li></ul></section></section></details>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/catalog/types.d.ts:205</li></ul></aside></div></li></ul></section></section></details>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="properties-1">Properties<a href="#properties-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
 <section class="tsd-panel tsd-member tsd-is-external">
 <h3 class="tsd-anchor-link" id="components"><code class="tsd-tag">Readonly</code><span>components</span><a href="#components" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">components</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ReadonlyMap</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#t">T</a><span class="tsd-signature-symbol">&gt;</span></div>
-<div class="tsd-comment tsd-typography"><p>A map of available components.
-This is readonly to encourage immutable extension patterns.</p>
+<div class="tsd-comment tsd-typography"><p>Map of available components keyed by component name.</p>
+<p>Readonly to encourage immutable extension patterns.</p>
 </div><aside class="tsd-sources">
 <p>Implementation of CatalogInterface.components</p>
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/catalog/types.d.ts:72</li></ul></aside></section>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/catalog/types.d.ts:167</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-external">
 <h3 class="tsd-anchor-link" id="functions"><code class="tsd-tag">Readonly</code><span>functions</span><a href="#functions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">functions</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ReadonlyMap</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">FunctionImplementation</span><span class="tsd-signature-symbol">&gt;</span></div>
+<div class="tsd-signature"><span class="tsd-kind-property">functions</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ReadonlyMap</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <a class="tsd-signature-type tsd-kind-type-parameter" href="#f">F</a><span class="tsd-signature-symbol">&gt;</span></div>
 <div class="tsd-comment tsd-typography"><p>Map of functions provided by this catalog.</p>
 </div><aside class="tsd-sources">
 <p>Implementation of CatalogInterface.functions</p>
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/catalog/types.d.ts:76</li></ul></aside></section>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/catalog/types.d.ts:171</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-external">
 <h3 class="tsd-anchor-link" id="id"><code class="tsd-tag">Readonly</code><span>id</span><a href="#id" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">id</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">id</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+<div class="tsd-comment tsd-typography"><p>Unique identifier for the catalog.</p>
+</div><aside class="tsd-sources">
 <p>Implementation of CatalogInterface.id</p>
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/catalog/types.d.ts:67</li></ul></aside></section>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/catalog/types.d.ts:157</li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-external">
+<h3 class="tsd-anchor-link" id="instructions"><code class="tsd-tag">Optional</code> <code class="tsd-tag">Readonly</code><span>instructions</span><a href="#instructions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">instructions</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div>
+<div class="tsd-comment tsd-typography"><p>Optional system instructions or usage guidelines for this catalog.</p>
+</div><aside class="tsd-sources">
+<p>Implementation of CatalogInterface.instructions</p>
+<ul>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/catalog/types.d.ts:179</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-external">
 <h3 class="tsd-anchor-link" id="invoker"><code class="tsd-tag">Readonly</code><span>invoker</span><a href="#invoker" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">invoker</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">FunctionInvoker</span></div>
-<div class="tsd-comment tsd-typography"><p>A ready-to-use FunctionInvoker callback that delegates to this catalog's functions.
-Can be passed directly to a DataContext.</p>
+<div class="tsd-comment tsd-typography"><p>Function invoker callback that delegates to this catalog's registered functions.</p>
 </div><aside class="tsd-sources">
 <p>Implementation of CatalogInterface.invoker</p>
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/catalog/types.d.ts:85</li></ul></aside></section>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/catalog/types.d.ts:183</li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-external">
+<h3 class="tsd-anchor-link" id="protocolversion"><code class="tsd-tag">Readonly</code><span>protocol<wbr/>Version</span><a href="#protocolversion" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">protocolVersion</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">&amp;</span> <span class="tsd-signature-symbol">{}</span></div>
+<div class="tsd-comment tsd-typography"><p>Protocol specification version supported by this catalog.</p>
+</div><aside class="tsd-sources">
+<p>Implementation of CatalogInterface.protocolVersion</p>
+<ul>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/catalog/types.d.ts:161</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-external">
 <h3 class="tsd-anchor-link" id="themeschema"><code class="tsd-tag">Optional</code> <code class="tsd-tag">Readonly</code><span>theme<wbr/>Schema</span><a href="#themeschema" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">themeSchema</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">ZodObject</span><span class="tsd-signature-symbol">&lt;</span><br/>    <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-type">UnknownKeysParam</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-type">ZodTypeAny</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-symbol">{</span> <span class="tsd-signature-symbol">[</span><span class="tsd-kind-index-signature">key</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]:</span> <span class="tsd-signature-type">any</span> <span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-symbol">{</span> <span class="tsd-signature-symbol">[</span><span class="tsd-kind-index-signature">key</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]:</span> <span class="tsd-signature-type">any</span> <span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">&gt;</span></div>
-<div class="tsd-comment tsd-typography"><p>The schema for theme parameters used by this catalog.</p>
+<div class="tsd-signature"><span class="tsd-kind-property">themeSchema</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">ZodTypeAny</span></div>
+<div class="tsd-comment tsd-typography"><p>Schema for theme parameters used by this catalog.</p>
 </div><aside class="tsd-sources">
 <p>Implementation of CatalogInterface.themeSchema</p>
 <ul>
-<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.10.5/node_modules/@a2ui/web_core/src/v0_9/catalog/types.d.ts:80</li></ul></aside></section></section></details></div>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/catalog/types.d.ts:175</li></ul></aside></section></section></details>
+<details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Accessors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h2 class="tsd-anchor-link" id="accessors-1">Accessors<a href="#accessors-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
+<section>
+<section class="tsd-panel tsd-member tsd-is-external">
+<h3 class="tsd-anchor-link" id="catalogschema"><span>catalog<wbr/>Schema</span><a href="#catalogschema" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-external">
+<li>
+<div class="tsd-signature" id="catalogschemacatalogschema"><span class="tsd-signature-keyword">get</span> <span class="tsd-kind-get-signature">catalogSchema</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Dynamically reconstructs and memoizes the unified standard A2UI catalog JSON Schema document.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<p>Implementation of CatalogInterface.catalogSchema</p>
+<ul>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/catalog/types.d.ts:188</li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-external">
+<h3 class="tsd-anchor-link" id="componentrefmap"><span>component<wbr/>Ref<wbr/>Map</span><a href="#componentrefmap" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-external">
+<li>
+<div class="tsd-signature" id="componentrefmapcomponentrefmap"><span class="tsd-signature-keyword">get</span> <span class="tsd-kind-get-signature">componentRefMap</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ComponentRefMap</span></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Lazily computed component reference map for child reference extraction and topology validation.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ComponentRefMap</span></h4><aside class="tsd-sources">
+<p>Implementation of CatalogInterface.componentRefMap</p>
+<ul>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/catalog/types.d.ts:193</li></ul></aside></div></li></ul></section></section></details>
+<details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h2 class="tsd-anchor-link" id="methods-1">Methods<a href="#methods-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
+<section>
+<section class="tsd-panel tsd-member tsd-is-external">
+<h3 class="tsd-anchor-link" id="fromschema"><code class="tsd-tag">Static</code><span>from<wbr/>Schema</span><a href="#fromschema" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-external">
+<li class="tsd-is-external">
+<div class="tsd-signature tsd-anchor-link" id="fromschema-1"><span class="tsd-kind-call-signature">fromSchema</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">catalogSchema</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">protocolVersion</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-class">Catalog</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ComponentApi</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ZodTypeAny</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">FunctionApi</span><span class="tsd-signature-symbol">&gt;</span><a href="#fromschema-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Constructs a schema-only Catalog directly from a raw A2UI catalog schema.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">catalogSchema</span>: <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></span>
+<div class="tsd-comment tsd-typography"><p>Raw catalog schema or client capabilities payload object.</p>
+</div></li>
+<li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">protocolVersion</span>: <span class="tsd-signature-type">string</span></span>
+<div class="tsd-comment tsd-typography"><p>Protocol version to use when the schema does not
+declare one. Catalog schemas published before v1.0 omit the field, in
+which case <code>DEFAULT_PROTOCOL_VERSION</code> applies.</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type tsd-kind-class">Catalog</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ComponentApi</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ZodTypeAny</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">FunctionApi</span><span class="tsd-signature-symbol">&gt;</span></h4><p>A new Catalog populated with component and function schemas.</p>
+
+<div class="tsd-comment tsd-typography">
+<div class="tsd-tag-throws">
+<h4 class="tsd-anchor-link" id="throws-1">Throws<a href="#throws-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><p>If the catalog ID is missing or not a string.</p>
+</div></div><aside class="tsd-sources">
+<ul>
+<li>Defined in node_modules/.pnpm/@a2ui+web_core@0.12.0/node_modules/@a2ui/web_core/src/catalog/types.d.ts:216</li></ul></aside></div></li></ul></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -126,7 +240,11 @@ Can be passed directly to a DataContext.</p>
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Constructors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Constructors</summary>
 <div><a href="#constructor" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Constructor"><use href="../assets/icons.svg#icon-512"></use></svg><span>constructor</span></a></div></details>
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Properties</summary>
-<div><a href="#components" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>components</span></a><a href="#functions" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>functions</span></a><a href="#id" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>id</span></a><a href="#invoker" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>invoker</span></a><a href="#themeschema" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>theme<wbr/>Schema</span></a></div></details></div></details></div>
+<div><a href="#components" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>components</span></a><a href="#functions" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>functions</span></a><a href="#id" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>id</span></a><a href="#instructions" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>instructions</span></a><a href="#invoker" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>invoker</span></a><a href="#protocolversion" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>protocol<wbr/>Version</span></a><a href="#themeschema" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>theme<wbr/>Schema</span></a></div></details>
+<details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Accessors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Accessors</summary>
+<div><a href="#catalogschema" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Accessor"><use href="../assets/icons.svg#icon-262144"></use></svg><span>catalog<wbr/>Schema</span></a><a href="#componentrefmap" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Accessor"><use href="../assets/icons.svg#icon-262144"></use></svg><span>component<wbr/>Ref<wbr/>Map</span></a></div></details>
+<details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Methods</summary>
+<div><a href="#fromschema" class="tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>from<wbr/>Schema</span></a></div></details></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../index.html">Prometheus Entity Management API</a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container">

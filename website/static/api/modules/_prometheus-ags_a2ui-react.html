@@ -61,15 +61,15 @@ official A2UI.</p>
 </tr>
 <tr>
 <td><code>@a2ui/react</code> distribution</td>
-<td><code>0.10.2</code></td>
+<td><code>0.12.0</code></td>
 </tr>
 <tr>
 <td><code>@a2ui/web_core</code> distribution</td>
-<td><code>0.10.5</code></td>
+<td><code>0.12.0</code></td>
 </tr>
 <tr>
 <td><code>@a2ui/markdown-it</code> distribution</td>
-<td><code>0.1.0</code></td>
+<td><code>0.2.0</code></td>
 </tr>
 <tr>
 <td>AG-UI activity transport</td>
@@ -100,11 +100,130 @@ needed.</p>
 <p><code>processAgUiEvent(event)</code> consumes the AG-UI 0.0.59 A2UI activity convention:
 <code>ACTIVITY_SNAPSHOT</code>, activity type <code>a2ui-surface</code>, and
 <code>content.a2ui_operations</code>. Transport acceptance never bypasses the same
-schema, catalog, action-policy, or approval gates used by direct messages.</p>
+schema, catalog, action-policy, or approval gates used by direct messages. It
+also accepts <code>MESSAGES_SNAPSHOT</code> (see below).</p>
+<h3 id="redelivery-restatement-and-ordering" class="tsd-anchor-link">Redelivery, restatement and ordering<a href="#redelivery-restatement-and-ordering" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>AG-UI clients redeliver: on reconnect replay, when a <code>MESSAGES_SNAPSHOT</code>
+restates a thread, and when two streams carry the same activity. Delivery is
+idempotent, so a redelivered activity never rolls a surface back or loses typed
+input.</p>
+<ul>
+<li><strong>A surface is only deleted by an explicit <code>deleteSurface</code> operation.</strong> A
+<code>replace:true</code> snapshot restates the producer's statement; it is applied to
+the held surface as updates and never deletes surfaces or recreates them.
+Surfaces and components the restatement leaves out stay (the official
+processor never removes a component the producer stops mentioning).
+<code>replace:false</code> still means &quot;ignore if this message is already known&quot;.</li>
+<li><strong>Ordering is optional and per surface.</strong> AG-UI 1.0 defines no version field,
+so a producer carries one in the activity's own content:
+<code>content.surfaceVersions: { &quot;&lt;surfaceId&gt;&quot;: { epoch?: n, version: n } }</code>.
+Versions order a surface's activities: an older one is ignored, an identical
+redelivery is ignored, a newer one is applied. <code>epoch</code> is an integer the
+producer raises on every restart, so a restarted producer that numbers from 1
+again is not mistaken for an old one; a missing epoch means 0. One activity can
+touch several surfaces, and each is decided on its own.</li>
+<li><strong>Same key, different content is a producer fault</strong> (<code>version-conflict</code>): the
+first is kept, the second is ignored, and the two are never merged.</li>
+<li><strong>Versionless producers</strong> are only protected against an identical redelivery of
+the same message. Out-of-order delivery of versionless activities is not
+detected.</li>
+<li><strong>Restating <code>createSurface</code> for a held surface</strong> applies its inline components
+and data model as updates. If it changes the catalog, theme or
+<code>sendDataModel</code>, that surface's operations in that activity are ignored and a
+<code>surface-config-mismatch</code> fault is reported.</li>
+<li><strong>Typed input survives.</strong> The runtime remembers the last value the producer
+wrote at each data leaf and writes only leaves whose producer value changed, so
+an unchanged value cannot overwrite what the user typed. If the producer
+changes a leaf the user also changed, the <strong>producer wins</strong> and <code>onConflict</code>
+reports it. A leaf the producer wrote before and no longer states is removed.
+Per-leaf tracking is dropped for a surface with more than 20,000 data leaves;
+its later restatements simply overwrite.</li>
+<li><strong>A deleted surface stays deleted</strong> against any version at or below the one
+that deleted it, so a redelivered create or update cannot revive it. Only
+versioned deletions are remembered (bounded by <code>maxTombstones</code>).</li>
+<li><strong><code>MESSAGES_SNAPSHOT</code></strong> that carries activity messages is the complete set of
+activity messages. Each A2UI activity goes through the same path, so replaying
+a thread changes nothing already applied. A tracked message the snapshot
+omits is forgotten as a message only; its surfaces stay. A snapshot with no
+activity messages is not handled.</li>
+</ul>
+<h3 id="incremental-updates-" class="tsd-anchor-link">Incremental updates (<code>ACTIVITY_DELTA</code>)<a href="#incremental-updates-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>A producer can update a long-lived surface without resending it. A delta applies
+on top of the version it names and produces the next one:</p>
+<pre><code class="json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-13">&quot;type&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;ACTIVITY_DELTA&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-13">&quot;messageId&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;m1&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-13">&quot;activityType&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;a2ui-surface&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-13">&quot;patch&quot;</span><span class="hl-1">: [</span><br/><span class="hl-1">    { </span><span class="hl-13">&quot;op&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;test&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;path&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;/surfaceVersions/s1/version&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;value&quot;</span><span class="hl-1">: </span><span class="hl-14">3</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-13">&quot;op&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;add&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;path&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;/a2ui_operations/-&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;value&quot;</span><span class="hl-1">: { </span><span class="hl-13">&quot;version&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;v0.9.1&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;updateComponents&quot;</span><span class="hl-1">: { </span><span class="hl-13">&quot;surfaceId&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;s1&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;components&quot;</span><span class="hl-1">: [] } } }</span><br/><span class="hl-1">  ]</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Only these two patch operations are accepted. A delta using any other operation,
+or touching a surface it carries no version for, is rejected (<code>invalid-message</code>):
+a delta without a version cannot be ordered, and <code>remove</code> cannot be honored
+because the official processor cannot remove a component. An optional
+<code>/surfaceVersions/&lt;surfaceId&gt;/epoch</code> test names the epoch; without it the held
+epoch is assumed.</p>
+<ul>
+<li><strong>In order</strong> (the named version is the one held): applied, and the surface is
+now at the next version.</li>
+<li><strong>Already applied or behind</strong>: ignored.</li>
+<li><strong>Ahead of what is held, or for a surface with no versioned state</strong>: held in a
+bounded buffer (<code>maxBufferedDeltas</code>, <code>bufferTimeoutMs</code>). When the missing
+version arrives the held deltas are applied in order. If it does not arrive in
+time, or the buffer overflows, <code>onResyncNeeded</code> is called. A delta that
+touches several surfaces waits as a whole until every one of them is in order.</li>
+</ul>
+<p><code>onResyncNeeded(request)</code> also fires when the runtime <strong>refuses</strong> a batch the
+producer had accepted (a disallowed component, a topology error, a limit): the
+surface would otherwise sit at its last version with no signal. The same event
+reports a <code>batch-refused</code> producer fault (limit rejections report their own).
+AG-UI has no resync event, so send the request upstream in <code>forwardedProps</code>:</p>
+<pre><code class="ts"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">runtime</span><span class="hl-1"> = </span><span class="hl-0">createPrometheusA2uiRuntime</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-0">onResyncNeeded</span><span class="hl-4">:</span><span class="hl-1"> (</span><span class="hl-4">request</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-7">// request.reason: &quot;gap&quot; | &quot;missing-surface&quot; | &quot;buffer-overflow&quot; | &quot;refused&quot; | &quot;stale-action&quot;</span><br/><span class="hl-1">    </span><span class="hl-0">sendRunInput</span><span class="hl-1">({ </span><span class="hl-4">forwardedProps:</span><span class="hl-1"> </span><span class="hl-0">buildA2uiForwardedProps</span><span class="hl-1">({ </span><span class="hl-4">resync:</span><span class="hl-1"> { </span><span class="hl-4">held:</span><span class="hl-1"> </span><span class="hl-4">request</span><span class="hl-1">.</span><span class="hl-4">held</span><span class="hl-1"> } }) });</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-4">runtime</span><span class="hl-1">.</span><span class="hl-0">getHeldVersions</span><span class="hl-1">(); </span><span class="hl-7">// { s1: { epoch: 0, version: 3 } }</span><br/><span class="hl-4">runtime</span><span class="hl-1">.</span><span class="hl-0">getResyncForwardedProps</span><span class="hl-1">(); </span><span class="hl-7">// the same, shaped for forwardedProps</span>
+</code><button type="button">Copy</button></pre>
+
+<p><code>dispose()</code> clears the buffer and every pending timer.</p>
+<p>Only <code>processAgUiEvent</code> tracks and reconciles. Messages passed straight to
+<code>processMessages</code> are applied as before and are not versioned or deduplicated.</p>
 <p><code>processMessages()</code> treats each supplied message list as one transaction. It
 preflights the complete batch against a shadow official processor seeded from
 the current surfaces; a later schema, catalog, component, or official state
 error therefore cannot partially commit an earlier message to the live runtime.</p>
+<h3 id="actions-ids-retry-and-stale-rejection" class="tsd-anchor-link">Actions: ids, retry and stale rejection<a href="#actions-ids-retry-and-stale-rejection" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><code>onActionEnvelope(envelope)</code> is called for every action the action policy
+<strong>executed</strong>, on v0.9.1 and v1.0 surfaces alike. A denied action never leaves
+the runtime. Put <code>envelope.forwardedProps</code> into the next AG-UI run input:</p>
+<pre><code class="json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-13">&quot;a2uiAction&quot;</span><span class="hl-1">: {</span><br/><span class="hl-1">    </span><span class="hl-13">&quot;userAction&quot;</span><span class="hl-1">: { </span><span class="hl-13">&quot;name&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;save&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;surfaceId&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;s1&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;sourceComponentId&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;b1&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;timestamp&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;...&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;context&quot;</span><span class="hl-1">: {} },</span><br/><span class="hl-1">    </span><span class="hl-13">&quot;actionId&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;01a1828e-cdf8-7204-9517-4a7080fc09d9&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-13">&quot;heldVersion&quot;</span><span class="hl-1">: { </span><span class="hl-13">&quot;epoch&quot;</span><span class="hl-1">: </span><span class="hl-14">0</span><span class="hl-1">, </span><span class="hl-13">&quot;version&quot;</span><span class="hl-1">: </span><span class="hl-14">3</span><span class="hl-1"> },</span><br/><span class="hl-1">    </span><span class="hl-13">&quot;dataModel&quot;</span><span class="hl-1">: { </span><span class="hl-13">&quot;version&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;v0.9.1&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;surfaces&quot;</span><span class="hl-1">: { </span><span class="hl-13">&quot;s1&quot;</span><span class="hl-1">: {} } }</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<ul>
+<li><code>userAction</code> is the A2UI action exactly as the renderer produced it; it is
+never modified.</li>
+<li><code>actionId</code> is a globally unique id (a UUIDv7) minted once per interaction, so
+two tabs, or one tab after a reload, never share one. A server uses it to make
+action handling idempotent. The runtime does not arbitrate duplicates; that is
+the server's job.</li>
+<li><code>heldVersion</code> is the version the surface held when the action fired, so a
+server can tell a stale action from a current one. It is absent for a surface
+with no versioned state.</li>
+<li><code>dataModel</code> is present only when the surface sets <code>sendDataModel</code>.</li>
+</ul>
+<p><strong>Two different ids.</strong> The v1.0 <code>onRendererMessage</code> action message can also
+carry an <code>actionId</code>. That is a <em>correlation</em> id for <code>wantResponse</code> actions
+(<code>surface:component:n</code>, unique only within one runtime instance) that matches an
+<code>actionResponse</code> to its action. It is unchanged. The envelope's <code>actionId</code> is an
+<em>idempotency</em> id and is global. They do different jobs; do not use one for the
+other.</p>
+<p><code>runtime.retryAction(actionId)</code> resends the original envelope under the same id.
+The runtime owns the retry because a host that resent on its own would mint a
+new id and defeat idempotency. The resent envelope keeps the <code>heldVersion</code> and
+data model from when the action fired. It returns <code>false</code> for an unknown id (the
+last 100 envelopes are retained) or when no handler is installed.</p>
+<p>When a server rejects an action as stale, pass what it returns to
+<code>runtime.applyStaleActionRejection</code>:</p>
+<pre><code class="json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-13">&quot;actionId&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;01a1828e-cdf8-7204-9517-4a7080fc09d9&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-13">&quot;a2ui_operations&quot;</span><span class="hl-1">: [],</span><br/><span class="hl-1">  </span><span class="hl-13">&quot;surfaceVersions&quot;</span><span class="hl-1">: { </span><span class="hl-13">&quot;s1&quot;</span><span class="hl-1">: { </span><span class="hl-13">&quot;epoch&quot;</span><span class="hl-1">: </span><span class="hl-14">0</span><span class="hl-1">, </span><span class="hl-13">&quot;version&quot;</span><span class="hl-1">: </span><span class="hl-14">5</span><span class="hl-1"> } }</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<p><code>a2ui_operations</code> are the operations since the version the client held, and
+<code>surfaceVersions</code> the versions they bring each surface to. They go through the
+same ordering and limits as any activity, so a repeated rejection changes
+nothing. A rejection carrying no operations cannot repair the surface, so the
+runtime calls <code>onResyncNeeded</code> with reason <code>&quot;stale-action&quot;</code>.</p>
 <h2 id="the-security-boundary" class="tsd-anchor-link">The security boundary<a href="#the-security-boundary" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
 <p><strong>Protocol validity never grants application authority.</strong></p>
 <p>Think of the catalog as an approved vocabulary, not a database credential. The
@@ -123,6 +242,156 @@ field.</p>
 </ol>
 <p>Agent-supplied context cannot self-assert approval. Unknown actions, tenants,
 entity types, and fields are denied.</p>
+<h2 id="resource-limits" class="tsd-anchor-link">Resource limits<a href="#resource-limits" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>A2UI messages come from an agent or server the application does not control.
+The official <code>@a2ui/web_core</code> processor enforces no resource caps, so one
+faulty or hostile producer could exhaust the browser's memory or CPU. The
+runtime therefore enforces limits <strong>by default</strong>. An application that needs
+more room raises specific limits; nothing is silently truncated.</p>
+<table>
+<thead>
+<tr>
+<th>Limit</th>
+<th>Default</th>
+<th>Applies to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>maxSurfaces</code></td>
+<td>64</td>
+<td>surfaces held by one runtime</td>
+</tr>
+<tr>
+<td><code>maxComponentsPerSurface</code></td>
+<td>2,000</td>
+<td>components in one surface</td>
+</tr>
+<tr>
+<td><code>maxComponentsTotal</code></td>
+<td>10,000</td>
+<td>components across all surfaces</td>
+</tr>
+<tr>
+<td><code>maxComponentDepth</code></td>
+<td>32</td>
+<td>levels in the longest component reference chain</td>
+</tr>
+<tr>
+<td><code>maxDataModelBytes</code></td>
+<td>1,048,576</td>
+<td>serialized UTF-8 size of one surface's data model</td>
+</tr>
+<tr>
+<td><code>maxComponentBytes</code></td>
+<td>1,048,576</td>
+<td>serialized UTF-8 size of one surface's components</td>
+</tr>
+<tr>
+<td><code>maxOperationsPerCall</code></td>
+<td>500</td>
+<td>messages in one <code>processMessages</code> call</td>
+</tr>
+<tr>
+<td><code>maxCallBytes</code></td>
+<td>1,048,576</td>
+<td>serialized UTF-8 size of one <code>processMessages</code> call</td>
+</tr>
+<tr>
+<td><code>maxTrackedMessages</code></td>
+<td>1,000</td>
+<td>activity messages remembered for redelivery; oldest forgotten first</td>
+</tr>
+<tr>
+<td><code>maxTombstones</code></td>
+<td>1,000</td>
+<td>deleted surfaces remembered so a stale create cannot revive them; oldest forgotten first</td>
+</tr>
+<tr>
+<td><code>maxBufferedDeltas</code></td>
+<td>100</td>
+<td>deltas held while the version they build on has not arrived; oldest dropped first</td>
+</tr>
+<tr>
+<td><code>bufferTimeoutMs</code></td>
+<td>5,000</td>
+<td>how long a held delta waits before a resync is requested</td>
+</tr>
+</tbody>
+</table>
+<p>The defaults are provisional estimates, not measurements. They are exported as
+<code>DEFAULT_PROMETHEUS_A2UI_LIMITS</code>.</p>
+<pre><code class="ts"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">runtime</span><span class="hl-1"> = </span><span class="hl-0">createPrometheusA2uiRuntime</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">limits:</span><span class="hl-1"> { </span><span class="hl-4">maxSurfaces:</span><span class="hl-1"> </span><span class="hl-14">200</span><span class="hl-1">, </span><span class="hl-4">maxComponentsPerSurface:</span><span class="hl-1"> </span><span class="hl-14">5_000</span><span class="hl-1"> },</span><br/><span class="hl-1">  </span><span class="hl-0">onProducerFault</span><span class="hl-4">:</span><span class="hl-1"> (</span><span class="hl-4">fault</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-7">// { kind: &quot;limit-exceeded&quot;, limit, max, attempted, current?, surfaceId? }</span><br/><span class="hl-1">    </span><span class="hl-0">reportToTelemetry</span><span class="hl-1">(</span><span class="hl-4">fault</span><span class="hl-1">);</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Every limit must be a positive safe integer, and an unknown limit name throws at
+construction.</p>
+<p><strong>When a limit is exceeded.</strong> The whole call is rejected before anything is
+applied and every surface is left unchanged. <code>onProducerFault</code> receives the
+limit name, the configured <code>max</code>, the value the call would have produced
+(<code>attempted</code>), the value held before it (<code>current</code>, for state limits) and the
+<code>surfaceId</code> for per-surface limits. The call then throws a
+<code>PrometheusA2uiError</code> whose <code>code</code> is <code>&quot;limit-exceeded&quot;</code>. <code>processAgUiEvent</code>
+goes through <code>processMessages</code>, so it is covered too.</p>
+<p><strong>What is measured.</strong> <code>maxOperationsPerCall</code> and <code>maxCallBytes</code> are checked on
+the raw input. The state limits are checked on the state the call <em>would</em>
+produce, measured on the same shadow processor that preflights the batch, so
+the numbers are exact.</p>
+<p><strong>Action responses.</strong> A v1.0 <code>actionResponse</code> value written to a surface's
+<code>responsePath</code> is producer input and goes through the same check. A rejection
+there is reported through <code>onProducerFault</code>, leaves the surface unchanged, and
+does not undo the messages of the surrounding call that were already applied.</p>
+<p><strong>Changing limits at runtime.</strong></p>
+<pre><code class="ts"><span class="hl-4">runtime</span><span class="hl-1">.</span><span class="hl-0">setLimits</span><span class="hl-1">({ </span><span class="hl-4">maxSurfaces:</span><span class="hl-1"> </span><span class="hl-14">10</span><span class="hl-1"> }); </span><span class="hl-7">// for example on a constrained device</span><br/><span class="hl-4">runtime</span><span class="hl-1">.</span><span class="hl-0">getLimitUsage</span><span class="hl-1">(); </span><span class="hl-7">// { maxSurfaces: { current, max }, ... }</span>
+</code><button type="button">Copy</button></pre>
+
+<p><code>setLimits</code> applies to later calls only and never evicts a surface already
+held. If a cap is lowered below what is held, calls that would grow that value
+past the cap are rejected, but calls that shrink it or leave it unchanged (for
+example deleting a surface) still succeed, so the application can get back under
+the cap. <code>getLimitUsage</code> reports held usage against each state limit; for the
+per-surface limits it reports the largest surface.</p>
+<p><strong>Upgrading.</strong> Enforcement is on by default. A host that already renders
+surfaces larger than these defaults must raise the relevant limits when
+upgrading, or those calls will be rejected.</p>
+<h2 id="headless-runtime-and-surface-export" class="tsd-anchor-link">Headless runtime and surface export<a href="#headless-runtime-and-surface-export" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p><code>@prometheus-ags/a2ui-react/headless</code> runs the same validation with no React, no
+DOM and no renderer, so a server or a tool can check agent output exactly as the
+browser will, and compact a long-lived surface.</p>
+<pre><code class="ts"><span class="hl-3">import</span><span class="hl-1"> { </span><span class="hl-4">createPrometheusA2uiHeadlessRuntime</span><span class="hl-1"> } </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&quot;@prometheus-ags/a2ui-react/headless&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">runtime</span><span class="hl-1"> = </span><span class="hl-0">createPrometheusA2uiHeadlessRuntime</span><span class="hl-1">({ </span><span class="hl-4">limits:</span><span class="hl-1"> { </span><span class="hl-4">maxSurfaces:</span><span class="hl-1"> </span><span class="hl-14">16</span><span class="hl-1"> } });</span><br/><span class="hl-4">runtime</span><span class="hl-1">.</span><span class="hl-0">processMessages</span><span class="hl-1">(</span><span class="hl-4">messages</span><span class="hl-1">); </span><span class="hl-7">// throws the same PrometheusA2uiError the browser would</span>
+</code><button type="button">Copy</button></pre>
+
+<p>The headless and React runtimes share one core and build their catalogs with the
+same function from the same default allowlists, so the allowlist, the limits,
+the schema checks, the ordering rules and the all-or-nothing batches are the same
+code. Only the catalog's source differs: the headless entry uses the official
+<code>@a2ui/web_core</code> basic catalog, which has no renderers. Nothing it imports
+reaches <code>@a2ui/react</code> or React at run time. It has no <code>getSurface</code> rendering; it
+holds and validates state only.</p>
+<p><strong><code>runtime.exportSurfaceMessages(surfaceId, { pruneOrphans? })</code></strong> (on both
+runtimes) returns <code>{ surfaceId, messages, orphans }</code>: messages that rebuild the
+surface in a fresh runtime, and exporting the rebuilt surface again yields the
+same messages.</p>
+<ul>
+<li>A v0.9.1 surface exports as three official messages: <code>createSurface</code> (catalog,
+theme, <code>sendDataModel</code>), <code>updateComponents</code> (every component, with its own
+<code>catalogId</code> where it differs from the surface's) and <code>updateDataModel</code> at <code>/</code>.</li>
+<li>A v1.0 surface exports as <strong>one inline <code>createSurface</code></strong> carrying its
+components and data model, with each action's <code>wantResponse</code> and
+<code>responsePath</code> put back where the producer wrote them. The v1.0 schema cannot
+express a theme, so a v1.0 surface has none to lose. An explicit
+<code>wantResponse: false</code> comes back as an absent field, which means the same.</li>
+<li>The root is the component with id <code>root</code> and is preserved by id.</li>
+<li><strong>Orphans.</strong> The official processor never removes a component a producer stops
+mentioning, so unreferenced components accumulate. Components no reachable
+component refers to are left out of the export (unless <code>pruneOrphans: false</code>)
+and listed in <code>orphans</code>. A surface with no <code>root</code> component has nothing to
+anchor to, so nothing is pruned and <code>orphans</code> is empty.</li>
+<li>An unknown surface throws a <code>PrometheusA2uiError</code> with code <code>surface-not-found</code>.</li>
+</ul>
+<p>The headless declaration files still reference this package's shared option
+types, whose default names the React component type, so a type-checking consumer
+needs <code>@types/react</code> available even though no React code runs.</p>
 <h2 id="catalog-policy" class="tsd-anchor-link">Catalog policy<a href="#catalog-policy" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
 <p><code>createPrometheusA2uiCatalog()</code> derives implementations from the official
 React basic catalog and exposes only explicit component and function
@@ -192,7 +461,7 @@ separate.</p>
 complete evidence boundary and upstream references.</p>
 </section>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Modules"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
-<h2 class="tsd-anchor-link" id="modules">Modules<a href="#modules" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary><dl class="tsd-member-summaries"><dt class="tsd-member-summary" id="_"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><a href="_prometheus-ags_a2ui-react..html"></a><a href="#_" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="ag-ui"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><a href="_prometheus-ags_a2ui-react.ag-ui.html">ag-ui</a><a href="#ag-ui" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd></dl></details></div>
+<h2 class="tsd-anchor-link" id="modules">Modules<a href="#modules" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary><dl class="tsd-member-summaries"><dt class="tsd-member-summary" id="_"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><a href="_prometheus-ags_a2ui-react..html"></a><a href="#_" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="ag-ui"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><a href="_prometheus-ags_a2ui-react.ag-ui.html">ag-ui</a><a href="#ag-ui" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd><dt class="tsd-member-summary" id="headless"><span class="tsd-member-summary-name"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><a href="_prometheus-ags_a2ui-react.headless.html">headless</a><a href="#headless" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></span></dt><dd class="tsd-member-summary"></dd></dl></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -213,14 +482,21 @@ complete evidence boundary and upstream references.</p>
 <li><a href="#pinned-version-axes"><span>Pinned version axes</span></a></li>
 <li><a href="#install"><span>Install</span></a></li>
 <li><a href="#quick-start"><span>Quick start</span></a></li>
+<li>
+<ul>
+<li><a href="#redelivery-restatement-and-ordering"><span>Redelivery, restatement and ordering</span></a></li>
+<li><a href="#incremental-updates-"><span>Incremental updates ()</span></a></li>
+<li><a href="#actions-ids-retry-and-stale-rejection"><span>Actions: ids, retry and stale rejection</span></a></li></ul></li>
 <li><a href="#the-security-boundary"><span>The security boundary</span></a></li>
+<li><a href="#resource-limits"><span>Resource limits</span></a></li>
+<li><a href="#headless-runtime-and-surface-export"><span>Headless runtime and surface export</span></a></li>
 <li><a href="#catalog-policy"><span>Catalog policy</span></a></li>
 <li><a href="#react-and-ssr"><span>React and <wbr/>SSR</span></a></li>
 <li><a href="#migrating-alpha-chat-consumers"><span>Migrating alpha chat consumers</span></a></li>
 <li><a href="#public-runtime-exports"><span>Public runtime exports</span></a></li>
 <li><a href="#verification"><span>Verification</span></a></li></ul>
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Modules"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Modules</summary>
-<div><a href="#_"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><span></span></a><a href="#ag-ui"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><span>ag-<wbr/>ui</span></a></div></details></div></details></div>
+<div><a href="#_"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><span></span></a><a href="#ag-ui"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><span>ag-<wbr/>ui</span></a><a href="#headless"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Module"><use href="../assets/icons.svg#icon-2"></use></svg><span>headless</span></a></div></details></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../index.html">Prometheus Entity Management API</a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container">
