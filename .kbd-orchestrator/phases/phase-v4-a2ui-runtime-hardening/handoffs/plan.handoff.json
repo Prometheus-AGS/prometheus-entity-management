@@ -1,0 +1,18 @@
+{
+  "stage": "plan",
+  "completedAt": "2026-10-28T11:25:17Z",
+  "outputs": [
+    "plan.md"
+  ],
+  "nextStage": "execute",
+  "summaryForNext": "8 changes / 46 tasks registered; contract adopted by the operator 2026-10-28 (decision contract-adoption-phase-v4-a2ui-runtime-hardening-22d8555a, bound at plan revision 10, scenarios AUI-1..14, run owner a2ui-hardening-acceptance#7). Order: release-status, web_core Node probe, limits, idempotency, versioned deltas, action ids, headless export (conditional on probe go + D2), acceptance. First change: a2ui-release-status-reconcile#1. Model assignments are in plan.md and provisional (liter-llm MCP unreachable at session start). WARNINGS carried: four Claude decisions not individually confirmed (new example package examples/agui-activity-lab, action emission for executed v0.9.1 actions, Flutter-contract doc section, editing existing bridge-gate expectations at the final boundary); caps enforced by default is a breaking change for large hosts; existing bridge gates fail until a2ui-hardening-acceptance#5; a phase-level tasks.json was generated from the runtime tasks.md projection because no runtime writer exists; unresolved review findings are listed in plan.md.",
+  "skipped": false,
+  "skipReason": null,
+  "identity": {
+    "projectId": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
+    "runId": "v3-devtools-parity-20261028T102815Z",
+    "phaseId": "phase-v4-a2ui-runtime-hardening",
+    "planRevision": 10,
+    "contractDigest": "22d8555a087078b1a8f70b26924c88a960d5a50a99c5e9ae538b90a8b1c82e40"
+  }
+}

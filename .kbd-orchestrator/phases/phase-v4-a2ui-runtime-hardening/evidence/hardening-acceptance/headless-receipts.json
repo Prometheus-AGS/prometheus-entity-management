@@ -1,0 +1,58 @@
+{
+  "AUI-10": {
+    "status": "pass",
+    "proof": {
+      "h1": {
+        "messages": 3
+      },
+      "h2": {
+        "messages": 1
+      }
+    }
+  },
+  "AUI-11": {
+    "status": "pass",
+    "proof": [
+      {
+        "name": "valid",
+        "headless": "accepted",
+        "react": "accepted"
+      },
+      {
+        "name": "valid-v1",
+        "headless": "accepted",
+        "react": "accepted"
+      },
+      {
+        "name": "component outside the allowlist",
+        "headless": "component-not-allowed",
+        "react": "component-not-allowed"
+      },
+      {
+        "name": "component limit exceeded",
+        "headless": "limit-exceeded",
+        "react": "limit-exceeded"
+      },
+      {
+        "name": "update before create",
+        "headless": "other-error",
+        "react": "other-error"
+      }
+    ]
+  },
+  "AUI-12": {
+    "status": "pass",
+    "proof": {
+      "orphans": [
+        "orphan"
+      ]
+    }
+  },
+  "AUI-13": {
+    "status": "pass",
+    "proof": {
+      "packagesCompared": 13,
+      "tag": "NOT_EXERCISED until the operator approves v4.2.0"
+    }
+  }
+}

@@ -1,0 +1,282 @@
+{
+  "generatedBy": "kbd-plan from runtime tasks.md projection (workaround: no runtime writer exists for a phase-level tasks.json)",
+  "sourceRevision": 64,
+  "tasks": [
+    {
+      "id": "a2ui-release-status-reconcile#1",
+      "change": "a2ui-release-status-reconcile",
+      "ordinal": 1,
+      "title": "Record provenance of the published 4.2.0: tarball exports `createPrometheusA2uiComponent`, `gitHead` is null, source `34a21156` inferred"
+    },
+    {
+      "id": "a2ui-release-status-reconcile#2",
+      "change": "a2ui-release-status-reconcile",
+      "ordinal": 2,
+      "title": "Update `release/npm-registry-status.json` for all 13 package entries to what `npm view` reports, set both source SHAs to the full 40-character SHA of `34a21156`, and regenerate `website/static/api/packed-inventory.json` and the README registry table with the repository generators"
+    },
+    {
+      "id": "a2ui-release-status-reconcile#3",
+      "change": "a2ui-release-status-reconcile",
+      "ordinal": 3,
+      "title": "Correct the stale `web_core`, `@a2ui/react` and `markdown-it` pins in `release/a2ui-protocol-bridge.md` and in `prometheus-entity-skills/_shared/references/a2ui-protocol-bridge.md`"
+    },
+    {
+      "id": "a2ui-release-status-reconcile#4",
+      "change": "a2ui-release-status-reconcile",
+      "ordinal": 4,
+      "title": "Fix the root `CHANGELOG.md` 4.2.0 heading and add a changeset stating that 4.2.0 first ships application-supplied component implementations"
+    },
+    {
+      "id": "a2ui-release-status-reconcile#5",
+      "change": "a2ui-release-status-reconcile",
+      "ordinal": 5,
+      "title": "Record every reader of the edited files and confirm by reading that their expected strings still match, listing any conflicting assertion for the acceptance change"
+    },
+    {
+      "id": "a2ui-release-status-reconcile#6",
+      "change": "a2ui-release-status-reconcile",
+      "ordinal": 6,
+      "title": "Prepare the `v4.2.0` tag command at `34a21156` and record it as pending operator approval; do not create or push it"
+    },
+    {
+      "id": "a2ui-webcore-node-probe#1",
+      "change": "a2ui-webcore-node-probe",
+      "ordinal": 1,
+      "title": "Install dependencies for `@prometheus-ags/a2ui-react` with the frozen lockfile"
+    },
+    {
+      "id": "a2ui-webcore-node-probe#2",
+      "change": "a2ui-webcore-node-probe",
+      "ordinal": 2,
+      "title": "Run a scripted Node import of the `web_core` 0.12.0 processing entries and a create/update/data-model message sequence"
+    },
+    {
+      "id": "a2ui-webcore-node-probe#3",
+      "change": "a2ui-webcore-node-probe",
+      "ordinal": 3,
+      "title": "Record the result in `evidence/webcore-node-probe.md`, with the exact failing import if any, and a go/no-go for `a2ui-headless-export`"
+    },
+    {
+      "id": "a2ui-runtime-limits#1",
+      "change": "a2ui-runtime-limits",
+      "ordinal": 1,
+      "title": "Add the typed `PrometheusA2uiLimits` option with provisional defaults validated at construction, and the `onProducerFault` callback option"
+    },
+    {
+      "id": "a2ui-runtime-limits#2",
+      "change": "a2ui-runtime-limits",
+      "ordinal": 2,
+      "title": "Add the pre-apply check over one call's operations plus held state, rejecting the whole call atomically before any mutation"
+    },
+    {
+      "id": "a2ui-runtime-limits#3",
+      "change": "a2ui-runtime-limits",
+      "ordinal": 3,
+      "title": "Add `setLimits(partial)` (future calls only, never evicts) and `getLimitUsage()`"
+    },
+    {
+      "id": "a2ui-runtime-limits#4",
+      "change": "a2ui-runtime-limits",
+      "ordinal": 4,
+      "title": "Document the `limits` option, defaults and fault reporting in the package README"
+    },
+    {
+      "id": "a2ui-activity-idempotency#1",
+      "change": "a2ui-activity-idempotency",
+      "ordinal": 1,
+      "title": "Track the creating message of each surface separately from messages that only update it"
+    },
+    {
+      "id": "a2ui-activity-idempotency#2",
+      "change": "a2ui-activity-idempotency",
+      "ordinal": 2,
+      "title": "Read the ordering key `(surface, epoch, version)` from `content.surfaceVersions`, with epoch as a producer-raised integer defaulting to 0"
+    },
+    {
+      "id": "a2ui-activity-idempotency#3",
+      "change": "a2ui-activity-idempotency",
+      "ordinal": 3,
+      "title": "Add a canonical content digest and bounded tombstone and tracked-message maps wired to the runtime limits"
+    },
+    {
+      "id": "a2ui-activity-idempotency#4",
+      "change": "a2ui-activity-idempotency",
+      "ordinal": 4,
+      "title": "Filter an activity's operations per surface so a stale surface and a fresh surface in one message are handled independently"
+    },
+    {
+      "id": "a2ui-activity-idempotency#5",
+      "change": "a2ui-activity-idempotency",
+      "ordinal": 5,
+      "title": "Reconcile a restatement in place by stripping `createSurface` for held surfaces, reporting a differing catalog, theme or `sendDataModel` as a producer fault, and keeping the v1 action-clearing path correct"
+    },
+    {
+      "id": "a2ui-activity-idempotency#6",
+      "change": "a2ui-activity-idempotency",
+      "ordinal": 6,
+      "title": "Track the last producer-applied value per data path and write only changed paths, with producer-wins conflicts reported through `onConflict`"
+    },
+    {
+      "id": "a2ui-activity-idempotency#7",
+      "change": "a2ui-activity-idempotency",
+      "ordinal": 7,
+      "title": "Handle `MESSAGES_SNAPSHOT` through the idempotent path, untracking absent messages without deleting their surfaces"
+    },
+    {
+      "id": "a2ui-activity-idempotency#8",
+      "change": "a2ui-activity-idempotency",
+      "ordinal": 8,
+      "title": "Document the behavior change and add the changelog callout for the minor release"
+    },
+    {
+      "id": "a2ui-versioned-deltas#1",
+      "change": "a2ui-versioned-deltas",
+      "ordinal": 1,
+      "title": "Declare `@ag-ui/core` 1.0.3 as a dev dependency and widen the peer range to `>=0.0.59 <0.1.0 || ^1.0.0`"
+    },
+    {
+      "id": "a2ui-versioned-deltas#2",
+      "change": "a2ui-versioned-deltas",
+      "ordinal": 2,
+      "title": "Handle `ACTIVITY_DELTA` with a per-message content copy, accepting only `add` to the operations list and `test` on the held version and rejecting versionless deltas"
+    },
+    {
+      "id": "a2ui-versioned-deltas#3",
+      "change": "a2ui-versioned-deltas",
+      "ordinal": 3,
+      "title": "Buffer early or gapped deltas within the runtime limits, call `onResyncNeeded`, and clear buffers and timers in `dispose()`"
+    },
+    {
+      "id": "a2ui-versioned-deltas#4",
+      "change": "a2ui-versioned-deltas",
+      "ordinal": 4,
+      "title": "Add `getHeldVersions()` and a single `forwardedProps` builder module with the resync request"
+    },
+    {
+      "id": "a2ui-versioned-deltas#5",
+      "change": "a2ui-versioned-deltas",
+      "ordinal": 5,
+      "title": "Report a refused batch as an A2UI validation error together with a resync request"
+    },
+    {
+      "id": "a2ui-action-ids#1",
+      "change": "a2ui-action-ids",
+      "ordinal": 1,
+      "title": "Implement RFC 9562 UUIDv7 generation inline, adding no dependency"
+    },
+    {
+      "id": "a2ui-action-ids#2",
+      "change": "a2ui-action-ids",
+      "ordinal": 2,
+      "title": "Emit the action envelope for executed actions of both v0.9.1 and v1 and never for policy-denied actions, leaving the v1 correlation id inside the action untouched"
+    },
+    {
+      "id": "a2ui-action-ids#3",
+      "change": "a2ui-action-ids",
+      "ordinal": 3,
+      "title": "Extend the shared `forwardedProps` builder with `actionId`, `heldVersion` and the client data model when `sendDataModel` is set"
+    },
+    {
+      "id": "a2ui-action-ids#4",
+      "change": "a2ui-action-ids",
+      "ordinal": 4,
+      "title": "Add `retryAction(actionId)` reusing the id"
+    },
+    {
+      "id": "a2ui-action-ids#5",
+      "change": "a2ui-action-ids",
+      "ordinal": 5,
+      "title": "Apply the operations returned with a stale-action rejection and record the wire shape as a decision"
+    },
+    {
+      "id": "a2ui-action-ids#6",
+      "change": "a2ui-action-ids",
+      "ordinal": 6,
+      "title": "Document the correlation id and the idempotency id and their separate roles"
+    },
+    {
+      "id": "a2ui-headless-export#1",
+      "change": "a2ui-headless-export",
+      "ordinal": 1,
+      "title": "Split the catalog so a React-free entry does not import `@a2ui/react`"
+    },
+    {
+      "id": "a2ui-headless-export#2",
+      "change": "a2ui-headless-export",
+      "ordinal": 2,
+      "title": "Add a headless entry with no React or DOM that applies the same allowlist, limits and validation as the React runtime"
+    },
+    {
+      "id": "a2ui-headless-export#3",
+      "change": "a2ui-headless-export",
+      "ordinal": 3,
+      "title": "Add `exportSurfaceMessages(surfaceId)` preserving catalog, root, theme, `sendDataModel`, component `catalogId` and `rootId`"
+    },
+    {
+      "id": "a2ui-headless-export#4",
+      "change": "a2ui-headless-export",
+      "ordinal": 4,
+      "title": "Keep v1 `wantResponse` and `responsePath` metadata exportable from the v1 compatibility layer"
+    },
+    {
+      "id": "a2ui-headless-export#5",
+      "change": "a2ui-headless-export",
+      "ordinal": 5,
+      "title": "Prune components unreachable from the root on export and report orphan accounting"
+    },
+    {
+      "id": "a2ui-headless-export#6",
+      "change": "a2ui-headless-export",
+      "ordinal": 6,
+      "title": "Add the package `exports` entry, a `tsup.config.ts` entry and the `entryPoints` update in `scripts/skills-package-registry.mjs`"
+    },
+    {
+      "id": "a2ui-hardening-acceptance#1",
+      "change": "a2ui-hardening-acceptance",
+      "ordinal": 1,
+      "title": "Scaffold the `examples/agui-activity-lab` package: add it to `pnpm-workspace.yaml`, copy the `src` aliases for `@prometheus-ags/a2ui-react` used by the other examples, add `@ag-ui/core`, and update `pnpm-lock.yaml`"
+    },
+    {
+      "id": "a2ui-hardening-acceptance#2",
+      "change": "a2ui-hardening-acceptance",
+      "ordinal": 2,
+      "title": "Add a Node SSE server that emits AG-UI 1.0 snapshots, deltas and `MESSAGES_SNAPSHOT` with versions and epochs and records received action envelopes"
+    },
+    {
+      "id": "a2ui-hardening-acceptance#3",
+      "change": "a2ui-hardening-acceptance",
+      "ordinal": 3,
+      "title": "Add the consumer page that feeds the stream to `PrometheusA2uiRuntime` through the package hooks layer and posts action envelopes back"
+    },
+    {
+      "id": "a2ui-hardening-acceptance#4",
+      "change": "a2ui-hardening-acceptance",
+      "ordinal": 4,
+      "title": "Run one scoped `typecheck:affected` for the touched workspaces"
+    },
+    {
+      "id": "a2ui-hardening-acceptance#5",
+      "change": "a2ui-hardening-acceptance",
+      "ordinal": 5,
+      "title": "Update the package README, the bridge document and the skills reference, reconcile the existing gates' expectations for the replacement assertion, export counts and pins, then run the scoped `refresh:exports` and `verify:skills`"
+    },
+    {
+      "id": "a2ui-hardening-acceptance#6",
+      "change": "a2ui-hardening-acceptance",
+      "ordinal": 6,
+      "title": "Author the executable scenarios as Cucumber features and Playwright flows with a new Playwright config and confirm the Cucumber config picks up the new features"
+    },
+    {
+      "id": "a2ui-hardening-acceptance#7",
+      "change": "a2ui-hardening-acceptance",
+      "ordinal": 7,
+      "title": "Run the complete integration set once against the real producer and consumer, fix defects, rebuild the package output and rerun, including the registry comparison for the delivery-only scenario"
+    },
+    {
+      "id": "a2ui-hardening-acceptance#8",
+      "change": "a2ui-hardening-acceptance",
+      "ordinal": 8,
+      "title": "Run an artifact-only review, record evidence, and archive the phase changes only after the gates pass, without tagging or publishing"
+    }
+  ]
+}

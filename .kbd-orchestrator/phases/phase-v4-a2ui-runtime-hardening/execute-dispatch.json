@@ -1,0 +1,21 @@
+{
+  "kind": "kbd.execute-dispatch",
+  "phase": "phase-v4-a2ui-runtime-hardening",
+  "dispatchedAt": "2026-10-28T11:25:46Z",
+  "backend": "openspec",
+  "driver": "kbd-apply",
+  "contractDigest": "22d8555a087078b1a8f70b26924c88a960d5a50a99c5e9ae538b90a8b1c82e40",
+  "assignedChanges": [
+    "a2ui-action-ids",
+    "a2ui-activity-idempotency",
+    "a2ui-hardening-acceptance",
+    "a2ui-headless-export",
+    "a2ui-release-status-reconcile",
+    "a2ui-runtime-limits",
+    "a2ui-versioned-deltas",
+    "a2ui-webcore-node-probe"
+  ],
+  "pendingTasks": 46,
+  "pendingWork": "all tasks; then one integration gate, one cumulative review, verify and archive",
+  "note": "Dispatch receipt only. Execute stays active. This is not a stage handoff and carries no completedAt or nextStage."
+}

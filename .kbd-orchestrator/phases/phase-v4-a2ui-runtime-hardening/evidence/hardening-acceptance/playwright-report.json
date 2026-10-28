@@ -1,0 +1,772 @@
+{
+  "config": {
+    "argv": [
+      "/Users/gqadonis/.volta/tools/image/node/24.18.0/bin/node",
+      "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "tests/browser/v4-a2ui-runtime-hardening.playwright.config.ts"
+    ],
+    "configFile": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/tests/browser/v4-a2ui-runtime-hardening.playwright.config.ts",
+    "rootDir": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-desktop",
+        "name": "chromium-desktop",
+        "testDir": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "v4-a2ui-runtime-hardening.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm --filter prometheus-agui-activity-lab-example preview --host 127.0.0.1 --port 4180 --strictPort",
+      "url": "http://127.0.0.1:4180",
+      "reuseExistingServer": false,
+      "timeout": 60000
+    }
+  },
+  "suites": [
+    {
+      "title": "v4-a2ui-runtime-hardening.spec.ts",
+      "file": "v4-a2ui-runtime-hardening.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "AUI-1 duplicate create activity is a no-op",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1003,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T14:22:53.807Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts/v4-a2ui-runtime-hardening--79a6d--create-activity-is-a-no-op-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f1d74cb4e95d759d499-3846490b46c783d4129c",
+          "file": "v4-a2ui-runtime-hardening.spec.ts",
+          "line": 93,
+          "column": 5
+        },
+        {
+          "title": "AUI-2 duplicate and out-of-order versioned updates",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 656,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T14:22:55.286Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts/v4-a2ui-runtime-hardening--c3dcd--of-order-versioned-updates-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f1d74cb4e95d759d499-4ae178b130c440992ef3",
+          "file": "v4-a2ui-runtime-hardening.spec.ts",
+          "line": 114,
+          "column": 5
+        },
+        {
+          "title": "AUI-3 messages snapshot replay keeps surface and input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 568,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T14:22:55.984Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts/v4-a2ui-runtime-hardening--99226-lay-keeps-surface-and-input-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f1d74cb4e95d759d499-6acc8b74056f7f2369a9",
+          "file": "v4-a2ui-runtime-hardening.spec.ts",
+          "line": 136,
+          "column": 5
+        },
+        {
+          "title": "AUI-4 newer restatement applies as updates",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 695,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T14:22:56.697Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts/v4-a2ui-runtime-hardening--4b6c7-tatement-applies-as-updates-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f1d74cb4e95d759d499-9fab1d3f92c4194b73e2",
+          "file": "v4-a2ui-runtime-hardening.spec.ts",
+          "line": 158,
+          "column": 5
+        },
+        {
+          "title": "AUI-5 one activity under two message ids is applied once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 521,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T14:22:57.578Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts/v4-a2ui-runtime-hardening--7efdc-message-ids-is-applied-once-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f1d74cb4e95d759d499-fc54e842512d834f38e1",
+          "file": "v4-a2ui-runtime-hardening.spec.ts",
+          "line": 189,
+          "column": 5
+        },
+        {
+          "title": "AUI-6 versioned delta, gap and refusal",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 542,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T14:22:58.172Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts/v4-a2ui-runtime-hardening--8599c-ioned-delta-gap-and-refusal-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f1d74cb4e95d759d499-05190b3e409859b86a5e",
+          "file": "v4-a2ui-runtime-hardening.spec.ts",
+          "line": 207,
+          "column": 5
+        },
+        {
+          "title": "AUI-7 held versions are reported and only the missing operations return",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6399,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T14:22:58.768Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts/v4-a2ui-runtime-hardening--73ca3-e-missing-operations-return-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f1d74cb4e95d759d499-43ec00cd2649bc8b94ad",
+          "file": "v4-a2ui-runtime-hardening.spec.ts",
+          "line": 243,
+          "column": 5
+        },
+        {
+          "title": "AUI-14 stale-action rejection operations are applied",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1011,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T14:23:05.230Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts/v4-a2ui-runtime-hardening--821a2-tion-operations-are-applied-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f1d74cb4e95d759d499-e759330492a241458b76",
+          "file": "v4-a2ui-runtime-hardening.spec.ts",
+          "line": 269,
+          "column": 5
+        },
+        {
+          "title": "AUI-8 distinct action ids across contexts and reload; retry reuses one",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2427,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T14:23:06.326Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts/v4-a2ui-runtime-hardening--9c5a7-and-reload-retry-reuses-one-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f1d74cb4e95d759d499-933495a44ee78c241cde",
+          "file": "v4-a2ui-runtime-hardening.spec.ts",
+          "line": 289,
+          "column": 5
+        },
+        {
+          "title": "AUI-9 envelope fidelity for v0.9.1 and v1.0",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1122,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T14:23:08.978Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts/v4-a2ui-runtime-hardening--015ef-idelity-for-v0-9-1-and-v1-0-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f1d74cb4e95d759d499-46aee71822b9efd8d2ea",
+          "file": "v4-a2ui-runtime-hardening.spec.ts",
+          "line": 325,
+          "column": 5
+        },
+        {
+          "title": "AUI-15 a failing action response does not undo its batch",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 831,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T14:23:10.171Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts/v4-a2ui-runtime-hardening--87bdb-nse-does-not-undo-its-batch-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f1d74cb4e95d759d499-5aea338077bf6cde4a96",
+          "file": "v4-a2ui-runtime-hardening.spec.ts",
+          "line": 365,
+          "column": 5
+        },
+        {
+          "title": "AUI-16 oversize delta is rejected before buffering; a waiting delta is held once",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8189,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T14:23:11.073Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts/v4-a2ui-runtime-hardening--b3976--waiting-delta-is-held-once-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f1d74cb4e95d759d499-a368f2b7a3c6c4bd582f",
+          "file": "v4-a2ui-runtime-hardening.spec.ts",
+          "line": 416,
+          "column": 5
+        },
+        {
+          "title": "AUI-17 component payload growth past the cap is rejected",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1037,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T14:23:19.357Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts/v4-a2ui-runtime-hardening--6bbc6-th-past-the-cap-is-rejected-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f1d74cb4e95d759d499-4a12c866318b07644151",
+          "file": "v4-a2ui-runtime-hardening.spec.ts",
+          "line": 440,
+          "column": 5
+        },
+        {
+          "title": "AUI-18 unreadable data keys do not wedge later updates",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 749,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T14:23:20.466Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts/v4-a2ui-runtime-hardening--79df9--do-not-wedge-later-updates-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f1d74cb4e95d759d499-fa09882efb27d3488866",
+          "file": "v4-a2ui-runtime-hardening.spec.ts",
+          "line": 455,
+          "column": 5
+        },
+        {
+          "title": "AUI-19 delete and create of one surface in one activity restores its data",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 756,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T14:23:21.293Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts/v4-a2ui-runtime-hardening--86801--activity-restores-its-data-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f1d74cb4e95d759d499-59f05254d62d8215914e",
+          "file": "v4-a2ui-runtime-hardening.spec.ts",
+          "line": 476,
+          "column": 5
+        },
+        {
+          "title": "AUI-9b envelopes without sendDataModel carry no data model",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 916,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T14:23:22.176Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts/v4-a2ui-runtime-hardening--ee24d-taModel-carry-no-data-model-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f1d74cb4e95d759d499-914cf53518992d393bbe",
+          "file": "v4-a2ui-runtime-hardening.spec.ts",
+          "line": 492,
+          "column": 5
+        },
+        {
+          "title": "AUI-5b two real concurrent streams carrying the same activity",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1032,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-28T14:23:23.299Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/gqadonis/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/playwright-artifacts/v4-a2ui-runtime-hardening--e6a23--carrying-the-same-activity-chromium-desktop/trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2f1d74cb4e95d759d499-34a36f6748a776a69c4c",
+          "file": "v4-a2ui-runtime-hardening.spec.ts",
+          "line": 524,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-28T14:22:48.004Z",
+    "duration": 36828.182,
+    "expected": 17,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

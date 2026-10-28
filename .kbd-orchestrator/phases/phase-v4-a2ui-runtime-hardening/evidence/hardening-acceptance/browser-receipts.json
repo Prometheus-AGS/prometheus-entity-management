@@ -1,0 +1,133 @@
+{
+  "AUI-1": {
+    "status": "pass",
+    "proof": {
+      "surfaces": 1,
+      "typed": "typed",
+      "faults": 1
+    }
+  },
+  "AUI-2": {
+    "status": "pass",
+    "proof": {
+      "held": 2,
+      "typed": "typed"
+    }
+  },
+  "AUI-3": {
+    "status": "pass",
+    "proof": {
+      "kept": true,
+      "notResurrected": true
+    }
+  },
+  "AUI-4": {
+    "status": "pass",
+    "proof": {
+      "conflicts": 1,
+      "omittedSurfaceSurvives": true
+    }
+  },
+  "AUI-5": {
+    "status": "pass",
+    "proof": {
+      "appliedOnce": true,
+      "limitation": "one stream carries both message ids"
+    }
+  },
+  "AUI-6": {
+    "status": "pass",
+    "proof": {
+      "ordered": true,
+      "refused": 2,
+      "resyncs": 1
+    }
+  },
+  "AUI-7": {
+    "status": "pass",
+    "proof": {
+      "held": {
+        "s7": {
+          "epoch": 1,
+          "version": 1
+        }
+      }
+    }
+  },
+  "AUI-14": {
+    "status": "pass",
+    "proof": {
+      "repaired": true,
+      "emptyRejectionResyncs": true
+    }
+  },
+  "AUI-8": {
+    "status": "pass",
+    "proof": {
+      "ids": [
+        "01a182e4-ac41-707d-b2e4-9842fd336536",
+        "01a182e4-afad-7bb2-a791-5c1c096aec71",
+        "01a182e4-b0f2-706a-98e6-1a043df12b6c"
+      ],
+      "retryReused": true
+    }
+  },
+  "AUI-9": {
+    "status": "pass",
+    "proof": {
+      "v09": {
+        "epoch": 1,
+        "version": 1
+      },
+      "v1": "lab.ping"
+    }
+  },
+  "AUI-15": {
+    "status": "pass",
+    "proof": {
+      "applied": true,
+      "resyncs": 0
+    }
+  },
+  "AUI-16": {
+    "status": "pass",
+    "proof": {
+      "oversizeRejected": true,
+      "resyncs": 1
+    }
+  },
+  "AUI-17": {
+    "status": "pass",
+    "proof": {
+      "rejectedAtThird": true
+    }
+  },
+  "AUI-18": {
+    "status": "pass",
+    "proof": {
+      "updatesAfterForbiddenKey": true
+    }
+  },
+  "AUI-19": {
+    "status": "pass",
+    "proof": {
+      "dataRestored": true
+    }
+  },
+  "AUI-9b": {
+    "status": "pass",
+    "proof": {
+      "v09": "no dataModel",
+      "v1": "no dataModel"
+    }
+  },
+  "AUI-5b": {
+    "status": "pass",
+    "proof": {
+      "streams": 2,
+      "eventsReceived": 6,
+      "applied": "once each",
+      "typed": "typed"
+    }
+  }
+}

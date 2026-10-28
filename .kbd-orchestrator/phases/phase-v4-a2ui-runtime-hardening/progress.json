@@ -1,0 +1,164 @@
+{
+  "schemaVersion": "2",
+  "generatedBy": "kbd-runtime",
+  "projectionContractVersion": 2,
+  "sourceRevision": 267,
+  "derivedRevision": 267,
+  "frontier": {
+    "6dfa3101-01a6-48e1-b437-0e49b08b937b": 267
+  },
+  "conflictCount": 0,
+  "phase": "phase-v4-a2ui-runtime-hardening",
+  "phaseId": "phase-v4-a2ui-runtime-hardening",
+  "parentPhase": null,
+  "last_updated": "2026-10-28T14:18:25.539049Z",
+  "last_updated_by": "kbd-runtime",
+  "changes_total": 8,
+  "changes_completed": 8,
+  "implementation_total": 8,
+  "implementation_completed": 8,
+  "completion": {
+    "primaryCounter": "implementation",
+    "implementation": {
+      "completed": 8,
+      "total": 8,
+      "status": "COMPLETE"
+    },
+    "evidence": {
+      "status": "NOT_TRACKED",
+      "summary": null,
+      "blockers": []
+    },
+    "certification": {
+      "status": "NOT_TRACKED",
+      "summary": null,
+      "blockers": []
+    },
+    "publication": {
+      "status": "NOT_TRACKED",
+      "summary": null,
+      "blockers": []
+    }
+  },
+  "completionScopes": {
+    "completion": "phase",
+    "runCompletion": "run"
+  },
+  "runCompletion": {
+    "scope": "run",
+    "runId": "v3-devtools-parity-20261028T102815Z",
+    "primaryCounter": "implementation",
+    "implementation": {
+      "completed": 49,
+      "total": 71,
+      "status": "IN_PROGRESS"
+    },
+    "evidence": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    },
+    "certification": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    },
+    "publication": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    }
+  },
+  "changes": [
+    {
+      "id": "a2ui-release-status-reconcile",
+      "title": "a2ui-release-status-reconcile — a2ui-release-status-reconcile",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 6,
+      "tasks_done": 6,
+      "last_task_completed": "Prepare the `v4.2.0` tag command at `34a21156` and record it as pending operator approval; do not create or push it",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "a2ui-webcore-node-probe",
+      "title": "a2ui-webcore-node-probe — a2ui-webcore-node-probe",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 3,
+      "tasks_done": 3,
+      "last_task_completed": "Record the result in `evidence/webcore-node-probe.md`, with the exact failing import if any, and a go/no-go for `a2ui-headless-export`",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "a2ui-runtime-limits",
+      "title": "a2ui-runtime-limits — a2ui-runtime-limits",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 4,
+      "tasks_done": 4,
+      "last_task_completed": "Document the `limits` option, defaults and fault reporting in the package README",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "a2ui-activity-idempotency",
+      "title": "a2ui-activity-idempotency — a2ui-activity-idempotency",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 8,
+      "tasks_done": 8,
+      "last_task_completed": "Document the behavior change and add the changelog callout for the minor release",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "a2ui-versioned-deltas",
+      "title": "a2ui-versioned-deltas — a2ui-versioned-deltas",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 5,
+      "tasks_done": 5,
+      "last_task_completed": "Report a refused batch as an A2UI validation error together with a resync request",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "a2ui-action-ids",
+      "title": "a2ui-action-ids — a2ui-action-ids",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 6,
+      "tasks_done": 6,
+      "last_task_completed": "Document the correlation id and the idempotency id and their separate roles",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "a2ui-headless-export",
+      "title": "a2ui-headless-export — a2ui-headless-export",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 6,
+      "tasks_done": 6,
+      "last_task_completed": "Add the package `exports` entry, a `tsup.config.ts` entry and the `entryPoints` update in `scripts/skills-package-registry.mjs`",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "a2ui-hardening-acceptance",
+      "title": "a2ui-hardening-acceptance — a2ui-hardening-acceptance",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 8,
+      "tasks_done": 8,
+      "last_task_completed": "Run an artifact-only review, record evidence, and archive the phase changes only after the gates pass, without tagging or publishing",
+      "next_task_pending": null,
+      "blockers": []
+    }
+  ],
+  "children": {},
+  "migrationStatus": null
+}

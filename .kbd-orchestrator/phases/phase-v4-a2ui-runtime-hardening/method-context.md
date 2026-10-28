@@ -1,0 +1,169 @@
+# Derived method context
+
+Method: UNKNOWN; phase: phase-v4-a2ui-runtime-hardening; revision: 66; status: BLOCKED.
+
+This is a recovery index, not execution permission. Resolve current canonical decisions and contract before dependent action.
+
+```json
+{
+  "schemaVersion": 1,
+  "kind": "kbd.derived-method-context",
+  "generatedAt": "2026-10-28T11:24:54.080Z",
+  "authority": "derived-read-only-index; canonical signed decisions, phase binding, contract and governing host policy remain authority",
+  "projectId": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
+  "runId": "v3-devtools-parity-20261028T102815Z",
+  "phaseId": "phase-v4-a2ui-runtime-hardening",
+  "sourceRevision": 66,
+  "phaseDirectory": ".kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening",
+  "contract": {
+    "path": ".kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/adopted-contract.json",
+    "observation": "observed",
+    "sha256": "2e873dafe884065f11e78e2fd091e1235d2467d599444c01025d044aab7182af",
+    "contractDigest": "22d8555a087078b1a8f70b26924c88a960d5a50a99c5e9ae538b90a8b1c82e40",
+    "binding": {
+      "contractPath": ".kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/adopted-contract.json",
+      "contractDigest": "22d8555a087078b1a8f70b26924c88a960d5a50a99c5e9ae538b90a8b1c82e40",
+      "scenarioDigests": {
+        "AUI-1": "22dd7a1b86a130887c30e18ddafde3302cdfa0bdcbac20328973a01bbc54623d",
+        "AUI-10": "03ad4e66eb134fe231b7e580010680a4c1ebcc893691e280256e49b0bee482c1",
+        "AUI-11": "417783e056fea66279687d1fd47c7eaaf9318ddcd4e33601714643c07a7f5664",
+        "AUI-12": "14d73262c3369f39600bf801a742d3e38f890fce639f13c5d7e532e92f8ee663",
+        "AUI-13": "3f7c577dce0ee4a719b6b733c990afbb9931e287796da4d9126c7f50ccf83f07",
+        "AUI-14": "2d16cf3c93c0852ff3218d61c1d6e2507750a186b2464f31c67115617f5ef709",
+        "AUI-2": "16ec2339591023905f90036af52485f2e08b920972105c3abfbd5a58d8ef445b",
+        "AUI-3": "0af1d8e345f5ed6fc3bb4d7fa37d2117f00a3b6f372efc977023be380a78176d",
+        "AUI-4": "e74cfa80c708dbed66842c890754062882b8cf45999f1e9a4f50b2c050a33391",
+        "AUI-5": "c085889c8be19dd3da8f32eeffdcfd1e7644b8d8e8fa9ac7055f0c465e017820",
+        "AUI-6": "eb705a38e9d11f3717631724e053aba96e2ab10c7ddc5549a961e4b17d8cb74a",
+        "AUI-7": "ab0bf518f442ea906e7e41af1b99f70aa30af1730d2ec8f9898008ef779d49b6",
+        "AUI-8": "824243cc2650eef4039af61e429e7c9884193315ad23c290f9468f8835f9c35e",
+        "AUI-9": "7a601163ae426afb354532c1c19f1ac6ba2be6f5820c620abb541bd5f27a3f07"
+      },
+      "planRevision": 10,
+      "adoptionDecisionId": "contract-adoption-phase-v4-a2ui-runtime-hardening-22d8555a",
+      "bindingRevision": 1
+    },
+    "identity": {
+      "projectId": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
+      "runId": "v3-devtools-parity-20261028T102815Z",
+      "phaseId": "phase-v4-a2ui-runtime-hardening",
+      "planRevision": 10,
+      "contractDigest": "22d8555a087078b1a8f70b26924c88a960d5a50a99c5e9ae538b90a8b1c82e40"
+    }
+  },
+  "selectedMethod": "UNKNOWN",
+  "methodDecision": null,
+  "retiredMethods": [],
+  "references": [],
+  "includedValue": [
+    "AUI-1",
+    "AUI-2",
+    "AUI-4",
+    "AUI-5",
+    "AUI-6",
+    "AUI-7",
+    "AUI-8",
+    "AUI-9",
+    "AUI-14"
+  ],
+  "exclusions": [
+    "Flutter implementation",
+    "CRDT and collaborative input merge",
+    "epic workstreams #59 through #69",
+    "tagging or publishing without operator approval",
+    "server-side action arbitration (UAR)"
+  ],
+  "stage": "plan",
+  "stageAuthority": {
+    "operations": [
+      "discover/define/plan within governing policy"
+    ],
+    "implementationComplete": false,
+    "verificationAuthority": "separately authorized whole-value-phase boundary required; this index grants none",
+    "executableTestAuthoring": "governed by host policy; where that policy is production-first, defer until the complete agreed production work"
+  },
+  "governingInstructions": [
+    {
+      "path": "AGENTS.md",
+      "observation": "observed",
+      "sha256": "d6cf8d33b214ab6a9668cd80d1f561e08a8be68cda3a4370a45833c1be5da897"
+    },
+    {
+      "path": "CLAUDE.md",
+      "observation": "observed",
+      "sha256": "6aefdb4d940cf1a5b7537d439829f5fe20313bd14e881d144273f4fa33a9da1e"
+    },
+    {
+      "path": ".kbd-orchestrator/constraints.md",
+      "observation": "missing",
+      "sha256": null
+    }
+  ],
+  "policyConflicts": [],
+  "candidateAndEvidence": {
+    "freshness": "source digest of packages/a2ui-react or examples/agui-activity-lab, plan revision, or fixture identity changes",
+    "paths": [
+      "local receipt per scenario with source identity, exit code and observed result"
+    ]
+  },
+  "budgets": {
+    "adopted": {
+      "timeMinutes": 150,
+      "toolCalls": 400,
+      "repairAttempts": 3,
+      "noProgressLimit": 3,
+      "tokenBudget": "UNKNOWN",
+      "tokenFallback": "time and tool-call budgets",
+      "exhaustion": "checkpoint and BLOCKED; never silent PASS"
+    },
+    "consumption": "UNKNOWN; recover original canonical/evidence receipts before execution"
+  },
+  "unresolved": {
+    "boundaryObligations": {
+      "phase:phase-v4-a2ui-runtime-hardening": {
+        "key": "phase:phase-v4-a2ui-runtime-hardening",
+        "receiptId": "51571a128be04a60ff347f4426a5146e46551f422cb21df06d888a94e0c3ca2a",
+        "boundary": "phase",
+        "subject": "phase-v4-a2ui-runtime-hardening",
+        "sourceRevision": 5,
+        "exactSignal": "Starting phase 8 out of 8: phase-v4-a2ui-runtime-hardening"
+      }
+    },
+    "blockers": [],
+    "instruction": "Unknown side effects require reconciliation before retry, not a fresh attempt assumption."
+  },
+  "preserve": [
+    "latest non-superseded method decision and retiredMethods; old commands/memory are context only",
+    "original contract snapshots, evidence and source/build/configuration/fixture/assertion identity",
+    "all budget consumption/high-water marks, including UNKNOWN prior usage; never reset on recovery",
+    "unresolved effects and cleanup/receipt obligations; reconcile uncertain effects before retry"
+  ],
+  "hostCapabilities": {
+    "platform": "darwin",
+    "nodeVersion": "v24.18.0",
+    "observedInterfaces": [
+      "canonical status",
+      "typed phase disposition",
+      "project-owned file identity"
+    ],
+    "executionInterception": "not provided by this helper",
+    "commandInventoryIsPermission": false
+  },
+  "control": {
+    "mode": "instruction-only",
+    "observed": [
+      "canonical references and file identities"
+    ],
+    "enforced": [
+      "only named existing signed runtime mutations; no generic shell/tool interception claimed"
+    ],
+    "unsupported": [
+      "universal model obedience or arbitrary tool interception"
+    ]
+  },
+  "status": "BLOCKED",
+  "blockers": [
+    "no current contract-bound selected-method decision"
+  ]
+}
+```
