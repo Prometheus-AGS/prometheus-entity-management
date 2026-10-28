@@ -6,7 +6,7 @@
     "runId": "v3-devtools-parity-20261028T102815Z",
     "phaseId": "phase-v4-a2ui-runtime-hardening",
     "planRevision": 10,
-    "contractDigest": "22d8555a087078b1a8f70b26924c88a960d5a50a99c5e9ae538b90a8b1c82e40"
+    "contractDigest": "cbcede2596295b3fe35f68722fbe26ea418d3316e26028af80da57af9dfd8321"
   },
   "digestNormalization": {
     "algorithm": "sha256",
@@ -282,7 +282,33 @@
     "noProgressLimit": 3,
     "tokenBudget": "UNKNOWN",
     "tokenFallback": "time and tool-call budgets",
-    "exhaustion": "checkpoint and BLOCKED; never silent PASS"
+    "exhaustion": "checkpoint and BLOCKED; never silent PASS",
+    "extensions": [
+      {
+        "scope": "phase close after the observed consumption of the hardening phase: wall clock 342 min (measured), 13 repair attempts (estimate, counted from the phase record), tool calls 386 and rising; ceilings raised to cover completing the phase, no scope added",
+        "timeMinutes": 330,
+        "toolCalls": 200,
+        "repairAttempts": 10,
+        "resultingCeilings": {
+          "timeMinutes": 480,
+          "toolCalls": 600,
+          "repairAttempts": 13,
+          "noProgressLimit": 3
+        }
+      },
+      {
+        "scope": "wall-clock only: measured time since dispatch reached 691 min because it counts waiting, docs work and the operator-run close; no scope added",
+        "timeMinutes": 960,
+        "toolCalls": 0,
+        "repairAttempts": 0,
+        "resultingCeilings": {
+          "timeMinutes": 1440,
+          "toolCalls": 600,
+          "repairAttempts": 13,
+          "noProgressLimit": 3
+        }
+      }
+    ]
   },
   "evidenceInvalidation": "source digest of packages/a2ui-react or examples/agui-activity-lab, plan revision, or fixture identity changes",
   "workerRoutes": {

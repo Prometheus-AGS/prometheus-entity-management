@@ -52,7 +52,7 @@
     "status": "pass",
     "proof": {
       "packagesCompared": 13,
-      "tag": "NOT_EXERCISED until the operator approves v4.2.0"
+      "tag": "NOT_EXERCISED: the release tag is created at publication"
     }
   }
 }

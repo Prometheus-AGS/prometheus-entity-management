@@ -1,0 +1,164 @@
+{
+  "phase": "phase-v4-a2ui-runtime-hardening",
+  "projectId": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
+  "runId": "v3-devtools-parity-20261028T102815Z",
+  "contractDigest": "cbcede2596295b3fe35f68722fbe26ea418d3316e26028af80da57af9dfd8321",
+  "generatedAt": "2026-10-28T23:17:03.186Z",
+  "producedBy": "scripts/build-a2ui-boundary-results.mjs from the local acceptance receipts",
+  "sourceDigests": {
+    "packages/a2ui-react/src/official/action-envelopes.ts": "c8b1cb2ee413d6809b75b555104c8c9ea8f7f63bb95d1054aa051a8247bd9c33",
+    "packages/a2ui-react/src/official/activity-delta.ts": "b25977ba349a9dc5b48164a16b8a5922f9de01664077c7d578fcf09c81ddd3b6",
+    "packages/a2ui-react/src/official/activity-keys.ts": "b1c5201eb85e8ee9ee3fd4691c6ba432251291384acbb5c544bd864da152a2c4",
+    "packages/a2ui-react/src/official/activity-ledger.ts": "305aac37388a3006b7d37abc2dd764d58b994c0acafa13b52a57bb251b081bbd",
+    "packages/a2ui-react/src/official/activity-plan.ts": "9fdd90f005c04dc3ee93cd36a8cf5b334642ad1a6abdbd28e141fe9fa9d29716",
+    "packages/a2ui-react/src/official/catalog-core.ts": "f9b17a1f4f22a95a34bbd483e78b38b7bd9edcd5724919fd49fcb3e0879f5ffc",
+    "packages/a2ui-react/src/official/catalog.ts": "e4232608a26bf70b741631df9089236b2b81bd9474d1906ad2492fd1bdbb641c",
+    "packages/a2ui-react/src/official/data-reconcile.ts": "82e23155bce7fc988bf0c87dfc2daf91724ce009ff1b4a66ecb40370ca3cc9fd",
+    "packages/a2ui-react/src/official/delta-buffer.ts": "af0df86a2bfec195d01da6629b7470ae11020b9e2059e9f4d3010472e2302671",
+    "packages/a2ui-react/src/official/forwarded-props.ts": "6dc5599241aaf6d179fddc30871fca174238420d6e433db550a267e7c6ebf345",
+    "packages/a2ui-react/src/official/limit-checks.ts": "b3264db9358fab8a70283d1cb41bcece28a4a4d0eaf612ff36743305c84be5fe",
+    "packages/a2ui-react/src/official/limits.ts": "913e4873af123c68b7aa62655067502da72349cbf75074447496f93438cae0de",
+    "packages/a2ui-react/src/official/parse-messages.ts": "d53ebba62e4969c50aeab968f247563aa3a67d6067acea5c77d5540db7736a6e",
+    "packages/a2ui-react/src/official/runtime-core.ts": "1f6666db898ea5172de886942968284556e4bd9cca830efa64c0185835dbfc8e",
+    "packages/a2ui-react/src/official/runtime-types.ts": "7d50535e5797dbc99bf79de5d11ccbfcf58a725b14d4f4a25e0e5cf3be784600",
+    "packages/a2ui-react/src/official/runtime.ts": "4f0b2982929fac339c1ed62370de2cae2653c80ebd4cf250f39edac0f26373da",
+    "packages/a2ui-react/src/official/shadow-seed.ts": "de97c52ab96c1f6105fc35c6ac25765903cf3aaacaef4b197e6a1058f015f7a4",
+    "packages/a2ui-react/src/official/stale-action.ts": "4f1f55377112144ce466ac92a9f3f3f88c5e71c7171c3143f4cf1c12eb67b705",
+    "packages/a2ui-react/src/official/surface-export.ts": "1d8dd0f5692c8439eb193e603d26233448e50f1573d6ab56fa5cba00906c620e",
+    "packages/a2ui-react/src/official/types.ts": "0b2e25d032dbb354f6c534e587736937b181f9b165706942f76cc6c58fa7a333",
+    "packages/a2ui-react/src/official/uuid.ts": "0aad53d68369f777739f1609b393aaed147b6859b9392a90111c74d26a5f02d6",
+    "packages/a2ui-react/src/official/v1-compat.ts": "a6f1eaca35eea2d4c0ca8e04e0a1eab7f0d03da7a5f591bd5963a640a28bbc09",
+    "packages/a2ui-react/src/headless.ts": "036b435afe24e497bdeb04d103b76391d027251b9fabe6aaf95c5847485511b1",
+    "packages/a2ui-react/src/index.ts": "1ac3906bff373f25322ea61d455d6dc0ab518303af013110141752759f5c7c63",
+    "examples/agui-activity-lab/server/events.ts": "2aa24150ed11f23f177e0a0e457afaed948d923c57fbbb945d4932fdda195ca9",
+    "examples/agui-activity-lab/server/main.ts": "c8a5eff5532a1772233b902b39f660506220a7e101f28725b27df7aa32b6bcbb",
+    "examples/agui-activity-lab/server/producer.ts": "d7a5ede6cde1f51f7652f3c4d6102780379f8fd67b6de07d1f4e05c78e628c09",
+    "examples/agui-activity-lab/src/features/lab/components/lab-console.tsx": "dda8a203aec203bf597008d973adbc8cd4c5763a8f3234a4a050c1aaea5ff2ac",
+    "examples/agui-activity-lab/src/features/lab/hooks.ts": "9917a154d88d6f58c3f410aabeb33fc5feeef470b04105db20e1d78c3373f208",
+    "examples/agui-activity-lab/src/features/lab/lab-store.ts": "efde7259525645d4ddd98fd6f5640ea71b29b6bd3df7dc4a24345c3b8be6d388",
+    "examples/agui-activity-lab/src/features/lab/runtime.ts": "cd7a8e5f4e0d443a52f0f7da80d32a54a7a791c3cfb567fe256ad22c27be4985",
+    "examples/agui-activity-lab/src/main.tsx": "8e0922a10153523023704dfd5c6f5e5c9e1edfa13d126ae781b3e8e6172f378d",
+    "examples/agui-activity-lab/src/styles.css": "380b32e1b3d1442cd40e624cdba92d634cb7eac24e75727ce72046b58bc2e771",
+    "examples/agui-activity-lab/src/vite-env.d.ts": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5"
+  },
+  "scenarios": [
+    {
+      "id": "AUI-1",
+      "status": "PASS",
+      "attempted": "Duplicate create activity is a no-op: lab producer redelivers a create activity to a real Chromium page running PrometheusA2uiRuntime",
+      "observed": "{\"surfaces\":1,\"typed\":\"typed\",\"faults\":1}",
+      "evidence": ".kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/browser-receipts.json#AUI-1 sha256:8d76a27c0bc0c1de27e69c0a8f9b2e2fb9a859695b4bda3ab3b58cde82ee3073"
+    },
+    {
+      "id": "AUI-2",
+      "status": "PASS",
+      "attempted": "Duplicate and out-of-order versioned updates: lab producer redelivers and reorders versioned update activities",
+      "observed": "{\"held\":2,\"typed\":\"typed\"}",
+      "evidence": ".kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/browser-receipts.json#AUI-2 sha256:8d76a27c0bc0c1de27e69c0a8f9b2e2fb9a859695b4bda3ab3b58cde82ee3073"
+    },
+    {
+      "id": "AUI-3",
+      "status": "PASS",
+      "attempted": "MESSAGES_SNAPSHOT replay keeps surface and input: lab producer replays a thread via MESSAGES_SNAPSHOT while the user has typed input",
+      "observed": "{\"kept\":true,\"notResurrected\":true}",
+      "evidence": ".kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/browser-receipts.json#AUI-3 sha256:8d76a27c0bc0c1de27e69c0a8f9b2e2fb9a859695b4bda3ab3b58cde82ee3073"
+    },
+    {
+      "id": "AUI-4",
+      "status": "PASS",
+      "attempted": "Newer restatement applies as updates: lab producer sends a newer replace:true restatement after the user edited a bound input",
+      "observed": "{\"conflicts\":1,\"omittedSurfaceSurvives\":true}",
+      "evidence": ".kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/browser-receipts.json#AUI-4 sha256:8d76a27c0bc0c1de27e69c0a8f9b2e2fb9a859695b4bda3ab3b58cde82ee3073"
+    },
+    {
+      "id": "AUI-5",
+      "status": "PASS",
+      "attempted": "Two concurrent streams, one activity: lab producer delivers one activity over two streams, including one surface version under two messageIds",
+      "observed": "{\"appliedOnce\":true,\"limitation\":\"one stream carries both message ids\"}",
+      "evidence": ".kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/browser-receipts.json#AUI-5 sha256:8d76a27c0bc0c1de27e69c0a8f9b2e2fb9a859695b4bda3ab3b58cde82ee3073"
+    },
+    {
+      "id": "AUI-6",
+      "status": "PASS",
+      "attempted": "Versioned delta, gap and refusal: lab producer streams deltas, skips a version, and sends a batch the runtime refuses",
+      "observed": "{\"ordered\":true,\"refused\":2,\"resyncs\":1}",
+      "evidence": ".kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/browser-receipts.json#AUI-6 sha256:8d76a27c0bc0c1de27e69c0a8f9b2e2fb9a859695b4bda3ab3b58cde82ee3073"
+    },
+    {
+      "id": "AUI-7",
+      "status": "PASS",
+      "attempted": "Held-version report on reconnect: page reconnects and reports held versions to the lab producer",
+      "observed": "{\"held\":{\"s7\":{\"epoch\":1,\"version\":1}}}",
+      "evidence": ".kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/browser-receipts.json#AUI-7 sha256:8d76a27c0bc0c1de27e69c0a8f9b2e2fb9a859695b4bda3ab3b58cde82ee3073"
+    },
+    {
+      "id": "AUI-8",
+      "status": "PASS",
+      "attempted": "Distinct actionIds across contexts and reload: two browser contexts and a reload each dispatch actions to the lab producer",
+      "observed": "{\"ids\":[\"01a18379-508f-7b49-bee6-f6077452e065\",\"01a18379-51de-756d-bcdb-e6dc83d17bc2\",\"01a18379-524f-7150-99cb-9456212a7176\"],\"retryReused\":true}",
+      "evidence": ".kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/browser-receipts.json#AUI-8 sha256:8d76a27c0bc0c1de27e69c0a8f9b2e2fb9a859695b4bda3ab3b58cde82ee3073"
+    },
+    {
+      "id": "AUI-9",
+      "status": "PASS",
+      "attempted": "Envelope fidelity: a real browser action for v0.9.1 and v1, with and without sendDataModel",
+      "observed": "{\"v09\":{\"epoch\":1,\"version\":1},\"v1\":\"lab.ping\"}",
+      "evidence": ".kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/browser-receipts.json#AUI-9 sha256:8d76a27c0bc0c1de27e69c0a8f9b2e2fb9a859695b4bda3ab3b58cde82ee3073"
+    },
+    {
+      "id": "AUI-10",
+      "status": "PASS",
+      "attempted": "Export is a fixed point (conditional): headless runtime in a real Node process exports a surface, loads it into a fresh runtime and exports again",
+      "observed": "{\"h1\":{\"messages\":3},\"h2\":{\"messages\":1}}",
+      "evidence": ".kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/headless-receipts.json#AUI-10 sha256:5dedf07d20137ee24c71f16f0bb00cda474878c706d8a75716eae2e648cf0231"
+    },
+    {
+      "id": "AUI-11",
+      "status": "PASS",
+      "attempted": "Headless and React runtimes agree (conditional): the same message corpus through the headless entry and the browser runtime",
+      "observed": "[{\"name\":\"valid\",\"headless\":\"accepted\",\"react\":\"accepted\"},{\"name\":\"valid-v1\",\"headless\":\"accepted\",\"react\":\"accepted\"},{\"name\":\"component outside the allowlist\",\"headless\":\"component-not-allowed\",\"react\":\"component-not-allowed\"},{\"name\":\"component limit exceeded\",\"headless\":\"limit-exceeded\",\"react\":\"limit-exceeded\"},{\"name\":\"update before create\",\"headless\":\"other-error\",\"react\":\"other-error\"}]",
+      "evidence": ".kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/headless-receipts.json#AUI-11 sha256:5dedf07d20137ee24c71f16f0bb00cda474878c706d8a75716eae2e648cf0231"
+    },
+    {
+      "id": "AUI-12",
+      "status": "PASS",
+      "attempted": "Unreachable components pruned (conditional): headless export of a surface with orphaned components",
+      "observed": "{\"orphans\":[\"orphan\"]}",
+      "evidence": ".kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/headless-receipts.json#AUI-12 sha256:5dedf07d20137ee24c71f16f0bb00cda474878c706d8a75716eae2e648cf0231"
+    },
+    {
+      "id": "AUI-13",
+      "status": "PASS",
+      "attempted": "Release records match the registry: comparison of release status files, both changelogs and bridge pins with npm view output",
+      "observed": "{\"packagesCompared\":13,\"tag\":\"NOT_EXERCISED: the release tag is created at publication\"}",
+      "evidence": ".kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/headless-receipts.json#AUI-13 sha256:5dedf07d20137ee24c71f16f0bb00cda474878c706d8a75716eae2e648cf0231"
+    },
+    {
+      "id": "AUI-14",
+      "status": "PASS",
+      "attempted": "Stale-action rejection operations are applied: lab producer rejects a stale action and returns operations since the held version",
+      "observed": "{\"repaired\":true,\"emptyRejectionResyncs\":true}",
+      "evidence": ".kbd-orchestrator/phases/phase-v4-a2ui-runtime-hardening/evidence/hardening-acceptance/browser-receipts.json#AUI-14 sha256:8d76a27c0bc0c1de27e69c0a8f9b2e2fb9a859695b4bda3ab3b58cde82ee3073"
+    }
+  ],
+  "budgetConsumption": {
+    "source": "self-reported: wall clock since execute-dispatch.json dispatchedAt; tool_use blocks counted in the session transcript and its subagent transcripts since dispatch; repair attempts as stated by the operator-visible flag",
+    "values": {
+      "timeMinutes": {
+        "class": "measured",
+        "value": 711,
+        "note": "wall clock including waiting, not active agent time"
+      },
+      "toolCalls": {
+        "class": "measured",
+        "value": 403,
+        "note": "main 371 + subagents 32; transcript snapshot may lag the last calls"
+      },
+      "repairAttempts": {
+        "class": "estimate",
+        "value": 13,
+        "note": "8 acceptance-run failures fixed (import.meta, changelog regex, label selector, double-counted faults, buffered-delta test, cucumber memoization, legacy release test, stale processor.version assertion) + 5 review findings fixed; counted from the phase record, not telemetry"
+      }
+    }
+  }
+}
