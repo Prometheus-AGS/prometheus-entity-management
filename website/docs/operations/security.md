@@ -32,6 +32,10 @@ application-owned catalog with argument validation, tenant/actor policy, and
 human approval where the action has consequential effects. Unknown, malformed,
 cancelled, or denied actions fail before store mutation.
 
+The A2UI runtime also bounds untrusted agent output with resource limits that are
+enforced by default, and it mints every action id itself rather than trusting one from the agent. See
+[Limits and security](../a2ui/limits-and-security.md).
+
 ## Native rules
 
 Tauri capabilities grant the minimum command/event surface. Validate every

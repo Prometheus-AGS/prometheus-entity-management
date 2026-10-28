@@ -22,3 +22,4 @@ app-store release is claimed.
 
 - [React/Vite scenario tour](react-vite.md)
 - [Flutter/Riverpod scenario tour](flutter-riverpod.md)
+- [AG-UI activity lab](agui-activity-lab.md)

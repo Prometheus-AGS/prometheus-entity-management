@@ -16,6 +16,13 @@ The [machine-readable coverage ledger](coverage.json) is the source of truth for
 
 The branded Docusaurus site and protected GitHub Pages deployment are separately tracked as planned work in `website/`, culminating in `v3-docs-github-pages`.
 
+## AG-UI activity lab
+
+`examples/agui-activity-lab` pairs a real AG-UI 1.0 producer with a React
+consumer to replay, reorder and overload the `@prometheus-ags/a2ui-react`
+runtime. It is the acceptance harness for the A2UI runtime hardening. See its
+[README](agui-activity-lab/README.md) to run it.
+
 ## Implemented React 19 and Vite 8 showcase
 
 The `/release-showcase` route now exercises the normalized graph, optimistic

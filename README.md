@@ -200,9 +200,52 @@ free of the debugging surface.
 | Application runtimes | Vite 8, Next.js App Router, Tauri 2 desktop/Android/iOS |
 | Transports | REST, GraphQL, WebSocket, Supabase Realtime, Flint Realtime Fabric |
 | Local-first | PGlite persistence, Loro convergence, offline queues, reconnect recovery |
-| Agent protocols | A2A JSON-RPC, official A2UI surfaces, default-deny action policy, optional human approval |
+| Agent protocols | A2A JSON-RPC, official A2UI surfaces over AG-UI (idempotent delivery, versioned deltas, unique action ids, resource limits), headless server runtime, default-deny action policy, optional human approval |
 | Native seams | Tauri commands/events/capabilities, optional Flutter FFI transport |
 | Schema/tooling | Entity SDL, generated declarations/providers, Rust CLI and MCP deliverables |
+
+### A2UI and AG-UI
+
+`@prometheus-ags/a2ui-react` renders interfaces an agent describes (A2UI) and
+accepts them over AG-UI, while your application keeps the authority: components
+come from an allowlist, and every action passes a default-deny policy with
+optional human approval. Protocol validity never grants graph authority.
+
+Delivery over AG-UI is treated as unreliable, so the runtime reconciles instead
+of replaying:
+
+- **Idempotent redelivery.** Reconnect replays, `MESSAGES_SNAPSHOT` restatements
+  and duplicate streams never roll a surface back or erase typed input. A surface
+  is deleted only by an explicit `deleteSurface`; the producer wins when it and
+  the user both changed a value, and `onConflict` reports it.
+- **Versioned deltas.** `ACTIVITY_DELTA` applies in order on top of a per-surface
+  `(epoch, version)` carried in the activity content, waits when a version is
+  missing, and calls `onResyncNeeded` when the gap does not close.
+- **Unique action ids.** Every executed action carries a UUIDv7 `actionId` and
+  the `heldVersion` it was built on at `forwardedProps.a2uiAction`, so a server
+  can de-duplicate; `retryAction` reuses the id and `applyStaleActionRejection`
+  repairs a stale surface.
+- **Resource limits on by default.** Surfaces, components, depth, data size, call
+  size and buffered deltas are capped; an over-limit call is rejected whole and
+  leaves every surface unchanged. `setLimits` changes them at runtime.
+- **Headless runtime.** `@prometheus-ags/a2ui-react/headless` applies the same
+  validation with no React or DOM, and `exportSurfaceMessages` rebuilds a surface
+  losslessly, pruning components unreachable from `root`.
+
+AG-UI support spans `@ag-ui/core` `>=0.0.59 <0.1.0 || ^1.0.0` (developed against
+`1.0.3`). Upgrading from 4.2.x: a `replace: true` restatement no longer removes
+surfaces or components (send `deleteSurface` instead), and a host with surfaces larger than the
+default limits must raise them. See the [4.3.0 changelog](CHANGELOG.md).
+
+Guided documentation: [A2UI and AG-UI](website/docs/a2ui/index.md),
+[AG-UI delivery](website/docs/a2ui/agui-delivery.md),
+[Deltas and resync](website/docs/a2ui/deltas-and-resync.md),
+[Actions](website/docs/a2ui/actions.md),
+[Limits and security](website/docs/a2ui/limits-and-security.md) and
+[Headless runtime and export](website/docs/a2ui/headless-and-export.md). Package
+reference: [`packages/a2ui-react`](packages/a2ui-react/README.md). To watch it
+work against a real producer, run the
+[AG-UI activity lab](examples/agui-activity-lab/README.md).
 
 ### Flint Realtime Fabric
 

@@ -2,10 +2,15 @@
 
 Strict A2UI v1.0 release-candidate compatibility for React over the maintained
 official v0.9.1 renderer, with a default-deny Prometheus entity-graph action
-bridge and AG-UI 0.0.59 A2UI activity transport.
+bridge and an idempotent AG-UI A2UI activity transport (AG-UI 0.0.59 through
+1.x).
 
-> Version `3.2.0` carries this 1.0-RC compatibility boundary. It does not claim an
+> This package carries a 1.0-RC compatibility boundary. It does not claim an
 > unpublished native upstream v1 renderer.
+
+Guided documentation, with diagrams of the flows below, is on the documentation
+site under **A2UI and AG-UI** (`website/docs/a2ui/`). This README is the
+reference.
 
 ## Two protocol surfaces
 
@@ -30,7 +35,7 @@ These numbers are related but are not interchangeable:
 | `@a2ui/react` distribution | `0.12.0` |
 | `@a2ui/web_core` distribution | `0.12.0` |
 | `@a2ui/markdown-it` distribution | `0.2.0` |
-| AG-UI activity transport | `@ag-ui/core` `0.0.59` |
+| AG-UI activity transport | `@ag-ui/core` peer `>=0.0.59 <0.1.0 \|\| ^1.0.0` (developed against `1.0.3`) |
 
 The published A2UI packages do not expose the documented v1 renderer entry
 points yet. The bridge therefore validates the v1.0-RC envelope, decomposes its
@@ -118,9 +123,9 @@ export function OrderAgentSurface() {
 Call `a2uiRuntime.dispose()` when the application-owned runtime is no longer
 needed.
 
-`processAgUiEvent(event)` consumes the AG-UI 0.0.59 A2UI activity convention:
-`ACTIVITY_SNAPSHOT`, activity type `a2ui-surface`, and
-`content.a2ui_operations`. Transport acceptance never bypasses the same
+`processAgUiEvent(event)` consumes the AG-UI A2UI activity convention
+(0.0.59 and 1.x): `ACTIVITY_SNAPSHOT` and `ACTIVITY_DELTA`, activity type
+`a2ui-surface`, and `content.a2ui_operations`. Transport acceptance never bypasses the same
 schema, catalog, action-policy, or approval gates used by direct messages. It
 also accepts `MESSAGES_SNAPSHOT` (see below).
 
@@ -517,6 +522,11 @@ pnpm run test:a2ui-bridge
 pnpm run verify:a2ui-bridge
 pnpm run bdd:a2ui-bridge
 ```
+
+The AG-UI hardening (redelivery, versioned deltas, action ids, limits, headless
+export) is verified end to end against a real producer by the
+[`agui-activity-lab`](../../examples/agui-activity-lab/README.md) example:
+17 browser flows, 4 headless checks and 6 Cucumber scenarios.
 
 The current package evidence covers official atomic message processing/rendering,
 default-deny graph actions, packed ESM/CommonJS/NodeNext/Node16/SSR consumers,

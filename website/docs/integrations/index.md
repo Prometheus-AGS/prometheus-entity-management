@@ -15,5 +15,5 @@ services directly.
 - REST and GraphQL
 - WebSocket and Supabase Realtime
 - PGlite and Loro local-first convergence
-- A2A and policy-controlled A2UI
+- A2A and policy-controlled A2UI, with [AG-UI delivery](../a2ui/index.md)
 - Tauri native adapters and optional Flutter FFI

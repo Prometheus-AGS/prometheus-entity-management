@@ -57,6 +57,11 @@ Add the A2UI renderer when the application accepts generated surfaces:
 pnpm add @prometheus-ags/a2ui-react
 ```
 
+Add `@ag-ui/core` (1.x, or 0.0.59 and later on the 0.0.x line) as a peer when you
+deliver surfaces over AG-UI, and import `@prometheus-ags/a2ui-react/headless` on
+a server that must validate or mirror agent output without React. See
+[A2UI and AG-UI](../a2ui/index.md).
+
 Flutter applications install the public stable Dart package:
 
 ```bash
