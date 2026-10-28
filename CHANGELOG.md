@@ -5,7 +5,47 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [4.2.0] - unreleased (prepared, not published)
+## [Unreleased]
+
+---
+
+## [4.3.0] — 2026-10-28
+
+### Changed (behavior change)
+
+- `@prometheus-ags/a2ui-react`: **AG-UI activity redelivery is now idempotent, and
+  `replace:true` no longer deletes surfaces.** Before, every `ACTIVITY_SNAPSHOT`
+  deleted all surfaces its `messageId` had named and replayed only that message,
+  so a redelivered activity (reconnect replay, a `MESSAGES_SNAPSHOT`, a second
+  stream) rolled a surface back and lost typed input. Now a surface is deleted
+  only by an explicit `deleteSurface` operation. **Migration:** a producer that
+  relied on a `replace:true` restatement to remove a surface or its components
+  must send `deleteSurface` for the surface it wants gone; components the
+  producer stops mentioning persist in a held surface.
+- `@prometheus-ags/a2ui-react`: resource limits are **enforced by default**
+  (`limits` option; surfaces, components, depth, data size and per-call size).
+  A host that renders surfaces larger than the defaults must raise the relevant
+  limits, or those calls are rejected with a `limit-exceeded`
+  `PrometheusA2uiError`. See the package README, "Resource limits".
+
+### Added
+
+- `@prometheus-ags/a2ui-react`: `limits`, `onProducerFault`, `setLimits()` and
+  `getLimitUsage()`; a React-free `@prometheus-ags/a2ui-react/headless` entry
+  (`createPrometheusA2uiHeadlessRuntime`) sharing the runtime core and allowlists,
+  and `exportSurfaceMessages()` with orphan pruning; `onActionEnvelope` (a globally unique UUIDv7 `actionId`,
+  `heldVersion` and the data model for every executed action, v0.9.1 and v1.0),
+  `retryAction()` and `applyStaleActionRejection()`; `ACTIVITY_DELTA`,
+  `onResyncNeeded`, `getHeldVersions()` and `buildA2uiForwardedProps`;
+  `MESSAGES_SNAPSHOT` handling; optional per-surface
+  ordering through `content.surfaceVersions` (`epoch`, `version`); typed-input
+  preservation on restatement (`onConflict`, producer wins); new
+  `onProducerFault` kinds `version-conflict` and `surface-config-mismatch`; new
+  limits `maxTrackedMessages` and `maxTombstones`.
+
+---
+
+## [4.2.0] — 2026-10-10
 
 ### Added
 

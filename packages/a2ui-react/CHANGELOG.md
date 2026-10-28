@@ -1,5 +1,50 @@
 # @prometheus-ags/a2ui-react changelog
 
+## 4.3.0
+
+### Minor Changes
+
+- **Behavior change:** AG-UI activity redelivery is idempotent and `replace:true`
+  no longer deletes surfaces. A surface is deleted only by an explicit
+  `deleteSurface` operation, so a producer that relied on a restatement to remove
+  a surface or its components must send `deleteSurface`. Redelivery, replay and
+  duplicate streams no longer roll a surface back or lose typed input.
+- Added a React-free `./headless` entry (`createPrometheusA2uiHeadlessRuntime`)
+  that shares the runtime core and allowlists, and `exportSurfaceMessages()` on
+  both runtimes, with orphan pruning and v1.0 action metadata preserved.
+- Added `onActionEnvelope` (a globally unique UUIDv7 `actionId`, `heldVersion`
+  and the data model for every executed action, v0.9.1 and v1.0), `retryAction()`
+  and `applyStaleActionRejection()`; `ACTIVITY_DELTA` with `onResyncNeeded`,
+  `getHeldVersions()` and `buildA2uiForwardedProps`; and the `maxBufferedDeltas`
+  and `bufferTimeoutMs` limits. Oversize deltas are rejected before they can be
+  buffered, and a redelivered waiting delta is held once.
+- Added the `maxComponentBytes` limit (1 MiB of serialized component properties
+  per surface). A failing v1.0 `actionResponse` write is reported as a
+  `batch-refused` producer fault instead of failing the batch that carried it.
+- Added `MESSAGES_SNAPSHOT` handling, optional per-surface ordering through
+  `content.surfaceVersions`, typed-input preservation with `onConflict`
+  (producer wins), the `version-conflict` and `surface-config-mismatch`
+  producer faults, and the `maxTrackedMessages` and `maxTombstones` limits.
+- Added resource limits (`limits`, `onProducerFault`, `setLimits()`,
+  `getLimitUsage()`), **enforced by default**: raise the relevant limits if you
+  render surfaces larger than the defaults, or those calls are rejected with a
+  `limit-exceeded` `PrometheusA2uiError`.
+
+## 4.2.0
+
+### Minor Changes
+
+- Applications can supply their own catalog component implementations:
+  `createPrometheusA2uiComponent`, `getPrometheusA2uiOfficialComponent` and the
+  `implementations` option of `createPrometheusA2uiCatalog`. **4.2.0 is the
+  first published version that ships this**: the published 4.2.0 package
+  contains it, and its source commit is after 4.1.1's source commit
+  (`c5a3a101`). Components must be built on the instance of `@a2ui/react` that
+  this package bundles; one built with an application's own copy cannot share
+  the surface context.
+- Runs on official A2UI 0.12.0: `@a2ui/react` and `@a2ui/web_core` pinned
+  exactly at 0.12.0, `@a2ui/markdown-it` at 0.2.0.
+
 ## 4.0.0
 
 ### Patch Changes

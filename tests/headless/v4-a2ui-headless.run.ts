@@ -166,7 +166,7 @@ function aui13(): void {
   assert.match(readFileSync("packages/a2ui-react/CHANGELOG.md", "utf8"), /^## 4\.2\.0/m, "package changelog");
   receipts["AUI-13"] = {
     status: "pass",
-    proof: { packagesCompared: Object.keys(status.packages).length, tag: "NOT_EXERCISED until the operator approves v4.2.0" },
+    proof: { packagesCompared: Object.keys(status.packages).length, tag: "NOT_EXERCISED: the release tag is created at publication" },
   };
 }
 
