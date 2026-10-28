@@ -1,15 +1,14 @@
 # Releasing Prometheus Entity Management
 
-## 4.3.0 status: prepared, not published
+## 4.3.0 status: stable published
 
-**Update 2026-10-28: 4.3.0 is prepared and unpublished.** The lockstep minor
-bump moves all thirteen `@prometheus-ags/*` packages from `4.2.0` to `4.3.0`.
-`@prometheus-ags/a2ui-react` carries the AG-UI redelivery, delta, action-id and
-headless work (#70-#73). Resource limits are enforced by default, a breaking
-change for hosts that render large surfaces; read the changelog before upgrading.
-The registry serves `4.2.0` on `latest` and `next`. A dry run and an
-operator-approved publish are still required; do not publish or move dist-tags
-before then.
+**Update 2026-10-28: 4.3.0 stable is published.** All thirteen
+`@prometheus-ags/*` npm packages are public at `4.3.0` with both `latest` and
+`next` pointing at it (tag `v4.3.0`, commit `ea38b265`). `@prometheus-ags/a2ui-react`
+carries the AG-UI redelivery, delta, action-id and headless work (#70-#73).
+Resource limits are enforced by default, a breaking change for hosts that render
+large surfaces; read the changelog before upgrading. Published with `pnpm publish`
+and the operator's npm token, so there is no npm provenance attestation.
 
 ## 4.2.0: published
 
