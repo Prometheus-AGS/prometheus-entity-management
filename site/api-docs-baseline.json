@@ -14,7 +14,6 @@
       "createGraphEffect",
       "createGraphQLSubscriptionAdapter",
       "createGraphTool",
-      "createGraphTransaction",
       "createRow",
       "createSchemaGraphTool",
       "createSupabaseRealtimeAdapter",

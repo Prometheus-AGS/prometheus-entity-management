@@ -1,8 +1,7 @@
 import { graphStore } from "./graph";
 import type { EntityId, EntitySyncMetadata, EntityType, GraphStore, QueryKey, SyncOrigin } from "./graph";
-import { emitLegacyDevtoolsEvent } from "./legacy-devtools";
-
-declare const process: { env: { NODE_ENV?: string } } | undefined;
+import { emitGatedDevtoolsEvent } from "./devtools-gate";
+import { emitLegacyDevtoolsEvent, type LegacyDevtoolsEvent } from "./legacy-devtools";
 
 interface GraphDataSnapshot {
   entities: ReturnType<typeof graphStore.getState>["entities"];
@@ -50,18 +49,21 @@ export type GraphActionEvent =
 const graphActionListeners = new Set<(event: GraphActionEvent) => void>();
 const graphActionReplayers = new Map<string, (record: GraphActionRecord, store: GraphStore) => Promise<unknown>>();
 
+/**
+ * Open a transaction whose writes apply immediately (each op is one store
+ * write) and can be rolled back. Opening it is O(1): the baseline is a set of
+ * references to the current immutable graph slots, not a copy, so its cost does
+ * not grow with the graph. For many writes with a single notification use
+ * `batchGraphWrites` (it can be called inside a transaction or an action).
+ */
 export function createGraphTransaction(storeApi: GraphStore = graphStore): GraphTransaction {
-  const baseline = cloneGraphData(storeApi.getState());
+  const baseline = captureGraphData(storeApi.getState());
   let closed = false;
 
   const tx: GraphTransaction = {
     upsertEntity(type, id, data) {
       storeApi.getState().upsertEntity(type, id, data);
-      if (
-        typeof process === "undefined" || process.env.NODE_ENV !== "production"
-      ) {
-        emitLegacyDevtoolsEvent({ kind: "upsert", type, id, data, at: new Date().toISOString() });
-      }
+      emitGatedDevtoolsEvent<LegacyDevtoolsEvent>(emitLegacyDevtoolsEvent, () => ({ kind: "upsert", type, id, data, at: new Date().toISOString() }));
       return tx;
     },
     replaceEntity(type, id, data) {
@@ -74,20 +76,12 @@ export function createGraphTransaction(storeApi: GraphStore = graphStore): Graph
     },
     patchEntity(type, id, patch) {
       storeApi.getState().patchEntity(type, id, patch);
-      if (
-        typeof process === "undefined" || process.env.NODE_ENV !== "production"
-      ) {
-        emitLegacyDevtoolsEvent({ kind: "patch", type, id, patch, at: new Date().toISOString() });
-      }
+      emitGatedDevtoolsEvent<LegacyDevtoolsEvent>(emitLegacyDevtoolsEvent, () => ({ kind: "patch", type, id, patch, at: new Date().toISOString() }));
       return tx;
     },
     clearPatch(type, id) {
       storeApi.getState().clearPatch(type, id);
-      if (
-        typeof process === "undefined" || process.env.NODE_ENV !== "production"
-      ) {
-        emitLegacyDevtoolsEvent({ kind: "clearPatch", type, id, at: new Date().toISOString() });
-      }
+      emitGatedDevtoolsEvent<LegacyDevtoolsEvent>(emitLegacyDevtoolsEvent, () => ({ kind: "clearPatch", type, id, at: new Date().toISOString() }));
       return tx;
     },
     insertIdInList(key, id, position) {
@@ -123,7 +117,9 @@ export function createGraphTransaction(storeApi: GraphStore = graphStore): Graph
     },
     rollback() {
       if (closed) return;
-      storeApi.setState(cloneGraphData(baseline) as Partial<ReturnType<typeof graphStore.getState>>);
+      // The captured slots are immutable (immer copy-on-write), so restoring
+      // the references restores the exact pre-transaction graph.
+      storeApi.setState({ ...baseline } as Partial<ReturnType<typeof graphStore.getState>>);
       closed = true;
     },
     snapshot() {
@@ -198,6 +194,17 @@ function cloneGraphData(
     entityStates: structuredClone(source.entityStates),
     syncMetadata: structuredClone(source.syncMetadata),
     lists: structuredClone(source.lists),
+  };
+}
+
+/** O(1) baseline: references to the current immutable graph slots. */
+function captureGraphData(source: Pick<ReturnType<typeof graphStore.getState>, keyof GraphDataSnapshot>): GraphDataSnapshot {
+  return {
+    entities: source.entities,
+    patches: source.patches,
+    entityStates: source.entityStates,
+    syncMetadata: source.syncMetadata,
+    lists: source.lists,
   };
 }
 
