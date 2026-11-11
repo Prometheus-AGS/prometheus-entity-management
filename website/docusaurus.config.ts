@@ -78,7 +78,7 @@ const config: Config = {
     announcementBar: {
       id: 'v4_stable',
       content:
-        '<strong>4.3.0 stable</strong> — all thirteen npm packages are public on npm at 4.3.0, including the hardened A2UI runtime for AG-UI. Flutter 4.0.0 is public on pub.dev with its official DevTools companion.',
+        '<strong>4.4.0 stable</strong> — all thirteen npm packages are public on npm at 4.4.0, including the streaming-store hardening for AG-UI and the zod 4 A2UI runtime. Flutter 4.0.0 is public on pub.dev with its official DevTools companion.',
       backgroundColor: '#0B0F14',
       textColor: '#FFFFFF',
       isCloseable: false,
