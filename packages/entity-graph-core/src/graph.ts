@@ -4,6 +4,21 @@ import { immer } from "zustand/middleware/immer";
 import type { EntityError } from "./errors";
 import { getMergeStrategy } from "./merge/registry";
 import type { MergeContext } from "./merge/types";
+import {
+  clearPatchDraft,
+  defaultListState,
+  defaultSyncMetadata,
+  entityKey as ek,
+  insertIdInListDraft,
+  patchEntityDraft,
+  removeEntityDraft,
+  removeIdFromAllListsDraft,
+  replaceEntityDraft,
+  setEntitySyncMetadataDraft,
+  unpatchEntityDraft,
+  upsertEntitiesDraft,
+  upsertEntityDraft,
+} from "./graph-mutators";
 import { findInsertionIndex, matchesFilter, matchesSearch } from "./view/evaluator";
 import type { ViewDescriptor } from "./view/types";
 
@@ -153,6 +168,14 @@ export const EMPTY_LIST_STATE: ListState = {
 
 /**
  * Canonical Zustand store: **entities** (server truth), **patches** (UI-only overlay), **lists** (id order + list meta), and **entityStates** (per-entity fetch state).
+ *
+ * **Written values are adopted and frozen.** The store is immer-backed with
+ * auto-freeze on, so every object passed to a write (and every object nested in
+ * it) becomes part of the immutable graph and is deep-frozen. This is
+ * intentional: it is what makes structural sharing, O(1) transaction rollback
+ * and time travel safe. If the caller (or another library, e.g. an A2UI data
+ * model) keeps mutating an object after writing it, pass a copy
+ * (`structuredClone(value)`). The AG-UI bridge does this for you.
  * Framework bindings subscribe to the vanilla store; stores, adapters, and
  * engines can read it synchronously through `graphStore.getState()`.
  */
@@ -270,15 +293,6 @@ function defaultEntityState(): EntityState {
   return { ...EMPTY_ENTITY_STATE };
 }
 
-function defaultSyncMetadata(): EntitySyncMetadata {
-  return { ...EMPTY_SYNC_METADATA };
-}
-
-function defaultListState(): ListState {
-  return { ...EMPTY_LIST_STATE, ids: [] };
-}
-
-function ek(type: EntityType, id: EntityId) { return `${type}:${id}`; }
 
 interface SnapshotCacheEntry {
   base: Record<string, unknown>;
@@ -342,26 +356,8 @@ export function createGraphStore() {
     immer((set, get) => ({
       entities: {}, patches: {}, entityStates: {}, syncMetadata: {}, lists: {},
 
-      upsertEntity: (type, id, data) => set((s) => {
-        if (!s.entities[type]) s.entities[type] = {};
-        const key = ek(type, id);
-        // Route through the registered MergeStrategy (default = LWW shallow merge,
-        // identical to the historical `{ ...prev, ...data }` behavior).
-        const strategy = getMergeStrategy(type);
-        const ctx: MergeContext = { type, id, origin: s.syncMetadata[key]?.origin ?? "server", updatedAt: Date.now() };
-        s.entities[type][id] = strategy(s.entities[type][id], data, ctx);
-        if (!s.syncMetadata[key]) s.syncMetadata[key] = defaultSyncMetadata();
-      }),
-      upsertEntities: (type, entries) => set((s) => {
-        if (!s.entities[type]) s.entities[type] = {};
-        const strategy = getMergeStrategy(type);
-        for (const { id, data } of entries) {
-          const key = ek(type, id);
-          const ctx: MergeContext = { type, id, origin: s.syncMetadata[key]?.origin ?? "server", updatedAt: Date.now() };
-          s.entities[type][id] = strategy(s.entities[type][id], data, ctx);
-          if (!s.syncMetadata[key]) s.syncMetadata[key] = defaultSyncMetadata();
-        }
-      }),
+      upsertEntity: (type, id, data) => set((s) => upsertEntityDraft(s, type, id, data)),
+      upsertEntities: (type, entries) => set((s) => upsertEntitiesDraft(s, type, entries)),
       ingestFetchedList: (type, entries, options = {}) => set((s) => {
         const fetchedAt = Date.now();
         const ids = entries.map(({ id }) => id);
@@ -498,27 +494,11 @@ export function createGraphStore() {
           s.lists[key].isFetching = false;
         }
       }),
-      replaceEntity: (type, id, data) => set((s) => {
-        if (!s.entities[type]) s.entities[type] = {};
-        s.entities[type][id] = data;
-        const key = ek(type, id);
-        if (!s.syncMetadata[key]) s.syncMetadata[key] = defaultSyncMetadata();
-      }),
-      removeEntity: (type, id) => set((s) => {
-        delete s.entities[type]?.[id];
-        delete s.patches[type]?.[id];
-        delete s.entityStates[ek(type, id)];
-        delete s.syncMetadata[ek(type, id)];
-      }),
-      patchEntity: (type, id, patch) => set((s) => {
-        if (!s.patches[type]) s.patches[type] = {};
-        s.patches[type][id] = { ...(s.patches[type][id] ?? {}), ...patch };
-      }),
-      unpatchEntity: (type, id, keys) => set((s) => {
-        const p = s.patches[type]?.[id]; if (!p) return;
-        for (const k of keys) delete p[k];
-      }),
-      clearPatch: (type, id) => set((s) => { delete s.patches[type]?.[id]; }),
+      replaceEntity: (type, id, data) => set((s) => replaceEntityDraft(s, type, id, data)),
+      removeEntity: (type, id) => set((s) => removeEntityDraft(s, type, id)),
+      patchEntity: (type, id, patch) => set((s) => patchEntityDraft(s, type, id, patch)),
+      unpatchEntity: (type, id, keys) => set((s) => unpatchEntityDraft(s, type, id, keys)),
+      clearPatch: (type, id) => set((s) => clearPatchDraft(s, type, id)),
       setEntityFetching: (type, id, fetching) => set((s) => {
         const k = ek(type, id);
         if (!s.entityStates[k]) s.entityStates[k] = defaultEntityState();
@@ -542,10 +522,7 @@ export function createGraphStore() {
         if (!s.entityStates[k]) s.entityStates[k] = defaultEntityState();
         s.entityStates[k].stale = stale;
       }),
-      setEntitySyncMetadata: (type, id, metadata) => set((s) => {
-        const k = ek(type, id);
-        s.syncMetadata[k] = { ...(s.syncMetadata[k] ?? defaultSyncMetadata()), ...metadata };
-      }),
+      setEntitySyncMetadata: (type, id, metadata) => set((s) => setEntitySyncMetadataDraft(s, type, id, metadata)),
       clearEntitySyncMetadata: (type, id) => set((s) => {
         delete s.syncMetadata[ek(type, id)];
       }),
@@ -561,22 +538,8 @@ export function createGraphStore() {
         const ex = s.lists[key] ?? defaultListState();
         s.lists[key] = { ...ex, ...(meta ?? {}), ids: Array.from(new Set([...ids, ...ex.ids])), isFetching: false, isFetchingMore: false, error: null, lastError: null, stale: false, lastFetched: Date.now() };
       }),
-      removeIdFromAllLists: (type, id) => set((s) => {
-        for (const key of Object.keys(s.lists)) {
-          const list = s.lists[key];
-          if (list.entityType && list.entityType !== type) continue;
-          const idx = list.ids.indexOf(id);
-          if (idx !== -1) { list.ids.splice(idx, 1); if (list.total !== null) list.total -= 1; }
-        }
-      }),
-      insertIdInList: (key, id, position) => set((s) => {
-        if (!s.lists[key]) s.lists[key] = defaultListState();
-        const ids = s.lists[key].ids;
-        const ex = ids.indexOf(id); if (ex !== -1) ids.splice(ex, 1);
-        if (position === "start") ids.unshift(id);
-        else if (position === "end") ids.push(id);
-        else ids.splice(position, 0, id);
-      }),
+      removeIdFromAllLists: (type, id) => set((s) => removeIdFromAllListsDraft(s, type, id)),
+      insertIdInList: (key, id, position) => set((s) => insertIdInListDraft(s, key, id, position)),
       setListFetching: (key, fetching) => set((s) => {
         if (!s.lists[key]) s.lists[key] = defaultListState();
         s.lists[key].isFetching = fetching;
