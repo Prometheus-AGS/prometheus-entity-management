@@ -1,6 +1,6 @@
 # @prometheus-ags/a2ui-react changelog
 
-## Unreleased
+## 4.4.0
 
 ### Security
 
