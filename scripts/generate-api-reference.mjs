@@ -571,11 +571,14 @@ for (const pkg of NPM_PACKAGES) {
       byteCount += statSync(target).size;
     }
   }
+  // A `|` in a range (`a || b`) would split the table cell and leave `<x` outside
+  // the code span, where MDX parses it as JSX; escape it inside the cell.
+  const cellRange = (range) => range.replaceAll("|", "\\|");
   const peers = Object.entries(manifest.peerDependencies ?? {}).map(
-    ([name, range]) => `| \`${name}\` | \`${range}\` |`,
+    ([name, range]) => `| \`${name}\` | \`${cellRange(range)}\` |`,
   );
   const deps = Object.entries(manifest.dependencies ?? {}).map(
-    ([name, range]) => `| \`${name}\` | \`${range}\` |`,
+    ([name, range]) => `| \`${name}\` | \`${cellRange(range)}\` |`,
   );
   const packageSpecific = pkg.slug === "prometheus-entity-management"
     ? [

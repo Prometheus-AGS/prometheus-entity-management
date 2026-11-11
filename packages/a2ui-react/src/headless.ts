@@ -47,6 +47,7 @@ export class PrometheusA2uiHeadlessRuntime extends PrometheusA2uiRuntimeCore<Com
   }
 }
 
+/** Create a React-free A2UI runtime that uses the headless catalog unless `catalogs` is given. */
 export function createPrometheusA2uiHeadlessRuntime(
   options: CreatePrometheusA2uiRuntimeOptions<ComponentApi> = {},
 ): PrometheusA2uiHeadlessRuntime {
