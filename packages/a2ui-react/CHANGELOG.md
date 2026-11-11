@@ -1,5 +1,24 @@
 # @prometheus-ags/a2ui-react changelog
 
+## Unreleased
+
+### Security
+
+- `zod` 3.25.76 → **4.6.7** (GHSA-mrhx-c7xc-m3w5). The bundled
+  `@a2ui/web_core@0.12.0` is patched to import `zod/v3` from Zod 4, so published
+  consumers execute A2UI upstream code on this package's `zod@4.6.7`. The
+  `@a2ui/web_core` dependency remains for its types and brings its own
+  `zod@3.25.76` into consumer installs, unused at runtime; override `zod` to
+  `4.6.7` if your audit must be clean.
+- Markdown is sanitised with this package's exact `dompurify@3.4.17` through a
+  port of `@a2ui/markdown-it@0.2.0` (which pins 3.4.11). `@a2ui/markdown-it` is
+  no longer a dependency; `@a2ui/react` (bundled) moves to `devDependencies`.
+
+### Changed
+
+- `A2uiActionRule.contextSchema` is typed structurally (`parse`, `safeParse`), accepting
+  Zod 4, Zod 3 and other compatible validators.
+
 ## 4.3.0
 
 ### Minor Changes

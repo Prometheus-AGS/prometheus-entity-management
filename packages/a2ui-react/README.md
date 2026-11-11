@@ -34,7 +34,8 @@ These numbers are related but are not interchangeable:
 | Official renderer engine | `v0.9.1` compatibility boundary |
 | `@a2ui/react` distribution | `0.12.0` |
 | `@a2ui/web_core` distribution | `0.12.0` |
-| `@a2ui/markdown-it` distribution | `0.2.0` |
+| Markdown renderer | package-owned port of `@a2ui/markdown-it@0.2.0` (`markdown-it@14.3.3`, `dompurify@3.4.17`) |
+| `zod` | `4.6.7` (upstream A2UI code runs on `zod/v3`) |
 | AG-UI activity transport | `@ag-ui/core` peer `>=0.0.59 <0.1.0 \|\| ^1.0.0` (developed against `1.0.3`) |
 
 The published A2UI packages do not expose the documented v1 renderer entry
@@ -42,6 +43,27 @@ points yet. The bridge therefore validates the v1.0-RC envelope, decomposes its
 embedded surface into the official `/v0_9` processor, and retains v1-only
 action/function metadata at the runtime boundary. It does not implement a
 second renderer, data model, or surface store.
+
+### Dependency security (`zod`, `dompurify`)
+
+The official `@a2ui/*` code is bundled into `dist`. Its `@a2ui/web_core` copy is
+patched to import `zod/v3` from this package's `zod@4.6.7`, and markdown is
+sanitised with this package's `dompurify@3.4.17`, so the code that runs is on the
+patched releases. `@a2ui/web_core@0.12.0` is still installed for its types and
+brings its own `zod@3.25.76` (never executed by this package), which
+`pnpm audit`/`npm audit` report as GHSA-mrhx-c7xc-m3w5. For an audit-clean tree,
+override it in the consuming app:
+
+```jsonc
+// pnpm (pnpm-workspace.yaml `overrides:` or package.json "pnpm": { "overrides": ... })
+{ "overrides": { "zod": "4.6.7", "dompurify": "3.4.17" } }
+// npm (package.json)
+{ "overrides": { "zod": "4.6.7", "dompurify": "3.4.17" } }
+```
+
+Only override `zod` if you do not also run unpatched `@a2ui/web_core` code
+yourself: upstream `web_core` uses Zod 3 internals and fails on the `zod` 4 root
+export.
 
 ## Install
 

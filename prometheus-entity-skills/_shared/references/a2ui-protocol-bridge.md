@@ -48,8 +48,10 @@ AG-UI state/message events as A2UI surface conformance.
 ## Version rules
 
 - Stable wire target: A2UI `v0.9.1`.
-- Official packages: `@a2ui/react@0.12.0`,
-  `@a2ui/web_core@0.12.0`, and `@a2ui/markdown-it@0.2.0`.
+- Official packages: `@a2ui/react@0.12.0` and `@a2ui/web_core@0.12.0`
+  (bundled; `web_core` patched to import `zod/v3`), with `zod@4.6.7`.
+  Markdown uses a package-owned port of `@a2ui/markdown-it@0.2.0` on
+  `dompurify@3.4.17`.
 - Import only official `/v0_9` entry points.
 - Treat package distribution versions and wire versions as separate axes.
 - Do not add v1.0 behavior until a governed version adapter and its evidence

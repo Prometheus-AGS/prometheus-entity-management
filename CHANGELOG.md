@@ -7,6 +7,40 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Security
+
+- `@prometheus-ags/a2ui-react`: **`zod` 3.25.76 → 4.6.7** (GHSA-mrhx-c7xc-m3w5,
+  memory exhaustion on oversized arrays, fixed only in `zod >= 4.6.6`; there is no
+  fixed 3.x). The workspace overrides every `zod` to 4.6.7, so the lockfile holds
+  no Zod 3. The upstream `@a2ui/web_core@0.12.0` declares `zod ^3.25.76` and uses
+  Zod 3 internals, so it is **patched** (`patches/@a2ui__web_core@0.12.0.patch`,
+  `pnpm.patchedDependencies`) to import the `zod/v3` permalink that Zod 4 ships.
+  The package bundles `@a2ui/*` into its `dist`, so **published consumers run the
+  patched code on our `zod@4.6.7`**. Limits: `zod/v3` inside 4.6.7 is the Zod 3
+  implementation, which the advisory's v4 `$ZodArray` fix does not change; the
+  package's default resource limits still bound what reaches it.
+  `@a2ui/web_core@0.12.0` stays a dependency because the published types
+  import it, so consumer installs still contain its own `zod@3.25.76`
+  (types only; never executed by this package). A consumer that wants an
+  audit-clean tree can override `zod` to `4.6.7` (pnpm `overrides`, npm
+  `overrides`); runtime is unaffected because the executed copy is bundled.
+- `@prometheus-ags/a2ui-react`: **markdown is sanitised with `dompurify@3.4.17`
+  for consumers.** `@a2ui/markdown-it@0.2.0` pins `dompurify` 3.4.11 exactly; the
+  package now ships its own port of that renderer (Apache-2.0, attributed) on
+  exact `markdown-it@14.3.3` and `dompurify@3.4.17` dependencies and no longer
+  depends on `@a2ui/markdown-it`. `@a2ui/react@0.12.0`, already bundled into
+  `dist`, moves to `devDependencies`, which removes its `@a2ui/markdown-it` →
+  `dompurify@3.4.11` chain from consumer installs.
+
+### Changed
+
+- `@prometheus-ags/a2ui-react`: `A2uiActionRule.contextSchema` is typed
+  structurally (`{ parse, safeParse }`) instead of `z.ZodType<TContext>`, so Zod 4,
+  Zod 3 (`zod@3` or `zod/v3`) and other validators with `parse`/`safeParse` type-check.
+  Existing Zod 3 callers keep compiling; code that read
+  `rule.contextSchema` as a full Zod type (for example in `requestApproval`) now
+  sees only `parse` and `safeParse`.
+
 ---
 
 ## [4.3.0] — 2026-10-28

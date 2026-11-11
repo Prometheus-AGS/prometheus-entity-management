@@ -57,3 +57,10 @@ overrides:
   "body-parser@1": "1.20.9"
   "markdown-it@14": "14.3.3"
   dompurify: "3.4.17"
+  zod: "4.6.7"
+# @a2ui/web_core declares zod ^3.25.76 and uses Zod 3 internals (_def.typeName,
+# ZodError.errors). With zod forced to 4.6.7 its imports are retargeted to the
+# zod/v3 permalink shipped by zod 4; tsup bundles the patched code into
+# @prometheus-ags/a2ui-react's dist.
+patchedDependencies:
+  "@a2ui/web_core@0.12.0": patches/@a2ui__web_core@0.12.0.patch

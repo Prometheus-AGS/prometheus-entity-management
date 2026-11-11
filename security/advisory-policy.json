@@ -156,7 +156,16 @@
         "seroval",
         "joi"
       ],
-      "action": "2026-11-11 advisory wave: bump root pnpm overrides in pnpm-workspace.yaml (joi 17.13.9, undici@7 7.30.2, seroval 1.6.12) and add overrides for follow-redirects 1.16.3, launch-editor 2.14.2, body-parser@1 1.20.9, markdown-it@14 14.3.3 and dompurify 3.4.17; upgrade the Next.js example to 16.4.6. @a2ui/markdown-it pins dompurify 3.4.11 exactly, so consumers of the published a2ui-react package keep that upstream pin until @a2ui/markdown-it releases a fix. The http-cache-semantics (1240991) and braces (1240992) acceptances were removed because neither advisory is reported any longer."
+      "action": "2026-11-11 advisory wave: bump root pnpm overrides in pnpm-workspace.yaml (joi 17.13.9, undici@7 7.30.2, seroval 1.6.12) and add overrides for follow-redirects 1.16.3, launch-editor 2.14.2, body-parser@1 1.20.9, markdown-it@14 14.3.3 and dompurify 3.4.17; upgrade the Next.js example to 16.4.6. @a2ui/markdown-it pins dompurify 3.4.11 exactly, so a2ui-react replaces it with a port on its own exact dompurify 3.4.17 dependency. The http-cache-semantics (1240991) and braces (1240992) acceptances were removed because neither advisory is reported any longer."
+    },
+    {
+      "ids": [
+        1243066
+      ],
+      "packages": [
+        "zod"
+      ],
+      "action": "2026-11-11 GHSA-mrhx-c7xc-m3w5 (fixed only in zod >= 4.6.6): move every zod pin to 4.6.7 and add a root zod override in pnpm-workspace.yaml so no Zod 3 is resolved. @a2ui/web_core@0.12.0 declares zod ^3.25.76 and relies on Zod 3 internals, so pnpm patchedDependencies (patches/@a2ui__web_core@0.12.0.patch) retargets its imports to the zod/v3 permalink shipped by zod 4; a2ui-react bundles the patched code. The zod/v3 implementation inside 4.6.7 is not changed by the advisory's v4 $ZodArray fix; A2UI resource limits bound its input. Consumer installs still contain @a2ui/web_core's own zod 3.25.76 for its types only."
     }
   ],
   "policy": "Every active critical/high production advisory must be remediated or have a time-bounded acceptance with an owner and rationale. Lower severities remain visible and are not described as zero risk."

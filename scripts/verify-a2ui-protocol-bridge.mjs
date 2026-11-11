@@ -126,7 +126,7 @@ async function writeConsumer(directory, tarballs) {
       react: "19.2.8",
       "react-dom": "19.2.8",
       typescript: "6.0.2",
-      zod: "3.25.76",
+      zod: "4.6.7",
     },
     pnpm: {
       overrides: {

@@ -9,10 +9,13 @@ const read = (path) => readFile(join(root, path), "utf8");
 
 test("the package targets exact official A2UI distributions and protocol entry points", async () => {
   const manifest = JSON.parse(await read("packages/a2ui-react/package.json"));
-  assert.equal(manifest.dependencies["@a2ui/react"], "0.12.0");
+  // @a2ui/react is bundled into dist (tsup noExternal), so it is a build-time pin.
+  assert.equal(manifest.devDependencies["@a2ui/react"], "0.12.0");
   assert.equal(manifest.dependencies["@a2ui/web_core"], "0.12.0");
-  assert.equal(manifest.dependencies["@a2ui/markdown-it"], "0.2.0");
-  assert.equal(manifest.dependencies.zod, "3.25.76");
+  assert.equal(manifest.dependencies["@a2ui/markdown-it"], undefined);
+  assert.equal(manifest.dependencies.dompurify, "3.4.17");
+  assert.equal(manifest.dependencies["markdown-it"], "14.3.3");
+  assert.equal(manifest.dependencies.zod, "4.6.7");
   assert.ok(manifest.exports["./ag-ui"]);
   const sources = await Promise.all([
     read("packages/a2ui-react/src/official/catalog.ts"),

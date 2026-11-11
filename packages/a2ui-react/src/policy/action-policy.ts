@@ -1,6 +1,5 @@
 import { A2uiClientActionSchema } from "@a2ui/web_core/v0_9";
 import type { A2uiClientAction } from "@a2ui/web_core/v0_9" with { "resolution-mode": "import" };
-import type { z } from "zod";
 
 export type A2uiActionDeniedCode =
   | "invalid-action"
@@ -26,8 +25,15 @@ export interface A2uiActionRule<
 > {
   /** Exact official action name. Wildcards are intentionally unsupported. */
   name: string;
-  /** Application-owned context schema evaluated after official action validation. */
-  contextSchema: z.ZodType<TContext>;
+  /**
+   * Application-owned context schema evaluated after official action validation.
+   * Typed structurally so Zod 4 (`zod`), Zod 3 (`zod@3` or `zod/v3`) and any
+   * validator with compatible `parse`/`safeParse` are accepted.
+   */
+  contextSchema: {
+    parse(input: unknown): TContext;
+    safeParse(input: unknown): { success: true; data: TContext } | { success: false; error: unknown };
+  };
   /** Destructive rules require an approval callback before execution. */
   destructive?: boolean;
   /** Tenant/scope/resource authorization. Absence means deny. */
