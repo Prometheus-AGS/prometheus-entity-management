@@ -1,17 +1,18 @@
 # Releasing Prometheus Entity Management
 
-## 4.4.0 status: prepared, not published
+## 4.4.0 status: stable published
 
-**Update 2026-11-11: 4.4.0 is prepared and unpublished.** The lockstep minor
-bump moves all thirteen `@prometheus-ags/*` packages from `4.3.0` to `4.4.0`.
+**Update 2026-11-11: 4.4.0 stable is published.** All thirteen
+`@prometheus-ags/*` npm packages are public at `4.4.0` with both `latest` and
+`next` pointing at it (tag `v4.4.0`, commit `f5361081`).
 `@prometheus-ags/entity-graph-core` carries the streaming-store hardening (#76):
 batched writes, the live layer, the lossless AG-UI bridge and production
 devtools gating. `@prometheus-ags/a2ui-react` moves to `zod@4.6.7` and
 sanitises markdown with `dompurify@3.4.17` (#77; the bundled `@a2ui/web_core`
-is patched to run on `zod/v3`). **Behavior change:** the AG-UI bridge now deletes entities the
-agent removes from its state; read the changelog before upgrading. The registry
-serves `4.3.0` on `latest` and `next` until publication, so
-`release/npm-registry-status.json` keeps recording `4.3.0` until then.
+is patched to run on `zod/v3`). **Behavior change:** the AG-UI bridge now
+deletes entities the agent removes from its state; read the changelog before
+upgrading. Published with `pnpm publish` and the operator's npm token, so there
+is no npm provenance attestation.
 
 ## 4.3.0 status: stable published
 
