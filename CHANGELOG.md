@@ -7,6 +7,30 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [4.4.0] — 2026-11-11
+
+### Changed (behavior change) — read before upgrading
+
+> **The AG-UI bridge now deletes entities the agent removes from its state.**
+> In 4.3.0 an entity that left a mapped slice of the agent state stayed in the
+> graph; in 4.4.0 `applyAgUiSnapshot` / `applyAgUiDelta` remove it. Only ids the
+> previous stored (or caller-supplied) state held at a mapped pointer are
+> removed, an id still held by another mapping of the same type is kept, and a
+> base reconstructed from a pre-4.4.0 graph never removes anything. A host that
+> relied on agent-removed entities lingering in the graph must keep its own copy.
+
+- `@prometheus-ags/entity-graph-core`: the AG-UI bridge now removes an entity when
+  the agent state that previously held it at a mapped pointer no longer does
+  (before, such entities stayed in the graph). Entities the bridge never saw in
+  the previous state are never removed. The bridge also writes one `AgUiState`
+  entity per `stateId` and one order list per collection mapping. `applyAgUiSnapshot`
+  and `applyAgUiDelta` return `{ applied, state }` instead of `void`.
+- `@prometheus-ags/entity-graph-core`: browser builds without `process` and
+  without Vite dev no longer emit legacy devtools events from graph
+  transactions. Call `setGraphDevtoolsEmission(true)` to restore them.
+
 ### Added
 
 - `@prometheus-ags/entity-graph-core`: `batchGraphWrites(fn)` applies many writes
@@ -38,15 +62,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   in every browser production bundle. Emission is now off where `process` is
   absent, unless Vite's `import.meta.env.DEV` is set or emission is enabled
   explicitly. Node/SSR behaviour is unchanged.
-
-### Changed (behavior change)
-
-- `@prometheus-ags/entity-graph-core`: the AG-UI bridge now removes an entity when
-  the agent state that previously held it at a mapped pointer no longer does
-  (before, such entities stayed in the graph). Entities the bridge never saw in
-  the previous state are never removed. The bridge also writes one `AgUiState`
-  entity per `stateId` and one order list per collection mapping. `applyAgUiSnapshot`
-  and `applyAgUiDelta` return `{ applied, state }` instead of `void`.
 
 ### Security
 
