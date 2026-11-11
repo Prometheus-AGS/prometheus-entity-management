@@ -1,26 +1,11 @@
 {
   "schemaVersion": "1.0.0",
-  "assessedOn": "2026-10-08",
+  "assessedOn": "2026-11-11",
   "threshold": [
     "critical",
     "high"
   ],
-  "acceptedAdvisories": [
-    {
-      "id": 1240991,
-      "package": "http-cache-semantics",
-      "owner": "Travis James",
-      "expiresOn": "2027-01-08",
-      "rationale": "No patched release exists (advisory lists patched <0.0.0). Build-time-only transitive dependency of the Docusaurus docs toolchain (update-notifier > got > cacheable-request); runs only during the docs build's update check against the npm registry and is not shipped in any published package runtime tree. Reassess when a fixed release or a Docusaurus upgrade drops update-notifier."
-    },
-    {
-      "id": 1240992,
-      "package": "braces",
-      "owner": "Travis James",
-      "expiresOn": "2027-01-08",
-      "rationale": "No patched release exists (3.0.3 is the latest; advisory lists patched <0.0.0). Developer-tooling-only transitive dependency of @changesets/cli (micromatch) that globs first-party workspace paths; not shipped in any published package runtime tree. Reassess when braces publishes a fix."
-    }
-  ],
+  "acceptedAdvisories": [],
   "resolvedAdvisories": [
     {
       "ids": [
@@ -136,6 +121,42 @@
         "hono"
       ],
       "action": "Remove the shadcn scaffolding CLI from application production dependencies; generated components do not import the CLI at runtime."
+    },
+    {
+      "ids": [
+        1242600,
+        1242604,
+        1242605,
+        1242663,
+        1242672,
+        1242816,
+        1242818,
+        1242859,
+        1242880,
+        1242881,
+        1243073,
+        1243113,
+        1243473,
+        1243475,
+        1243478,
+        1243612,
+        1243613,
+        1243614,
+        1244003,
+        1244009
+      ],
+      "packages": [
+        "markdown-it",
+        "follow-redirects",
+        "launch-editor",
+        "next",
+        "dompurify",
+        "body-parser",
+        "undici",
+        "seroval",
+        "joi"
+      ],
+      "action": "2026-11-11 advisory wave: bump root pnpm overrides in pnpm-workspace.yaml (joi 17.13.9, undici@7 7.30.2, seroval 1.6.12) and add overrides for follow-redirects 1.16.3, launch-editor 2.14.2, body-parser@1 1.20.9, markdown-it@14 14.3.3 and dompurify 3.4.17; upgrade the Next.js example to 16.4.6. @a2ui/markdown-it pins dompurify 3.4.11 exactly, so consumers of the published a2ui-react package keep that upstream pin until @a2ui/markdown-it releases a fix. The http-cache-semantics (1240991) and braces (1240992) acceptances were removed because neither advisory is reported any longer."
     }
   ],
   "policy": "Every active critical/high production advisory must be remediated or have a time-bounded acceptance with an owner and rationale. Lower severities remain visible and are not described as zero risk."
