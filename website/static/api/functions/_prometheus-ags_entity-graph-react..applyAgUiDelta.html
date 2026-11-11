@@ -15,13 +15,15 @@
 <section class="tsd-panel">
 <ul class="tsd-signatures">
 <li class="">
-<div class="tsd-signature tsd-anchor-link" id="applyaguidelta"><span class="tsd-kind-call-signature">applyAgUiDelta</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">event</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/_prometheus-ags_entity-graph-react..AgUiStateDeltaEvent.html" class="tsd-signature-type tsd-kind-interface">AgUiStateDeltaEvent</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">options</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/_prometheus-ags_entity-graph-react..ApplyAgUiOptions.html" class="tsd-signature-type tsd-kind-interface">ApplyAgUiOptions</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">currentState</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><a href="#applyaguidelta" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-signature tsd-anchor-link" id="applyaguidelta"><span class="tsd-kind-call-signature">applyAgUiDelta</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">event</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/_prometheus-ags_entity-graph-react..AgUiStateDeltaEvent.html" class="tsd-signature-type tsd-kind-interface">AgUiStateDeltaEvent</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">options</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/_prometheus-ags_entity-graph-react..ApplyAgUiOptions.html" class="tsd-signature-type tsd-kind-interface">ApplyAgUiOptions</a><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">currentState</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/_prometheus-ags_entity-graph-core..AgUiApplyResult.html" class="tsd-signature-type tsd-kind-interface">AgUiApplyResult</a><a href="#applyaguidelta" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Apply an AG-UI STATE_DELTA (RFC-6902 JSON Patch) to the graph.</p>
-<p>The delta is applied against a reconstructed agent-state view assembled from
-the current graph entities (per the mappings), then the resulting slices are
-re-projected back into the graph. This lets path-based deltas target nested
-entity fields without the caller tracking the full agent state themselves.</p>
+<p>The delta applies to, in order of preference: <code>currentState</code> when given, the
+stored agent state document, or (for graphs written before 4.4.0) a state
+view reconstructed from the mapped entities. The result is stored and
+re-projected exactly as a snapshot is, so removals and order are applied.
+A reconstructed base never causes removals: it may contain entities the
+agent never wrote.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -29,11 +31,11 @@ entity fields without the caller tracking the full agent state themselves.</p>
 <li><span><span class="tsd-kind-parameter">event</span>: <a href="../interfaces/_prometheus-ags_entity-graph-react..AgUiStateDeltaEvent.html" class="tsd-signature-type tsd-kind-interface">AgUiStateDeltaEvent</a></span></li>
 <li><span><span class="tsd-kind-parameter">options</span>: <a href="../interfaces/_prometheus-ags_entity-graph-react..ApplyAgUiOptions.html" class="tsd-signature-type tsd-kind-interface">ApplyAgUiOptions</a></span></li>
 <li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">currentState</span>: <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></span>
-<div class="tsd-comment tsd-typography"><p>Current agent-state view; if omitted, reconstructed from the graph mappings.</p>
+<div class="tsd-comment tsd-typography"><p>Current agent-state view; if omitted, the stored document (or a reconstruction) is used.</p>
 </div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<h4 class="tsd-returns-title">Returns <a href="../interfaces/_prometheus-ags_entity-graph-core..AgUiApplyResult.html" class="tsd-signature-type tsd-kind-interface">AgUiApplyResult</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-core/dist/index.d.ts:1424</li></ul></aside></div></li></ul></section></div>
+<li>Defined in packages/entity-graph-core/dist/index.d.ts:1614</li></ul></aside></div></li></ul></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
