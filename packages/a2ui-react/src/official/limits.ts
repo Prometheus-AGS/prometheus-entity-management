@@ -41,6 +41,7 @@ export type PrometheusA2uiLimitName = keyof PrometheusA2uiLimits;
 
 const ONE_MEBIBYTE = 1_048_576;
 
+/** Default resource limits, enforced unless a host overrides them through the `limits` option. */
 export const DEFAULT_PROMETHEUS_A2UI_LIMITS: Readonly<PrometheusA2uiLimits> = Object.freeze({
   maxSurfaces: 64,
   maxComponentsPerSurface: 2_000,
