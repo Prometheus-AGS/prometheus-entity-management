@@ -11,6 +11,7 @@ import {
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createGraphStore } from "@prometheus-ags/entity-graph-core";
 import { z } from "zod";
+import { z as z3 } from "zod/v3";
 import {
   DEFAULT_PROMETHEUS_A2UI_FUNCTIONS,
   ENTITY_GRAPH_A2UI_ACTIONS,
@@ -442,6 +443,26 @@ describe("application-owned A2UI entity graph policy", () => {
     expect(decisions.map((decision) =>
       decision.status === "denied" ? decision.code : "executed",
     )).toEqual(["unknown-action", "unauthorized", "unauthorized", "unauthorized"]);
+  });
+
+  it("accepts Zod 4 and Zod 3 context schemas", async () => {
+    for (const contextSchema of [
+      z.object({ value: z.string() }),
+      z3.object({ value: z3.string() }),
+    ]) {
+      const policy = createA2uiActionPolicy({
+        rules: [{
+          name: "test.schema",
+          contextSchema,
+          authorize: () => true,
+          execute: (_action, context) => context.value,
+        }],
+      });
+      await expect(policy.handle(action("test.schema", { value: "ok" })))
+        .resolves.toMatchObject({ status: "executed", result: "ok" });
+      await expect(policy.handle(action("test.schema", { value: 1 })))
+        .resolves.toMatchObject({ status: "denied", code: "invalid-context" });
+    }
   });
 
   it("requires out-of-band approval for destructive actions", async () => {

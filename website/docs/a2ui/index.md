@@ -70,7 +70,8 @@ These numbers are related but are not interchangeable:
 | Public A2UI input | `v1.0` release candidate and `v0.9.1` |
 | Official renderer engine | `v0.9.1` compatibility boundary |
 | `@a2ui/react` / `@a2ui/web_core` | `0.12.0` |
-| `@a2ui/markdown-it` | `0.2.0` |
+| Markdown renderer | port of `@a2ui/markdown-it` `0.2.0` on `dompurify` `3.4.17` |
+| `zod` | `4.6.7` (A2UI upstream runs on `zod/v3`) |
 | AG-UI | `@ag-ui/core` peer range `>=0.0.59 <0.1.0 \|\| ^1.0.0`, developed against `1.0.3` |
 
 The published A2UI packages do not expose a v1 renderer yet. The runtime

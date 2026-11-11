@@ -6,7 +6,6 @@ import {
   type ReactNode,
 } from "react";
 import { A2uiSurface, MarkdownContext } from "@a2ui/react/v0_9";
-import { renderMarkdown } from "@a2ui/markdown-it";
 import type {
   A2uiClientCapabilities,
   A2uiClientDataModel,
@@ -17,6 +16,7 @@ import type {
   PrometheusA2uiRuntime,
 } from "../official/runtime.js";
 import type { PrometheusA2uiComponentImplementation } from "../official/types.js";
+import { renderMarkdown } from "./markdown.js";
 
 const A2uiRuntimeContext = createContext<PrometheusA2uiRuntime | null>(null);
 const subscribeToHydration = () => () => undefined;
