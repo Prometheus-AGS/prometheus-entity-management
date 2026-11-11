@@ -1,5 +1,16 @@
 # Releasing Prometheus Entity Management
 
+## 4.4.0 status: prepared, not published
+
+**Update 2026-11-11: 4.4.0 is prepared and unpublished.** The lockstep minor
+bump moves all thirteen `@prometheus-ags/*` packages from `4.3.0` to `4.4.0`.
+`@prometheus-ags/entity-graph-core` carries the streaming-store hardening (#76):
+batched writes, the live layer, the lossless AG-UI bridge and production
+devtools gating. **Behavior change:** the AG-UI bridge now deletes entities the
+agent removes from its state; read the changelog before upgrading. The registry
+serves `4.3.0` on `latest` and `next` until publication, so
+`release/npm-registry-status.json` keeps recording `4.3.0` until then.
+
 ## 4.3.0 status: stable published
 
 **Update 2026-10-28: 4.3.0 stable is published.** All thirteen
