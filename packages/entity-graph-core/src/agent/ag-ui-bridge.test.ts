@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { useGraphStore } from "../graph";
 import { __resetMergeStrategies } from "../merge/registry";
-import { applyAgUiSnapshot, applyAgUiDelta, type AgUiStateMapping } from "./ag-ui-bridge";
+import { AGUI_STATE_ENTITY_TYPE, applyAgUiSnapshot, applyAgUiDelta, type AgUiStateMapping } from "./ag-ui-bridge";
 
 describe("AG-UI ingestion bridge", () => {
   beforeEach(() => {
@@ -9,6 +9,8 @@ describe("AG-UI ingestion bridge", () => {
     const s = useGraphStore.getState();
     for (const id of Object.keys(s.entities.Order ?? {})) s.removeEntity("Order", id);
     for (const id of Object.keys(s.entities.LineItem ?? {})) s.removeEntity("LineItem", id);
+    // The bridge also stores the agent state document; reset it with the entities.
+    for (const id of Object.keys(s.entities[AGUI_STATE_ENTITY_TYPE] ?? {})) s.removeEntity(AGUI_STATE_ENTITY_TYPE, id);
   });
 
   it("applyAgUiSnapshot writes a single mapped entity into the graph", () => {
