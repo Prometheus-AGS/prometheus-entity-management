@@ -7,6 +7,47 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+
+- `@prometheus-ags/entity-graph-core`: `batchGraphWrites(fn)` applies many writes
+  across entity types as one atomic store publication without copying the graph,
+  and `applyGraphChanges(changes)` applies a serialisable change set the same way.
+  It is idempotent under the default merge strategy.
+- `@prometheus-ags/entity-graph-core`: `createLiveLayer()`, a render-only layer for
+  fast-changing ephemeral values (streaming text). It provides per-entity
+  subscriptions, a merged `read()`, and explicit `commit()` / `commitAll()` /
+  `discard()`. Live values are not persisted and do not reach devtools.
+- `@prometheus-ags/entity-graph-core`: `readAgUiState()`, `agUiListKey()`,
+  `AGUI_STATE_ENTITY_TYPE`, and the `store`, `stateId` and `eventId` options of the
+  AG-UI bridge.
+- `@prometheus-ags/entity-graph-core`: `setGraphDevtoolsEmission()`,
+  `isGraphDevtoolsEmissionEnabled()` and the `__PROMETHEUS_ENTITY_GRAPH_DEVTOOLS__`
+  build-time flag (`false` removes the emission code from bundles).
+
+### Fixed
+
+- `@prometheus-ags/entity-graph-core`: `createGraphTransaction` no longer
+  `structuredClone`s the whole graph when it opens. The rollback baseline is a set
+  of references to the immutable state.
+- `@prometheus-ags/entity-graph-core`: the AG-UI bridge was a lossy projection. It
+  now keeps plain fields and root pointers in a stored state document, keeps
+  collection order, and applies RFC 6902 `remove` / `replace` / `move`. It
+  publishes once per event and no longer deep-freezes the caller's event objects.
+  `applyJsonPatch` copies `add` / `replace` values.
+- `@prometheus-ags/entity-graph-core`: graph transactions emitted devtools events
+  in every browser production bundle. Emission is now off where `process` is
+  absent, unless Vite's `import.meta.env.DEV` is set or emission is enabled
+  explicitly. Node/SSR behaviour is unchanged.
+
+### Changed (behavior change)
+
+- `@prometheus-ags/entity-graph-core`: the AG-UI bridge now removes an entity when
+  the agent state that previously held it at a mapped pointer no longer does
+  (before, such entities stayed in the graph). Entities the bridge never saw in
+  the previous state are never removed. The bridge also writes one `AgUiState`
+  entity per `stateId` and one order list per collection mapping. `applyAgUiSnapshot`
+  and `applyAgUiDelta` return `{ applied, state }` instead of `void`.
+
 ### Security
 
 - `@prometheus-ags/a2ui-react`: **`zod` 3.25.76 → 4.6.7** (GHSA-mrhx-c7xc-m3w5,

@@ -68,6 +68,11 @@ export { queryOnce, selectGraph } from "./graph-query";
 export type { GraphQueryOptions, GraphIncludeMap, GraphIncludeRelation } from "./graph-query";
 export { createGraphTransaction, createGraphAction } from "./graph-actions";
 export type { GraphTransaction, GraphActionOptions, GraphActionRecord, GraphActionEvent } from "./graph-actions";
+export { batchGraphWrites, applyGraphChanges } from "./graph-batch";
+export type { GraphBatch, GraphChange } from "./graph-batch";
+export { createLiveLayer } from "./live-layer";
+export type { LiveLayer, LiveLayerOptions } from "./live-layer";
+export { setGraphDevtoolsEmission, isGraphDevtoolsEmissionEnabled } from "./devtools-gate";
 export { createGraphEffect } from "./graph-effects";
 export type { GraphEffectHandle, GraphEffectOptions, GraphEffectEvent } from "./graph-effects";
 export { createGraphTool, createSchemaGraphTool, exportGraphSnapshot } from "./ai-interop";
@@ -130,9 +135,11 @@ export type {
 } from "./crud/relations";
 
 // ── Agent protocol ingestion (AG-UI → graph) ──────────────────────────────
-export { applyAgUiSnapshot, applyAgUiDelta, applyJsonPatch } from "./agent";
+export {
+  applyAgUiSnapshot, applyAgUiDelta, applyJsonPatch, readAgUiState, agUiListKey, AGUI_STATE_ENTITY_TYPE,
+} from "./agent";
 export type {
-  AgUiStateSnapshotEvent, AgUiStateDeltaEvent, AgUiStateMapping, ApplyAgUiOptions, JsonPatchOp,
+  AgUiStateSnapshotEvent, AgUiStateDeltaEvent, AgUiStateMapping, ApplyAgUiOptions, AgUiApplyResult, JsonPatchOp,
 } from "./agent";
 
 // ── Adapter types + realtime manager + adapters (framework-agnostic) ──────
