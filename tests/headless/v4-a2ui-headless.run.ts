@@ -79,7 +79,7 @@ function aui10(): void {
   const tampered = structuredClone(exported(source, "h1").messages) as Array<Record<string, any>>;
   delete tampered[0].createSurface.catalogId;
   const rebuilt = createPrometheusA2uiHeadlessRuntime();
-  let differs = false;
+  let differs: boolean;
   try {
     rebuilt.processMessages(tampered);
     differs = JSON.stringify(exported(rebuilt, "h1").messages) !== JSON.stringify(exported(source, "h1").messages);
