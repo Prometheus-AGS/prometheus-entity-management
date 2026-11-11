@@ -7,6 +7,8 @@
  * directly. It is small, dependency-free, and fully unit-tested.
  *
  * Immutability: every op returns a NEW document; the input is never mutated.
+ * `add`/`replace` values are copied, so the result shares no objects with the
+ * caller's operations (a store that freezes the result cannot freeze them).
  *
  * Supported ops: add, replace, remove, move, copy, test.
  * Pointers follow RFC-6901 (`/a/b/0`), including the `-` array-append token and
@@ -103,10 +105,10 @@ export function applyJsonPatch<T = unknown>(doc: T, ops: readonly JsonPatchOp[])
     const segs = parsePointer(op.path);
     switch (op.op) {
       case "add":
-        current = setAt(current, segs, op.value, "add");
+        current = setAt(current, segs, clone(op.value), "add");
         break;
       case "replace":
-        current = setAt(current, segs, op.value, "replace");
+        current = setAt(current, segs, clone(op.value), "replace");
         break;
       case "remove":
         current = removeAt(current, segs);

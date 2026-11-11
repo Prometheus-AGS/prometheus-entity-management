@@ -6,12 +6,19 @@
  * consumed via the Flint adapter, not here.)
  */
 
-export { applyAgUiSnapshot, applyAgUiDelta } from "./ag-ui-bridge";
+export {
+  applyAgUiSnapshot,
+  applyAgUiDelta,
+  readAgUiState,
+  agUiListKey,
+  AGUI_STATE_ENTITY_TYPE,
+} from "./ag-ui-bridge";
 export type {
   AgUiStateSnapshotEvent,
   AgUiStateDeltaEvent,
   AgUiStateMapping,
   ApplyAgUiOptions,
+  AgUiApplyResult,
 } from "./ag-ui-bridge";
 export { applyJsonPatch } from "./json-patch";
 export type { JsonPatchOp } from "./json-patch";

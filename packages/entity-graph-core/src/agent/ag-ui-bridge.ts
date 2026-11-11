@@ -18,10 +18,33 @@
  * constant)". This keeps the bridge transport-agnostic — it does not depend on
  * `@ag-ui/client` and takes plain event objects, so `@ag-ui/*` stays an OPTIONAL
  * peer (use it for typed events on the consumer side if desired).
+ *
+ * Lossless since 4.4.0:
+ * - The complete agent state document (plain fields included) is stored as the
+ *   `AgUiState` entity (`readAgUiState`), and deltas apply to it, so scalars
+ *   such as `phase` and root-pointer mappings survive.
+ * - Each collection mapping's order is kept as an ordered list
+ *   (`agUiListKey(mapping)`), so `move` and positional `add` are represented.
+ * - Items that leave a mapped slice (`remove`, `replace`, a smaller snapshot)
+ *   are removed from the graph and from every list. Only ids present in the
+ *   previous agent state at that pointer are removed; entities written by
+ *   anything else are never touched.
+ * - One snapshot or delta is one graph publication.
+ * - The caller's event objects are copied, never stored, so they are never
+ *   frozen by the store and can still be mutated (A2UI data models do this).
+ * - An `eventId` makes re-delivery idempotent: an id already applied to the
+ *   document is skipped, and the record survives persistence and hydration.
  */
 
-import { useGraphStore } from "../graph";
+import { graphStore, type GraphStore } from "../graph";
+import { batchGraphWrites, type GraphBatch } from "../graph-batch";
 import { applyJsonPatch, type JsonPatchOp } from "./json-patch";
+
+/** Entity type of the stored agent state documents (one per `stateId`). */
+export const AGUI_STATE_ENTITY_TYPE = "AgUiState";
+const DEFAULT_STATE_ID = "default";
+/** Applied event ids remembered per document for idempotent re-delivery. */
+const MAX_APPLIED_EVENT_IDS = 256;
 
 /** AG-UI STATE_SNAPSHOT event (minimal shape — no @ag-ui dependency). */
 export interface AgUiStateSnapshotEvent {
@@ -41,7 +64,8 @@ export interface AgUiStateMapping {
   entityType: string;
   /**
    * JSON-Pointer prefix into the agent state where this entity (or collection)
-   * lives. `"/order"` → a single entity; `"/orders"` → a collection keyed by id.
+   * lives. `"/order"` → a single entity; `"/orders"` → a collection keyed by id;
+   * `""` → the whole state as one entity.
    */
   pointer: string;
   /** Whether `pointer` addresses one object or a collection (array/record). */
@@ -58,21 +82,46 @@ export interface AgUiStateMapping {
    * (full overwrite). Snapshots typically replace; deltas typically upsert.
    */
   write?: "upsert" | "replace";
+  /** List key holding a collection's order (default `agUiListKey(mapping)`). */
+  listKey?: string;
 }
 
 export interface ApplyAgUiOptions {
   mappings: AgUiStateMapping[];
+  /** Graph to write into (default: the process graph). */
+  store?: GraphStore;
+  /** Which stored agent state document to apply to (default `"default"`). */
+  stateId?: string;
+  /** Identity of this event (SSE id, sequence number). Re-applying an id already applied is a no-op. */
+  eventId?: string;
+}
+
+/** Outcome of applying one AG-UI state event. */
+export interface AgUiApplyResult {
+  /** False when the event was skipped because its `eventId` was already applied. */
+  applied: boolean;
+  /** The agent state after the event (read-only: it is the stored, frozen document). */
+  state: Record<string, unknown> | null;
+}
+
+interface AgUiStateRecord {
+  id: string;
+  state: Record<string, unknown>;
+  appliedEventIds: string[];
 }
 
 function isObject(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null && !Array.isArray(v);
 }
 
+function parsePointer(pointer: string): string[] {
+  if (pointer === "" || pointer === "/") return [];
+  return pointer.slice(1).split("/").map((s) => s.replace(/~1/g, "/").replace(/~0/g, "~"));
+}
+
 function getAtPointer(state: unknown, pointer: string): unknown {
-  if (pointer === "" || pointer === "/") return state;
-  const segs = pointer.slice(1).split("/").map((s) => s.replace(/~1/g, "/").replace(/~0/g, "~"));
   let cur: unknown = state;
-  for (const s of segs) {
+  for (const s of parsePointer(pointer)) {
     if (Array.isArray(cur)) cur = cur[Number(s)];
     else if (isObject(cur)) cur = cur[s];
     else return undefined;
@@ -80,56 +129,119 @@ function getAtPointer(state: unknown, pointer: string): unknown {
   return cur;
 }
 
-function writeEntity(
-  mapping: AgUiStateMapping,
-  id: string,
-  obj: Record<string, unknown>,
-): void {
-  const store = useGraphStore.getState();
-  if ((mapping.write ?? "upsert") === "replace") {
-    store.replaceEntity(mapping.entityType, id, obj);
-  } else {
-    store.upsertEntity(mapping.entityType, id, obj);
-  }
+/** Default list key holding the order of a collection mapping. */
+export function agUiListKey(mapping: AgUiStateMapping, stateId: string = DEFAULT_STATE_ID): string {
+  return mapping.listKey ?? `agui:${stateId}:${mapping.entityType}:${mapping.pointer}`;
 }
 
-function projectState(state: Record<string, unknown>, mappings: AgUiStateMapping[]): void {
-  for (const mapping of mappings) {
-    const slice = getAtPointer(state, mapping.pointer);
-    if (slice === undefined) continue;
-
-    if (mapping.kind === "single") {
-      if (!isObject(slice)) continue;
-      const id = mapping.constantId ?? String(slice[mapping.idField ?? "id"] ?? "");
-      if (!id) continue;
-      writeEntity(mapping, id, slice);
-    } else {
-      // collection: array of objects, or record keyed by id
-      const items: Array<[string, Record<string, unknown>]> = [];
-      if (Array.isArray(slice)) {
-        for (const item of slice) {
-          if (isObject(item)) {
-            const id = String(item[mapping.idField ?? "id"] ?? "");
-            if (id) items.push([id, item]);
-          }
-        }
-      } else if (isObject(slice)) {
-        for (const [key, item] of Object.entries(slice)) {
-          if (isObject(item)) {
-            const id = String(item[mapping.idField ?? "id"] ?? key);
-            items.push([id, item]);
-          }
-        }
+/** Ordered `[id, object]` pairs a mapping addresses in one agent state. */
+function mappedItems(state: unknown, mapping: AgUiStateMapping): Array<[string, Record<string, unknown>]> {
+  const slice = getAtPointer(state, mapping.pointer);
+  if (slice === undefined) return [];
+  if (mapping.kind === "single") {
+    if (!isObject(slice)) return [];
+    const id = mapping.constantId ?? String(slice[mapping.idField ?? "id"] ?? "");
+    return id ? [[id, slice]] : [];
+  }
+  // collection: array of objects, or record keyed by id
+  const items: Array<[string, Record<string, unknown>]> = [];
+  if (Array.isArray(slice)) {
+    for (const item of slice) {
+      if (isObject(item)) {
+        const id = String(item[mapping.idField ?? "id"] ?? "");
+        if (id) items.push([id, item]);
       }
-      for (const [id, obj] of items) writeEntity(mapping, id, obj);
+    }
+  } else if (isObject(slice)) {
+    for (const [key, item] of Object.entries(slice)) {
+      if (isObject(item)) items.push([String(item[mapping.idField ?? "id"] ?? key), item]);
     }
   }
+  return items;
 }
 
 /**
- * Apply an AG-UI STATE_SNAPSHOT to the graph. Each mapped slice is written as an
- * entity. Snapshots default to `replace` semantics when the mapping does not
- * specify otherwise is left to the mapping's `write` field (default upsert).
+ * Write `next`'s mapped slices, remove items that left them since `prev`, and
+ * record collection order. An id is removed only when no mapping of its entity
+ * type still holds it in `next` (an item moving between two slices survives).
+ */
+function projectState(
+  batch: GraphBatch,
+  prev: Record<string, unknown> | undefined,
+  next: Record<string, unknown>,
+  mappings: AgUiStateMapping[],
+  stateId: string,
+): void {
+  const itemsByMapping = mappings.map((mapping) => mappedItems(next, mapping));
+  if (prev) {
+    const held = new Map<string, Set<string>>();
+    mappings.forEach((mapping, i) => {
+      let ids = held.get(mapping.entityType);
+      if (!ids) held.set(mapping.entityType, (ids = new Set()));
+      for (const [id] of itemsByMapping[i]) ids.add(id);
+    });
+    const removed = new Set<string>();
+    for (const mapping of mappings) {
+      for (const [id] of mappedItems(prev, mapping)) {
+        const key = `${mapping.entityType}:${id}`;
+        if (held.get(mapping.entityType)?.has(id) || removed.has(key)) continue;
+        removed.add(key);
+        batch.removeEntity(mapping.entityType, id);
+        batch.removeIdFromAllLists(mapping.entityType, id);
+      }
+    }
+  }
+  mappings.forEach((mapping, i) => {
+    const items = itemsByMapping[i];
+    const nextIds = new Set(items.map(([id]) => id));
+    for (const [id, obj] of items) {
+      if ((mapping.write ?? "upsert") === "replace") batch.replaceEntity(mapping.entityType, id, obj);
+      else batch.upsertEntity(mapping.entityType, id, obj);
+    }
+    if (mapping.kind === "collection") {
+      batch.setListIds(agUiListKey(mapping, stateId), [...nextIds], mapping.entityType);
+    }
+  });
+}
+
+function readRecord(store: GraphStore, stateId: string): AgUiStateRecord | undefined {
+  const record = store.getState().entities[AGUI_STATE_ENTITY_TYPE]?.[stateId];
+  return record as unknown as AgUiStateRecord | undefined;
+}
+
+/** The stored agent state document, or `null` before the first snapshot/delta. Read-only. */
+export function readAgUiState(stateId: string = DEFAULT_STATE_ID, store: GraphStore = graphStore): Record<string, unknown> | null {
+  return readRecord(store, stateId)?.state ?? null;
+}
+
+function applyState(
+  options: ApplyAgUiOptions,
+  nextOf: (record: AgUiStateRecord | undefined) => { prev: Record<string, unknown> | undefined; next: unknown },
+): AgUiApplyResult {
+  const store = options.store ?? graphStore;
+  const stateId = options.stateId ?? DEFAULT_STATE_ID;
+  const record = readRecord(store, stateId);
+  if (options.eventId !== undefined && record?.appliedEventIds.includes(options.eventId)) {
+    return { applied: false, state: record.state };
+  }
+  const { prev, next } = nextOf(record);
+  if (!isObject(next)) return { applied: false, state: record?.state ?? null };
+
+  const appliedEventIds = options.eventId === undefined
+    ? record?.appliedEventIds ?? []
+    : [...(record?.appliedEventIds ?? []), options.eventId].slice(-MAX_APPLIED_EVENT_IDS);
+  batchGraphWrites((batch) => {
+    projectState(batch, prev, next, options.mappings, stateId);
+    batch.replaceEntity(AGUI_STATE_ENTITY_TYPE, stateId, { id: stateId, state: next, appliedEventIds });
+  }, store);
+  return { applied: true, state: readAgUiState(stateId, store) };
+}
+
+/**
+ * Apply an AG-UI STATE_SNAPSHOT to the graph: store the whole document, write
+ * each mapped slice as entities, record collection order, and remove items the
+ * previous document had at a mapped pointer but this one does not. Writes use
+ * each mapping's `write` mode (default `upsert`).
  *
  * @example
  * ```ts
@@ -142,43 +254,65 @@ function projectState(state: Record<string, unknown>, mappings: AgUiStateMapping
 export function applyAgUiSnapshot(
   event: AgUiStateSnapshotEvent,
   options: ApplyAgUiOptions,
-): void {
-  if (!isObject(event.snapshot)) return;
-  projectState(event.snapshot, options.mappings);
+): AgUiApplyResult {
+  if (!isObject(event.snapshot)) return { applied: false, state: null };
+  return applyState(options, (record) => ({ prev: record?.state, next: structuredClone(event.snapshot) }));
 }
 
 /**
  * Apply an AG-UI STATE_DELTA (RFC-6902 JSON Patch) to the graph.
  *
- * The delta is applied against a reconstructed agent-state view assembled from
- * the current graph entities (per the mappings), then the resulting slices are
- * re-projected back into the graph. This lets path-based deltas target nested
- * entity fields without the caller tracking the full agent state themselves.
+ * The delta applies to, in order of preference: `currentState` when given, the
+ * stored agent state document, or (for graphs written before 4.4.0) a state
+ * view reconstructed from the mapped entities. The result is stored and
+ * re-projected exactly as a snapshot is, so removals and order are applied.
+ * A reconstructed base never causes removals: it may contain entities the
+ * agent never wrote.
  */
 export function applyAgUiDelta(
   event: AgUiStateDeltaEvent,
   options: ApplyAgUiOptions,
-  /** Current agent-state view; if omitted, reconstructed from the graph mappings. */
+  /** Current agent-state view; if omitted, the stored document (or a reconstruction) is used. */
   currentState?: Record<string, unknown>,
-): void {
-  const base = currentState ?? reconstructState(options.mappings);
-  const next = applyJsonPatch(base, event.delta);
-  if (isObject(next)) projectState(next, options.mappings);
+): AgUiApplyResult {
+  const store = options.store ?? graphStore;
+  const stateId = options.stateId ?? DEFAULT_STATE_ID;
+  return applyState(options, (record) => {
+    const base = currentState !== undefined ? structuredClone(currentState) : record?.state;
+    if (base) return { prev: base, next: applyJsonPatch(base, event.delta) };
+    const reconstructed = reconstructState(options.mappings, store, stateId);
+    return { prev: undefined, next: applyJsonPatch(reconstructed, event.delta) };
+  });
 }
 
-/** Rebuild a minimal agent-state view from current graph entities (per mappings). */
-function reconstructState(mappings: AgUiStateMapping[]): Record<string, unknown> {
-  const store = useGraphStore.getState();
-  const state: Record<string, unknown> = {};
+/** Copy-on-write set: never mutates `target` or the (frozen) graph objects it holds. */
+function setAtPointer(target: Record<string, unknown>, pointer: string, value: unknown): Record<string, unknown> {
+  const segs = parsePointer(pointer);
+  if (segs.length === 0) return isObject(value) ? { ...value } : target;
+  const root = { ...target };
+  let cur = root;
+  for (const seg of segs.slice(0, -1)) {
+    const child: Record<string, unknown> = isObject(cur[seg]) ? { ...(cur[seg] as Record<string, unknown>) } : {};
+    cur[seg] = child;
+    cur = child;
+  }
+  cur[segs[segs.length - 1]] = value;
+  return root;
+}
+
+/** Rebuild an agent-state view from mapped graph entities (graphs with no stored document). */
+function reconstructState(mappings: AgUiStateMapping[], store: GraphStore, stateId: string): Record<string, unknown> {
+  const s = store.getState();
+  let state: Record<string, unknown> = {};
   for (const mapping of mappings) {
-    const key = mapping.pointer.replace(/^\//, "").split("/")[0];
-    if (!key) continue;
-    const bucket = store.entities[mapping.entityType] ?? {};
+    const bucket = s.entities[mapping.entityType] ?? {};
     if (mapping.kind === "single") {
       const id = mapping.constantId;
-      if (id && bucket[id]) state[key] = bucket[id];
+      if (id && bucket[id]) state = setAtPointer(state, mapping.pointer, bucket[id]);
     } else {
-      state[key] = Object.values(bucket);
+      const order = s.lists[agUiListKey(mapping, stateId)]?.ids;
+      const items = order ? order.map((id) => bucket[id]).filter(Boolean) : Object.values(bucket);
+      state = setAtPointer(state, mapping.pointer, items);
     }
   }
   return state;
