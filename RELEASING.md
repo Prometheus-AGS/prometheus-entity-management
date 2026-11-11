@@ -6,7 +6,9 @@
 bump moves all thirteen `@prometheus-ags/*` packages from `4.3.0` to `4.4.0`.
 `@prometheus-ags/entity-graph-core` carries the streaming-store hardening (#76):
 batched writes, the live layer, the lossless AG-UI bridge and production
-devtools gating. **Behavior change:** the AG-UI bridge now deletes entities the
+devtools gating. `@prometheus-ags/a2ui-react` moves to `zod@4.6.7` and
+sanitises markdown with `dompurify@3.4.17` (#77; the bundled `@a2ui/web_core`
+is patched to run on `zod/v3`). **Behavior change:** the AG-UI bridge now deletes entities the
 agent removes from its state; read the changelog before upgrading. The registry
 serves `4.3.0` on `latest` and `next` until publication, so
 `release/npm-registry-status.json` keeps recording `4.3.0` until then.
