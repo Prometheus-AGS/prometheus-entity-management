@@ -78,6 +78,70 @@ UI components should consume the hooks provided by their framework binding inste
 
 The deprecated core `useGraphStore` name is a StoreApi-shaped alias for `graphStore`, not a React hook. React consumers import the callable `useGraphStore(selector)` hook from `@prometheus-ags/prometheus-entity-management`. See the repository's `release/framework-neutral-core.md` migration contract for the complete boundary.
 
+## Streaming agent state
+
+Four primitives keep a store usable at token rate (all since 4.4.0):
+
+```ts
+import {
+  applyAgUiDelta,
+  applyAgUiSnapshot,
+  applyGraphChanges,
+  batchGraphWrites,
+  createLiveLayer,
+  readAgUiState,
+} from "@prometheus-ags/entity-graph-core";
+
+// 1. Many writes, one notification, no graph copy. A throw writes nothing.
+batchGraphWrites((batch) => {
+  batch.upsertEntity("Message", "m1", { id: "m1", status: "done" });
+  batch.upsertEntity("ToolCall", "t1", { id: "t1", status: "running" });
+  batch.insertIdInList("thread:messages", "m1", "end");
+});
+// The same thing as data (journal, replay); idempotent with the default merge.
+applyGraphChanges([{ op: "remove", type: "Message", id: "draft" }]);
+
+// 2. Render-only live values: not graph writes, not persisted, not in devtools.
+const live = createLiveLayer();
+live.append("Message", "m1", "text", token);        // per token
+live.subscribe("Message", "m1", render);            // live + durable changes
+live.read("Message", "m1");                         // durable entity + live fields
+live.commit("Message", "m1");                       // one durable write
+
+// 3. Lossless AG-UI state: plain fields, order and removals are kept.
+applyAgUiSnapshot({ snapshot }, { mappings, eventId: "41" });
+applyAgUiDelta({ delta }, { mappings, eventId: "42" }); // a replayed id is skipped
+readAgUiState(); // the whole agent state document
+```
+
+`createGraphTransaction` no longer copies the graph when it opens (rollback
+restores references to the immutable previous state). Collection mappings keep
+their order in the list `agUiListKey(mapping)`; items that leave a mapped slice
+are removed. Only ids that the previous agent state held at that pointer are
+removed. Written values are adopted and deep-frozen by the store, so if your
+code keeps mutating an object, write a `structuredClone` of it. The AG-UI bridge
+copies its input for you.
+
+Persisting with `persistGraphToStorage` and hydrating with
+`hydrateGraphFromStorage` round-trips the AG-UI document, its order lists and
+its applied event ids, so a transport that replays after a reload does not
+apply the same delta twice. Live values are not persisted. Commit them before a
+checkpoint if they must survive.
+
+### DevTools events in production
+
+The deprecated `subscribeDevtoolsEvent` stream fed by graph transactions emits
+only where `process` exists and `NODE_ENV !== "production"`, or in a browser
+under Vite's `import.meta.env.DEV`. Plain browser production bundles emit
+nothing. To enable or disable it at runtime, call
+`setGraphDevtoolsEmission(true | false)`. To remove the code from a bundle,
+define `__PROMETHEUS_ENTITY_GRAPH_DEVTOOLS__` as `false`:
+
+```ts
+// vite.config.ts
+export default { define: { __PROMETHEUS_ENTITY_GRAPH_DEVTOOLS__: "false" } };
+```
+
 ## Optional Loro merge strategy
 
 `loro-crdt` remains an optional peer. Node consumers can let core load it at
