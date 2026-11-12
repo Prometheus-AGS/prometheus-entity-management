@@ -15,3 +15,19 @@ tauri = { version = "2.11.5", features = ["test"] }
 
 [build-dependencies]
 tauri-build = { version = "2.6.3", features = [] }
+
+[patch.crates-io]
+urlpattern = { path = "../../../packages/entity-graph-tauri/rust-plugin/vendor/patches/urlpattern-0.3.0" }
+
+# Keep Tauri 2.11 on GTK3/WebKitGTK 4.1 with GLib 0.22.
+libappindicator = { path = "../../../packages/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/libappindicator-0.9.0" }
+libappindicator-sys = { path = "../../../packages/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/libappindicator-sys-0.9.0" }
+muda = { path = "../../../packages/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/muda-0.19.3" }
+tao = { path = "../../../packages/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/tao-0.35.3" }
+tauri = { path = "../../../packages/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/tauri-2.11.6" }
+tauri-runtime = { path = "../../../packages/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/tauri-runtime-2.11.3" }
+tauri-runtime-wry = { path = "../../../packages/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/tauri-runtime-wry-2.11.4" }
+tray-icon = { path = "../../../packages/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/tray-icon-0.24.2" }
+webkit2gtk = { path = "../../../packages/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/webkit2gtk-2.0.2" }
+webkit2gtk-sys = { path = "../../../packages/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/webkit2gtk-2.0.2/sys" }
+wry = { path = "../../../packages/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/wry-0.55.1" }

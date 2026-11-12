@@ -67,14 +67,14 @@ pub async fn run_http(
     // `StreamableHttpServerConfig` is `#[non_exhaustive]`; use its builder
     // methods instead of struct literal syntax.
     let config = StreamableHttpServerConfig::default()
-        .with_stateful_mode(true)
+        .with_legacy_session_mode(true)
         .with_cancellation_token(cancel.clone())
         .with_allowed_hosts(["localhost", "127.0.0.1", "0.0.0.0"]);
 
     // Clone the server for each new MCP session.
     let server_factory = {
         let server = server.clone();
-        move || Ok(server.clone())
+        move || -> std::io::Result<_> { Ok(server.clone()) }
     };
 
     let mcp_service = StreamableHttpService::new(server_factory, session_manager, config);

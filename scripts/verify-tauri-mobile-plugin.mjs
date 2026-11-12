@@ -5,6 +5,8 @@ import { tmpdir } from "node:os";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+const gtk3Host = ["linux", "freebsd", "openbsd", "netbsd", "dragonfly"].includes(process.platform);
+const desktopRustToolchain = gtk3Host ? "+1.92.0" : "+1.88.0";
 const COMMAND_TIMEOUT_MS = 15 * 60 * 1_000;
 const MAX_BUFFER_BYTES = 30 * 1024 * 1024;
 const TERMINATION_GRACE_MS = 2_000;
@@ -76,7 +78,7 @@ try {
   report.javascriptBindings.runtimeTests = "pass";
 
   const sourceHost = await run("cargo", [
-    "+1.88.0",
+    desktopRustToolchain,
     "test",
     "--manifest-path",
     join(fixtureDirectory, "Cargo.toml"),
@@ -122,6 +124,10 @@ try {
     "rust-plugin/Cargo.toml",
     "rust-plugin/build.rs",
     "rust-plugin/src/lib.rs",
+    "rust-plugin/vendor/gtk3-glib/tauri-2.11.6/Cargo.toml",
+    "rust-plugin/vendor/gtk3-glib/webkit2gtk-2.0.2/sys/Cargo.toml",
+    "rust-plugin/vendor/patches/urlpattern-0.3.0/Cargo.toml",
+    "rust-plugin/vendor/patches/specta-2.0.0-rc.25/Cargo.toml",
     "rust-plugin/src/desktop.rs",
     "rust-plugin/src/mobile.rs",
     "rust-plugin/android/src/main/java/EntityGraphPlugin.kt",
@@ -171,14 +177,21 @@ try {
   const consumerManifest = await readFile(consumerManifestPath, "utf8");
   const rewrittenManifest = consumerManifest.replace(
     /entity-graph-tauri = \{ path = "[^"]+" \}/,
-    `entity-graph-tauri = { path = "${packedRustPlugin}" }`,
+    `entity-graph-tauri = { path = ${JSON.stringify(packedRustPlugin)} }`,
   );
   if (rewrittenManifest === consumerManifest) {
     throw new Error("packed host fixture dependency path was not rewritten");
   }
-  await writeFile(consumerManifestPath, rewrittenManifest);
+  const packedManifest = rewrittenManifest.replace(
+    /path = "[^"]*\/vendor\/((?:gtk3-glib|patches)\/[^"]+)"/g,
+    (_match, source) => `path = ${JSON.stringify(join(packedRustPlugin, "vendor", source))}`,
+  );
+  if (packedManifest === rewrittenManifest) {
+    throw new Error("packed host fixture vendored dependency paths were not rewritten");
+  }
+  await writeFile(consumerManifestPath, packedManifest);
   await run("cargo", [
-    "+1.88.0",
+    desktopRustToolchain,
     "test",
     "--manifest-path",
     consumerManifestPath,

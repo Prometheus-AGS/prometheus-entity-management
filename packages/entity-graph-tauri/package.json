@@ -20,6 +20,8 @@
     "README.md",
     "CHANGELOG.md",
     "rust-plugin/Cargo.toml",
+    "rust-plugin/vendor/gtk3-glib",
+    "rust-plugin/vendor/patches",
     "rust-plugin/build.rs",
     "rust-plugin/src",
     "rust-plugin/permissions",

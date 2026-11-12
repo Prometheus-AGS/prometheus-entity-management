@@ -36,6 +36,32 @@ entity-graph-tauri = { path = "../node_modules/@prometheus-ags/entity-graph-taur
 Adjust the relative path for your workspace layout. Contributors working in
 this monorepo can point directly at `packages/entity-graph-tauri/rust-plugin`.
 
+Linux desktop hosts using the packaged Tauri 2.11 GTK3 source need Rust 1.92 or
+newer. The GTK3 bindings use GLib 0.22 and retain the native WebKitGTK 4.1
+backend. For Tauri 2.11.5, add the packaged source overrides to the host's
+workspace root manifest. Adjust the paths for your workspace layout.
+
+```toml
+[patch.crates-io]
+urlpattern = { path = "../node_modules/@prometheus-ags/entity-graph-tauri/rust-plugin/vendor/patches/urlpattern-0.3.0" }
+libappindicator = { path = "../node_modules/@prometheus-ags/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/libappindicator-0.9.0" }
+libappindicator-sys = { path = "../node_modules/@prometheus-ags/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/libappindicator-sys-0.9.0" }
+muda = { path = "../node_modules/@prometheus-ags/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/muda-0.19.3" }
+tao = { path = "../node_modules/@prometheus-ags/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/tao-0.35.3" }
+tauri = { path = "../node_modules/@prometheus-ags/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/tauri-2.11.5" }
+tauri-runtime = { path = "../node_modules/@prometheus-ags/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/tauri-runtime-2.11.3" }
+tauri-runtime-wry = { path = "../node_modules/@prometheus-ags/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/tauri-runtime-wry-2.11.4" }
+tray-icon = { path = "../node_modules/@prometheus-ags/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/tray-icon-0.24.2" }
+webkit2gtk = { path = "../node_modules/@prometheus-ags/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/webkit2gtk-2.0.2" }
+webkit2gtk-sys = { path = "../node_modules/@prometheus-ags/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/webkit2gtk-2.0.2/sys" }
+wry = { path = "../node_modules/@prometheus-ags/entity-graph-tauri/rust-plugin/vendor/gtk3-glib/wry-0.55.1" }
+```
+
+For Tauri 2.11.6, point the `tauri` override at `tauri-2.11.6`. The
+workspace lock must resolve the corresponding overlay versions. Cargo applies
+patches from the host workspace root, so the plugin manifest's patch table is
+used when developing the plugin as its own workspace.
+
 ---
 
 ## Usage
