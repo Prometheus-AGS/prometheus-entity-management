@@ -73,6 +73,9 @@ supabase/.temp/
 !.agents/skills/
 .agents/skills/*
 !.agents/skills/npm-release-and-cleanup/
+# OpenSpec 2.0 keeps one shared copy here; .claude/skills/openspec-* are
+# symlinks into it, so it must be tracked or a fresh clone gets dead links.
+!.agents/skills/openspec-*/
 
 # ── Misc ───────────────────────────────────────────────────────────────────────
 .turbo/
