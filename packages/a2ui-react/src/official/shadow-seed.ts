@@ -3,7 +3,7 @@ import type {
   MessageProcessor,
   SurfaceModel,
 } from "@a2ui/web_core/v0_9" with { "resolution-mode": "import" };
-import { PROMETHEUS_A2UI_PROTOCOL_VERSION } from "./catalog-core.js";
+import { PROMETHEUS_A2UI_PROTOCOL_VERSION, requireBoundSurfaceCatalog } from "./catalog-core.js";
 
 /**
  * Replay the surfaces a live processor holds into a fresh shadow processor, so
@@ -20,7 +20,7 @@ export function seedShadowProcessor<Implementation extends ComponentApi>(
         version: PROMETHEUS_A2UI_PROTOCOL_VERSION,
         createSurface: {
           surfaceId,
-          catalogId: surface.catalog.id,
+          catalogId: requireBoundSurfaceCatalog(surface).id,
           theme: structuredClone(surface.theme),
           sendDataModel: surface.sendDataModel,
         },

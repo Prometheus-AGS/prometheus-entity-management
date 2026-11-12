@@ -1,0 +1,67 @@
+{
+  "dompurify": {
+    "version": "3.4.17",
+    "url": "https://registry.npmjs.org/dompurify/-/dompurify-3.4.17.tgz",
+    "integrity": "sha512-B/pSlYVHQ58kqISD/yDjuJ1yfzI34m1gF4lAod2bwSRhiN4K5Cl3H8Af7hqB2PmTL911tdEudnnXn5FnhRoz0w==",
+    "files": {
+      "dompurify-3.4.17-LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "dompurify-3.4.17-LICENSE-MPL": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85"
+    }
+  },
+  "markdown-it": {
+    "version": "14.3.3",
+    "url": "https://registry.npmjs.org/markdown-it/-/markdown-it-14.3.3.tgz",
+    "integrity": "sha512-L//tDAkjTjJCU6pBUSBTgs3Kg4InVaZuUZog/b6V12UKhcDQ7S78877ibbCanRExwPuYP1CZD7Gd2dxSy1GXRg==",
+    "files": {
+      "markdown-it-14.3.3-LICENSE": "792c48c5a849a15fdf9e37e8bcf9e6d1dd13b32b46c642a748a0a46a9919d473"
+    }
+  },
+  "argparse": {
+    "version": "2.0.1",
+    "url": "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz",
+    "integrity": "sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==",
+    "files": {
+      "argparse-2.0.1-LICENSE": "de4d1f2d2ad5ad0cfd1657a106476b31cb5db5ef9d1ff842b237c0c81f0c8a23"
+    }
+  },
+  "entities": {
+    "version": "4.5.0",
+    "url": "https://registry.npmjs.org/entities/-/entities-4.5.0.tgz",
+    "integrity": "sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==",
+    "files": {
+      "entities-4.5.0-LICENSE": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164"
+    }
+  },
+  "linkify-it": {
+    "version": "5.0.2",
+    "url": "https://registry.npmjs.org/linkify-it/-/linkify-it-5.0.2.tgz",
+    "integrity": "sha512-ONTm2jCMAVZjgQa/Fy1kScXsuOoF5NPTsoFBdE1KVIZ2vAh/r9+Bqo+0jINCBYnavTPQZz38QzFTme79ENoN3Q==",
+    "files": {
+      "linkify-it-5.0.2-LICENSE": "95e3f7f0e81e9b4940cdfaa1956aaff5e4dfd2fb1565041e7c78eb9a606f23e3"
+    }
+  },
+  "mdurl": {
+    "version": "2.1.0",
+    "url": "https://registry.npmjs.org/mdurl/-/mdurl-2.1.0.tgz",
+    "integrity": "sha512-1+HBaOx0zi/dQWht8rNv9MYf9qqpqL/kxI0hXImU6Y547zM6Sni8BQibt7ifgMcYtQg41ao3Ivd6cnSM86inpg==",
+    "files": {
+      "mdurl-2.1.0-LICENSE": "6b6a356c4337e2446841f30f3cdf7e7023af8c5260b5e347c0f987b9f6aa2644"
+    }
+  },
+  "punycode.js": {
+    "version": "2.3.1",
+    "url": "https://registry.npmjs.org/punycode.js/-/punycode.js-2.3.1.tgz",
+    "integrity": "sha512-uxFIHU0YlHYhDQtV4R9J6a52SLx28BCjT+4ieh7IGbgwVJWO+km431c4yRlREUAsAmt/uMjQUyQHNEPf0M39CA==",
+    "files": {
+      "punycode.js-2.3.1-LICENSE-MIT.txt": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a"
+    }
+  },
+  "uc.micro": {
+    "version": "2.1.0",
+    "url": "https://registry.npmjs.org/uc.micro/-/uc.micro-2.1.0.tgz",
+    "integrity": "sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==",
+    "files": {
+      "uc.micro-2.1.0-LICENSE.txt": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a"
+    }
+  }
+}

@@ -17,7 +17,7 @@
     "@prometheus-ags/entity-graph-core": "workspace:*",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "zod": "3.25.76",
+    "zod": "4.6.7",
     "zustand": "5.0.14",
     "@prometheus-ags/entity-graph-react": "workspace:*"
   },
@@ -28,7 +28,7 @@
     "@types/react-dom": "19.2.4",
     "@vitejs/plugin-react": "6.0.5",
     "typescript": "6.0.2",
-    "vite": "8.2.0",
-    "vitest": "4.1.10"
+    "vite": "8.2.4",
+    "vitest": "4.1.12"
   }
 }

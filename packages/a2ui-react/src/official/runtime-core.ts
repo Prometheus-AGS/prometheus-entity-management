@@ -14,7 +14,7 @@ import {
   type A2uiActionDecision,
   type A2uiActionPolicy,
 } from "../policy/action-policy.js";
-import { PROMETHEUS_A2UI_PROTOCOL_VERSION } from "./catalog-core.js";
+import { PROMETHEUS_A2UI_PROTOCOL_VERSION, requireBoundSurfaceCatalog } from "./catalog-core.js";
 import { classifyDelta, parseDelta, type ParsedDelta } from "./activity-delta.js";
 import { canonicalize, describeOperation, digestOf, parseSurfaceVersions, type SurfaceVersion } from "./activity-keys.js";
 import { ActivityLedger } from "./activity-ledger.js";
@@ -573,7 +573,7 @@ export class PrometheusA2uiRuntimeCore<Implementation extends ComponentApi> {
         const surface = this.processor.model.getSurface(surfaceId);
         return surface
           ? {
-              catalogId: surface.catalog.id,
+              catalogId: requireBoundSurfaceCatalog(surface).id,
               theme: surface.theme,
               sendDataModel: surface.sendDataModel,
             }
@@ -616,6 +616,7 @@ export class PrometheusA2uiRuntimeCore<Implementation extends ComponentApi> {
     return exportSurface({
       surfaceId,
       surface,
+      catalogId: requireBoundSurfaceCatalog(surface).id,
       v1: this.v1Surfaces.has(surfaceId),
       actions: [...this.v1Actions.values()].filter((action) => action.surfaceId === surfaceId),
       options,
@@ -893,11 +894,12 @@ export class PrometheusA2uiRuntimeCore<Implementation extends ComponentApi> {
     const surface = processor.model.getSurface(message.updateComponents.surfaceId);
     if (!surface) return; // The official processor emits the canonical state error.
 
+    const catalog = requireBoundSurfaceCatalog(surface);
     for (const component of message.updateComponents.components) {
-      if (!surface.catalog.components.has(component.component)) {
+      if (!catalog.components.has(component.component)) {
         throw new PrometheusA2uiError(
           "component-not-allowed",
-          `Component is not allowlisted by catalog ${surface.catalog.id}: ${component.component}`,
+          `Component is not allowlisted by catalog ${catalog.id}: ${component.component}`,
         );
       }
     }

@@ -270,7 +270,8 @@ paths, and token-shaped content.
 
 | Runtime | Supported line | Notes |
 | --- | --- | --- |
-| Node.js | `^22.14.0`, `^24.0.0`, or `>=26.0.0` | npm libraries and documentation tooling |
+| Node.js | `^22.14.0`, `^24.0.0`, or `>=26.0.0` | published npm library runtime |
+| Node.js | `^22.19.0`, `^24.11.0`, or `>=26.0.0` | workspace builds and documentation tooling |
 | pnpm | `>=10.33.0 <12` | pnpm 10.33.0 is pinned; pnpm 11 consumer workspaces are supported |
 | React | 19.x | vanilla core remains React-free |
 | Next.js | App Router / 16.x example | one graph per server request |

@@ -44,9 +44,9 @@
   },
   "devDependencies": {
     "@prometheus-ags/entity-graph-core": "workspace:*",
-    "tsup": "8.5.1",
+    "tsup": "9.0.0",
     "typescript": "6.0.2",
-    "vitest": "4.1.10"
+    "vitest": "4.1.12"
   },
   "keywords": [
     "web-components",

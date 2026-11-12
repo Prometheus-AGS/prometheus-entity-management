@@ -6,11 +6,11 @@ export default definePackageConfig({
     "ag-ui": "src/ag-ui/index.ts",
     headless: "src/headless.ts",
   },
-  // The official web_core package is ESM-only while this repository promises a
-  // working CommonJS artifact. Bundle the exact official implementation into
-  // both outputs; React and the canonical graph remain external singletons.
-  noExternal: [/^@a2ui\//],
+  // Bundle the renderer and the sanitized Markdown adapter. Keep core and Zod
+  // shared so a consumer's binder works with the runtime's actual schemas.
+  noExternal: [/^@a2ui\/(?:react|markdown-it)(?:\/|$)/, "dompurify", "markdown-it"],
   external: [
+    "@a2ui/web_core",
     "@prometheus-ags/entity-graph-core",
     "react",
     "react-dom",

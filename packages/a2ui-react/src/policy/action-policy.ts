@@ -88,7 +88,7 @@ export function createA2uiActionPolicy(options: A2uiActionPolicyOptions): A2uiAc
 
   return {
     async handle(input: unknown): Promise<A2uiActionDecision> {
-      const parsedAction = A2uiClientActionSchema.safeParse(input);
+      const parsedAction = A2uiClientActionSchema.safeParse(input, { jitless: true });
       if (!parsedAction.success) {
         return finish({
           status: "denied",
@@ -110,7 +110,7 @@ export function createA2uiActionPolicy(options: A2uiActionPolicyOptions): A2uiAc
         });
       }
 
-      const parsedContext = rule.contextSchema.safeParse(action.context);
+      const parsedContext = rule.contextSchema.safeParse(action.context, { jitless: true });
       if (!parsedContext.success) {
         return finish({
           status: "denied",

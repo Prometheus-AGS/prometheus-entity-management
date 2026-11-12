@@ -3,6 +3,7 @@ import type {
   Catalog,
   ComponentApi,
 } from "@a2ui/web_core/v0_9" with { "resolution-mode": "import" };
+import { PrometheusA2uiError } from "./runtime-types.js";
 
 /*
  * The React-free half of the catalog: protocol constants, the default
@@ -11,6 +12,16 @@ import type {
  * pulling a renderer into its bundle. The React catalog and the headless
  * catalog both call `createAllowlistedCatalog`, so the two cannot drift apart.
  */
+
+/** PEM only processes bound v0.9.1 surfaces, including normalized v1.0 RC input. */
+export function requireBoundSurfaceCatalog<T extends { readonly id: string }>(
+  surface: { readonly id: string; readonly defaultCatalog: T | undefined },
+): T {
+  if (!surface.defaultCatalog) {
+    throw new PrometheusA2uiError("invalid-message", `A2UI surface ${surface.id} has no bound catalog.`);
+  }
+  return surface.defaultCatalog;
+}
 
 /** The only stable A2UI wire protocol supported by the 3.0 package. */
 export const PROMETHEUS_A2UI_PROTOCOL_VERSION = "v0.9.1" as const;

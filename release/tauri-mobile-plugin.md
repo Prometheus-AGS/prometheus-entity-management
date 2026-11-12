@@ -1,5 +1,7 @@
 # Tauri desktop and mobile plugin contract
 
+The GTK3 desktop and packed host verifier uses Rust 1.92 on Linux and BSD to compile the GLib 0.22 bindings. Its macOS and Windows host invocations use Rust 1.88.
+
 The `v3-tauri-mobile-plugin` gate certifies the installable JavaScript/Rust
 plugin boundary without treating a desktop test or native source file as
 Android/iOS runtime proof.

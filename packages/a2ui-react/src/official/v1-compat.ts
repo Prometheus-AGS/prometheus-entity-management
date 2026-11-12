@@ -45,7 +45,8 @@ const updateDataModelSchema = z
       .object({
         surfaceId: surfaceIdSchema,
         path: z.string().optional(),
-        value: z.unknown(),
+        // An omitted value removes the addressed data-model key.
+        value: z.unknown().optional(),
       })
       .strict(),
   })
@@ -151,7 +152,7 @@ export function normalizeA2uiV1Message(
   defaultCatalogId: string,
   surfaceCatalogs: ReadonlyMap<string, string>,
 ): NormalizedA2uiV1Message {
-  const message = prometheusA2uiV1MessageSchema.parse(input);
+  const message = prometheusA2uiV1MessageSchema.parse(input, { jitless: true });
   if ("callFunction" in message || "actionResponse" in message) {
     return { renderMessages: [], protocolMessage: message, actions: [] };
   }

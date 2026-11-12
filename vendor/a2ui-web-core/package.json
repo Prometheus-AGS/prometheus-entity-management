@@ -1,0 +1,152 @@
+{
+  "name": "@prometheus-ags/a2ui-web-core-zod4",
+  "version": "0.14.0-rc.1",
+  "private": true,
+  "description": "A2UI Core Library",
+  "homepage": "https://a2ui.org/",
+  "repository": {
+    "directory": "frontend/vendor/a2ui-web-core",
+    "type": "git",
+    "url": "git+https://github.com/Prometheus-AGS/universal-agent-runtime.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Prometheus-AGS/universal-agent-runtime/issues"
+  },
+  "keywords": [
+    "a2ui",
+    "web",
+    "ai",
+    "agent",
+    "ui",
+    "renderer"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./catalog": {
+      "types": "./dist/catalog/index.d.ts",
+      "default": "./dist/catalog/index.js"
+    },
+    "./state": {
+      "types": "./dist/state/index.d.ts",
+      "default": "./dist/state/index.js"
+    },
+    "./processing": {
+      "types": "./dist/processing/index.d.ts",
+      "default": "./dist/processing/index.js"
+    },
+    "./resolution": {
+      "types": "./dist/resolution/index.d.ts",
+      "default": "./dist/resolution/index.js"
+    },
+    "./rendering": {
+      "types": "./dist/resolution/index.d.ts",
+      "default": "./dist/resolution/index.js"
+    },
+    "./validation": {
+      "types": "./dist/validation/index.d.ts",
+      "default": "./dist/validation/index.js"
+    },
+    "./validating": {
+      "types": "./dist/validation/integrity-checker.d.ts",
+      "default": "./dist/validation/integrity-checker.js"
+    },
+    "./reactivity": {
+      "types": "./dist/reactivity/index.d.ts",
+      "default": "./dist/reactivity/index.js"
+    },
+    "./expressions": {
+      "types": "./dist/expressions/index.d.ts",
+      "default": "./dist/expressions/index.js"
+    },
+    "./adapters": {
+      "types": "./dist/processing/adapters/index.d.ts",
+      "default": "./dist/processing/adapters/index.js"
+    },
+    "./rpc": {
+      "types": "./dist/rpc/index.d.ts",
+      "default": "./dist/rpc/index.js"
+    },
+    "./errors": {
+      "types": "./dist/errors.d.ts",
+      "default": "./dist/errors.js"
+    },
+    "./events": {
+      "types": "./dist/common/events.d.ts",
+      "default": "./dist/common/events.js"
+    },
+    "./semver": {
+      "types": "./dist/common/semver.d.ts",
+      "default": "./dist/common/semver.js"
+    },
+    "./v0_8": {
+      "types": "./dist/v0_8/index.d.ts",
+      "default": "./dist/v0_8/index.js"
+    },
+    "./v0_8/basic_catalog": {
+      "types": "./dist/v0_8/basic_catalog/index.d.ts",
+      "default": "./dist/v0_8/basic_catalog/index.js"
+    },
+    "./v0_9": {
+      "types": "./dist/v0_9/index.d.ts",
+      "default": "./dist/v0_9/index.js"
+    },
+    "./v0_9/universal": {
+      "types": "./dist/v0_9/universal/index.d.ts",
+      "default": "./dist/v0_9/universal/index.js"
+    },
+    "./v0_9/basic_catalog": {
+      "types": "./dist/v0_9/basic_catalog/index.d.ts",
+      "default": "./dist/v0_9/basic_catalog/index.js"
+    },
+    "./v1_0": {
+      "types": "./dist/v1_0/index.d.ts",
+      "default": "./dist/v1_0/index.js"
+    },
+    "./catalogs/basic/v1": {
+      "types": "./dist/catalogs/basic/v1/index.d.ts",
+      "default": "./dist/catalogs/basic/v1/index.js"
+    },
+    "./universal": {
+      "types": "./dist/universal/index.d.ts",
+      "default": "./dist/universal/index.js"
+    },
+    "./data/*": {
+      "types": "./dist/v0_8/data/*.d.ts",
+      "default": "./dist/v0_8/data/*.js"
+    },
+    "./types/*": {
+      "types": "./dist/v0_8/types/*.d.ts",
+      "default": "./dist/v0_8/types/*.js"
+    },
+    "./styles/*": {
+      "types": "./dist/v0_8/styles/*.d.ts",
+      "default": "./dist/v0_8/styles/*.js"
+    }
+  },
+  "type": "module",
+  "sideEffects": ["./dist/common/zod.js"],
+  "author": "Google",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@lit/context": "^1.1.6",
+    "@preact/signals-core": "^1.14.2",
+    "lit": "^3.3.3",
+    "redos-detector": "^6.1.4",
+    "validate-color": "^2.2.4",
+    "zod": "4.6.7"
+  },
+  "files": [
+    "dist",
+    "ORIGIN.md"
+  ],
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "stage:package": "node scripts/stage-package.mjs",
+    "verify:migration": "node --test scripts/verify-migration.mjs"
+  }
+}

@@ -30,7 +30,6 @@ import {
 
 /** The parts of an official surface model the export reads. */
 export interface ExportableSurface {
-  readonly catalog: { readonly id: string };
   readonly theme: unknown;
   readonly sendDataModel: boolean | undefined;
   readonly componentsModel: {
@@ -69,6 +68,7 @@ export interface PrometheusA2uiSurfaceExport {
 export interface ExportSurfaceInput {
   readonly surfaceId: string;
   readonly surface: ExportableSurface;
+  readonly catalogId: string;
   /** The surface was created by a v1.0 message. */
   readonly v1: boolean;
   /** `wantResponse` / `responsePath` metadata of this surface's v1.0 actions. */
@@ -102,7 +102,7 @@ function reachableFromRoot(
 }
 
 export function exportSurface(input: ExportSurfaceInput): PrometheusA2uiSurfaceExport {
-  const { surfaceId, surface, v1, actions } = input;
+  const { surfaceId, surface, catalogId, v1, actions } = input;
   const prune = input.options?.pruneOrphans ?? true;
 
   const entries = [...surface.componentsModel.entries];
@@ -115,7 +115,7 @@ export function exportSurface(input: ExportSurfaceInput): PrometheusA2uiSurfaceE
     ...(isPlainObject(component.properties) ? structuredClone(component.properties) : {}),
     id,
     component: component.type,
-    ...(component.catalog && component.catalog.id !== surface.catalog.id
+    ...(component.catalog && component.catalog.id !== catalogId
       ? { catalogId: component.catalog.id }
       : {}),
   }));
@@ -132,7 +132,7 @@ export function exportSurface(input: ExportSurfaceInput): PrometheusA2uiSurfaceE
           version: PROMETHEUS_A2UI_RC_PROTOCOL_VERSION,
           createSurface: {
             surfaceId,
-            catalogId: surface.catalog.id,
+            catalogId,
             ...(surface.sendDataModel === undefined ? {} : { sendDataModel: surface.sendDataModel }),
             ...(restored.length > 0 ? { components: restored } : {}),
             ...(inlineData ? { dataModel: structuredClone(data) } : {}),
@@ -161,7 +161,7 @@ export function exportSurface(input: ExportSurfaceInput): PrometheusA2uiSurfaceE
         version,
         createSurface: {
           surfaceId,
-          catalogId: surface.catalog.id,
+          catalogId,
           theme: structuredClone(surface.theme),
           ...(surface.sendDataModel === undefined ? {} : { sendDataModel: surface.sendDataModel }),
         },

@@ -63,7 +63,7 @@ const identitySchema = {
 const dataContextSchema = z
   .object({
     ...identitySchema,
-    data: z.record(z.unknown()),
+    data: z.record(z.string(), z.unknown()),
   })
   .strict();
 

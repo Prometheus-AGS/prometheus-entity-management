@@ -36,3 +36,14 @@ tauri-plugin = { version = "2.6.3", features = ["build"] }
 name = "generate-bindings"
 path = "src/bin/generate-bindings.rs"
 required-features = ["generate-bindings"]
+
+[patch.crates-io]
+urlpattern = { path = "vendor/patches/urlpattern-0.3.0" }
+specta = { path = "vendor/patches/specta-2.0.0-rc.25" }
+
+# Keep Tauri 2.11 on GTK3/WebKitGTK 4.1 with GLib 0.22.
+muda = { path = "vendor/gtk3-glib/muda-0.19.3" }
+tauri = { path = "vendor/gtk3-glib/tauri-2.11.5" }
+tauri-runtime = { path = "vendor/gtk3-glib/tauri-runtime-2.11.3" }
+webkit2gtk = { path = "vendor/gtk3-glib/webkit2gtk-2.0.2" }
+webkit2gtk-sys = { path = "vendor/gtk3-glib/webkit2gtk-2.0.2/sys" }

@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/a2ui-react",
-  "version": "4.3.0",
+  "version": "4.3.1-rc.1",
   "description": "A2UI v1.0-RC compatibility for React over the official renderer, with policy-gated entity graph actions and AG-UI 0.0.59 activity support.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
@@ -32,6 +32,7 @@
   "sideEffects": false,
   "files": [
     "dist",
+    "third-party-notices",
     "README.md",
     "CHANGELOG.md"
   ],
@@ -39,7 +40,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "pnpm --filter @prometheus-ags/a2ui-web-core-zod4 build && tsup",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run",
     "refresh:exports": "pnpm run build && node ../../scripts/refresh-exports-ledger.mjs --a2ui",
@@ -57,13 +58,13 @@
     }
   },
   "dependencies": {
-    "@a2ui/markdown-it": "0.2.0",
-    "@a2ui/react": "0.12.0",
-    "@a2ui/web_core": "0.12.0",
+    "@a2ui/web_core": "workspace:@prometheus-ags/a2ui-web-core-zod4@0.14.0-rc.1",
     "@prometheus-ags/entity-graph-core": "workspace:*",
-    "zod": "3.25.76"
+    "zod": "4.6.7"
   },
   "devDependencies": {
+    "@a2ui/markdown-it": "workspace:@prometheus-ags/a2ui-markdown-it-zod4@0.2.0-rc.1",
+    "@a2ui/react": "workspace:@prometheus-ags/a2ui-react-reference-legacy-zod4@0.12.0-rc.1",
     "@ag-ui/core": "1.0.3",
     "@testing-library/react": "^16.3.2",
     "@types/react": "19.2.18",
@@ -71,9 +72,9 @@
     "jsdom": "^30.0.1",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "tsup": "8.5.1",
+    "tsup": "9.0.0",
     "typescript": "6.0.2",
-    "vitest": "4.1.10"
+    "vitest": "4.1.12"
   },
   "keywords": [
     "a2ui",

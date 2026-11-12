@@ -9,8 +9,8 @@ import { PrometheusA2uiError, type PrometheusA2uiMessageInput } from "./runtime-
 /** Validate one official v0.9.1 message list against the official schema. */
 export function parseMessages(input: PrometheusA2uiMessageInput): A2uiMessage[] {
   const parsed = Array.isArray(input)
-    ? A2uiMessageListSchema.safeParse(input)
-    : A2uiMessageListWrapperSchema.safeParse(input);
+    ? A2uiMessageListSchema.safeParse(input, { jitless: true })
+    : A2uiMessageListWrapperSchema.safeParse(input, { jitless: true });
 
   if (!parsed.success) {
     throw new PrometheusA2uiError(

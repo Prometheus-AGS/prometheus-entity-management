@@ -55,7 +55,8 @@ export function validateTarballFileList(publicPackage, files) {
       file.includes("node_modules/") ||
       file.includes(".env") ||
       file.startsWith("src/") ||
-      file === "rust-plugin/Cargo.lock",
+      file === "rust-plugin/Cargo.lock" ||
+      (file.startsWith("rust-plugin/vendor/") && file.split("/").includes("target")),
   );
   assert(
     forbidden.length === 0,
@@ -76,6 +77,9 @@ export function validateTarballFileList(publicPackage, files) {
     if (publicPackage.directory !== "packages/entity-graph-tauri") return true;
     return !(
       file === "rust-plugin/Cargo.toml" ||
+      file.startsWith("rust-plugin/vendor/gtk3-glib/") ||
+      file.startsWith("rust-plugin/vendor/patches/urlpattern-0.3.0/") ||
+      file.startsWith("rust-plugin/vendor/patches/specta-2.0.0-rc.25/") ||
       file === "rust-plugin/build.rs" ||
       file.startsWith("rust-plugin/src/") ||
       file.startsWith("rust-plugin/gen/schemas/") ||

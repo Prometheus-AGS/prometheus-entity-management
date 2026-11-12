@@ -20,6 +20,8 @@
     "README.md",
     "CHANGELOG.md",
     "rust-plugin/Cargo.toml",
+    "rust-plugin/vendor/gtk3-glib",
+    "rust-plugin/vendor/patches",
     "rust-plugin/build.rs",
     "rust-plugin/src",
     "rust-plugin/permissions",
@@ -63,9 +65,9 @@
   },
   "devDependencies": {
     "@tauri-apps/api": "^2.11.1",
-    "tsup": "8.5.1",
+    "tsup": "9.0.0",
     "typescript": "6.0.2",
-    "vitest": "4.1.10"
+    "vitest": "4.1.12"
   },
   "keywords": [
     "tauri",

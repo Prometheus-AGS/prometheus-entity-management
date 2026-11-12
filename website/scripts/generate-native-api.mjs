@@ -13,6 +13,7 @@ const repositoryRoot = path.resolve(websiteRoot, '..');
 const flutterVersion = '3.44.8';
 const flutterExecutable = process.env.NATIVE_API_FLUTTER_BIN ?? 'flutter';
 const rustToolchain = '1.88.0';
+const gtk3Host = ['linux', 'freebsd', 'openbsd', 'netbsd', 'dragonfly'].includes(process.platform);
 const dartdocVersion = '9.0.5';
 const temporaryOwnerFile = '.prometheus-native-api-owner';
 const workingOwnerToken = randomBytes(32).toString('hex');
@@ -163,7 +164,7 @@ try {
       'packages/entity-graph-tauri/rust-plugin/Cargo.toml',
     ]) {
       run('cargo', [
-        `+${rustToolchain}`,
+        `+${gtk3Host && manifest.includes('entity-graph-tauri') ? '1.92.0' : rustToolchain}`,
         'doc',
         '--locked',
         '--no-deps',
