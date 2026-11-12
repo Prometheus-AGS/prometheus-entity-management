@@ -19,7 +19,7 @@ use gtk::{
   prelude::*,
 };
 use http::Request;
-use javascriptcore::ValueExt;
+use javascriptcore::{Value, ValueExt};
 use raw_window_handle::HasWindowHandle;
 #[cfg(feature = "x11")]
 use raw_window_handle::RawWindowHandle;
@@ -63,6 +63,24 @@ const WEBVIEW_ID: &str = "webview_id";
 mod drag_drop;
 mod synthetic_mouse_events;
 mod web_context;
+
+fn evaluate_javascript(
+  webview: &WebView,
+  script: &str,
+  cancellable: Option<&Cancellable>,
+  callback: impl FnOnce(Option<Value>) + 'static,
+) {
+  // linux-body enables WebKitGTK 2.40. Standalone Wry also supports 2.38.
+  #[cfg(feature = "linux-body")]
+  webview.evaluate_javascript(script, None, None, cancellable, move |result| {
+    callback(result.ok());
+  });
+
+  #[cfg(not(feature = "linux-body"))]
+  webview.run_javascript(script, cancellable, move |result| {
+    callback(result.ok().and_then(|result| result.js_value()));
+  });
+}
 
 #[cfg(feature = "x11")]
 struct X11Data {
@@ -358,9 +376,8 @@ impl InnerWebView {
       if let LoadEvent::Committed = event {
         let mut pending_scripts_ = pending_scripts.lock().unwrap();
         if let Some(pending_scripts) = pending_scripts_.take() {
-          let cancellable: Option<&Cancellable> = None;
           for script in pending_scripts {
-            webview.run_javascript(&script, cancellable, |_| ());
+            evaluate_javascript(webview, &script, None, |_| ());
           }
         }
       }
@@ -698,19 +715,16 @@ impl InnerWebView {
     if let Some(pending_scripts) = &mut *self.pending_scripts.lock().unwrap() {
       pending_scripts.push(js.into());
     } else {
-      let cancellable: Option<&Cancellable> = None;
-
       #[cfg(feature = "tracing")]
       let span = SendEnteredSpan(tracing::debug_span!("wry::eval").entered());
 
-      self.webview.run_javascript(js, cancellable, |result| {
+      evaluate_javascript(&self.webview, js, None, |result| {
         #[cfg(feature = "tracing")]
         drop(span);
 
         if let Some(callback) = callback {
           let result = result
-            .map(|r| r.js_value().and_then(|js| js.to_json(0)))
-            .unwrap_or_default()
+            .and_then(|js| js.to_json(0))
             .unwrap_or_default()
             .to_string();
 

@@ -4,7 +4,9 @@ use gtk::{
   gdk::{EventButton, EventMask, ModifierType},
   prelude::*,
 };
-use webkit2gtk::{WebView, WebViewExt};
+use webkit2gtk::WebView;
+
+use super::evaluate_javascript;
 
 pub fn setup(webview: &WebView) {
   webview.add_events(EventMask::BUTTON1_MOTION_MASK | EventMask::BUTTON_PRESS_MASK);
@@ -19,9 +21,10 @@ pub fn setup(webview: &WebView) {
       8 => {
         inhibit = true;
         bf_state_c.set(BACK);
-        webview.run_javascript(
+        evaluate_javascript(
+          webview,
           &create_js_mouse_event(event, true, &bf_state_c),
-          None::<&gtk::gio::Cancellable>,
+          None,
           |_| {},
         );
       }
@@ -29,9 +32,10 @@ pub fn setup(webview: &WebView) {
       9 => {
         inhibit = true;
         bf_state_c.set(FORWARD);
-        webview.run_javascript(
+        evaluate_javascript(
+          webview,
           &create_js_mouse_event(event, true, &bf_state_c),
-          None::<&gtk::gio::Cancellable>,
+          None,
           |_| {},
         );
       }
@@ -53,9 +57,10 @@ pub fn setup(webview: &WebView) {
       8 => {
         inhibit = true;
         bf_state_c.remove(BACK);
-        webview.run_javascript(
+        evaluate_javascript(
+          webview,
           &create_js_mouse_event(event, false, &bf_state_c),
-          None::<&gtk::gio::Cancellable>,
+          None,
           |_| {},
         );
       }
@@ -63,9 +68,10 @@ pub fn setup(webview: &WebView) {
       9 => {
         inhibit = true;
         bf_state_c.remove(FORWARD);
-        webview.run_javascript(
+        evaluate_javascript(
+          webview,
           &create_js_mouse_event(event, false, &bf_state_c),
-          None::<&gtk::gio::Cancellable>,
+          None,
           |_| {},
         );
       }
