@@ -340,9 +340,8 @@ impl WebViewBuilder {
     }
   }
 
-  #[cfg(feature = "gtk_v2_18")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v2_18")))]
-  #[cfg_attr(feature = "gtk_v3_14", deprecated = "Since 3.14")]
+  // Keep the generated methods gated by undeclared GTK version features disabled.
+  #[cfg(any())]
   pub fn double_buffered(self, double_buffered: bool) -> Self {
     Self {
       builder: self.builder.property("double-buffered", double_buffered),
@@ -353,16 +352,14 @@ impl WebViewBuilder {
   //    Self { builder: self.builder.property("events", events), }
   //}
 
-  #[cfg(feature = "gtk_v3")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v3")))]
+  #[cfg(any())]
   pub fn expand(self, expand: bool) -> Self {
     Self {
       builder: self.builder.property("expand", expand),
     }
   }
 
-  #[cfg(feature = "gtk_v3_20")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v3_20")))]
+  #[cfg(any())]
   pub fn focus_on_click(self, focus_on_click: bool) -> Self {
     Self {
       builder: self.builder.property("focus-on-click", focus_on_click),
@@ -370,7 +367,6 @@ impl WebViewBuilder {
   }
 
   //    #[cfg(feature = "gtk_v3")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v3")))]
   //pub fn halign(self, halign: /*Ignored*/gtk::Align) -> Self {
   //    Self { builder: self.builder.property("halign", halign), }
   //}
@@ -387,8 +383,7 @@ impl WebViewBuilder {
     }
   }
 
-  #[cfg(feature = "gtk_v2_12")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v2_12")))]
+  #[cfg(any())]
   pub fn has_tooltip(self, has_tooltip: bool) -> Self {
     Self {
       builder: self.builder.property("has-tooltip", has_tooltip),
@@ -401,16 +396,14 @@ impl WebViewBuilder {
     }
   }
 
-  #[cfg(feature = "gtk_v3")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v3")))]
+  #[cfg(any())]
   pub fn hexpand(self, hexpand: bool) -> Self {
     Self {
       builder: self.builder.property("hexpand", hexpand),
     }
   }
 
-  #[cfg(feature = "gtk_v3")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v3")))]
+  #[cfg(any())]
   pub fn hexpand_set(self, hexpand_set: bool) -> Self {
     Self {
       builder: self.builder.property("hexpand-set", hexpand_set),
@@ -423,58 +416,49 @@ impl WebViewBuilder {
     }
   }
 
-  #[cfg(feature = "gtk_v3")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v3")))]
+  #[cfg(any())]
   pub fn margin(self, margin: i32) -> Self {
     Self {
       builder: self.builder.property("margin", margin),
     }
   }
 
-  #[cfg(feature = "gtk_v3")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v3")))]
+  #[cfg(any())]
   pub fn margin_bottom(self, margin_bottom: i32) -> Self {
     Self {
       builder: self.builder.property("margin-bottom", margin_bottom),
     }
   }
 
-  #[cfg(feature = "gtk_v3_12")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v3_12")))]
+  #[cfg(any())]
   pub fn margin_end(self, margin_end: i32) -> Self {
     Self {
       builder: self.builder.property("margin-end", margin_end),
     }
   }
 
-  #[cfg(feature = "gtk_v3")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v3")))]
-  #[cfg_attr(feature = "gtk_v3_12", deprecated = "Since 3.12")]
+  #[cfg(any())]
   pub fn margin_left(self, margin_left: i32) -> Self {
     Self {
       builder: self.builder.property("margin-left", margin_left),
     }
   }
 
-  #[cfg(feature = "gtk_v3")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v3")))]
-  #[cfg_attr(feature = "gtk_v3_12", deprecated = "Since 3.12")]
+  #[cfg(any())]
   pub fn margin_right(self, margin_right: i32) -> Self {
     Self {
       builder: self.builder.property("margin-right", margin_right),
     }
   }
 
-  #[cfg(feature = "gtk_v3_12")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v3_12")))]
+  #[cfg(any())]
   pub fn margin_start(self, margin_start: i32) -> Self {
     Self {
       builder: self.builder.property("margin-start", margin_start),
     }
   }
 
-  #[cfg(feature = "gtk_v3")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v3")))]
+  #[cfg(any())]
   pub fn margin_top(self, margin_top: i32) -> Self {
     Self {
       builder: self.builder.property("margin-top", margin_top),
@@ -493,8 +477,7 @@ impl WebViewBuilder {
     }
   }
 
-  #[cfg(feature = "gtk_v3_8")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v3_8")))]
+  #[cfg(any())]
   pub fn opacity(self, opacity: f64) -> Self {
     Self {
       builder: self.builder.property("opacity", opacity),
@@ -523,8 +506,7 @@ impl WebViewBuilder {
   //    Self { builder: self.builder.property("style", style.clone().upcast()), }
   //}
 
-  #[cfg(feature = "gtk_v2_12")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v2_12")))]
+  #[cfg(any())]
   pub fn tooltip_markup(self, tooltip_markup: impl Into<glib::GString>) -> Self {
     Self {
       builder: self
@@ -533,8 +515,7 @@ impl WebViewBuilder {
     }
   }
 
-  #[cfg(feature = "gtk_v2_12")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v2_12")))]
+  #[cfg(any())]
   pub fn tooltip_text(self, tooltip_text: impl Into<glib::GString>) -> Self {
     Self {
       builder: self.builder.property("tooltip-text", tooltip_text.into()),
@@ -542,20 +523,17 @@ impl WebViewBuilder {
   }
 
   //    #[cfg(feature = "gtk_v3")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v3")))]
   //pub fn valign(self, valign: /*Ignored*/gtk::Align) -> Self {
   //    Self { builder: self.builder.property("valign", valign), }
   //}
-  #[cfg(feature = "gtk_v3")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v3")))]
+  #[cfg(any())]
   pub fn vexpand(self, vexpand: bool) -> Self {
     Self {
       builder: self.builder.property("vexpand", vexpand),
     }
   }
 
-  #[cfg(feature = "gtk_v3")]
-  #[cfg_attr(docsrs, doc(cfg(feature = "gtk_v3")))]
+  #[cfg(any())]
   pub fn vexpand_set(self, vexpand_set: bool) -> Self {
     Self {
       builder: self.builder.property("vexpand-set", vexpand_set),
