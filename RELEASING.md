@@ -1,14 +1,16 @@
 # Releasing Prometheus Entity Management
 
-## 5.0.0 status: prepared, not published
+## 5.0.0 status: stable published
 
-**Update 2026-11-13: 5.0.0 is prepared and unpublished.** The fixed group of all
-thirteen `@prometheus-ags/*` packages moves from `4.4.0` to `5.0.0` (major):
-A2UI 1.0 final through `@a2ui/web_core` and `@a2ui/react` 0.15.0, AG-UI 1.0
-(`@ag-ui/core` `^1.0.0`), and the official A2UI A2A extension. **Breaking:**
-read the 5.0 migration guide before upgrading. The registry serves `4.4.0` on
-`latest` and `next` until publication, so `release/npm-registry-status.json`
-keeps recording `4.4.0` until then.
+**Update 2026-11-13: 5.0.0 stable is published.** All thirteen
+`@prometheus-ags/*` npm packages are public at `5.0.0` with both `latest` and
+`next` pointing at it (tag `v5.0.0`, commit `b8397dab`), and
+`entity_graph_flutter` `5.0.0` is public on pub.dev (a clean consumer
+resolved, imported and analyzed it). This major brings A2UI 1.0 final through
+`@a2ui/web_core` and `@a2ui/react` 0.15.0, AG-UI 1.0 (`@ag-ui/core`
+`^1.0.0`) and the official A2UI A2A extension. **Breaking:** read the 5.0
+migration guide before upgrading. Published with `pnpm publish` and the
+operator's npm token, so there is no npm provenance attestation.
 
 ## 4.4.0 status: stable published
 

@@ -9,7 +9,7 @@ cd "$(dirname "$0")/.."
 # scratch cwd — otherwise `npm view` fails and this script misfires.
 scratch=$(mktemp -d)
 trap 'rm -rf "$scratch"' EXIT
-npmview() { (cd "$scratch" && npm view "$@"); }
+npmview() { (cd "$scratch" && npm view --prefer-online "$@"); }
 
 order=(
   packages/entity-graph-core
@@ -49,18 +49,18 @@ for dir in "${order[@]}"; do
   # Fail closed: re-read what the registry actually received. The pre-publish
   # tarball gate (scripts/package-contract-validation.mjs) was never wired into
   # this script, so nothing caught the leak in the 3.0.0 run.
-  # Registry reads race the write: `npm view` can 404 for several seconds after
-  # a successful publish, so retry until the version is actually visible.
+  # Registry reads race the write: `npm view` can 404 for minutes after a successful
+  # publish (5.0.0 core took ~3 minutes), so retry for up to 6 minutes.
   visible=""
-  for attempt in 1 2 3 4 5 6; do
+  for attempt in $(seq 1 36); do
     if [[ "$(npmview "$name@$version" version 2>/dev/null || true)" == "$version" ]]; then
       visible=1
       break
     fi
-    sleep 5
+    sleep 10
   done
   if [[ -z "$visible" ]]; then
-    echo "ERROR: $name@$version not visible on the registry 30s after publish" >&2
+    echo "ERROR: $name@$version not visible on the registry 6 minutes after publish" >&2
     exit 1
   fi
   if npmview "$name@$version" --json 2>/dev/null \

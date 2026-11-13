@@ -30,23 +30,23 @@ The production documentation is available at
 [prometheus-ags.github.io/prometheus-entity-management](https://prometheus-ags.github.io/prometheus-entity-management/).
 
 <!-- BEGIN GENERATED:RELEASE_TAGS -->
-Registry snapshot: 2026-11-11T08:10:42.000Z. Expected candidate: `4.4.0`.
+Registry snapshot: 2026-11-13T09:16:52.000Z. Expected candidate: `5.0.0`.
 
 | Package | `latest` | `alpha` | `next` | Release state |
 | --- | --- | --- | --- | --- |
-| `@prometheus-ags/entity-graph-core` | `4.4.0` | `3.0.0-alpha.0` | `4.4.0` | published |
-| `@prometheus-ags/entity-graph-react` | `4.4.0` | `absent` | `4.4.0` | published |
-| `@prometheus-ags/entity-graph-sdl` | `4.4.0` | `3.0.0-alpha.0` | `4.4.0` | published |
-| `@prometheus-ags/entity-graph-solid` | `4.4.0` | `3.0.0-alpha.0` | `4.4.0` | published |
-| `@prometheus-ags/entity-graph-svelte` | `4.4.0` | `3.0.0-alpha.0` | `4.4.0` | published |
-| `@prometheus-ags/entity-graph-sync` | `4.4.0` | `3.0.0-alpha.0` | `4.4.0` | published |
-| `@prometheus-ags/entity-graph-tauri` | `4.4.0` | `3.0.0-alpha.0` | `4.4.0` | published |
-| `@prometheus-ags/entity-graph-web-components` | `4.4.0` | `3.0.0-alpha.0` | `4.4.0` | published |
-| `@prometheus-ags/prometheus-entity-management` | `4.4.0` | `3.0.0-alpha.0` | `4.4.0` | published |
-| `@prometheus-ags/a2ui-react` | `4.4.0` | `3.0.0-alpha.0` | `4.4.0` | published |
-| `@prometheus-ags/entity-graph-a2a` | `4.4.0` | `3.0.0-alpha.0` | `4.4.0` | published |
-| `@prometheus-ags/entity-graph-alpine` | `4.4.0` | `3.0.0-alpha.0` | `4.4.0` | published |
-| `@prometheus-ags/entity-graph-htmx` | `4.4.0` | `3.0.0-alpha.0` | `4.4.0` | published |
+| `@prometheus-ags/entity-graph-core` | `5.0.0` | `3.0.0-alpha.0` | `5.0.0` | published |
+| `@prometheus-ags/entity-graph-react` | `5.0.0` | `absent` | `5.0.0` | published |
+| `@prometheus-ags/entity-graph-sdl` | `5.0.0` | `3.0.0-alpha.0` | `5.0.0` | published |
+| `@prometheus-ags/entity-graph-solid` | `5.0.0` | `3.0.0-alpha.0` | `5.0.0` | published |
+| `@prometheus-ags/entity-graph-svelte` | `5.0.0` | `3.0.0-alpha.0` | `5.0.0` | published |
+| `@prometheus-ags/entity-graph-sync` | `5.0.0` | `3.0.0-alpha.0` | `5.0.0` | published |
+| `@prometheus-ags/entity-graph-tauri` | `5.0.0` | `3.0.0-alpha.0` | `5.0.0` | published |
+| `@prometheus-ags/entity-graph-web-components` | `5.0.0` | `3.0.0-alpha.0` | `5.0.0` | published |
+| `@prometheus-ags/prometheus-entity-management` | `5.0.0` | `3.0.0-alpha.0` | `5.0.0` | published |
+| `@prometheus-ags/a2ui-react` | `5.0.0` | `3.0.0-alpha.0` | `5.0.0` | published |
+| `@prometheus-ags/entity-graph-a2a` | `5.0.0` | `3.0.0-alpha.0` | `5.0.0` | published |
+| `@prometheus-ags/entity-graph-alpine` | `5.0.0` | `3.0.0-alpha.0` | `5.0.0` | published |
+| `@prometheus-ags/entity-graph-htmx` | `5.0.0` | `3.0.0-alpha.0` | `5.0.0` | published |
 <!-- END GENERATED:RELEASE_TAGS -->
 
 The stable release is tagged `v4.1.1` and was verified live against the public
@@ -170,11 +170,11 @@ flutter pub add entity_graph_flutter:^4.0.0
 ```
 
 <!-- BEGIN GENERATED:NATIVE_RELEASES -->
-pub.dev snapshot: 2026-10-08T10:38:40.000Z.
+pub.dev snapshot: 2026-11-13T08:51:13.000Z.
 
 | Package | Version | State | Published |
 | --- | --- | --- | --- |
-| [`entity_graph_flutter`](https://pub.dev/packages/entity_graph_flutter) | `4.0.0` | published | 2026-09-05T13:06:03.642746Z |
+| [`entity_graph_flutter`](https://pub.dev/packages/entity_graph_flutter) | `5.0.0` | published | 2026-11-13T08:48:13.915021Z |
 
 The published archive passed a clean consumer resolution, import, and analyzer check.
 pub.dev does not yet associate the package with a verified publisher.
