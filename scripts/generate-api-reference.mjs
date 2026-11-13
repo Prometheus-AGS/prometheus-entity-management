@@ -209,6 +209,10 @@ function yamlQuote(text) {
   return `"${String(text).replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
 }
 
+function tableCode(text) {
+  return `\`${text.replace(/\|/g, "\\|")}\``;
+}
+
 function commentText(comment) {
   if (!comment) return "";
   const parts = [];
@@ -574,10 +578,10 @@ for (const pkg of NPM_PACKAGES) {
     }
   }
   const peers = Object.entries(manifest.peerDependencies ?? {}).map(
-    ([name, range]) => `| \`${name}\` | \`${range}\` |`,
+    ([name, range]) => `| ${tableCode(name)} | ${tableCode(range)} |`,
   );
   const deps = Object.entries(manifest.dependencies ?? {}).map(
-    ([name, range]) => `| \`${name}\` | \`${range}\` |`,
+    ([name, range]) => `| ${tableCode(name)} | ${tableCode(range)} |`,
   );
   const packageSpecific = pkg.slug === "prometheus-entity-management"
     ? [
@@ -624,7 +628,7 @@ for (const pkg of NPM_PACKAGES) {
     "",
     "| Field | Value |",
     "| ----- | ----- |",
-    `| Node | \`${manifest.engines?.node ?? ">=20"}\` |`,
+    `| Node | ${tableCode(manifest.engines?.node ?? ">=20")} |`,
     `| Package manager | pnpm only (workspace rule) |`,
     `| Published files | ${fileCount} files, ${(byteCount / 1024).toFixed(1)} KiB |`,
     "",
