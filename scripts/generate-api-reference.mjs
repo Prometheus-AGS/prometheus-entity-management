@@ -238,6 +238,8 @@ for (const pkg of NPM_PACKAGES) {
     process.execPath,
     [
       typedocBin,
+      "--tsconfig",
+      join(workspaceRoot, "packages", pkg.directory, "tsconfig.json"),
       "--entryPoints",
       ...entries,
       "--json",
