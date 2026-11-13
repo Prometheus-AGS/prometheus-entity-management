@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.0.0
+
+- Version aligned with the 5.0.0 release of the npm packages (A2UI 1.0, AG-UI 1.0),
+  under the release contract's aligned-major policy. No API changes in this
+  package. The Flutter showcase now renders A2UI 1.0 through the official
+  `a2ui_flutter` renderer; see the 5.0 migration guide.
+
 ## 4.0.0
 
 - **`hooks_riverpod` replaces `flutter_riverpod`.** `hooks_riverpod` re-exports

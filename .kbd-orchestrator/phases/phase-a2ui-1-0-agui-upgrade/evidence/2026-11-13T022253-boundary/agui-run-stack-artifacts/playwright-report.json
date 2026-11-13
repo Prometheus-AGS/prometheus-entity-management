@@ -1,0 +1,189 @@
+{
+  "config": {
+    "argv": [
+      "/Users/gqadonis/.local/share/fnm/node-versions/v26.5.0/installation/bin/node",
+      "/Volumes/T7/Projects/prometheus/prometheus-entity-management/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "tests/browser/agui-run-stack.playwright.config.ts"
+    ],
+    "configFile": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.playwright.config.ts",
+    "rootDir": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/agui-run-stack-artifacts/playwright-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-desktop",
+        "name": "chromium-desktop",
+        "testDir": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "agui-run-stack.spec.ts"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/agui-run-stack-artifacts/playwright-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "agui-run-stack.spec.ts",
+      "file": "agui-run-stack.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "UPG-10 AG-UI 1.0 run stream drives EntityChat through the graph",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1734,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T08:24:25.679Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "315ecd2bc85d44d2bcba-dc8a38e2d3def6f97fc2",
+          "file": "agui-run-stack.spec.ts",
+          "line": 235,
+          "column": 5
+        },
+        {
+          "title": "UPG-11 Cancellation stops superseded streams",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 398,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T08:24:27.628Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "315ecd2bc85d44d2bcba-c62ec4e59371fe30989d",
+          "file": "agui-run-stack.spec.ts",
+          "line": 381,
+          "column": 5
+        },
+        {
+          "title": "UPG-12 Interrupt approvals through the entity action policy",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 705,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T08:24:28.033Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "315ecd2bc85d44d2bcba-e74c92d39ef2df3a760e",
+          "file": "agui-run-stack.spec.ts",
+          "line": 515,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-13T08:24:23.161Z",
+    "duration": 5638.976,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

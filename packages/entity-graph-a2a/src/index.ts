@@ -68,7 +68,12 @@ export type { CreateBearerTokenAuthenticatorOptions } from "./policy.js";
 
 export {
   createA2UIArtifact,
+  createA2UIDataPart,
   createDeterministicA2UIMessages,
+  extractA2UIMessages,
+  isA2UIDataPart,
+  offersA2UICatalog,
+  rendererCapabilitiesOf,
 } from "./a2ui-artifact.js";
 export type {
   PrometheusA2UIArtifactPayload,
@@ -79,6 +84,8 @@ export { InMemoryTaskStore } from "./store.js";
 export type { TaskStore } from "./store.js";
 
 export {
+  A2UI_RENDERER_CAPABILITIES_KEY,
+  A2UI_RENDERER_DATA_MODEL_KEY,
   PROMETHEUS_A2UI_CATALOG_ID,
   PROMETHEUS_A2UI_EXTENSION_URI,
   PROMETHEUS_A2UI_MEDIA_TYPE,
@@ -86,6 +93,8 @@ export {
   PROMETHEUS_GRAPH_EXTENSION_URI,
 } from "./types.js";
 export type {
+  A2UIInboundContext,
+  A2UIInboundHandler,
   A2AApplicationPolicy,
   A2AAuthenticationContext,
   A2AAuthenticator,

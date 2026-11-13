@@ -5,10 +5,12 @@ import {
   type RequestContext,
 } from "@a2a-js/sdk/server";
 import {
+  PROMETHEUS_A2UI_CATALOG_ID,
   PROMETHEUS_A2UI_EXTENSION_URI,
   Role,
   TaskState,
   createA2UIArtifact,
+  offersA2UICatalog,
   type Message,
   type Part,
   type Task,
@@ -115,22 +117,26 @@ export class SharedDomainReferenceAgent implements AgentExecutor {
       return;
     }
 
-    const messages =
-      scenario === "malformed" ? createMalformedSurface() : createTaskReviewSurface();
-    eventBus.publish(
-      AgentEvent.artifactUpdate({
-        taskId,
-        contextId,
-        artifact: createA2UIArtifact(messages, {
-          artifactId: this.id("artifact"),
-          name: "Shared-domain task review",
-          description: "Deterministic official A2UI messages for the shared task domain.",
+    // Per-turn capability rule of the A2UI A2A extension: send A2UI only when
+    // this turn's message offers the catalog.
+    if (offersA2UICatalog(requestContext.userMessage, PROMETHEUS_A2UI_CATALOG_ID)) {
+      const messages =
+        scenario === "malformed" ? createMalformedSurface() : createTaskReviewSurface();
+      eventBus.publish(
+        AgentEvent.artifactUpdate({
+          taskId,
+          contextId,
+          artifact: createA2UIArtifact(messages, {
+            artifactId: this.id("artifact"),
+            name: "Shared-domain task review",
+            description: "Deterministic official A2UI messages for the shared task domain.",
+          }),
+          append: false,
+          lastChunk: true,
+          metadata: {},
         }),
-        append: false,
-        lastChunk: true,
-        metadata: {},
-      }),
-    );
+      );
+    }
     this.publishTerminal(
       requestContext,
       eventBus,

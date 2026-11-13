@@ -10,8 +10,8 @@
 import { EventType } from "@ag-ui/core";
 
 export const A2UI_ACTIVITY_TYPE = "a2ui-surface";
-const A2UI_VERSION = "v0.9.1";
-const CATALOG_ID = "urn:prometheus-ags:a2ui:catalog:v3";
+const A2UI_VERSION = "1.0";
+const CATALOG_ID = "urn:prometheus-ags:a2ui:catalog:a2ui-1.0";
 
 export interface SurfaceVersionKey {
   readonly epoch: number;

@@ -2,7 +2,7 @@
  * entity-stream.tsx — EntityStream: renders a live stream of agent events.
  *
  * EntityStream is the lowest-level primitive: it accepts an AsyncIterable of
- * StreamEvents and renders the raw token stream as it arrives. It is useful for
+ * AG-UI 1.0 events and renders the raw token stream as it arrives. It is useful for
  * non-chat contexts — inline LLM completions, "generating..." surfaces, etc.
  *
  * STATE_SNAPSHOT / STATE_DELTA events are still projected into the entity graph
@@ -18,11 +18,12 @@ import {
   applyAgUiSnapshot,
   applyAgUiDelta,
 } from "@prometheus-ags/entity-graph-core";
-import type { StreamEvent, AgUiStateMapping } from "./types.js";
+import type { AgUiEvent, AgUiStateMapping } from "./types.js";
 
 export interface EntityStreamProps {
   /** The live event stream to consume. Changing this prop replaces the stream. */
-  stream: AsyncIterable<StreamEvent> | null | undefined;
+  /** An AG-UI 1.0 event stream. */
+  stream: AsyncIterable<AgUiEvent> | null | undefined;
   /** AG-UI mappings so STATE_* events project onto the entity graph. */
   mappings?: AgUiStateMapping[];
   /** Called with each token delta as it arrives. */
@@ -40,7 +41,7 @@ export interface EntityStreamProps {
 }
 
 /**
- * EntityStream — consumes a live async-iterable of StreamEvents and renders
+ * EntityStream — consumes a live async-iterable of AG-UI 1.0 events and renders
  * the accumulating text in real time.
  *
  * @example
@@ -91,9 +92,11 @@ export function EntityStream({
           if (cancelled) break;
 
           switch (event.type) {
-            case "MESSAGE_DELTA":
-            case "TOOL_CALL_DELTA": {
-              const token = event.delta ?? event.toolArgsDelta ?? "";
+            case "TEXT_MESSAGE_CONTENT":
+            case "TEXT_MESSAGE_CHUNK":
+            case "TOOL_CALL_ARGS":
+            case "TOOL_CALL_CHUNK": {
+              const token = typeof event.delta === "string" ? event.delta : "";
               if (token) {
                 contentRef.current += token;
                 setContent(contentRef.current);
@@ -103,21 +106,19 @@ export function EntityStream({
             }
 
             case "STATE_SNAPSHOT": {
-              if (!event.snapshot) break;
-              applyAgUiSnapshot(
-                { type: "STATE_SNAPSHOT", snapshot: event.snapshot },
-                { mappings }
-              );
-              Object.assign(agentState, event.snapshot);
+              if (!event.snapshot || typeof event.snapshot !== "object") break;
+              const snapshot = event.snapshot as Record<string, unknown>;
+              applyAgUiSnapshot({ type: "STATE_SNAPSHOT", snapshot }, { mappings });
+              Object.assign(agentState, snapshot);
               break;
             }
 
             case "STATE_DELTA": {
-              if (!event.patch) break;
+              if (!Array.isArray(event.delta)) break;
               applyAgUiDelta(
                 {
                   type: "STATE_DELTA",
-                  delta: event.patch as Parameters<typeof applyAgUiDelta>[0]["delta"],
+                  delta: event.delta as Parameters<typeof applyAgUiDelta>[0]["delta"],
                 },
                 { mappings },
                 Object.keys(agentState).length > 0 ? agentState : undefined
@@ -125,15 +126,15 @@ export function EntityStream({
               break;
             }
 
-            case "ERROR": {
-              const msg = event.error ?? "Stream error";
+            case "RUN_ERROR": {
+              const msg = typeof event.message === "string" ? event.message : "Stream error";
               setError(msg);
               onErrorRef.current?.(new Error(msg));
               break;
             }
 
-            case "DONE":
-            case "MESSAGE_END":
+            case "RUN_FINISHED":
+            case "TEXT_MESSAGE_END":
               break;
 
             default:

@@ -11,56 +11,57 @@ packages:
   - "website"
   - "extension"
 allowBuilds:
-  better-sqlite3: true
-  esbuild: true
-  msw: false
-  sharp: true
   # pnpm 11 fails frozen installs over unlisted build scripts
   # (ERR_PNPM_IGNORED_BUILDS). Both are safe to skip: @swc/core ships
   # platform binaries via optionalDependencies; core-js postinstall is
   # a funding banner.
   "@swc/core": false
+  better-sqlite3: true
   core-js: false
+  esbuild: true
+  msw: false
+  sharp: true
 # pnpm 11 no longer reads the `pnpm` field in package.json; overrides live
 # here so CI (pinned pnpm) and local pnpm 10 resolve the same config and the
 # frozen-lockfile config hash matches on both.
 overrides:
   "@changesets/parse>js-yaml": "4.3.2"
+  "@docusaurus/core>tinypool": "2.1.2"
   "@lhci/cli>tmp": "0.2.7"
   "@lhci/utils>js-yaml": "3.15.2"
-  "cosmiconfig>js-yaml": "4.3.2"
-  "js-yaml@4": "4.3.2"
-  "external-editor>tmp": "0.2.7"
-  "read-yaml-file>js-yaml": "3.15.2"
-  fast-uri: "3.1.7"
-  shell-quote: "1.12.0"
-  joi: "17.13.9"
-  postcss: "8.5.25"
-  serialize-javascript: "7.0.3"
-  sharp: "0.35.5"
-  browserslist: "4.28.7"
-  svgo: "3.3.5"
-  image-size: "2.0.3"
-  "undici@7": "7.30.2"
-  "undici@8": "8.10.2"
+  "body-parser@1": "1.20.9"
   "brace-expansion@1": "1.1.20"
   "brace-expansion@5": "5.0.11"
-  seroval: "1.6.12"
-  source-map-js: "1.2.2"
-  proxy-addr: "2.0.8"
+  browserslist: "4.28.7"
   compression: "1.8.2"
-  "@docusaurus/core>tinypool": "2.1.2"
+  "cosmiconfig>js-yaml": "4.3.2"
   devalue: "5.9.3"
-  "nanoid@3": "3.3.18"
-  follow-redirects: "1.16.3"
-  launch-editor: "2.14.2"
-  "body-parser@1": "1.20.9"
-  "markdown-it@14": "14.3.3"
   dompurify: "3.4.17"
+  "external-editor>tmp": "0.2.7"
+  fast-uri: "3.1.7"
+  follow-redirects: "1.16.3"
+  image-size: "2.0.3"
+  joi: "17.13.9"
+  "js-yaml@4": "4.3.2"
+  launch-editor: "2.14.2"
+  "markdown-it@14": "14.3.3"
+  "nanoid@3": "3.3.18"
+  postcss: "8.5.25"
+  proxy-addr: "2.0.8"
+  "read-yaml-file>js-yaml": "3.15.2"
+  serialize-javascript: "7.0.3"
+  seroval: "1.6.12"
+  sharp: "0.35.5"
+  shell-quote: "1.12.0"
+  source-map-js: "1.2.2"
+  svgo: "3.3.5"
+  "undici@7": "7.30.2"
+  "undici@8": "8.10.2"
   zod: "4.6.7"
 # @a2ui/web_core declares zod ^3.25.76 and uses Zod 3 internals (_def.typeName,
 # ZodError.errors). With zod forced to 4.6.7 its imports are retargeted to the
 # zod/v3 permalink shipped by zod 4; tsup bundles the patched code into
 # @prometheus-ags/a2ui-react's dist.
 patchedDependencies:
-  "@a2ui/web_core@0.12.0": patches/@a2ui__web_core@0.12.0.patch
+  '@a2ui/react@0.15.0': patches/@a2ui__react@0.15.0.patch
+  '@a2ui/web_core@0.15.0': patches/@a2ui__web_core@0.15.0.patch

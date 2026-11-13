@@ -1,0 +1,38 @@
+{
+  "agentCallable": {
+    "functionCallId": "upg6-agent-callable",
+    "messages": [
+      {
+        "version": "1.0",
+        "callRendererFunction": {
+          "functionCallId": "upg6-agent-callable",
+          "callFunction": {
+            "@call": "agentEcho",
+            "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+            "args": {
+              "text": "ping"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "rendererOnly": {
+    "functionCallId": "upg6-renderer-only",
+    "messages": [
+      {
+        "version": "1.0",
+        "callRendererFunction": {
+          "functionCallId": "upg6-renderer-only",
+          "callFunction": {
+            "@call": "rendererOnlySecret",
+            "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+            "args": {
+              "text": "ping"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/use-chat-session.ts",
+      "claim": "An interrupt decision completed after unmount can permanently strand the conversation with no visible interrupts and no way to resume through the hook.",
+      "evidence": "resolveInterrupt calls store.decideInterrupt(entry, epoch) before checking activeStoreRef.current !== store. If the hook unmounts while the policy is awaited, cleanup calls cancel(), which leaves an interrupted conversation unchanged. The eventual decision is therefore recorded, but resume is skipped. ChatConversationStore.snapshot() filters recorded decisions out of interrupts, so remounting the conversation exposes runStatus \"interrupted\" with no approval controls; resolveInterrupt also refuses an already-decided interrupt. This breaks the recoverability requirement in A-12 and the interrupt/resume production path in UPG-12.",
+      "suggested_fix": "Represent fully decided but not yet resumed pauses explicitly in the store and provide a recoverable resume path on remount, or release an inactive caller's claim without hiding the pending interrupt. Preserve the at-most-once policy execution guarantee when recovering."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/a2ui-react/src/chat/conversation-store.ts",
+      "claim": "Cancelling or superseding a run leaves its unfinished messages permanently marked as streaming.",
+      "evidence": "startMessage writes streaming: true, and only endMessage clears it. cancel() updates only the conversation record, while beginRun() resets chunkMessageId without completing the previous message. The superseded stream is subsequently prevented from applying its END event. EntityChat renders a cursor for streaming messages and keeps reasoning details open while streaming, so a second send or cancellation leaves stale streaming indicators on the abandoned answer.",
+      "suggested_fix": "Finalize the outgoing run's unfinished messages as part of cancellation or supersession, before invalidating its ownership, without allowing late events from that run to write."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

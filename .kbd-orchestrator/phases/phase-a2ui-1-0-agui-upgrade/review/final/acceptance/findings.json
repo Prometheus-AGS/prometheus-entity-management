@@ -1,0 +1,50 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-agui-run-stack.mjs",
+      "claim": "The AG-UI acceptance gate can report PASS despite a nonzero Playwright exit.",
+      "evidence": "The script captures playwrightExitCode but only includes it in the report; the final verdict is `const failed = problems.length > 0`. If all scenario records were written before a worker, teardown, or reporter failure, the command exits 0 despite the browser run failing.",
+      "suggested_fix": "Add a problem whenever playwrightExitCode is nonzero and require a zero Playwright exit for the final verdict."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-a2ui-v1.mjs",
+      "claim": "The Node acceptance lane ignores a failing headless-consumer process when that process has written a completed result.",
+      "evidence": "nodeLane runs the consumer with allowFailure:true and stores `ran.exitCode`, but only checks whether the output exists and `lane.result.status === \"completed\"`; the final problems list never checks `node.run.exitCode`. This contradicts the script's stated contract that any lane error fails the run.",
+      "suggested_fix": "Add a lane problem when ran.exitCode is nonzero, even if the result file contains passing checks."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-a2ui-conformance.mjs",
+      "claim": "The conformance gate fails when all listed divergences have been fixed and every upstream case passes.",
+      "evidence": "When no case has status DIVERGED, the divergence control is assigned `failedRun: false` with reason `NOT_EXERCISED`; the final verdict rejects any such control. UPG-3 explicitly permits a listed case to pass, so eliminating every divergence must not itself fail acceptance.",
+      "suggested_fix": "Exercise the allowance-rejection control using a deliberately constructed failing record for a loaded case rather than requiring an actual renderer defect to remain present."
+    },
+    {
+      "severity": "WARNING",
+      "file": "scripts/verify-a2ui-v1.mjs",
+      "claim": "Every headless acceptance invocation leaks its installed scratch consumer and tarballs.",
+      "evidence": "nodeLane creates `mkdtempSync(join(tmpdir(), \"a2ui-v1-headless-\"))`, installs packages beneath it, and returns without any finally block or removal of lane.scratch, including on install or execution failure.",
+      "suggested_fix": "Remove the scratch directory in a finally block after collecting the result and tarball digests, or make retention an explicit opt-in diagnostic option."
+    },
+    {
+      "severity": "WARNING",
+      "file": "scripts/verify-a2ui-v1.mjs",
+      "claim": "Uncaught browser errors are recorded but do not affect the A2UI acceptance verdict.",
+      "evidence": "tests/browser/a2ui-v1.spec.ts collects pageerror and console.error events into pageErrors, while judgeScenario merely copies nonempty entry.pageErrors into its output and does not add them to reasons. A runtime exception can therefore accompany a PASS if the selected DOM and policy checks still hold.",
+      "suggested_fix": "Include unexpected page errors in scenario failure reasons; if a scenario intentionally emits an error, classify and allow that specific expected error explicitly."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

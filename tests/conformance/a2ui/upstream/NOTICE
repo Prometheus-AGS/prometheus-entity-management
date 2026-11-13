@@ -1,0 +1,14 @@
+A2UI conformance suite (vendored subset)
+
+The files in this directory, except manifest.json and this NOTICE, are
+unmodified copies from the A2UI project:
+
+  Repository: https://github.com/a2ui-project/a2ui
+  Commit:     0d2fcf3714a7a3725ed994b2861ffdd7d1f995bd (2026-11-11)
+
+Copyright 2024 Google LLC. Licensed under the Apache License, Version 2.0;
+see LICENSE in this directory. The upstream repository ships no NOTICE file.
+Paths keep the upstream repository layout so the cases' repository-relative
+paths (for example catalogs/basic/v1/catalog.json) resolve against this
+directory. manifest.json records the SHA-256 digest of every vendored file;
+scripts/verify-a2ui-conformance.mjs refuses to run when a digest differs.

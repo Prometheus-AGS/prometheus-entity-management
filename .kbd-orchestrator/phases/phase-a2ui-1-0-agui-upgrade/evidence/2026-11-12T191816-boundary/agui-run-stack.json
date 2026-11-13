@@ -1,0 +1,2614 @@
+{
+  "schemaVersion": 1,
+  "scenarioIds": [
+    "UPG-10",
+    "UPG-11",
+    "UPG-12"
+  ],
+  "recordedAt": "2026-11-13T01:19:54.431Z",
+  "argv": [
+    "/Volumes/T7/Projects/prometheus/prometheus-entity-management/scripts/verify-agui-run-stack.mjs",
+    "--",
+    "--report",
+    ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191816-boundary/agui-run-stack.json"
+  ],
+  "builtPackage": {
+    "name": "@prometheus-ags/a2ui-react",
+    "version": "5.0.0",
+    "entries": {
+      "@prometheus-ags/a2ui-react": {
+        "path": "packages/a2ui-react/dist/index.mjs",
+        "sha256": "dc7a54268119b4d8bd23b20117bf9120e2074010ed87641e4f8603b726c93540"
+      },
+      "@prometheus-ags/a2ui-react/ag-ui": {
+        "path": "packages/a2ui-react/dist/ag-ui.mjs",
+        "sha256": "42303b7cf60af69c328253f37c7b87d5e4767fc5162c7d936acca73222ec0242"
+      }
+    }
+  },
+  "agUi": {
+    "@ag-ui/client": {
+      "version": "1.0.4",
+      "path": "node_modules/.pnpm/@ag-ui+client@1.0.4_zod@4.6.7/node_modules/@ag-ui/client/package.json"
+    },
+    "@ag-ui/encoder": {
+      "version": "1.0.4",
+      "path": "node_modules/.pnpm/@ag-ui+encoder@1.0.4_zod@4.6.7/node_modules/@ag-ui/encoder/package.json"
+    },
+    "@ag-ui/core": {
+      "version": "1.0.4",
+      "path": "node_modules/.pnpm/@ag-ui+core@1.0.4_zod@4.6.7/node_modules/@ag-ui/core/package.json"
+    }
+  },
+  "browser": "chromium (Playwright devices['Desktop Chrome'])",
+  "scratchPorts": {
+    "page": 4211,
+    "agent": 4212
+  },
+  "pageResolution": {
+    "ok": true,
+    "problems": [],
+    "resolved": {
+      "react-dom/client": "node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/client.js",
+      "@prometheus-ags/entity-graph-core": "packages/entity-graph-core/dist/index.mjs",
+      "@prometheus-ags/a2ui-react/ag-ui": "packages/a2ui-react/dist/ag-ui.mjs",
+      "@prometheus-ags/a2ui-react": "packages/a2ui-react/dist/index.mjs",
+      "react": "node_modules/.pnpm/react@19.2.8/node_modules/react/index.js",
+      "@ag-ui/client": "node_modules/.pnpm/@ag-ui+client@1.0.4_zod@4.6.7/node_modules/@ag-ui/client/dist/index.mjs"
+    },
+    "agUiClientModules": [
+      "node_modules/.pnpm/@ag-ui+client@1.0.4_zod@4.6.7/node_modules/@ag-ui/client/dist/index.mjs"
+    ],
+    "srcModules": []
+  },
+  "scenarios": [
+    {
+      "id": "UPG-10",
+      "name": "AG-UI 1.0 run stream drives EntityChat through the graph",
+      "status": "PASS",
+      "oracle": {
+        "status": "PASS",
+        "exercised": true,
+        "checks": [
+          {
+            "name": "RUN_STARTED: the graph records the run as running with the agent's runId, and EntityChat disables its input",
+            "pass": true,
+            "detail": {
+              "runStatus": "running",
+              "runId": "25fa27d1-16c3-4637-973e-c262e45d18c9",
+              "agentRunId": "25fa27d1-16c3-4637-973e-c262e45d18c9",
+              "inputDisabled": true
+            }
+          },
+          {
+            "name": "TEXT_MESSAGE_CONTENT renders while the message streams (streaming cursor shown)",
+            "pass": true
+          },
+          {
+            "name": "mid-run, the second view shows the same partial messages",
+            "pass": true,
+            "detail": {
+              "chat": [
+                {
+                  "id": "5a451137-ffbf-4c7d-8523-ec634c97c70e",
+                  "role": "user",
+                  "text": "What is the status of invoice inv-42?",
+                  "content": "What is the status of invoice inv-42?"
+                },
+                {
+                  "id": "r-1",
+                  "role": "reasoning",
+                  "text": "ReasoningChecking invoice inv-42 against the ledger.",
+                  "content": "Checking invoice inv-42 against the ledger."
+                },
+                {
+                  "id": "m-1",
+                  "role": "assistant",
+                  "text": "Invoice inv-42 ▍",
+                  "content": "Invoice inv-42"
+                }
+              ],
+              "mirror": [
+                {
+                  "id": "5a451137-ffbf-4c7d-8523-ec634c97c70e",
+                  "role": "user",
+                  "text": "What is the status of invoice inv-42?",
+                  "content": "What is the status of invoice inv-42?"
+                },
+                {
+                  "id": "r-1",
+                  "role": "reasoning",
+                  "text": "ReasoningChecking invoice inv-42 against the ledger.",
+                  "content": "Checking invoice inv-42 against the ledger."
+                },
+                {
+                  "id": "m-1",
+                  "role": "assistant",
+                  "text": "Invoice inv-42 ▍",
+                  "content": "Invoice inv-42"
+                }
+              ]
+            }
+          },
+          {
+            "name": "the run went through @ag-ui/client without error and every scripted event type reached the store",
+            "pass": true,
+            "detail": {
+              "finished": true,
+              "error": null,
+              "missing": []
+            }
+          },
+          {
+            "name": "the scripted agent sent the whole run and the client kept the stream to the end",
+            "pass": true,
+            "detail": {
+              "sent": [
+                "RUN_STARTED",
+                "REASONING_START",
+                "REASONING_MESSAGE_START",
+                "REASONING_MESSAGE_CONTENT",
+                "REASONING_MESSAGE_END",
+                "REASONING_END",
+                "TEXT_MESSAGE_START",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_END",
+                "TOOL_CALL_START",
+                "TOOL_CALL_ARGS",
+                "TOOL_CALL_ARGS",
+                "TOOL_CALL_END",
+                "TOOL_CALL_RESULT",
+                "RUN_FINISHED"
+              ],
+              "completed": true
+            }
+          },
+          {
+            "name": "the user's message renders",
+            "pass": true
+          },
+          {
+            "name": "REASONING_* renders as a collapsed reasoning message with its content",
+            "pass": true,
+            "detail": {
+              "dom": {
+                "id": "r-1",
+                "role": "reasoning",
+                "text": "ReasoningChecking invoice inv-42 against the ledger.",
+                "content": "Checking invoice inv-42 against the ledger."
+              },
+              "graph": {
+                "id": "r-1",
+                "role": "reasoning",
+                "content": "Checking invoice inv-42 against the ledger.",
+                "createdAt": "2026-11-13T01:19:52.898Z",
+                "streaming": false,
+                "conversationId": "upg10-main"
+              }
+            }
+          },
+          {
+            "name": "TEXT_MESSAGE_START/CONTENT/END render the complete assistant message, no longer streaming",
+            "pass": true,
+            "detail": {
+              "dom": {
+                "id": "m-1",
+                "role": "assistant",
+                "text": "Invoice inv-42 is overdue by 12 days.lookup_invoice{\"invoiceId\":\"inv-42\"}",
+                "content": "Invoice inv-42 is overdue by 12 days."
+              },
+              "graph": {
+                "id": "m-1",
+                "role": "assistant",
+                "content": "Invoice inv-42 is overdue by 12 days.",
+                "createdAt": "2026-11-13T01:19:52.902Z",
+                "streaming": false,
+                "conversationId": "upg10-main",
+                "toolCalls": [
+                  {
+                    "id": "tc-1",
+                    "type": "function",
+                    "function": {
+                      "name": "lookup_invoice",
+                      "arguments": "{\"invoiceId\":\"inv-42\"}"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "TOOL_CALL_START/ARGS/END land on the assistant message in the graph (name and full arguments)",
+            "pass": true,
+            "detail": {
+              "toolCalls": [
+                {
+                  "id": "tc-1",
+                  "type": "function",
+                  "function": {
+                    "name": "lookup_invoice",
+                    "arguments": "{\"invoiceId\":\"inv-42\"}"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "TOOL_CALL_START/ARGS/END render in EntityChat (the tool call's name is shown)",
+            "pass": true,
+            "detail": {
+              "looksFor": "lookup_invoice",
+              "note": "EntityChat's default message bubble renders message.content only (packages/a2ui-react/src/entity-chat.tsx MessageBubble)"
+            }
+          },
+          {
+            "name": "TOOL_CALL_RESULT renders as a tool message with the result content",
+            "pass": true,
+            "detail": {
+              "dom": {
+                "id": "t-1",
+                "role": "tool",
+                "text": "{\"invoiceId\":\"inv-42\",\"status\":\"overdue\",\"daysLate\":12}",
+                "content": "{\"invoiceId\":\"inv-42\",\"status\":\"overdue\",\"daysLate\":12}"
+              },
+              "graph": {
+                "id": "t-1",
+                "role": "tool",
+                "content": "{\"invoiceId\":\"inv-42\",\"status\":\"overdue\",\"daysLate\":12}",
+                "createdAt": "2026-11-13T01:19:52.965Z",
+                "toolCallId": "tc-1",
+                "conversationId": "upg10-main"
+              }
+            }
+          },
+          {
+            "name": "RUN_FINISHED: the graph records the run finished, the input is enabled and no typing indicator shows",
+            "pass": true,
+            "detail": {
+              "conversation": {
+                "runStatus": "finished",
+                "error": null,
+                "isLoading": false,
+                "runId": "25fa27d1-16c3-4637-973e-c262e45d18c9"
+              }
+            }
+          },
+          {
+            "name": "messages render in stream order: user, reasoning, assistant, tool result",
+            "pass": true,
+            "detail": {
+              "order": [
+                "user:5a451137-ffbf-4c7d-8523-ec634c97c70e",
+                "reasoning:r-1",
+                "assistant:m-1",
+                "tool:t-1"
+              ]
+            }
+          },
+          {
+            "name": "the second view (same conversation id) shows exactly the same messages, read from the graph",
+            "pass": true,
+            "detail": {
+              "chatDigest": "2b4808da04cd1ebda387696a67b04ae7e5c2eeb89a113746b4edb018708f2ff5",
+              "mirrorDigest": "2b4808da04cd1ebda387696a67b04ae7e5c2eeb89a113746b4edb018708f2ff5",
+              "mirrorFactoryCalls": 0
+            }
+          },
+          {
+            "name": "the graph holds the conversation's messages under its list key",
+            "pass": true,
+            "detail": {
+              "ids": [
+                "[\"upg10-main\",\"5a451137-ffbf-4c7d-8523-ec634c97c70e\"]",
+                "[\"upg10-main\",\"r-1\"]",
+                "[\"upg10-main\",\"m-1\"]",
+                "[\"upg10-main\",\"t-1\"]"
+              ]
+            }
+          },
+          {
+            "name": "no uncaught page errors",
+            "pass": true,
+            "detail": []
+          }
+        ],
+        "evidence": {
+          "midRun": {
+            "inputDisabled": true,
+            "cursorShown": true,
+            "conversation": {
+              "runStatus": "running",
+              "error": null,
+              "isLoading": true,
+              "runId": "25fa27d1-16c3-4637-973e-c262e45d18c9"
+            },
+            "chat": [
+              {
+                "id": "5a451137-ffbf-4c7d-8523-ec634c97c70e",
+                "role": "user",
+                "text": "What is the status of invoice inv-42?",
+                "content": "What is the status of invoice inv-42?"
+              },
+              {
+                "id": "r-1",
+                "role": "reasoning",
+                "text": "ReasoningChecking invoice inv-42 against the ledger.",
+                "content": "Checking invoice inv-42 against the ledger."
+              },
+              {
+                "id": "m-1",
+                "role": "assistant",
+                "text": "Invoice inv-42 ▍",
+                "content": "Invoice inv-42"
+              }
+            ],
+            "mirror": [
+              {
+                "id": "5a451137-ffbf-4c7d-8523-ec634c97c70e",
+                "role": "user",
+                "text": "What is the status of invoice inv-42?",
+                "content": "What is the status of invoice inv-42?"
+              },
+              {
+                "id": "r-1",
+                "role": "reasoning",
+                "text": "ReasoningChecking invoice inv-42 against the ledger.",
+                "content": "Checking invoice inv-42 against the ledger."
+              },
+              {
+                "id": "m-1",
+                "role": "assistant",
+                "text": "Invoice inv-42 ▍",
+                "content": "Invoice inv-42"
+              }
+            ],
+            "agentRunId": "25fa27d1-16c3-4637-973e-c262e45d18c9"
+          },
+          "graphSnapshotDigest": "428792d447975d0d4efccdbd4695707661f78f575ae77d812c2abd73b438a80f",
+          "graphSnapshot": {
+            "conversationId": "upg10-main",
+            "listKey": "a2ui-chat:upg10-main",
+            "ids": [
+              "[\"upg10-main\",\"5a451137-ffbf-4c7d-8523-ec634c97c70e\"]",
+              "[\"upg10-main\",\"r-1\"]",
+              "[\"upg10-main\",\"m-1\"]",
+              "[\"upg10-main\",\"t-1\"]"
+            ],
+            "messages": [
+              {
+                "id": "5a451137-ffbf-4c7d-8523-ec634c97c70e",
+                "role": "user",
+                "content": "What is the status of invoice inv-42?",
+                "createdAt": "2026-11-13T01:19:52.825Z",
+                "conversationId": "upg10-main"
+              },
+              {
+                "id": "r-1",
+                "role": "reasoning",
+                "content": "Checking invoice inv-42 against the ledger.",
+                "createdAt": "2026-11-13T01:19:52.898Z",
+                "streaming": false,
+                "conversationId": "upg10-main"
+              },
+              {
+                "id": "m-1",
+                "role": "assistant",
+                "content": "Invoice inv-42 is overdue by 12 days.",
+                "createdAt": "2026-11-13T01:19:52.902Z",
+                "streaming": false,
+                "conversationId": "upg10-main",
+                "toolCalls": [
+                  {
+                    "id": "tc-1",
+                    "type": "function",
+                    "function": {
+                      "name": "lookup_invoice",
+                      "arguments": "{\"invoiceId\":\"inv-42\"}"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "t-1",
+                "role": "tool",
+                "content": "{\"invoiceId\":\"inv-42\",\"status\":\"overdue\",\"daysLate\":12}",
+                "createdAt": "2026-11-13T01:19:52.965Z",
+                "toolCallId": "tc-1",
+                "conversationId": "upg10-main"
+              }
+            ],
+            "conversation": {
+              "runStatus": "finished",
+              "error": null,
+              "isLoading": false,
+              "runId": "25fa27d1-16c3-4637-973e-c262e45d18c9"
+            }
+          },
+          "domDigests": {
+            "chat": "2b4808da04cd1ebda387696a67b04ae7e5c2eeb89a113746b4edb018708f2ff5",
+            "mirror": "2b4808da04cd1ebda387696a67b04ae7e5c2eeb89a113746b4edb018708f2ff5"
+          },
+          "dom": {
+            "chat": [
+              {
+                "id": "5a451137-ffbf-4c7d-8523-ec634c97c70e",
+                "role": "user",
+                "text": "What is the status of invoice inv-42?",
+                "content": "What is the status of invoice inv-42?"
+              },
+              {
+                "id": "r-1",
+                "role": "reasoning",
+                "text": "ReasoningChecking invoice inv-42 against the ledger.",
+                "content": "Checking invoice inv-42 against the ledger."
+              },
+              {
+                "id": "m-1",
+                "role": "assistant",
+                "text": "Invoice inv-42 is overdue by 12 days.lookup_invoice{\"invoiceId\":\"inv-42\"}",
+                "content": "Invoice inv-42 is overdue by 12 days."
+              },
+              {
+                "id": "t-1",
+                "role": "tool",
+                "text": "{\"invoiceId\":\"inv-42\",\"status\":\"overdue\",\"daysLate\":12}",
+                "content": "{\"invoiceId\":\"inv-42\",\"status\":\"overdue\",\"daysLate\":12}"
+              }
+            ],
+            "mirror": [
+              {
+                "id": "5a451137-ffbf-4c7d-8523-ec634c97c70e",
+                "role": "user",
+                "text": "What is the status of invoice inv-42?",
+                "content": "What is the status of invoice inv-42?"
+              },
+              {
+                "id": "r-1",
+                "role": "reasoning",
+                "text": "ReasoningChecking invoice inv-42 against the ledger.",
+                "content": "Checking invoice inv-42 against the ledger."
+              },
+              {
+                "id": "m-1",
+                "role": "assistant",
+                "text": "Invoice inv-42 is overdue by 12 days.lookup_invoice{\"invoiceId\":\"inv-42\"}",
+                "content": "Invoice inv-42 is overdue by 12 days."
+              },
+              {
+                "id": "t-1",
+                "role": "tool",
+                "text": "{\"invoiceId\":\"inv-42\",\"status\":\"overdue\",\"daysLate\":12}",
+                "content": "{\"invoiceId\":\"inv-42\",\"status\":\"overdue\",\"daysLate\":12}"
+              }
+            ]
+          },
+          "clientEventTypes": [
+            "RUN_STARTED",
+            "REASONING_START",
+            "REASONING_MESSAGE_START",
+            "REASONING_MESSAGE_CONTENT",
+            "REASONING_MESSAGE_END",
+            "REASONING_END",
+            "TEXT_MESSAGE_START",
+            "TEXT_MESSAGE_CONTENT",
+            "TEXT_MESSAGE_CONTENT",
+            "TEXT_MESSAGE_END",
+            "TOOL_CALL_START",
+            "TOOL_CALL_ARGS",
+            "TOOL_CALL_ARGS",
+            "TOOL_CALL_END",
+            "TOOL_CALL_RESULT",
+            "RUN_FINISHED"
+          ],
+          "agentRun": {
+            "seq": 0,
+            "script": "upg10",
+            "case": null,
+            "threadId": "upg10-main",
+            "runId": "25fa27d1-16c3-4637-973e-c262e45d18c9",
+            "resume": null,
+            "messageRoles": [
+              "user"
+            ],
+            "receivedAt": 1794532792837,
+            "sent": [
+              "RUN_STARTED",
+              "REASONING_START",
+              "REASONING_MESSAGE_START",
+              "REASONING_MESSAGE_CONTENT",
+              "REASONING_MESSAGE_END",
+              "REASONING_END",
+              "TEXT_MESSAGE_START",
+              "TEXT_MESSAGE_CONTENT",
+              "TEXT_MESSAGE_CONTENT",
+              "TEXT_MESSAGE_END",
+              "TOOL_CALL_START",
+              "TOOL_CALL_ARGS",
+              "TOOL_CALL_ARGS",
+              "TOOL_CALL_END",
+              "TOOL_CALL_RESULT",
+              "RUN_FINISHED"
+            ],
+            "waitingAt": null,
+            "completed": true,
+            "clientClosed": false,
+            "error": null
+          }
+        },
+        "verdict": "PASS"
+      },
+      "negativeControl": {
+        "status": "PASS",
+        "exercised": true,
+        "checks": [
+          {
+            "name": "the other conversation's view shows no messages",
+            "pass": true,
+            "detail": {
+              "dom": []
+            }
+          },
+          {
+            "name": "the other conversation's view contains none of the run's texts",
+            "pass": true,
+            "detail": {
+              "leaked": []
+            }
+          },
+          {
+            "name": "the other conversation has no messages in the graph",
+            "pass": true,
+            "detail": {
+              "ids": []
+            }
+          },
+          {
+            "name": "liveness: the control view renders its own conversation's run",
+            "pass": true,
+            "detail": {
+              "other": [
+                {
+                  "id": "cdbb63ee-0e25-4ada-ad65-88154dc2c6ef",
+                  "role": "user",
+                  "text": "Control view probe",
+                  "content": "Control view probe"
+                },
+                {
+                  "id": "p-1",
+                  "role": "assistant",
+                  "text": "Probe reply for the other conversation.",
+                  "content": "Probe reply for the other conversation."
+                }
+              ]
+            }
+          },
+          {
+            "name": "liveness: the probe run does not appear in either view of the main conversation",
+            "pass": true,
+            "detail": {
+              "chatDigest": "2b4808da04cd1ebda387696a67b04ae7e5c2eeb89a113746b4edb018708f2ff5",
+              "mirrorDigest": "2b4808da04cd1ebda387696a67b04ae7e5c2eeb89a113746b4edb018708f2ff5"
+            }
+          }
+        ],
+        "evidence": {
+          "before": {
+            "dom": [],
+            "domDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "graph": {
+              "conversationId": "upg10-other",
+              "listKey": "a2ui-chat:upg10-other",
+              "ids": [],
+              "messages": [],
+              "conversation": null
+            },
+            "graphDigest": "e025711d959c7782cfe181eafe12f5fdd35640921e45f96e14e2ea513610974a"
+          },
+          "afterProbe": {
+            "chat": [
+              {
+                "id": "5a451137-ffbf-4c7d-8523-ec634c97c70e",
+                "role": "user",
+                "text": "What is the status of invoice inv-42?",
+                "content": "What is the status of invoice inv-42?"
+              },
+              {
+                "id": "r-1",
+                "role": "reasoning",
+                "text": "ReasoningChecking invoice inv-42 against the ledger.",
+                "content": "Checking invoice inv-42 against the ledger."
+              },
+              {
+                "id": "m-1",
+                "role": "assistant",
+                "text": "Invoice inv-42 is overdue by 12 days.lookup_invoice{\"invoiceId\":\"inv-42\"}",
+                "content": "Invoice inv-42 is overdue by 12 days."
+              },
+              {
+                "id": "t-1",
+                "role": "tool",
+                "text": "{\"invoiceId\":\"inv-42\",\"status\":\"overdue\",\"daysLate\":12}",
+                "content": "{\"invoiceId\":\"inv-42\",\"status\":\"overdue\",\"daysLate\":12}"
+              }
+            ],
+            "mirror": [
+              {
+                "id": "5a451137-ffbf-4c7d-8523-ec634c97c70e",
+                "role": "user",
+                "text": "What is the status of invoice inv-42?",
+                "content": "What is the status of invoice inv-42?"
+              },
+              {
+                "id": "r-1",
+                "role": "reasoning",
+                "text": "ReasoningChecking invoice inv-42 against the ledger.",
+                "content": "Checking invoice inv-42 against the ledger."
+              },
+              {
+                "id": "m-1",
+                "role": "assistant",
+                "text": "Invoice inv-42 is overdue by 12 days.lookup_invoice{\"invoiceId\":\"inv-42\"}",
+                "content": "Invoice inv-42 is overdue by 12 days."
+              },
+              {
+                "id": "t-1",
+                "role": "tool",
+                "text": "{\"invoiceId\":\"inv-42\",\"status\":\"overdue\",\"daysLate\":12}",
+                "content": "{\"invoiceId\":\"inv-42\",\"status\":\"overdue\",\"daysLate\":12}"
+              }
+            ],
+            "other": [
+              {
+                "id": "cdbb63ee-0e25-4ada-ad65-88154dc2c6ef",
+                "role": "user",
+                "text": "Control view probe",
+                "content": "Control view probe"
+              },
+              {
+                "id": "p-1",
+                "role": "assistant",
+                "text": "Probe reply for the other conversation.",
+                "content": "Probe reply for the other conversation."
+              }
+            ],
+            "digests": {
+              "chat": "2b4808da04cd1ebda387696a67b04ae7e5c2eeb89a113746b4edb018708f2ff5",
+              "mirror": "2b4808da04cd1ebda387696a67b04ae7e5c2eeb89a113746b4edb018708f2ff5",
+              "other": "1b58da68f7e8e721a3699487a2e701f18759515f6b559210efb73b8b99550ff5"
+            }
+          }
+        },
+        "verdict": "PASS"
+      },
+      "pageErrors": []
+    },
+    {
+      "id": "UPG-11",
+      "name": "Cancellation stops superseded streams",
+      "status": "PASS",
+      "oracle": {
+        "status": "PASS",
+        "exercised": true,
+        "checks": [
+          {
+            "name": "the second send was recorded as the supersede point",
+            "pass": true
+          },
+          {
+            "name": "the AbortSignal passed to streamFactory for the first run is aborted, at or after the second send",
+            "pass": true,
+            "detail": {
+              "signalAborted": true,
+              "abortedAt": 335.5,
+              "supersedeAt": 335.09999999403954
+            }
+          },
+          {
+            "name": "the second run's signal is not aborted",
+            "pass": true,
+            "detail": {
+              "signalAborted": false
+            }
+          },
+          {
+            "name": "the first stream's later events were sent by the agent after the second send",
+            "pass": true,
+            "detail": {
+              "sent": [
+                "RUN_STARTED",
+                "TEXT_MESSAGE_START",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_END",
+                "TEXT_MESSAGE_START",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_END",
+                "RUN_FINISHED"
+              ],
+              "completed": true,
+              "clientClosed": false
+            }
+          },
+          {
+            "name": "the first stream's later events reached the browser through @ag-ui/client (non-vacuous)",
+            "pass": true,
+            "detail": {
+              "laterEventsReceived": 10,
+              "types": [
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_END",
+                "TEXT_MESSAGE_START",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_END",
+                "RUN_FINISHED"
+              ]
+            }
+          },
+          {
+            "name": "the counter observed the first stream while it was current",
+            "pass": true,
+            "detail": {
+              "first": 3
+            }
+          },
+          {
+            "name": "the first stream's later events cause zero graph writes",
+            "pass": true,
+            "detail": {
+              "first": 0
+            }
+          },
+          {
+            "name": "the first stream's message is unchanged and its later message was never created",
+            "pass": true,
+            "detail": {
+              "content": "a-before ",
+              "dom": [
+                {
+                  "id": "a6c75a73-0f9e-4560-9348-9be1ce90befd",
+                  "role": "user",
+                  "text": "First question",
+                  "content": ""
+                },
+                {
+                  "id": "a-1",
+                  "role": "assistant",
+                  "text": "a-before",
+                  "content": ""
+                },
+                {
+                  "id": "fa7149cd-7ba3-4229-936b-d720bc4b2bc5",
+                  "role": "user",
+                  "text": "Second question",
+                  "content": ""
+                },
+                {
+                  "id": "b-1",
+                  "role": "assistant",
+                  "text": "b-reply to the second question.",
+                  "content": ""
+                }
+              ]
+            }
+          },
+          {
+            "name": "the conversation record belongs to the second run (the first run's RUN_FINISHED wrote nothing)",
+            "pass": true,
+            "detail": {
+              "conversation": {
+                "runStatus": "finished",
+                "error": null,
+                "isLoading": false,
+                "runId": "61cecc69-1393-469d-9bd4-4e00c8e7d3b5"
+              },
+              "secondRunId": "61cecc69-1393-469d-9bd4-4e00c8e7d3b5"
+            }
+          },
+          {
+            "name": "the second stream rendered and wrote to the graph",
+            "pass": true,
+            "detail": {
+              "second": 3
+            }
+          },
+          {
+            "name": "no uncaught page errors",
+            "pass": true,
+            "detail": []
+          }
+        ],
+        "evidence": {
+          "graphWriteCounts": {
+            "beforeSupersede": {
+              "user": 3,
+              "first": 3,
+              "control": 2
+            },
+            "afterSupersede": {
+              "second": 3,
+              "control": 9
+            }
+          },
+          "supersede": {
+            "seq": 8,
+            "at": 335.09999999403954
+          },
+          "streams": {
+            "first": {
+              "label": "first",
+              "url": "http://127.0.0.1:4212/agent/upg11-a",
+              "startedAt": 204.59999999403954,
+              "historyRoles": [
+                "user"
+              ],
+              "resume": null,
+              "clientPendingInterruptIds": [],
+              "honoursSignal": false,
+              "signalAborted": true,
+              "abortedAt": 335.5,
+              "transportAborted": false,
+              "events": [
+                {
+                  "type": "RUN_STARTED",
+                  "at": 282.90000000596046,
+                  "afterConsumerClosed": false
+                },
+                {
+                  "type": "TEXT_MESSAGE_START",
+                  "at": 283.5,
+                  "afterConsumerClosed": false
+                },
+                {
+                  "type": "TEXT_MESSAGE_CONTENT",
+                  "at": 284,
+                  "afterConsumerClosed": false
+                },
+                {
+                  "type": "TEXT_MESSAGE_CONTENT",
+                  "at": 350.09999999403954,
+                  "afterConsumerClosed": false
+                },
+                {
+                  "type": "TEXT_MESSAGE_CONTENT",
+                  "at": 350.2999999821186,
+                  "afterConsumerClosed": true
+                },
+                {
+                  "type": "TEXT_MESSAGE_CONTENT",
+                  "at": 351.69999998807907,
+                  "afterConsumerClosed": true
+                },
+                {
+                  "type": "TEXT_MESSAGE_CONTENT",
+                  "at": 351.69999998807907,
+                  "afterConsumerClosed": true
+                },
+                {
+                  "type": "TEXT_MESSAGE_CONTENT",
+                  "at": 351.69999998807907,
+                  "afterConsumerClosed": true
+                },
+                {
+                  "type": "TEXT_MESSAGE_END",
+                  "at": 351.69999998807907,
+                  "afterConsumerClosed": true
+                },
+                {
+                  "type": "TEXT_MESSAGE_START",
+                  "at": 351.69999998807907,
+                  "afterConsumerClosed": true
+                },
+                {
+                  "type": "TEXT_MESSAGE_CONTENT",
+                  "at": 351.69999998807907,
+                  "afterConsumerClosed": true
+                },
+                {
+                  "type": "TEXT_MESSAGE_END",
+                  "at": 351.69999998807907,
+                  "afterConsumerClosed": true
+                },
+                {
+                  "type": "RUN_FINISHED",
+                  "at": 351.69999998807907,
+                  "afterConsumerClosed": true
+                }
+              ],
+              "consumerClosedAt": 350.19999998807907,
+              "finished": true,
+              "error": null
+            },
+            "second": {
+              "label": "second",
+              "url": "http://127.0.0.1:4212/agent/upg11-b",
+              "startedAt": 335.90000000596046,
+              "historyRoles": [
+                "user",
+                "assistant",
+                "user"
+              ],
+              "resume": null,
+              "clientPendingInterruptIds": [],
+              "honoursSignal": true,
+              "signalAborted": false,
+              "abortedAt": null,
+              "transportAborted": false,
+              "events": [
+                {
+                  "type": "RUN_STARTED",
+                  "at": 341.5,
+                  "afterConsumerClosed": false
+                },
+                {
+                  "type": "TEXT_MESSAGE_START",
+                  "at": 341.7999999821186,
+                  "afterConsumerClosed": false
+                },
+                {
+                  "type": "TEXT_MESSAGE_CONTENT",
+                  "at": 342.09999999403954,
+                  "afterConsumerClosed": false
+                },
+                {
+                  "type": "TEXT_MESSAGE_END",
+                  "at": 342.2999999821186,
+                  "afterConsumerClosed": false
+                },
+                {
+                  "type": "RUN_FINISHED",
+                  "at": 342.59999999403954,
+                  "afterConsumerClosed": false
+                }
+              ],
+              "consumerClosedAt": null,
+              "finished": true,
+              "error": null
+            }
+          },
+          "agentRuns": {
+            "a": {
+              "seq": 2,
+              "script": "upg11-a",
+              "case": null,
+              "threadId": "upg11-x",
+              "runId": "32f2fee5-7379-46b3-91f8-3269e2e0769d",
+              "resume": null,
+              "messageRoles": [
+                "user"
+              ],
+              "receivedAt": 1794532793386,
+              "sent": [
+                "RUN_STARTED",
+                "TEXT_MESSAGE_START",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_END",
+                "TEXT_MESSAGE_START",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_END",
+                "RUN_FINISHED"
+              ],
+              "waitingAt": null,
+              "completed": true,
+              "clientClosed": false,
+              "error": null
+            },
+            "b": {
+              "seq": 4,
+              "script": "upg11-b",
+              "case": null,
+              "threadId": "upg11-x",
+              "runId": "61cecc69-1393-469d-9bd4-4e00c8e7d3b5",
+              "resume": null,
+              "messageRoles": [
+                "user",
+                "assistant",
+                "user"
+              ],
+              "receivedAt": 1794532793514,
+              "sent": [
+                "RUN_STARTED",
+                "TEXT_MESSAGE_START",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_END",
+                "RUN_FINISHED"
+              ],
+              "waitingAt": null,
+              "completed": true,
+              "clientClosed": false,
+              "error": null
+            }
+          },
+          "dom": [
+            {
+              "id": "a6c75a73-0f9e-4560-9348-9be1ce90befd",
+              "role": "user",
+              "text": "First question",
+              "content": ""
+            },
+            {
+              "id": "a-1",
+              "role": "assistant",
+              "text": "a-before",
+              "content": ""
+            },
+            {
+              "id": "fa7149cd-7ba3-4229-936b-d720bc4b2bc5",
+              "role": "user",
+              "text": "Second question",
+              "content": ""
+            },
+            {
+              "id": "b-1",
+              "role": "assistant",
+              "text": "b-reply to the second question.",
+              "content": ""
+            }
+          ],
+          "graph": {
+            "conversationId": "upg11-x",
+            "listKey": "a2ui-chat:upg11-x",
+            "ids": [
+              "[\"upg11-x\",\"a6c75a73-0f9e-4560-9348-9be1ce90befd\"]",
+              "[\"upg11-x\",\"a-1\"]",
+              "[\"upg11-x\",\"fa7149cd-7ba3-4229-936b-d720bc4b2bc5\"]",
+              "[\"upg11-x\",\"b-1\"]"
+            ],
+            "messages": [
+              {
+                "id": "a6c75a73-0f9e-4560-9348-9be1ce90befd",
+                "role": "user",
+                "content": "First question",
+                "createdAt": "2026-11-13T01:19:53.379Z",
+                "conversationId": "upg11-x"
+              },
+              {
+                "id": "a-1",
+                "role": "assistant",
+                "content": "a-before ",
+                "createdAt": "2026-11-13T01:19:53.459Z",
+                "streaming": false,
+                "conversationId": "upg11-x"
+              },
+              {
+                "id": "fa7149cd-7ba3-4229-936b-d720bc4b2bc5",
+                "role": "user",
+                "content": "Second question",
+                "createdAt": "2026-11-13T01:19:53.511Z",
+                "conversationId": "upg11-x"
+              },
+              {
+                "id": "b-1",
+                "role": "assistant",
+                "content": "b-reply to the second question.",
+                "createdAt": "2026-11-13T01:19:53.517Z",
+                "streaming": false,
+                "conversationId": "upg11-x"
+              }
+            ],
+            "conversation": {
+              "runStatus": "finished",
+              "error": null,
+              "isLoading": false,
+              "runId": "61cecc69-1393-469d-9bd4-4e00c8e7d3b5"
+            }
+          },
+          "writes": [
+            {
+              "seq": 0,
+              "bucket": "user",
+              "conversationId": "upg11-x",
+              "messageId": "a6c75a73-0f9e-4560-9348-9be1ce90befd",
+              "at": 203.7999999821186
+            },
+            {
+              "seq": 1,
+              "bucket": "first",
+              "conversationId": "upg11-x",
+              "messageId": "a-1",
+              "at": 283.59999999403954
+            },
+            {
+              "seq": 2,
+              "bucket": "first",
+              "conversationId": "upg11-x",
+              "messageId": "a-1",
+              "at": 284
+            },
+            {
+              "seq": 3,
+              "bucket": "user",
+              "conversationId": "upg11-y",
+              "messageId": "de70ad71-d190-4ee7-8f04-0ef39d2d3303",
+              "at": 301.40000000596046
+            },
+            {
+              "seq": 4,
+              "bucket": "control",
+              "conversationId": "upg11-y",
+              "messageId": "c-1",
+              "at": 308.90000000596046
+            },
+            {
+              "seq": 5,
+              "bucket": "control",
+              "conversationId": "upg11-y",
+              "messageId": "c-1",
+              "at": 309.19999998807907
+            },
+            {
+              "seq": 6,
+              "bucket": "first",
+              "conversationId": "upg11-x",
+              "messageId": "a-1",
+              "at": 335.59999999403954
+            },
+            {
+              "seq": 7,
+              "bucket": "user",
+              "conversationId": "upg11-x",
+              "messageId": "fa7149cd-7ba3-4229-936b-d720bc4b2bc5",
+              "at": 335.7999999821186
+            },
+            {
+              "seq": 8,
+              "bucket": "second",
+              "conversationId": "upg11-x",
+              "messageId": "b-1",
+              "at": 341.7999999821186
+            },
+            {
+              "seq": 9,
+              "bucket": "second",
+              "conversationId": "upg11-x",
+              "messageId": "b-1",
+              "at": 342.19999998807907
+            },
+            {
+              "seq": 10,
+              "bucket": "second",
+              "conversationId": "upg11-x",
+              "messageId": "b-1",
+              "at": 342.40000000596046
+            },
+            {
+              "seq": 11,
+              "bucket": "control",
+              "conversationId": "upg11-y",
+              "messageId": "c-1",
+              "at": 350.59999999403954
+            },
+            {
+              "seq": 12,
+              "bucket": "control",
+              "conversationId": "upg11-y",
+              "messageId": "c-1",
+              "at": 350.90000000596046
+            },
+            {
+              "seq": 13,
+              "bucket": "control",
+              "conversationId": "upg11-y",
+              "messageId": "c-1",
+              "at": 351.09999999403954
+            },
+            {
+              "seq": 14,
+              "bucket": "control",
+              "conversationId": "upg11-y",
+              "messageId": "c-1",
+              "at": 351.09999999403954
+            },
+            {
+              "seq": 15,
+              "bucket": "control",
+              "conversationId": "upg11-y",
+              "messageId": "c-1",
+              "at": 351.2999999821186
+            },
+            {
+              "seq": 16,
+              "bucket": "control",
+              "conversationId": "upg11-y",
+              "messageId": "c-1",
+              "at": 351.40000000596046
+            },
+            {
+              "seq": 17,
+              "bucket": "control",
+              "conversationId": "upg11-y",
+              "messageId": "c-2",
+              "at": 352.09999999403954
+            },
+            {
+              "seq": 18,
+              "bucket": "control",
+              "conversationId": "upg11-y",
+              "messageId": "c-2",
+              "at": 352.2999999821186
+            },
+            {
+              "seq": 19,
+              "bucket": "control",
+              "conversationId": "upg11-y",
+              "messageId": "c-2",
+              "at": 352.40000000596046
+            }
+          ]
+        },
+        "verdict": "PASS"
+      },
+      "negativeControl": {
+        "status": "PASS",
+        "exercised": true,
+        "checks": [
+          {
+            "name": "the control stream emitted later events after the second send, and the browser received them",
+            "pass": true,
+            "detail": {
+              "laterEventsReceived": 10
+            }
+          },
+          {
+            "name": "the control stream's later events DO write to the graph (the counter observes writes)",
+            "pass": true,
+            "detail": {
+              "control": 9,
+              "expectedAtLeast": 9
+            }
+          },
+          {
+            "name": "the control stream's later content renders",
+            "pass": true,
+            "detail": {
+              "dom": [
+                {
+                  "id": "de70ad71-d190-4ee7-8f04-0ef39d2d3303",
+                  "role": "user",
+                  "text": "Control question",
+                  "content": ""
+                },
+                {
+                  "id": "c-1",
+                  "role": "assistant",
+                  "text": "c-before c-late-0 c-late-1 c-late-2 c-late-3 c-late-4",
+                  "content": ""
+                },
+                {
+                  "id": "c-2",
+                  "role": "assistant",
+                  "text": "c-late-message",
+                  "content": ""
+                }
+              ]
+            }
+          },
+          {
+            "name": "the control stream's signal was never aborted and the run finished",
+            "pass": true,
+            "detail": {
+              "signalAborted": false,
+              "finished": true
+            }
+          }
+        ],
+        "evidence": {
+          "graphWriteCounts": {
+            "beforeSupersede": {
+              "user": 3,
+              "first": 3,
+              "control": 2
+            },
+            "afterSupersede": {
+              "second": 3,
+              "control": 9
+            }
+          },
+          "stream": {
+            "label": "control",
+            "url": "http://127.0.0.1:4212/agent/upg11-c",
+            "startedAt": 301.5,
+            "historyRoles": [
+              "user"
+            ],
+            "resume": null,
+            "clientPendingInterruptIds": [],
+            "honoursSignal": true,
+            "signalAborted": false,
+            "abortedAt": null,
+            "transportAborted": false,
+            "events": [
+              {
+                "type": "RUN_STARTED",
+                "at": 308.59999999403954,
+                "afterConsumerClosed": false
+              },
+              {
+                "type": "TEXT_MESSAGE_START",
+                "at": 308.90000000596046,
+                "afterConsumerClosed": false
+              },
+              {
+                "type": "TEXT_MESSAGE_CONTENT",
+                "at": 309.19999998807907,
+                "afterConsumerClosed": false
+              },
+              {
+                "type": "TEXT_MESSAGE_CONTENT",
+                "at": 350.5,
+                "afterConsumerClosed": false
+              },
+              {
+                "type": "TEXT_MESSAGE_CONTENT",
+                "at": 350.90000000596046,
+                "afterConsumerClosed": false
+              },
+              {
+                "type": "TEXT_MESSAGE_CONTENT",
+                "at": 351,
+                "afterConsumerClosed": false
+              },
+              {
+                "type": "TEXT_MESSAGE_CONTENT",
+                "at": 351.09999999403954,
+                "afterConsumerClosed": false
+              },
+              {
+                "type": "TEXT_MESSAGE_CONTENT",
+                "at": 351.19999998807907,
+                "afterConsumerClosed": false
+              },
+              {
+                "type": "TEXT_MESSAGE_END",
+                "at": 351.2999999821186,
+                "afterConsumerClosed": false
+              },
+              {
+                "type": "TEXT_MESSAGE_START",
+                "at": 352.09999999403954,
+                "afterConsumerClosed": false
+              },
+              {
+                "type": "TEXT_MESSAGE_CONTENT",
+                "at": 352.2999999821186,
+                "afterConsumerClosed": false
+              },
+              {
+                "type": "TEXT_MESSAGE_END",
+                "at": 352.40000000596046,
+                "afterConsumerClosed": false
+              },
+              {
+                "type": "RUN_FINISHED",
+                "at": 352.5,
+                "afterConsumerClosed": false
+              }
+            ],
+            "consumerClosedAt": null,
+            "finished": true,
+            "error": null
+          },
+          "agentRun": {
+            "seq": 3,
+            "script": "upg11-c",
+            "case": null,
+            "threadId": "upg11-y",
+            "runId": "3c3ad4df-3fc3-41dd-aefc-7babaafd7646",
+            "resume": null,
+            "messageRoles": [
+              "user"
+            ],
+            "receivedAt": 1794532793479,
+            "sent": [
+              "RUN_STARTED",
+              "TEXT_MESSAGE_START",
+              "TEXT_MESSAGE_CONTENT",
+              "TEXT_MESSAGE_CONTENT",
+              "TEXT_MESSAGE_CONTENT",
+              "TEXT_MESSAGE_CONTENT",
+              "TEXT_MESSAGE_CONTENT",
+              "TEXT_MESSAGE_CONTENT",
+              "TEXT_MESSAGE_END",
+              "TEXT_MESSAGE_START",
+              "TEXT_MESSAGE_CONTENT",
+              "TEXT_MESSAGE_END",
+              "RUN_FINISHED"
+            ],
+            "waitingAt": null,
+            "completed": true,
+            "clientClosed": false,
+            "error": null
+          },
+          "dom": [
+            {
+              "id": "de70ad71-d190-4ee7-8f04-0ef39d2d3303",
+              "role": "user",
+              "text": "Control question",
+              "content": ""
+            },
+            {
+              "id": "c-1",
+              "role": "assistant",
+              "text": "c-before c-late-0 c-late-1 c-late-2 c-late-3 c-late-4",
+              "content": ""
+            },
+            {
+              "id": "c-2",
+              "role": "assistant",
+              "text": "c-late-message",
+              "content": ""
+            }
+          ]
+        },
+        "verdict": "PASS"
+      },
+      "pageErrors": []
+    },
+    {
+      "id": "UPG-12",
+      "name": "Interrupt approvals through the entity action policy",
+      "status": "PASS",
+      "oracle": {
+        "status": "PASS",
+        "exercised": true,
+        "checks": [
+          {
+            "name": "approve: the interrupt outcome shows the approval UI (EntityInterruptApproval) for that interrupt",
+            "pass": true,
+            "detail": {
+              "shownId": "int-approve",
+              "runStatus": "interrupted"
+            }
+          },
+          {
+            "name": "approve: @ag-ui/client tracked the interrupt as pending before the resume run (it parsed the outcome)",
+            "pass": true,
+            "detail": {
+              "pending": [
+                "int-approve"
+              ]
+            }
+          },
+          {
+            "name": "approve: the resume run's resume[] passed to streamFactory is what the agent received",
+            "pass": true,
+            "detail": {
+              "client": [
+                {
+                  "interruptId": "int-approve",
+                  "status": "resolved",
+                  "payload": {
+                    "entityType": "Invoice",
+                    "entityId": "inv-approve",
+                    "data": {
+                      "status": "approved"
+                    }
+                  }
+                }
+              ],
+              "agent": [
+                {
+                  "interruptId": "int-approve",
+                  "status": "resolved",
+                  "payload": {
+                    "entityType": "Invoice",
+                    "entityId": "inv-approve",
+                    "data": {
+                      "status": "approved"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "approve: resume[] carries the approval: resolved with the approved values",
+            "pass": true,
+            "detail": {
+              "resume": [
+                {
+                  "interruptId": "int-approve",
+                  "status": "resolved",
+                  "payload": {
+                    "entityType": "Invoice",
+                    "entityId": "inv-approve",
+                    "data": {
+                      "status": "approved"
+                    }
+                  }
+                }
+              ],
+              "expectedPayload": {
+                "entityType": "Invoice",
+                "entityId": "inv-approve",
+                "data": {
+                  "status": "approved"
+                }
+              }
+            }
+          },
+          {
+            "name": "approve: the policy audit records one executed decision with those values",
+            "pass": true,
+            "detail": {
+              "auditRecords": [
+                {
+                  "seq": 0,
+                  "at": 331.2000000178814,
+                  "status": "executed",
+                  "name": "prometheus.entity.patch",
+                  "surfaceId": "agui-interrupt:upg12-approve",
+                  "sourceComponentId": "int-approve",
+                  "context": {
+                    "entityType": "Invoice",
+                    "entityId": "inv-approve",
+                    "data": {
+                      "status": "approved"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "approve: the guarded entity now holds the approved values",
+            "pass": true,
+            "detail": {
+              "before": {
+                "status": "draft",
+                "amount": 100
+              },
+              "after": {
+                "status": "approved",
+                "amount": 100
+              }
+            }
+          },
+          {
+            "name": "approve: the resumed run renders",
+            "pass": true,
+            "detail": {
+              "resumeText": "resume resolved {\"entityType\":\"Invoice\",\"entityId\":\"inv-approve\",\"data\":{\"status\":\"approved\"}}"
+            }
+          },
+          {
+            "name": "edit: the interrupt outcome shows the approval UI (EntityInterruptApproval) for that interrupt",
+            "pass": true,
+            "detail": {
+              "shownId": "int-edit",
+              "runStatus": "interrupted"
+            }
+          },
+          {
+            "name": "edit: @ag-ui/client tracked the interrupt as pending before the resume run (it parsed the outcome)",
+            "pass": true,
+            "detail": {
+              "pending": [
+                "int-edit"
+              ]
+            }
+          },
+          {
+            "name": "edit: the resume run's resume[] passed to streamFactory is what the agent received",
+            "pass": true,
+            "detail": {
+              "client": [
+                {
+                  "interruptId": "int-edit",
+                  "status": "resolved",
+                  "payload": {
+                    "entityType": "Invoice",
+                    "entityId": "inv-edit",
+                    "data": {
+                      "amount": 250
+                    }
+                  }
+                }
+              ],
+              "agent": [
+                {
+                  "interruptId": "int-edit",
+                  "status": "resolved",
+                  "payload": {
+                    "entityType": "Invoice",
+                    "entityId": "inv-edit",
+                    "data": {
+                      "amount": 250
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "edit: resume[] carries the approval: resolved with the approved values",
+            "pass": true,
+            "detail": {
+              "resume": [
+                {
+                  "interruptId": "int-edit",
+                  "status": "resolved",
+                  "payload": {
+                    "entityType": "Invoice",
+                    "entityId": "inv-edit",
+                    "data": {
+                      "amount": 250
+                    }
+                  }
+                }
+              ],
+              "expectedPayload": {
+                "entityType": "Invoice",
+                "entityId": "inv-edit",
+                "data": {
+                  "amount": 250
+                }
+              }
+            }
+          },
+          {
+            "name": "edit: the policy audit records one executed decision with those values",
+            "pass": true,
+            "detail": {
+              "auditRecords": [
+                {
+                  "seq": 1,
+                  "at": 454,
+                  "status": "executed",
+                  "name": "prometheus.entity.patch",
+                  "surfaceId": "agui-interrupt:upg12-edit",
+                  "sourceComponentId": "int-edit",
+                  "context": {
+                    "entityType": "Invoice",
+                    "entityId": "inv-edit",
+                    "data": {
+                      "amount": 250
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "edit: the guarded entity now holds the approved values",
+            "pass": true,
+            "detail": {
+              "before": {
+                "status": "draft",
+                "amount": 100
+              },
+              "after": {
+                "status": "draft",
+                "amount": 250
+              }
+            }
+          },
+          {
+            "name": "edit: the resumed run renders",
+            "pass": true,
+            "detail": {
+              "resumeText": "resume resolved {\"entityType\":\"Invoice\",\"entityId\":\"inv-edit\",\"data\":{\"amount\":250}}"
+            }
+          },
+          {
+            "name": "no uncaught page errors",
+            "pass": true,
+            "detail": []
+          }
+        ],
+        "evidence": {
+          "approve": {
+            "interruptShown": {
+              "dataInterruptId": "int-approve",
+              "conversationBeforeDecision": {
+                "runStatus": "interrupted",
+                "error": null,
+                "isLoading": false,
+                "runId": "65a02386-9572-4777-b452-035acbd65b12",
+                "interrupts": [
+                  {
+                    "id": "int-approve",
+                    "reason": "approval",
+                    "message": "Mark invoice inv-approve as approved?",
+                    "metadata": {
+                      "prometheus.action": {
+                        "name": "prometheus.entity.patch",
+                        "context": {
+                          "entityType": "Invoice",
+                          "entityId": "inv-approve",
+                          "data": {
+                            "status": "approved"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ],
+                "decisions": {},
+                "interruptEpoch": 1
+              }
+            },
+            "firstRun": {
+              "seq": 5,
+              "script": "upg12",
+              "case": "approve",
+              "threadId": "upg12-approve",
+              "runId": "65a02386-9572-4777-b452-035acbd65b12",
+              "resume": null,
+              "messageRoles": [
+                "user"
+              ],
+              "receivedAt": 1794532793842,
+              "sent": [
+                "RUN_STARTED",
+                "TEXT_MESSAGE_START",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_END",
+                "RUN_FINISHED"
+              ],
+              "waitingAt": null,
+              "completed": true,
+              "clientClosed": false,
+              "error": null
+            },
+            "resumePayloads": {
+              "agentReceived": [
+                {
+                  "interruptId": "int-approve",
+                  "status": "resolved",
+                  "payload": {
+                    "entityType": "Invoice",
+                    "entityId": "inv-approve",
+                    "data": {
+                      "status": "approved"
+                    }
+                  }
+                }
+              ],
+              "streamFactoryContext": [
+                {
+                  "interruptId": "int-approve",
+                  "status": "resolved",
+                  "payload": {
+                    "entityType": "Invoice",
+                    "entityId": "inv-approve",
+                    "data": {
+                      "status": "approved"
+                    }
+                  }
+                }
+              ]
+            },
+            "clientPendingInterruptIds": [
+              "int-approve"
+            ],
+            "auditRecords": [
+              {
+                "seq": 0,
+                "at": 331.2000000178814,
+                "status": "executed",
+                "name": "prometheus.entity.patch",
+                "surfaceId": "agui-interrupt:upg12-approve",
+                "sourceComponentId": "int-approve",
+                "context": {
+                  "entityType": "Invoice",
+                  "entityId": "inv-approve",
+                  "data": {
+                    "status": "approved"
+                  }
+                }
+              }
+            ],
+            "interruptDecision": {
+              "case": "approve",
+              "interruptId": "int-approve",
+              "entry": {
+                "interruptId": "int-approve",
+                "status": "resolved",
+                "payload": {
+                  "entityType": "Invoice",
+                  "entityId": "inv-approve",
+                  "data": {
+                    "status": "approved"
+                  }
+                }
+              },
+              "policyDecision": {
+                "status": "executed",
+                "name": "prometheus.entity.patch",
+                "surfaceId": "agui-interrupt:upg12-approve",
+                "sourceComponentId": "int-approve",
+                "context": {
+                  "entityType": "Invoice",
+                  "entityId": "inv-approve",
+                  "data": {
+                    "status": "approved"
+                  }
+                }
+              }
+            },
+            "entityDigests": {
+              "before": "c7b62babb07fd835d8cf914bf05e8fcadc34302de5bcf09605dfa90ef934a332",
+              "after": "b3bcfb48ff02227bff7620b9aec918111107eaeab95c6d092c475135403717b6"
+            },
+            "entities": {
+              "before": {
+                "type": "Invoice",
+                "id": "inv-approve",
+                "base": {
+                  "status": "draft",
+                  "amount": 100
+                },
+                "patch": null,
+                "merged": {
+                  "status": "draft",
+                  "amount": 100
+                }
+              },
+              "after": {
+                "type": "Invoice",
+                "id": "inv-approve",
+                "base": {
+                  "status": "draft",
+                  "amount": 100
+                },
+                "patch": {
+                  "status": "approved"
+                },
+                "merged": {
+                  "status": "approved",
+                  "amount": 100
+                }
+              }
+            },
+            "resumeRendered": "resume resolved {\"entityType\":\"Invoice\",\"entityId\":\"inv-approve\",\"data\":{\"status\":\"approved\"}}"
+          },
+          "edit": {
+            "interruptShown": {
+              "dataInterruptId": "int-edit",
+              "conversationBeforeDecision": {
+                "runStatus": "interrupted",
+                "error": null,
+                "isLoading": false,
+                "runId": "0d290d54-dff7-4afd-a910-65a3cd76d98a",
+                "interrupts": [
+                  {
+                    "id": "int-edit",
+                    "reason": "approval",
+                    "message": "Set the amount of invoice inv-edit?",
+                    "metadata": {
+                      "prometheus.action": {
+                        "name": "prometheus.entity.patch",
+                        "context": {
+                          "entityType": "Invoice",
+                          "entityId": "inv-edit",
+                          "data": {
+                            "amount": 100
+                          }
+                        }
+                      }
+                    }
+                  }
+                ],
+                "decisions": {},
+                "interruptEpoch": 1
+              }
+            },
+            "firstRun": {
+              "seq": 7,
+              "script": "upg12",
+              "case": "edit",
+              "threadId": "upg12-edit",
+              "runId": "0d290d54-dff7-4afd-a910-65a3cd76d98a",
+              "resume": null,
+              "messageRoles": [
+                "user"
+              ],
+              "receivedAt": 1794532794020,
+              "sent": [
+                "RUN_STARTED",
+                "TEXT_MESSAGE_START",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_END",
+                "RUN_FINISHED"
+              ],
+              "waitingAt": null,
+              "completed": true,
+              "clientClosed": false,
+              "error": null
+            },
+            "resumePayloads": {
+              "agentReceived": [
+                {
+                  "interruptId": "int-edit",
+                  "status": "resolved",
+                  "payload": {
+                    "entityType": "Invoice",
+                    "entityId": "inv-edit",
+                    "data": {
+                      "amount": 250
+                    }
+                  }
+                }
+              ],
+              "streamFactoryContext": [
+                {
+                  "interruptId": "int-edit",
+                  "status": "resolved",
+                  "payload": {
+                    "entityType": "Invoice",
+                    "entityId": "inv-edit",
+                    "data": {
+                      "amount": 250
+                    }
+                  }
+                }
+              ]
+            },
+            "clientPendingInterruptIds": [
+              "int-edit"
+            ],
+            "auditRecords": [
+              {
+                "seq": 1,
+                "at": 454,
+                "status": "executed",
+                "name": "prometheus.entity.patch",
+                "surfaceId": "agui-interrupt:upg12-edit",
+                "sourceComponentId": "int-edit",
+                "context": {
+                  "entityType": "Invoice",
+                  "entityId": "inv-edit",
+                  "data": {
+                    "amount": 250
+                  }
+                }
+              }
+            ],
+            "interruptDecision": {
+              "case": "edit",
+              "interruptId": "int-edit",
+              "entry": {
+                "interruptId": "int-edit",
+                "status": "resolved",
+                "payload": {
+                  "entityType": "Invoice",
+                  "entityId": "inv-edit",
+                  "data": {
+                    "amount": 250
+                  }
+                }
+              },
+              "policyDecision": {
+                "status": "executed",
+                "name": "prometheus.entity.patch",
+                "surfaceId": "agui-interrupt:upg12-edit",
+                "sourceComponentId": "int-edit",
+                "context": {
+                  "entityType": "Invoice",
+                  "entityId": "inv-edit",
+                  "data": {
+                    "amount": 250
+                  }
+                }
+              }
+            },
+            "entityDigests": {
+              "before": "c7b62babb07fd835d8cf914bf05e8fcadc34302de5bcf09605dfa90ef934a332",
+              "after": "7f285092a2f16ecc507c4c741c9a502c52b804d2432603163fb1fb632f95fbb8"
+            },
+            "entities": {
+              "before": {
+                "type": "Invoice",
+                "id": "inv-edit",
+                "base": {
+                  "status": "draft",
+                  "amount": 100
+                },
+                "patch": null,
+                "merged": {
+                  "status": "draft",
+                  "amount": 100
+                }
+              },
+              "after": {
+                "type": "Invoice",
+                "id": "inv-edit",
+                "base": {
+                  "status": "draft",
+                  "amount": 100
+                },
+                "patch": {
+                  "amount": 250
+                },
+                "merged": {
+                  "status": "draft",
+                  "amount": 250
+                }
+              }
+            },
+            "resumeRendered": "resume resolved {\"entityType\":\"Invoice\",\"entityId\":\"inv-edit\",\"data\":{\"amount\":250}}"
+          }
+        },
+        "verdict": "PASS"
+      },
+      "negativeControl": {
+        "status": "PASS",
+        "exercised": true,
+        "checks": [
+          {
+            "name": "deny: the interrupt outcome shows the approval UI (EntityInterruptApproval) for that interrupt",
+            "pass": true,
+            "detail": {
+              "shownId": "int-deny",
+              "runStatus": "interrupted"
+            }
+          },
+          {
+            "name": "deny: @ag-ui/client tracked the interrupt as pending before the resume run (it parsed the outcome)",
+            "pass": true,
+            "detail": {
+              "pending": [
+                "int-deny"
+              ]
+            }
+          },
+          {
+            "name": "deny: the resume run's resume[] passed to streamFactory is what the agent received",
+            "pass": true,
+            "detail": {
+              "client": [
+                {
+                  "interruptId": "int-deny",
+                  "status": "cancelled",
+                  "payload": {
+                    "reason": "denied-by-user"
+                  }
+                }
+              ],
+              "agent": [
+                {
+                  "interruptId": "int-deny",
+                  "status": "cancelled",
+                  "payload": {
+                    "reason": "denied-by-user"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "deny: deny resumes with a denial (cancelled, denied-by-user)",
+            "pass": true,
+            "detail": {
+              "resume": [
+                {
+                  "interruptId": "int-deny",
+                  "status": "cancelled",
+                  "payload": {
+                    "reason": "denied-by-user"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "deny: deny does not reach the policy (no audit record)",
+            "pass": true,
+            "detail": {
+              "auditRecords": []
+            }
+          },
+          {
+            "name": "deny: the guarded entity is unchanged",
+            "pass": true,
+            "detail": {
+              "before": {
+                "type": "Invoice",
+                "id": "inv-deny",
+                "base": {
+                  "status": "draft",
+                  "amount": 100
+                },
+                "patch": null,
+                "merged": {
+                  "status": "draft",
+                  "amount": 100
+                }
+              },
+              "after": {
+                "type": "Invoice",
+                "id": "inv-deny",
+                "base": {
+                  "status": "draft",
+                  "amount": 100
+                },
+                "patch": null,
+                "merged": {
+                  "status": "draft",
+                  "amount": 100
+                }
+              }
+            }
+          },
+          {
+            "name": "deny: the resumed run renders the denial",
+            "pass": true,
+            "detail": {
+              "resumeText": "resume cancelled {\"reason\":\"denied-by-user\"}"
+            }
+          },
+          {
+            "name": "disallowed: the interrupt outcome shows the approval UI (EntityInterruptApproval) for that interrupt",
+            "pass": true,
+            "detail": {
+              "shownId": "int-disallowed",
+              "runStatus": "interrupted"
+            }
+          },
+          {
+            "name": "disallowed: @ag-ui/client tracked the interrupt as pending before the resume run (it parsed the outcome)",
+            "pass": true,
+            "detail": {
+              "pending": [
+                "int-disallowed"
+              ]
+            }
+          },
+          {
+            "name": "disallowed: the resume run's resume[] passed to streamFactory is what the agent received",
+            "pass": true,
+            "detail": {
+              "client": [
+                {
+                  "interruptId": "int-disallowed",
+                  "status": "cancelled",
+                  "payload": {
+                    "reason": "Entity type is not allowlisted: Ledger",
+                    "code": "unauthorized"
+                  }
+                }
+              ],
+              "agent": [
+                {
+                  "interruptId": "int-disallowed",
+                  "status": "cancelled",
+                  "payload": {
+                    "reason": "Entity type is not allowlisted: Ledger",
+                    "code": "unauthorized"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "disallowed: an approved action on a disallowed entity is refused by policy (audit: denied, unauthorized)",
+            "pass": true,
+            "detail": {
+              "auditRecords": [
+                {
+                  "seq": 2,
+                  "at": 654.3000000119209,
+                  "status": "denied",
+                  "name": "prometheus.entity.patch",
+                  "surfaceId": "agui-interrupt:upg12-disallowed",
+                  "sourceComponentId": "int-disallowed",
+                  "context": {
+                    "entityType": "Ledger",
+                    "entityId": "led-1",
+                    "data": {
+                      "locked": false
+                    }
+                  },
+                  "code": "unauthorized",
+                  "reason": "Entity type is not allowlisted: Ledger"
+                }
+              ]
+            }
+          },
+          {
+            "name": "disallowed: resume[] carries the refusal (cancelled with the policy's code and reason)",
+            "pass": true,
+            "detail": {
+              "resume": [
+                {
+                  "interruptId": "int-disallowed",
+                  "status": "cancelled",
+                  "payload": {
+                    "reason": "Entity type is not allowlisted: Ledger",
+                    "code": "unauthorized"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "disallowed: the disallowed entity is unchanged",
+            "pass": true,
+            "detail": {
+              "before": {
+                "type": "Ledger",
+                "id": "led-1",
+                "base": {
+                  "locked": true,
+                  "balance": 5000
+                },
+                "patch": null,
+                "merged": {
+                  "locked": true,
+                  "balance": 5000
+                }
+              },
+              "after": {
+                "type": "Ledger",
+                "id": "led-1",
+                "base": {
+                  "locked": true,
+                  "balance": 5000
+                },
+                "patch": null,
+                "merged": {
+                  "locked": true,
+                  "balance": 5000
+                }
+              }
+            }
+          }
+        ],
+        "evidence": {
+          "deny": {
+            "interruptShown": {
+              "dataInterruptId": "int-deny",
+              "conversationBeforeDecision": {
+                "runStatus": "interrupted",
+                "error": null,
+                "isLoading": false,
+                "runId": "d9ac666e-8384-4987-a0b4-151fe4217456",
+                "interrupts": [
+                  {
+                    "id": "int-deny",
+                    "reason": "approval",
+                    "message": "Void invoice inv-deny?",
+                    "metadata": {
+                      "prometheus.action": {
+                        "name": "prometheus.entity.patch",
+                        "context": {
+                          "entityType": "Invoice",
+                          "entityId": "inv-deny",
+                          "data": {
+                            "status": "void"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ],
+                "decisions": {},
+                "interruptEpoch": 1
+              }
+            },
+            "firstRun": {
+              "seq": 9,
+              "script": "upg12",
+              "case": "deny",
+              "threadId": "upg12-deny",
+              "runId": "d9ac666e-8384-4987-a0b4-151fe4217456",
+              "resume": null,
+              "messageRoles": [
+                "user"
+              ],
+              "receivedAt": 1794532794147,
+              "sent": [
+                "RUN_STARTED",
+                "TEXT_MESSAGE_START",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_END",
+                "RUN_FINISHED"
+              ],
+              "waitingAt": null,
+              "completed": true,
+              "clientClosed": false,
+              "error": null
+            },
+            "resumePayloads": {
+              "agentReceived": [
+                {
+                  "interruptId": "int-deny",
+                  "status": "cancelled",
+                  "payload": {
+                    "reason": "denied-by-user"
+                  }
+                }
+              ],
+              "streamFactoryContext": [
+                {
+                  "interruptId": "int-deny",
+                  "status": "cancelled",
+                  "payload": {
+                    "reason": "denied-by-user"
+                  }
+                }
+              ]
+            },
+            "clientPendingInterruptIds": [
+              "int-deny"
+            ],
+            "auditRecords": [],
+            "interruptDecision": {
+              "case": "deny",
+              "interruptId": "int-deny",
+              "entry": {
+                "interruptId": "int-deny",
+                "status": "cancelled",
+                "payload": {
+                  "reason": "denied-by-user"
+                }
+              },
+              "policyDecision": null
+            },
+            "entityDigests": {
+              "before": "c7b62babb07fd835d8cf914bf05e8fcadc34302de5bcf09605dfa90ef934a332",
+              "after": "c7b62babb07fd835d8cf914bf05e8fcadc34302de5bcf09605dfa90ef934a332"
+            },
+            "entities": {
+              "before": {
+                "type": "Invoice",
+                "id": "inv-deny",
+                "base": {
+                  "status": "draft",
+                  "amount": 100
+                },
+                "patch": null,
+                "merged": {
+                  "status": "draft",
+                  "amount": 100
+                }
+              },
+              "after": {
+                "type": "Invoice",
+                "id": "inv-deny",
+                "base": {
+                  "status": "draft",
+                  "amount": 100
+                },
+                "patch": null,
+                "merged": {
+                  "status": "draft",
+                  "amount": 100
+                }
+              }
+            },
+            "resumeRendered": "resume cancelled {\"reason\":\"denied-by-user\"}"
+          },
+          "disallowed": {
+            "interruptShown": {
+              "dataInterruptId": "int-disallowed",
+              "conversationBeforeDecision": {
+                "runStatus": "interrupted",
+                "error": null,
+                "isLoading": false,
+                "runId": "74252192-2dec-4a71-91e7-5d1ef5138358",
+                "interrupts": [
+                  {
+                    "id": "int-disallowed",
+                    "reason": "approval",
+                    "message": "Unlock ledger led-1?",
+                    "metadata": {
+                      "prometheus.action": {
+                        "name": "prometheus.entity.patch",
+                        "context": {
+                          "entityType": "Ledger",
+                          "entityId": "led-1",
+                          "data": {
+                            "locked": false
+                          }
+                        }
+                      }
+                    }
+                  }
+                ],
+                "decisions": {},
+                "interruptEpoch": 1
+              }
+            },
+            "firstRun": {
+              "seq": 11,
+              "script": "upg12",
+              "case": "disallowed",
+              "threadId": "upg12-disallowed",
+              "runId": "74252192-2dec-4a71-91e7-5d1ef5138358",
+              "resume": null,
+              "messageRoles": [
+                "user"
+              ],
+              "receivedAt": 1794532794229,
+              "sent": [
+                "RUN_STARTED",
+                "TEXT_MESSAGE_START",
+                "TEXT_MESSAGE_CONTENT",
+                "TEXT_MESSAGE_END",
+                "RUN_FINISHED"
+              ],
+              "waitingAt": null,
+              "completed": true,
+              "clientClosed": false,
+              "error": null
+            },
+            "resumePayloads": {
+              "agentReceived": [
+                {
+                  "interruptId": "int-disallowed",
+                  "status": "cancelled",
+                  "payload": {
+                    "reason": "Entity type is not allowlisted: Ledger",
+                    "code": "unauthorized"
+                  }
+                }
+              ],
+              "streamFactoryContext": [
+                {
+                  "interruptId": "int-disallowed",
+                  "status": "cancelled",
+                  "payload": {
+                    "reason": "Entity type is not allowlisted: Ledger",
+                    "code": "unauthorized"
+                  }
+                }
+              ]
+            },
+            "clientPendingInterruptIds": [
+              "int-disallowed"
+            ],
+            "auditRecords": [
+              {
+                "seq": 2,
+                "at": 654.3000000119209,
+                "status": "denied",
+                "name": "prometheus.entity.patch",
+                "surfaceId": "agui-interrupt:upg12-disallowed",
+                "sourceComponentId": "int-disallowed",
+                "context": {
+                  "entityType": "Ledger",
+                  "entityId": "led-1",
+                  "data": {
+                    "locked": false
+                  }
+                },
+                "code": "unauthorized",
+                "reason": "Entity type is not allowlisted: Ledger"
+              }
+            ],
+            "interruptDecision": {
+              "case": "disallowed",
+              "interruptId": "int-disallowed",
+              "entry": {
+                "interruptId": "int-disallowed",
+                "status": "cancelled",
+                "payload": {
+                  "reason": "Entity type is not allowlisted: Ledger",
+                  "code": "unauthorized"
+                }
+              },
+              "policyDecision": {
+                "status": "denied",
+                "name": "prometheus.entity.patch",
+                "surfaceId": "agui-interrupt:upg12-disallowed",
+                "sourceComponentId": "int-disallowed",
+                "context": {
+                  "entityType": "Ledger",
+                  "entityId": "led-1",
+                  "data": {
+                    "locked": false
+                  }
+                },
+                "code": "unauthorized",
+                "reason": "Entity type is not allowlisted: Ledger"
+              }
+            },
+            "entityDigests": {
+              "before": "431315a9472b0c2e873bfa647caa959b10efcde9dd98d451adff2a0e0d8fe860",
+              "after": "431315a9472b0c2e873bfa647caa959b10efcde9dd98d451adff2a0e0d8fe860"
+            },
+            "entities": {
+              "before": {
+                "type": "Ledger",
+                "id": "led-1",
+                "base": {
+                  "locked": true,
+                  "balance": 5000
+                },
+                "patch": null,
+                "merged": {
+                  "locked": true,
+                  "balance": 5000
+                }
+              },
+              "after": {
+                "type": "Ledger",
+                "id": "led-1",
+                "base": {
+                  "locked": true,
+                  "balance": 5000
+                },
+                "patch": null,
+                "merged": {
+                  "locked": true,
+                  "balance": 5000
+                }
+              }
+            },
+            "resumeRendered": "resume cancelled {\"reason\":\"Entity type is not allowlisted: Ledger\",\"code\":\"unauthorized\"}"
+          }
+        },
+        "verdict": "PASS"
+      },
+      "pageErrors": []
+    }
+  ],
+  "problems": [],
+  "playwright": {
+    "exitCode": 0,
+    "resultsFile": ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191816-boundary/agui-run-stack-artifacts/results.jsonl"
+  },
+  "commands": [
+    {
+      "label": "build entity-graph-core",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@prometheus-ags/entity-graph-core",
+        "build"
+      ],
+      "env": {},
+      "startedAt": "2026-11-13T01:19:40.863Z",
+      "exitCode": 0
+    },
+    {
+      "label": "build a2ui-react",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@prometheus-ags/a2ui-react",
+        "build"
+      ],
+      "env": {},
+      "startedAt": "2026-11-13T01:19:43.381Z",
+      "exitCode": 0
+    },
+    {
+      "label": "UPG-10/11/12 (Chromium)",
+      "argv": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "--config",
+        "tests/browser/agui-run-stack.playwright.config.ts"
+      ],
+      "env": {
+        "AGUI_RUN_STACK_RESULTS": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191816-boundary/agui-run-stack-artifacts/results.jsonl",
+        "AGUI_RUN_STACK_OUT_DIR": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191816-boundary/agui-run-stack-artifacts",
+        "AGUI_RUN_STACK_RESOLUTION": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191816-boundary/agui-run-stack-artifacts/page-resolution.json",
+        "AGUI_RUN_STACK_PORT": "4211",
+        "AGUI_RUN_STACK_AGENT_PORT": "4212"
+      },
+      "startedAt": "2026-11-13T01:19:47.777Z",
+      "exitCode": 0
+    }
+  ],
+  "status": "PASS",
+  "exitCode": 0
+}

@@ -1,0 +1,27 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  },
+  "checked_classes": [
+    "Spec violations \u2014 Checked the example migration hunks against UPG-14 and UPG-18: shown producers use final 1.0 envelopes and @path bindings, Flutter dependencies replace genui, and the expanded integration scenario exercises allowed and denied actions plus hostile-component refusal. The packet contains no execution evidence, so gate success is not established.",
+    "Correctness \u2014 Checked surface replacement, processor-error handling, root-component validation, notifier projection, action forwarding, and disposal. No concrete new defect is demonstrated by the supplied code.",
+    "Regressions \u2014 Checked renderer replacement, fixture renames and updated imports, surface clearing, and capability negotiation. The supplied hunks do not establish an unintended behavior regression beyond the legacy-test incompatibility already explicitly resolved in the prior review.",
+    "Security \u2014 Checked the actual agent-output and renderer-action boundaries: Flutter narrows components and removes catalog functions, restricts message kinds, checks the registered surface, and routes actions through application policy. A2A artifact selection now recognizes metadata.mimeType. No concrete authorization bypass is established.",
+    "Constraint breaches \u2014 Checked changes for unrelated refactoring, newly introduced isolated tests, UI-owned protocol parsing, and direct UI-to-external communication. The added test coverage is in the integration entry, parsing moves into the store, and no new breach is demonstrated.",
+    "Silent failure \u2014 Checked artifact filtering, capability-gated artifact emission, processor refusals, and empty or incomplete surface handling. No demonstrably swallowed failure is established without assuming behavior of collaborators absent from the packet."
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

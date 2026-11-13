@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "release": "4.4.0",
+  "release": "5.0.0",
   "contract": "release/v3-release-contract.json",
   "status": "in-progress",
   "semanticContract": {
@@ -983,7 +983,7 @@
             "examples/shared/scenario-contract.schema.json",
             "scripts/verify-example-coverage.mjs"
           ],
-          "applicability": "Runs keyless task states, A2UI 0.9.1 surface identity, allowlist approval, denial, and malformed rejection."
+          "applicability": "Runs keyless task states, A2UI 1.0 surface identity, allowlist approval, denial, and malformed rejection."
         }
       ],
       "releaseEvidence": [
@@ -998,7 +998,7 @@
             "scripts/verify-a2ui-protocol-bridge.mjs",
             ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-a2ui-protocol-bridge/visual-evidence.json"
           ],
-          "applicability": "Official v0.9.1 messages render through the official engine and graph actions cross an allowlisted, default-deny application policy in packed and real-browser receipts. A2A transport conformance is certified by its separate implemented gate."
+          "applicability": "Official A2UI 1.0 messages render through the official engine and graph actions cross an allowlisted, default-deny application policy; 1.0 receipts are produced by the 5.0 release gate. A2A transport conformance is certified by its separate implemented gate."
         },
         {
           "kind": "protocol",
@@ -1213,7 +1213,7 @@
             "examples/shared/scenario-contract.schema.json",
             "scripts/verify-example-coverage.mjs"
           ],
-          "applicability": "Runs application-owned canonical graph and experimental genui maturity semantics."
+          "applicability": "Runs application-owned canonical graph and native A2UI 1.0 rendering semantics."
         }
       ],
       "releaseEvidence": [
@@ -1654,17 +1654,18 @@
         "kind": "integration",
         "status": "implemented",
         "ownerChange": "v3-flutter-riverpod-a2ui-example",
-        "command": "pnpm run dart:ci",
+        "command": "pnpm run verify:flutter-a2ui-v1",
         "paths": [
+          "scripts/verify-flutter-a2ui-v1.mjs",
+          "examples/flutter-riverpod/integration_test/mobile_smoke_test.dart",
           "examples/flutter-riverpod/test/a2ui_contract_test.dart",
           "examples/flutter-riverpod/test/showcase_controller_test.dart",
           "examples/flutter-riverpod/test/showcase_widget_test.dart",
-          "examples/flutter-riverpod/integration_test/mobile_smoke_test.dart",
           ".github/workflows/flutter-example-platform.yml",
           ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-riverpod-a2ui-example/task-3-tests.md",
           ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-riverpod-a2ui-example/task-5-clean-gates.md"
         ],
-        "applicability": "Flutter 3.44.8 stable passes generation, format, analysis, 70 package tests, and 25 showcase tests covering protocol rejection, policy, graph/Riverpod behavior, optimistic/offline CRUD, relationships, realtime, lifecycle states, accessibility semantics, and three goldens. The shared application smoke flow also passes on an iOS 26.5 simulator and Android API 35 emulator."
+        "applicability": "A2UI 1.0 (phase-a2ui-1-0-agui-upgrade, UPG-18): the verifier checks the a2ui_flutter 0.3.0 and a2ui_core 0.7.0 pins with no genui, then runs the integration test on a booted iOS simulator: the official renderer draws the task surface, a denied action leaves a denial receipt and no graph change, an allowed action leaves a receipt and the graph change, and a batch with an unknown component is refused with nothing rendered or written; a flipped copy of the test must fail. The Flutter 3.44.8 test counts, goldens and Android emulator lane listed in the 3.0 evidence predate the A2UI 1.0 migration."
       },
       "visualEvidence": {
         "kind": "visual",

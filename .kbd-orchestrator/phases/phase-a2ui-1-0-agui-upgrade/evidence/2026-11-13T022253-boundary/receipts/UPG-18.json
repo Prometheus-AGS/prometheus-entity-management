@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "scenario": "UPG-18",
+  "name": "Flutter showcase renders A2UI 1.0 final through a2ui_flutter under the Riverpod action policy",
+  "status": "PASS",
+  "steps": [
+    {
+      "step": 13,
+      "argv": "pnpm run verify:flutter-a2ui-v1 -- --report \"$E/flutter-a2ui-v1.json\"",
+      "exitCode": 0,
+      "startedAt": "2026-11-13T08:25:16Z",
+      "completedAt": "2026-11-13T08:27:57Z"
+    }
+  ],
+  "contractDigest": "bfa43f3bad025a031ce5b3c6175e12453baefb3ef41ac25a9ab420a7001badb1",
+  "source": {
+    "gitHead": "a8f543dc915fccc7bbaf51dab10ec693db635971",
+    "workingTreeDiffSha256": "3028ea9704d458e452db81b282419ab633312b49eb9859e550608c3cf8d439c9",
+    "note": "uncommitted working tree on top of gitHead"
+  },
+  "evidence": [
+    {
+      "path": "flutter-a2ui-v1.json",
+      "sha256": "294ea25ee16fa9e12490370953472766803eee66b2a0ba89f8f7aa541626710c"
+    },
+    {
+      "path": "logs/step-13.log",
+      "sha256": "1f8325c5c59c5beda96b006836708ea6fd9d2a3918778626cc539abf7e3c57e2"
+    }
+  ]
+}

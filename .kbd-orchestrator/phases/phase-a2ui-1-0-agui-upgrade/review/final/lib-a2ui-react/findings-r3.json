@@ -1,0 +1,36 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/use-chat-session.ts",
+      "claim": "An interrupt decision that finishes after its run is superseded can decide and resume a different run that reuses the same interrupt ID.",
+      "evidence": "resolveInterrupt claims an interrupt, awaits actionPolicy.handle, and then calls store.decideInterrupt(entry) without checking the original run's identity. beginRun clears claims and decisions, while decideInterrupt checks only runStatus and interruptId. If another send produces a new interrupted run with the same ID during that await, the old decision is recorded against the new run and store.resume supersedes it.",
+      "suggested_fix": "Bind interrupt claims and decisions to an explicit paused-run generation and verify that generation after every asynchronous boundary before recording a decision or resuming."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/use-chat-session.ts",
+      "claim": "Exceptions from interrupt mapping or decision callbacks permanently strand a claimed interrupt.",
+      "evidence": "resolveInterrupt calls store.claimInterrupt before invoking interruptToAction and onInterruptDecision, but neither callback is covered by the policy try/catch. If either throws, store.decideInterrupt is never reached. claimInterrupt subsequently rejects every retry because record.claims still includes the ID, leaving UPG-12's approval/resume path stuck.",
+      "suggested_fix": "Handle mapping and notification failures explicitly, ensuring that every acquired claim either records a terminal decision or is released safely; do not allow a notification callback to prevent recording and resuming an already executed policy decision."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/chat/conversation-store.ts",
+      "claim": "Agent state from previous snapshots and cleared conversations remains in the base supplied to later state deltas.",
+      "evidence": "agentState is initialized once per store, STATE_SNAPSHOT updates it with Object.assign rather than replacing its contents, and neither beginRun nor clear resets it. STATE_DELTA then passes this retained object to applyAgUiDelta. For example, a snapshot containing an order followed by an empty snapshot still leaves that order in the delta base. The previous hook initialized agentState inside processStream, so the change also introduces cross-run retention.",
+      "suggested_fix": "Make snapshots replace the complete retained state, clear it when the conversation is cleared, and define the run/resume lifecycle for the delta base explicitly rather than retaining arbitrary prior-run keys."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

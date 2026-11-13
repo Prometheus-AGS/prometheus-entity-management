@@ -1,5 +1,5 @@
 import {
-  PROMETHEUS_A2UI_PROTOCOL_VERSION,
+  PROMETHEUS_A2UI_V1_PROTOCOL_VERSION,
   createPrometheusA2uiRuntime,
 } from "@prometheus-ags/a2ui-react";
 import type { PrometheusA2UIMessage } from "@prometheus-ags/entity-graph-a2a";
@@ -17,7 +17,7 @@ export function clearAgentSurfaces(): void {
   const messages: PrometheusA2UIMessage[] = agentA2uiRuntime
     .getSurfaces()
     .map((surface) => ({
-      version: PROMETHEUS_A2UI_PROTOCOL_VERSION,
+      version: PROMETHEUS_A2UI_V1_PROTOCOL_VERSION,
       deleteSurface: { surfaceId: surface.id },
     }));
   if (messages.length > 0) agentA2uiRuntime.processMessages(messages);

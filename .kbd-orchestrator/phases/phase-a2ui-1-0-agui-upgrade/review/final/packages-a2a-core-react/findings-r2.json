@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/entity-graph-a2a/src/handler.ts",
+      "line": 536,
+      "claim": "Inbound A2UI handler replies are silently discarded when the client offers a valid 1.0 catalog other than the reference agent's hard-coded catalog.",
+      "evidence": "The inbound branch calls handleInboundA2UI before gating all returned replies with offersA2UICatalog(requestContext.userMessage, PROMETHEUS_A2UI_CATALOG_ID). For a client advertising supportedCatalogIds: [\"urn:app:custom\"], an authorized callAgentFunction can therefore execute in the application handler while its agentFunctionResponse is discarded. A2UIInboundHandler.handle documents that returned messages are sent when the turn offered A2UI 1.0 capabilities; it does not restrict handlers to the deterministic reference catalog.",
+      "suggested_fix": "Separate inbound reply negotiation from deterministic surface generation: require a 1.0 capabilities entry for inbound replies, and check catalog compatibility against catalogs actually used by any returned surface messages rather than the reference agent's fixed catalog. Preserve function responses for clients using custom catalogs."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

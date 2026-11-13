@@ -5,7 +5,10 @@
  */
 import { Role, SendMessageRequest } from "@a2a-js/sdk";
 import {
+  A2UI_RENDERER_CAPABILITIES_KEY,
+  PROMETHEUS_A2UI_CATALOG_ID,
   PROMETHEUS_A2UI_EXTENSION_URI,
+  PROMETHEUS_A2UI_PROTOCOL_VERSION,
   PROMETHEUS_GRAPH_EXTENSION_URI,
   type A2ACaller,
   type A2AJsonRpcResponse,
@@ -59,7 +62,20 @@ export function graphRequestMessage(
   };
 }
 
-export function surfaceRequestMessage(text: string): Message {
+/** Minimal A2UI 1.0 offer, used when the caller has no runtime to describe. */
+const DEFAULT_RENDERER_CAPABILITIES = {
+  [PROMETHEUS_A2UI_PROTOCOL_VERSION]: { supportedCatalogIds: [PROMETHEUS_A2UI_CATALOG_ID] },
+};
+
+/**
+ * A user message asking for a surface. Every such message offers the renderer's
+ * A2UI capabilities (per-turn rule of the A2UI A2A extension); pass
+ * `runtime.getClientCapabilities()` to describe a live runtime.
+ */
+export function surfaceRequestMessage(
+  text: string,
+  capabilities: object = DEFAULT_RENDERER_CAPABILITIES,
+): Message {
   messageCounter += 1;
   return {
     role: Role.ROLE_USER,
@@ -67,7 +83,7 @@ export function surfaceRequestMessage(text: string): Message {
     taskId: "",
     contextId: "",
     parts: [textPart(text)],
-    metadata: {},
+    metadata: { [A2UI_RENDERER_CAPABILITIES_KEY]: capabilities },
     extensions: [PROMETHEUS_A2UI_EXTENSION_URI],
     referenceTaskIds: [],
   };

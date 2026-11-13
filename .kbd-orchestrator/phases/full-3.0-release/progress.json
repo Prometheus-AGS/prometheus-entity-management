@@ -1,16 +1,18 @@
 {
   "schemaVersion": "2",
   "generatedBy": "kbd-runtime",
-  "sourceRevision": 353,
-  "derivedRevision": 353,
+  "projectionContractVersion": 2,
+  "sourceRevision": 854,
+  "derivedRevision": 854,
   "frontier": {
-    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 353
+    "d144c44a-0d69-46eb-ad0b-88d07bbd014e": 331,
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 523
   },
-  "conflictCount": 0,
+  "conflictCount": 6,
   "phase": "full-3.0-release",
   "phaseId": "full-3.0-release",
   "parentPhase": null,
-  "last_updated": "2026-08-29T22:01:30.676159Z",
+  "last_updated": "2026-11-13T07:27:21.365082Z",
   "last_updated_by": "kbd-runtime",
   "changes_total": 29,
   "changes_completed": 7,
@@ -21,6 +23,35 @@
     "implementation": {
       "completed": 7,
       "total": 29,
+      "status": "IN_PROGRESS"
+    },
+    "evidence": {
+      "status": "NOT_TRACKED",
+      "summary": null,
+      "blockers": []
+    },
+    "certification": {
+      "status": "NOT_TRACKED",
+      "summary": null,
+      "blockers": []
+    },
+    "publication": {
+      "status": "NOT_TRACKED",
+      "summary": null,
+      "blockers": []
+    }
+  },
+  "completionScopes": {
+    "completion": "phase",
+    "runCompletion": "run"
+  },
+  "runCompletion": {
+    "scope": "run",
+    "runId": "full-3.0-release-20260801T113424Z",
+    "primaryCounter": "implementation",
+    "implementation": {
+      "completed": 52,
+      "total": 75,
       "status": "IN_PROGRESS"
     },
     "evidence": {

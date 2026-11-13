@@ -1,0 +1,28 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  },
+  "checked_classes": [
+    "Spec violations \u2014 Checked the changed A2A extension constants, DataPart representation, per-turn capability gating and inbound authorization against UPG-9; no concrete contradiction is established by the supplied hunks.",
+    "Correctness \u2014 Checked message extraction order, capability predicates, per-message authorization and handler-reply version enforcement; no demonstrable logic error is present in the supplied changes.",
+    "Regressions \u2014 Checked the removed private artifact wrapper, protocol-version changes and tightened AG-UI peer ranges; these are explicitly included in the requested 5.0.0 breaking-change scope and documented in the changed READMEs.",
+    "Security \u2014 Checked the client-to-agent DataPart trust boundary; inbound records require the expected protocol version and an affirmative application authorization decision before handling, and a missing handler rejects extracted inbound messages.",
+    "Constraint breaches \u2014 Checked the visible changes for unrelated refactoring, added isolated tests, hidden business state and secret logging; none is shown. Execution and publication discipline cannot be determined from this diff.",
+    "Silent failure \u2014 Checked inbound denial and invalid handler replies; wholly refused extracted messages reject the request, and wrong-version replies throw rather than being silently discarded. Malformed DataPart entries are explicitly documented as ignored by the extraction helper.",
+    "Cross-package integration \u2014 Checked the visible exports, SDK dependency pin and public option/type wiring; the new helpers and inbound handler are exported and connected to the executor. Runtime and packed-consumer verification results are not supplied in this packet."
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

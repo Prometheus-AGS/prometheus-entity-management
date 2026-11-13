@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../a2ui/domain/a2ui_contract.dart';
-import '../../a2ui/infrastructure/deterministic_fixture.dart';
 import '../../a2ui/presentation/safe_a2ui_surface.dart';
+import '../application/agent_surface_provider.dart';
 import '../application/showcase_controller.dart';
 import '../domain/demo_models.dart';
 
@@ -526,6 +526,7 @@ final class _AgentWorkspace extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.read(showcaseControllerProvider.notifier);
+    final agentSurface = ref.watch(agentSurfaceStoreProvider);
     final task = ref.watch(
       entityProvider<DemoTask>(
         type: demoTaskType,
@@ -546,10 +547,10 @@ final class _AgentWorkspace extends ConsumerWidget {
         ),
         const SizedBox(height: 6),
         const Text(
-          'The app validates A2UI 1.0-RC surfaces, then adapts them to the '
-          'published GenUI v0.9 renderer boundary. An atomic '
-          'preflight restricts widgets and declared actions; application policy '
-          'then validates tenant, payload, approval, and mutation intent.',
+          'The official A2UI Flutter renderer consumes A2UI 1.0 natively. Its '
+          'processor validates every batch atomically against a narrowed basic '
+          'catalog; application policy then validates tenant, payload, '
+          'approval, and mutation intent.',
         ),
         const SizedBox(height: 16),
         SwitchListTile(
@@ -564,13 +565,7 @@ final class _AgentWorkspace extends ConsumerWidget {
         Card(
           child: Padding(
             padding: const EdgeInsets.all(20),
-            child: SafeA2uiSurface(
-              key: ValueKey(state.showHostileFixture),
-              source: state.showHostileFixture
-                  ? hostileUnknownComponentFixture
-                  : sharedTaskReviewFixture,
-              onAction: controller.handleAgentAction,
-            ),
+            child: SafeA2uiSurface(store: agentSurface),
           ),
         ),
         const SizedBox(height: 16),

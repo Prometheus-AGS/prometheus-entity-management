@@ -1,0 +1,168 @@
+{
+  "node": "v26.5.0",
+  "headlessEntry": "@prometheus-ags/a2ui-react/headless",
+  "resolvedEntry": "/private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/a2ui-v1-headless-twvxVR/consumer/node_modules/.pnpm/@prometheus-ags+a2ui-react@file+..+..+..+..+..+..+..+..+var+folders+ln+0wnpd96j26z2qhvx_e7c9c496ea83f098335719d69aeca762/node_modules/@prometheus-ags/a2ui-react/dist/headless.mjs",
+  "resolvedEntryDigest": "a098575cb1006df9667a7b4161e3f951ffbe5ccef890ddd78986293a744d15bb",
+  "packageConstants": {
+    "PROMETHEUS_A2UI_V1_CATALOG_ID": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+    "PROMETHEUS_A2UI_CATALOG_ID": "urn:prometheus-ags:a2ui:catalog:v3"
+  },
+  "oracle": {
+    "observed": {
+      "exportDigest": "4a1c0fbd6f2f738f6f39f3f1a2f552fc6e9e53c639f9c46f9cb8fa808acced59",
+      "reExportDigest": "4a1c0fbd6f2f738f6f39f3f1a2f552fc6e9e53c639f9c46f9cb8fa808acced59",
+      "exported": {
+        "surfaceId": "upg13",
+        "orphans": [],
+        "messages": [
+          {
+            "version": "1.0",
+            "createSurface": {
+              "surfaceId": "upg13",
+              "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+              "sendDataModel": true,
+              "components": [
+                {
+                  "children": [
+                    "title",
+                    "status"
+                  ],
+                  "id": "root",
+                  "component": "Column"
+                },
+                {
+                  "text": "Shipment",
+                  "id": "title",
+                  "component": "Text"
+                },
+                {
+                  "text": {
+                    "@path": "/status"
+                  },
+                  "id": "status",
+                  "component": "Text"
+                }
+              ],
+              "dataModel": {
+                "status": "in transit",
+                "items": [
+                  {
+                    "sku": "A-1",
+                    "qty": 2
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "checks": [
+      {
+        "name": "packed headless entry resolves inside the scratch consumer",
+        "pass": true,
+        "detail": "/private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/a2ui-v1-headless-twvxVR/consumer/node_modules/.pnpm/@prometheus-ags+a2ui-react@file+..+..+..+..+..+..+..+..+var+folders+ln+0wnpd96j26z2qhvx_e7c9c496ea83f098335719d69aeca762/node_modules/@prometheus-ags/a2ui-react/dist/headless.mjs"
+      },
+      {
+        "name": "package catalog ids match the fixtures",
+        "pass": true
+      },
+      {
+        "name": "export is one or more 1.0 messages",
+        "pass": true
+      },
+      {
+        "name": "export carries no theme",
+        "pass": true
+      },
+      {
+        "name": "export keeps every fixture component id",
+        "pass": true
+      },
+      {
+        "name": "export keeps the fixture data values",
+        "pass": true
+      },
+      {
+        "name": "rebuilt surface re-exports byte-identically",
+        "pass": true,
+        "detail": {
+          "exportDigest": "4a1c0fbd6f2f738f6f39f3f1a2f552fc6e9e53c639f9c46f9cb8fa808acced59",
+          "reExportDigest": "4a1c0fbd6f2f738f6f39f3f1a2f552fc6e9e53c639f9c46f9cb8fa808acced59"
+        }
+      }
+    ]
+  },
+  "negativeControl": {
+    "exercised": true,
+    "observed": {
+      "exportDigest": "096bbf9a7237a9ddfe7bce65b2a925fa792e95b14ccbe863a4f0cb082cd3d88f",
+      "reExportDigest": "096bbf9a7237a9ddfe7bce65b2a925fa792e95b14ccbe863a4f0cb082cd3d88f",
+      "themes": [
+        {
+          "primaryColor": "#3366ff"
+        }
+      ],
+      "exported": {
+        "surfaceId": "upg13-legacy",
+        "orphans": [],
+        "messages": [
+          {
+            "version": "v0.9.1",
+            "createSurface": {
+              "surfaceId": "upg13-legacy",
+              "catalogId": "urn:prometheus-ags:a2ui:catalog:v3",
+              "theme": {
+                "primaryColor": "#3366ff"
+              },
+              "sendDataModel": false
+            }
+          },
+          {
+            "version": "v0.9.1",
+            "updateComponents": {
+              "surfaceId": "upg13-legacy",
+              "components": [
+                {
+                  "text": "Legacy",
+                  "id": "root",
+                  "component": "Text"
+                }
+              ]
+            }
+          },
+          {
+            "version": "v0.9.1",
+            "updateDataModel": {
+              "surfaceId": "upg13-legacy",
+              "path": "/",
+              "value": {
+                "note": "kept"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "checks": [
+      {
+        "name": "v0.9.1 export keeps the theme",
+        "pass": true,
+        "detail": [
+          {
+            "primaryColor": "#3366ff"
+          }
+        ]
+      },
+      {
+        "name": "v0.9.1 round trip is byte-identical (theme survives the rebuild)",
+        "pass": true,
+        "detail": {
+          "exportDigest": "096bbf9a7237a9ddfe7bce65b2a925fa792e95b14ccbe863a4f0cb082cd3d88f",
+          "reExportDigest": "096bbf9a7237a9ddfe7bce65b2a925fa792e95b14ccbe863a4f0cb082cd3d88f"
+        }
+      }
+    ]
+  },
+  "status": "completed"
+}

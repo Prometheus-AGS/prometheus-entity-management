@@ -109,6 +109,9 @@ async function writeConsumer(directory, tarballs) {
       },
     },
   };
+  // Pin the consumer to the repository's pnpm: outside a project corepack falls back to its
+  // last-known-good release, which may not be launchable on this machine.
+  manifest.packageManager = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8")).packageManager;
   await writeFile(join(directory, "package.json"), `${JSON.stringify(manifest, null, 2)}\n`);
 
   await writeFile(

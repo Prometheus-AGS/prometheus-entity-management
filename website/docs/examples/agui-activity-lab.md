@@ -12,7 +12,8 @@ does to an agent stream: redelivery, reordering, gaps, retries and floods.
 
 - The **producer** is a plain `node:http` server that streams AG-UI events over
   Server-Sent Events. Every event is checked against the `@ag-ui/core` 1.0
-  schemas first, so the runtime sees a valid AG-UI stream.
+  schemas first, so the runtime sees a valid AG-UI stream. Its A2UI envelopes use
+  `version: "1.0"` against the 1.0 catalog.
 - The **consumer** is a Vite and React app. A store owns the connections and the
   network calls, a hook feeds events to the runtime, and the components only
   render, following the repository's Components → Hooks → Stores → Services flow.

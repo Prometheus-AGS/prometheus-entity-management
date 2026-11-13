@@ -34,25 +34,25 @@ export function createTaskReviewSurface(): readonly PrometheusA2UIMessage[] {
               "eyebrow",
               "heading",
               "summary",
-              "update-button",
-              "update-label",
-              "archive-button",
-              "archive-label",
-              "delete-button",
-              "delete-label",
-              "invalid-button",
-              "invalid-label",
-              "unknown-button",
-              "unknown-label",
+              "update_button",
+              "update_label",
+              "archive_button",
+              "archive_label",
+              "delete_button",
+              "delete_label",
+              "invalid_button",
+              "invalid_label",
+              "unknown_button",
+              "unknown_label",
             ],
           },
           { id: "eyebrow", component: "Text", text: "AGENT RECOMMENDATION", variant: "caption" },
-          { id: "heading", component: "Text", text: { path: "/heading" }, variant: "h2" },
-          { id: "summary", component: "Text", text: { path: "/summary" }, variant: "body" },
+          { id: "heading", component: "Text", text: { "@path": "/heading" } },
+          { id: "summary", component: "Text", text: { "@path": "/summary" }, variant: "body" },
           {
-            id: "update-button",
+            id: "update_button",
             component: "Button",
-            child: "update-label",
+            child: "update_label",
             action: {
               event: {
                 name: "task.update",
@@ -64,11 +64,11 @@ export function createTaskReviewSurface(): readonly PrometheusA2UIMessage[] {
               },
             },
           },
-          { id: "update-label", component: "Text", text: "Mark task done" },
+          { id: "update_label", component: "Text", text: "Mark task done" },
           {
-            id: "archive-button",
+            id: "archive_button",
             component: "Button",
-            child: "archive-label",
+            child: "archive_label",
             action: {
               event: {
                 name: "task.archive",
@@ -79,11 +79,11 @@ export function createTaskReviewSurface(): readonly PrometheusA2UIMessage[] {
               },
             },
           },
-          { id: "archive-label", component: "Text", text: "Archive with approval" },
+          { id: "archive_label", component: "Text", text: "Archive with approval" },
           {
-            id: "delete-button",
+            id: "delete_button",
             component: "Button",
-            child: "delete-label",
+            child: "delete_label",
             action: {
               event: {
                 name: "task.delete",
@@ -94,11 +94,11 @@ export function createTaskReviewSurface(): readonly PrometheusA2UIMessage[] {
               },
             },
           },
-          { id: "delete-label", component: "Text", text: "Attempt denied delete" },
+          { id: "delete_label", component: "Text", text: "Attempt denied delete" },
           {
-            id: "invalid-button",
+            id: "invalid_button",
             component: "Button",
-            child: "invalid-label",
+            child: "invalid_label",
             action: {
               event: {
                 name: "task.update",
@@ -109,11 +109,11 @@ export function createTaskReviewSurface(): readonly PrometheusA2UIMessage[] {
               },
             },
           },
-          { id: "invalid-label", component: "Text", text: "Send invalid update" },
+          { id: "invalid_label", component: "Text", text: "Send invalid update" },
           {
-            id: "unknown-button",
+            id: "unknown_button",
             component: "Button",
-            child: "unknown-label",
+            child: "unknown_label",
             action: {
               event: {
                 name: "system.run",
@@ -121,7 +121,7 @@ export function createTaskReviewSurface(): readonly PrometheusA2UIMessage[] {
               },
             },
           },
-          { id: "unknown-label", component: "Text", text: "Attempt undeclared action" },
+          { id: "unknown_label", component: "Text", text: "Attempt undeclared action" },
         ],
       },
     },

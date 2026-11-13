@@ -1,0 +1,36 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "tests/browser/a2ui-examples.spec.ts",
+      "claim": "The activity-lab acceptance flow treats receipt of an HTTP POST as successful action completion without checking that the action executed.",
+      "evidence": "UPG-14 requires each example to complete one action. The lab test checks only that /control/envelopes contains one entry and that the page displays HTTP 200, then assigns capture.action unconditionally. scripts/verify-a2ui-examples.mjs accepts any truthy capture.action. No assertion checks the received action name, policy decision, or execution effect, so a posted but denied action satisfies this gate.",
+      "suggested_fix": "Assert that the received envelope contains lab.ping and observe the application's executed policy receipt or action effect before setting capture.action."
+    },
+    {
+      "severity": "WARNING",
+      "file": "tests/a2ui-v1/headless-lane.mjs",
+      "claim": "The headless round-trip oracle can pass after export silently discards the surface's components or data.",
+      "evidence": "The UPG-13 fixture includes Shipment, a bound status, and nested items data, but the oracle checks only that export contains at least one 1.0 message, contains no theme, and equals its own re-export. An exporter returning just a stable createSurface message can satisfy all of those checks without preserving the fixture.",
+      "suggested_fix": "Check the exported and rebuilt surface against the fixture's expected component definitions and data model in addition to checking byte-identical re-export."
+    },
+    {
+      "severity": "WARNING",
+      "file": "scripts/verify-a2ui-visual-evidence.mjs",
+      "claim": "The captured-evidence verifier ignores the supporting artifact hashes and observed wire versions recorded by the capture.",
+      "evidence": "capture-a2ui-visual.mjs records supportingArtifacts with the entity-graph-core digest and page.observedEnvelopeVersions, but verifyCapturedEvidence never validates either field. verifyArtifact checks only manifest.artifact, and the protocol check merely compares manifest.protocol with the page's displayed chip. Evidence therefore remains accepted after the supporting package changes, or when the captured wire versions disagree with the displayed protocol.",
+      "suggested_fix": "Verify each supportingArtifacts entry against the current built file and require a nonempty observedEnvelopeVersions set matching the intended protocol."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

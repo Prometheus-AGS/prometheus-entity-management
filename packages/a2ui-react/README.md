@@ -1,12 +1,12 @@
 # @prometheus-ags/a2ui-react
 
-Strict A2UI v1.0 release-candidate compatibility for React over the maintained
-official v0.9.1 renderer, with a default-deny Prometheus entity-graph action
-bridge and an idempotent AG-UI A2UI activity transport (AG-UI 0.0.59 through
-1.x).
+A2UI 1.0 final (and v0.9.1) for React over the official `@a2ui/*` 0.15.0
+processor, with a default-deny Prometheus entity-graph action bridge, an
+idempotent AG-UI 1.0 A2UI activity transport and AG-UI chat components.
 
-> This package carries a 1.0-RC compatibility boundary. It does not claim an
-> unpublished native upstream v1 renderer.
+> Upgrading from 4.x? The wire format, several public types and the AG-UI chat
+> API changed in 5.0.0. See the migration guide on the documentation site
+> (**Migration > Migrate to 5.0**).
 
 Guided documentation, with diagrams of the flows below, is on the documentation
 site under **A2UI and AG-UI** (`website/docs/a2ui/`). This README is the
@@ -16,13 +16,13 @@ reference.
 
 | Import | Contract |
 | --- | --- |
-| `@prometheus-ags/a2ui-react` | A2UI v1.0-RC and v0.9.1 messages, catalogs, surfaces, React rendering, action policy, and AG-UI A2UI activities |
-| `@prometheus-ags/a2ui-react/ag-ui` | Compatibility APIs for the pre-3.0 AG-UI chat/state-event surface |
+| `@prometheus-ags/a2ui-react` | A2UI 1.0 and v0.9.1 messages, catalogs, surfaces, React rendering, action policy, and AG-UI A2UI activities |
+| `@prometheus-ags/a2ui-react/ag-ui` | AG-UI 1.0 chat components and hooks: messages in the entity graph, cancellation, reasoning, interrupts |
 
 A2UI and AG-UI solve different problems. A2UI describes and renders a
 catalog-constrained interface. AG-UI transports run, message, tool, and state
-events. The package root no longer labels the legacy AG-UI chat components as
-official A2UI.
+events. The package root does not label the AG-UI chat components as official
+A2UI.
 
 ## Pinned version axes
 
@@ -30,40 +30,50 @@ These numbers are related but are not interchangeable:
 
 | Axis | Selected target |
 | --- | --- |
-| Public A2UI input | `v1.0` RC and `v0.9.1` |
-| Official renderer engine | `v0.9.1` compatibility boundary |
-| `@a2ui/react` distribution | `0.12.0` |
-| `@a2ui/web_core` distribution | `0.12.0` |
+| Public A2UI input | `1.0` (final) and `v0.9.1`; the `v1.0` release candidate only with `acceptReleaseCandidateInput` |
+| Official renderer engine | `@a2ui/web_core` / `@a2ui/react` `0.15.0`, native 1.0 and v0.9.1 |
+| `@a2ui/react` distribution | `0.15.0` (bundled) |
+| `@a2ui/web_core` distribution | `0.15.0` (bundled; types inlined; a dev dependency of this package) |
 | Markdown renderer | package-owned port of `@a2ui/markdown-it@0.2.0` (`markdown-it@14.3.3`, `dompurify@3.4.17`) |
 | `zod` | `4.6.7` (upstream A2UI code runs on `zod/v3`) |
-| AG-UI activity transport | `@ag-ui/core` peer `>=0.0.59 <0.1.0 \|\| ^1.0.0` (developed against `1.0.3`) |
+| AG-UI | `@ag-ui/core` peer `^1.0.0` (developed against `1.0.4`) |
 
-The published A2UI packages do not expose the documented v1 renderer entry
-points yet. The bridge therefore validates the v1.0-RC envelope, decomposes its
-embedded surface into the official `/v0_9` processor, and retains v1-only
-action/function metadata at the runtime boundary. It does not implement a
-second renderer, data model, or surface store.
+Both runtimes hold two catalogs by default: v0.9.1 (`urn:prometheus-ags:a2ui:catalog:v3`)
+and 1.0 (`PROMETHEUS_A2UI_V1_CATALOG_ID`, built on the official
+`catalogs/basic/v1`). The official processor handles 1.0 natively, including
+function messages; this package adds the allowlist, resource limits, action
+policy, all-or-nothing batches and AG-UI reconciliation around it. 1.0
+envelopes go to the processor unchanged apart from translating the spec's
+`@catalogId`, `@metadata`, `@accessibility` and `@checks` keys to the
+processor's bare keys (a component carrying both forms is `invalid-message`).
+Passing `catalogs` replaces the defaults.
+
+```ts
+import {
+  PROMETHEUS_A2UI_V1_CATALOG_ID,
+  PROMETHEUS_A2UI_V1_PROTOCOL_VERSION,
+  createPrometheusA2uiCatalog,
+} from "@prometheus-ags/a2ui-react";
+
+const catalog = createPrometheusA2uiCatalog({ protocolVersion: "1.0" }); // default is "v0.9.1"
+```
+
+**Release-candidate input.** Messages with `version: "v1.0"` (the release
+candidate: `path` / `call` bindings, `callFunction`, `actionResponse`,
+`wantResponse`) are refused with `unsupported-protocol-version` unless the runtime
+is created with `acceptReleaseCandidateInput: true`, which needs a 1.0 catalog
+and translates the input to 1.0. It is off by default and kept for one minor
+line after 5.0.0.
 
 ### Dependency security (`zod`, `dompurify`)
 
-The official `@a2ui/*` code is bundled into `dist`. Its `@a2ui/web_core` copy is
-patched to import `zod/v3` from this package's `zod@4.6.7`, and markdown is
-sanitised with this package's `dompurify@3.4.17`, so the code that runs is on the
-patched releases. `@a2ui/web_core@0.12.0` is still installed for its types and
-brings its own `zod@3.25.76` (never executed by this package), which
-`pnpm audit`/`npm audit` report as GHSA-mrhx-c7xc-m3w5. For an audit-clean tree,
-override it in the consuming app:
-
-```jsonc
-// pnpm (pnpm-workspace.yaml `overrides:` or package.json "pnpm": { "overrides": ... })
-{ "overrides": { "zod": "4.6.7", "dompurify": "3.4.17" } }
-// npm (package.json)
-{ "overrides": { "zod": "4.6.7", "dompurify": "3.4.17" } }
-```
-
-Only override `zod` if you do not also run unpatched `@a2ui/web_core` code
-yourself: upstream `web_core` uses Zod 3 internals and fails on the `zod` 4 root
-export.
+The official `@a2ui/*` code is bundled into `dist`, patched to import `zod/v3`
+from this package's `zod@4.6.7`, and markdown is sanitised with this package's
+`dompurify@3.4.17`, so the code that runs is on the patched releases. The
+official types are inlined into this package's declarations, so installing it
+does not install `@a2ui/web_core` or the `zod@3` it depends on. The bundle is
+larger than 4.x because the 0.15.0 basic catalog is Lit-based: all ESM outputs
+grew from about 709 KB to 1,051 KB raw (about 155 KB to 227 KB gzip).
 
 ## Install
 
@@ -84,6 +94,8 @@ runtime and render the resulting surface:
 ```tsx
 import {
   ENTITY_GRAPH_A2UI_ACTIONS,
+  PROMETHEUS_A2UI_V1_CATALOG_ID,
+  PROMETHEUS_A2UI_V1_PROTOCOL_VERSION,
   PrometheusA2uiProvider,
   PrometheusA2uiSurface,
   createEntityGraphA2uiActionPolicy,
@@ -117,10 +129,10 @@ export const a2uiRuntime = createPrometheusA2uiRuntime({
 
 a2uiRuntime.processMessages([
   {
-    version: "v1.0",
+    version: PROMETHEUS_A2UI_V1_PROTOCOL_VERSION,
     createSurface: {
       surfaceId: "order-review",
-      catalogId: "urn:prometheus-ags:a2ui:catalog:v3",
+      catalogId: PROMETHEUS_A2UI_V1_CATALOG_ID,
       components: [
         { id: "root", component: "Column", children: ["title"] },
         { id: "title", component: "Text", text: "Review order" },
@@ -146,10 +158,16 @@ Call `a2uiRuntime.dispose()` when the application-owned runtime is no longer
 needed.
 
 `processAgUiEvent(event)` consumes the AG-UI A2UI activity convention
-(0.0.59 and 1.x): `ACTIVITY_SNAPSHOT` and `ACTIVITY_DELTA`, activity type
+(AG-UI 1.x): `ACTIVITY_SNAPSHOT` and `ACTIVITY_DELTA`, activity type
 `a2ui-surface`, and `content.a2ui_operations`. Transport acceptance never bypasses the same
 schema, catalog, action-policy, or approval gates used by direct messages. It
 also accepts `MESSAGES_SNAPSHOT` (see below).
+
+`@ag-ui/a2ui-middleware` also sends `a2ui-surface` activities that carry progress
+instead of operations (`content.status` of `building`, `retrying` or `failed`, no
+`a2ui_operations`). They are accepted without changing any surface; a `failed`
+one is reported once per message id as a resync request with reason
+`producer-failed`.
 
 ### Redelivery, restatement and ordering
 
@@ -209,7 +227,7 @@ on top of the version it names and produces the next one:
   "activityType": "a2ui-surface",
   "patch": [
     { "op": "test", "path": "/surfaceVersions/s1/version", "value": 3 },
-    { "op": "add", "path": "/a2ui_operations/-", "value": { "version": "v0.9.1", "updateComponents": { "surfaceId": "s1", "components": [] } } }
+    { "op": "add", "path": "/a2ui_operations/-", "value": { "version": "1.0", "updateComponents": { "surfaceId": "s1", "components": [] } } }
   ]
 }
 ```
@@ -239,7 +257,7 @@ AG-UI has no resync event, so send the request upstream in `forwardedProps`:
 ```ts
 const runtime = createPrometheusA2uiRuntime({
   onResyncNeeded: (request) => {
-    // request.reason: "gap" | "missing-surface" | "buffer-overflow" | "refused" | "stale-action"
+    // request.reason: "gap" | "missing-surface" | "buffer-overflow" | "refused" | "stale-action" | "producer-failed"
     sendRunInput({ forwardedProps: buildA2uiForwardedProps({ resync: { held: request.held } }) });
   },
 });
@@ -286,12 +304,11 @@ the runtime. Put `envelope.forwardedProps` into the next AG-UI run input:
   with no versioned state.
 - `dataModel` is present only when the surface sets `sendDataModel`.
 
-**Two different ids.** The v1.0 `onRendererMessage` action message can also
-carry an `actionId`. That is a *correlation* id for `wantResponse` actions
-(`surface:component:n`, unique only within one runtime instance) that matches an
-`actionResponse` to its action. It is unchanged. The envelope's `actionId` is an
-*idempotency* id and is global. They do different jobs; do not use one for the
-other.
+**One idempotency id.** The envelope's `actionId` is global and exists for
+idempotency. A 1.0 surface has no response-aware actions: `wantResponse`,
+`responsePath` and the correlation id that matched an `actionResponse` were
+release-candidate features. To get an answer from the agent, call
+`runtime.callAgentFunction(...)` (see below).
 
 `runtime.retryAction(actionId)` resends the original envelope under the same id.
 The runtime owns the retry because a host that resent on its own would mint a
@@ -316,6 +333,39 @@ same ordering and limits as any activity, so a repeated rejection changes
 nothing. A rejection carrying no operations cannot repair the surface, so the
 runtime calls `onResyncNeeded` with reason `"stale-action"`.
 
+### Functions and renderer-to-agent messages (A2UI 1.0)
+
+1.0 splits function calls into four messages. `callRendererFunction` (agent to
+renderer) is run by the official processor: the function must resolve in a
+registered catalog and pass its `allowedCallers` and user-activation checks,
+otherwise the answer is an `INVALID_FUNCTION_CALL` error; it is answered by
+`rendererFunctionResponse`. `callAgentFunction` (renderer to agent) is answered
+by `agentFunctionResponse`. `openUrl` stays out of the default allowlist.
+
+Replies and requests leave through `onRendererMessage`, which receives the
+official 1.0 renderer-to-agent messages (`action`, `callAgentFunction`,
+`rendererFunctionResponse`, `error`). An executed action on a 1.0 surface is sent
+there as a 1.0 `action` message after the action policy decided it; a refused 1.0
+call sends the agent a 1.0 `error`.
+
+```ts
+const runtime = createPrometheusA2uiRuntime({
+  onRendererMessage: (message) => sendToAgent(message),
+});
+
+// Resolves with the agent's answer. `writeTo` also writes it into the surface's
+// data model through processMessages, so the resource limits apply.
+await runtime.callAgentFunction(
+  "order-review",
+  { call: "refreshOrders", args: { status: "open" } },
+  { writeTo: "/orders", timeoutMs: 10_000 },
+);
+```
+
+`onFunctionCall` (4.x app-owned function calls) is removed; so are
+`wantResponse` and `responsePath` on actions. `dispose()` rejects pending
+`callAgentFunction` calls.
+
 ## The security boundary
 
 **Protocol validity never grants application authority.**
@@ -327,7 +377,7 @@ field.
 
 The entity-graph policy therefore fails closed:
 
-1. The action must match the official v0.9.1 schema.
+1. The action must match the official A2UI action schema for the surface's protocol version.
 2. The exact action name must be registered.
 3. Its context must match the application schema.
 4. The entity type, action, and every written field must be allowlisted.
@@ -390,8 +440,8 @@ the raw input. The state limits are checked on the state the call *would*
 produce, measured on the same shadow processor that preflights the batch, so
 the numbers are exact.
 
-**Action responses.** A v1.0 `actionResponse` value written to a surface's
-`responsePath` is producer input and goes through the same check. A rejection
+**Agent function answers.** A `callAgentFunction` answer written with `writeTo` is
+producer input and goes through the same check. A rejection
 there is reported through `onProducerFault`, leaves the surface unchanged, and
 does not undo the messages of the surrounding call that were already applied.
 
@@ -442,11 +492,10 @@ same messages.
 - A v0.9.1 surface exports as three official messages: `createSurface` (catalog,
   theme, `sendDataModel`), `updateComponents` (every component, with its own
   `catalogId` where it differs from the surface's) and `updateDataModel` at `/`.
-- A v1.0 surface exports as **one inline `createSurface`** carrying its
-  components and data model, with each action's `wantResponse` and
-  `responsePath` put back where the producer wrote them. The v1.0 schema cannot
-  express a theme, so a v1.0 surface has none to lose. An explicit
-  `wantResponse: false` comes back as an absent field, which means the same.
+- A 1.0 surface exports as **one inline `createSurface`** carrying its
+  components and data model (plus an `updateDataModel` when the root value is not
+  an object). 1.0 has no theme and no response-aware actions, so there is nothing
+  else to carry.
 - The root is the component with id `root` and is preserved by id.
 - **Orphans.** The official processor never removes a component a producer stops
   mentioning, so unreferenced components accumulate. Components no reachable
@@ -462,8 +511,12 @@ needs `@types/react` available even though no React code runs.
 ## Catalog policy
 
 `createPrometheusA2uiCatalog()` derives implementations from the official
-React basic catalog and exposes only explicit component and function
-allowlists. The default catalog includes the standard presentation and input
+basic catalog and exposes only explicit component and function allowlists.
+`createPrometheusA2uiCatalog({ protocolVersion: "1.0" })` builds the 1.0 catalog
+(default `"v0.9.1"`; `createPrometheusA2uiHeadlessCatalog` and
+`getPrometheusA2uiOfficialComponent` take the same option).
+`PrometheusA2uiComponentImplementation` is the official `ReactCatalogComponent`:
+a React implementation or a Web Component implementation. The default catalog includes the standard presentation and input
 components but deliberately excludes `openUrl`. Applications may opt into
 that function explicitly; navigation is never silently granted.
 
@@ -484,12 +537,23 @@ const catalog = createPrometheusA2uiCatalog({
 - `PrometheusA2uiSurface` renders one official surface.
 - `PrometheusA2uiSurfaces` renders the current surface collection.
 - `usePrometheusA2ui` processes messages and reads client capabilities/data.
+  `getClientCapabilities()` returns `PrometheusA2uiRendererCapabilities`, the
+  official record keyed by protocol version (both `v0.9.1` and `1.0` by default;
+  the `1.0` entry has `supportedCatalogIds`), and `getClientDataModel("1.0")`
+  returns the 1.0 `a2uiRendererDataModel`.
 - `usePrometheusA2uiRuntime` and `usePrometheusA2uiSurfaces` expose focused
   orchestration reads.
 
-The surface wrapper emits deterministic fallback markup during server
-rendering and lets the official renderer take over after hydration. This avoids
-claiming that the current official renderer itself is server-renderable.
+The official basic catalog renders as Custom Elements and is **client only**:
+there is no server rendering of basic-catalog components. The surface wrapper
+emits deterministic fallback markup during server rendering and lets the
+official renderer take over after hydration.
+
+Errors thrown by the official processor are rethrown as `PrometheusA2uiError`
+with `code: "protocol-error"` and the A2UI code in `protocolCode`
+(`VALIDATION_ERROR`, `CATALOG_ERROR`, `INVALID_FUNCTION_CALL`,
+`EXPRESSION_ERROR`, ...); the raw error is `cause`. This package's own codes are
+unchanged.
 
 The architectural boundary remains:
 
@@ -498,6 +562,57 @@ Components → Prometheus A2UI hooks/provider → runtime policy → graph store
 ```
 
 Renderer components do not read or write the graph store directly.
+
+## AG-UI chat (`./ag-ui`)
+
+The chat components consume AG-UI 1.0 events (`AgUiEvent`, structurally typed so
+the optional `@ag-ui/core` peer is not required by the declarations).
+
+```tsx
+import { EntityChat, useChatSession } from "@prometheus-ags/a2ui-react/ag-ui";
+
+const session = useChatSession({
+  sessionId: "support",
+  actionPolicy, // decides interrupt approvals; without one they are cancelled
+  streamFactory: (messages, { signal, resume }) => myStream(messages, signal, resume),
+  onInterruptDecision: (interrupt, entry, decision) => audit(interrupt, entry, decision),
+});
+```
+
+- **Events handled:** run lifecycle including `RUN_ERROR`, text and reasoning
+  messages, tool calls and `TOOL_CALL_RESULT`, `STATE_SNAPSHOT` / `STATE_DELTA`,
+  `MESSAGES_SNAPSHOT`. Other types are ignored; `SUBAGENT_*` events and
+  multimodal parts are not handled. The pre-5.0 names (`MESSAGE_DELTA`,
+  `TOOL_CALL_DELTA`, `ERROR`, `DONE`) are gone; `StreamEvent` is a deprecated
+  alias of `AgUiEvent`.
+- **Cancellation:** `sendMessage`, `clearMessages` and unmount abort the previous
+  run's `signal`, and events of a superseded run are dropped. Run ownership is
+  shared by every view of one conversation on one graph: a send from any view
+  supersedes the others, and unmounting a view that did not start the run does
+  not cancel it.
+- **Tool calls:** `EntityChat` lists each assistant message's tool calls (name
+  and arguments). With a `toolProvider`, a call the agent left unanswered runs at
+  `RUN_FINISHED`; a call answered with `TOOL_CALL_RESULT` never runs in the
+  browser, and a run that pauses on an interrupt runs no client tools.
+- **Messages live in the graph:** `ChatConversationStore` writes
+  `A2uiChatMessage` entities, the ordered id list `a2ui-chat:<conversationId>` and
+  an `A2uiChatConversation` record (`runStatus`, `runId`, error, loading). Sessions
+  with the same `sessionId` share messages; pass `graphStore` to choose the graph.
+- **Reasoning messages** render collapsed in `EntityChat` (class slot
+  `messageReasoning`).
+- **Interrupts:** a `RUN_FINISHED` with an interrupt outcome sets
+  `runStatus: "interrupted"`. `resolveInterrupt(id, { approved, payload? })`
+  decides each one; when all are decided the next run starts with `resume`
+  passed to `streamFactory`. Denial resolves as `cancelled` without calling the
+  policy. An approval is mapped to an action (`interruptToAction`, default reads
+  `metadata["prometheus.action"]`) and decided by the installed `actionPolicy`,
+  so `executed` is `resolved` and `denied` is `cancelled`. It fails closed: no
+  policy, an interrupt that maps to no action, or a mapping or policy that
+  throws, is `cancelled`. Each interrupt is claimed before its policy runs, so
+  its action executes at most once across callers and views. `EntityChat`
+  renders `EntityInterruptApproval` for each pending interrupt. The interrupt
+  outcome fields are Draft in AG-UI; `readInterruptOutcome` and `toResumeInput`
+  are the only code that knows the wire shape.
 
 ## Migrating alpha chat consumers
 

@@ -1,0 +1,229 @@
+{
+  "config": {
+    "argv": [
+      "/Users/gqadonis/.local/share/fnm/node-versions/v26.5.0/installation/bin/node",
+      "/Volumes/T7/Projects/prometheus/prometheus-entity-management/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "tests/browser/agui-run-stack.playwright.config.ts"
+    ],
+    "configFile": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.playwright.config.ts",
+    "rootDir": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191505-boundary/agui-run-stack-artifacts/playwright-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-desktop",
+        "name": "chromium-desktop",
+        "testDir": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "agui-run-stack.spec.ts"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191505-boundary/agui-run-stack-artifacts/playwright-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "agui-run-stack.spec.ts",
+      "file": "agui-run-stack.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "UPG-10 AG-UI 1.0 run stream drives EntityChat through the graph",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1828,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T01:16:39.006Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "315ecd2bc85d44d2bcba-dc8a38e2d3def6f97fc2",
+          "file": "agui-run-stack.spec.ts",
+          "line": 235,
+          "column": 5
+        },
+        {
+          "title": "UPG-11 Cancellation stops superseded streams",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 471,
+                  "error": {
+                    "message": "Error: [{\"name\":\"the control stream's later events DO write to the graph (the counter observes writes)\",\"pass\":false,\"detail\":{\"control\":7,\"expectedAtLeast\":9}}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"PASS\"\u001b[39m\nReceived: \u001b[31m\"FAIL\"\u001b[39m",
+                    "stack": "Error: [{\"name\":\"the control stream's later events DO write to the graph (the counter observes writes)\",\"pass\":false,\"detail\":{\"control\":7,\"expectedAtLeast\":9}}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"PASS\"\u001b[39m\nReceived: \u001b[31m\"FAIL\"\u001b[39m\n    at /Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.spec.ts:488:87",
+                    "location": {
+                      "file": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.spec.ts",
+                      "column": 87,
+                      "line": 488
+                    },
+                    "snippet": "  486 |   expect(result.error, result.error).toBeUndefined();\n  487 |   expect(oracle.status, JSON.stringify(oracle.checks.filter((item) => !item.pass))).toBe(\"PASS\");\n> 488 |   expect(control.status, JSON.stringify(control.checks.filter((item) => !item.pass))).toBe(\"PASS\");\n      |                                                                                       ^\n  489 | });\n  490 |\n  491 | // ── UPG-12 ──"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.spec.ts",
+                        "column": 87,
+                        "line": 488
+                      },
+                      "message": "Error: [{\"name\":\"the control stream's later events DO write to the graph (the counter observes writes)\",\"pass\":false,\"detail\":{\"control\":7,\"expectedAtLeast\":9}}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"PASS\"\u001b[39m\nReceived: \u001b[31m\"FAIL\"\u001b[39m\n\n  486 |   expect(result.error, result.error).toBeUndefined();\n  487 |   expect(oracle.status, JSON.stringify(oracle.checks.filter((item) => !item.pass))).toBe(\"PASS\");\n> 488 |   expect(control.status, JSON.stringify(control.checks.filter((item) => !item.pass))).toBe(\"PASS\");\n      |                                                                                       ^\n  489 | });\n  490 |\n  491 | // ── UPG-12 ──\n    at /Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.spec.ts:488:87"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T01:16:41.170Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191505-boundary/agui-run-stack-artifacts/playwright-artifacts/agui-run-stack-UPG-11-Cancellation-stops-superseded-streams-chromium-desktop/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191505-boundary/agui-run-stack-artifacts/playwright-artifacts/agui-run-stack-UPG-11-Cancellation-stops-superseded-streams-chromium-desktop/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191505-boundary/agui-run-stack-artifacts/playwright-artifacts/agui-run-stack-UPG-11-Cancellation-stops-superseded-streams-chromium-desktop/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.spec.ts",
+                    "column": 87,
+                    "line": 488
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "315ecd2bc85d44d2bcba-c62ec4e59371fe30989d",
+          "file": "agui-run-stack.spec.ts",
+          "line": 381,
+          "column": 5
+        },
+        {
+          "title": "UPG-12 Interrupt approvals through the entity action policy",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1983,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T01:16:41.997Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "315ecd2bc85d44d2bcba-e74c92d39ef2df3a760e",
+          "file": "agui-run-stack.spec.ts",
+          "line": 515,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-13T01:16:36.373Z",
+    "duration": 7917.392,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "scenario": "UPG-2",
+  "name": "Real AG-UI A2UI middleware surface renders and recovery resyncs",
+  "status": "PASS",
+  "steps": [
+    {
+      "step": 8,
+      "argv": "pnpm run verify:a2ui-v1 -- --report \"$E/a2ui-v1.json\"",
+      "exitCode": 0,
+      "startedAt": "2026-11-13T08:23:53Z",
+      "completedAt": "2026-11-13T08:24:10Z"
+    }
+  ],
+  "contractDigest": "bfa43f3bad025a031ce5b3c6175e12453baefb3ef41ac25a9ab420a7001badb1",
+  "source": {
+    "gitHead": "a8f543dc915fccc7bbaf51dab10ec693db635971",
+    "workingTreeDiffSha256": "3028ea9704d458e452db81b282419ab633312b49eb9859e550608c3cf8d439c9",
+    "note": "uncommitted working tree on top of gitHead"
+  },
+  "evidence": [
+    {
+      "path": "a2ui-v1.json",
+      "sha256": "4f19f5a9ac57b82de3b0c92cdef366162840a9a50b3471cb8fecde1b23c21f14"
+    },
+    {
+      "path": "logs/step-8.log",
+      "sha256": "97918e2730fd293a3b47bee44f9a76487eba9672bb3d77447091dbc035512a7f"
+    }
+  ]
+}

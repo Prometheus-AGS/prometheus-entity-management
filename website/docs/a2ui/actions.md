@@ -64,13 +64,16 @@ const runtime = createPrometheusA2uiRuntime({
 });
 ```
 
-## Two different ids
+## One id, one job
 
-A v1.0 `wantResponse` action can also carry an `actionId`. That is a
-**correlation** id, shaped `surface:component:n`, unique only within one runtime
-instance, that matches an `actionResponse` to its action. It is unchanged. The
-envelope's `actionId` is an **idempotency** id and is global. They do different
-jobs. Do not use one for the other.
+The envelope's `actionId` is an **idempotency** id and is global. A 1.0 surface no
+longer has response-aware actions: `wantResponse`, `responsePath` and the
+correlation id that matched an `actionResponse` to its action were release
+candidate features and do not exist in A2UI 1.0. To get an answer from the agent,
+call it explicitly with `runtime.callAgentFunction(surfaceId, { call, args }, { writeTo })`;
+the answer is written to the data model through the same limits as any other
+input. An executed action on a 1.0 surface is also sent to `onRendererMessage` as
+a 1.0 `action` message, after the action policy has decided it.
 
 ## Retry
 

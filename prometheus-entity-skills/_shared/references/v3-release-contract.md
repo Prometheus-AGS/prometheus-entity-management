@@ -6,7 +6,7 @@ Skills must read that contract before making 3.0 packaging or compatibility clai
 
 - stable and experimental surfaces must remain distinct;
 - official A2UI rendering and AG-UI event transport are separate concerns;
-- Flutter `genui` remains experimental even though the Flutter entity-graph binding is in the release inventory;
+- Flutter A2UI rendering (`a2ui_flutter`, pre-1.0 and pinned exactly since 5.0; `genui` in 3.0) remains experimental even though the Flutter entity-graph binding is in the release inventory;
 - the npm `latest` tag cannot move without the explicit approval gate in the contract;
 - a planned example in `examples/coverage.json` is not certified evidence.
 

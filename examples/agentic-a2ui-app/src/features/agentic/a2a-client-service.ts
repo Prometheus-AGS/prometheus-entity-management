@@ -1,16 +1,18 @@
 import {
   A2A_VERSION_HEADER,
+  A2UI_RENDERER_CAPABILITIES_KEY,
   HTTP_EXTENSION_HEADER,
   PROMETHEUS_A2UI_EXTENSION_URI,
   PROMETHEUS_A2UI_MEDIA_TYPE,
-  PROMETHEUS_A2UI_PROTOCOL_VERSION,
   Role,
   type Message,
   type Part,
   type PrometheusA2UIMessage,
+  extractA2UIMessages,
 } from "@prometheus-ags/entity-graph-a2a";
-import { SendMessageRequest } from "@a2a-js/sdk";
+import { Part as WirePart, SendMessageRequest } from "@a2a-js/sdk";
 import { agentServer, LOCAL_A2A_ENDPOINT } from "./agent-server";
+import { agentA2uiRuntime } from "./runtime";
 import type {
   AgentArtifactReceipt,
   AgentLifecycle,
@@ -54,7 +56,9 @@ function requestMessage(scenario: AgentScenario, messageId: string): Message {
     taskId: "",
     contextId: "",
     parts: [textPart(`scenario:${scenario} review task-sync`)],
-    metadata: {},
+    metadata: {
+      [A2UI_RENDERER_CAPABILITIES_KEY]: agentA2uiRuntime.getClientCapabilities(),
+    },
     extensions: [PROMETHEUS_A2UI_EXTENSION_URI],
     referenceTaskIds: [],
   };
@@ -180,19 +184,15 @@ function readArtifact(
 } | null {
   if (!isRecord(value)) return null;
   const parts = Array.isArray(value.parts) ? value.parts : [];
-  const part = parts.find(
-    (candidate) =>
-      isRecord(candidate) && candidate.mediaType === PROMETHEUS_A2UI_MEDIA_TYPE,
-  );
-  if (!isRecord(part) || !isRecord(part.data)) return null;
-  const payload = part.data;
-  if (payload.protocol !== PROMETHEUS_A2UI_PROTOCOL_VERSION) {
-    throw new Error("A2UI artifact protocol is not v0.9.1.");
-  }
-  if (!Array.isArray(payload.messages)) {
-    throw new Error("A2UI artifact messages must be an array.");
-  }
-  const messages = payload.messages as PrometheusA2UIMessage[];
+  const a2uiParts = parts
+    // The official extension marks A2UI parts with metadata.mimeType; mediaType is optional.
+    .filter((candidate) =>
+      isRecord(candidate) &&
+      (candidate.mediaType === PROMETHEUS_A2UI_MEDIA_TYPE ||
+        (isRecord(candidate.metadata) && candidate.metadata.mimeType === PROMETHEUS_A2UI_MEDIA_TYPE)))
+    .map((candidate) => WirePart.fromJSON(candidate));
+  if (a2uiParts.length === 0) return null;
+  const messages = extractA2UIMessages({ parts: a2uiParts }) as PrometheusA2UIMessage[];
   return {
     messages,
     receipt: {

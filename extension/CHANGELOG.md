@@ -1,5 +1,13 @@
 # @prometheus-ags/entity-graph-chrome-devtools
 
+## 3.2.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @prometheus-ags/entity-graph-core@5.0.0
+  - @prometheus-ags/entity-graph-react@5.0.0
+
 ## 3.2.1
 
 ### Patch Changes

@@ -32,6 +32,8 @@ pnpm run dev:vite
 
 See the [React/Vite example evidence](../examples/react-vite.md).
 
-Generated UI remains a separate boundary: `@prometheus-ags/a2ui-react@3.2.0`
-accepts A2UI 1.0-RC envelopes through the maintained official v0.9.1 renderer
-and consumes AG-UI 0.0.59 activities without granting them graph authority.
+Generated UI remains a separate boundary: `@prometheus-ags/a2ui-react`
+renders A2UI 1.0 (and v0.9.1) surfaces through the official `@a2ui/*` 0.15.0
+processor and consumes AG-UI 1.0 activities without granting them graph
+authority. The official basic catalog renders client only. See
+[Migrate to 5.0](../operations/migration-5.md).

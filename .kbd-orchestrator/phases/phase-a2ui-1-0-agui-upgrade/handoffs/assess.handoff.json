@@ -1,0 +1,11 @@
+{
+  "stage": "assess",
+  "completedAt": "2026-11-12T01:40:31Z",
+  "outputs": [
+    "assessment.md"
+  ],
+  "nextStage": "analyze",
+  "summaryForNext": "A2UI 1.0 is final (current 2026-11-06; npm @a2ui/* 0.15.0) and the repo's RC bridge does not speak it: version string, function messages, @path/@call binding and no wantResponse in 1.0 (G1); 0.12->0.15 also removes APIs we import (basicCatalog from @a2ui/react/v0_9, SSR of the basic catalog) (G13), and a 1.0 surface needs a separate protocol-1.0 catalog (D2). Open for plan: operator decisions D1-D8 (target 0.15.0, catalog split, 5.0.0 across all 13 fixed packages, scope, AG-UI ^1.0.0, #75 patch, Flutter, SSR); WARNINGs from two same-model review rounds: full changelog-to-call-site map not done, AG-UI/A2A breaking claims unverified, @a2a-js/sdk 1.0.1->1.3.0 unassessed, 4 spec deltas, conformance harness must be built.",
+  "skipped": false,
+  "skipReason": null
+}

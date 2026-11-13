@@ -1,0 +1,210 @@
+{
+  "mode": "artifact",
+  "target": "plan",
+  "round": 2,
+  "verdict": "PASS",
+  "judge_model": "claude-fable-5-2",
+  "isolation_mode": "harness-native",
+  "producer_model": "claude-opus-5-5",
+  "cross_model_check": "verified-distinct",
+  "contract_schema_validation": "adopted-contract.json validates against adopted-contract.schema.json (Draft 2020-12, 0 errors; planRevision and contractDigest null are allowed).",
+  "d6_refinement": "Within the adopted goal: D6's stated aim is no skipLibCheck; the patch is kept and declaration inlining is added. Side effect not stated: inlined types become structural copies, distinct from @a2ui/web_core's own for consumers who import both.",
+  "round1_resolution": [
+    {
+      "round1_claim_prefix": "The D6 fix as planned (a workspace pnpm patch for #75) cannot make the UPG-15",
+      "resolved": true,
+      "note": "plan.md:69 adds a2ui-0-15-library-baseline#3 (declarations independent of upstream); UPG-15 oracle now requires the registry (unpatched) @a2ui/* in consumers. Residual: the new TS2835 control consumer and the zod-resolution assertion have no authoring task (see finding 4)."
+    },
+    {
+      "round1_claim_prefix": "UPG-15's boundary command verify:a2ui-bridge cannot exit 0: it chains verify:a2ui-visual",
+      "resolved": true,
+      "note": "plan.md:192 (release-sync#1) authors a capture and retargets verify-a2ui-visual-evidence.mjs; boundary commands 4-5 capture and pass A2UI_VISUAL_EVIDENCE. Residual: capture is ordered before the build it must hash (finding 2)."
+    },
+    {
+      "round1_claim_prefix": "UPG-9 requires an A2A exchange that 'renders' and 'round-trips an action'",
+      "resolved": true,
+      "note": "plan.md:130-131 add the inbound path and the headless-runtime verifier; change 5 now depends on 2 and 3. Residual: 'the action policy' lives in packages/a2ui-react, which entity-graph-a2a does not depend on (finding 5)."
+    },
+    {
+      "round1_claim_prefix": "The contract's time budget is a fraction of the plan's own effort estimate",
+      "resolved": true,
+      "note": "budgets 3600 min / 4000 calls / 10 repairs against a 2,700-4,200 min estimate; still below the upper estimate, stated as checkpoint+BLOCKED."
+    },
+    {
+      "round1_claim_prefix": "The isolated review of the cumulative diff is ordered after the single boundary run",
+      "resolved": true,
+      "note": "release-sync#5 (review) precedes #6 (boundary); requiredApprovals says the review passes before the run."
+    },
+    {
+      "round1_claim_prefix": "Plan contradicts itself on who authors verify:a2ui-conformance",
+      "resolved": true,
+      "note": "change 10 alone owns the script, authored after changes 1-7 and 9; native-surfaces#6 is defined from the spec MUST rules."
+    },
+    {
+      "round1_claim_prefix": "The plan claims G5 is 'reproduced before claimed fixed', but no task reproduces it",
+      "resolved": false,
+      "note": "Only the wording changed (plan.md:137-138). No step runs the UPG-11 flow against pre-fix code, so the defect is still never observed; assessment.md:198 requires that 'a full-integration flow must reproduce it before it is called fixed'. The stale-history part is resolved (excluded, raised as a question)."
+    },
+    {
+      "round1_claim_prefix": "UPG-14's 'negative control' is a static grep",
+      "resolved": false,
+      "note": "Replaced by a real failing run, but partially: no task records the pre-migration streams, and 'git revision before change 9' is not a revision the plan ever creates (finding 3)."
+    },
+    {
+      "round1_claim_prefix": "UPG-16 does not check what its name says, and its negative control would not fail",
+      "resolved": false,
+      "note": "Control now names packages/a2ui-react/src/index.ts and the rebuild, but the contract name is still 'Exports, skills and docs in sync', ownerTask still includes the docs task, no docs check was added to the boundary, and no task or boundary command runs the scratch-copy control (finding 4)."
+    },
+    {
+      "round1_claim_prefix": "The first boundary command does not put a pinned runtime on PATH",
+      "resolved": true,
+      "note": "Command 0 now exports PATH and exits non-zero unless Node is 22 or 24; plan states one shell session."
+    },
+    {
+      "round1_claim_prefix": "Two boundary commands write into or read from an earlier phase's evidence folder",
+      "resolved": true,
+      "note": "A2A report, package-contracts report and visual evidence all go to $E; verify-a2ui-protocol-bridge.mjs writes nothing without --report (lines 16-17, 104)."
+    },
+    {
+      "round1_claim_prefix": "Machine-readable release contract and legacy gates that hard-code the RC baseline",
+      "resolved": true,
+      "note": "native-surfaces#7 updates release/v3-release-contract.json and the validator; baseline#5 and a2a#1/#5 cover script pins. Nothing in the boundary runs 'pnpm run validate' to show the JSON and validator agree (finding 10)."
+    },
+    {
+      "round1_claim_prefix": "Real collaborators named by four scenarios are not dependencies anywhere",
+      "resolved": true,
+      "note": "floors#1 adds @ag-ui/client, @ag-ui/encoder and @ag-ui/a2ui-middleware as root devDependencies before any consumer of them. Versions stay '1.0.x' in the contract; registry shows a2ui-middleware 0.0.16 with peers rxjs 7.8.1 and @ag-ui/client >=1.0.0, neither mentioned."
+    },
+    {
+      "round1_claim_prefix": "The RC-input shim is built in change 2, before the 1.0 function mechanism",
+      "resolved": true,
+      "note": "Shim moved to functions-and-actions#4; UPG-17 oracle now covers RC wantResponse -> callAgentFunction."
+    },
+    {
+      "round1_claim_prefix": "Parts of W3 that D4 adopted are neither tasked nor excluded",
+      "resolved": true,
+      "note": "RUN_ERROR and MESSAGES_SNAPSHOT tasked (plan.md:140); SUBAGENT_* and multimodal parts excluded. New issue: the exclusion narrows adopted D4 without being flagged, and the two added events have no oracle (findings 7, 11)."
+    },
+    {
+      "round1_claim_prefix": "G10 is only partly mapped",
+      "resolved": true,
+      "note": "functions-and-actions#5 dispositions findings 6-10; AUI-16/18 and provenance are explicit exclusions."
+    },
+    {
+      "round1_claim_prefix": "Change 1 tasks 2 and 3 both patch @a2ui/web_core@0.15.0",
+      "resolved": true,
+      "note": "Merged into baseline#2 as one patch file."
+    },
+    {
+      "round1_claim_prefix": "Several oracles use terms with no stated reference",
+      "resolved": false,
+      "note": "UPG-2 now names its baseline. UPG-4's expected code is whatever the implementer records in design.md, and UPG-3 still has no rule for an upstream case that cannot pass (finding 12)."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": "adopted-contract.json",
+      "line": 379,
+      "claim": "The contract promises that a repair reruns only the scenarios its change affects, but its own invalidation rule and the visual hash pin make almost any repair invalidate almost every receipt, and the rerun has nowhere defined to write.",
+      "evidence": "adopted-contract.json:379 'a repair then reruns only the scenarios its change affects'; :338 evidence is 'Keyed to the source digests of packages/a2ui-react, ...'; :371 every receipt carries source digests. use-chat-session.ts, entity-chat.tsx, entity-approval.tsx, policy/action-policy.ts and official/* all live in packages/a2ui-react (grep), so 15 of 17 scenarios key to that one digest. scripts/verify-a2ui-visual-evidence.mjs:18-19 pins sha256 of packages/a2ui-react/dist/index.mjs, so a repair there also needs a recapture. Commands share $E from command 3 (:352); a rerun in a later shell has no $E, 'mkdir \"$E\"' fails on the same date (stop condition :381), and rerunning with the same --report path overwrites the failing report although :338 says 'history is preserved'. verify:a2ui-v1 is one command for nine scenarios with no per-scenario selector.",
+      "suggested_fix": "State the real rule: a repair inside a keyed input reruns every command whose receipts key to it (including capture), into a new suffixed folder (for example <date>-boundary-r2), with the failed folder kept. Or key each scenario to narrower inputs and give the scripts a --scenario selector."
+    },
+    {
+      "severity": "WARNING",
+      "file": "adopted-contract.json",
+      "line": 353,
+      "claim": "Boundary command order and setup: the visual capture runs before the build whose artifact it must hash, and the evidence folder's parent does not exist.",
+      "evidence": "adopted-contract.json:352 'mkdir \"$E\"' with E='.../phase-a2ui-1-0-agui-upgrade/evidence/<date>-boundary'; 'ls' of the phase folder shows no evidence/ directory, and the same command in a scratch dir exits 1 ('mkdir: x/evidence: No such file or directory'). :353 runs capture:a2ui-visual immediately after 'pnpm install --frozen-lockfile'; a2ui-react is first built by :354 (package.json verify:a2ui-bridge = '...entity-graph-core build && ...a2ui-react build && node scripts/verify-a2ui-protocol-bridge.mjs && pnpm run verify:a2ui-visual'). The current packages/a2ui-react/dist is stale (no headless.* or .cjs files), so the capture would hash an artifact the next command replaces, or find none. :357 also needs a packed a2ui-react but builds only core and a2a.",
+      "suggested_fix": "Use 'mkdir -p \"$(dirname \"$E\")\" && mkdir \"$E\"'. Build packages before the capture (move build:packages ahead, or make the capture script build), and add the a2ui-react build to the A2A command. Fix before the digest is stamped; a wrong frozen command costs an amendment, which the plan's own lesson (plan.md:39-41) cites."
+    },
+    {
+      "severity": "WARNING",
+      "file": "adopted-contract.json",
+      "line": 242,
+      "claim": "UPG-14's negative control depends on recorded pre-migration streams that no task records, taken from a revision the plan never creates.",
+      "evidence": "adopted-contract.json:242-243 'a recorded pre-migration stream from each example (git revision before change 9)' and fixtures 'recorded from the parent revision with digests'. Change 9 tasks (plan.md:169-172) migrate only; release-sync#1 (plan.md:192) authors verify:a2ui-examples after the examples are already migrated. The plan never commits per change (the word 'commit' appears only for the conformance pin), so 'before change 9' is a working-tree state, not a revision; the only real revision is HEAD a8f543dc. Two of the three examples produce envelopes in the browser (assessment example inventory: src/features/agentic/*, src/agent/*), so 'network' capture does not apply to them.",
+      "suggested_fix": "Add a task (first task of change 9, or in release-sync#1 using a separate worktree at the pre-phase commit with its own install) that records the streams and their digests, name the exact commit, and say how in-browser envelopes are captured."
+    },
+    {
+      "severity": "WARNING",
+      "file": "adopted-contract.json",
+      "line": 256,
+      "claim": "The UPG-15 and UPG-16 negative controls, and UPG-15's zod-resolution oracle, are not authored by any task and not run by any boundary command.",
+      "evidence": "UPG-15 (:255-256) needs a control consumer importing @a2ui/web_core/v0_9 that must fail with TS2835, and proof the bundled runtime resolves zod via zod/v3 at 4.6.7. scripts/verify-a2ui-protocol-bridge.mjs mentions zod once (line 129, a manifest pin) and has no control consumer; scripts/verify-package-contracts.mjs has neither. baseline#5 (plan.md:71) only 'Update the 0.12.0 and v0.9.1 pins'; release-sync#1 (plan.md:192) lists three other scripts. UPG-16 (:269) needs a scratch copy with an export removed and a rebuild; the boundary runs only 'pnpm run verify:skills' (:361).",
+      "suggested_fix": "Add these script changes to release-sync#1 (A-9 timing) and name it as an owner task of UPG-15 and UPG-16; give the UPG-16 control a command in the packet or drop it and say the scenario has no executed control."
+    },
+    {
+      "severity": "WARNING",
+      "file": "plan.md",
+      "line": 130,
+      "claim": "Inbound A2A actions are to be routed 'through the action policy', but that policy is in packages/a2ui-react, which entity-graph-a2a does not and (as a server package) should not obviously depend on; the plan does not say how they meet.",
+      "evidence": "plan.md:130 and UPG-9 oracle (:167) 'handled by the agent through the action policy'. packages/entity-graph-a2a/package.json dependencies: only @a2a-js/sdk and @prometheus-ags/entity-graph-core. The policy is packages/a2ui-react/src/policy/action-policy.ts, whose first lines import A2uiClientActionSchema from '@a2ui/web_core/v0_9' (the v0.9 action schema, not 1.0); a2ui-react has react and react-dom as required peers. entity-graph-core has no A2UI action policy (grep). Change 5's scope (plan.md:120) lists no dependency change. packages/entity-graph-a2a/src/handler.ts is already 617 lines.",
+      "suggested_fix": "Decide in the plan: a structural policy interface in entity-graph-a2a that the application injects (verifier injects the one from the packed ./headless entry), or move the policy to core. Record the choice, the new exports, and that handler.ts stays under 800 lines."
+    },
+    {
+      "severity": "WARNING",
+      "file": "plan.md",
+      "line": 140,
+      "claim": "Change 6 removes the StreamEvent shape that the UPG-15 packed-consumer fixtures compile against, and no task updates them, so boundary command 5 fails as planned.",
+      "evidence": "scripts/verify-a2ui-protocol-bridge.mjs:220,235,248,256 import 'type StreamEvent' from '@prometheus-ags/a2ui-react/ag-ui' and compile 'const event: StreamEvent = { type: \"DONE\" }' with skipLibCheck false. plan.md:140 'Replace the bespoke StreamEvent union with AG-UI 1.0 events'. The only task touching this script is baseline#5 (plan.md:71, pins only, round 1). Change 6's scope (plan.md:134) lists no scripts.",
+      "suggested_fix": "Add the fixture update to release-sync#1 (or a change 6 task) and list it under UPG-15's owner tasks."
+    },
+    {
+      "severity": "WARNING",
+      "file": "plan.md",
+      "line": 14,
+      "claim": "The plan says it refines one adopted decision, but it narrows a second one (D4/W3) without flagging it for the operator.",
+      "evidence": "plan.md:14 'Operator attention: one refinement of an adopted decision'. assessment.md D4 adopts W3 in scope, and W3 reads 'RUN_*, TEXT_MESSAGE_*, TOOL_CALL_RESULT, reasoning, subagents' (assessment.md:335). plan.md:47-49 and contract exclusions (:315) drop 'AG-UI SUBAGENT_* events and multimodal message parts' with the reason 'not needed by any adopted scenario', but the scenarios are written by this same plan. CLAUDE.md A-7: do not silently reduce scope.",
+      "suggested_fix": "List the SUBAGENT_* exclusion under Operator attention next to D6 so adoption of the contract is an informed decision, or task it."
+    },
+    {
+      "severity": "WARNING",
+      "file": "plan.md",
+      "line": 133,
+      "claim": "AG-UI 1.0 facts that change 6 and 7 build on are still research-only, and unlike A2UI and A2A there is no task that checks them against the installed package before the event model is designed.",
+      "evidence": "assessment.md 'Unresolved review findings' item 3: 'Every AG-UI claim in section 1 is [research]' and each finding 'must be closed in analyze or plan'. Analyze was skipped (plan.md:8). baseline#1 maps the A2UI changelogs and a2a#1 maps the SDK; floors#2 probes only the middleware payload. UPG-12's oracle (:211) hard-codes 'resume[]' and interrupt outcomes that the contract itself lists as Draft (:34). Registry check today: @ag-ui/core, client and encoder are at 1.0.4 with zod as a required peer '^3.25.18 || ^4.0.0', which already answers the 'zod peer' unknown (:31).",
+      "suggested_fix": "Add a first task to change 6 (or to change 4) that reads the @ag-ui/core 1.0.4 event and RunAgentInput types and records event names, interrupt outcome and resume shapes in design.md before agui-1-0-chat-run-stack#1; let UPG-12's wire terms defer to that record."
+    },
+    {
+      "severity": "WARNING",
+      "file": "plan.md",
+      "line": 137,
+      "claim": "G5 is still fixed without ever being observed; the revision changed the sentence, not the plan.",
+      "evidence": "plan.md:137-138 'The abort defect (G5) is read from code; it is demonstrated, and its fix shown, only by UPG-11'. UPG-11 runs once, after the fix, and its negative control (:197) is an un-superseded stream that 'proves the counter observes writes'. Nothing runs the flow against pre-fix code. assessment.md:198: 'a full-integration flow must reproduce it before it is called fixed'.",
+      "suggested_fix": "Add to UPG-11 a control lane that runs the same flow against the published 4.4.0 tarball and must show graph writes after the second send; or say plainly that the defect is asserted from code reading and the operator accepts that."
+    },
+    {
+      "severity": "WARNING",
+      "file": "adopted-contract.json",
+      "line": 262,
+      "claim": "UPG-16 still claims docs are in sync while checking only runtime export names, and the two machine-checked artifacts the plan edits (release contract JSON, generated website reference) have no check in the boundary.",
+      "evidence": "UPG-16 name (:262) 'Exports, skills and docs in sync', ownerTask (:263) includes release-sync#2 (docs); plan.md:232 calls the same scenario 'exports manifest and skills in sync'. scripts/verify-skills-exports.mjs compares Object.keys of each dist entry with the ledger and reads no docs. package.json has 'validate' (validate-v3-release-contract.mjs, edited by native-surfaces#7) and 'docs:artifacts:check' (regenerated by release-sync#3); neither is in boundaryPacket.commands.",
+      "suggested_fix": "Rename UPG-16 to match what it checks and drop the docs task from its owners, and add 'pnpm run validate' and 'pnpm run docs:artifacts:check' as delivery-only commands (both are static checks, allowed by the testing policy)."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "plan.md",
+      "line": 140,
+      "claim": "RUN_ERROR and MESSAGES_SNAPSHOT were added to the task but no oracle exercises them.",
+      "evidence": "plan.md:140 lists both; UPG-10's oracle (:182) covers RUN_STARTED, TEXT_MESSAGE_*, TOOL_CALL_*, TOOL_CALL_RESULT, REASONING_* and RUN_FINISHED only.",
+      "suggested_fix": "Add a RUN_ERROR case (error shown, run ends, no further writes) and a MESSAGES_SNAPSHOT case to UPG-10 or UPG-11."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "adopted-contract.json",
+      "line": 99,
+      "claim": "Three oracles remain self-referential or open-ended.",
+      "evidence": "UPG-4 (:99) expects 'the catalog-mismatch error code recorded in design.md by a2ui-v1-native-surfaces#2', so the implementer defines the expected value. UPG-3 (:85) requires 'every case' to pass with no rule for a case 0.15.0 cannot satisfy. UPG-2's negative control (:72, unknown activity ignored) already passes on today's code (assessment G3: the runtime skips other activity types) and says nothing about recovery.",
+      "suggested_fix": "Name the A2UI 1.0 error code in the contract; state that an unpassable upstream case is BLOCKED, never waived; make UPG-2's control 'a stream with no a2ui_recovery produces zero resync requests'."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "adopted-contract.json",
+      "line": 312,
+      "claim": "Stale and loose references in the contract that will be frozen by the digest.",
+      "evidence": "Exclusion (:312) says 'design only, change 9'; the design change is change 8 (plan.md:156) and change 9 is the examples migration. evidenceInvalidation (:338) omits scripts/ and the conformance harness, so editing a verifier after the run invalidates nothing. Collaborators are '@ag-ui/client 1.0.x' while a2ui-middleware is pinned 0.0.15 (registry latest 0.0.16, peers rxjs 7.8.1 and @ag-ui/client >=1.0.0). No command checks that Playwright's Chromium is installed before five browser commands.",
+      "suggested_fix": "Correct the change number, add the verifier scripts and harness to the invalidation keys, pin exact collaborator versions, and add a Chromium presence check to command 0."
+    }
+  ]
+}

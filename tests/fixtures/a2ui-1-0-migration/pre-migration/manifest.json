@@ -1,0 +1,29 @@
+{
+  "agentic-a2ui-app.json": {
+    "sha256": "9c6681d00e9ae06e24079417de3bfadb3ea2fe6aba81512ceefe44c993bff4be",
+    "source": [
+      "examples/agentic-a2ui-app/src/features/agentic/fixtures/task-review.v0.9.1.json",
+      "examples/agentic-a2ui-app/src/features/agentic/fixtures/malformed-unknown-component.v0.9.1.json"
+    ],
+    "recordedAt": "2026-11-12",
+    "gitRevision": "a8f543dc915fccc7bbaf51dab10ec693db635971"
+  },
+  "agentic-a2ui.json": {
+    "sha256": "4fd9cbbf27d9931b496e5a6497f1e19727ef27ff27b7aeb3ee4366d0fd2fadd6",
+    "source": [
+      "examples/agentic-a2ui/tests/golden/surface-task-sync.json",
+      "examples/agentic-a2ui/src/agent/surface-messages.ts"
+    ],
+    "recordedAt": "2026-11-12",
+    "gitRevision": "a8f543dc915fccc7bbaf51dab10ec693db635971"
+  },
+  "agui-activity-lab.json": {
+    "sha256": "b45227cf87809223a1f4de2cfa4355fdd3f33b331c080c37b8d138faaa31014c",
+    "source": [
+      "examples/agui-activity-lab/server/events.ts",
+      "tests/browser/v4-a2ui-runtime-hardening.spec.ts (components fixture)"
+    ],
+    "recordedAt": "2026-11-12",
+    "gitRevision": "a8f543dc915fccc7bbaf51dab10ec693db635971"
+  }
+}

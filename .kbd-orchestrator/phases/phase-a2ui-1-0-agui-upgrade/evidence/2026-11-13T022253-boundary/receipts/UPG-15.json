@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "scenario": "UPG-15",
+  "name": "Packed consumers type-check strictly and the zod advisory stays closed",
+  "status": "PASS",
+  "steps": [
+    {
+      "step": 6,
+      "argv": "A2UI_VISUAL_EVIDENCE=\"$E/visual\" pnpm run verify:a2ui-bridge",
+      "exitCode": 0,
+      "startedAt": "2026-11-13T08:23:05Z",
+      "completedAt": "2026-11-13T08:23:17Z"
+    },
+    {
+      "step": 7,
+      "argv": "pnpm run verify:package-contracts -- --report \"$E/package-contracts.json\"",
+      "exitCode": 0,
+      "startedAt": "2026-11-13T08:23:17Z",
+      "completedAt": "2026-11-13T08:23:53Z"
+    }
+  ],
+  "contractDigest": "bfa43f3bad025a031ce5b3c6175e12453baefb3ef41ac25a9ab420a7001badb1",
+  "source": {
+    "gitHead": "a8f543dc915fccc7bbaf51dab10ec693db635971",
+    "workingTreeDiffSha256": "3028ea9704d458e452db81b282419ab633312b49eb9859e550608c3cf8d439c9",
+    "note": "uncommitted working tree on top of gitHead"
+  },
+  "evidence": [
+    {
+      "path": "package-contracts.json",
+      "sha256": "0f4bf24a894435fddd511189f1dfe569a8c803bd4c7f119c1892da6d1d7caf9e"
+    },
+    {
+      "path": "logs/step-6.log",
+      "sha256": "1069dcc58d4f3a6f7e43d16a85c0f0a327e93e4690729856bdf7527bc78112b4"
+    },
+    {
+      "path": "logs/step-7.log",
+      "sha256": "c478dcdf21cf83786268938bf6a136a15a18ab8de98c7aff653ec9f7b8d69823"
+    },
+    {
+      "path": "visual/manifest.json",
+      "sha256": "bb98eb8e30c91d6900b2e2accb8a2559025661d0abb1ceda8b1c1a9bd9b8d370"
+    }
+  ]
+}

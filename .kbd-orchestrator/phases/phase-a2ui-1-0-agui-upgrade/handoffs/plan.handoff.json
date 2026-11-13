@@ -1,0 +1,20 @@
+{
+  "stage": "plan",
+  "completedAt": "2026-11-12T10:48:06Z",
+  "outputs": [
+    "plan.md"
+  ],
+  "nextStage": "execute",
+  "summaryForNext": "11 OpenSpec changes / 52 tasks in dependency order, starting with a2ui-0-15-library-baseline (changelog map, 0.15.0 bump, one combined patch, declaration bundling for #75) and ending with a2ui-1-0-release-sync (acceptance scripts, review, then one boundary run); default execution is sequential in one worktree. Task model assignments are in plan.md (D opus-5-5, I sonnet-5-5, R fable-5-2; all native, weak evidence, liter-llm unavailable). Plan review: round 1 BLOCK (3 CRITICAL fixed), round 2 PASS with 10 WARNING; carried: wide repair reruns, UPG-4 error code fixed in design.md before acceptance authoring, no rule yet for an unpassable upstream conformance case, RUN_ERROR/MESSAGES_SNAPSHOT unexercised, no Chromium presence check; operator should confirm the D6 mechanism refinement and the D4 SUBAGENT_* narrowing; the design-only change fails openspec validate --strict by design (no delta, archive with --skip-specs).",
+  "skipped": false,
+  "skipReason": null,
+  "identity": {
+    "contractPath": ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/adopted-contract.json",
+    "contractDigest": "19abd871d19898ac0e8a9f7e6b2ae6ed0841592b0abd7c9f9668c2fc15f3a575",
+    "decisionId": "contract-adoption-phase-a2ui-1-0-agui-upgrade-19abd871",
+    "planRevision": 10,
+    "projectId": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
+    "runId": "full-3.0-release-20260801T113424Z",
+    "phaseId": "phase-a2ui-1-0-agui-upgrade"
+  }
+}

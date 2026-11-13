@@ -25,15 +25,6 @@ For every action the action policy executed, on v0.9.1 and v1.0 surfaces, the ru
 - **WHEN** the policy denies an action
 - **THEN** no envelope is emitted
 
-### Requirement: The correlation id and the idempotency id stay separate
-
-The v1.0 correlation `actionId` inside an action SHALL be unchanged and SHALL key response matching only. The envelope `actionId` SHALL be the global idempotency id.
-
-#### Scenario: v1 wantResponse action
-
-- **WHEN** a v1.0 `wantResponse` action fires
-- **THEN** the correlation id still matches its `actionResponse` and the envelope carries a separate UUIDv7
-
 ### Requirement: Retry reuses the id
 
 `retryAction(actionId)` SHALL resend the original envelope under the same id with its original `heldVersion` and data model, and SHALL return `false` for an unknown id (the last 100 envelopes are retained) or when no handler is installed.
@@ -56,3 +47,12 @@ The v1.0 correlation `actionId` inside an action SHALL be unchanged and SHALL ke
 
 - **WHEN** the rejection carries no operations
 - **THEN** a resync is requested with reason `stale-action`
+
+### Requirement: Protocol correlation ids stay separate from the idempotency id
+
+A protocol correlation id carried by an action or a function call (for example a 1.0 `functionCallId`) SHALL be unchanged and SHALL key response matching only. The envelope `actionId` SHALL be the global idempotency id.
+
+#### Scenario: Function call answered after an action
+
+- **WHEN** a 1.0 surface action leads to a `callAgentFunction` whose `agentFunctionResponse` arrives
+- **THEN** the response matches by its function call id and the envelope carries a separate UUIDv7

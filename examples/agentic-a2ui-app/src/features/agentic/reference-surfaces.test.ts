@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createPrometheusA2uiRuntime } from "@prometheus-ags/a2ui-react";
-import malformedFixture from "./fixtures/malformed-unknown-component.v0.9.1.json";
-import taskReviewFixture from "./fixtures/task-review.v0.9.1.json";
+import malformedFixture from "./fixtures/malformed-unknown-component.1.0.json";
+import taskReviewFixture from "./fixtures/task-review.1.0.json";
 import { createMalformedSurface, createTaskReviewSurface } from "./reference-surfaces";
 
 describe("golden A2UI protocol fixtures", () => {

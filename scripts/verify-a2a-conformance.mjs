@@ -1,5 +1,10 @@
+// UPG-9: run after `pnpm run build:packages`. Packs entity-graph-core,
+// entity-graph-a2a and a2ui-react, installs the tarballs into a scratch
+// consumer, and proves the official A2UI A2A extension v1.0 end to end there
+// (tests/a2a/a2ui-extension-consumer.mjs) alongside the packed module-format
+// consumers. `--report <file>` is required.
 import { execFile } from "node:child_process";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -15,22 +20,30 @@ const execFileAsync = promisify(execFile);
 const workspaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const reportFlag = process.argv.indexOf("--report");
 const reportPath = reportFlag >= 0 ? process.argv[reportFlag + 1] : null;
-if (reportFlag >= 0 && !reportPath) throw new Error("--report requires a file path");
+if (!reportPath || reportPath.startsWith("--")) {
+  throw new Error("--report <file> is required");
+}
+
+const A2A_SDK_VERSION = "1.3.0";
+const A2UI_SCENARIO_FIXTURE = join(workspaceRoot, "tests", "a2a", "a2ui-extension-consumer.mjs");
+const A2UI_RESULT_MARKER = "A2UI_EXTENSION_RESULT ";
 
 const selected = [
   PUBLIC_PACKAGES.find(({ name }) => name === "@prometheus-ags/entity-graph-core"),
   PUBLIC_PACKAGES.find(({ name }) => name === "@prometheus-ags/entity-graph-a2a"),
+  PUBLIC_PACKAGES.find(({ name }) => name === "@prometheus-ags/a2ui-react"),
 ];
 if (selected.some((entry) => !entry)) {
-  throw new Error("core/A2A package inventory is incomplete");
+  throw new Error("core/A2A/A2UI package inventory is incomplete");
 }
 
 const temporaryRoot = await mkdtemp(join(tmpdir(), "prometheus-a2a-consumer-"));
 const tarballDirectory = join(temporaryRoot, "tarballs");
 const consumerDirectory = join(temporaryRoot, "consumer");
 const report = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   generatedAt: new Date().toISOString(),
+  argv: process.argv.slice(1),
   packages: {},
   consumers: {
     esm: "pending",
@@ -40,9 +53,11 @@ const report = {
     officialRoot: "pending",
     legacySubpath: "pending",
     externalExecutor: "pending",
+    a2uiExtension: "pending",
   },
   protocol: "A2A 1.0 JSONRPC",
-  sdk: "@a2a-js/sdk@1.0.1",
+  sdk: `@a2a-js/sdk@${A2A_SDK_VERSION}`,
+  a2uiExtension: null,
   workspaceAliases: "forbidden",
 };
 
@@ -68,8 +83,8 @@ try {
     const packedManifest = JSON.parse(manifestResult.stdout);
     validatePackedManifestData(packedManifest, workspaceRoot);
     if (publicPackage.name === "@prometheus-ags/entity-graph-a2a") {
-      if (packedManifest.dependencies?.["@a2a-js/sdk"] !== "1.0.1") {
-        throw new Error("packed A2A package must pin @a2a-js/sdk@1.0.1");
+      if (packedManifest.dependencies?.["@a2a-js/sdk"] !== A2A_SDK_VERSION) {
+        throw new Error(`packed A2A package must pin @a2a-js/sdk@${A2A_SDK_VERSION}`);
       }
       // ESM-only as of 4.0.0 (f3c02502): no .cjs / .d.cts are emitted.
       for (const required of [
@@ -77,6 +92,11 @@ try {
         "dist/legacy.d.ts",
       ]) {
         if (!files.includes(required)) throw new Error(`packed A2A package is missing ${required}`);
+      }
+    }
+    if (publicPackage.name === "@prometheus-ags/a2ui-react") {
+      for (const required of ["dist/headless.mjs", "dist/headless.d.ts"]) {
+        if (!files.includes(required)) throw new Error(`packed A2UI package is missing ${required}`);
       }
     }
     tarballs[publicPackage.name] = `file:${tarballPath}`;
@@ -115,15 +135,30 @@ try {
   });
   report.consumers.typescriptNode16 = "pass";
 
+  const a2ui = await run("node", ["a2ui-extension.mjs"], { cwd: consumerDirectory });
+  const resultLine = a2ui.stdout
+    .split(/\r?\n/)
+    .find((line) => line.startsWith(A2UI_RESULT_MARKER));
+  if (!resultLine) {
+    throw new Error(`A2UI extension scenario printed no result line:\n${a2ui.stdout}`);
+  }
   process.stdout.write(
-    "[a2a-conformance] PASS: packed A2A ESM, CommonJS, NodeNext, Node16, official root, legacy subpath, and external executor consumer.\n",
+    a2ui.stdout
+      .split(/\r?\n/)
+      .filter((line) => line && !line.startsWith(A2UI_RESULT_MARKER))
+      .map((line) => `${line}\n`)
+      .join(""),
+  );
+  report.a2uiExtension = JSON.parse(resultLine.slice(A2UI_RESULT_MARKER.length));
+  report.consumers.a2uiExtension = "pass";
+
+  process.stdout.write(
+    "[a2a-conformance] PASS: packed A2A ESM, CommonJS, NodeNext, Node16, official root, legacy subpath, external executor, and official A2UI extension v1.0 (capabilities offered/absent, inbound authorized/refused) consumer.\n",
   );
 
-  if (reportPath) {
-    const absolute = resolve(workspaceRoot, reportPath);
-    await mkdir(dirname(absolute), { recursive: true });
-    await writeFile(absolute, `${JSON.stringify(report, null, 2)}\n`);
-  }
+  const absolute = resolve(workspaceRoot, reportPath);
+  await mkdir(dirname(absolute), { recursive: true });
+  await writeFile(absolute, `${JSON.stringify(report, null, 2)}\n`);
 } finally {
   await rm(temporaryRoot, { recursive: true, force: true });
 }
@@ -132,6 +167,7 @@ async function writeConsumer(directory, tarballs) {
   await mkdir(directory, { recursive: true });
   const coreTarball = tarballs["@prometheus-ags/entity-graph-core"];
   const a2aTarball = tarballs["@prometheus-ags/entity-graph-a2a"];
+  const a2uiTarball = tarballs["@prometheus-ags/a2ui-react"];
   const manifest = {
     name: "prometheus-a2a-packed-consumer",
     private: true,
@@ -139,6 +175,9 @@ async function writeConsumer(directory, tarballs) {
     dependencies: {
       "@prometheus-ags/entity-graph-core": coreTarball,
       "@prometheus-ags/entity-graph-a2a": a2aTarball,
+      "@prometheus-ags/a2ui-react": a2uiTarball,
+      // The official client the scenario drives the reference agent with.
+      "@a2a-js/sdk": A2A_SDK_VERSION,
       "@types/node": "22.20.1",
       typescript: "6.0.2",
     },
@@ -146,10 +185,15 @@ async function writeConsumer(directory, tarballs) {
       overrides: {
         "@prometheus-ags/entity-graph-core": coreTarball,
         "@prometheus-ags/entity-graph-a2a": a2aTarball,
+        "@prometheus-ags/a2ui-react": a2uiTarball,
       },
     },
   };
+  // Pin the consumer to the repository's pnpm: outside a project corepack falls back to its
+  // last-known-good release, which may not be launchable on this machine.
+  manifest.packageManager = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8")).packageManager;
   await writeFile(join(directory, "package.json"), `${JSON.stringify(manifest, null, 2)}\n`);
+  await copyFile(A2UI_SCENARIO_FIXTURE, join(directory, "a2ui-extension.mjs"));
 
   await writeFile(
     join(directory, "consumer.mjs"),
@@ -278,12 +322,14 @@ console.log("[a2a-conformance] packed Node CommonJS root and legacy subpath pass
     join(directory, "consumer.mts"),
     `import {
   A2A_PROTOCOL_VERSION,
+  PROMETHEUS_A2UI_EXTENSION_URI,
   PROMETHEUS_A2UI_PROTOCOL_VERSION,
   TaskState,
   buildAgentCard,
   createA2AServer,
   createExternalA2AExecutor,
   type A2AApplicationPolicy,
+  type A2UIInboundHandler,
   type AgentCard,
   type ExternalA2AExecutorOptions,
   type Task,
@@ -291,7 +337,12 @@ console.log("[a2a-conformance] packed Node CommonJS root and legacy subpath pass
 import { createLegacyA2AAdapter } from "@prometheus-ags/entity-graph-a2a/legacy";
 const card: AgentCard = buildAgentCard({ url: "http://localhost/a2a" });
 const policy: A2AApplicationPolicy | undefined = undefined;
-const server = createA2AServer({ card, policy });
+const a2uiInbound: A2UIInboundHandler = {
+  authorize: () => false,
+  handle: () => [],
+};
+const server = createA2AServer({ card, policy, deterministicExecutor: { a2uiInbound } });
+if (PROMETHEUS_A2UI_EXTENSION_URI !== "https://a2ui.org/a2a-extension/a2ui/v1.0") throw new Error("extension mismatch");
 const task: Task | undefined = undefined;
 const adapter = createLegacyA2AAdapter({ server });
 const externalOptions: ExternalA2AExecutorOptions = { baseUrl: "https://agents.example.test" };
@@ -300,7 +351,7 @@ void task;
 void adapter;
 void externalExecutor;
 if (A2A_PROTOCOL_VERSION !== "1.0") throw new Error("protocol mismatch");
-if (PROMETHEUS_A2UI_PROTOCOL_VERSION !== "v0.9.1") throw new Error("A2UI mismatch");
+if (PROMETHEUS_A2UI_PROTOCOL_VERSION !== "1.0") throw new Error("A2UI mismatch");
 if (TaskState.TASK_STATE_COMPLETED !== 3) throw new Error("enum mismatch");
 `,
   );

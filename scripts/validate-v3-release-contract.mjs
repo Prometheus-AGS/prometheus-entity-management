@@ -407,17 +407,17 @@ export function validateReleaseContract(contract) {
   if (!contract.releaseGates?.manualAuthority?.includes("npm-latest")) {
     errors.push("stable promotion is missing npm-latest manual authority");
   }
-  if (contract.protocols?.a2ui?.version !== "1.0-rc") {
-    errors.push("A2UI protocol version must be 1.0-rc");
+  if (contract.protocols?.a2ui?.version !== "1.0") {
+    errors.push("A2UI protocol version must be 1.0");
   }
-  if (contract.protocols?.a2ui?.stability !== "release-candidate-compatibility") {
-    errors.push("A2UI stability must be release-candidate-compatibility");
+  if (contract.protocols?.a2ui?.stability !== "stable") {
+    errors.push("A2UI stability must be stable");
   }
-  if (contract.protocols?.a2ui?.renderer !== "official-v0.9-engine-adapter") {
-    errors.push("A2UI renderer must be official-v0.9-engine-adapter");
+  if (contract.protocols?.a2ui?.renderer !== "official-processor-native-1.0-and-v0.9.1") {
+    errors.push("A2UI renderer must be official-processor-native-1.0-and-v0.9.1");
   }
-  if (contract.protocols?.agui?.version !== "0.0.59") {
-    errors.push("AG-UI transport version must be 0.0.59");
+  if (contract.protocols?.agui?.version !== "1.0") {
+    errors.push("AG-UI transport version must be 1.0");
   }
   if (contract.protocols?.flutterGenui?.version !== "0.10.2") {
     errors.push("Flutter genui version must be 0.10.2");

@@ -10,6 +10,8 @@
 export {
   PROMETHEUS_A2UI_CATALOG_ID,
   PROMETHEUS_A2UI_PROTOCOL_VERSION,
+  PROMETHEUS_A2UI_V1_CATALOG_ID,
+  PROMETHEUS_A2UI_V1_PROTOCOL_VERSION,
   DEFAULT_PROMETHEUS_A2UI_COMPONENTS,
   DEFAULT_PROMETHEUS_A2UI_FUNCTIONS,
   createPrometheusA2uiCatalog,
@@ -21,6 +23,7 @@ export type {
   PrometheusA2uiComponentRenderProps,
   PrometheusA2uiComponentName,
   PrometheusA2uiFunctionName,
+  PrometheusA2uiProtocolVersion,
 } from "./official/catalog.js";
 
 export {
@@ -33,7 +36,10 @@ export type {
   CreatePrometheusA2uiRuntimeOptions,
   PrometheusA2uiErrorCode,
   PrometheusA2uiMessageInput,
+  PrometheusA2uiRendererCapabilities,
   PrometheusA2uiRendererMessage,
+  PrometheusA2uiAgentFunctionCall,
+  PrometheusA2uiAgentFunctionOptions,
 } from "./official/runtime.js";
 export { buildA2uiForwardedProps } from "./official/forwarded-props.js";
 export type {
@@ -61,13 +67,9 @@ export type {
   PrometheusA2uiSurfaceMismatchFault,
   PrometheusA2uiVersionConflictFault,
 } from "./official/limits.js";
-export { PROMETHEUS_A2UI_RC_PROTOCOL_VERSION } from "./official/v1-compat.js";
-export type {
-  PrometheusA2uiV1ActionMetadata,
-  PrometheusA2uiV1ActionResponse,
-  PrometheusA2uiV1FunctionCall,
-  PrometheusA2uiV1Message,
-} from "./official/v1-compat.js";
+// A2UI 1.0 release-candidate input, accepted only with acceptReleaseCandidateInput.
+export { PROMETHEUS_A2UI_RC_PROTOCOL_VERSION } from "./official/rc-shim.js";
+export type { PrometheusA2uiV1Message } from "./official/v1-messages.js";
 
 export {
   createA2uiActionPolicy,
@@ -117,5 +119,11 @@ export type {
   A2uiClientDataModel,
   A2uiMessage,
   Catalog,
+  ComponentApi,
+  ComponentContext,
   SurfaceModel,
 } from "@a2ui/web_core/v0_9" with { "resolution-mode": "import" };
+// The published declarations inline the official types (scripts/
+// bundle-declarations.mjs), so the shared runtime core is re-exported for the
+// public types that extend it to stay nameable in consumers' declarations.
+export type { PrometheusA2uiRuntimeCore } from "./official/runtime-core.js";

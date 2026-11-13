@@ -1,0 +1,593 @@
+{
+  "exampleId": "agentic-a2ui-app",
+  "url": "http://127.0.0.1:4201",
+  "surface": null,
+  "action": null,
+  "records": [
+    {
+      "source": "serialized-payload",
+      "payload": {
+        "jsonrpc": "2.0",
+        "id": "stream-1",
+        "result": {
+          "artifactUpdate": {
+            "taskId": "664d8f1d-7ccb-41b4-9fc9-641d18d3fa99",
+            "contextId": "f3b2b4e8-c631-4dd0-b0de-c8bff4944377",
+            "artifact": {
+              "artifactId": "reference-artifact-2",
+              "name": "Shared-domain task review",
+              "description": "Deterministic official A2UI messages for the shared task domain.",
+              "parts": [
+                {
+                  "data": [
+                    {
+                      "version": "1.0",
+                      "createSurface": {
+                        "surfaceId": "surface-task-sync",
+                        "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+                        "sendDataModel": true
+                      }
+                    },
+                    {
+                      "version": "1.0",
+                      "updateComponents": {
+                        "surfaceId": "surface-task-sync",
+                        "components": [
+                          {
+                            "id": "root",
+                            "component": "Card",
+                            "child": "content"
+                          },
+                          {
+                            "id": "content",
+                            "component": "Column",
+                            "children": [
+                              "eyebrow",
+                              "heading",
+                              "summary",
+                              "update-button",
+                              "update-label",
+                              "archive-button",
+                              "archive-label",
+                              "delete-button",
+                              "delete-label",
+                              "invalid-button",
+                              "invalid-label",
+                              "unknown-button",
+                              "unknown-label"
+                            ]
+                          },
+                          {
+                            "id": "eyebrow",
+                            "component": "Text",
+                            "text": "AGENT RECOMMENDATION",
+                            "variant": "caption"
+                          },
+                          {
+                            "id": "heading",
+                            "component": "Text",
+                            "text": {
+                              "@path": "/heading"
+                            }
+                          },
+                          {
+                            "id": "summary",
+                            "component": "Text",
+                            "text": {
+                              "@path": "/summary"
+                            },
+                            "variant": "body"
+                          },
+                          {
+                            "id": "update-button",
+                            "component": "Button",
+                            "child": "update-label",
+                            "action": {
+                              "event": {
+                                "name": "task.update",
+                                "context": {
+                                  "taskId": "task-sync",
+                                  "tenantId": "tenant-prometheus-demo",
+                                  "status": "done"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "id": "update-label",
+                            "component": "Text",
+                            "text": "Mark task done"
+                          },
+                          {
+                            "id": "archive-button",
+                            "component": "Button",
+                            "child": "archive-label",
+                            "action": {
+                              "event": {
+                                "name": "task.archive",
+                                "context": {
+                                  "taskId": "task-sync",
+                                  "tenantId": "tenant-prometheus-demo"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "id": "archive-label",
+                            "component": "Text",
+                            "text": "Archive with approval"
+                          },
+                          {
+                            "id": "delete-button",
+                            "component": "Button",
+                            "child": "delete-label",
+                            "action": {
+                              "event": {
+                                "name": "task.delete",
+                                "context": {
+                                  "taskId": "task-sync",
+                                  "tenantId": "tenant-prometheus-demo"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "id": "delete-label",
+                            "component": "Text",
+                            "text": "Attempt denied delete"
+                          },
+                          {
+                            "id": "invalid-button",
+                            "component": "Button",
+                            "child": "invalid-label",
+                            "action": {
+                              "event": {
+                                "name": "task.update",
+                                "context": {
+                                  "taskId": "task-sync",
+                                  "tenantId": "tenant-prometheus-demo"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "id": "invalid-label",
+                            "component": "Text",
+                            "text": "Send invalid update"
+                          },
+                          {
+                            "id": "unknown-button",
+                            "component": "Button",
+                            "child": "unknown-label",
+                            "action": {
+                              "event": {
+                                "name": "system.run",
+                                "context": {
+                                  "command": "ignored"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "id": "unknown-label",
+                            "component": "Text",
+                            "text": "Attempt undeclared action"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "version": "1.0",
+                      "updateDataModel": {
+                        "surfaceId": "surface-task-sync",
+                        "path": "/",
+                        "value": {
+                          "heading": "Review: Prove offline convergence",
+                          "summary": "This official A2UI surface can update the canonical task, request human approval, and prove that denied or malformed actions do not mutate the graph."
+                        }
+                      }
+                    }
+                  ],
+                  "metadata": {
+                    "mimeType": "application/a2ui+json"
+                  },
+                  "mediaType": "application/a2ui+json"
+                }
+              ],
+              "metadata": {
+                "extensionUri": "https://a2ui.org/a2a-extension/a2ui/v1.0"
+              },
+              "extensions": [
+                "https://a2ui.org/a2a-extension/a2ui/v1.0"
+              ]
+            },
+            "lastChunk": true,
+            "metadata": {}
+          }
+        }
+      }
+    },
+    {
+      "source": "a2a-sse",
+      "payload": {
+        "jsonrpc": "2.0",
+        "id": "stream-1",
+        "result": {
+          "artifactUpdate": {
+            "taskId": "664d8f1d-7ccb-41b4-9fc9-641d18d3fa99",
+            "contextId": "f3b2b4e8-c631-4dd0-b0de-c8bff4944377",
+            "artifact": {
+              "artifactId": "reference-artifact-2",
+              "name": "Shared-domain task review",
+              "description": "Deterministic official A2UI messages for the shared task domain.",
+              "parts": [
+                {
+                  "data": [
+                    {
+                      "version": "1.0",
+                      "createSurface": {
+                        "surfaceId": "surface-task-sync",
+                        "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+                        "sendDataModel": true
+                      }
+                    },
+                    {
+                      "version": "1.0",
+                      "updateComponents": {
+                        "surfaceId": "surface-task-sync",
+                        "components": [
+                          {
+                            "id": "root",
+                            "component": "Card",
+                            "child": "content"
+                          },
+                          {
+                            "id": "content",
+                            "component": "Column",
+                            "children": [
+                              "eyebrow",
+                              "heading",
+                              "summary",
+                              "update-button",
+                              "update-label",
+                              "archive-button",
+                              "archive-label",
+                              "delete-button",
+                              "delete-label",
+                              "invalid-button",
+                              "invalid-label",
+                              "unknown-button",
+                              "unknown-label"
+                            ]
+                          },
+                          {
+                            "id": "eyebrow",
+                            "component": "Text",
+                            "text": "AGENT RECOMMENDATION",
+                            "variant": "caption"
+                          },
+                          {
+                            "id": "heading",
+                            "component": "Text",
+                            "text": {
+                              "@path": "/heading"
+                            }
+                          },
+                          {
+                            "id": "summary",
+                            "component": "Text",
+                            "text": {
+                              "@path": "/summary"
+                            },
+                            "variant": "body"
+                          },
+                          {
+                            "id": "update-button",
+                            "component": "Button",
+                            "child": "update-label",
+                            "action": {
+                              "event": {
+                                "name": "task.update",
+                                "context": {
+                                  "taskId": "task-sync",
+                                  "tenantId": "tenant-prometheus-demo",
+                                  "status": "done"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "id": "update-label",
+                            "component": "Text",
+                            "text": "Mark task done"
+                          },
+                          {
+                            "id": "archive-button",
+                            "component": "Button",
+                            "child": "archive-label",
+                            "action": {
+                              "event": {
+                                "name": "task.archive",
+                                "context": {
+                                  "taskId": "task-sync",
+                                  "tenantId": "tenant-prometheus-demo"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "id": "archive-label",
+                            "component": "Text",
+                            "text": "Archive with approval"
+                          },
+                          {
+                            "id": "delete-button",
+                            "component": "Button",
+                            "child": "delete-label",
+                            "action": {
+                              "event": {
+                                "name": "task.delete",
+                                "context": {
+                                  "taskId": "task-sync",
+                                  "tenantId": "tenant-prometheus-demo"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "id": "delete-label",
+                            "component": "Text",
+                            "text": "Attempt denied delete"
+                          },
+                          {
+                            "id": "invalid-button",
+                            "component": "Button",
+                            "child": "invalid-label",
+                            "action": {
+                              "event": {
+                                "name": "task.update",
+                                "context": {
+                                  "taskId": "task-sync",
+                                  "tenantId": "tenant-prometheus-demo"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "id": "invalid-label",
+                            "component": "Text",
+                            "text": "Send invalid update"
+                          },
+                          {
+                            "id": "unknown-button",
+                            "component": "Button",
+                            "child": "unknown-label",
+                            "action": {
+                              "event": {
+                                "name": "system.run",
+                                "context": {
+                                  "command": "ignored"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "id": "unknown-label",
+                            "component": "Text",
+                            "text": "Attempt undeclared action"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "version": "1.0",
+                      "updateDataModel": {
+                        "surfaceId": "surface-task-sync",
+                        "path": "/",
+                        "value": {
+                          "heading": "Review: Prove offline convergence",
+                          "summary": "This official A2UI surface can update the canonical task, request human approval, and prove that denied or malformed actions do not mutate the graph."
+                        }
+                      }
+                    }
+                  ],
+                  "metadata": {
+                    "mimeType": "application/a2ui+json"
+                  },
+                  "mediaType": "application/a2ui+json"
+                }
+              ],
+              "metadata": {
+                "extensionUri": "https://a2ui.org/a2a-extension/a2ui/v1.0"
+              },
+              "extensions": [
+                "https://a2ui.org/a2a-extension/a2ui/v1.0"
+              ]
+            },
+            "lastChunk": true,
+            "metadata": {}
+          }
+        }
+      }
+    },
+    {
+      "source": "runtime-input",
+      "payload": [
+        {
+          "version": "1.0",
+          "createSurface": {
+            "surfaceId": "surface-task-sync",
+            "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+            "sendDataModel": true
+          }
+        },
+        {
+          "version": "1.0",
+          "updateComponents": {
+            "surfaceId": "surface-task-sync",
+            "components": [
+              {
+                "id": "root",
+                "component": "Card",
+                "child": "content"
+              },
+              {
+                "id": "content",
+                "component": "Column",
+                "children": [
+                  "eyebrow",
+                  "heading",
+                  "summary",
+                  "update-button",
+                  "update-label",
+                  "archive-button",
+                  "archive-label",
+                  "delete-button",
+                  "delete-label",
+                  "invalid-button",
+                  "invalid-label",
+                  "unknown-button",
+                  "unknown-label"
+                ]
+              },
+              {
+                "id": "eyebrow",
+                "component": "Text",
+                "text": "AGENT RECOMMENDATION",
+                "variant": "caption"
+              },
+              {
+                "id": "heading",
+                "component": "Text",
+                "text": {
+                  "@path": "/heading"
+                }
+              },
+              {
+                "id": "summary",
+                "component": "Text",
+                "text": {
+                  "@path": "/summary"
+                },
+                "variant": "body"
+              },
+              {
+                "id": "update-button",
+                "component": "Button",
+                "child": "update-label",
+                "action": {
+                  "event": {
+                    "name": "task.update",
+                    "context": {
+                      "taskId": "task-sync",
+                      "tenantId": "tenant-prometheus-demo",
+                      "status": "done"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "update-label",
+                "component": "Text",
+                "text": "Mark task done"
+              },
+              {
+                "id": "archive-button",
+                "component": "Button",
+                "child": "archive-label",
+                "action": {
+                  "event": {
+                    "name": "task.archive",
+                    "context": {
+                      "taskId": "task-sync",
+                      "tenantId": "tenant-prometheus-demo"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "archive-label",
+                "component": "Text",
+                "text": "Archive with approval"
+              },
+              {
+                "id": "delete-button",
+                "component": "Button",
+                "child": "delete-label",
+                "action": {
+                  "event": {
+                    "name": "task.delete",
+                    "context": {
+                      "taskId": "task-sync",
+                      "tenantId": "tenant-prometheus-demo"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "delete-label",
+                "component": "Text",
+                "text": "Attempt denied delete"
+              },
+              {
+                "id": "invalid-button",
+                "component": "Button",
+                "child": "invalid-label",
+                "action": {
+                  "event": {
+                    "name": "task.update",
+                    "context": {
+                      "taskId": "task-sync",
+                      "tenantId": "tenant-prometheus-demo"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "invalid-label",
+                "component": "Text",
+                "text": "Send invalid update"
+              },
+              {
+                "id": "unknown-button",
+                "component": "Button",
+                "child": "unknown-label",
+                "action": {
+                  "event": {
+                    "name": "system.run",
+                    "context": {
+                      "command": "ignored"
+                    }
+                  }
+                }
+              },
+              {
+                "id": "unknown-label",
+                "component": "Text",
+                "text": "Attempt undeclared action"
+              }
+            ]
+          }
+        },
+        {
+          "version": "1.0",
+          "updateDataModel": {
+            "surfaceId": "surface-task-sync",
+            "path": "/",
+            "value": {
+              "heading": "Review: Prove offline convergence",
+              "summary": "This official A2UI surface can update the canonical task, request human approval, and prove that denied or malformed actions do not mutate the graph."
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "tap": {
+    "installed": true,
+    "sseFrames": 4,
+    "errors": []
+  },
+  "screenshots": [],
+  "error": "\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByTestId('agent-lifecycle')\nExpected: \u001b[32m\"\u001b[7mcomplet\u001b[27med\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mvalidation-fail\u001b[27med\"\u001b[39m\nTimeout:  20000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 20000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('agent-lifecycle')\u001b[22m\n\u001b[2m    3 × locator resolved to <span data-testid=\"agent-lifecycle\">…</span>\u001b[22m\n\u001b[2m      - unexpected value \"working\"\u001b[22m\n\u001b[2m    40 × locator resolved to <span data-testid=\"agent-lifecycle\">…</span>\u001b[22m\n\u001b[2m       - unexpected value \"validation-failed\"\u001b[22m\n"
+}

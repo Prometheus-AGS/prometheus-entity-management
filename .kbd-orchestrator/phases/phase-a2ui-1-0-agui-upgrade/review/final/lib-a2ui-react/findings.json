@@ -1,0 +1,50 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/chat/conversation-store.ts",
+      "claim": "An interrupted run executes pending client tools before the user has approved the interrupt.",
+      "evidence": "The RUN_FINISHED branch awaits runClientTools(run) before calling readInterruptOutcome(event). runClientTools executes every ended, unanswered call through provider.executeTool without excluding calls named by an interrupt's toolCallId. UPG-12 requires denial to leave the guarded entity unchanged.",
+      "suggested_fix": "Read the interrupt outcome before executing client tools and defer interrupted tool calls until an authorized decision permits their execution; a denied interrupt must never execute its guarded tool."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/official/runtime-core.ts",
+      "claim": "Surface errors on A2UI 1.0 surfaces are never subscribed to because the version comparison uses the wrong representation.",
+      "evidence": "forwardSurfaceErrors returns unless surface.protocolVersion equals PROMETHEUS_A2UI_V1_PROTOCOL_VERSION, which is \"1.0\". The new v1-messages.ts explicitly documents that the official surface model stores \"v1.0\" and implements isV1Surface using that representation. Consequently, asynchronous expression errors do not reach onRendererMessage.",
+      "suggested_fix": "Use isV1Surface(surface) in forwardSurfaceErrors rather than comparing the model version with the wire-version constant."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/use-chat-session.ts",
+      "claim": "Two views of the same conversation can run concurrent streams that both keep writing because run ownership is local to each hook instance.",
+      "evidence": "Each useChatSession constructs a separate ChatConversationStore and AbortController, while ChatConversationStore.runToken is an instance field. Although sessionId is documented to share a conversation, sending from a second view neither invalidates the first store's token nor aborts its signal. Both stores write the same conversation and message list, contradicting the store's stated invariant that only the current run writes and the cancellation behavior required by UPG-11.",
+      "suggested_fix": "Coordinate run ownership and cancellation per graph/conversation rather than per hook instance, with explicit lifecycle ownership so unmounting a passive view does not cancel another view's active run."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/use-chat-session.ts",
+      "claim": "Concurrent resolutions of the same interrupt can execute its policy action more than once.",
+      "evidence": "resolveInterrupt reads an undecided interrupt, then awaits actionPolicy.handle before calling store.decideInterrupt. During that await, the interrupt remains available in snapshot().interrupts, so another caller or another mounted approval view can enter the same path and execute the same action. The component's local busy state does not protect the exported hook API or other views. UPG-12 places guarded entity mutations behind interrupt approval.",
+      "suggested_fix": "Atomically claim a pending interrupt in the conversation store before invoking the policy, reject duplicate claims, and bind completion to the interrupted run so stale decisions cannot resolve a later run."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/chat/conversation-store.ts",
+      "claim": "Applying MESSAGES_SNAPSHOT discards assistant tool-call history from both the graph and subsequent run inputs.",
+      "evidence": "replaceMessages first deletes all existing message entities, then reconstructs messages with only id, role, content, createdAt, name and toolCallId; it never copies raw.toolCalls. stream() subsequently passes this.messages() to streamFactory. A snapshot containing assistant tool calls and corresponding tool results therefore leaves tool results without their originating calls, despite UPG-10 requiring TOOL_CALL_* messages to be represented through the graph.",
+      "suggested_fix": "Preserve and validate the supported toolCalls fields when replacing messages from an AG-UI snapshot, so snapshot replay retains the same tool-call history as incremental ingestion."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

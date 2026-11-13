@@ -1,15 +1,15 @@
-/// A2UI agent panel: runs the keyless demo agent, renders the genui surface,
-/// routes destructive actions through an approval dialog, and shows the
-/// fail-closed receipt log so denials are visible rather than silent.
+/// A2UI agent panel: runs the keyless demo agent, renders the A2UI 1.0
+/// surface with the official renderer, routes destructive actions through an
+/// approval dialog, and shows the fail-closed receipt log so denials are
+/// visible rather than silent.
 library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:genui/genui.dart';
 
 import '../a2ui/action_policy.dart';
 import '../a2ui/showcase_runtime.dart';
-import '../a2ui/surface_messages.dart';
+import 'a2ui/presentation/safe_a2ui_surface.dart';
 import 'task_board_page.dart';
 
 /// Renders the agent lifecycle, the A2UI surface, and the policy receipts.
@@ -87,24 +87,11 @@ class _A2uiPanelState extends ConsumerState<A2uiPanel> {
               ],
             ),
             const SizedBox(height: 8),
-            StreamBuilder<SurfaceUpdate>(
-              stream: runtime.controller.surfaceUpdates,
-              builder: (context, _) {
-                final active = runtime.controller.activeSurfaceIds.contains(
-                  taskBoardSurfaceId,
-                );
-                if (!active) {
-                  return const Text('No agent surface yet');
-                }
-                return SizedBox(
-                  height: 260,
-                  child: Surface(
-                    surfaceContext: runtime.controller.contextFor(
-                      taskBoardSurfaceId,
-                    ),
-                  ),
-                );
-              },
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxHeight: 260),
+              child: SingleChildScrollView(
+                child: SafeA2uiSurface(store: runtime.surfaces),
+              ),
             ),
             ValueListenableBuilder<List<A2uiActionReceipt>>(
               valueListenable: runtime.receipts,

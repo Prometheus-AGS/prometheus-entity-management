@@ -10,7 +10,7 @@ Official A2UI renderer → exact action policy → command store → canonical g
 ```
 
 The default path runs a deterministic in-process A2A v1 reference agent. It
-requires no model credential and emits official A2UI v0.9.1 messages. The
+requires no model credential and emits official A2UI 1.0 messages. The
 rendered actions demonstrate:
 
 - a valid `task.update` that updates both the ID-backed list and detail view;

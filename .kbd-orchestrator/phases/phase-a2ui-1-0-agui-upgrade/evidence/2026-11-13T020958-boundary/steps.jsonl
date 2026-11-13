@@ -1,0 +1,14 @@
+{"step":1,"command":"export PATH=\"$(dirname \"$(command -v node)\"):$(printf %s \"$PATH\" | tr ':' '\\n' | grep -v modern-python | paste -sd: -)\" && node -e \"process.exit(/^v(22|24|26)\\./.test(process.version)?0:1)\" && pnpm --version","startedAt":"2026-11-13T08:09:54Z","completedAt":"2026-11-13T08:09:55Z","exitCode":0}
+{"step":2,"command":"pnpm install --frozen-lockfile","startedAt":"2026-11-13T08:09:55Z","completedAt":"2026-11-13T08:09:58Z","exitCode":0}
+{"step":3,"command":"export E=\".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/$(date +%Y-%m-%dT%H%M%S)-boundary\" && mkdir -p \"$(dirname \"$E\")\" && mkdir \"$E\"","startedAt":"2026-11-13T08:09:58Z","completedAt":"2026-11-13T08:09:58Z","exitCode":0}
+{"step":4,"command":"pnpm run build:packages","startedAt":"2026-11-13T08:09:58Z","completedAt":"2026-11-13T08:10:01Z","exitCode":0}
+{"step":5,"command":"pnpm run capture:a2ui-visual -- --out \"$E/visual\"","startedAt":"2026-11-13T08:10:01Z","completedAt":"2026-11-13T08:10:14Z","exitCode":0}
+{"step":6,"command":"A2UI_VISUAL_EVIDENCE=\"$E/visual\" pnpm run verify:a2ui-bridge","startedAt":"2026-11-13T08:10:14Z","completedAt":"2026-11-13T08:10:39Z","exitCode":0}
+{"step":7,"command":"pnpm run verify:package-contracts -- --report \"$E/package-contracts.json\"","startedAt":"2026-11-13T08:10:39Z","completedAt":"2026-11-13T08:11:20Z","exitCode":0}
+{"step":8,"command":"pnpm run verify:a2ui-v1 -- --report \"$E/a2ui-v1.json\"","startedAt":"2026-11-13T08:11:20Z","completedAt":"2026-11-13T08:11:37Z","exitCode":0}
+{"step":9,"command":"node scripts/verify-a2a-conformance.mjs --report \"$E/a2a-conformance.json\"","startedAt":"2026-11-13T08:11:37Z","completedAt":"2026-11-13T08:11:43Z","exitCode":0}
+{"step":10,"command":"pnpm run verify:agui-run-stack -- --report \"$E/agui-run-stack.json\"","startedAt":"2026-11-13T08:11:43Z","completedAt":"2026-11-13T08:11:56Z","exitCode":0}
+{"step":11,"command":"pnpm run verify:a2ui-examples -- --report \"$E/examples.json\"","startedAt":"2026-11-13T08:11:56Z","completedAt":"2026-11-13T08:12:17Z","exitCode":0}
+{"step":12,"command":"pnpm run verify:a2ui-conformance -- --report \"$E/conformance.json\"","startedAt":"2026-11-13T08:12:17Z","completedAt":"2026-11-13T08:12:46Z","exitCode":0}
+{"step":13,"command":"pnpm run verify:flutter-a2ui-v1 -- --report \"$E/flutter-a2ui-v1.json\"","startedAt":"2026-11-13T08:12:46Z","completedAt":"2026-11-13T08:14:57Z","exitCode":0}
+{"step":14,"command":"pnpm run verify:skills && pnpm run validate && pnpm run docs:artifacts:check","startedAt":"2026-11-13T08:14:57Z","completedAt":"2026-11-13T08:15:09Z","exitCode":1}

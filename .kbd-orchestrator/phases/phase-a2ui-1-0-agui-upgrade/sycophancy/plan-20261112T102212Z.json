@@ -1,0 +1,1 @@
+{"tool":"detect_sycophancy","evaluation_domain":"pmpo_plan_phase","strictness":"standard","input":"condensed plan narrative (header, scope check, change summaries, routing caveats); the task-model table was not sent","executed_at":"2026-11-12T10:22:12.883706Z","sycophancy_score":0.0,"classifications":[],"correction_mandatory":false}

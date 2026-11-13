@@ -1,5 +1,12 @@
 # @prometheus-ags/entity-graph-sync
 
+## 5.0.0
+
+### Patch Changes
+
+- Updated dependencies
+  - @prometheus-ags/entity-graph-core@5.0.0
+
 ## 4.0.0
 
 ### Patch Changes
@@ -70,6 +77,7 @@
 
   Evolves the React-only entity graph into a cross-platform, multi-framework,
   AI-native, local-first ecosystem.
+
   - **Monorepo split (breaking, but consumer-safe):** the framework-agnostic core
     is extracted into `@prometheus-ags/entity-graph-core` (zero React). The
     published `@prometheus-ags/prometheus-entity-management` package is the React

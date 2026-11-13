@@ -1,0 +1,209 @@
+{
+  "schemaVersion": "2",
+  "generatedBy": "kbd-runtime",
+  "projectionContractVersion": 2,
+  "sourceRevision": 863,
+  "derivedRevision": 863,
+  "frontier": {
+    "d144c44a-0d69-46eb-ad0b-88d07bbd014e": 340,
+    "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 523
+  },
+  "conflictCount": 6,
+  "phase": "phase-a2ui-1-0-agui-upgrade",
+  "phaseId": "phase-a2ui-1-0-agui-upgrade",
+  "parentPhase": null,
+  "last_updated": "2026-11-13T08:37:44.969659Z",
+  "last_updated_by": "kbd-runtime",
+  "changes_total": 12,
+  "changes_completed": 12,
+  "implementation_total": 12,
+  "implementation_completed": 12,
+  "completion": {
+    "primaryCounter": "implementation",
+    "implementation": {
+      "completed": 12,
+      "total": 12,
+      "status": "COMPLETE"
+    },
+    "evidence": {
+      "status": "NOT_TRACKED",
+      "summary": null,
+      "blockers": []
+    },
+    "certification": {
+      "status": "NOT_TRACKED",
+      "summary": null,
+      "blockers": []
+    },
+    "publication": {
+      "status": "NOT_TRACKED",
+      "summary": null,
+      "blockers": []
+    }
+  },
+  "completionScopes": {
+    "completion": "phase",
+    "runCompletion": "run"
+  },
+  "runCompletion": {
+    "scope": "run",
+    "runId": "full-3.0-release-20260801T113424Z",
+    "primaryCounter": "implementation",
+    "implementation": {
+      "completed": 53,
+      "total": 75,
+      "status": "IN_PROGRESS"
+    },
+    "evidence": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    },
+    "certification": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    },
+    "publication": {
+      "status": "PENDING",
+      "summary": null,
+      "blockers": []
+    }
+  },
+  "changes": [
+    {
+      "id": "a2ui-0-15-library-baseline",
+      "title": "`@a2ui/*` 0.12.0 → 0.15.0 with the v0.9.1 path intact",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 5,
+      "tasks_done": 5,
+      "last_task_completed": "Update the 0.12.0 and v0.9.1 pins in `scripts/verify-a2ui-protocol-bridge.mjs`, `scripts/verify-package-contracts.mjs`, the release notes, and `tests/steps/v3-a2ui-protocol-bridge.steps.ts` (kept consistent, not cited as evidence)",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "a2ui-v1-native-surfaces",
+      "title": "A2UI 1.0 surfaces through the processor's own 1.0 adapter",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 7,
+      "tasks_done": 7,
+      "last_task_completed": "Write spec deltas for `v3-a2ui-protocol-bridge` and `v3-release-contract`, and update the RC and AG-UI 0.0.59 baseline in `release/v3-release-contract.json` and `scripts/validate-v3-release-contract.mjs`",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "a2ui-v1-functions-and-actions",
+      "title": "1.0 function calls and actions under the existing policies",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 7,
+      "tasks_done": 7,
+      "last_task_completed": "Write spec deltas for `a2ui-action-envelope`, `a2ui-headless-runtime` and `a2ui-resource-limits`",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "agui-1-0-floors-and-middleware-interop",
+      "title": "AG-UI 1.0 ranges and the real A2UI middleware",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 4,
+      "tasks_done": 4,
+      "last_task_completed": "Write the `a2ui-activity-delivery` spec delta for recovery activities",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "a2a-official-a2ui-extension",
+      "title": "A2A on the official A2UI v1.0 extension, both directions (G2)",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 5,
+      "tasks_done": 5,
+      "last_task_completed": "Update `verify-a2a-conformance.mjs` to build surfaces from received parts with the packed headless runtime and take its report path as an argument, and write the `v3-a2a-conformance-agent` spec delta",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "agui-1-0-chat-run-stack",
+      "title": "chat, copilot and stream components speak AG-UI 1.0 (W3, W7, G4–G6)",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 5,
+      "tasks_done": 5,
+      "last_task_completed": "Write the `agui-run-stack` spec",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "agui-interrupt-approvals",
+      "title": "interrupt/resume tied to the entity action policy (W4)",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 3,
+      "tasks_done": 3,
+      "last_task_completed": "Write the `agui-interrupt-approvals` spec",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "a2ui-governed-actions-graph-binding-design",
+      "title": "design only for W5 and W6",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 2,
+      "tasks_done": 2,
+      "last_task_completed": "Write the W6 design: reconciling `updateDataModel`/`sendDataModel` with graph entities under an explicit conflict policy, with spike measurements on a throwaway branch",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "examples-a2ui-1-0-migration",
+      "title": "every example that uses `a2ui-react` emits 1.0",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 4,
+      "tasks_done": 4,
+      "last_task_completed": "Write spec deltas for `v3-agentic-a2ui-example` and `v3-flutter-riverpod-a2ui-example`",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "a2ui-v1-conformance-harness",
+      "title": "upstream conformance cases against the built renderer (W2)",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 3,
+      "tasks_done": 3,
+      "last_task_completed": "Add the `verify:a2ui-conformance` script with a mutated-case negative control and a report path argument, and write the `a2ui-v1-conformance` spec",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "a2ui-1-0-release-sync",
+      "title": "acceptance authoring, docs, skills, changesets, review, the boundary run",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 7,
+      "tasks_done": 7,
+      "last_task_completed": "Archive the changes whose scenarios passed",
+      "next_task_pending": null,
+      "blockers": []
+    },
+    {
+      "id": "flutter-a2ui-1-0-parity",
+      "title": "Flutter A2UI 1.0 parity on a2ui_flutter 0.3.0",
+      "status": "DONE",
+      "implementation_status": "COMPLETE",
+      "tasks_total": 3,
+      "tasks_done": 3,
+      "last_task_completed": "Author the Flutter acceptance path and update docs and ledgers",
+      "next_task_pending": null,
+      "blockers": []
+    }
+  ],
+  "children": {},
+  "migrationStatus": null
+}

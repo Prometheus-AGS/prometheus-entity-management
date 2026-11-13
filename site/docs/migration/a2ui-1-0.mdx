@@ -1,0 +1,451 @@
+---
+title: Migrate to 5.0 (A2UI 1.0, AG-UI 1.0, official A2A extension)
+description: Breaking changes and step-by-step recipes for moving to 5.0, which targets A2UI 1.0 final, @a2ui 0.15.0, AG-UI 1.0 and the official A2UI A2A extension.
+---
+
+# Migrate to 5.0
+
+## Who this affects
+
+5.0.0 ships all thirteen npm packages in one fixed group. It moves the agentic
+packages to **A2UI 1.0 final**, `@a2ui/*` **0.15.0**, **AG-UI 1.0** and the
+**official A2UI extension for A2A**. Most of the breaking changes are in
+`@prometheus-ags/a2ui-react` and `@prometheus-ags/entity-graph-a2a`. If you use
+only the core graph, React hooks, schema or sync packages, the upgrade is the
+version bump.
+
+Use this page if your application:
+
+- sends or stores A2UI messages (`version: "v0.9.1"`, or the 1.0 release
+  candidate `version: "v1.0"`);
+- reads `getClientCapabilities()`, `onFunctionCall` or `onRendererMessage`, or
+  passes its own catalog implementations;
+- uses the AG-UI chat components or `useChatSession`;
+- sends A2UI over A2A, or runs an A2A server with an A2UI executor.
+
+The Flutter showcase needs no migration steps; see [Flutter](#flutter).
+
+## Checklist
+
+| # | 4.x | 5.0 | Recipe |
+| - | --- | --- | --- |
+| 1 | `version: "v0.9.1"` or RC `"v1.0"` messages | `version: "1.0"` messages | [Wire format](#a2ui-10-wire-format) |
+| 2 | `{ "path" }` and `{ "call", "args" }` bindings | `{ "@path" }` and `{ "@call", "args" }` | [Wire format](#a2ui-10-wire-format) |
+| 3 | `theme` on `createSurface` | no `theme` in 1.0 | [Wire format](#a2ui-10-wire-format) |
+| 4 | `callFunction` / `actionResponse` | `callRendererFunction` / `rendererFunctionResponse` / `callAgentFunction` / `agentFunctionResponse` | [Functions and actions](#functions-and-actions) |
+| 5 | `wantResponse` / `responsePath` on actions | forbidden in 1.0; use `callAgentFunction` | [Functions and actions](#functions-and-actions) |
+| 6 | `onFunctionCall` | removed; `callAgentFunction(surfaceId, call, { writeTo })` | [Functions and actions](#functions-and-actions) |
+| 7 | RC input accepted | RC input refused unless `acceptReleaseCandidateInput` | [RC input shim](#release-candidate-input-shim) |
+| 8 | basic catalog rendered by React components | basic catalog renders as Custom Elements, client only | [Rendering](#rendering-is-client-only-for-the-basic-catalog) |
+| 9 | `PrometheusA2uiComponentImplementation` is a React component type | it is the official `ReactCatalogComponent` | [Public API](#public-api-changes) |
+| 10 | `getClientCapabilities()` returns v0.9 capabilities | version-keyed `PrometheusA2uiRendererCapabilities` | [Public API](#public-api-changes) |
+| 11 | `onRendererMessage` carries RC messages | official 1.0 renderer-to-agent messages | [Public API](#public-api-changes) |
+| 12 | processor errors thrown raw | `PrometheusA2uiError` code `protocol-error` | [Public API](#public-api-changes) |
+| 13 | install `@a2ui/web_core` types | nothing to install; types are inlined | [Public API](#public-api-changes) |
+| 14 | `@ag-ui/core` `>=0.0.59` and bespoke chat events | `@ag-ui/core` `^1.0.0`, `AgUiEvent` | [AG-UI](#ag-ui-10) |
+| 15 | `streamFactory(messages)` | `streamFactory(messages, { signal, resume })` | [AG-UI](#ag-ui-10) |
+| 16 | private A2A extension URI and `application/json+a2ui` | official URI and `application/a2ui+json` | [A2A](#a2a-official-a2ui-extension) |
+| 17 | `{ protocol, extensionUri, messages }` artifact payload | DataPart `data` is the message list | [A2A](#a2a-official-a2ui-extension) |
+| 18 | `@a2a-js/sdk` 1.0.1 | `@a2a-js/sdk` 1.3.0 | [A2A](#a2a-official-a2ui-extension) |
+
+## A2UI 1.0 wire format
+
+Both runtimes (`createPrometheusA2uiRuntime` and
+`createPrometheusA2uiHeadlessRuntime`) now hold **two catalogs by default**: the
+v0.9.1 catalog and a 1.0 catalog. Each surface is processed in the version its
+messages declare. Existing v0.9.1 producers keep working unchanged, so you can
+move producers one at a time.
+
+New constants:
+
+```ts
+import {
+  PROMETHEUS_A2UI_V1_CATALOG_ID,
+  PROMETHEUS_A2UI_V1_PROTOCOL_VERSION,
+  createPrometheusA2uiCatalog,
+} from "@prometheus-ags/a2ui-react";
+
+PROMETHEUS_A2UI_V1_PROTOCOL_VERSION; // "1.0"
+PROMETHEUS_A2UI_V1_CATALOG_ID; // "urn:prometheus-ags:a2ui:catalog:a2ui-1.0"
+
+// The existing factory defaults to "v0.9.1"; ask for the 1.0 catalog explicitly.
+const catalog = createPrometheusA2uiCatalog({ protocolVersion: "1.0" });
+```
+
+Passing `catalogs` to the runtime options replaces the defaults: you get exactly
+the catalogs you pass.
+
+**Before (v0.9.1):**
+
+```json
+[
+  {
+    "version": "v0.9.1",
+    "createSurface": {
+      "surfaceId": "order-review",
+      "catalogId": "urn:prometheus-ags:a2ui:catalog:v3",
+      "theme": { "primaryColor": "#0b5fff" }
+    }
+  },
+  {
+    "version": "v0.9.1",
+    "updateComponents": {
+      "surfaceId": "order-review",
+      "components": [
+        { "id": "root", "component": "Text", "text": { "path": "/title" } }
+      ]
+    }
+  }
+]
+```
+
+**After (1.0):**
+
+```json
+[
+  {
+    "version": "1.0",
+    "createSurface": {
+      "surfaceId": "order-review",
+      "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0"
+    }
+  },
+  {
+    "version": "1.0",
+    "updateComponents": {
+      "surfaceId": "order-review",
+      "components": [
+        { "id": "root", "component": "Text", "text": { "@path": "/title" } }
+      ]
+    }
+  }
+]
+```
+
+- [ ] Change `version` to `"1.0"` and point `catalogId` at
+  `PROMETHEUS_A2UI_V1_CATALOG_ID` (or your own 1.0 catalog).
+- [ ] Rename data bindings: `{ "path": ... }` becomes `{ "@path": ... }`, and a
+  function binding `{ "call": "formatString", "args": ... }` becomes
+  `{ "@call": "formatString", "args": ... }`.
+- [ ] Remove `theme` from `createSurface`. The 1.0 schema has no theme, so a
+  1.0 surface holds none.
+- [ ] The 1.0 envelope keys `@catalogId`, `@metadata`, `@accessibility` and
+  `@checks` are accepted and translated to the processor's bare keys. A
+  component that carries both the prefixed and the bare form is rejected as
+  `invalid-message`.
+- [ ] A 1.0 surface may have no default catalog. Code that reads
+  `surface.catalog.id` should read the default catalog defensively.
+- [ ] A 1.0 surface that names a catalog declared for another protocol version
+  is refused with `protocol-error` and `protocolCode: "CATALOG_ERROR"`.
+- [ ] Surfaces exported with `exportSurfaceMessages` come back as one inline 1.0
+  `createSurface` (plus an `updateDataModel` when the root value is not an
+  object), with no `theme`. The `actions` input to the export is gone.
+
+## Functions and actions
+
+1.0 renames and splits the function messages, and removes response-aware
+actions.
+
+| RC message | 1.0 message | Direction |
+| --- | --- | --- |
+| `callFunction` | `callRendererFunction` | agent to renderer |
+| (none) | `rendererFunctionResponse` | renderer answers the agent |
+| (none) | `callAgentFunction` | renderer to agent |
+| `actionResponse` | `agentFunctionResponse` | agent answers the renderer |
+
+`callRendererFunction` is run by the official processor: the function must
+resolve in a registered catalog and pass its `allowedCallers` and user-activation
+checks, otherwise the answer is an `INVALID_FUNCTION_CALL` error. The
+`openUrl` function stays out of the default allowlist.
+
+**Before (RC action that waits for a reply):**
+
+```json
+{
+  "id": "refresh",
+  "component": "Button",
+  "child": "refresh-label",
+  "action": {
+    "event": {
+      "name": "orders.refresh",
+      "wantResponse": true,
+      "responsePath": "/orders"
+    }
+  }
+}
+```
+
+`wantResponse` and `responsePath` do not exist in 1.0 and are **forbidden** on a
+1.0 surface. Call the agent from application code instead and write the answer
+where you need it:
+
+**After (1.0):**
+
+```ts
+import type { PrometheusA2uiRuntime } from "@prometheus-ags/a2ui-react";
+
+declare const runtime: PrometheusA2uiRuntime;
+
+// Resolves with the agent's answer; `writeTo` also writes it into the
+// surface's data model through processMessages, so the resource limits apply.
+await runtime.callAgentFunction(
+  "order-review",
+  { call: "refreshOrders", args: { status: "open" } },
+  { writeTo: "/orders", timeoutMs: 10_000 },
+);
+```
+
+- [ ] Replace each `wantResponse` / `responsePath` action with a
+  `callAgentFunction` call and a `writeTo` path.
+- [ ] Remove `onFunctionCall` from the runtime options. It is gone. A 1.0 agent
+  that wants the renderer to run a function sends `callRendererFunction`, and the
+  function must be in a catalog.
+- [ ] Provide `onRendererMessage` if you call agent functions. It is how
+  `callAgentFunction` and `rendererFunctionResponse` reach the agent.
+- [ ] An executed action on a 1.0 surface is also sent as a 1.0 `action` message
+  through `onRendererMessage`. It still passes the action policy first. The
+  `userMessage`, `catalogId` and `metadata` fields of the 1.0 action survive the
+  policy.
+- [ ] `dispose()` now disposes the official processor, which rejects pending
+  `callAgentFunction` promises.
+
+## Release candidate input shim
+
+Producers that still send the 1.0 release candidate (`version: "v1.0"`, `path`
+and `call` bindings, `callFunction`, `actionResponse`, `wantResponse`) are
+refused with `unsupported-protocol-version`. To keep them working while you
+migrate, opt in:
+
+```ts
+import { createPrometheusA2uiRuntime } from "@prometheus-ags/a2ui-react";
+
+export const runtime = createPrometheusA2uiRuntime({
+  acceptReleaseCandidateInput: true,
+});
+```
+
+- The option is off by default and needs a 1.0 catalog in the runtime.
+- It translates RC envelopes to 1.0: bindings to `@path` / `@call`,
+  `callFunction` to `callRendererFunction`, and `actionResponse` to
+  `agentFunctionResponse`. A response-aware action is stripped and recorded; when
+  it fires, the runtime issues `callAgentFunction` with `writeTo` set to its
+  `responsePath`.
+- It is kept for **one minor line** after 5.0.0, then removed. Treat it as a
+  bridge, not a destination.
+
+## Rendering is client only for the basic catalog
+
+The official basic catalog in `@a2ui/react` 0.15.0 renders as W3C **Custom
+Elements** (inside `<a2ui-react-...>` hosts), and they do not render on the
+server. Server rendering of basic-catalog components is not available.
+
+- [ ] `PrometheusA2uiSurface` still emits deterministic fallback markup during
+  SSR and lets the official renderer take over after hydration. Keep a
+  meaningful `fallback`.
+- [ ] Basic-catalog CSS classes gained an `a2ui-` prefix. If you styled the old
+  class names, update the selectors.
+- [ ] Missing components now render nothing; the old `[Loading id...]`
+  placeholder is gone.
+- [ ] Parent and child rules (`allowedParents`, `allowedChildren`) are enforced
+  for custom components too. Payloads that broke them and used to render are now
+  rejected.
+- [ ] Bundle size grew: the ESM outputs of `@prometheus-ags/a2ui-react` went from
+  about 709 KB to 1,051 KB raw (about +48%) and from 155 KB to 227 KB gzip. The
+  growth is the Lit-based Custom Element catalog in a shared chunk; load the
+  A2UI entry lazily if it is not on your first screen.
+
+## Public API changes
+
+- [ ] **`PrometheusA2uiComponentImplementation`** is now an alias of the
+  official `ReactCatalogComponent`, which is a React implementation **or** a Web
+  Component implementation. Code that read `.render` on a catalog entry must
+  narrow the type first.
+- [ ] **`getClientCapabilities()`** returns `PrometheusA2uiRendererCapabilities`,
+  the official renderer-capabilities record keyed by protocol version, not the
+  v0.9 client-capabilities shape. With both default catalogs it has a `v0.9.1`
+  and a `1.0` entry; the `1.0` entry carries `supportedCatalogIds`. Send it to
+  the agent as is.
+  `getClientDataModel(version = "v0.9.1")` returns the 1.0
+  `a2uiRendererDataModel` when called with `"1.0"`.
+- [ ] **`onRendererMessage`** receives official A2UI 1.0 renderer-to-agent
+  messages (`action`, `callAgentFunction`, `rendererFunctionResponse`, `error`).
+  It no longer receives RC messages.
+- [ ] **Errors.** Errors from the official processor are rethrown as
+  `PrometheusA2uiError` with `code: "protocol-error"` and the A2UI code in
+  `protocolCode` (`VALIDATION_ERROR`, `CATALOG_ERROR`, `INVALID_FUNCTION_CALL`,
+  `EXPRESSION_ERROR`, and others). The raw upstream error is in `cause`. This
+  package's own codes (`invalid-message`, `component-not-allowed`,
+  `limit-exceeded`) are unchanged. A refused 1.0 call also sends the agent a 1.0
+  `error` message through `onRendererMessage`.
+- [ ] **`@a2ui/web_core` types.** The published declarations inline the official
+  `@a2ui/*` types. Remove `@a2ui/web_core` (and the `zod@3` it brought) from your
+  own dependencies if you only installed it for these types. Import types from
+  `@prometheus-ags/a2ui-react`.
+- [ ] New public types are exported so declaration emit can name them:
+  `PrometheusA2uiRendererCapabilities`, `PrometheusA2uiAgentFunctionCall`,
+  `PrometheusA2uiAgentFunctionOptions`, `PrometheusA2uiProtocolVersion`.
+
+## AG-UI 1.0
+
+`@ag-ui/core` is now a `^1.0.0` peer of `@prometheus-ags/entity-graph-core`,
+`@prometheus-ags/entity-graph-react` and `@prometheus-ags/a2ui-react`. The
+0.0.x line is no longer supported.
+
+The chat components and `useChatSession` (at
+`@prometheus-ags/a2ui-react/ag-ui`) consume AG-UI 1.0 events.
+
+**Before:**
+
+```ts
+const session = useChatSession({
+  sessionId: "support",
+  streamFactory: (messages) => myStream(messages), // emitted MESSAGE_DELTA, DONE, ...
+});
+```
+
+**After:**
+
+```ts
+import { useChatSession } from "@prometheus-ags/a2ui-react/ag-ui";
+import type { AgUiEvent } from "@prometheus-ags/a2ui-react/ag-ui";
+
+declare function myStream(
+  messages: unknown,
+  signal: AbortSignal,
+  resume?: unknown,
+): AsyncIterable<AgUiEvent>;
+
+const session = useChatSession({
+  sessionId: "support",
+  streamFactory: (messages, { signal, resume }) =>
+    myStream(messages, signal, resume),
+});
+```
+
+- [ ] Emit AG-UI 1.0 events (`RUN_STARTED`, `TEXT_MESSAGE_*`,
+  `REASONING_*`, `TOOL_CALL_*`, `TOOL_CALL_RESULT`, `STATE_SNAPSHOT`,
+  `STATE_DELTA`, `MESSAGES_SNAPSHOT`, `RUN_FINISHED`, `RUN_ERROR`). The bespoke
+  names (`MESSAGE_DELTA`, `TOOL_CALL_DELTA`, `ERROR`, `DONE`) are gone, and so is
+  anything typed as `StreamEvent` beyond its deprecated alias. Other event types
+  are ignored. `SUBAGENT_*` events and multimodal parts are not handled.
+- [ ] `streamFactory` takes a second argument `{ signal, resume }`. Pass `signal`
+  to your transport; `sendMessage`, `clearMessages` and unmount now abort the
+  previous run for real, and events of a superseded run are dropped.
+- [ ] Messages live in the entity graph (`ChatConversationStore`): message
+  entities, an ordered id list and a conversation record with `runStatus` and
+  `runId`. Two sessions with the same `sessionId` share messages. Pass
+  `graphStore` to use a specific graph.
+- [ ] Reasoning messages render collapsed in `EntityChat` (class slot
+  `messageReasoning`).
+- [ ] **Interrupts.** A `RUN_FINISHED` event with an interrupt outcome sets
+  `runStatus: "interrupted"`. Resolve each one with
+  `resolveInterrupt(interruptId, { approved, payload? })`; when all are decided
+  the next run starts with `resume` entries passed to `streamFactory`.
+  `EntityChat` renders `EntityInterruptApproval` for each pending interrupt.
+  An approval is decided by the installed `actionPolicy` and **fails closed**:
+  without an `actionPolicy`, or with an interrupt that maps to no action, the
+  entry is `cancelled`. Denying never calls the policy. Report decisions with
+  `onInterruptDecision`.
+
+  ```ts
+  useChatSession({
+    sessionId: "support",
+    streamFactory,
+    actionPolicy, // required for approvals to be resolved
+    onInterruptDecision: (interrupt, entry, decision) => audit(interrupt, entry, decision),
+  });
+  ```
+
+- [ ] The interrupt outcome fields are still marked Draft in AG-UI. They are
+  read in one module (`readInterruptOutcome`, `toResumeInput`) so a change in the
+  wire shape is a single fix.
+- [ ] **Middleware interop.** The runtime accepts the `@ag-ui/a2ui-middleware`
+  lifecycle activities (`status: "building" | "retrying" | "failed"`, without
+  `a2ui_operations`). A `failed` activity is reported once per message id through
+  `onResyncNeeded` with the new reason `"producer-failed"`. Update any exhaustive
+  switch over the resync reasons.
+
+## A2A official extension
+
+`@prometheus-ags/entity-graph-a2a` implements the official A2UI extension for
+A2A. The export names are unchanged; the values and shapes are not.
+
+| | 4.x | 5.0 |
+| --- | --- | --- |
+| `PROMETHEUS_A2UI_EXTENSION_URI` | Prometheus-owned URI | `https://a2ui.org/a2a-extension/a2ui/v1.0` |
+| `PROMETHEUS_A2UI_MEDIA_TYPE` | `application/json+a2ui` | `application/a2ui+json` |
+| `PROMETHEUS_A2UI_PROTOCOL_VERSION` | `"v0.9.1"` | `"1.0"` |
+| `PROMETHEUS_A2UI_CATALOG_ID` | v0.9.1 catalog | `urn:prometheus-ags:a2ui:catalog:a2ui-1.0` |
+| DataPart `data` | `{ protocol, extensionUri, messages }` | the A2UI message list |
+| `@a2a-js/sdk` | 1.0.1 | 1.3.0 |
+
+**Before:**
+
+```ts
+const part = { data: { protocol: "v0.9.1", extensionUri, messages } };
+```
+
+**After:**
+
+```ts
+import {
+  createA2UIArtifact,
+  createA2UIDataPart,
+  extractA2UIMessages,
+} from "@prometheus-ags/entity-graph-a2a";
+
+const part = createA2UIDataPart(messages); // data is the message list
+const artifact = createA2UIArtifact(messages, { artifactId: "invoice-review" });
+const received = extractA2UIMessages({ parts: [part] });
+```
+
+- [ ] `PrometheusA2UIArtifactPayload` is a deprecated alias of the message list.
+  Stop reading `payload.messages`.
+- [ ] The agent card extension params follow the spec:
+  `supportedCatalogIds` and `acceptsInlineCatalogs: false`.
+- [ ] **Capabilities are per turn.** An agent may send A2UI only in reply to a
+  message whose metadata carries `a2uiRendererCapabilities["1.0"]`. Clients must
+  attach it to every user message (`runtime.getClientCapabilities()` produces
+  it). Agents decide with `offersA2UICatalog(message, catalogId)`;
+  `rendererCapabilitiesOf` returns the entry itself. Constants:
+  `A2UI_RENDERER_CAPABILITIES_KEY`, `A2UI_RENDERER_DATA_MODEL_KEY`.
+- [ ] **Inbound client actions are denied by default.** A2UI DataParts that
+  carry renderer-to-agent messages (`action`, `callAgentFunction`,
+  `rendererFunctionResponse`, `error`) are refused unless the server has an
+  `a2uiInbound` handler. Each message is authorized and handled on its own; if
+  there is no handler, or every message is refused, the request is rejected
+  (`TASK_STATE_REJECTED`).
+
+  ```ts
+  import { createA2AServer, buildAgentCard } from "@prometheus-ags/entity-graph-a2a";
+
+  const server = createA2AServer({
+    card: buildAgentCard({ url: "https://api.example.com/a2a" }),
+    deterministicExecutor: {
+      a2uiInbound: {
+        authorize: (message, context) => message.version === "1.0" && isAllowed(context),
+        handle: async (message) => handleAction(message), // may return A2UI messages
+      },
+    },
+  });
+  ```
+
+- [ ] Replies from `handle` are sent only if that turn offered 1.0 capabilities.
+
+## Flutter
+
+The Flutter showcase is part of the 5.0.0 work. It renders A2UI 1.0 final
+(`version: "1.0"`) natively through the official `a2ui_flutter` 0.3.0 renderer
+and the `a2ui_core` 0.7.0 message processor, so a 5.0 agent that sends
+`version: "1.0"` messages can drive it directly. There is no translation layer
+and GenUI is no longer a dependency. The showcase uses its own narrowed catalog,
+`urn:prometheus-ags:a2ui:catalog:flutter-showcase-1.0` (Card, Column, Row, Text,
+Button and Divider, with no client functions). `entity_graph_flutter` stays at
+3.1.0; it contains no A2UI code, so there is no pub.dev release for this.
+
+## Related pages
+
+- [A2A and A2UI integration](../integrations/a2a-a2ui.mdx)
+- [Agentic A2UI example](../examples/agentic-a2ui.mdx)
+- [Compatibility policy](compatibility-policy.mdx)
+- [Migrate from 3.0 alpha/RC to stable](alpha-to-stable.mdx), for older upgrades

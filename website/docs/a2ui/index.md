@@ -22,7 +22,8 @@ package guarantees when messages are delivered over AG-UI, and how to wire it up
 
 A2UI is the picture; AG-UI is the delivery truck. They are independent, and the
 package keeps them apart: the package root is the official A2UI surface, and
-`@prometheus-ags/a2ui-react/ag-ui` holds the older AG-UI chat components.
+`@prometheus-ags/a2ui-react/ag-ui` holds the AG-UI chat components, which consume
+AG-UI 1.0 events. Moving from 4.x? See [Migrate to 5.0](../operations/migration-5.md).
 
 ```mermaid
 flowchart LR
@@ -59,7 +60,7 @@ flowchart LR
 | --- | --- |
 | Render surfaces in React | `@prometheus-ags/a2ui-react` |
 | Validate or mirror agent output on a server, or export a surface | `@prometheus-ags/a2ui-react/headless` |
-| Keep the pre-3.0 AG-UI chat components | `@prometheus-ags/a2ui-react/ag-ui` |
+| Use the AG-UI chat components (messages in the entity graph, interrupts) | `@prometheus-ags/a2ui-react/ag-ui` |
 
 ## Version axes
 
@@ -67,17 +68,20 @@ These numbers are related but are not interchangeable:
 
 | Axis | Selected target |
 | --- | --- |
-| Public A2UI input | `v1.0` release candidate and `v0.9.1` |
-| Official renderer engine | `v0.9.1` compatibility boundary |
-| `@a2ui/react` / `@a2ui/web_core` | `0.12.0` |
+| Public A2UI input | `1.0` (final) and `v0.9.1`; the `v1.0` release candidate only with `acceptReleaseCandidateInput` |
+| Official renderer engine | `@a2ui/web_core` / `@a2ui/react` `0.15.0`, native 1.0 and v0.9.1 |
 | Markdown renderer | port of `@a2ui/markdown-it` `0.2.0` on `dompurify` `3.4.17` |
-| `zod` | `4.6.7` (A2UI upstream runs on `zod/v3`) |
-| AG-UI | `@ag-ui/core` peer range `>=0.0.59 <0.1.0 \|\| ^1.0.0`, developed against `1.0.3` |
+| `zod` | `4.6.7` (upstream A2UI runs on `zod/v3`) |
+| AG-UI | `@ag-ui/core` peer `^1.0.0`, developed against `1.0.4` |
+| A2A extension | `https://a2ui.org/a2a-extension/a2ui/v1.0`, `@a2a-js/sdk` `1.3.0` |
 
-The published A2UI packages do not expose a v1 renderer yet. The runtime
-validates the v1.0 release-candidate envelope, decomposes its embedded surface
-into the official v0.9.1 processor, and keeps v1-only action metadata at the
-boundary. It does not claim an upstream v1 renderer.
+Both runtimes hold a v0.9.1 catalog and a 1.0 catalog by default and process each
+surface in the version its messages declare. The official processor handles 1.0
+natively, including `callRendererFunction` and `callAgentFunction`; this package
+adds the allowlist, limits, action policy and AG-UI reconciliation around it. The
+official basic catalog renders as Custom Elements and is client only: there is no
+server rendering of basic-catalog components, and `PrometheusA2uiSurface` emits
+fallback markup until hydration.
 
 ## Quick start
 

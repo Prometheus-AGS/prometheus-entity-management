@@ -1,0 +1,101 @@
+diff --git a/chunk-H4D2JAR7.js b/chunk-H4D2JAR7.js
+index c35aa0252fa33440a35754aaccb51ac9da4dd387..b1b75888bf84209cf8c59c6d60206e7cce92e321 100644
+--- a/chunk-H4D2JAR7.js
++++ b/chunk-H4D2JAR7.js
+@@ -95,7 +95,10 @@ var HostRegistry = class _HostRegistry {
+ };
+ 
+ // src/catalog/react_host_element.ts
+-var ReactWcHost = class extends HTMLElement {
++// Prometheus patch: no DOM at module load, so server rendering and plain Node can import this module.
++var ReactWcHostBase = typeof HTMLElement === "undefined" ? class {
++} : HTMLElement;
++var ReactWcHost = class extends ReactWcHostBase {
+   context;
+   _node;
+   registry;
+diff --git a/chunk-WRJMELUI.cjs b/chunk-WRJMELUI.cjs
+index 7633f2590405acfd9d71dceaf6c77f8a62cf7e14..20592b88dbac5a11d677b248320fb90903b79b73 100644
+--- a/chunk-WRJMELUI.cjs
++++ b/chunk-WRJMELUI.cjs
+@@ -101,7 +101,10 @@ var HostRegistry = class _HostRegistry {
+ };
+ 
+ // src/catalog/react_host_element.ts
+-var ReactWcHost = class extends HTMLElement {
++// Prometheus patch: no DOM at module load, so server rendering and plain Node can import this module.
++var ReactWcHostBase = typeof HTMLElement === "undefined" ? class {
++} : HTMLElement;
++var ReactWcHost = class extends ReactWcHostBase {
+   context;
+   _node;
+   registry;
+diff --git a/index.d.cts b/index.d.cts
+index b4342a2ebb8cd20204a9cc4b8f31a0da43a7d4fe..17a14b87ea9898a750707d519be7d322f37986b3 100644
+--- a/index.d.cts
++++ b/index.d.cts
+@@ -1,7 +1,7 @@
+ import * as react from 'react';
+ import react__default, { ComponentType } from 'react';
+ import { ComponentApi, ComponentContext, A2uiMetadata, ComponentNode, SurfaceModel, ResolveA2uiProps, InferredComponentApiSchemaType, NodeProps, Signal } from '@a2ui/web_core/v0_9';
+-import { ZodTypeAny } from 'zod';
++import { ZodTypeAny } from 'zod/v3';
+ import { WebComponentImplementation } from '@a2ui/web_core/v0_9/universal';
+ import { MarkdownRenderer } from '@a2ui/web_core';
+ 
+diff --git a/index.d.ts b/index.d.ts
+index b4342a2ebb8cd20204a9cc4b8f31a0da43a7d4fe..17a14b87ea9898a750707d519be7d322f37986b3 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -1,7 +1,7 @@
+ import * as react from 'react';
+ import react__default, { ComponentType } from 'react';
+ import { ComponentApi, ComponentContext, A2uiMetadata, ComponentNode, SurfaceModel, ResolveA2uiProps, InferredComponentApiSchemaType, NodeProps, Signal } from '@a2ui/web_core/v0_9';
+-import { ZodTypeAny } from 'zod';
++import { ZodTypeAny } from 'zod/v3';
+ import { WebComponentImplementation } from '@a2ui/web_core/v0_9/universal';
+ import { MarkdownRenderer } from '@a2ui/web_core';
+ 
+diff --git a/package.json b/package.json
+index a3b991831edc2b7d1d1c458c0cdf4bc54f057918..293d6cb5e089f94c126ebb46c0d6e4fd4c5e5996 100644
+--- a/package.json
++++ b/package.json
+@@ -75,12 +75,12 @@
+     "@a2ui/web_core": "^0.15.0",
+     "clsx": "^2.1.1",
+     "markdown-it": "^14.2.0",
+-    "zod": "^3.25.76"
++    "zod": "^3.25.76 || ^4.0.0"
+   },
+   "peerDependencies": {
+     "react": "^18.0.0 || ^19.0.0",
+     "react-dom": "^18.0.0 || ^19.0.0",
+-    "zod": "^3.25.76"
++    "zod": "^3.25.76 || ^4.0.0"
+   },
+   "engines": {
+     "node": ">=18.0.0"
+diff --git a/v0_9/index.d.cts b/v0_9/index.d.cts
+index e39c19a8f33598b20a00614fc11fddbe79d0c0d3..81c27327279b2ddfbcfdfdfb28e6ac53cb2a1704 100644
+--- a/v0_9/index.d.cts
++++ b/v0_9/index.d.cts
+@@ -1,6 +1,6 @@
+ export { A2uiSurface, MarkdownComponentContext, MarkdownComponentProps, MarkdownContext, NodeBuildChild, NodeViewProps, ReactA2uiComponentProps, ReactCatalogComponent, ReactComponentImplementation, createBinderlessComponentImplementation, createComponentImplementation, useMarkdownRenderer, useSignalValue } from '../index.cjs';
+ import 'react';
+ import '@a2ui/web_core/v0_9';
+-import 'zod';
++import 'zod/v3';
+ import '@a2ui/web_core/v0_9/universal';
+ import '@a2ui/web_core';
+diff --git a/v0_9/index.d.ts b/v0_9/index.d.ts
+index b2b2f1acb23627189faca19448b03e189994c80b..d58e946e4e23f3dc34d14a8155eee1eb27a89b16 100644
+--- a/v0_9/index.d.ts
++++ b/v0_9/index.d.ts
+@@ -1,6 +1,6 @@
+ export { A2uiSurface, MarkdownComponentContext, MarkdownComponentProps, MarkdownContext, NodeBuildChild, NodeViewProps, ReactA2uiComponentProps, ReactCatalogComponent, ReactComponentImplementation, createBinderlessComponentImplementation, createComponentImplementation, useMarkdownRenderer, useSignalValue } from '../index.js';
+ import 'react';
+ import '@a2ui/web_core/v0_9';
+-import 'zod';
++import 'zod/v3';
+ import '@a2ui/web_core/v0_9/universal';
+ import '@a2ui/web_core';

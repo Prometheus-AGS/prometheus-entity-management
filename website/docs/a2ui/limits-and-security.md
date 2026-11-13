@@ -16,7 +16,7 @@ official processor can prove a surface and an action are valid A2UI. Only your
 application can decide whether that action may touch a tenant, an entity, or a
 field. The entity-graph policy therefore fails closed:
 
-1. The action must match the official v0.9.1 schema.
+1. The action must match the official A2UI action schema (v0.9.1 or 1.0, by the surface's protocol version).
 2. The exact action name must be registered.
 3. Its context must match your application schema.
 4. The entity type, action and every written field must be allowlisted.

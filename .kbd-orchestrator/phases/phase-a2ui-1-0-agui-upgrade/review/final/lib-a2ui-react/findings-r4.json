@@ -1,0 +1,36 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/use-chat-session.ts",
+      "claim": "An interrupt decision that completes after unmount can start a new run and continue writing to the graph.",
+      "evidence": "resolveInterrupt awaits decideInterruptChoice and then unconditionally calls store.decideInterrupt followed by store.resume when all decisions are present. The effect cleanup only aborts abortRef and calls store.cancel(). In conversation-store.ts, cancel() leaves an interrupted conversation's status and interruptEpoch unchanged, so the pending decision still passes decideInterrupt's checks and resume() creates a fresh current run after cleanup. This contradicts the hook's documented guarantee that unmounting aborts the run and drops subsequent events.",
+      "suggested_fix": "Invalidate pending decision continuations on cleanup and check that lifecycle token after awaiting the policy, before recording decisions or starting a resumed stream."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/official/runtime-core.ts",
+      "claim": "processMessages reorders function messages after all surface mutations, changing the meaning of valid ordered batches.",
+      "evidence": "The parsing loop partitions input into stateMessages and functionMessages, then applies every stateMessages entry before passing functionMessages to the processor. A batch containing createSurface, callRendererFunction, and deleteSurface therefore deletes the surface before invoking the function; likewise, a function positioned between two data-model updates observes the final state rather than the state at its position. The public method explicitly promises to process messages 'in order'.",
+      "suggested_fix": "Preserve input ordering during production application while excluding function execution from shadow validation; explicitly define and implement transaction boundaries for batches containing RPC messages."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/a2ui-react/src/use-chat-session.ts",
+      "claim": "Changing graphStore during an active run abandons the old graph's running conversation without aborting its transport.",
+      "evidence": "callbacks.current.graph changes immediately and subscribe resubscribes on opts.graphStore, but the store and cleanup effect remain stable. ChatRun.isCurrent() calls this.owners(), which resolves the newly selected graph, so the old run loses ownership without its abort callback being invoked. Its old conversation remains runStatus 'running' and isLoading true, and a transport awaiting another event can remain open indefinitely.",
+      "suggested_fix": "Bind each run to its starting graph and explicitly abort and cancel that run on graph changes before switching the store's graph and subscription."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

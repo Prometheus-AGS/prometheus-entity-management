@@ -1,0 +1,104 @@
+{
+  "surfaceId": "upg7",
+  "surface": [
+    {
+      "version": "1.0",
+      "createSurface": {
+        "surfaceId": "upg7",
+        "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "total",
+              "approve",
+              "forbid"
+            ]
+          },
+          {
+            "id": "total",
+            "component": "Text",
+            "text": {
+              "@path": "/total"
+            }
+          },
+          {
+            "id": "approve",
+            "component": "Button",
+            "child": "approveLabel",
+            "action": {
+              "event": {
+                "name": "prometheus.entity.upsert",
+                "context": {
+                  "entityType": "Order",
+                  "entityId": "o-1",
+                  "tenantId": "tenant-a",
+                  "data": {
+                    "@path": "/approvePatch"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "approveLabel",
+            "component": "Text",
+            "text": "Approve"
+          },
+          {
+            "id": "forbid",
+            "component": "Button",
+            "child": "forbidLabel",
+            "action": {
+              "event": {
+                "name": "prometheus.entity.upsert",
+                "context": {
+                  "entityType": "Order",
+                  "entityId": "o-1",
+                  "tenantId": "tenant-a",
+                  "data": {
+                    "@path": "/forbiddenPatch"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "id": "forbidLabel",
+            "component": "Text",
+            "text": "Set total"
+          }
+        ],
+        "dataModel": {
+          "total": "pending",
+          "approvePatch": {
+            "status": "approved"
+          },
+          "forbiddenPatch": {
+            "total": 999
+          }
+        }
+      }
+    }
+  ],
+  "answerCall": {
+    "call": "lookupTotal",
+    "args": {
+      "orderId": "o-1"
+    }
+  },
+  "answerValue": "42.00 USD",
+  "answerPath": "/total",
+  "oversizedCall": {
+    "call": "lookupBlob",
+    "args": {
+      "orderId": "o-1"
+    }
+  },
+  "oversizedLength": 4096,
+  "oversizedPath": "/blob",
+  "lowerLimits": {
+    "maxDataModelBytes": 1024
+  }
+}

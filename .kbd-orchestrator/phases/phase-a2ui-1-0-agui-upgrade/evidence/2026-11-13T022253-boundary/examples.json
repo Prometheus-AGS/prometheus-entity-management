@@ -1,0 +1,490 @@
+{
+  "schemaVersion": 1,
+  "scenario": "UPG-14",
+  "name": "Examples run A2UI 1.0 end to end",
+  "argv": [
+    "/Users/gqadonis/.local/share/fnm/node-versions/v26.5.0/installation/bin/node",
+    "/Volumes/T7/Projects/prometheus/prometheus-entity-management/scripts/verify-a2ui-examples.mjs",
+    "--",
+    "--report",
+    ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples.json"
+  ],
+  "cwd": "/Volumes/T7/Projects/prometheus/prometheus-entity-management",
+  "node": "v26.5.0",
+  "startedAt": "2026-11-13T08:24:29.103Z",
+  "completedAt": "2026-11-13T08:24:48.421Z",
+  "artifactsDirectory": ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples-artifacts",
+  "commands": [
+    {
+      "label": "build-workspace-dependencies",
+      "command": "pnpm --filter prometheus-agentic-a2ui-example^... --filter prometheus-entity-management-agentic-a2ui^... --filter prometheus-agui-activity-lab-example^... build",
+      "startedAt": "2026-11-13T08:24:29.108Z",
+      "completedAt": "2026-11-13T08:24:36.120Z",
+      "exitCode": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "label": "build-agentic-a2ui-app",
+      "command": "pnpm --filter prometheus-agentic-a2ui-example build",
+      "startedAt": "2026-11-13T08:24:36.120Z",
+      "completedAt": "2026-11-13T08:24:37.510Z",
+      "exitCode": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "label": "build-agentic-a2ui",
+      "command": "pnpm --filter prometheus-entity-management-agentic-a2ui build",
+      "startedAt": "2026-11-13T08:24:37.510Z",
+      "completedAt": "2026-11-13T08:24:39.072Z",
+      "exitCode": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "label": "build-agui-activity-lab",
+      "command": "pnpm --filter prometheus-agui-activity-lab-example build",
+      "startedAt": "2026-11-13T08:24:39.072Z",
+      "completedAt": "2026-11-13T08:24:40.019Z",
+      "exitCode": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "label": "browser-chromium",
+      "command": "pnpm exec playwright test --config tests/browser/a2ui-examples.playwright.config.ts",
+      "env": {
+        "A2UI_EXAMPLES_ARTIFACTS": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples-artifacts",
+        "A2UI_EXAMPLES_ONLY": "agentic-a2ui-app,agentic-a2ui,agui-activity-lab"
+      },
+      "startedAt": "2026-11-13T08:24:40.019Z",
+      "completedAt": "2026-11-13T08:24:48.417Z",
+      "exitCode": 0,
+      "signal": null,
+      "error": null
+    }
+  ],
+  "examples": [
+    {
+      "exampleId": "agentic-a2ui-app",
+      "packageName": "prometheus-agentic-a2ui-example",
+      "producer": "in-browser A2A reference agent (reference-agent.ts) streamed over the in-page A2A server",
+      "build": {
+        "exitCode": 0,
+        "status": "pass"
+      },
+      "browser": {
+        "test": "agentic-a2ui-app: streams the task surface and executes Mark task done",
+        "ok": true,
+        "statuses": [
+          "passed"
+        ]
+      },
+      "surface": {
+        "rendered": true,
+        "lifecycle": "completed",
+        "artifacts": 1,
+        "button": "Mark task done"
+      },
+      "action": {
+        "name": "task.update",
+        "decision": "executed",
+        "detailStatus": "done"
+      },
+      "capture": {
+        "file": ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples-artifacts/agentic-a2ui-app.captures.json",
+        "sha256": "840feb2428e5d2bd0b7e2a724602a63bb56e08bf05f1caca285c1909df20dacb",
+        "tap": {
+          "installed": true,
+          "sseFrames": 4,
+          "errors": []
+        },
+        "requiredSource": "a2a-sse",
+        "sources": {
+          "serialized-payload": {
+            "records": 1,
+            "envelopes": 3
+          },
+          "a2a-sse": {
+            "records": 1,
+            "envelopes": 3
+          },
+          "runtime-input": {
+            "records": 1,
+            "envelopes": 3
+          }
+        },
+        "envelopes": 9,
+        "distinctEnvelopeDigests": [
+          "b29ad6d48a3b892e7a1a45b4bc7411169ed4fdf747f3dfda80fd4eba47ea567f",
+          "8f57134cff57a22534760a476810d4c36f86fb31c7ae92b06ee4e7b3d4476128",
+          "aae758b0702280d95b432ec926075597a52bed9fd303bd8bb7bb0991d4368fec"
+        ]
+      },
+      "assertion": {
+        "ok": true,
+        "required": "1.0",
+        "total": 9,
+        "versions": {
+          "1.0": 9
+        },
+        "failures": [],
+        "reasons": []
+      },
+      "screenshots": [
+        {
+          "path": ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples-artifacts/agentic-a2ui-app-surface.png",
+          "sha256": "fb11915fb9dc1971783b5487a343d21324a78aa93dc23666b258a8c95ba02c3d"
+        },
+        {
+          "path": ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples-artifacts/agentic-a2ui-app-action.png",
+          "sha256": "cf30375b7f76aad940f6d4b9333ec6068f455d2c1a2e57da1dd610d0ce7e49e7"
+        }
+      ],
+      "status": "pass",
+      "reasons": []
+    },
+    {
+      "exampleId": "agentic-a2ui",
+      "packageName": "prometheus-entity-management-agentic-a2ui",
+      "producer": "in-browser surface planner (src/agent/surface-messages.ts) fed to the A2UI runtime",
+      "build": {
+        "exitCode": 0,
+        "status": "pass"
+      },
+      "browser": {
+        "test": "agentic-a2ui: renders the task board surface and executes Mark done",
+        "ok": true,
+        "statuses": [
+          "passed"
+        ]
+      },
+      "surface": {
+        "rendered": true,
+        "surfaceId": "surface-task-sync",
+        "detailBefore": "Wire realtime sync — todo (v1)"
+      },
+      "action": {
+        "name": "prometheus.entity.upsert",
+        "decision": "allowed",
+        "detailAfter": "Wire realtime sync — done (v1)"
+      },
+      "capture": {
+        "file": ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples-artifacts/agentic-a2ui.captures.json",
+        "sha256": "e821d2ddcb0a711ac831848775630eb72451a2a617d2533dbfd4b784a0ed7304",
+        "tap": {
+          "installed": true,
+          "sseFrames": 0,
+          "errors": []
+        },
+        "requiredSource": "runtime-input",
+        "sources": {
+          "runtime-input": {
+            "records": 1,
+            "envelopes": 3
+          }
+        },
+        "envelopes": 3,
+        "distinctEnvelopeDigests": [
+          "b29ad6d48a3b892e7a1a45b4bc7411169ed4fdf747f3dfda80fd4eba47ea567f",
+          "4d3d537d1c7290d624c62f1ede422ff90eaccf582ae1d8ea3405cca85b994919",
+          "459bcde6bbb68200cac4f048c4e6bafb99d48cefc8187b802d50af826f7f16c9"
+        ]
+      },
+      "assertion": {
+        "ok": true,
+        "required": "1.0",
+        "total": 3,
+        "versions": {
+          "1.0": 3
+        },
+        "failures": [],
+        "reasons": []
+      },
+      "screenshots": [
+        {
+          "path": ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples-artifacts/agentic-a2ui-surface.png",
+          "sha256": "aaf3fdfa1af62b42c40bf83d39c5aa73c2130892df5aa897fb05a526b73dca97"
+        },
+        {
+          "path": ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples-artifacts/agentic-a2ui-action.png",
+          "sha256": "835256baf20022a9cfd947b73a76c4c8e9c23807c12644beba2a7a7821d8da82"
+        }
+      ],
+      "status": "pass",
+      "reasons": []
+    },
+    {
+      "exampleId": "agui-activity-lab",
+      "packageName": "prometheus-agui-activity-lab-example",
+      "producer": "Node AG-UI activity producer (server/producer.ts) emitting server/events.ts operations",
+      "build": {
+        "exitCode": 0,
+        "status": "pass"
+      },
+      "browser": {
+        "test": "agui-activity-lab: renders the producer's activity surface and posts the Ping action",
+        "ok": true,
+        "statuses": [
+          "passed"
+        ]
+      },
+      "surface": {
+        "rendered": true,
+        "surfaceId": "upg14",
+        "producer": "http://127.0.0.1:54072",
+        "stream": "upg14"
+      },
+      "action": {
+        "name": "lab.ping",
+        "executedByPolicy": true,
+        "actionId": "01a1d402-60f9-750b-891f-a2f6e10d4475",
+        "duplicate": false,
+        "userAction": {
+          "name": "lab.ping",
+          "surfaceId": "upg14",
+          "sourceComponentId": "ping",
+          "timestamp": "2026-11-13T08:24:48.120Z",
+          "context": {}
+        }
+      },
+      "capture": {
+        "file": ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples-artifacts/agui-activity-lab.captures.json",
+        "sha256": "e1a71c87c527ea9153e0fcb9500a616e258e96f9286acd81ba3fe0bceb82fd07",
+        "tap": {
+          "installed": true,
+          "sseFrames": 0,
+          "errors": []
+        },
+        "requiredSource": "agui-activity-stream",
+        "sources": {
+          "agui-activity-stream": {
+            "records": 1,
+            "envelopes": 3
+          },
+          "runtime-input": {
+            "records": 2,
+            "envelopes": 6
+          }
+        },
+        "envelopes": 9,
+        "distinctEnvelopeDigests": [
+          "19bcbfc1724020961f2fe54beefc9275b2ecc8c3f85e8b345f684e787f0ddd96",
+          "2aff88ae207f00c88a00d0cd337993ce9a60b3c1a28ddd726e597fef6f72a7c3",
+          "7b54abb8d0d57fd0c85af5aaa8754dcd61450350edf5d1917f5dfb98cc2f122a"
+        ]
+      },
+      "assertion": {
+        "ok": true,
+        "required": "1.0",
+        "total": 9,
+        "versions": {
+          "1.0": 9
+        },
+        "failures": [],
+        "reasons": []
+      },
+      "screenshots": [
+        {
+          "path": ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples-artifacts/agui-activity-lab-surface.png",
+          "sha256": "ccdc8eb7058b263c85cf4f4fd4324112431fb788734e76b7a63c7b4a271b066e"
+        },
+        {
+          "path": ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples-artifacts/agui-activity-lab-action.png",
+          "sha256": "292970d8459d202fcb29d2e8155e1cc6b0d0ea8f512a5bbca9590f7531b7e862"
+        }
+      ],
+      "status": "pass",
+      "reasons": []
+    }
+  ],
+  "fixtures": [
+    {
+      "exampleId": "agentic-a2ui-app",
+      "fixture": "tests/fixtures/a2ui-1-0-migration/pre-migration/agentic-a2ui-app.json",
+      "manifest": "tests/fixtures/a2ui-1-0-migration/pre-migration/manifest.json",
+      "recorded": "9c6681d00e9ae06e24079417de3bfadb3ea2fe6aba81512ceefe44c993bff4be",
+      "actual": "9c6681d00e9ae06e24079417de3bfadb3ea2fe6aba81512ceefe44c993bff4be",
+      "matches": true
+    },
+    {
+      "exampleId": "agentic-a2ui",
+      "fixture": "tests/fixtures/a2ui-1-0-migration/pre-migration/agentic-a2ui.json",
+      "manifest": "tests/fixtures/a2ui-1-0-migration/pre-migration/manifest.json",
+      "recorded": "4fd9cbbf27d9931b496e5a6497f1e19727ef27ff27b7aeb3ee4366d0fd2fadd6",
+      "actual": "4fd9cbbf27d9931b496e5a6497f1e19727ef27ff27b7aeb3ee4366d0fd2fadd6",
+      "matches": true
+    },
+    {
+      "exampleId": "agui-activity-lab",
+      "fixture": "tests/fixtures/a2ui-1-0-migration/pre-migration/agui-activity-lab.json",
+      "manifest": "tests/fixtures/a2ui-1-0-migration/pre-migration/manifest.json",
+      "recorded": "b45227cf87809223a1f4de2cfa4355fdd3f33b331c080c37b8d138faaa31014c",
+      "actual": "b45227cf87809223a1f4de2cfa4355fdd3f33b331c080c37b8d138faaa31014c",
+      "matches": true
+    }
+  ],
+  "negativeControl": [
+    {
+      "exampleId": "agentic-a2ui-app",
+      "fixture": "tests/fixtures/a2ui-1-0-migration/pre-migration/agentic-a2ui-app.json",
+      "digest": {
+        "recorded": "9c6681d00e9ae06e24079417de3bfadb3ea2fe6aba81512ceefe44c993bff4be",
+        "actual": "9c6681d00e9ae06e24079417de3bfadb3ea2fe6aba81512ceefe44c993bff4be",
+        "matches": true
+      },
+      "assertion": {
+        "ok": false,
+        "required": "1.0",
+        "total": 5,
+        "versions": {
+          "v0.9.1": 5
+        },
+        "failures": [
+          {
+            "index": 0,
+            "kind": "createSurface",
+            "version": "v0.9.1"
+          },
+          {
+            "index": 1,
+            "kind": "updateComponents",
+            "version": "v0.9.1"
+          },
+          {
+            "index": 2,
+            "kind": "updateDataModel",
+            "version": "v0.9.1"
+          },
+          {
+            "index": 3,
+            "kind": "createSurface",
+            "version": "v0.9.1"
+          },
+          {
+            "index": 4,
+            "kind": "updateComponents",
+            "version": "v0.9.1"
+          }
+        ],
+        "reasons": [
+          "5 envelope(s) do not have version \"1.0\""
+        ]
+      },
+      "failureVersions": [
+        "v0.9.1"
+      ],
+      "expected": "the assertion fails, only on v0.9.1 / v1.0 envelopes",
+      "status": "pass",
+      "reason": null
+    },
+    {
+      "exampleId": "agentic-a2ui",
+      "fixture": "tests/fixtures/a2ui-1-0-migration/pre-migration/agentic-a2ui.json",
+      "digest": {
+        "recorded": "4fd9cbbf27d9931b496e5a6497f1e19727ef27ff27b7aeb3ee4366d0fd2fadd6",
+        "actual": "4fd9cbbf27d9931b496e5a6497f1e19727ef27ff27b7aeb3ee4366d0fd2fadd6",
+        "matches": true
+      },
+      "assertion": {
+        "ok": false,
+        "required": "1.0",
+        "total": 3,
+        "versions": {
+          "v0.9.1": 3
+        },
+        "failures": [
+          {
+            "index": 0,
+            "kind": "createSurface",
+            "version": "v0.9.1"
+          },
+          {
+            "index": 1,
+            "kind": "updateComponents",
+            "version": "v0.9.1"
+          },
+          {
+            "index": 2,
+            "kind": "updateDataModel",
+            "version": "v0.9.1"
+          }
+        ],
+        "reasons": [
+          "3 envelope(s) do not have version \"1.0\""
+        ]
+      },
+      "failureVersions": [
+        "v0.9.1"
+      ],
+      "expected": "the assertion fails, only on v0.9.1 / v1.0 envelopes",
+      "status": "pass",
+      "reason": null
+    },
+    {
+      "exampleId": "agui-activity-lab",
+      "fixture": "tests/fixtures/a2ui-1-0-migration/pre-migration/agui-activity-lab.json",
+      "digest": {
+        "recorded": "b45227cf87809223a1f4de2cfa4355fdd3f33b331c080c37b8d138faaa31014c",
+        "actual": "b45227cf87809223a1f4de2cfa4355fdd3f33b331c080c37b8d138faaa31014c",
+        "matches": true
+      },
+      "assertion": {
+        "ok": false,
+        "required": "1.0",
+        "total": 5,
+        "versions": {
+          "v0.9.1": 5
+        },
+        "failures": [
+          {
+            "index": 0,
+            "kind": "createSurface",
+            "version": "v0.9.1"
+          },
+          {
+            "index": 1,
+            "kind": "updateComponents",
+            "version": "v0.9.1"
+          },
+          {
+            "index": 2,
+            "kind": "updateDataModel",
+            "version": "v0.9.1"
+          },
+          {
+            "index": 3,
+            "kind": "updateDataModel",
+            "version": "v0.9.1"
+          },
+          {
+            "index": 4,
+            "kind": "deleteSurface",
+            "version": "v0.9.1"
+          }
+        ],
+        "reasons": [
+          "5 envelope(s) do not have version \"1.0\""
+        ]
+      },
+      "failureVersions": [
+        "v0.9.1"
+      ],
+      "expected": "the assertion fails, only on v0.9.1 / v1.0 envelopes",
+      "status": "pass",
+      "reason": null
+    }
+  ],
+  "screenshots": [
+    ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples-artifacts/agentic-a2ui-app-surface.png",
+    ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples-artifacts/agentic-a2ui-app-action.png",
+    ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples-artifacts/agentic-a2ui-surface.png",
+    ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples-artifacts/agentic-a2ui-action.png",
+    ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples-artifacts/agui-activity-lab-surface.png",
+    ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T022253-boundary/examples-artifacts/agui-activity-lab-action.png"
+  ],
+  "status": "pass",
+  "exitCode": 0,
+  "error": null
+}

@@ -1,0 +1,30 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/capture-a2ui-visual.mjs",
+      "line": 496,
+      "claim": "The capture's cleanup calls a nonexistent close method on Vite's PreviewServer, causing an otherwise successful capture to throw instead of terminating successfully.",
+      "evidence": "The script assigns `previewServer = await vite.preview(...)` and finally executes `await previewServer.close().catch(...)`. Vite's preview server exposes its HTTP server as `httpServer`, rather than the development server's `close()` method. Calling the missing method throws synchronously, before `.catch()` can handle it, and leaves the preview listener open.",
+      "suggested_fix": "Close `previewServer.httpServer` using its callback-based close API wrapped in a promise, and ensure cleanup errors cannot prevent the remaining temporary-directory cleanup."
+    },
+    {
+      "severity": "WARNING",
+      "file": "tests/conformance/a2ui/harness/src/operations.ts",
+      "claim": "Slider input operations are translated into Playwright fill commands that cannot operate on range inputs.",
+      "evidence": "The `name === \"a2ui-slider\"` branch locates `input[type=\"range\"]` and returns an instruction with `kind: \"fill\"`; `tests/browser/a2ui-conformance.spec.ts` executes that instruction using `target.fill(...)`. Playwright does not support `fill` on range inputs, so this path records a harness failure rather than exercising the slider.",
+      "suggested_fix": "Add a supported slider interaction instruction, such as focusing the range input and using keyboard input to reach the requested value, and execute it in the browser driver."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

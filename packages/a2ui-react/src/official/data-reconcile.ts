@@ -70,12 +70,18 @@ function pointerOf(keys: readonly string[]): string {
   return keys.length === 0 ? "/" : `/${keys.map(escapeSegment).join("/")}`;
 }
 
+/**
+ * Path segments exactly as the official data model reads them
+ * (`DataModel.parsePath`): empty segments are dropped, so `a/b`, `/a/b` and
+ * `/a//b/` name the same leaf, and `~1` / `~0` are unescaped in one pass.
+ * Diverging from it made reconciliation compare a different leaf than the one
+ * the model writes.
+ */
 function keysOf(pointer: string): string[] {
-  if (pointer === "" || pointer === "/") return [];
   return pointer
     .split("/")
-    .slice(1)
-    .map((segment) => segment.replace(/~1/g, "/").replace(/~0/g, "~"));
+    .filter((segment) => segment.length > 0)
+    .map((segment) => segment.replace(/~([01])/g, (_, digit: string) => (digit === "1" ? "/" : "~")));
 }
 
 /** Objects recurse; arrays, primitives, null and empty objects are leaves. */

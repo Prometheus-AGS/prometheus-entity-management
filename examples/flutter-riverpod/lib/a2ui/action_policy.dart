@@ -1,6 +1,7 @@
 /// App-owned fail-closed A2UI action policy (cand-009 adaption).
 ///
-/// genui owns protocol parsing; this policy owns authority. Every action
+/// The official `a2ui_core` processor owns protocol parsing; this policy owns
+/// authority. Every action
 /// emitted by a rendered surface is evaluated before any graph access:
 /// malformed payloads are rejected, unknown actions are denied, tenants must
 /// match the session, destructive actions require explicit human approval,
@@ -44,7 +45,7 @@ final class A2uiApprovalRequest {
   final Map<String, Object?> data;
 }
 
-/// Fail-closed policy gate between genui `onSubmit` events and the graph.
+/// Fail-closed policy gate between renderer actions and the graph.
 class A2uiActionPolicy {
   A2uiActionPolicy({required this.graph, required this.tenantId});
 

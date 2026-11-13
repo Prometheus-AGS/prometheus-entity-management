@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "examples/flutter-riverpod/lib/features/a2ui/application/a2ui_surface_store.dart",
+      "line": 110,
+      "claim": "The replacement store accepts an incomplete createSurface-only batch instead of refusing it, removing the previous complete-surface validation.",
+      "evidence": "load() accepts a batch whenever processor.model.getSurface(surfaceId) is non-null and no foreign surfaces remain, then assigns that surface to surface.value. A valid createSurface envelope creates that model without supplying any components. The deleted A2uiEnvelopeValidator.normalizeForGenUi explicitly rejected batches when componentCount == 0, and _validateComponents required a root component. Consequently, an incomplete batch now reaches the renderer without a refusal rather than taking the previous fail-closed path. Constraint A-7 requires preserving existing behavior unless the task requires changing it.",
+      "suggested_fix": "Before publishing the loaded surface, enforce the application's complete-surface requirement, including the required root component, using the processor's validated model. Refuse and clear incomplete batches rather than treating successful processing of createSurface as a complete renderable surface."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

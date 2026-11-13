@@ -14,7 +14,7 @@ import type { AgUiStateMapping, ApplyAgUiOptions } from "@prometheus-ags/entity-
 
 // ── Message model ────────────────────────────────────────────────────────────
 
-export type MessageRole = "user" | "assistant" | "system" | "tool";
+export type MessageRole = "user" | "assistant" | "system" | "tool" | "developer" | "reasoning";
 
 export interface ChatMessage {
   id: string;
@@ -42,31 +42,61 @@ export interface ToolCall {
   };
 }
 
-// ── Stream event model (subset of AG-UI protocol) ──────────────────────────
+// ── Stream event model: AG-UI 1.0 ─────────────────────────────────────────
 
-export type StreamEventType =
-  | "MESSAGE_START"
-  | "MESSAGE_DELTA"
-  | "MESSAGE_END"
+/**
+ * The AG-UI 1.0 event types this package consumes, named exactly as
+ * `@ag-ui/core` 1.0's `EventType`. Events are typed structurally so this
+ * package's declarations do not require the optional `@ag-ui/core` peer; an
+ * `@ag-ui/core` event object is assignable to `AgUiEvent`.
+ */
+export type AgUiEventType =
+  | "RUN_STARTED"
+  | "RUN_FINISHED"
+  | "RUN_ERROR"
+  | "STEP_STARTED"
+  | "STEP_FINISHED"
+  | "TEXT_MESSAGE_START"
+  | "TEXT_MESSAGE_CONTENT"
+  | "TEXT_MESSAGE_END"
+  | "TEXT_MESSAGE_CHUNK"
   | "TOOL_CALL_START"
-  | "TOOL_CALL_DELTA"
+  | "TOOL_CALL_ARGS"
   | "TOOL_CALL_END"
+  | "TOOL_CALL_CHUNK"
+  | "TOOL_CALL_RESULT"
+  | "REASONING_START"
+  | "REASONING_MESSAGE_START"
+  | "REASONING_MESSAGE_CONTENT"
+  | "REASONING_MESSAGE_END"
+  | "REASONING_MESSAGE_CHUNK"
+  | "REASONING_END"
+  | "REASONING_ENCRYPTED_VALUE"
   | "STATE_SNAPSHOT"
   | "STATE_DELTA"
-  | "ERROR"
-  | "DONE";
+  | "MESSAGES_SNAPSHOT"
+  | "ACTIVITY_SNAPSHOT"
+  | "ACTIVITY_DELTA"
+  | "CUSTOM"
+  | "RAW";
 
-export interface StreamEvent {
-  type: StreamEventType;
-  messageId?: string;
-  delta?: string;
-  snapshot?: Record<string, unknown>;
-  patch?: Array<{ op: string; path: string; value?: unknown }>;
-  toolCallId?: string;
-  toolName?: string;
-  toolArgsDelta?: string;
-  error?: string;
+/**
+ * One AG-UI 1.0 event. The fields the session reads follow the 1.0 schema:
+ * `messageId`, `delta`, `role` (text and reasoning messages); `toolCallId`,
+ * `toolCallName`, `parentMessageId`, `delta`, `content` (tool calls and
+ * results); `snapshot` / `delta` (state); `messages` (messages snapshot);
+ * `threadId`, `runId`, `outcome` (run lifecycle); `message`, `code` (run error).
+ * Unknown event types are ignored, as AG-UI 1.0 requires.
+ */
+export interface AgUiEvent {
+  type: AgUiEventType | (string & {});
+  [field: string]: unknown;
 }
+
+/** @deprecated Use `AgUiEvent`. The pre-5.0 bespoke event names are gone. */
+export type StreamEvent = AgUiEvent;
+/** @deprecated Use `AgUiEventType`. */
+export type StreamEventType = AgUiEventType;
 
 // ── Tool provider (MCP progressive enhancement) ───────────────────────────
 
@@ -102,6 +132,9 @@ export interface EntityToolProvider {
 
 // ── Chat session ─────────────────────────────────────────────────────────────
 
+/** Where the current AG-UI run is. */
+export type ChatRunStatus = "idle" | "running" | "finished" | "error" | "interrupted" | "cancelled";
+
 export interface ChatSession {
   id: string;
   messages: ChatMessage[];
@@ -109,6 +142,10 @@ export interface ChatSession {
   error: string | null;
   /** AG-UI state mappings for entity projection */
   mappings?: AgUiStateMapping[];
+  /** The current or last run's status. */
+  runStatus: ChatRunStatus;
+  /** The current or last run's id (`RUN_STARTED.runId`). */
+  runId?: string;
 }
 
 // ── Diff model (for EntityDiff / EntityApproval) ──────────────────────────

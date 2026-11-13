@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "description": "Upstream A2UI conformance cases that @prometheus-ags/a2ui-react is allowed to fail, and exactly where. scripts/verify-a2ui-conformance.mjs excuses a listed case only when every failure it records is one of the listed (step, assertion) pairs; any other failure, an uncaught page error, or an entry that names no loaded case fails the run. A listed case that passes is reported as not exercised. The SHA-256 of this file is bound into the report.",
+  "renderer": "@a2ui/web_core 0.15.0 and @a2ui/react 0.15.0, bundled in @prometheus-ags/a2ui-react",
+  "reasonClasses": {
+    "security-policy": "The package refuses the input on purpose; rendering it would weaken the component allowlist.",
+    "upstream-renderer-gap": "The bundled 0.15.0 renderer does not implement the behaviour; fixing it means patching the official renderer.",
+    "not-observable-through-public-API": "The assertion reads renderer internals the package does not expose."
+  },
+  "divergences": [
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "case": "fallback_states_unknown_type_and_cyclic_diagnostics",
+      "reasonClass": "security-policy",
+      "reason": "The component allowlist refuses the whole batch with component-not-allowed when a message names an unregistered component, so no placeholder surface is rendered and the UNKNOWN_COMPONENT_TYPE / CYCLIC_REFERENCE diagnostics are not produced.",
+      "allowedFailures": [
+        {
+          "step": 0,
+          "assertion": "expectViewTree"
+        },
+        {
+          "step": 0,
+          "assertion": "expectErrors"
+        },
+        {
+          "step": 0,
+          "assertion": "expectOutbound"
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "case": "v10_theme_dropped_in_permissive_mode_renders_like_none",
+      "reasonClass": "upstream-renderer-gap",
+      "reason": "The case needs permissive mode (strictMode: false). The 0.15.0 processor parses 1.0 strictly and has no permissive option, so a createSurface carrying the removed theme field is refused instead of having the field dropped.",
+      "allowedFailures": [
+        {
+          "step": 0,
+          "assertion": "expectViewTree"
+        },
+        {
+          "step": 0,
+          "assertion": "expectErrors"
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "case": "agent_function_action_failure_reports_expression_error",
+      "reasonClass": "upstream-renderer-gap",
+      "reason": "Action resolution in the 0.15.0 renderer never routes an unknown function to rpc.callAgentFunction, so no callAgentFunction message is sent and the later agentFunctionResponse error has no pending call to fail. Observed in boundary run 11 and accepted by the operator (2026-11-13): after the failed agent-function argument the renderer still runs the button's local incrementCounter with the default step, so the counter reads 11 instead of 10 at step 2.",
+      "allowedFailures": [
+        {
+          "step": 1,
+          "assertion": "expectOutbound"
+        },
+        {
+          "step": 2,
+          "assertion": "expectErrors"
+        },
+        {
+          "step": 2,
+          "assertion": "expectOutbound"
+        },
+        {
+          "step": 2,
+          "assertion": "expectDataModel"
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "case": "validation_results_error_disables_warning_allows",
+      "reasonClass": "upstream-renderer-gap",
+      "reason": "The 0.15.0 TextField renders no hint text for warning or info validation results; the isValid outcome is unaffected.",
+      "allowedFailures": [
+        {
+          "step": 0,
+          "assertion": "expectViewTree"
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "case": "teardown_unmount_releases_subscriptions",
+      "reasonClass": "not-observable-through-public-API",
+      "reason": "Listener counts live in private fields of the official SurfaceModel, DataModel and EventEmitter; the package exposes no subscription-count API.",
+      "allowedFailures": [
+        {
+          "step": 1,
+          "assertion": "expectActiveSubscriptions"
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "case": "delete_surface_unmounts_view",
+      "reasonClass": "not-observable-through-public-API",
+      "reason": "Listener counts live in private fields of the official SurfaceModel, DataModel and EventEmitter; the package exposes no subscription-count API.",
+      "allowedFailures": [
+        {
+          "step": 1,
+          "assertion": "expectActiveSubscriptions"
+        }
+      ]
+    },
+    {
+      "suite": "core/accessibility.yaml",
+      "case": "test_accessibility_dynamic_label_and_hidden_binding",
+      "reasonClass": "upstream-renderer-gap",
+      "reason": "When the button becomes hidden the 0.15.0 Button sets aria-hidden on an element that keeps a focusable button inside it, which axe reports as aria-hidden-focus.",
+      "allowedFailures": [
+        {
+          "step": 1,
+          "assertion": "axeCore:aria-hidden-focus"
+        }
+      ]
+    }
+  ]
+}

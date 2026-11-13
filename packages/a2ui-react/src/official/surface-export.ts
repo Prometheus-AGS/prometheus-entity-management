@@ -9,10 +9,11 @@
  * - A v0.9.1 surface exports as three official messages: `createSurface` (catalog,
  *   theme, `sendDataModel`), `updateComponents` (every component, with its own
  *   `catalogId` where it differs from the surface's) and `updateDataModel` at `/`.
- * - A v1.0 surface exports as ONE inline `createSurface` carrying its components
- *   and data model, with the `wantResponse` / `responsePath` action metadata put
- *   back where the producer wrote it. The v1.0 schema cannot express a theme, so
- *   a v1.0 surface has none to lose.
+ * - An A2UI 1.0 surface exports as ONE inline `createSurface` (`version: "1.0"`)
+ *   carrying its components and data model, each component with its own
+ *   `catalogId` where it differs from the surface default. A2UI 1.0 removed
+ *   `theme`, so a 1.0 surface has none to lose, and a 1.0 surface created
+ *   without a default catalog exports without `catalogId`.
  *
  * The root is the component with id `root`, by A2UI convention, and is preserved
  * by id. Components nothing reachable from the root refers to are orphans: the
@@ -21,16 +22,13 @@
  * caller asks to keep them.
  */
 
-import { PROMETHEUS_A2UI_PROTOCOL_VERSION } from "./catalog-core.js";
-import {
-  PROMETHEUS_A2UI_RC_PROTOCOL_VERSION,
-  restoreV1ActionMetadata,
-  type PrometheusA2uiV1ActionMetadata,
-} from "./v1-compat.js";
+import { PROMETHEUS_A2UI_PROTOCOL_VERSION, PROMETHEUS_A2UI_V1_PROTOCOL_VERSION } from "./catalog-core.js";
 
 /** The parts of an official surface model the export reads. */
 export interface ExportableSurface {
   readonly catalog: { readonly id: string };
+  /** The default catalog; an A2UI 1.0 surface may have none. */
+  readonly defaultCatalog?: { readonly id: string } | undefined;
   readonly theme: unknown;
   readonly sendDataModel: boolean | undefined;
   readonly componentsModel: {
@@ -69,10 +67,8 @@ export interface PrometheusA2uiSurfaceExport {
 export interface ExportSurfaceInput {
   readonly surfaceId: string;
   readonly surface: ExportableSurface;
-  /** The surface was created by a v1.0 message. */
+  /** The surface was created by an A2UI 1.0 message. */
   readonly v1: boolean;
-  /** `wantResponse` / `responsePath` metadata of this surface's v1.0 actions. */
-  readonly actions: readonly PrometheusA2uiV1ActionMetadata[];
   readonly options?: SurfaceExportOptions;
 }
 
@@ -102,7 +98,8 @@ function reachableFromRoot(
 }
 
 export function exportSurface(input: ExportSurfaceInput): PrometheusA2uiSurfaceExport {
-  const { surfaceId, surface, v1, actions } = input;
+  const { surfaceId, surface, v1 } = input;
+  const surfaceCatalogId = v1 ? surface.defaultCatalog?.id : surface.catalog.id;
   const prune = input.options?.pruneOrphans ?? true;
 
   const entries = [...surface.componentsModel.entries];
@@ -115,7 +112,7 @@ export function exportSurface(input: ExportSurfaceInput): PrometheusA2uiSurfaceE
     ...(isPlainObject(component.properties) ? structuredClone(component.properties) : {}),
     id,
     component: component.type,
-    ...(component.catalog && component.catalog.id !== surface.catalog.id
+    ...(component.catalog && component.catalog.id !== surfaceCatalogId
       ? { catalogId: component.catalog.id }
       : {}),
   }));
@@ -123,27 +120,26 @@ export function exportSurface(input: ExportSurfaceInput): PrometheusA2uiSurfaceE
 
   if (v1) {
     const inlineData = isPlainObject(data);
-    const restored = restoreV1ActionMetadata(components, actions);
     return {
       surfaceId,
       orphans,
       messages: [
         {
-          version: PROMETHEUS_A2UI_RC_PROTOCOL_VERSION,
+          version: PROMETHEUS_A2UI_V1_PROTOCOL_VERSION,
           createSurface: {
             surfaceId,
-            catalogId: surface.catalog.id,
+            ...(surfaceCatalogId === undefined ? {} : { catalogId: surfaceCatalogId }),
             ...(surface.sendDataModel === undefined ? {} : { sendDataModel: surface.sendDataModel }),
-            ...(restored.length > 0 ? { components: restored } : {}),
+            ...(components.length > 0 ? { components } : {}),
             ...(inlineData ? { dataModel: structuredClone(data) } : {}),
           },
         },
-        // The v1.0 inline form takes an object data model; any other root value
+        // The 1.0 inline form takes an object data model; any other root value
         // follows as its own message.
         ...(data !== undefined && !inlineData
           ? [
               {
-                version: PROMETHEUS_A2UI_RC_PROTOCOL_VERSION,
+                version: PROMETHEUS_A2UI_V1_PROTOCOL_VERSION,
                 updateDataModel: { surfaceId, path: "/", value: structuredClone(data) },
               },
             ]

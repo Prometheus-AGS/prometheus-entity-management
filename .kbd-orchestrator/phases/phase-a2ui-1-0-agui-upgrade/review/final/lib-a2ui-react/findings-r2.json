@@ -1,0 +1,37 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/headless.ts",
+      "line": 21,
+      "claim": "The headless entry now imports Custom Element implementations, breaking its plain-Node import contract.",
+      "evidence": "headless.ts imports both @a2ui/web_core/v0_9/basic_catalog and @a2ui/web_core/catalogs/basic/v1 and explicitly notes that these catalogs contain Lit Custom Element implementations. The added scripts/dist-dom-globals.mjs states that loading the official basic catalog evaluates classes extending HTMLElement and therefore requires jsdom globals in Node. No such environment is installed by the headless entry. UPG-9 and UPG-13 require importing the packed headless runtime in Node.",
+      "suggested_fix": "Construct the headless catalogs from DOM-independent schemas and function implementations, without importing modules that define Custom Elements, and verify the packed headless entry in plain Node without DOM globals."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/chat/conversation-store.ts",
+      "claim": "Interrupt IDs matching Object.prototype properties cannot be approved or denied.",
+      "evidence": "claimInterrupt checks record.decisions?.[interruptId], and snapshot filters pending interrupts using !decided[item.id], where decisions is initialized to {} on RUN_FINISHED. readInterruptOutcome accepts every string ID. An interrupt named \"constructor\", \"toString\", or \"__proto__\" therefore appears already decided through an inherited property, is omitted from the UI, and cannot be claimed. This violates UPG-12's interrupt approval/resume contract for accepted wire input.",
+      "suggested_fix": "Use own-property checks when testing whether an interrupt has a decision, or represent decisions with a prototype-free dictionary throughout claim, snapshot, and completion checks."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/use-chat-session.ts",
+      "claim": "Changing graphStore leaves the hook subscribed to the previous graph while its store reads and writes the new graph.",
+      "evidence": "callbacks.current.graph is updated on every render and the ChatConversationStore graph getter reads it dynamically, but subscribe is memoized with an empty dependency array. useSyncExternalStore therefore retains the subscription established against the original graph. After the graphStore prop changes, events write to the replacement graph without notifying this view; changes on the old graph can instead trigger reads from the replacement graph.",
+      "suggested_fix": "Resolve the graph identity explicitly and make the subscription depend on it. Cancel or rebind any existing run when switching graphs so its ownership and writes remain attached to the same graph."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

@@ -2,16 +2,17 @@
   "schemaVersion": "2",
   "generatedBy": "kbd-runtime",
   "projectionContractVersion": 2,
-  "sourceRevision": 523,
-  "derivedRevision": 523,
+  "sourceRevision": 854,
+  "derivedRevision": 854,
   "frontier": {
+    "d144c44a-0d69-46eb-ad0b-88d07bbd014e": 331,
     "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 523
   },
   "conflictCount": 6,
   "phase": "v3-devtools-parity",
   "phaseId": "v3-devtools-parity",
   "parentPhase": null,
-  "last_updated": "2026-08-30T15:58:47.140196Z",
+  "last_updated": "2026-11-13T07:27:21.365082Z",
   "last_updated_by": "kbd-runtime",
   "changes_total": 9,
   "changes_completed": 9,
@@ -23,6 +24,35 @@
       "completed": 9,
       "total": 9,
       "status": "COMPLETE"
+    },
+    "evidence": {
+      "status": "NOT_TRACKED",
+      "summary": null,
+      "blockers": []
+    },
+    "certification": {
+      "status": "NOT_TRACKED",
+      "summary": null,
+      "blockers": []
+    },
+    "publication": {
+      "status": "NOT_TRACKED",
+      "summary": null,
+      "blockers": []
+    }
+  },
+  "completionScopes": {
+    "completion": "phase",
+    "runCompletion": "run"
+  },
+  "runCompletion": {
+    "scope": "run",
+    "runId": "full-3.0-release-20260801T113424Z",
+    "primaryCounter": "implementation",
+    "implementation": {
+      "completed": 52,
+      "total": 75,
+      "status": "IN_PROGRESS"
     },
     "evidence": {
       "status": "PENDING",

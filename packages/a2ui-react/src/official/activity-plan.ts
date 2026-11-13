@@ -25,7 +25,9 @@ import type {
 
 /** The settings a held surface was created with. */
 export interface SurfaceConfig {
-  readonly catalogId: string;
+  /** The surface's default catalog; an A2UI 1.0 surface may have none. */
+  readonly catalogId: string | undefined;
+  /** Only a v0.9.1 surface has a theme; A2UI 1.0 removed it. */
   readonly theme: unknown;
   readonly sendDataModel: boolean | undefined;
 }
@@ -118,7 +120,7 @@ function findMismatch(
 
 /**
  * A `createSurface` for a surface that already exists cannot be applied (the
- * official processor throws), but a v1.0 RC one can carry inline components and
+ * official processor throws), but an A2UI 1.0 one can carry inline components and
  * a data model that the restatement means to apply. Turn those into the
  * equivalent update operations, so nothing the producer restated is lost.
  */

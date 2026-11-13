@@ -1,0 +1,90 @@
+{
+  "mode": "artifact",
+  "verdict": "BLOCK",
+  "judge_model": "claude-opus-5-5",
+  "isolation_mode": "harness-native",
+  "producer_model": "claude-opus-5-5",
+  "cross_model_check": "same-model-collision",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "assessment.md",
+      "line": 294,
+      "claim": "Goal 4 (confirm breaking changes against release notes) is marked MET, but the assessment never looks at the library API breaking changes between @a2ui/web_core / @a2ui/react 0.12.0 and 0.15.0. It covers only wire-format differences, and several of those library changes break code this repository ships today.",
+      "evidence": "The web_core 0.15.0 CHANGELOG lists 18 **BREAKING CHANGE** entries after 0.12.0, and the @a2ui/react CHANGELOG lists 8 (A2UI clone typescript/renderers/react/CHANGELOG.md). Neither is cited anywhere in assessment.md. Concrete breaks in this repository: (1) @a2ui/react 0.13.0 '`@a2ui/react/v0_9` no longer ships a React implementation of the basic catalog', and its v0_9/index.ts no longer exports `basicCatalog`, yet packages/a2ui-react/src/official/catalog.ts:6-9 imports `{ basicCatalog, createComponentImplementation } from \"@a2ui/react/v0_9\"`. (2) 0.13.0 also makes 'Every catalog component now render[] inside a custom element' and drops server rendering of the basic catalog, which changes what the visual lane (`verify:a2ui-visual`) and any SSR consumer see. (3) web_core: 'The deprecated `SurfaceModel.catalog` getter may return `undefined`'. `surface.catalog.id` is dereferenced at surface-export.ts:118,135,164, shadow-seed.ts:23 and runtime-core.ts:576,897. (4) web_core: a catalog invoker now refuses `allowedCallers: 'agentOnly'` functions, `CatalogInterface` requires `toJson()`/`validationSchema`, and peer-catalog APIs are removed. (5) The acceptance step file pins the old versions (tests/steps/v3-a2ui-protocol-bridge.steps.ts:54-55 asserts \"0.12.0\"). None of this appears in G1-G12 or in section 11.",
+      "suggested_fix": "Add a gap that inventories every BREAKING entry in the web_core and @a2ui/react changelogs from 0.13.0 to 0.15.0 against each import site in packages/a2ui-react/src. Cover at least catalog.ts, a2ui-provider.tsx, catalog-core.ts, surface-export.ts, shadow-seed.ts and runtime-core.ts, plus the visual lane. Downgrade Goal 4 to PARTIAL until this inventory exists."
+    },
+    {
+      "severity": "WARNING",
+      "file": "assessment.md",
+      "line": 111,
+      "claim": "The 'native web_core/v1_0' framing in the status table and in D2 misdescribes the upstream architecture. In 0.15.0 there is one multi-version MessageProcessor, and the one the repository already imports from `@a2ui/web_core/v0_9` is that same processor, which already dispatches 1.0 messages. The pinned 0.12.0 already shipped a v1_0 adapter too.",
+      "evidence": "web_core 0.15.0 src/v0_9/index.d.ts re-exports `../processing/message-processor.js` and `../state/surface-model.js`. src/v1_0/index.d.ts re-exports the same `../processing/index.js` and `../state/index.js`. processing/adapters/factory.js registers ['0.9', ...], ['0.9.1', ...] and ['1.0', new V1Point0Adapter()]. ProcessableMessage = V08 | V09 | V10AgentToRendererMessage. The repository's own patches/@a2ui__web_core@0.12.0.patch touches src/processing/adapters/v1_0.d.ts and src/v1_0/** (29 files), so 0.12.0 already had a v1.0 adapter. The assessment never explains why the RC bridge downgrades to v0.9.1 despite that, and D2 ('routing v1.0 through the native `web_core/v1_0` adapter') invites the planner to build a second processor path. The claim that `MessageProcessor` 'picks an adapter by each message's version' (line 63) is tagged [research], but it can be checked in the tarball the author had.",
+      "suggested_fix": "Restate D2: after the upgrade, stop pre-normalizing 1.0 messages and let the existing single processor dispatch by `version`. Say explicitly that one processor instance serves v0.9, v0.9.1 and 1.0. Record why the 0.12.0 v1_0 adapter was not used (most likely the RC/final version-string mismatch)."
+    },
+    {
+      "severity": "WARNING",
+      "file": "assessment.md",
+      "line": 65,
+      "claim": "Two UNKNOWNs that drive D1/D2 could have been settled from the upstream copies the author had: whether @a2ui/react 0.15.0 renders v1.0, and whether wantResponse/responsePath survive in 1.0 final.",
+      "evidence": "@a2ui/react: the React renderer at version 0.15.0 runs `conformance/core/adapter_conformance.yaml` (protocolVersion \"1.0\", '13 v1.0 UI framework adapter cases') in its test:unit files list (typescript/renderers/react/package.json:165-170). Its A2uiSurface consumes the shared `SurfaceModel` that v1_0 also produces. wantResponse: web_core 0.15.0 src/v1_0/schemas/common_types.json and specification/v1_0/json/common_types.json both define `Action.event` with properties only ['name','userMessage','context'] and additionalProperties false. wantResponse appears nowhere in specification/v1_0. Lines 134 and 357 nevertheless list both as UNKNOWN, and D2/D3 are recommended on top of them.",
+      "suggested_fix": "Resolve both UNKNOWNs as checked facts. wantResponse/responsePath are removed in 1.0. @a2ui/react's v0_9 A2uiSurface renders processor-produced 1.0 surfaces (subject to the final probe). Then drop them from section 11."
+    },
+    {
+      "severity": "WARNING",
+      "file": "assessment.md",
+      "line": 229,
+      "claim": "G12 says only the `v3-a2ui-protocol-bridge` spec needs a delta, but two other published OpenSpec specs write the RC-only behavior that 1.0 final removes into SHALL requirements.",
+      "evidence": "openspec/specs/a2ui-action-envelope/spec.md:30-35 ('The v1.0 correlation `actionId`...', 'Scenario: v1 wantResponse action ... the correlation id still matches its `actionResponse`'). openspec/specs/a2ui-headless-runtime/spec.md:24,33 ('A v1.0 surface SHALL export as one inline `createSurface` with `wantResponse` and `responsePath` restored'). Neither spec is mentioned in the assessment.",
+      "suggested_fix": "List every A2UI spec that needs a delta, at minimum: v3-a2ui-protocol-bridge, a2ui-action-envelope, a2ui-headless-runtime, plus a2ui-activity-delivery and a2ui-resource-limits if they reference v1.0 or AG-UI 0.0.59."
+    },
+    {
+      "severity": "WARNING",
+      "file": "assessment.md",
+      "line": 291,
+      "claim": "Goal 1 requires the upgrade 'across packages/a2ui-react and every example that uses it', but the assessment never names the consuming examples or what each emits. Example impact appears only as a file count ('examples 9').",
+      "evidence": "Workspaces depending on @prometheus-ags/a2ui-react: the root package.json, examples/agui-activity-lab, examples/agentic-a2ui-app and examples/agentic-a2ui. Producer code emitting RC/v0.9.1 envelopes includes examples/agui-activity-lab/server/events.ts, examples/agentic-a2ui-app/src/features/agentic/{reference-agent.ts,agent-server.ts,reference-surfaces.ts,a2a-client-service.ts,runtime.ts}, the fixtures/*.v0.9.1.json files and examples/agentic-a2ui/src/agent/{agent-client.ts,surface-messages.ts}. examples/agentic-a2ui-app and examples/agentic-a2ui also pin @a2a-js/sdk 1.0.1.",
+      "suggested_fix": "Add a per-example table: what it consumes, what dialect it produces (RC v1.0, v0.9.1 or A2A), and what must change for 1.0 final."
+    },
+    {
+      "severity": "WARNING",
+      "file": "assessment.md",
+      "line": 327,
+      "claim": "D3 recommends releasing a2ui-react as 5.0.0 without saying that the changeset config's fixed group forces all 13 npm packages to 5.0.0. That is a much larger consumer-facing decision than the assessment presents.",
+      "evidence": ".changeset/config.json \"fixed\" holds a single group listing entity-graph-core, -react, -sdl, -sync, -svelte, -solid, -web-components, -alpine, -htmx, -a2a, a2ui-react, -tauri and prometheus-entity-management. D3 and D5 talk only about wire-format and AG-UI floor breakage.",
+      "suggested_fix": "State in D3 that a major bump moves every package in the fixed group, or offer the alternative of taking a2ui-react and entity-graph-a2a out of the fixed group."
+    },
+    {
+      "severity": "WARNING",
+      "file": "assessment.md",
+      "line": 310,
+      "claim": "The desired observable result and W2 rest on 'the upstream A2UI 1.0 conformance cases pass against our renderer', but the assessment does not say which suites apply to a wrapper renderer or that no harness exists. Upstream suites are per-SDK and run through a harness each SDK implements.",
+      "evidence": "conformance/conformance_harness_implementation_guide.md: 'A conformance harness is a thin adapter inside your language package's test directory... Build the tiers in order'. The suites split into Core SDK (already run by web_core's own `test:conformance`), Inference/agent (not applicable to a renderer) and framework adapter (`core/adapter_conformance.yaml`, `core/accessibility.yaml`). The repository has no harness, and the assessment counts no harness work.",
+      "suggested_fix": "Name the applicable suites (most likely core/adapter_conformance.yaml, core/accessibility.yaml, core/message_processor_v1_0.yaml and core/error_responses.yaml, run through our runtime) and treat building the TypeScript harness as explicit scope."
+    },
+    {
+      "severity": "WARNING",
+      "file": "assessment.md",
+      "line": 292,
+      "claim": "The AG-UI goal status leaves out that the lockfile resolves @ag-ui/core to 0.0.57 for entity-graph-core and entity-graph-react. That is below a2ui-react's own floor, so the local integration graph is running pre-1.0 AG-UI.",
+      "evidence": "pnpm-lock.yaml: importers packages/entity-graph-core and packages/entity-graph-react have '@ag-ui/core': specifier '>=0.0.30', version 0.0.57 (lines 743-748, 787-791). The '@ag-ui/core@0.0.57' entry is at line 1117. G7 and the goal table cite only the declared ranges.",
+      "suggested_fix": "Record the resolved 0.0.57 in G7 and make re-resolving the lockfile to 1.0.x an explicit part of goal 2."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "assessment.md",
+      "line": 207,
+      "claim": "G9 presents lit, @preact/signals-core and validate-color as new 0.15.0 dependencies with an UNKNOWN install-size effect. They were already 0.12.0 dependencies, and because tsup bundles every @a2ui/* package the real question is bundle size, not install size.",
+      "evidence": "patches/@a2ui__web_core@0.12.0.patch package.json hunk context lines: \"@preact/signals-core\": \"^1.14.2\", \"lit\": \"^3.3.3\", \"validate-color\": \"^2.2.4\". packages/a2ui-react/tsup.config.ts has `noExternal: [/^@a2ui\\//]`, and lit etc. are not in its `external` list.",
+      "suggested_fix": "Narrow the unknown to the deps that are actually new (@lit/context, redos-detector) and measure the dist bundle size delta."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "assessment.md",
+      "line": 99,
+      "claim": "The Flutter section treats genui as the only Flutter path and never mentions that upstream now publishes an official Flutter renderer, a2ui_flutter. That is relevant to D7.",
+      "evidence": "The A2UI clone contains dart/a2ui_flutter/pubspec.yaml (name: a2ui_flutter, version 0.3.0) alongside dart/a2ui_core 0.7.0. The assessment discusses only `genui: 0.10.2` and an unreliable genui tag lookup.",
+      "suggested_fix": "Name a2ui_flutter as the upstream 1.0-track Flutter renderer in the D7 options."
+    }
+  ]
+}

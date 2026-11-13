@@ -1,0 +1,22 @@
+[
+  {
+    "version": "1.0",
+    "createSurface": {
+      "surfaceId": "surface-malformed",
+      "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0"
+    }
+  },
+  {
+    "version": "1.0",
+    "updateComponents": {
+      "surfaceId": "surface-malformed",
+      "components": [
+        {
+          "id": "root",
+          "component": "UntrustedShellCommand",
+          "command": "ignored"
+        }
+      ]
+    }
+  }
+]

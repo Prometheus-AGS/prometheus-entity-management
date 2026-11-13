@@ -1,0 +1,36 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/use-chat-session.ts",
+      "claim": "Switching graphStore aborts the transport but leaves the previous graph's conversation permanently marked running and loading.",
+      "evidence": "The graph-change effect only calls abortRef.current?.abort(), while callbacks.current.graph is immediately replaced during render. ChatConversationStore.stream returns without updating status when signal.aborted, and its run.isCurrent() subsequently consults owners() on the newly selected graph. No code cancels the conversation or releases run ownership on the previous graph. Returning to that graph therefore exposes its unchanged runStatus: \"running\" and isLoading: true.",
+      "suggested_fix": "Bind each run to the graph on which it started, and cancel and release that run on its original graph before switching the store's graph reference."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/use-chat-session.ts",
+      "claim": "An interrupt approval started on one graph can complete and resume an unrelated paused conversation on another graph.",
+      "evidence": "resolveInterrupt captures only interruptId and the numeric interruptEpoch before awaiting decideInterruptChoice. After that await it calls store.decideInterrupt(entry, epoch), whose readConversation uses the current callbacks.current.graph. Changing graphStore does not invalidate the pending decision, and mountedRef remains true. If both graphs have the same conversation and interrupt IDs at the same pause epoch, the old graph's approval is recorded on the new graph and store.resume starts its stream. The epoch check distinguishes pauses but not graphs, violating the graph isolation boundary required by constraint A-3.",
+      "suggested_fix": "Capture the graph identity and a graph-switch generation when claiming an interrupt; require both to remain current before recording the decision or resuming, and keep any completion bookkeeping bound to the original graph."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/chat/conversation-store.ts",
+      "claim": "The advertised AG-UI chunk handlers discard continuation chunks that omit their optional message or tool-call IDs.",
+      "evidence": "In apply, TEXT_MESSAGE_CHUNK and REASONING_MESSAGE_CHUNK pass str(event.messageId) directly to appendDelta, which returns when messageId is absent. TOOL_CALL_CHUNK similarly passes str(event.toolCallId) to toolCallArgs, which returns without an ID. AG-UI chunk streams identify a message or call initially and can omit that identity on continuation chunks; this implementation retains no active chunk identity. Consequently valid chunk streams lose text or tool arguments despite the declared TEXT_MESSAGE_CHUNK/TOOL_CALL_CHUNK support and UPG-10's requirement that the AG-UI message and tool-call stream render through EntityChat.",
+      "suggested_fix": "Normalize chunk events into start/content/end events using active message and tool-call identities, including closing chunk-started messages at the appropriate boundary, before applying them to the conversation."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

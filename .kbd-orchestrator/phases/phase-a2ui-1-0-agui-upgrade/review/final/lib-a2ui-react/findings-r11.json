@@ -1,0 +1,29 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/chat/conversation-store.ts",
+      "claim": "A superseded run can execute additional client tools because runClientTools checks ownership only after executing each tool.",
+      "evidence": "runClientTools iterates unanswered calls, invokes provider.executeTool, then checks run.isCurrent(), and then calls upsertMessage. That graph write synchronously notifies graph subscribers, which can clear the conversation or start another run. The next loop iteration invokes executeTool without checking ownership again, allowing a stale run to produce external effects despite the cancellation contract in UPG-11.",
+      "suggested_fix": "Check run.isCurrent() at the start of every iteration, before parsing arguments or invoking the provider, while retaining the post-await check."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/a2ui-react/src/official/runtime-core.ts",
+      "claim": "Batch error reports attribute failures to the first 1.0 envelope rather than the envelope that failed.",
+      "evidence": "reportV1Failure selects messages.find(isV1Envelope) and passes that envelope to extractEnvelopeErrorContext. Both the parsing catch and processing catch pass the entire batch. For a batch containing a valid operation on surface A followed by an invalid operation on surface B, the renderer error is therefore constructed with A's context, potentially including the wrong surface or function-call identifier.",
+      "suggested_fix": "Track the envelope being parsed or processed and use its context when reporting the failure; propagate the failing envelope from shadow preflight as well. For genuinely batch-wide failures, omit envelope-specific context rather than assigning the first envelope's context."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

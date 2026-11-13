@@ -11,7 +11,7 @@
       "required":["version","channel","owner","repository","license"],
       "properties":{
         "name":{"type":"string","minLength":1},
-        "version":{"pattern":"^4\\.[0-9]+\\.[0-9]+$"},
+        "version":{"pattern":"^5\\.[0-9]+\\.[0-9]+$"},
         "channel":{"const":"stable"},
         "owner":{"type":"string","minLength":1},
         "repository":{"type":"string","format":"uri"},

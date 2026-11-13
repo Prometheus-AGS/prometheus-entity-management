@@ -103,19 +103,19 @@ they cannot create hidden graph singletons.
 <!-- BEGIN GENERATED:PACKAGES -->
 | Package | Candidate | Stability | Role |
 | --- | --- | --- | --- |
-| `@prometheus-ags/entity-graph-core` | `4.4.0` | stable | framework-neutral normalized graph |
-| `@prometheus-ags/entity-graph-react` | `4.4.0` | stable | React 19 hooks and UI |
-| `@prometheus-ags/entity-graph-sdl` | `4.4.0` | stable | schema definition language |
-| `@prometheus-ags/entity-graph-sync` | `4.4.0` | stable | local-first and CRDT sync providers |
-| `@prometheus-ags/entity-graph-svelte` | `4.4.0` | stable | Svelte 5 binding |
-| `@prometheus-ags/entity-graph-solid` | `4.4.0` | stable | Solid binding |
-| `@prometheus-ags/entity-graph-web-components` | `4.4.0` | stable | Lit web components |
-| `@prometheus-ags/entity-graph-alpine` | `4.4.0` | stable | Alpine plugin |
-| `@prometheus-ags/entity-graph-htmx` | `4.4.0` | stable | HTMX server adapter |
-| `@prometheus-ags/entity-graph-a2a` | `4.4.0` | stable | A2A reference server |
-| `@prometheus-ags/a2ui-react` | `4.4.0` | stable | A2UI React renderer and graph bridge after AG-UI migration |
-| `@prometheus-ags/entity-graph-tauri` | `4.4.0` | stable | Tauri JavaScript binding and bundled Rust plugin |
-| `@prometheus-ags/prometheus-entity-management` | `4.4.0` | stable | compatibility alias for @prometheus-ags/entity-graph-react |
+| `@prometheus-ags/entity-graph-core` | `5.0.0` | stable | framework-neutral normalized graph |
+| `@prometheus-ags/entity-graph-react` | `5.0.0` | stable | React 19 hooks and UI |
+| `@prometheus-ags/entity-graph-sdl` | `5.0.0` | stable | schema definition language |
+| `@prometheus-ags/entity-graph-sync` | `5.0.0` | stable | local-first and CRDT sync providers |
+| `@prometheus-ags/entity-graph-svelte` | `5.0.0` | stable | Svelte 5 binding |
+| `@prometheus-ags/entity-graph-solid` | `5.0.0` | stable | Solid binding |
+| `@prometheus-ags/entity-graph-web-components` | `5.0.0` | stable | Lit web components |
+| `@prometheus-ags/entity-graph-alpine` | `5.0.0` | stable | Alpine plugin |
+| `@prometheus-ags/entity-graph-htmx` | `5.0.0` | stable | HTMX server adapter |
+| `@prometheus-ags/entity-graph-a2a` | `5.0.0` | stable | A2A reference server |
+| `@prometheus-ags/a2ui-react` | `5.0.0` | stable | A2UI React renderer and graph bridge after AG-UI migration |
+| `@prometheus-ags/entity-graph-tauri` | `5.0.0` | stable | Tauri JavaScript binding and bundled Rust plugin |
+| `@prometheus-ags/prometheus-entity-management` | `5.0.0` | stable | compatibility alias for @prometheus-ags/entity-graph-react |
 <!-- END GENERATED:PACKAGES -->
 
 Package-level READMEs remain the package-specific API sources. The generated
@@ -183,7 +183,7 @@ pub.dev does not yet associate the package with a verified publisher.
 Start with [the package README](packages/entity_graph_flutter/README.md) and
 [Flutter/Riverpod guide](website/docs/frameworks/flutter-riverpod.md). The
 example uses generated Riverpod families, optimistic/offline CRUD,
-relationships, realtime invalidation, policy-gated GenUI, responsive layouts,
+relationships, realtime invalidation, policy-gated native A2UI 1.0 rendering, responsive layouts,
 and an optional FFI transport.
 
 Flutter `4.0.0` ships an optional, metadata-first DevTools controller,
@@ -272,7 +272,7 @@ npm packages, app stores, native signing, or stable npm promotion have occurred.
 | react-19-vite-8 | implemented | [`examples/vite-app`](examples/vite-app/) | `pnpm run verify:vite-react19` |
 | nextjs | implemented | [`examples/nextjs-app`](examples/nextjs-app/) | `pnpm run verify:nextjs-app-router` |
 | agentic-a2ui | implemented | [`examples/agentic-a2ui-app`](examples/agentic-a2ui-app/) | `pnpm run verify:agentic-a2ui` |
-| flutter-riverpod | implemented | [`examples/flutter-riverpod`](examples/flutter-riverpod/) | `pnpm run dart:ci` |
+| flutter-riverpod | implemented | [`examples/flutter-riverpod`](examples/flutter-riverpod/) | `pnpm run verify:flutter-a2ui-v1` |
 | tauri-desktop-mobile | implemented | [`examples/tauri-universal`](examples/tauri-universal/) | `pnpm run verify:tauri-universal` |
 <!-- END GENERATED:EXAMPLES -->
 
@@ -317,7 +317,7 @@ paths, and token-shaped content.
 | pnpm | `>=10.33.0 <12` | pnpm 10.33.0 is pinned; pnpm 11 consumer workspaces are supported |
 | React | 19.x | vanilla core remains React-free |
 | Next.js | App Router / 16.x example | one graph per server request |
-| Flutter | 3.44.8+ | `entity_graph_flutter@3.1.0`; Riverpod 3 generated providers; official DevTools companion; A2UI 1.0-RC compatibility via GenUI 0.10.2 |
+| Flutter | 3.44.8+ | `entity_graph_flutter@3.1.0`; Riverpod 3 generated providers; official DevTools companion; native A2UI 1.0 rendering in the showcase via `a2ui_flutter` 0.3.0 |
 | Tauri | 2.x | shared desktop/mobile application and native plugin |
 | npm module formats | ESM + CommonJS + loader-specific declarations | verified from packed tarballs |
 

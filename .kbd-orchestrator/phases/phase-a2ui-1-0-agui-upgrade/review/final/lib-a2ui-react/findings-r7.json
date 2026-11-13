@@ -1,0 +1,36 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/chat/conversation-store.ts",
+      "claim": "A malformed interrupt outcome falls through to client-tool execution instead of failing closed at the human-approval boundary.",
+      "evidence": "In RUN_FINISHED, client tools are suppressed only when readInterruptOutcome(event) returns a nonempty array. interrupts.ts returns undefined for an interrupt outcome with a non-array interrupts field and silently filters malformed entries, potentially returning an empty array. Consequently, a RUN_FINISHED with outcome.type === \"interrupt\" and malformed interrupt data executes pending tools through runClientTools. This contradicts the explicit comment that nothing requested by a paused run executes before a human decides and the approval boundary in UPG-12.",
+      "suggested_fix": "Distinguish a non-interrupt outcome from an invalid interrupt outcome. Reject malformed interrupt outcomes and suppress pending client tools whenever the producer declares an interrupt, even if parsing its details fails."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/chat/conversation-store.ts",
+      "claim": "Aborting the signal supplied to the public send or resume API can leave the conversation permanently loading or incorrectly mark it finished.",
+      "evidence": "stream() returns immediately from its catch when signal.aborted, without clearing isLoading or changing runStatus. If the iterator instead yields after abortion, the loop breaks and the subsequent run.isCurrent() check marks the still-running conversation finished rather than cancelled. send() and resume() accept an external AbortSignal, but neither registers cancellation with it; only callers that separately invoke cancel() repair the graph state.",
+      "suggested_fix": "Handle signal abortion by cancelling the corresponding current run and setting isLoading false, without changing a superseding run. Ensure this works both when the transport throws on abort and when it ends or yields normally."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/a2ui-react/src/official/runtime-core.ts",
+      "claim": "The new 1.0 getClientDataModel overload advertises the v0.9 data-model type for a different wire shape.",
+      "evidence": "getClientDataModel(version: PrometheusA2uiProtocolVersion) always returns A2uiClientDataModel | undefined via a cast, although its own documentation distinguishes the v0.9 `{ version, surfaces }` result from the 1.0 `a2uiRendererDataModel` result. A caller requesting \"1.0\" therefore receives declarations that permit reading fields belonging to the other protocol, contrary to constraint B-7's typed interface-contract requirement.",
+      "suggested_fix": "Expose version-specific overloads with the official return types, or return a correctly discriminated union instead of casting both protocol results to A2uiClientDataModel."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

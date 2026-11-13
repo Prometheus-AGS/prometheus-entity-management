@@ -2,31 +2,39 @@
   "schemaVersion": "5",
   "generatedBy": "kbd-runtime",
   "projectionContractVersion": 2,
-  "sourceRevision": 523,
-  "derivedRevision": 523,
+  "sourceRevision": 865,
+  "derivedRevision": 865,
   "frontier": {
+    "d144c44a-0d69-46eb-ad0b-88d07bbd014e": 342,
     "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 523
   },
   "conflictCount": 6,
   "projectId": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
   "runId": "full-3.0-release-20260801T113424Z",
   "path": [
-    "v3-devtools-parity"
+    "phase-a2ui-1-0-agui-upgrade"
   ],
   "phaseIds": [
-    "v3-devtools-parity"
+    "phase-a2ui-1-0-agui-upgrade"
   ],
-  "activePhaseId": "v3-devtools-parity",
-  "phase": "v3-devtools-parity",
+  "activePhaseId": "phase-a2ui-1-0-agui-upgrade",
+  "activePhase": "phase-a2ui-1-0-agui-upgrade",
+  "phase": "phase-a2ui-1-0-agui-upgrade",
+  "parentPhase": null,
   "childPointer": null,
   "change": null,
   "currentTask": null,
   "status": "running",
+  "lifecycle": "running",
+  "stageId": "execute",
+  "stageStatus": "COMPLETE",
   "completionMetric": "implementation",
-  "implementationCompleted": 41,
-  "implementationTotal": 63,
+  "implementationCompleted": 53,
+  "implementationTotal": 75,
   "planRevision": 10,
-  "revision": 523,
-  "exactNextCommand": "/kbd-apply v3-devtools-react-inspector",
-  "updatedAt": "2026-08-30T15:58:47.140196Z"
+  "revision": 865,
+  "exactNextCommand": "/kbd-assess phase-a2ui-1-0-agui-upgrade",
+  "nextChange": null,
+  "nextTask": null,
+  "updatedAt": "2026-11-13T08:39:27.858961Z"
 }

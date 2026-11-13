@@ -115,6 +115,7 @@ const sidebars = {
       link: { type: 'generated-index' },
       collapsible: false,
       items: [
+        'migration/a2ui-1-0',
         'migration/v2-to-v3',
         'migration/alpha-to-stable',
         'migration/compatibility-policy',

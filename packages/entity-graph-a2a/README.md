@@ -2,7 +2,7 @@
 
 Official A2A 1.0 JSON-RPC and streaming SSE for the Prometheus normalized entity graph.
 
-The package uses `@a2a-js/sdk@1.0.1` for the wire model and transport dispatcher. Prometheus owns the application policy, graph adapter, deterministic reference executor, and its versioned A2UI artifact adapter.
+The package uses `@a2a-js/sdk@1.3.0` for the wire model and transport dispatcher. Prometheus owns the application policy, graph adapter, deterministic reference executor, and the A2UI helpers that implement the official A2UI extension for A2A.
 
 ## Supported boundary
 
@@ -14,7 +14,7 @@ The package uses `@a2a-js/sdk@1.0.1` for the wire model and transport dispatcher
 | Streaming | Ordered task, status, artifact, and terminal envelopes over SSE |
 | Graph authority | Default deny; application allowlists entity types, actions, and fields |
 | Destructive writes | `replace` and `remove` require an out-of-band approval decision |
-| A2UI | Prometheus-owned structured-data adapter carrying validated A2UI `v0.9.1` messages |
+| A2UI | Official A2UI extension `https://a2ui.org/a2a-extension/a2ui/v1.0`: A2UI 1.0 messages in a DataPart of media type `application/a2ui+json` |
 | Reference agent | Deterministic and keyless, with injectable IDs, clock, and delay |
 | Remote agent | Optional HTTPS/loopback JSON-RPC executor seam; never required by default CI |
 
@@ -161,34 +161,77 @@ const message: Message = {
 
 Supported graph operations are `upsert`, `replace`, `remove`, `patch`, `clearPatch`, `query`, and `snapshot`. Local patches remain graph-local and are never represented as server-confirmed canonical data.
 
-## Deterministic A2UI artifacts
+## A2UI over A2A
 
-The built-in executor can emit an A2UI surface without a model credential when the client requests `PROMETHEUS_A2UI_EXTENSION_URI`.
+The package implements the official A2UI extension for A2A. Upgrading from 4.x
+(private extension URI, `application/json+a2ui`, wrapped payload): see
+**Migration > Migrate to 5.0** on the documentation site.
+
+| Constant | Value |
+| --- | --- |
+| `PROMETHEUS_A2UI_EXTENSION_URI` | `https://a2ui.org/a2a-extension/a2ui/v1.0` |
+| `PROMETHEUS_A2UI_MEDIA_TYPE` | `application/a2ui+json` |
+| `PROMETHEUS_A2UI_PROTOCOL_VERSION` | `"1.0"` |
+| `PROMETHEUS_A2UI_CATALOG_ID` | `urn:prometheus-ags:a2ui:catalog:a2ui-1.0` |
+
+An A2UI artifact has one DataPart whose `data` is the A2UI message list, with
+both the A2A `mediaType` and `metadata.mimeType` set. The agent card extension
+params follow the spec (`supportedCatalogIds`, `acceptsInlineCatalogs: false`).
 
 ```ts
 import {
   PROMETHEUS_A2UI_EXTENSION_URI,
-  PROMETHEUS_A2UI_PROTOCOL_VERSION,
   createA2UIArtifact,
+  createA2UIDataPart,
   createDeterministicA2UIMessages,
+  extractA2UIMessages,
 } from "@prometheus-ags/entity-graph-a2a";
 
 const messages = createDeterministicA2UIMessages(
   "The invoice is ready for review.",
   "invoice-review",
 );
-const artifact = createA2UIArtifact(messages, {
-  artifactId: "invoice-review-artifact",
-});
-
-if (PROMETHEUS_A2UI_PROTOCOL_VERSION !== "v0.9.1") {
-  throw new Error("unexpected protocol baseline");
-}
-void artifact;
-void PROMETHEUS_A2UI_EXTENSION_URI;
+const artifact = createA2UIArtifact(messages, { artifactId: "invoice-review-artifact" });
+const part = createA2UIDataPart(messages);
+const received = extractA2UIMessages({ parts: [part] });
+void [artifact, received, PROMETHEUS_A2UI_EXTENSION_URI];
 ```
 
-This is a Prometheus-owned versioned adapter. It does not claim that the legacy upstream A2UI-for-A2A v0.8 extension defines v0.9.1 transport semantics. Renderer action authorization is still enforced by `@prometheus-ags/a2ui-react`.
+`PrometheusA2UIArtifactPayload` is a deprecated alias of the message list; the
+old `{ protocol, extensionUri, messages }` wrapper is gone.
+
+**Capabilities are scoped to the turn.** The agent may send A2UI only in reply
+to a message whose metadata carries `a2uiRendererCapabilities["1.0"]`. The
+reference agent decides with `offersA2UICatalog(message, catalogId)`
+(`rendererCapabilitiesOf(message)` returns the entry; the metadata keys are
+`A2UI_RENDERER_CAPABILITIES_KEY` and `A2UI_RENDERER_DATA_MODEL_KEY`) and still
+activates the extension when the client requested it. A client attaches the
+record from `getClientCapabilities()` of `@prometheus-ags/a2ui-react` to every
+user message.
+
+**Inbound client actions are denied by default.** A2UI DataParts that carry
+renderer-to-agent messages (`action`, `callAgentFunction`,
+`rendererFunctionResponse`, `error`) go to the `a2uiInbound` option, a
+framework-free `A2UIInboundHandler` with no dependency on the React package.
+Each message is authorized and handled on its own. With no handler, or when
+every message is refused, the request is rejected (`TASK_STATE_REJECTED`).
+Messages returned by `handle` are sent back only for a turn that offered 1.0
+capabilities.
+
+```ts
+const server = createA2AServer({
+  card: buildAgentCard({ url: "https://api.example.com/a2a" }),
+  deterministicExecutor: {
+    a2uiInbound: {
+      authorize: (message, context) => message.version === "1.0" && isAllowed(context),
+      handle: async (message) => handleAction(message), // may return A2UI messages
+    },
+  },
+});
+```
+
+Renderer action authorization is still enforced by `@prometheus-ags/a2ui-react`;
+`a2uiInbound` is the server-side counterpart for what the agent accepts.
 
 For repeatable tests, pass `deterministicExecutor` options to `createA2AServer`:
 

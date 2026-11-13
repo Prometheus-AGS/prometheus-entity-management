@@ -8,6 +8,7 @@ import type {
   A2uiClientAction,
   Catalog,
   ComponentApi,
+  MessageProcessor,
 } from "@a2ui/web_core/v0_9" with { "resolution-mode": "import" };
 import type { A2uiActionDecision, A2uiActionPolicy } from "../policy/action-policy.js";
 import type { PrometheusA2uiDataConflict } from "./data-reconcile.js";
@@ -17,10 +18,8 @@ import type {
 } from "./forwarded-props.js";
 import type { PrometheusA2uiLimits, PrometheusA2uiProducerFault } from "./limits.js";
 import type { PrometheusA2uiComponentImplementation } from "./types.js";
-import type {
-  PROMETHEUS_A2UI_RC_PROTOCOL_VERSION,
-  PrometheusA2uiV1FunctionCall,
-} from "./v1-compat.js";
+import type { RendererToAgentMessage } from "@a2ui/web_core/v1_0" with { "resolution-mode": "import" };
+import { A2uiError as OfficialA2uiError } from "@a2ui/web_core/v0_9";
 
 export type PrometheusA2uiErrorCode =
   | "invalid-message"
@@ -28,19 +27,53 @@ export type PrometheusA2uiErrorCode =
   | "component-not-allowed"
   | "limit-exceeded"
   | "surface-not-found"
-  | "runtime-disposed";
+  | "runtime-disposed"
+  | "protocol-error";
 
 export class PrometheusA2uiError extends Error {
   readonly code: PrometheusA2uiErrorCode;
   readonly cause?: unknown;
+  /**
+   * The A2UI error code the official processor reported (for example
+   * `VALIDATION_ERROR`, `CATALOG_ERROR`, `INVALID_FUNCTION_CALL`,
+   * `EXPRESSION_ERROR`), when `code` is `protocol-error`.
+   */
+  readonly protocolCode?: string;
 
-  constructor(code: PrometheusA2uiErrorCode, message: string, cause?: unknown) {
+  constructor(code: PrometheusA2uiErrorCode, message: string, cause?: unknown, protocolCode?: string) {
     super(message);
     this.name = "PrometheusA2uiError";
     this.code = code;
     this.cause = cause;
+    if (protocolCode !== undefined) this.protocolCode = protocolCode;
   }
 }
+
+/**
+ * Wrap an error the official A2UI processor threw (an `A2ui*Error` carrying a
+ * string `code`) as a `protocol-error` that keeps the A2UI code. Anything else
+ * is returned unchanged.
+ */
+export function toPrometheusA2uiError(cause: unknown): unknown {
+  if (cause instanceof PrometheusA2uiError) return cause;
+  // instanceof first: official errors take `name` from constructor.name, which a minifier mangles.
+  if (
+    cause instanceof Error &&
+    (cause instanceof OfficialA2uiError || cause.name.startsWith("A2ui")) &&
+    typeof (cause as { code?: unknown }).code === "string"
+  ) {
+    return new PrometheusA2uiError(
+      "protocol-error",
+      cause.message,
+      cause,
+      (cause as unknown as { code: string }).code,
+    );
+  }
+  return cause;
+}
+
+/** Renderer capabilities for every protocol version the runtime's catalogs declare. */
+export type PrometheusA2uiRendererCapabilities = ReturnType<MessageProcessor["getRendererCapabilities"]>;
 
 export type PrometheusA2uiMessageInput =
   | readonly unknown[]
@@ -55,10 +88,20 @@ export interface CreatePrometheusA2uiRuntimeOptions<
   actionPolicy?: A2uiActionPolicy;
   /** Receives the auditable outcome of every official client action. */
   onActionDecision?: (decision: A2uiActionDecision) => void | Promise<void>;
-  /** Receives A2UI v1.0 renderer-to-agent action/function/error messages. */
+  /**
+   * Receives A2UI 1.0 renderer-to-agent messages for 1.0 surfaces: `action`
+   * (an executed action), `callAgentFunction`, `rendererFunctionResponse`
+   * (the answer to an agent's `callRendererFunction`) and `error` (a refused
+   * 1.0 batch or function call, with its A2UI error code). Send them to the
+   * agent over the transport in use (for example A2A).
+   */
   onRendererMessage?: (message: PrometheusA2uiRendererMessage) => void | Promise<void>;
-  /** Application-owned implementation for v1.0 agent-initiated function calls. */
-  onFunctionCall?: (call: PrometheusA2uiV1FunctionCall) => unknown | Promise<unknown>;
+  /**
+   * Accept A2UI 1.0 **release-candidate** envelopes (`version: "v1.0"`) by
+   * translating them to A2UI 1.0 (see `rc-shim.ts`). Off by default; kept for
+   * one minor line after 5.0.0 so producers can migrate.
+   */
+  acceptReleaseCandidateInput?: boolean;
   /**
    * Resource limits for agent-generated UI. Unspecified limits use
    * `DEFAULT_PROMETHEUS_A2UI_LIMITS`; enforcement is on by default.
@@ -94,20 +137,24 @@ export interface CreatePrometheusA2uiRuntimeOptions<
   onResyncNeeded?: (request: PrometheusA2uiResyncRequest) => void;
 }
 
-export type PrometheusA2uiRendererMessage =
-  | {
-      version: typeof PROMETHEUS_A2UI_RC_PROTOCOL_VERSION;
-      action: A2uiClientAction & { wantResponse?: boolean; actionId?: string };
-    }
-  | {
-      version: typeof PROMETHEUS_A2UI_RC_PROTOCOL_VERSION;
-      functionResponse: { functionCallId: string; call: string; value: unknown };
-    }
-  | {
-      version: typeof PROMETHEUS_A2UI_RC_PROTOCOL_VERSION;
-      error: {
-        code: string;
-        message: string;
-        functionCallId: string;
-      };
-    };
+/** An A2UI 1.0 renderer-to-agent message, as the official 1.0 schema defines it. */
+export type PrometheusA2uiRendererMessage = RendererToAgentMessage;
+
+/** A function the renderer asks the agent to run (`callAgentFunction`). */
+export interface PrometheusA2uiAgentFunctionCall {
+  /** The agent function's name. */
+  call: string;
+  args?: Record<string, unknown>;
+  catalogId?: string;
+}
+
+export interface PrometheusA2uiAgentFunctionOptions {
+  /**
+   * Write the agent's answer into the surface's data model at this JSON
+   * Pointer, through `processMessages`, so the resource limits apply. A failed
+   * write is reported as a producer fault and does not reject the call.
+   */
+  writeTo?: string;
+  /** Milliseconds before the call is rejected; the official default is 30000. */
+  timeoutMs?: number;
+}

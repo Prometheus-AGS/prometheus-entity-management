@@ -1,0 +1,8 @@
+{
+  "V1": "1.0",
+  "RC": "v1.0",
+  "V091": "v0.9.1",
+  "V1_CATALOG": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+  "V091_CATALOG": "urn:prometheus-ags:a2ui:catalog:v3",
+  "ALT_V1_CATALOG": "urn:prometheus-ags:verify:a2ui-v1:alt"
+}

@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-13T01:16:23.190Z",
+  "argv": [
+    "/Volumes/T7/Projects/prometheus/prometheus-entity-management/scripts/verify-a2a-conformance.mjs",
+    "--report",
+    ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191505-boundary/a2a-conformance.json"
+  ],
+  "packages": {
+    "@prometheus-ags/entity-graph-core": {
+      "payload": "pass",
+      "manifest": "pass",
+      "files": 15
+    },
+    "@prometheus-ags/entity-graph-a2a": {
+      "payload": "pass",
+      "manifest": "pass",
+      "files": 12
+    },
+    "@prometheus-ags/a2ui-react": {
+      "payload": "pass",
+      "manifest": "pass",
+      "files": 18
+    }
+  },
+  "consumers": {
+    "esm": "pass",
+    "commonjs": "pass",
+    "typescriptNodeNext": "pass",
+    "typescriptNode16": "pass",
+    "officialRoot": "pass",
+    "legacySubpath": "pass",
+    "externalExecutor": "pass",
+    "a2uiExtension": "pass"
+  },
+  "protocol": "A2A 1.0 JSONRPC",
+  "sdk": "@a2a-js/sdk@1.3.0",
+  "a2uiExtension": {
+    "extensionUri": "https://a2ui.org/a2a-extension/a2ui/v1.0",
+    "mediaType": "application/a2ui+json",
+    "agentOrigin": "http://127.0.0.1:61329",
+    "offeredCapabilities": {
+      "supportedCatalogIds": [
+        "urn:prometheus-ags:a2ui:catalog:v3",
+        "urn:prometheus-ags:a2ui:catalog:a2ui-1.0"
+      ]
+    },
+    "scenarios": {
+      "capabilitiesOffered": {
+        "taskState": "TASK_STATE_COMPLETED",
+        "a2uiParts": 1,
+        "partMetadataMimeTypes": [
+          "application/a2ui+json"
+        ],
+        "messageKinds": [
+          "createSurface",
+          "updateComponents",
+          "updateDataModel"
+        ],
+        "surfaceId": "prometheus-entity-surface",
+        "builtComponents": {
+          "body": "Text",
+          "content": "Column",
+          "heading": "Text",
+          "root": "Card"
+        },
+        "builtDataModel": {
+          "heading": "Prometheus Entity Agent",
+          "body": "Packed A2UI conformance surface"
+        },
+        "activatedExtensions": "https://a2ui.org/a2a-extension/a2ui/v1.0"
+      },
+      "capabilitiesAbsent": {
+        "taskState": "TASK_STATE_COMPLETED",
+        "a2uiParts": 0,
+        "artifactPartKinds": [
+          "text"
+        ],
+        "requestedExtensions": "https://a2ui.org/a2a-extension/a2ui/v1.0",
+        "activatedExtensions": "https://a2ui.org/a2a-extension/a2ui/v1.0"
+      },
+      "inboundAuthorized": {
+        "taskState": "TASK_STATE_COMPLETED",
+        "inboundLog": [
+          {
+            "step": "authorize",
+            "name": "acknowledge",
+            "caller": "anonymous"
+          },
+          {
+            "step": "handle",
+            "name": "acknowledge"
+          }
+        ],
+        "answerMessageKinds": [
+          "updateDataModel"
+        ],
+        "builtDataModelAfterAnswer": {
+          "heading": "Prometheus Entity Agent",
+          "body": "Acknowledged acknowledge"
+        }
+      },
+      "inboundRefused": {
+        "taskState": "TASK_STATE_REJECTED",
+        "inboundLog": [
+          {
+            "step": "authorize",
+            "name": "deleteEverything",
+            "caller": "anonymous"
+          }
+        ],
+        "a2uiParts": 0,
+        "statusMessage": "The requested operation is not accessible."
+      }
+    }
+  },
+  "workspaceAliases": "forbidden"
+}

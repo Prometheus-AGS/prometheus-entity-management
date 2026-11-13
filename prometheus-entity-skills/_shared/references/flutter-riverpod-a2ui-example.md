@@ -18,7 +18,7 @@ Also load `dart-graph-riverpod.md` for the canonical package contract and
 Widget -> generated provider/controller -> application controller
   -> EntityGraph -> EntityTransport
 
-A2UI JSONL -> atomic validation -> official GenUI renderer
+A2UI 1.0 messages -> atomic load (a2ui_core MessageProcessor) -> official a2ui_flutter renderer
   -> exact action policy -> human approval -> CRUD controller -> EntityGraph
 ```
 
@@ -33,30 +33,35 @@ A2UI JSONL -> atomic validation -> official GenUI renderer
 
 ## A2UI safety contract
 
-- Pin `genui` exactly while it remains experimental.
-- Validate the complete untrusted JSONL batch before official runtime mutation.
-- Allowlist component types, catalog and surface IDs, and event action names.
-- Reject client functions, malformed envelopes, duplicates, missing roots,
-  unknown components, and undeclared actions.
+- Pin `a2ui_flutter` 0.3.0 and `a2ui_core` 0.7.0 exactly while they are pre-1.0.
+- Load each untrusted batch atomically: if the processor rejects any message,
+  or the batch leaves a surface other than the registered one, remove every
+  surface and show the refusal instead of a partial surface.
+- Narrow the basic catalog with `Catalog.derive` under the app's own catalog id
+  (never the basic catalog's id) to the components the app renders and no
+  client functions; allow only createSurface, updateComponents,
+  updateDataModel and deleteSurface messages; refuse undeclared action names
+  before the batch reaches the processor.
 - Apply tenant/task authorization after protocol validation.
 - Require trusted human approval for archival/destructive intent.
 - Route allowed actions through generated CRUD controllers; the renderer never
   receives direct graph authority.
-- Do not claim byte-identical React/Flutter A2UI output: this example adapts
-  the shared 0.9.1 baseline to GenUI's official `v0.9` wire identifier.
+- Do not claim byte-identical React/Flutter A2UI output: the two renderers
+  draw the same 1.0 messages with different widget sets (1.0 Text has only
+  `caption` and `body` styles).
 
 ## Certified evidence
 
 ```bash
 pnpm run dart:bootstrap:frozen
-pnpm run dart:ci
+pnpm run verify:flutter-a2ui-v1 -- --report <file>
 ```
 
-Flutter 3.44.8 stable proves 70 package tests, 25 showcase tests, and
-phone/tablet golden baselines. The shared smoke flow also passes on an iOS 26.5
-simulator and Android API 35 emulator. Consult `examples/coverage.json` and the
-task-5 clean-gate receipt for the exact paths and platform identifiers. The
-showcase status is `implemented`; the overall release remains `in-progress`.
+The A2UI 1.0 gate checks the package pins and runs the integration test on a
+booted iOS simulator (denied action, allowed action, refused unknown-component
+batch), plus a flipped copy that must fail. The 3.0 test counts, goldens and
+Android emulator lane predate the A2UI 1.0 migration and are not re-certified
+by it. Consult `examples/coverage.json` for exact paths.
 
 The example changes no package declaration. Do not refresh
 `dart-library-exports.json` unless `packages/entity_graph_flutter/lib` actually

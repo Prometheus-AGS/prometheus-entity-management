@@ -71,6 +71,7 @@ flowchart TD
 | `buffer-overflow` | too many deltas were waiting |
 | `refused` | the runtime refused a batch the producer had accepted (a disallowed component, a topology error, a limit) |
 | `stale-action` | the server rejected an action as stale and returned nothing to repair it |
+| `producer-failed` | an `@ag-ui/a2ui-middleware` lifecycle activity reported `status: "failed"`; reported once per message id |
 
 AG-UI has no resync event, so you send the request upstream inside
 `forwardedProps` on the next run input:

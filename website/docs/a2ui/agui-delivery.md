@@ -86,6 +86,15 @@ One activity can touch several surfaces and each is decided on its own.
   that surface's operations in the activity are ignored and a
   `surface-config-mismatch` fault is reported.
 
+## Middleware lifecycle activities
+
+`@ag-ui/a2ui-middleware` also emits `a2ui-surface` activities that carry progress
+instead of operations: `content` is `{ status: "building" | "retrying" | "failed", ... }`
+with no `a2ui_operations`. The runtime accepts them without changing any surface.
+A `failed` one is reported once per message id as a resync request with reason
+`producer-failed`. Operations from the middleware use the same `a2ui-surface`
+activity convention (`replace: true`, `content.a2ui_operations`).
+
 ## Reading what the runtime did
 
 | Callback | Called when |

@@ -20,8 +20,8 @@ Every row names its evidence gate; run the gate before repeating the claim.
 | `@prometheus-ags/entity-graph-alpine` | Alpine.js plugin | `pnpm run verify:binding-singletons` |
 | `@prometheus-ags/entity-graph-htmx` | HTMX + SSE server rendering | `pnpm run verify:binding-singletons` |
 | `@prometheus-ags/entity-graph-web-components` | Framework-agnostic `<entity-list/detail/form>` elements | `pnpm run verify:binding-singletons` |
-| `@prometheus-ags/a2ui-react@3.2.0` | A2UI v1.0-RC compatibility over the official v0.9.1 renderer + AG-UI 0.0.59 activity/chat entry points | `pnpm run verify:a2ui-bridge` |
-| `@prometheus-ags/entity-graph-a2a` | A2A v1 JSON-RPC agent server with graph policy authority | `pnpm run verify:a2a-conformance` |
+| `@prometheus-ags/a2ui-react@3.2.0` | A2UI 1.0 and v0.9.1 over the official 0.15.0 processor + AG-UI 1.0 activity/chat entry points | `pnpm run verify:a2ui-bridge` |
+| `@prometheus-ags/entity-graph-a2a` | A2A v1 JSON-RPC agent server with graph policy authority; carries A2UI 1.0 over the official A2UI extension | `pnpm run verify:a2a-conformance` |
 | `@prometheus-ags/entity-graph-tauri` | Tauri 2 plugin bindings, commands, snapshot lifecycle | `pnpm run verify:tauri-plugin` |
 | `@prometheus-ags/entity-graph-sdl` | SDL JSON schema parsing/validation | `pnpm --filter @prometheus-ags/entity-graph-sdl test` |
 

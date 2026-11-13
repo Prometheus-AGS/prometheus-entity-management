@@ -1,0 +1,40 @@
+{
+  "surfaceId": "upg8",
+  "componentId": "gesture",
+  "surface": [
+    {
+      "version": "1.0",
+      "createSurface": {
+        "surfaceId": "upg8",
+        "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "gesture"
+            ]
+          },
+          {
+            "id": "gesture",
+            "component": "Button",
+            "child": "gestureLabel",
+            "action": {
+              "functionCall": {
+                "@call": "gestureEffect",
+                "args": {
+                  "source": "button"
+                }
+              }
+            }
+          },
+          {
+            "id": "gestureLabel",
+            "component": "Text",
+            "text": "Run"
+          }
+        ]
+      }
+    }
+  ]
+}

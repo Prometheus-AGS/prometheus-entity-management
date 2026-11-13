@@ -87,6 +87,18 @@ export function createA2uiActionPolicy(options: A2uiActionPolicyOptions): A2uiAc
     rules.set(rule.name, rule);
   }
 
+  const v1ActionFields = (input: unknown): Record<string, unknown> => {
+    if (!input || typeof input !== "object") return {};
+    const source = input as Record<string, unknown>;
+    return {
+      ...(typeof source.userMessage === "string" ? { userMessage: source.userMessage } : {}),
+      ...(typeof source.catalogId === "string" ? { catalogId: source.catalogId } : {}),
+      ...(source.metadata && typeof source.metadata === "object" && !Array.isArray(source.metadata)
+        ? { metadata: structuredClone(source.metadata) }
+        : {}),
+    };
+  };
+
   const finish = async (decision: A2uiActionDecision): Promise<A2uiActionDecision> => {
     await options.onDecision?.(decision);
     return decision;
@@ -100,12 +112,15 @@ export function createA2uiActionPolicy(options: A2uiActionPolicyOptions): A2uiAc
           status: "denied",
           action: null,
           code: "invalid-action",
-          reason: "The action does not match the official A2UI v0.9.1 action schema.",
+          reason: "The action does not match the official A2UI action schema.",
           cause: parsedAction.error,
         });
       }
 
-      const action = parsedAction.data;
+      // The official schema is the v0.9 one and strips the optional fields an
+      // A2UI 1.0 action adds; keep them so the executed action and its envelope
+      // are complete.
+      const action = { ...parsedAction.data, ...v1ActionFields(input) } as typeof parsedAction.data;
       const rule = rules.get(action.name);
       if (!rule) {
         return finish({

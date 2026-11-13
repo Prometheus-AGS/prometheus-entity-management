@@ -1,37 +1,40 @@
-/// A2UI runtime wiring for the showcase: genui's `SurfaceController` plus the
-/// app-owned action policy bound to the canonical graph.
+/// A2UI runtime wiring for the showcase: the official `a2ui_core`
+/// `MessageProcessor` (through [A2uiSurfaceStore]) plus the app-owned action
+/// policy bound to the canonical graph.
 ///
 /// Authority is application-owned and fail-closed. The demo agent is keyless
 /// and deterministic: it walks the A2A-style lifecycle
-/// (submitted → working → completed) and emits the fixed surface messages;
-/// user actions come back through `onSubmit` and cross the policy gate.
+/// (submitted → working → completed) and emits the fixed A2UI 1.0 surface
+/// messages; user actions come back from the renderer and cross the policy
+/// gate before anything can touch the graph.
 library;
 
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:a2ui_core/a2ui_core.dart' show A2uiRendererAction;
 import 'package:entity_graph_flutter/entity_graph_flutter.dart';
 import 'package:flutter/foundation.dart';
-import 'package:genui/genui.dart';
 
+import '../features/a2ui/application/a2ui_surface_store.dart';
 import 'action_policy.dart';
 import 'surface_messages.dart';
 
 /// Lifecycle states of the keyless demo agent run.
 enum DemoAgentState { idle, submitted, working, completed }
 
-/// Owns the genui controller, the action policy, and the receipt log for one
-/// showcase session.
+/// Owns the A2UI surface store, the action policy, and the receipt log for
+/// one showcase session.
 class ShowcaseA2uiRuntime {
   ShowcaseA2uiRuntime({required EntityGraph graph, required String tenantId})
     : policy = A2uiActionPolicy(graph: graph, tenantId: tenantId) {
-    _submitSubscription = controller.onSubmit.listen(_handleSubmit);
+    surfaces = A2uiSurfaceStore(
+      surfaceId: taskBoardSurfaceId,
+      onAction: _handleAction,
+    );
   }
 
-  /// genui protocol engine; the only A2UI parser/renderer in the example.
-  final SurfaceController controller = SurfaceController(
-    catalogs: [BasicCatalogItems.asNoAssetCatalog()],
-  );
+  /// Processor-backed surface state rendered by the A2UI panel.
+  late final A2uiSurfaceStore surfaces;
 
   final A2uiActionPolicy policy;
 
@@ -44,8 +47,6 @@ class ShowcaseA2uiRuntime {
   final ValueNotifier<List<A2uiActionReceipt>> receipts = ValueNotifier(
     const [],
   );
-
-  late final StreamSubscription<ChatMessage> _submitSubscription;
 
   /// Runs the deterministic agent: lifecycle transitions, then the fixed
   /// surface message sequence for [taskId].
@@ -61,46 +62,38 @@ class ShowcaseA2uiRuntime {
   }) async {
     agentState.value = DemoAgentState.submitted;
     agentState.value = DemoAgentState.working;
-    for (final message in createTaskBoardSurfaceMessages(
-      taskId: taskId,
-      title: title,
-      status: status,
-      tenantId: tenantId,
-    )) {
-      controller.handleMessage(message);
-    }
+    surfaces.load(
+      createTaskBoardSurfaceMessages(
+        taskId: taskId,
+        title: title,
+        status: status,
+        tenantId: tenantId,
+      ),
+    );
     agentState.value = DemoAgentState.completed;
   }
 
-  Future<void> _handleSubmit(ChatMessage message) async {
-    for (final part in message.parts) {
-      if (part is! DataPart) continue;
-      final UiInteractionPart interaction;
-      try {
-        interaction = UiInteractionPart.fromDataPart(part);
-      } on Object {
-        continue;
-      }
-      final decoded = jsonDecode(interaction.interaction);
-      final action = decoded is Map ? decoded['action'] : null;
-      final receipt = await policy.execute(
-        action is Map
-            ? action.cast<String, Object?>()
-            : const <String, Object?>{},
-        onApproval: (request) async {
-          final handler = approvalHandler;
-          if (handler == null) return false;
-          return handler(request);
-        },
-      );
-      receipts.value = [...receipts.value, receipt];
-    }
+  void _handleAction(A2uiRendererAction action) {
+    unawaited(_executeAction(action));
+  }
+
+  /// Every renderer action crosses [A2uiActionPolicy.execute] and leaves a
+  /// receipt, whatever the verdict.
+  Future<void> _executeAction(A2uiRendererAction action) async {
+    final receipt = await policy.execute(
+      action.toJson(),
+      onApproval: (request) async {
+        final handler = approvalHandler;
+        if (handler == null) return false;
+        return handler(request);
+      },
+    );
+    receipts.value = [...receipts.value, receipt];
   }
 
   void dispose() {
-    unawaited(_submitSubscription.cancel());
+    surfaces.dispose();
     agentState.dispose();
     receipts.dispose();
-    controller.dispose();
   }
 }

@@ -1,0 +1,119 @@
+{
+  "surfaceId": "upg4",
+  "surface": [
+    {
+      "version": "1.0",
+      "createSurface": {
+        "surfaceId": "upg4",
+        "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "alt",
+              "plain"
+            ]
+          },
+          {
+            "id": "alt",
+            "component": "Text",
+            "catalogId": "urn:prometheus-ags:verify:a2ui-v1:alt",
+            "text": "From the alternate 1.0 catalog"
+          },
+          {
+            "id": "plain",
+            "component": "Text",
+            "text": "From the surface catalog"
+          }
+        ]
+      }
+    }
+  ],
+  "probeComponentCatalog": [
+    {
+      "version": "1.0",
+      "updateComponents": {
+        "surfaceId": "upg4",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "alt",
+              "plain",
+              "btn"
+            ]
+          },
+          {
+            "id": "btn",
+            "component": "Button",
+            "catalogId": "urn:prometheus-ags:verify:a2ui-v1:alt",
+            "child": "btnLabel",
+            "action": {
+              "event": {
+                "name": "noop"
+              }
+            }
+          },
+          {
+            "id": "btnLabel",
+            "component": "Text",
+            "text": "Go"
+          }
+        ]
+      }
+    }
+  ],
+  "probeSurfaceCatalog": [
+    {
+      "version": "1.0",
+      "updateComponents": {
+        "surfaceId": "upg4",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "alt",
+              "plain",
+              "btn"
+            ]
+          },
+          {
+            "id": "btn",
+            "component": "Button",
+            "child": "btnLabel",
+            "action": {
+              "event": {
+                "name": "noop"
+              }
+            }
+          },
+          {
+            "id": "btnLabel",
+            "component": "Text",
+            "text": "Go"
+          }
+        ]
+      }
+    }
+  ],
+  "mismatchSurfaceId": "upg4-mismatch",
+  "mismatch": [
+    {
+      "version": "1.0",
+      "createSurface": {
+        "surfaceId": "upg4-mismatch",
+        "catalogId": "urn:prometheus-ags:a2ui:catalog:v3",
+        "components": [
+          {
+            "id": "root",
+            "component": "Text",
+            "text": "never rendered"
+          }
+        ]
+      }
+    }
+  ]
+}

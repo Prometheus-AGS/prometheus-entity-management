@@ -1,0 +1,2 @@
+# Built browser bundles and source maps are reproducible from the recorded source; receipts do not hash them.
+**/page-dist/

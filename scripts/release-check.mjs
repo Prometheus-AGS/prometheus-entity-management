@@ -56,7 +56,7 @@ export const laneRegistry = [
   { name: "example-vite-react19", category: "examples", mandatory: true, command: ["pnpm", "run", "verify:vite-react19"] },
   { name: "example-nextjs-app-router", category: "examples", mandatory: true, command: ["pnpm", "run", "verify:nextjs-app-router"] },
   { name: "example-agentic-a2ui", category: "examples", mandatory: true, command: ["pnpm", "run", "verify:agentic-a2ui"] },
-  { name: "example-flutter-riverpod-a2ui", category: "dart-flutter", mandatory: true, command: ["pnpm", "run", "verify:flutter-riverpod-a2ui"] },
+  { name: "example-flutter-a2ui-v1", category: "dart-flutter", mandatory: true, command: ["pnpm", "run", "verify:flutter-a2ui-v1", "--", "--report", `${DEFAULT_BUNDLE_DIR}/flutter-a2ui-v1.json`] },
   { name: "example-tauri-universal", category: "cargo-tauri", mandatory: true, command: ["pnpm", "run", "verify:tauri-universal"] },
   { name: "docs-foundation", category: "docs", mandatory: true, command: ["pnpm", "run", "verify:docs-foundation"] },
   { name: "docs-api-reference", category: "docs", mandatory: true, command: ["pnpm", "run", "verify:docs-api-reference"] },

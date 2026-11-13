@@ -1,0 +1,28 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  },
+  "checked_classes": [
+    "Spec violations \u2014 compared the supplied changes with the applicable library scenarios, including protocol selection, catalog pairing, envelope-key translation, function routing, interrupt/resume mapping, and protocol-specific exports; no additional violation is established by the packet.",
+    "Correctness and concurrency \u2014 inspected run ownership, signal cancellation, graph switching, interrupt claims and epochs, asynchronous decision completion, chunk continuation and completion, and client-tool execution; no additional reproducible defect is established.",
+    "Regressions \u2014 checked the retained v0.9.1 catalog and processing paths, theme-preserving export, optional RC compatibility, and public API changes accompanying the major-version bump; no unsupported regression is demonstrated.",
+    "Security \u2014 inspected component allowlisting, policy-gated interrupt approvals, malformed-interrupt rejection, own-key decision lookup, and resource-limited agent-answer writes; no concrete bypass is demonstrated.",
+    "Constraint breaches \u2014 inspected the changed artifacts for unrelated scope expansion, new prohibited tests, and unsupported verification claims; the packet does not establish an additional breach.",
+    "Silent failure and error handling \u2014 inspected stream errors, aborted runs, malformed protocol input, producer-failure resync, tool-result errors, and renderer error reporting; no additional blocking silent-failure path is established.",
+    "Packaging and consumer compatibility \u2014 inspected dependency changes and declaration rebundling; the packet omits the complete build configuration and generated outputs, so no packaging defect is inferred from those omissions."
+  ],
+  "sycophancy_screen": {
+    "reject_cap": 2,
+    "cap_overridden": false,
+    "cap_default": 2
+  }
+}

@@ -229,10 +229,11 @@ function App() {
         incompleteCriticalOrSerious: result.incomplete.filter(
           ({ impact }) => impact === "critical" || impact === "serious",
         ).length,
-        violations: result.violations.map(({ id, impact, description }) => ({
+        violations: result.violations.map(({ id, impact, description, nodes }) => ({
           id,
           impact,
           description,
+          targets: nodes.flatMap(({ target }) => target.map(String)),
         })),
         incomplete: result.incomplete.map(({ id, impact, description, nodes }) => ({
           id,

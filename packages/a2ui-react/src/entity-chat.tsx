@@ -20,6 +20,7 @@ import React, {
   FormEvent,
 } from "react";
 import { useChatSession, type UseChatSessionOptions } from "./use-chat-session.js";
+import { EntityInterruptApproval } from "./entity-interrupt-approval.js";
 import type { ChatMessage } from "./types.js";
 
 export interface EntityChatClassNames {
@@ -30,6 +31,7 @@ export interface EntityChatClassNames {
   messageAssistant?: string;
   messageTool?: string;
   messageSystem?: string;
+  messageReasoning?: string;
   messageContent?: string;
   inputRow?: string;
   input?: string;
@@ -38,7 +40,7 @@ export interface EntityChatClassNames {
 }
 
 export interface EntityChatProps extends Omit<UseChatSessionOptions, "streamFactory"> {
-  /** Required: factory producing a stream of StreamEvents for the given messages. */
+  /** Required: returns the AG-UI 1.0 event stream for the next run; honour `signal` to stop when the run is superseded. */
   streamFactory: UseChatSessionOptions["streamFactory"];
   /** Optional render override for a single message. */
   renderMessage?: (message: ChatMessage) => React.ReactNode;
@@ -80,7 +82,26 @@ function MessageBubble({
     assistant: classNames.messageAssistant ?? "a2ui-msg--assistant",
     tool: classNames.messageTool ?? "a2ui-msg--tool",
     system: classNames.messageSystem ?? "a2ui-msg--system",
+    developer: classNames.messageSystem ?? "a2ui-msg--system",
+    reasoning: classNames.messageReasoning ?? "a2ui-msg--reasoning",
   }[message.role] ?? "";
+
+  // AG-UI 1.0 reasoning streams as its own message; show it collapsed so the
+  // answer stays primary.
+  if (message.role === "reasoning") {
+    return (
+      <li
+        className={[classNames.message ?? "a2ui-msg", roleClass].filter(Boolean).join(" ")}
+        data-role={message.role}
+        data-message-id={message.id}
+      >
+        <details open={message.streaming}>
+          <summary>Reasoning</summary>
+          <span className={classNames.messageContent ?? "a2ui-msg__content"}>{message.content}</span>
+        </details>
+      </li>
+    );
+  }
 
   return (
     <li
@@ -94,6 +115,16 @@ function MessageBubble({
           <span className="a2ui-msg__cursor" aria-hidden="true">▍</span>
         )}
       </span>
+      {message.toolCalls && message.toolCalls.length > 0 && (
+        <ul className="a2ui-msg__tool-calls" aria-label="Tool calls">
+          {message.toolCalls.map((call) => (
+            <li key={call.id} data-tool-call-id={call.id}>
+              <code>{call.function.name}</code>
+              {call.function.arguments ? <pre>{call.function.arguments}</pre> : null}
+            </li>
+          ))}
+        </ul>
+      )}
     </li>
   );
 }
@@ -104,7 +135,7 @@ function MessageBubble({
  * @example
  * ```tsx
  * <EntityChat
- *   streamFactory={(messages) => myAgentStream(messages)}
+ *   streamFactory={(messages, { signal, resume }) => myAgentStream(messages, { signal, resume })}
  *   mappings={[{ entityType: "Order", pointer: "/order", kind: "single" }]}
  *   toolProvider={myMcpProvider}
  * />
@@ -117,19 +148,27 @@ export function EntityChat({
   sessionId,
   onMessage,
   onError,
+  actionPolicy,
+  interruptToAction,
+  onInterruptDecision,
+  graphStore,
   renderMessage,
   renderTypingIndicator,
   placeholder = "Type a message…",
   classNames = {},
   className,
 }: EntityChatProps): React.ReactElement {
-  const { session, sendMessage } = useChatSession({
+  const { session, sendMessage, interrupts, resolveInterrupt } = useChatSession({
     streamFactory,
     mappings,
     toolProvider,
     sessionId,
     onMessage,
     onError,
+    ...(actionPolicy === undefined ? {} : { actionPolicy }),
+    ...(interruptToAction === undefined ? {} : { interruptToAction }),
+    ...(onInterruptDecision === undefined ? {} : { onInterruptDecision }),
+    ...(graphStore === undefined ? {} : { graphStore }),
   });
 
   const [draft, setDraft] = useState("");
@@ -183,6 +222,14 @@ export function EntityChat({
           </li>
         )}
       </ol>
+
+      {interrupts.map((interrupt) => (
+        <EntityInterruptApproval
+          key={interrupt.id}
+          interrupt={interrupt}
+          onDecide={(decision) => resolveInterrupt(interrupt.id, decision)}
+        />
+      ))}
 
       {session.error && (
         <div

@@ -47,15 +47,25 @@ AG-UI state/message events as A2UI surface conformance.
 
 ## Version rules
 
-- Stable wire target: A2UI `v0.9.1`.
-- Official packages: `@a2ui/react@0.12.0` and `@a2ui/web_core@0.12.0`
+- Wire targets: A2UI `1.0` final (`version: "1.0"`, native through the official
+  processor's 1.0 adapter, catalog `PROMETHEUS_A2UI_V1_CATALOG_ID`) and `v0.9.1`
+  (still accepted). The 1.0 release-candidate dialect `"v1.0"` is refused unless
+  `acceptReleaseCandidateInput` is set.
+- Official packages: `@a2ui/react@0.15.0` and `@a2ui/web_core@0.15.0`
   (bundled; `web_core` patched to import `zod/v3`), with `zod@4.6.7`.
   Markdown uses a package-owned port of `@a2ui/markdown-it@0.2.0` on
   `dompurify@3.4.17`.
-- Import only official `/v0_9` entry points.
+- Pair catalogs with the protocol version: `createPrometheusA2uiCatalog({ protocolVersion: "1.0" })`.
+  A 1.0 surface naming a catalog declared for another version is refused.
+- In 1.0 component ids are UAX #31 identifiers (`update_button`, never
+  `update-button`); there is no theme; Text `variant` is only `caption` or `body`; an
+  action `event` takes no extra properties; response-aware actions are
+  `callAgentFunction` calls, not `wantResponse`.
+- The root entry renders the basic catalog as Custom Elements, which draw only
+  in the browser. Importing it on the server is safe (server rendering emits the
+  surface's fallback markup); use `@prometheus-ags/a2ui-react/headless` for
+  React-free server work such as exporting surfaces.
 - Treat package distribution versions and wire versions as separate axes.
-- Do not add v1.0 behavior until a governed version adapter and its evidence
-  exist.
 
 ## Architecture rules
 
@@ -100,6 +110,10 @@ NodeNext, and server-render consumers. `verify:a2ui-visual` hash-checks the
 built artifact, real browser screenshots, keyboard trace/video, and
 accessibility receipt.
 
+Upstream A2UI conformance is `pnpm run verify:a2ui-conformance -- --report <file>`;
+the cases it may fail, and exactly where, are listed in
+`tests/conformance/a2ui/divergences.json`.
+
 These receipts do not certify A2A conformance, the full agentic showcase,
 Flutter/native renderers, documentation deployment, registry authority, or npm
 `latest` promotion. Consult `examples/coverage.json` and the release
@@ -108,7 +122,7 @@ contract before expanding a claim.
 
 ## AG-UI 1.0 delivery and headless entry
 
-- AG-UI peer range is `>=0.0.59 <0.1.0 || ^1.0.0`. Activities are reconciled,
+- AG-UI peer range is `^1.0.0` (`@ag-ui/core`). Activities are reconciled,
   never replayed: only an explicit `deleteSurface` removes a surface, and the
   producer wins on data conflicts (`onConflict` reports them).
 - Ordering rides in activity `content.surfaceVersions` as `{ epoch, version }`

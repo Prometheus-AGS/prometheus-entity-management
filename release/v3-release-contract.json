@@ -3,7 +3,7 @@
   "schemaVersion": "1.0.0",
   "release": {
     "name": "Prometheus Entity Management",
-    "version": "4.4.0",
+    "version": "5.0.0",
     "channel": "stable",
     "owner": "Prometheus AGS",
     "repository": "https://github.com/Prometheus-AGS/prometheus-entity-management",
@@ -18,7 +18,7 @@
   "versionPolicy": {
     "npm": {
       "strategy": "fixed",
-      "version": "4.4.0",
+      "version": "5.0.0",
       "prereleaseTag": "next",
       "stableTag": "latest",
       "packages": [
@@ -39,8 +39,8 @@
     },
     "native": {
       "strategy": "independent-aligned-major",
-      "version": "4.0.0",
-      "note": "The Dart package releases independently within the aligned 3.x major. Rust artifacts retain their separately recorded source versions and deferred registry status."
+      "version": "5.0.0",
+      "note": "The Dart package releases independently within the aligned 5.x major. Rust artifacts retain their separately recorded source versions and deferred registry status."
     }
   },
   "registryScope": {
@@ -56,7 +56,7 @@
       "google-play",
       "microsoft-store"
     ],
-    "deferredPolicy": "A deferred registry does not block the npm 4.1.0 release, but documentation must not claim the artifact is installable from that registry until post-publish smoke evidence exists."
+    "deferredPolicy": "A deferred registry does not block the npm 5.0.0 release, but documentation must not claim the artifact is installable from that registry until post-publish smoke evidence exists."
   },
   "artifacts": [
     {
@@ -316,13 +316,13 @@
   },
   "protocols": {
     "a2ui": {
-      "version": "1.0-rc",
-      "stability": "release-candidate-compatibility",
-      "renderer": "official-v0.9-engine-adapter",
+      "version": "1.0",
+      "stability": "stable",
+      "renderer": "official-processor-native-1.0-and-v0.9.1",
       "applicationActionPolicy": "allowlisted"
     },
     "agui": {
-      "version": "0.0.59",
+      "version": "1.0",
       "stability": "stable",
       "role": "event-transport",
       "distinctFromA2uiRendering": true

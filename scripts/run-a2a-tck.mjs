@@ -216,7 +216,7 @@ try {
       artifacts: candidateArtifacts,
     },
     protocolFamily: "1.0",
-    sdk: "@a2a-js/sdk@1.0.1",
+    sdk: "@a2a-js/sdk@1.3.0",
     binding: "JSONRPC",
     target: ready.endpoint,
     tck: { repository: TCK_REPOSITORY, commit: resolvedTckCommit },

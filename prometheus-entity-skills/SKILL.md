@@ -104,13 +104,13 @@ Cross-cutting schemas and patterns used by all sub-skills:
 - [Shared example contract](../examples/shared/README.md) — Deterministic cross-showcase fixtures, scenarios, verification, and evidence limits
 - [React 19/Vite 8 showcase](_shared/references/vite-react19-example.md) — Implemented architecture, browser scenarios, optional-peer loading, and evidence boundary
 - [Certified sync path](_shared/references/sync-persistence-path.md) — PGlite durability, Loro convergence, reconnect, packed consumers, and evidence limits
-- [Official A2UI bridge](_shared/references/a2ui-protocol-bridge.md) — v0.9.1 rendering, default-deny graph actions, AG-UI migration, and certification limits
+- [Official A2UI bridge](_shared/references/a2ui-protocol-bridge.md) — A2UI 1.0 and v0.9.1 rendering, default-deny graph actions, AG-UI 1.0, and certification limits
 - [A2A conformance agent](_shared/references/a2a-conformance-agent.md) — official v1 JSON-RPC lifecycle, application authority, TCK scope, and alpha migration
 - [Agentic A2A/A2UI example](_shared/references/agentic-a2ui-example.md) — safe end-to-end composition, exact action authority, keyless fixtures, and showcase evidence limits
 - [Flutter source provenance](_shared/references/flutter-source-provenance.md) — licensed filtered history, sole Dart owner, non-public import, and blocked publication claims
 - [Dart graph and Riverpod 3](_shared/references/dart-graph-riverpod.md) — canonical graph ownership, generated providers, views, optimistic rollback, retry, transports, API ledger, and evidence limits
 - [Flutter DevTools controller](_shared/references/devtools-flutter-controller.md) — optional tooling entry, per-graph ownership, VM-service routing, value/security limits, API ledger, and assembled evidence
-- [Flutter/Riverpod/A2UI showcase](_shared/references/flutter-riverpod-a2ui-example.md) — complete app composition, safe GenUI boundary, Flutter 3.44.8 host evidence, and passing iOS/Android smoke lanes
+- [Flutter/Riverpod/A2UI showcase](_shared/references/flutter-riverpod-a2ui-example.md) — complete app composition, A2UI 1.0 through `a2ui_flutter`, the action-policy boundary, and the simulator acceptance gate
 - [Tauri desktop/mobile plugin](_shared/references/tauri-mobile-plugin.md) — generated bindings, least-privilege capabilities, in-memory mirror ownership, packed host proof, and mobile evidence limits
 - [Universal Tauri application](_shared/references/tauri-universal-example.md) — shared React/Tauri architecture, durable queue, deep-link/capability policy, focused checks, and pending platform/visual gates
 - [Flint portable contracts](_shared/references/flint-portable-contracts.md) — structural realtime client, issuer/tenant/key/JWKS rules, immutable live lane, and external Forge provisioning boundary

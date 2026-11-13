@@ -13,7 +13,7 @@ The machine-readable runtime surface is [`a2a-library-exports.json`](a2a-library
 5. Protocol validity never grants application authority. Authenticate, scope task visibility, authorize entity/action/field access, and obtain destructive approval before graph writes.
 6. Authorize every member of a mutation batch before opening its single graph transaction.
 7. Carry graph requests in official structured-data Parts with `PROMETHEUS_GRAPH_EXTENSION_URI`.
-8. Treat `PROMETHEUS_A2UI_EXTENSION_URI` as a Prometheus-owned v0.9.1 adapter. Do not call it upstream A2UI-for-A2A certification.
+8. `PROMETHEUS_A2UI_EXTENSION_URI` is the official A2UI A2A extension `https://a2ui.org/a2a-extension/a2ui/v1.0`: DataParts use `metadata.mimeType` `application/a2ui+json` and their `data` is the A2UI 1.0 message list. Send A2UI only when the turn's `message.metadata.a2uiRendererCapabilities` offers it, and route inbound client actions to `a2uiInbound` (deny by default, after `authorize`).
 9. Default CI must remain deterministic and keyless. External agent endpoints are explicit opt-in dependencies.
    They must use HTTPS outside loopback development, keep discovery and
    transport on the same injectable fetch boundary, and remap remote lifecycle

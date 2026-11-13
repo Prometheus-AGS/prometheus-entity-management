@@ -20,11 +20,19 @@ import {
 import {
   createA2UIArtifact,
   createDeterministicA2UIMessages,
+  extractA2UIMessages,
+  offersA2UICatalog,
+  rendererCapabilitiesOf,
+  type PrometheusA2UIMessage,
 } from "./a2ui-artifact.js";
 import { createDefaultDenyA2APolicy } from "./policy.js";
 import {
+  PROMETHEUS_A2UI_CATALOG_ID,
   PROMETHEUS_A2UI_EXTENSION_URI,
+  PROMETHEUS_A2UI_PROTOCOL_VERSION,
   PROMETHEUS_GRAPH_EXTENSION_URI,
+  type A2UIInboundContext,
+  type A2UIInboundHandler,
   type A2AApplicationPolicy,
   type A2ACaller,
   type A2AGraphPolicyContext,
@@ -433,6 +441,7 @@ function initialTask(requestContext: RequestContext, timestamp: string): Task {
  */
 export class DeterministicEntityGraphExecutor implements AgentExecutor {
   private readonly policy: A2AApplicationPolicy;
+  private readonly a2uiInbound?: A2UIInboundHandler;
   private readonly clock: () => string;
   private readonly idFactory: () => string;
   private readonly stepDelayMs: number;
@@ -441,6 +450,7 @@ export class DeterministicEntityGraphExecutor implements AgentExecutor {
 
   constructor(options: DeterministicExecutorOptions = {}) {
     this.policy = options.policy ?? createDefaultDenyA2APolicy();
+    this.a2uiInbound = options.a2uiInbound;
     this.clock = options.clock ?? (() => new Date().toISOString());
     this.idFactory = options.idFactory ?? (() => {
       if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
@@ -522,10 +532,23 @@ export class DeterministicEntityGraphExecutor implements AgentExecutor {
             metadata: {},
           }));
         }
-      } else if (
-        requestContext.context.requestedExtensions?.includes(PROMETHEUS_A2UI_EXTENSION_URI)
-      ) {
-        requestContext.context.addActivatedExtension(PROMETHEUS_A2UI_EXTENSION_URI);
+      } else if (extractA2UIMessages(requestContext.userMessage).length > 0) {
+        const replies = await this.handleInboundA2UI(requestContext);
+        // Replies answer a surface the client already renders, so any A2UI 1.0 offer suffices;
+        // the reference agent's own catalog gates only the surfaces it creates.
+        if (replies.length > 0 && rendererCapabilitiesOf(requestContext.userMessage) !== undefined) {
+          eventBus.publish(AgentEvent.artifactUpdate({
+            taskId,
+            contextId,
+            artifact: createA2UIArtifact(replies, { artifactId: this.idFactory() }),
+            append: false,
+            lastChunk: true,
+            metadata: {},
+          }));
+        }
+      } else if (offersA2UICatalog(requestContext.userMessage, PROMETHEUS_A2UI_CATALOG_ID)) {
+        // Capabilities are per turn (A2UI A2A extension v1.0): A2UI is sent only
+        // when this message offers A2UI 1.0 for the catalog the agent uses.
         const text = requestContext.userMessage.parts
           .filter((part) => part.content?.$case === "text")
           .map((part) =>
@@ -556,7 +579,7 @@ export class DeterministicEntityGraphExecutor implements AgentExecutor {
             description: "Deterministic guidance for the Prometheus A2A endpoint.",
             parts: [
               makeTextPart(
-                "Prometheus A2A v1 is ready. Request the A2UI extension for a deterministic surface or send an authorized entity-graph data request.",
+                "Prometheus A2A v1 is ready. Send a2uiRendererCapabilities for A2UI 1.0 in message metadata for a deterministic surface, or send an authorized entity-graph data request.",
               ),
             ],
             metadata: {},
@@ -587,6 +610,39 @@ export class DeterministicEntityGraphExecutor implements AgentExecutor {
     } finally {
       this.cancelledTasks.delete(taskId);
     }
+  }
+
+  /**
+   * Hand each inbound A2UI message to the application, after its `authorize`
+   * answer. The list is not transactional (A2UI A2A extension v1.0): each
+   * message is decided and handled on its own. With no handler installed, or
+   * when every message is refused, the request is refused as a whole.
+   */
+  private async handleInboundA2UI(requestContext: RequestContext): Promise<PrometheusA2UIMessage[]> {
+    const context: A2UIInboundContext = {
+      caller: callerFrom(requestContext),
+      tenantId: requestContext.context.tenant || requestContext.request.tenant || undefined,
+      message: requestContext.userMessage,
+    };
+    const replies: PrometheusA2UIMessage[] = [];
+    let handled = 0;
+    for (const message of extractA2UIMessages(requestContext.userMessage)) {
+      if (!this.a2uiInbound || message.version !== PROMETHEUS_A2UI_PROTOCOL_VERSION) continue;
+      if (!(await this.a2uiInbound.authorize(message, context))) continue;
+      handled += 1;
+      const produced = await this.a2uiInbound.handle(message, context);
+      for (const reply of produced ?? []) {
+        if (reply.version !== PROMETHEUS_A2UI_PROTOCOL_VERSION) {
+          // A handler bug, not a client fault: fail the task instead of dropping the answer silently.
+          throw new Error(
+            `a2uiInbound.handle returned a message with version ${JSON.stringify(reply.version)}; expected "${PROMETHEUS_A2UI_PROTOCOL_VERSION}".`,
+          );
+        }
+        replies.push(reply as PrometheusA2UIMessage);
+      }
+    }
+    if (handled === 0) throw new GraphPolicyDeniedError();
+    return replies;
   }
 
   private publishTerminalStatus(
