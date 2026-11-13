@@ -52,6 +52,11 @@ overrides:
   minimatch@>=7 <11: 11.0.8
   mermaid>katex: 0.18.2
 
+patchedDependencies:
+  typedoc@0.28.20:
+    hash: af1f8891c46809ec9aa4e245904becd24fbde43276bd75368a77a11db20a6396
+    path: patches/typedoc@0.28.20.patch
+
 importers:
 
   .:
@@ -998,7 +1003,7 @@ importers:
         version: 11.16.1
       typedoc:
         specifier: 0.28.20
-        version: 0.28.20(typescript@6.0.2)
+        version: 0.28.20(patch_hash=af1f8891c46809ec9aa4e245904becd24fbde43276bd75368a77a11db20a6396)(typescript@6.0.2)
 
   vendor/a2ui-markdown-it:
     dependencies:
@@ -1125,7 +1130,7 @@ importers:
         version: 0.35.5(@types/node@22.20.1)
       typedoc:
         specifier: 0.28.20
-        version: 0.28.20(typescript@6.0.2)
+        version: 0.28.20(patch_hash=af1f8891c46809ec9aa4e245904becd24fbde43276bd75368a77a11db20a6396)(typescript@6.0.2)
       typescript:
         specifier: 6.0.2
         version: 6.0.2
@@ -25613,7 +25618,7 @@ snapshots:
     dependencies:
       is-typedarray: 1.0.0
 
-  typedoc@0.28.20(typescript@6.0.2):
+  typedoc@0.28.20(patch_hash=af1f8891c46809ec9aa4e245904becd24fbde43276bd75368a77a11db20a6396)(typescript@6.0.2):
     dependencies:
       '@gerrit0/mini-shiki': 3.23.0
       lunr: 2.3.9
