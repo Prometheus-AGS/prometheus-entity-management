@@ -76,9 +76,9 @@ const config: Config = {
     ],
     colorMode: {defaultMode: 'light', respectPrefersColorScheme: true},
     announcementBar: {
-      id: 'v4_stable',
+      id: 'v5_stable',
       content:
-        '<strong>4.4.0 stable</strong> — all thirteen npm packages are public on npm at 4.4.0, including the streaming-store hardening for AG-UI and the zod 4 A2UI runtime. Flutter 4.0.0 is public on pub.dev with its official DevTools companion.',
+        '<strong>5.0.0 stable</strong> — all thirteen npm packages are public at 5.0.0 with A2UI 1.0, AG-UI 1.0 and the official A2UI A2A extension. Breaking: read the 5.0 migration guide. Flutter 5.0.0 is public on pub.dev.',
       backgroundColor: '#0B0F14',
       textColor: '#FFFFFF',
       isCloseable: false,
