@@ -11,9 +11,13 @@
 <li><a href="../modules/_prometheus-ags_a2ui-react.html">@prometheus-ags/a2ui-react</a></li>
 <li><a href="../modules/_prometheus-ags_a2ui-react.ag-ui.html">ag-ui</a></li>
 <li><a href="" aria-current="page">ChatConversationStore</a></li></ul>
-<h1>Class ChatConversationStore</h1></div><aside class="tsd-sources">
+<h1>Class ChatConversationStore</h1></div>
+<section class="tsd-panel tsd-comment">
+<div class="tsd-comment tsd-typography"><p>Applies AG-UI 1.0 events for one conversation to the entity graph: messages, tool calls, run status and interrupts.
+Views of the same conversation on the same graph share run ownership, so a new run supersedes the previous one.</p>
+</div></section><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:220</li></ul></aside>
+<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:226</li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -56,7 +60,7 @@
 <li><span><span class="tsd-kind-parameter">options</span>: <a href="../interfaces/_prometheus-ags_a2ui-react.ag-ui.ChatConversationStoreOptions.html" class="tsd-signature-type tsd-kind-interface">ChatConversationStoreOptions</a></span></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type tsd-kind-class">ChatConversationStore</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:231</li></ul></aside></div></li></ul></section></section></details>
+<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:237</li></ul></aside></div></li></ul></section></section></details>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Accessors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="accessors-1">Accessors<a href="#accessors-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
@@ -68,7 +72,7 @@
 <div class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:232</li></ul></aside></div></li></ul></section></section></details>
+<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:238</li></ul></aside></div></li></ul></section></section></details>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="methods-1">Methods<a href="#methods-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
@@ -87,7 +91,7 @@
 <li><span><span class="tsd-kind-parameter">run</span>: <a href="../interfaces/_prometheus-ags_a2ui-react.ag-ui.ChatRun.html" class="tsd-signature-type tsd-kind-interface">ChatRun</a></span></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:269</li></ul></aside></div></li></ul></section>
+<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:275</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="beginrun"><span>begin<wbr/>Run</span><a href="#beginrun" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -104,7 +108,7 @@ graph. <code>abort</code> is called if a later run, from any view, supersedes th
 <li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">abort</span>: <span class="tsd-signature-symbol">()</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">void</span></span></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="../interfaces/_prometheus-ags_a2ui-react.ag-ui.ChatRun.html" class="tsd-signature-type tsd-kind-interface">ChatRun</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:239</li></ul></aside></div></li></ul></section>
+<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:245</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="cancel"><span>cancel</span><a href="#cancel" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -117,7 +121,7 @@ nothing, so unmounting it never cancels another view's run.</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:245</li></ul></aside></div></li></ul></section>
+<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:251</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="claiminterrupt"><span>claim<wbr/>Interrupt</span><a href="#claiminterrupt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -134,7 +138,7 @@ so a policy action behind an interrupt runs at most once.</p>
 <li><span><span class="tsd-kind-parameter">interruptId</span>: <span class="tsd-signature-type">string</span></span></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">undefined</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:251</li></ul></aside></div></li></ul></section>
+<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:257</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="clear"><span>clear</span><a href="#clear" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -145,7 +149,7 @@ so a policy action behind an interrupt runs at most once.</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:271</li></ul></aside></div></li></ul></section>
+<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:277</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="decideinterrupt"><span>decide<wbr/>Interrupt</span><a href="#decideinterrupt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -163,7 +167,7 @@ otherwise <code>undefined</code>.</p>
 <li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">epoch</span>: <span class="tsd-signature-type">number</span></span></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="../interfaces/_prometheus-ags_a2ui-react.ag-ui.ChatResumeEntry.html" class="tsd-signature-type tsd-kind-interface">ChatResumeEntry</a><span class="tsd-signature-symbol">[]</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">undefined</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:259</li></ul></aside></div></li></ul></section>
+<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:265</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="messages"><span>messages</span><a href="#messages" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -174,7 +178,7 @@ otherwise <code>undefined</code>.</p>
 </div>
 <h4 class="tsd-returns-title">Returns <a href="../interfaces/_prometheus-ags_a2ui-react.ag-ui.ChatMessage.html" class="tsd-signature-type tsd-kind-interface">ChatMessage</a><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:273</li></ul></aside></div></li></ul></section>
+<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:279</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="pendingresume"><span>pending<wbr/>Resume</span><a href="#pendingresume" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -186,7 +190,7 @@ resumed (its deciding view unmounted first), or <code>undefined</code>.</p>
 </div>
 <h4 class="tsd-returns-title">Returns <a href="../interfaces/_prometheus-ags_a2ui-react.ag-ui.ChatResumeEntry.html" class="tsd-signature-type tsd-kind-interface">ChatResumeEntry</a><span class="tsd-signature-symbol">[]</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">undefined</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:264</li></ul></aside></div></li></ul></section>
+<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:270</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="resume"><span>resume</span><a href="#resume" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -204,7 +208,7 @@ resumed (its deciding view unmounted first), or <code>undefined</code>.</p>
 <li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">abort</span>: <span class="tsd-signature-symbol">()</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">void</span></span></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:266</li></ul></aside></div></li></ul></section>
+<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:272</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="send"><span>send</span><a href="#send" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -222,7 +226,7 @@ resumed (its deciding view unmounted first), or <code>undefined</code>.</p>
 <li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">abort</span>: <span class="tsd-signature-symbol">()</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">void</span></span></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:253</li></ul></aside></div></li></ul></section>
+<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:259</li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="snapshot"><span>snapshot</span><a href="#snapshot" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -234,7 +238,7 @@ changes, so React does not re-render on every unrelated subscription call.</p>
 </div>
 <h4 class="tsd-returns-title">Returns <a href="../interfaces/_prometheus-ags_a2ui-react.ag-ui.ChatConversationSnapshot.html" class="tsd-signature-type tsd-kind-interface">ChatConversationSnapshot</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:278</li></ul></aside></div></li></ul></section></section></details></div>
+<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:284</li></ul></aside></div></li></ul></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

@@ -33,6 +33,10 @@ function declaredContext(interrupt: ChatInterrupt): Record<string, unknown> | un
     : undefined;
 }
 
+/**
+ * Renders an AG-UI interrupt for a human decision: approve (optionally with edited values) or deny.
+ * The decision is passed to `onDecide`; the action policy still decides whether it executes.
+ */
 export function EntityInterruptApproval({
   interrupt,
   onDecide,

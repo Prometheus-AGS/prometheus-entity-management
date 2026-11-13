@@ -10,10 +10,10 @@ families project entities and lists without copying entity data into widgets.
 The package covers local/remote/hybrid views, optimistic rollback, realtime
 invalidation, transports, an optional FFI seam, and cross-view widget goldens.
 
-Install the public `3.1.0` package from pub.dev:
+Install the public `5.0.0` package from pub.dev:
 
 ```bash
-flutter pub add entity_graph_flutter:^4.0.0
+flutter pub add entity_graph_flutter:^5.0.0
 ```
 
 The published archive passed a clean consumer import and analyzer check. pub.dev
