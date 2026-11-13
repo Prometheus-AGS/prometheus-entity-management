@@ -4,7 +4,7 @@ A dedicated, keyless end-to-end demonstration of the 3.0 agentic surface:
 
 - A **deterministic A2A v1 agent** (`@prometheus-ags/entity-graph-a2a`) runs
   in-page over the official JSON-RPC wire — no HTTP hop, no model credential.
-- Agent output renders as **official A2UI v0.9.1 surfaces**
+- Agent output renders as **official A2UI 1.0 surfaces**
   (`@prometheus-ags/a2ui-react`) through the maintained official renderer.
 - Every surface action crosses the **declared action catalog**
   (entity/action/field allowlists, tenant authorization, human approval for

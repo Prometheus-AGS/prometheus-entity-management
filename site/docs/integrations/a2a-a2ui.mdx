@@ -10,13 +10,29 @@ Two packages cover agent-facing surfaces:
 - `@prometheus-ags/entity-graph-a2a` — an A2A v1 JSON-RPC agent server with
   **graph policy authority**: entity/action/field allowlists, tenant
   authorization, human approval for destructive operations.
-- `@prometheus-ags/a2ui-react` — A2UI v1.0-RC compatibility over the official
-  v0.9.1 renderer plus AG-UI 0.0.59
-  chat entry points for rendering agent output.
+- `@prometheus-ags/a2ui-react` — A2UI 1.0 (and v0.9.1) surfaces rendered through
+  the official `@a2ui/*` 0.15.0 processor, plus AG-UI 1.0 chat entry points
+  for rendering agent output.
 
-The current React package is `@prometheus-ags/a2ui-react@3.2.0`. Flutter uses
-`entity_graph_flutter@3.1.0` for the graph and a showcase-owned compatibility
-adapter that validates A2UI 1.0-RC input before GenUI 0.10.2 rendering.
+From 5.0.0 the packages target A2UI 1.0 final, `@a2ui/*` 0.15.0, AG-UI 1.0
+(`@ag-ui/core` `^1.0.0`) and the official A2UI A2A extension. Upgrading from 4.x:
+[Migrate to 5.0](../migration/a2ui-1-0.mdx). Flutter uses
+`entity_graph_flutter@3.1.0` for the graph and renders A2UI 1.0 natively in the
+showcase through `a2ui_flutter` 0.3.0, after application-owned policy
+validation.
+
+## A2UI over A2A
+
+The A2A package follows the official A2UI extension:
+
+- extension URI `https://a2ui.org/a2a-extension/a2ui/v1.0`, media type
+  `application/a2ui+json`, and a DataPart whose `data` is the A2UI message list
+  (`createA2UIDataPart`, `extractA2UIMessages`);
+- the client attaches `a2uiRendererCapabilities` to every user message, and the
+  agent sends A2UI only for a turn that offers it (`offersA2UICatalog`);
+- renderer-to-agent messages (`action`, `callAgentFunction`, ...) are denied unless
+  the server installs an `a2uiInbound` handler (`{ authorize, handle }`);
+- `@a2a-js/sdk` 1.3.0.
 
 ## Setup
 
@@ -35,7 +51,8 @@ Policy configuration lives in the server, not the client; see the
 ## Rendering agent output
 
 Agent artifacts render as official A2UI surfaces through the maintained
-renderer; application-owned surface projections (like the example's
+renderer. The official basic catalog renders as Custom Elements and is client
+only; SSR emits fallback markup until hydration. Application-owned surface projections (like the example's
 task-board sync messages) validate against the official schema.
 
 ## Deterministic demo mode vs. live credentials

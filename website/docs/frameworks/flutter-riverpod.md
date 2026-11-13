@@ -19,8 +19,9 @@ flutter pub add entity_graph_flutter:^4.0.0
 The published archive passed a clean consumer import and analyzer check. pub.dev
 does not yet associate the package with a verified publisher, so publisher
 assignment remains an operational follow-up rather than an installation block.
-The companion showcase accepts strict A2UI 1.0-RC surface envelopes and
-normalizes them to GenUI 0.10.2 only after application-owned policy validation.
+The companion showcase renders A2UI 1.0 (`version: "1.0"`) natively through
+`a2ui_flutter` 0.3.0 and the `a2ui_core` 0.7.0 message processor, with no
+translation layer, after application-owned policy validation.
 Start with `packages/entity_graph_flutter/README.md` and the
 [Flutter example evidence](../examples/flutter-riverpod.md).
 

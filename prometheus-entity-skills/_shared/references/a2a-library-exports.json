@@ -5,6 +5,8 @@
     "A2A_CALLER_STATE_KEY",
     "A2A_PROTOCOL_VERSION",
     "A2A_VERSION_HEADER",
+    "A2UI_RENDERER_CAPABILITIES_KEY",
+    "A2UI_RENDERER_DATA_MODEL_KEY",
     "AGENT_CARD_PATH",
     "ANONYMOUS_A2A_CALLER",
     "DEFAULT_AGENT_EXTENSIONS",
@@ -23,13 +25,18 @@
     "buildAgentCard",
     "createA2AServer",
     "createA2UIArtifact",
+    "createA2UIDataPart",
     "createBearerTokenAuthenticator",
     "createDefaultDenyA2APolicy",
     "createDenyAllA2APolicy",
     "createDeterministicA2UIMessages",
     "createDeterministicEntityGraphExecutor",
     "createEntityGraphA2APolicy",
-    "createExternalA2AExecutor"
+    "createExternalA2AExecutor",
+    "extractA2UIMessages",
+    "isA2UIDataPart",
+    "offersA2UICatalog",
+    "rendererCapabilitiesOf"
   ],
   "./legacy": [
     "LegacyA2AAdapter",

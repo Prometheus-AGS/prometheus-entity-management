@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/entity-graph-a2a",
-  "version": "4.4.0",
+  "version": "5.0.0",
   "description": "Policy-gated A2A v1 JSON-RPC and streaming SSE for the Prometheus entity graph, with deterministic A2UI artifacts.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
@@ -38,11 +38,11 @@
     "build": "tsup",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run",
-    "refresh:exports": "node ../../scripts/refresh-exports-ledger.mjs --a2a",
+    "refresh:exports": "pnpm run build && node ../../scripts/refresh-exports-ledger.mjs --a2a",
     "verify:skills": "node ../../scripts/verify-skills-exports.mjs --a2a"
   },
   "dependencies": {
-    "@a2a-js/sdk": "1.0.1",
+    "@a2a-js/sdk": "1.3.0",
     "@prometheus-ags/entity-graph-core": "workspace:*"
   },
   "devDependencies": {

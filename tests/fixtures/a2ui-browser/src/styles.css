@@ -169,6 +169,9 @@ h1 {
   border-radius: 16px;
   background: #f2f8f4;
   color: #13231d;
+  /* A light card inside the dark page: the official 0.15 components pick their colours with
+     light-dark(), so the card must declare its own scheme (dark captions are #aaa, too faint here). */
+  color-scheme: light;
 }
 
 .official-surface > div > div { gap: 16px !important; }

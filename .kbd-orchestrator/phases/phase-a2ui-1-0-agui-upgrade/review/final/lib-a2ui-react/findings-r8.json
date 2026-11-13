@@ -1,0 +1,36 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/chat/conversation-store.ts",
+      "claim": "Tool calls without an existing parent message disappear from the conversation history even though the client executes them.",
+      "evidence": "toolCallStart records the call in pendingToolCalls but adds it to graph messages only inside `if (parent)`. It never creates an assistant message when parentMessageId is absent or does not identify an existing message. runClientTools subsequently executes that call and inserts a tool-result message, leaving history with an orphan result and no corresponding assistant toolCalls. UPG-10 requires TOOL_CALL_* to render in EntityChat and appear in the shared graph.",
+      "suggested_fix": "Create and persist an assistant message for standalone tool calls, associate the pending call with that message, and accumulate its arguments there."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/official/runtime-core.ts",
+      "claim": "Malformed A2UI 1.0 messages throw without emitting the renderer error promised for refused 1.0 batches.",
+      "evidence": "The parsing loop calls parseV1Message inside an initial try/catch that simply rethrows PrometheusA2uiError. reportV1Failure is invoked only in the later preflight/application catch. Consequently, schema rejection or conflicting bare/@-prefixed keys never reaches onRendererMessage, despite runtime-types.ts documenting that callback as receiving an `error` for a refused 1.0 batch.",
+      "suggested_fix": "Route parsing failures for recognizable 1.0 envelopes through the renderer-error reporting path as well, retaining the offending envelope's context and preserving the original thrown error."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/a2ui-react/src/chat/conversation-store.ts",
+      "claim": "Calling the exported store's cancel method invalidates writes but does not abort its owned transport.",
+      "evidence": "beginRun stores the supplied abort callback in RunOwner, and supersession and clear invoke it. cancel instead deletes the owner and clears ownedRun without invoking its abort callback. Hook cleanup separately aborts its controller, but direct consumers of the publicly exported ChatConversationStore do not receive that behavior.",
+      "suggested_fix": "Invoke the current owned run's abort callback when cancel relinquishes ownership, while preserving the passive-view ownership check."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

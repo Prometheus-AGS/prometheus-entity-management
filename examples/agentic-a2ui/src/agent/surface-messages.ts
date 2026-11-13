@@ -1,10 +1,13 @@
 /**
- * Application-owned A2UI v0.9.1 surface messages for the deterministic task
+ * Application-owned A2UI 1.0 surface messages for the deterministic task
  * board. The golden fixtures replay these exact bytes; the interactive
  * buttons route through the Prometheus action policy, so the agent can never
  * write outside the declared action catalog.
  */
-import { PROMETHEUS_A2UI_CATALOG_ID } from "@prometheus-ags/a2ui-react";
+import {
+  PROMETHEUS_A2UI_V1_CATALOG_ID,
+  PROMETHEUS_A2UI_V1_PROTOCOL_VERSION,
+} from "@prometheus-ags/a2ui-react";
 import { DEMO_TENANT } from "../lib/demo-data";
 
 export const TASK_BOARD_SURFACE_ID = "surface-task-sync";
@@ -28,15 +31,15 @@ export function createTaskBoardSurfaceMessages(
   const tenantId = input.tenantId ?? DEMO_TENANT;
   return [
     {
-      version: "v0.9.1",
+      version: PROMETHEUS_A2UI_V1_PROTOCOL_VERSION,
       createSurface: {
         surfaceId: TASK_BOARD_SURFACE_ID,
-        catalogId: PROMETHEUS_A2UI_CATALOG_ID,
+        catalogId: PROMETHEUS_A2UI_V1_CATALOG_ID,
         sendDataModel: true,
       },
     },
     {
-      version: "v0.9.1",
+      version: PROMETHEUS_A2UI_V1_PROTOCOL_VERSION,
       updateComponents: {
         surfaceId: TASK_BOARD_SURFACE_ID,
         components: [
@@ -49,24 +52,23 @@ export function createTaskBoardSurfaceMessages(
           {
             id: "heading",
             component: "Text",
-            text: { path: "/title" },
-            variant: "h2",
+            text: { "@path": "/title" },
           },
           {
             id: "status",
             component: "Text",
-            text: { path: "/status" },
+            text: { "@path": "/status" },
             variant: "body",
           },
           {
             id: "actions",
             component: "Row",
-            children: ["mark-done", "replace-task", "delete-task"],
+            children: ["mark_done", "replace_task", "delete_task"],
           },
           {
-            id: "mark-done",
+            id: "mark_done",
             component: "Button",
-            child: "mark-done-label",
+            child: "mark_done_label",
             action: {
               event: {
                 name: "prometheus.entity.upsert",
@@ -74,21 +76,21 @@ export function createTaskBoardSurfaceMessages(
                   entityType: "Task",
                   entityId: input.taskId,
                   tenantId,
-                  data: { path: "/markDoneData" },
+                  data: { "@path": "/markDoneData" },
                 },
               },
             },
           },
           {
-            id: "mark-done-label",
+            id: "mark_done_label",
             component: "Text",
             text: "Mark done",
             variant: "body",
           },
           {
-            id: "replace-task",
+            id: "replace_task",
             component: "Button",
-            child: "replace-task-label",
+            child: "replace_task_label",
             action: {
               event: {
                 name: "prometheus.entity.replace",
@@ -96,21 +98,21 @@ export function createTaskBoardSurfaceMessages(
                   entityType: "Task",
                   entityId: input.taskId,
                   tenantId,
-                  data: { path: "/replaceData" },
+                  data: { "@path": "/replaceData" },
                 },
               },
             },
           },
           {
-            id: "replace-task-label",
+            id: "replace_task_label",
             component: "Text",
             text: "Reset task (approval)",
             variant: "body",
           },
           {
-            id: "delete-task",
+            id: "delete_task",
             component: "Button",
-            child: "delete-task-label",
+            child: "delete_task_label",
             action: {
               event: {
                 name: "prometheus.entity.remove",
@@ -123,7 +125,7 @@ export function createTaskBoardSurfaceMessages(
             },
           },
           {
-            id: "delete-task-label",
+            id: "delete_task_label",
             component: "Text",
             text: "Delete task",
             variant: "body",
@@ -132,7 +134,7 @@ export function createTaskBoardSurfaceMessages(
       },
     },
     {
-      version: "v0.9.1",
+      version: PROMETHEUS_A2UI_V1_PROTOCOL_VERSION,
       updateDataModel: {
         surfaceId: TASK_BOARD_SURFACE_ID,
         path: "/",

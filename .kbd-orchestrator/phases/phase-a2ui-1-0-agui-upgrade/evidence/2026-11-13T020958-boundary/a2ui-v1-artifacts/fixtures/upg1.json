@@ -1,0 +1,75 @@
+{
+  "create": [
+    {
+      "version": "1.0",
+      "createSurface": {
+        "surfaceId": "upg1",
+        "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0"
+      }
+    }
+  ],
+  "components": [
+    {
+      "version": "1.0",
+      "updateComponents": {
+        "surfaceId": "upg1",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "greeting",
+              "name"
+            ]
+          },
+          {
+            "id": "greeting",
+            "component": "Text",
+            "text": {
+              "@call": "formatString",
+              "args": {
+                "value": "Hello ${/name}"
+              }
+            }
+          },
+          {
+            "id": "name",
+            "component": "Text",
+            "variant": "caption",
+            "text": {
+              "@path": "/name"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "dataAda": [
+    {
+      "version": "1.0",
+      "updateDataModel": {
+        "surfaceId": "upg1",
+        "path": "/name",
+        "value": "Ada"
+      }
+    }
+  ],
+  "dataGrace": [
+    {
+      "version": "1.0",
+      "updateDataModel": {
+        "surfaceId": "upg1",
+        "path": "/name",
+        "value": "Grace"
+      }
+    }
+  ],
+  "delete": [
+    {
+      "version": "1.0",
+      "deleteSurface": {
+        "surfaceId": "upg1"
+      }
+    }
+  ]
+}

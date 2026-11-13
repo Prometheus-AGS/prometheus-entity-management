@@ -56,16 +56,16 @@ implement another renderer or maintain an alternate surface/data model.
 | --- | --- | --- |
 | Public wire input | A2UI `v1.0` RC and `v0.9.1` | RC compatibility without claiming an unpublished v1 renderer |
 | Renderer engine | A2UI `v0.9.1` | Maintained entry point exported by the published packages |
-| Official React package | `@a2ui/react@0.12.0` (bundled, build-time pin) | Distribution containing the selected renderer entry point |
-| Official core package | `@a2ui/web_core@0.12.0` (bundled, patched to `zod/v3`) | Distribution containing protocol processing and schemas |
+| Official React package | `@a2ui/react@0.15.0` (bundled, build-time pin; declarations patched to `zod/v3`) | Distribution containing the selected renderer entry point |
+| Official core package | `@a2ui/web_core@0.15.0` (bundled, build-time pin, patched to `zod/v3`; types inlined into this package's declarations) | Distribution containing protocol processing, schemas and the Custom Element basic catalog |
 | Markdown integration | package-owned port of `@a2ui/markdown-it@0.2.0` on `markdown-it@14.3.3` + `dompurify@3.4.17` | Renderer context used for official Text markdown |
 | AG-UI transport | `@ag-ui/core` peer `>=0.0.59 <0.1.0 \|\| ^1.0.0` (developed against `1.0.3`) | Activity snapshot, activity delta and messages-snapshot shapes used for A2UI operations |
 | Validation dependency | `zod@4.6.7` | Exact schema runtime; upstream A2UI code runs on its `zod/v3` subpath |
 
-The `0.12.x` package numbers are distribution versions, not A2UI wire
+The `0.15.x` package numbers are distribution versions, not A2UI wire
 versions. Root sources import explicit `/v0_9` entry points because
-`@a2ui/react@0.12.0` exports only `./v0_8` and `./v0_9` (no v1.0 renderer entry
-point); `@a2ui/web_core@0.12.0` does export `./v1_0`, which this package does not
+`@a2ui/react@0.15.0` exports only `./v0_8` and `./v0_9` (no v1.0 renderer entry
+point); `@a2ui/web_core@0.15.0` does export `./v1_0`, which this package does not
 yet use. The
 runtime validates v1.0-RC envelopes, decomposes embedded surface state for the
 official processor, and keeps response-aware action/function metadata at the

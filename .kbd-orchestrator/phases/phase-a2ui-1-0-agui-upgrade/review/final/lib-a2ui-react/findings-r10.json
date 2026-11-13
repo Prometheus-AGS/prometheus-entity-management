@@ -1,0 +1,29 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/chat/conversation-store.ts",
+      "claim": "An onMessage callback that clears or supersedes the conversation can cause the superseded event to write into the graph afterward.",
+      "evidence": "apply() checks run.isCurrent() only before calling closeChunks(event). closeChunks() can call endMessage(), which synchronously invokes options.onMessage. If that callback calls clearMessages() or starts another run, the original apply() still enters its switch and can execute startMessage(), appendDelta(), or another graph mutation. For example, a TEXT_MESSAGE_START following a chunk closes the previous message; clearing in its onMessage callback is followed by insertion of the old stream's new message. This violates UPG-11's requirement that superseded streams cause zero later graph writes.",
+      "suggested_fix": "Recheck run.isCurrent() immediately after closeChunks(event), before dispatching the event, and ensure any other synchronous external callback cannot be followed by writes without a corresponding ownership check."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/chat/interrupts.ts",
+      "claim": "A partially malformed interrupt outcome silently discards required interrupts and permits the run to resume after approving only the remaining subset.",
+      "evidence": "readInterruptOutcome() uses continue for entries without string id and reason, returning the remaining valid entries. In conversation-store.ts, RUN_FINISHED fails closed only when the returned array is empty; decideInterrupt() then considers only the filtered array when deciding whether every interrupt has been answered. An outcome containing one valid interrupt and one malformed interrupt therefore resumes with only one decision instead of refusing the unreadable pause. This is the same agent-input approval boundary addressed by the existing malformed-outcome guard and constraint A-3.",
+      "suggested_fix": "Reject the entire interrupt outcome when any entry is unreadable, rather than filtering entries, and route that rejection through the existing fail-closed RUN_FINISHED path."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

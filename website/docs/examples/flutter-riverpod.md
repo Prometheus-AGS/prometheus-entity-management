@@ -7,13 +7,15 @@ sidebar_position: 2
 
 The Flutter application projects one graph through generated Riverpod
 providers, demonstrates optimistic and offline-aware CRUD, relationships,
-realtime invalidation, policy-gated A2UI 1.0-RC input over GenUI 0.10.2,
-responsive layouts, and an optional FFI transport. Flutter 3.44.8 generation,
-analysis, 70 package tests, 25
-showcase tests, and three deterministic phone/tablet goldens are recorded. The
-shared application smoke flow also passed on an Android API 35 emulator and an
-iOS 26.5 simulator. Physical devices, signing, and app-store delivery remain
-outside this evidence boundary.
+realtime invalidation, policy-gated A2UI 1.0 rendering through `a2ui_flutter` 0.3.0,
+responsive layouts, and an optional FFI transport. The A2UI 1.0 acceptance gate
+is `pnpm run verify:flutter-a2ui-v1 -- --report <file>`: it checks the
+`a2ui_flutter` 0.3.0 and `a2ui_core` 0.7.0 pins and runs the integration test on a
+booted iOS simulator, including a denied action, an allowed action and a refused
+unknown-component batch. The 3.0 test counts, goldens and Android emulator
+receipts predate the A2UI 1.0 migration and are not re-certified by that gate.
+Physical devices, signing, and app-store delivery remain outside this evidence
+boundary.
 
 A separate assembled debugger flow now launches the configured Flutter app,
 connects from outside the isolate over Dart VM-service WebSocket JSON-RPC, and

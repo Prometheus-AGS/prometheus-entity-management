@@ -344,9 +344,9 @@ check is required after every publication.</li>
 <li>Flutter 3.44.8 generation, analysis, package/showcase tests, three goldens,
 Android emulator, and iOS simulator smoke lanes are recorded in
 <code>examples/coverage.json</code>.</li>
-<li>The Flutter showcase accepts strict A2UI 1.0-RC surfaces and normalizes them
-to the published GenUI 0.10.2 renderer only after catalog, component,
-function, action, tenant, and entity validation.</li>
+<li>The Flutter showcase renders A2UI 1.0 surfaces natively through
+<code>a2ui_flutter</code> 0.3.0 and the <code>a2ui_core</code> 0.7.0 message processor, only after
+catalog, component, action, tenant, and entity validation.</li>
 <li>The optional DevTools controller passed its complete
 Flutter/Riverpod/VM-service acceptance flow with two isolated graphs and 28
 versioned events. Version <code>3.1.0</code> also includes the official, validated
@@ -405,7 +405,7 @@ full npm 3.0 readiness from this Dart package version.</p>
 <footer>
   <span class="no-break">
     entity_graph_flutter
-      4.0.0
+      5.0.0
   </span>
   
 </footer>

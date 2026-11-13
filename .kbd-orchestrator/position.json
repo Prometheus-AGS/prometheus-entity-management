@@ -2,23 +2,25 @@
   "schemaVersion": "1",
   "generatedBy": "kbd-runtime",
   "projectionContractVersion": 2,
-  "sourceRevision": 523,
-  "derivedRevision": 523,
+  "sourceRevision": 865,
+  "derivedRevision": 865,
   "frontier": {
+    "d144c44a-0d69-46eb-ad0b-88d07bbd014e": 342,
     "f16401a8-c69e-4cb1-b6db-4866c4fa7043": 523
   },
   "conflictCount": 6,
-  "updatedAt": "2026-08-30T15:58:47.140196Z",
+  "updatedAt": "2026-11-13T08:39:27.858961Z",
   "cursor": [
-    "v3-devtools-parity"
+    "phase-a2ui-1-0-agui-upgrade",
+    "execute"
   ],
   "root": {
     "type": "phase",
     "id": "6ec4d107-b5d9-4e5d-87c7-a006573af66c",
     "status": "running",
     "progress": {
-      "done": 41,
-      "total": 63
+      "done": 53,
+      "total": 75
     },
     "children": [
       {
@@ -290,6 +292,127 @@
             "progress": {
               "done": 0,
               "total": 5
+            }
+          }
+        ],
+        "annotations": []
+      },
+      {
+        "type": "phase",
+        "id": "phase-a2ui-1-0-agui-upgrade",
+        "canonicalId": "phase-a2ui-1-0-agui-upgrade",
+        "status": "IN_PROGRESS",
+        "progress": {
+          "done": 12,
+          "total": 12
+        },
+        "children": [
+          {
+            "type": "change",
+            "id": "a2ui-0-15-library-baseline",
+            "status": "COMPLETE",
+            "progress": {
+              "done": 5,
+              "total": 5
+            }
+          },
+          {
+            "type": "change",
+            "id": "a2ui-v1-native-surfaces",
+            "status": "COMPLETE",
+            "progress": {
+              "done": 7,
+              "total": 7
+            }
+          },
+          {
+            "type": "change",
+            "id": "a2ui-v1-functions-and-actions",
+            "status": "COMPLETE",
+            "progress": {
+              "done": 7,
+              "total": 7
+            }
+          },
+          {
+            "type": "change",
+            "id": "agui-1-0-floors-and-middleware-interop",
+            "status": "COMPLETE",
+            "progress": {
+              "done": 4,
+              "total": 4
+            }
+          },
+          {
+            "type": "change",
+            "id": "a2a-official-a2ui-extension",
+            "status": "COMPLETE",
+            "progress": {
+              "done": 5,
+              "total": 5
+            }
+          },
+          {
+            "type": "change",
+            "id": "agui-1-0-chat-run-stack",
+            "status": "COMPLETE",
+            "progress": {
+              "done": 5,
+              "total": 5
+            }
+          },
+          {
+            "type": "change",
+            "id": "agui-interrupt-approvals",
+            "status": "COMPLETE",
+            "progress": {
+              "done": 3,
+              "total": 3
+            }
+          },
+          {
+            "type": "change",
+            "id": "a2ui-governed-actions-graph-binding-design",
+            "status": "COMPLETE",
+            "progress": {
+              "done": 2,
+              "total": 2
+            }
+          },
+          {
+            "type": "change",
+            "id": "examples-a2ui-1-0-migration",
+            "status": "COMPLETE",
+            "progress": {
+              "done": 4,
+              "total": 4
+            }
+          },
+          {
+            "type": "change",
+            "id": "a2ui-v1-conformance-harness",
+            "status": "COMPLETE",
+            "progress": {
+              "done": 3,
+              "total": 3
+            }
+          },
+          {
+            "type": "change",
+            "id": "a2ui-1-0-release-sync",
+            "status": "COMPLETE",
+            "progress": {
+              "done": 7,
+              "total": 7
+            }
+          },
+          {
+            "type": "change",
+            "id": "flutter-a2ui-1-0-parity",
+            "status": "COMPLETE",
+            "progress": {
+              "done": 3,
+              "total": 3
             }
           }
         ],

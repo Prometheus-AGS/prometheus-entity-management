@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/entity-graph-a2a/src/handler.ts",
+      "line": 545,
+      "claim": "The A2UI response path no longer activates the requested A2UI extension.",
+      "evidence": "The hunk replacing the requestedExtensions condition removes requestContext.context.addActivatedExtension(PROMETHEUS_A2UI_EXTENSION_URI), and neither new A2UI branch performs that activation. The updated README explicitly promises that the reference agent \"still activates the extension when the client requested it.\" Per-turn capabilities should gate A2UI output without removing extension activation.",
+      "suggested_fix": "Preserve activation when the request includes PROMETHEUS_A2UI_EXTENSION_URI, for both generated-surface and inbound-action response paths, while independently requiring per-turn capabilities before emitting A2UI."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/entity-graph-a2a/src/handler.ts",
+      "line": 633,
+      "claim": "An inbound handler's replies with an incorrect protocol version are silently discarded while the task proceeds as successfully handled.",
+      "evidence": "handleInboundA2UI increments handled before invoking handle, then retains a produced reply only when reply.version === PROMETHEUS_A2UI_PROTOCOL_VERSION. A handler returning only incorrectly versioned replies therefore returns an empty list without any error, and the caller emits no answer. The public handle return type permits arbitrary Record<string, unknown> values, so this failure is not prevented by its TypeScript contract.",
+      "suggested_fix": "Validate produced replies and surface invalid output as an explicit execution error rather than silently filtering it; also narrow the handler's return type to the supported outbound message contract."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

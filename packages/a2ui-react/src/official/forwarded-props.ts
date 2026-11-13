@@ -26,7 +26,13 @@ export type PrometheusA2uiResyncReason =
   /** The runtime refused a batch the producer had accepted, so it is stuck at its last version. */
   | "refused"
   /** A server rejected an action as stale and returned nothing to catch the surface up with. */
-  | "stale-action";
+  | "stale-action"
+  /**
+   * The producer reported that generating a surface failed (an AG-UI A2UI
+   * lifecycle activity with `status: "failed"`, as `@ag-ui/a2ui-middleware`
+   * sends when its recovery attempts are exhausted).
+   */
+  | "producer-failed";
 
 export interface PrometheusA2uiResyncSurface {
   readonly surfaceId: string;

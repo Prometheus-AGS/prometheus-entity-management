@@ -7,7 +7,6 @@ import {
 } from "react";
 import { A2uiSurface, MarkdownContext } from "@a2ui/react/v0_9";
 import type {
-  A2uiClientCapabilities,
   A2uiClientDataModel,
   SurfaceModel,
 } from "@a2ui/web_core/v0_9" with { "resolution-mode": "import" };
@@ -15,6 +14,7 @@ import type {
   PrometheusA2uiMessageInput,
   PrometheusA2uiRuntime,
 } from "../official/runtime.js";
+import type { PrometheusA2uiRendererCapabilities } from "../official/runtime-types.js";
 import type { PrometheusA2uiComponentImplementation } from "../official/types.js";
 import { renderMarkdown } from "./markdown.js";
 
@@ -71,7 +71,7 @@ export interface UsePrometheusA2uiResult {
   runtime: PrometheusA2uiRuntime;
   surfaces: readonly SurfaceModel<PrometheusA2uiComponentImplementation>[];
   processMessages(input: PrometheusA2uiMessageInput): void;
-  getClientCapabilities(options?: { includeInlineCatalogs?: boolean }): A2uiClientCapabilities;
+  getClientCapabilities(options?: { includeInlineCatalogs?: boolean }): PrometheusA2uiRendererCapabilities;
   getClientDataModel(): A2uiClientDataModel | undefined;
 }
 

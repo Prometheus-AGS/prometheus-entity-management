@@ -1,0 +1,102 @@
+[
+  {
+    "version": "v0.9.1",
+    "createSurface": {
+      "surfaceId": "s1",
+      "catalogId": "urn:prometheus-ags:a2ui:catalog:v3",
+      "sendDataModel": true
+    }
+  },
+  {
+    "version": "v0.9.1",
+    "updateComponents": {
+      "surfaceId": "s1",
+      "components": [
+        {
+          "id": "root",
+          "component": "Column",
+          "children": [
+            "name",
+            "note",
+            "ping",
+            "ping-label",
+            "nope",
+            "nope-label"
+          ]
+        },
+        {
+          "id": "name",
+          "component": "TextField",
+          "label": "Name v1",
+          "value": {
+            "path": "/name"
+          }
+        },
+        {
+          "id": "note",
+          "component": "Text",
+          "text": {
+            "path": "/note"
+          }
+        },
+        {
+          "id": "ping",
+          "component": "Button",
+          "child": "ping-label",
+          "action": {
+            "event": {
+              "name": "lab.ping",
+              "context": {}
+            }
+          }
+        },
+        {
+          "id": "ping-label",
+          "component": "Text",
+          "text": "Ping"
+        },
+        {
+          "id": "nope",
+          "component": "Button",
+          "child": "nope-label",
+          "action": {
+            "event": {
+              "name": "lab.forbidden",
+              "context": {}
+            }
+          }
+        },
+        {
+          "id": "nope-label",
+          "component": "Text",
+          "text": "Forbidden"
+        }
+      ]
+    }
+  },
+  {
+    "version": "v0.9.1",
+    "updateDataModel": {
+      "surfaceId": "s1",
+      "path": "/",
+      "value": {
+        "name": "",
+        "note": "first"
+      }
+    }
+  },
+  {
+    "version": "v0.9.1",
+    "updateDataModel": {
+      "surfaceId": "s1",
+      "path": "/name",
+      "value": "from producer"
+    }
+  },
+  {
+    "version": "v0.9.1",
+    "deleteSurface": {
+      "surfaceId": "s1"
+    }
+  }
+]

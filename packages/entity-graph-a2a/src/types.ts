@@ -4,13 +4,28 @@ import type { Message } from "@a2a-js/sdk";
 export const PROMETHEUS_GRAPH_EXTENSION_URI =
   "https://prometheus-ags.github.io/prometheus-entity-management/extensions/entity-graph/v1";
 
-/** Prometheus adapter contract for carrying validated A2UI v0.9.1 messages. */
-export const PROMETHEUS_A2UI_EXTENSION_URI =
-  "https://prometheus-ags.github.io/prometheus-entity-management/extensions/a2ui/v0.9.1";
+/**
+ * The official A2UI A2A extension (A2UI extension spec v1.0). Requesting it
+ * tells the agent the renderer supports the A2UI 1.0 schema; activation is
+ * optional, because per-turn `a2uiRendererCapabilities` metadata negotiates
+ * A2UI on its own.
+ */
+export const PROMETHEUS_A2UI_EXTENSION_URI = "https://a2ui.org/a2a-extension/a2ui/v1.0";
 
-export const PROMETHEUS_A2UI_PROTOCOL_VERSION = "v0.9.1" as const;
-export const PROMETHEUS_A2UI_MEDIA_TYPE = "application/json+a2ui" as const;
-export const PROMETHEUS_A2UI_CATALOG_ID = "urn:prometheus-ags:a2ui:catalog:v3";
+/** The A2UI wire version carried over A2A. */
+export const PROMETHEUS_A2UI_PROTOCOL_VERSION = "1.0" as const;
+
+/** The MIME type that marks an A2A DataPart as A2UI (`DataPart.metadata.mimeType`). */
+export const PROMETHEUS_A2UI_MEDIA_TYPE = "application/a2ui+json" as const;
+
+/** The Prometheus A2UI 1.0 catalog the reference agent generates against. */
+export const PROMETHEUS_A2UI_CATALOG_ID = "urn:prometheus-ags:a2ui:catalog:a2ui-1.0";
+
+/** `message.metadata` key carrying the renderer's version-keyed capabilities for this turn. */
+export const A2UI_RENDERER_CAPABILITIES_KEY = "a2uiRendererCapabilities" as const;
+
+/** `message.metadata` key carrying the renderer's synced data model. */
+export const A2UI_RENDERER_DATA_MODEL_KEY = "a2uiRendererDataModel" as const;
 
 /** A graph mutation transported inside an official A2A structured-data Part. */
 export type GraphMutation =
@@ -137,8 +152,38 @@ export interface CreateEntityGraphA2APolicyOptions {
   requestApproval?: A2AApplicationPolicy["requestApproval"];
 }
 
+/** Context for an A2UI message a client (renderer) sent to the agent. */
+export interface A2UIInboundContext {
+  caller: A2ACaller;
+  tenantId?: string;
+  /** The A2A message that carried it. */
+  message: Message;
+}
+
+/**
+ * Application-owned handling of A2UI renderer-to-agent messages (`action`,
+ * `callAgentFunction`, `rendererFunctionResponse`, `error`) arriving over A2A.
+ * Without it, every inbound A2UI message is refused.
+ */
+export interface A2UIInboundHandler {
+  /** Decide each message before it is handled; denial is the default answer to anything unexpected. */
+  authorize(message: Readonly<Record<string, unknown>>, context: A2UIInboundContext):
+    | Promise<boolean>
+    | boolean;
+  /**
+   * Handle an authorized message. A2UI messages returned are sent back to the
+   * renderer, only if this turn offered A2UI 1.0 capabilities.
+   */
+  handle(message: Readonly<Record<string, unknown>>, context: A2UIInboundContext):
+    | Promise<readonly Record<string, unknown>[] | void>
+    | readonly Record<string, unknown>[]
+    | void;
+}
+
 export interface DeterministicExecutorOptions {
   policy?: A2AApplicationPolicy;
+  /** Inbound A2UI messages; absent means every inbound A2UI message is refused. */
+  a2uiInbound?: A2UIInboundHandler;
   clock?: () => string;
   idFactory?: () => string;
   /** Async checkpoint between working and result; useful for cancellation tests. */

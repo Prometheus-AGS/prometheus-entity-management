@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "examples/flutter-riverpod/test/a2ui_contract_test.dart",
+      "line": 68,
+      "claim": "The change rewrites isolated widget tests despite the project's explicit prohibition on writing component tests or expanding legacy unit suites.",
+      "evidence": "The diff constructs an A2uiSurfaceStore, loads a fixture directly, and mounts SafeA2uiSurface in a standalone MaterialApp for testWidgets('renders the official safe catalog and forwards user intent'); it similarly rewrites the hostile-fixture widget test. Constraint A-9 says 'do not write or run unit, component, isolated ... tests' and 'Existing unit suites are legacy artifacts: do not expand them'; C-2 also prohibits creating isolated component tests. These tests bypass the Riverpod controller and assembled graph path, unlike the updated integration_test/mobile_smoke_test.dart.",
+      "suggested_fix": "Remove the rewritten isolated widget tests and keep the renderer, action-policy, graph-mutation, and refusal assertions in the assembled simulator integration test."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

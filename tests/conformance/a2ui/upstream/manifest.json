@@ -1,0 +1,32 @@
+{
+  "repository": "https://github.com/a2ui-project/a2ui",
+  "commit": "0d2fcf3714a7a3725ed994b2861ffdd7d1f995bd",
+  "commitDate": "2026-11-11",
+  "license": "Apache-2.0",
+  "files": {
+    "conformance/core/adapter_conformance.yaml": {
+      "sha256": "bb5bef3871254621d268b7939848982718229bb03d6c7cf62a549f5af95ca2c4",
+      "source": "conformance/core/adapter_conformance.yaml"
+    },
+    "conformance/core/accessibility.yaml": {
+      "sha256": "186f58023152d816c3f93625b8b66009b158f1252a82a86d0d9417c6e4ea2d77",
+      "source": "conformance/core/accessibility.yaml"
+    },
+    "catalogs/basic/v1/catalog.json": {
+      "sha256": "d4ce11f8fff2da8d5fd0b2793db524f6aa7eef541eefb6fe2b71f0efc17cbfa9",
+      "source": "catalogs/basic/v1/catalog.json"
+    },
+    "specification/v1_0/json/renderer_to_agent.json": {
+      "sha256": "58ecde02101f0f37566b5e238dc6ef6af628c3ff312fce0e17ab7670b7215465",
+      "source": "specification/v1_0/json/renderer_to_agent.json"
+    },
+    "specification/v1_0/json/common_types.json": {
+      "sha256": "c4e78305be1de73eecb37f8179ba169730250611703683af291b18135a6430dc",
+      "source": "specification/v1_0/json/common_types.json"
+    },
+    "LICENSE": {
+      "sha256": "8c8b5b632d56c4c1658296963c693db5396772a33caaddb9a22593c4155c437a",
+      "source": "LICENSE"
+    }
+  }
+}

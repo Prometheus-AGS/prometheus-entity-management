@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "scenario": "UPG-3",
+  "name": "Upstream adapter and accessibility conformance cases pass",
+  "status": "PASS",
+  "steps": [
+    {
+      "step": 12,
+      "argv": "pnpm run verify:a2ui-conformance -- --report \"$E/conformance.json\"",
+      "exitCode": 0,
+      "startedAt": "2026-11-13T08:24:48Z",
+      "completedAt": "2026-11-13T08:25:16Z"
+    }
+  ],
+  "contractDigest": "bfa43f3bad025a031ce5b3c6175e12453baefb3ef41ac25a9ab420a7001badb1",
+  "source": {
+    "gitHead": "a8f543dc915fccc7bbaf51dab10ec693db635971",
+    "workingTreeDiffSha256": "3028ea9704d458e452db81b282419ab633312b49eb9859e550608c3cf8d439c9",
+    "note": "uncommitted working tree on top of gitHead"
+  },
+  "evidence": [
+    {
+      "path": "conformance.json",
+      "sha256": "69f2f483d611c4f5fc115020c9705aaf151194f141b648eff8efb108ff7bfc17"
+    },
+    {
+      "path": "logs/step-12.log",
+      "sha256": "809b7bc6ff0793051edc80b24028a3df9570d6a19383ada816bc3f855e7f78cf"
+    }
+  ]
+}

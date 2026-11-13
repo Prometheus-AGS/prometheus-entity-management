@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "scenario": "UPG-18",
+  "recordedAt": "2026-11-13T08:12:46.496Z",
+  "argv": [
+    "/Volumes/T7/Projects/prometheus/prometheus-entity-management/scripts/verify-flutter-a2ui-v1.mjs",
+    "--",
+    "--report",
+    ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T020958-boundary/flutter-a2ui-v1.json"
+  ],
+  "status": "PASS",
+  "exitCode": 0,
+  "pins": {
+    "pubspec": {
+      "a2uiFlutter": true,
+      "a2uiCore": true,
+      "noGenui": true
+    },
+    "lock": {
+      "a2uiFlutter": "0.3.0",
+      "a2uiCore": "0.7.0",
+      "genui": null
+    },
+    "digests": {
+      "pubspec": "7a2cc42508720441f79c059862c4e7221410ca2862ad2bbe153a169f331db9c3",
+      "lock": "8b9495c69e6f47289e504eef361917dfc0a35fd5cbb0014a87d13b09d21ef410"
+    },
+    "surfaceMessages": {
+      "lib/a2ui/surface_messages.dart": "8df71f635cf3e21305cee7dbc149f1a021eefea464f213af635964a474e30796",
+      "lib/features/a2ui/infrastructure/deterministic_fixture.dart": "dc23ec149c3254bd4850de33e15df7f0e2acb05d58361b0d5af31dcdff81cca6",
+      "lib/features/a2ui/application/a2ui_surface_store.dart": "32654237e4d8b0d79b45e79ed694a169fbce64027a8fc1dc84212018fca0869a"
+    }
+  },
+  "device": {
+    "name": "iPhone 17 Pro",
+    "udid": "2C488E97-9CB4-4E8F-A3D0-9B5B628F375C",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-4"
+  },
+  "bootedByVerifier": true,
+  "flutterVersion": "3.47.5",
+  "integration": {
+    "file": "examples/flutter-riverpod/integration_test/mobile_smoke_test.dart",
+    "sha256": "b78cf902364abc4048531c002fc9237ddbe8959dd7e9eb045febb92d4b13d82f",
+    "exitCode": 0,
+    "attempts": [
+      {
+        "exitCode": 0,
+        "appStartFailure": false
+      }
+    ],
+    "passed": true
+  },
+  "negativeControl": {
+    "mutation": {
+      "file": "examples/flutter-riverpod/integration_test/negative_control_generated_test.dart",
+      "from": "find.text('task.delete · denied')",
+      "to": "find.text('task.delete · allowed')"
+    },
+    "exitCode": 1,
+    "attempts": [
+      {
+        "exitCode": 1,
+        "appStartFailure": false
+      }
+    ],
+    "failed": true
+  },
+  "commands": [
+    {
+      "label": "list simulators",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "list",
+        "devices",
+        "available",
+        "--json"
+      ],
+      "cwd": ".",
+      "startedAt": "2026-11-13T08:12:46.504Z",
+      "completedAt": "2026-11-13T08:12:46.865Z",
+      "exitCode": 0
+    },
+    {
+      "label": "flutter version",
+      "argv": [
+        "flutter",
+        "--version"
+      ],
+      "cwd": "examples/flutter-riverpod",
+      "startedAt": "2026-11-13T08:12:46.865Z",
+      "completedAt": "2026-11-13T08:12:47.223Z",
+      "exitCode": 0
+    },
+    {
+      "label": "boot simulator",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "boot",
+        "2C488E97-9CB4-4E8F-A3D0-9B5B628F375C"
+      ],
+      "cwd": ".",
+      "startedAt": "2026-11-13T08:12:47.223Z",
+      "completedAt": "2026-11-13T08:12:48.340Z",
+      "exitCode": 0
+    },
+    {
+      "label": "wait for simulator",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "bootstatus",
+        "2C488E97-9CB4-4E8F-A3D0-9B5B628F375C",
+        "-b"
+      ],
+      "cwd": ".",
+      "startedAt": "2026-11-13T08:12:48.340Z",
+      "completedAt": "2026-11-13T08:13:00.001Z",
+      "exitCode": 0
+    },
+    {
+      "label": "integration test",
+      "argv": [
+        "flutter",
+        "test",
+        "integration_test/mobile_smoke_test.dart",
+        "-d",
+        "2C488E97-9CB4-4E8F-A3D0-9B5B628F375C",
+        "--reporter",
+        "expanded"
+      ],
+      "cwd": "examples/flutter-riverpod",
+      "startedAt": "2026-11-13T08:13:00.002Z",
+      "completedAt": "2026-11-13T08:14:10.803Z",
+      "exitCode": 0
+    },
+    {
+      "label": "negative control (denied delete expected as allowed)",
+      "argv": [
+        "flutter",
+        "test",
+        "integration_test/negative_control_generated_test.dart",
+        "-d",
+        "2C488E97-9CB4-4E8F-A3D0-9B5B628F375C",
+        "--reporter",
+        "expanded"
+      ],
+      "cwd": "examples/flutter-riverpod",
+      "startedAt": "2026-11-13T08:14:10.805Z",
+      "completedAt": "2026-11-13T08:14:54.174Z",
+      "exitCode": 1
+    },
+    {
+      "label": "shut down simulator",
+      "argv": [
+        "xcrun",
+        "simctl",
+        "shutdown",
+        "2C488E97-9CB4-4E8F-A3D0-9B5B628F375C"
+      ],
+      "cwd": ".",
+      "startedAt": "2026-11-13T08:14:54.174Z",
+      "completedAt": "2026-11-13T08:14:57.449Z",
+      "exitCode": 0
+    }
+  ]
+}

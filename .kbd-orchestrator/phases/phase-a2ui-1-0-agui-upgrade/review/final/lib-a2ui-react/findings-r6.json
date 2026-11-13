@@ -1,0 +1,29 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/chat/conversation-store.ts",
+      "claim": "Chunk-only message and tool-call streams are accumulated but never completed.",
+      "evidence": "The TEXT_MESSAGE_CHUNK and REASONING_MESSAGE_CHUNK branches create messages with streaming: true, but only explicit *_MESSAGE_END events call endMessage. Likewise, TOOL_CALL_CHUNK creates pending calls, but only TOOL_CALL_END sets ended, and runClientTools filters out every call without ended. RUN_FINISHED does not finalize either chunk sequence. Consequently, a chunk-only answer remains visibly streaming after the run finishes, onMessage is never called, and chunk-only client tool calls never execute. This leaves the AG-UI event support required by UPG-10 incomplete.",
+      "suggested_fix": "Track and finalize chunk sequences according to AG-UI chunk semantics when they transition or the run terminates, including marking completed chunked tool calls eligible for client execution while preserving the interrupt execution prohibition."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/official/catalog.ts",
+      "claim": "The root package now eagerly loads DOM-dependent Custom Elements, breaking plain-Node and server-rendering imports of the existing React API.",
+      "evidence": "catalog.ts replaces the React basic catalog with eager imports of @a2ui/web_core/v0_9/basic_catalog and @a2ui/web_core/catalogs/basic/v1. The added scripts/dist-dom-globals.mjs explicitly records the resulting failure: the root entry defines classes extending HTMLElement and 'plain Node cannot import it'; the export scripts now install jsdom globals to work around it. This changes existing import behavior beyond the requested protocol migration and conflicts with A-7's requirement to preserve existing behavior.",
+      "suggested_fix": "Keep the root entry safe to import without DOM globals, using server-safe catalog definitions or a separately loaded browser implementation rather than requiring consumers and repository tooling to install synthetic DOM globals."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

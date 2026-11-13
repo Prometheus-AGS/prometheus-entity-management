@@ -12,16 +12,16 @@
 <li><a href="../modules/_prometheus-ags_a2ui-react.headless.html">headless</a></li>
 <li><a href="" aria-current="page">PrometheusA2uiHeadlessCatalogOptions</a></li></ul>
 <h1>Type Alias PrometheusA2uiHeadlessCatalogOptions</h1></div>
-<div class="tsd-signature"><span class="tsd-kind-type-alias">PrometheusA2uiHeadlessCatalogOptions</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Omit</span><span class="tsd-signature-symbol">&lt;</span><br/>    <span class="tsd-signature-type">AllowlistedCatalogOptions</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ComponentApi</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-type">&quot;overrides&quot;</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">&gt;</span></div>
+<div class="tsd-signature"><span class="tsd-kind-type-alias">PrometheusA2uiHeadlessCatalogOptions</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Omit</span><span class="tsd-signature-symbol">&lt;</span><br/>    <a href="../interfaces/_prometheus-ags_a2ui-react.headless.AllowlistedCatalogOptions.html" class="tsd-signature-type tsd-kind-interface">AllowlistedCatalogOptions</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_prometheus-ags_a2ui-react..ComponentApi.html" class="tsd-signature-type tsd-kind-interface">ComponentApi</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-signature-type">&quot;overrides&quot;</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">&gt;</span></div>
 <div class="tsd-comment tsd-typography"><p>Headless A2UI runtime: the same validation as the React runtime, with no
 React, no DOM and no renderer.</p>
 <p>A host (a server mirror, a validator, a compactor) can check agent output
 exactly as the browser will. Both runtimes share one core (<code>runtime-core.ts</code>)
 and build their catalogs with one function (<code>createAllowlistedCatalog</code>) from
 the same default allowlists, so the allowlist, the limits, the schema checks,
-the ordering rules and the all-or-nothing batches cannot drift apart. Only the
-catalog's source differs: this entry takes the official <code>web_core</code> basic
-catalog, which has no renderers, instead of the React one.</p>
+the ordering rules and the all-or-nothing batches cannot drift apart. Both
+take the official <code>web_core</code> basic catalog; this entry never renders it and
+cannot receive React component overrides.</p>
 <p>Nothing imported from here reaches <code>@a2ui/react</code> or React at run time.</p>
 </div><aside class="tsd-sources">
 <ul>

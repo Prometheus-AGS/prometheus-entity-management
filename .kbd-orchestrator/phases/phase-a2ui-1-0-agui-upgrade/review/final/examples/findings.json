@@ -1,0 +1,31 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "examples/agentic-a2ui-app/src/features/agentic/a2a-client-service.ts",
+      "line": 188,
+      "claim": "The artifact reader discards official A2UI DataParts before the official extractor can read them.",
+      "evidence": "readArtifact filters candidates using candidate.mediaType === PROMETHEUS_A2UI_MEDIA_TYPE before calling extractA2UIMessages. UPG-9 explicitly specifies official DataParts with metadata.mimeType set to application/a2ui+json and data containing the message list. Those parts do not pass this top-level mediaType filter, so a2uiParts is empty and readArtifact returns null, preventing the migrated example from rendering its agent artifact as required by UPG-14.",
+      "suggested_fix": "Deserialize the artifact's parts and let extractA2UIMessages identify official A2UI parts, or filter using the official metadata.mimeType location."
+    },
+    {
+      "severity": "WARNING",
+      "file": "examples/agentic-a2ui/tests/golden/surface-task-sync.json",
+      "line": 35,
+      "claim": "The migrated golden fixture no longer matches the producer output it is intended to replay.",
+      "evidence": "createTaskBoardSurfaceMessages in src/agent/surface-messages.ts removes variant: \"h2\" from the heading component, but tests/golden/surface-task-sync.json retains that property on the same heading component. The producer's own documentation states that the golden fixtures replay its exact bytes.",
+      "suggested_fix": "Remove the stale heading variant from the golden fixture so that it matches the migrated producer."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-a2ui-conformance.mjs",
+      "claim": "The conformance verifier can report PASS after Playwright fails outside the recorded case assertions.",
+      "evidence": "runSpec permits failure and returns main.exitCode, but the final `failed` expression considers only case counts, problems, and controls; main.exitCode is merely copied into the report. If all case records are written and Playwright subsequently fails during teardown, the gate can exit 0. Expected nonzero exits for listed divergences do not justify ignoring unrelated runner failures.",
+      "suggested_fix": "Inspect the Playwright report and reject runner, teardown, and other infrastructure failures, while allowing only test failures corresponding to case records that evaluate to permitted divergences."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "tests/browser/a2ui-v1.spec.ts",
+      "claim": "UPG-1 does not exercise its required same-surface RC negative control.",
+      "evidence": "UPG-1 requires 'the same surface sent with version \"v1.0\"' to be refused. The UPG-1 test loads `upg1.json` for its oracle but sends `fixture(\"upg17.json\").rc` for its negative control. That fixture has different components, bindings, actions, and data, rather than the oracle surface with its version changed.",
+      "suggested_fix": "Construct the negative input from the UPG-1 oracle batches by changing only the envelope version to `v1.0`, and verify refusal and absence of the UPG-1 surface with the shim off."
+    },
+    {
+      "severity": "CRITICAL",
+      "file": "scripts/verify-flutter-a2ui-v1.mjs",
+      "claim": "The Flutter acceptance receipt does not content-bind the showcase surface messages used by UPG-18.",
+      "evidence": "UPG-18 specifies 'the showcase\u2019s own surface messages, content-digested' as its fixtures. The verifier records hashes for pubspec.yaml, pubspec.lock, and mobile_smoke_test.dart, but records no digest for the surface-message fixture or the messages actually submitted to the renderer. Hashing the test file does not bind the separately imported showcase messages.",
+      "suggested_fix": "Have the assembled integration run emit the serialized surface batches it feeds to the renderer and record their SHA-256 digests in the acceptance report."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

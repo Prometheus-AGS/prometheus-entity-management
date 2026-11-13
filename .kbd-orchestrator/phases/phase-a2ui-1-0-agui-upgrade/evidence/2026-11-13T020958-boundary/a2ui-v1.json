@@ -1,0 +1,2113 @@
+{
+  "schemaVersion": 1,
+  "phase": "phase-a2ui-1-0-agui-upgrade",
+  "scenarios": [
+    "UPG-1",
+    "UPG-2",
+    "UPG-4",
+    "UPG-5",
+    "UPG-6",
+    "UPG-7",
+    "UPG-8",
+    "UPG-13",
+    "UPG-17"
+  ],
+  "recordedAt": "2026-11-13T08:11:20.718Z",
+  "argv": [
+    "/Volumes/T7/Projects/prometheus/prometheus-entity-management/scripts/verify-a2ui-v1.mjs",
+    "--",
+    "--report",
+    ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T020958-boundary/a2ui-v1.json"
+  ],
+  "node": "v26.5.0",
+  "builtPackage": {
+    "name": "@prometheus-ags/a2ui-react",
+    "version": "5.0.0",
+    "entries": {
+      ".": {
+        "file": "packages/a2ui-react/dist/index.mjs",
+        "sha256": "dc7a54268119b4d8bd23b20117bf9120e2074010ed87641e4f8603b726c93540"
+      },
+      "./headless": {
+        "file": "packages/a2ui-react/dist/headless.mjs",
+        "sha256": "a098575cb1006df9667a7b4161e3f951ffbe5ccef890ddd78986293a744d15bb"
+      }
+    }
+  },
+  "fixtures": {
+    "directory": ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T020958-boundary/a2ui-v1-artifacts/fixtures",
+    "sha256": {
+      "constants.json": "a080a55eb04dc37fcc169c30ce8f600c8c4a0bb3930e2ab3eb7492157a39e4f5",
+      "upg1.json": "4028be98e54c836adac7b09468adf37a905f36a853eb37ee6388cddc7e97b838",
+      "upg2.json": "41a747bfdbf099feacbd54ab4eef0b1b852126b038d2818ca3145e9b053c7b5d",
+      "upg4.json": "69263aa4a8f72004c33a1430992ec81dcd585aaa535bb7f0406df8aadb1e176e",
+      "upg5.json": "6959d99d6d8920cac40a26acba30b05be9611fefd390f6a85f653cc9c3d99209",
+      "upg6.json": "172e90032e7292e36942e9939b1619de0edc8fd618185783c58be668943f6f0c",
+      "upg7.json": "59fc1fa4640bef0cfd14483f74b4c6987e09a3d0a955f722098171e79358aaf5",
+      "upg8.json": "bdc0340faa20d91020967023b08998ea802495e5cbe33d5ff515571fe6ec3c53",
+      "upg13.json": "b5dd33100ae3941b8d7e90b02e8671b606701d7b75fcbc762c4f30e16591e282",
+      "upg17.json": "d735ac7c2990ac8f7f5bfe49cd32cb46aa077c78e185496c1f2df950c8f30dac"
+    }
+  },
+  "lanes": {
+    "browser": {
+      "browser": "chromium (Playwright devices['Desktop Chrome'])",
+      "port": 62292,
+      "exitCode": 0,
+      "artifacts": ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T020958-boundary/a2ui-v1-artifacts/browser",
+      "recorded": 8
+    },
+    "node": {
+      "scratch": "/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/a2ui-v1-headless-vYYhW5",
+      "tarballs": {
+        "@prometheus-ags/entity-graph-core": {
+          "file": "prometheus-ags-entity-graph-core-5.0.0.tgz",
+          "sha256": "a1b6b034fa08e0953ce88465bba27fcd9ec5790ee0c666e6f1f9d8dc08c19cc3"
+        },
+        "@prometheus-ags/a2ui-react": {
+          "file": "prometheus-ags-a2ui-react-5.0.0.tgz",
+          "sha256": "5c7d0a547c4d4b1d2e467cae4dcba1974753e33df63c88fcb21ed21c20e75355"
+        }
+      },
+      "install": {
+        "exitCode": 0
+      },
+      "run": {
+        "exitCode": 0,
+        "output": ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T020958-boundary/a2ui-v1-artifacts/node/headless-lane.json"
+      },
+      "node": "v26.5.0",
+      "resolvedEntry": "/private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/a2ui-v1-headless-vYYhW5/consumer/node_modules/.pnpm/@prometheus-ags+a2ui-react@file+..+..+..+..+..+..+..+..+var+folders+ln+0wnpd96j26z2qhvx_f89f7b3edb06ce8614b5efb28a85e0a9/node_modules/@prometheus-ags/a2ui-react/dist/headless.mjs",
+      "resolvedEntryDigest": "a098575cb1006df9667a7b4161e3f951ffbe5ccef890ddd78986293a744d15bb"
+    }
+  },
+  "results": [
+    {
+      "id": "UPG-1",
+      "lane": "browser",
+      "title": "conformant 1.0 surface renders through the built package",
+      "status": "PASS",
+      "oracle": {
+        "status": "PASS",
+        "checks": [
+          {
+            "name": "package catalog ids match the fixtures",
+            "pass": true,
+            "detail": {
+              "PROMETHEUS_A2UI_V1_CATALOG_ID": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+              "PROMETHEUS_A2UI_CATALOG_ID": "urn:prometheus-ags:a2ui:catalog:v3",
+              "PROMETHEUS_A2UI_V1_PROTOCOL_VERSION": "1.0",
+              "PROMETHEUS_A2UI_RC_PROTOCOL_VERSION": "v1.0"
+            }
+          },
+          {
+            "name": "createSurface, updateComponents, updateDataModel, deleteSurface (1.0) accepted",
+            "pass": true,
+            "detail": {
+              "createSurface": {
+                "ok": true
+              },
+              "updateComponents": {
+                "ok": true
+              },
+              "updateDataModelAda": {
+                "ok": true
+              },
+              "updateDataModelGrace": {
+                "ok": true
+              },
+              "deleteSurface": {
+                "ok": true
+              }
+            }
+          },
+          {
+            "name": "@call formatString renders the bound name",
+            "pass": true,
+            "detail": "Hello Ada Ada"
+          },
+          {
+            "name": "@path binding renders and the data model holds it",
+            "pass": true,
+            "detail": {
+              "name": "Ada"
+            }
+          },
+          {
+            "name": "updateDataModel re-renders the bindings",
+            "pass": true,
+            "detail": "Hello Grace Grace"
+          },
+          {
+            "name": "deleteSurface removes the surface and its DOM",
+            "pass": true,
+            "detail": {
+              "hasSurface": false,
+              "hostCount": 0
+            }
+          }
+        ],
+        "observed": {
+          "packageConstants": {
+            "PROMETHEUS_A2UI_V1_CATALOG_ID": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+            "PROMETHEUS_A2UI_CATALOG_ID": "urn:prometheus-ags:a2ui:catalog:v3",
+            "PROMETHEUS_A2UI_V1_PROTOCOL_VERSION": "1.0",
+            "PROMETHEUS_A2UI_RC_PROTOCOL_VERSION": "v1.0"
+          },
+          "steps": {
+            "createSurface": {
+              "ok": true
+            },
+            "updateComponents": {
+              "ok": true
+            },
+            "updateDataModelAda": {
+              "ok": true
+            },
+            "updateDataModelGrace": {
+              "ok": true
+            },
+            "deleteSurface": {
+              "ok": true
+            }
+          },
+          "afterAda": {
+            "surfaceId": "upg1",
+            "hasSurface": true,
+            "surfaceCount": 1,
+            "hostCount": 3,
+            "text": "Hello Ada Ada",
+            "dataModel": {
+              "name": "Ada"
+            },
+            "domDigest": "4c9377dea5640ba5018452d9624e591846de3d50c9653eb49221f62661ee7b02",
+            "dataModelDigest": "88bab6d8f6dc68a877064d584cbb5b6c50e74f617ea50d81d3a53c2ee6ffbc4f"
+          },
+          "afterGrace": {
+            "surfaceId": "upg1",
+            "hasSurface": true,
+            "surfaceCount": 1,
+            "hostCount": 3,
+            "text": "Hello Grace Grace",
+            "dataModel": {
+              "name": "Grace"
+            },
+            "domDigest": "2c4d87b387d0b212975ff1b4fb0c01dc05eab43652f5dc16e93a8337412d3d84",
+            "dataModelDigest": "71e0d496a8c942d986b4b0b31204fd5157b04cd75378369c8e7a342acc9f2507"
+          },
+          "afterDelete": {
+            "surfaceId": "upg1",
+            "hasSurface": false,
+            "surfaceCount": 0,
+            "hostCount": 0,
+            "text": "",
+            "dataModel": null,
+            "domDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "dataModelDigest": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+          }
+        }
+      },
+      "negativeControl": {
+        "status": "PASS",
+        "exercised": true,
+        "checks": [
+          {
+            "name": "RC envelope refused while the shim is off",
+            "pass": true,
+            "detail": {
+              "name": "PrometheusA2uiError",
+              "code": "unsupported-protocol-version",
+              "message": "A2UI 1.0 release-candidate input (\"v1.0\") is accepted only with acceptReleaseCandidateInput."
+            }
+          },
+          {
+            "name": "refused RC surface renders nothing",
+            "pass": true,
+            "detail": {
+              "surfaceId": "upg1",
+              "hasSurface": false,
+              "surfaceCount": 0,
+              "hostCount": 0,
+              "text": "",
+              "dataModel": null,
+              "domDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "dataModelDigest": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+            }
+          }
+        ],
+        "observed": {
+          "input": "upg1.json create+components+dataAda with version \"v1.0\"",
+          "refusal": {
+            "name": "PrometheusA2uiError",
+            "code": "unsupported-protocol-version",
+            "message": "A2UI 1.0 release-candidate input (\"v1.0\") is accepted only with acceptReleaseCandidateInput."
+          },
+          "after": {
+            "surfaceId": "upg1",
+            "hasSurface": false,
+            "surfaceCount": 0,
+            "hostCount": 0,
+            "text": "",
+            "dataModel": null,
+            "domDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "dataModelDigest": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+          }
+        }
+      }
+    },
+    {
+      "id": "UPG-2",
+      "lane": "browser",
+      "title": "real AG-UI A2UI middleware surface renders and recovery resyncs",
+      "status": "PASS",
+      "oracle": {
+        "status": "PASS",
+        "checks": [
+          {
+            "name": "middleware emitted a painted a2ui-surface activity carrying the operations",
+            "pass": true,
+            "detail": 1
+          },
+          {
+            "name": "every stream event was consumed without error",
+            "pass": true,
+            "detail": []
+          },
+          {
+            "name": "the same operations fed directly were accepted",
+            "pass": true,
+            "detail": {
+              "ok": true
+            }
+          },
+          {
+            "name": "middleware stream renders the surface",
+            "pass": true,
+            "detail": "Order 1042 Ready to ship"
+          },
+          {
+            "name": "DOM digest via middleware equals DOM digest via direct runtime input",
+            "pass": true,
+            "detail": {
+              "viaMiddleware": "31391dce4408ef828a1c71fc77fa4381bd39f59b5920233a99ac6a1963c571ee",
+              "viaRuntime": "31391dce4408ef828a1c71fc77fa4381bd39f59b5920233a99ac6a1963c571ee"
+            }
+          },
+          {
+            "name": "rendering the middleware stream requested no resync",
+            "pass": true,
+            "detail": []
+          },
+          {
+            "name": "middleware emitted a failed lifecycle activity",
+            "pass": true,
+            "detail": [
+              "RUN_STARTED",
+              "TOOL_CALL_START",
+              "TOOL_CALL_ARGS",
+              "TOOL_CALL_END",
+              "TOOL_CALL_RESULT",
+              "ACTIVITY_SNAPSHOT",
+              "RUN_FINISHED"
+            ]
+          },
+          {
+            "name": "failed activity delivered then redelivered produces exactly one producer-failed resync",
+            "pass": true,
+            "detail": [
+              {
+                "reason": "producer-failed",
+                "messageId": "a2ui-surface-upg2-generate",
+                "surfaces": [],
+                "held": {}
+              }
+            ]
+          },
+          {
+            "name": "failed lifecycle activity changes no surface",
+            "pass": true,
+            "detail": [
+              {
+                "type": "ACTIVITY_SNAPSHOT",
+                "activityType": "a2ui-surface",
+                "handled": true
+              },
+              {
+                "type": "ACTIVITY_SNAPSHOT",
+                "activityType": "a2ui-surface",
+                "handled": true
+              }
+            ]
+          }
+        ],
+        "observed": {
+          "middleware": {
+            "package": "@ag-ui/a2ui-middleware",
+            "renderRun": {
+              "digest": "091a75bc6a690d7ce229c8a2c9d2bcac2b5aa1d6dc207e22530ba26cf0e7fb10",
+              "rounds": 1,
+              "events": [
+                {
+                  "type": "RUN_STARTED",
+                  "threadId": "a2ui-v1-thread",
+                  "runId": "a2ui-v1-render-run"
+                },
+                {
+                  "type": "ACTIVITY_SNAPSHOT",
+                  "messageId": "a2ui-surface-upg2-render",
+                  "activityType": "a2ui-surface",
+                  "content": {
+                    "status": "building"
+                  },
+                  "replace": true
+                },
+                {
+                  "type": "TOOL_CALL_START",
+                  "toolCallId": "upg2-render",
+                  "toolCallName": "render_a2ui",
+                  "parentMessageId": "upg2-assistant-render"
+                },
+                {
+                  "type": "TOOL_CALL_ARGS",
+                  "toolCallId": "upg2-render",
+                  "delta": "{}"
+                },
+                {
+                  "type": "TOOL_CALL_END",
+                  "toolCallId": "upg2-render"
+                },
+                {
+                  "type": "TOOL_CALL_RESULT",
+                  "messageId": "upg2-render-result",
+                  "toolCallId": "upg2-render",
+                  "role": "tool",
+                  "content": "{\"a2ui_operations\":[{\"version\":\"1.0\",\"createSurface\":{\"surfaceId\":\"upg2\",\"catalogId\":\"urn:prometheus-ags:a2ui:catalog:a2ui-1.0\"}},{\"version\":\"1.0\",\"updateComponents\":{\"surfaceId\":\"upg2\",\"components\":[{\"id\":\"root\",\"component\":\"Column\",\"children\":[\"title\",\"status\"]},{\"id\":\"title\",\"component\":\"Text\",\"text\":\"Order 1042\"},{\"id\":\"status\",\"component\":\"Text\",\"text\":{\"@path\":\"/status\"}}]}},{\"version\":\"1.0\",\"updateDataModel\":{\"surfaceId\":\"upg2\",\"path\":\"/status\",\"value\":\"Ready to ship\"}}]}"
+                },
+                {
+                  "type": "ACTIVITY_SNAPSHOT",
+                  "messageId": "a2ui-surface-upg2-render",
+                  "activityType": "a2ui-surface",
+                  "content": {
+                    "a2ui_operations": [
+                      {
+                        "version": "1.0",
+                        "createSurface": {
+                          "surfaceId": "upg2",
+                          "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0"
+                        }
+                      },
+                      {
+                        "version": "1.0",
+                        "updateComponents": {
+                          "surfaceId": "upg2",
+                          "components": [
+                            {
+                              "id": "root",
+                              "component": "Column",
+                              "children": [
+                                "title",
+                                "status"
+                              ]
+                            },
+                            {
+                              "id": "title",
+                              "component": "Text",
+                              "text": "Order 1042"
+                            },
+                            {
+                              "id": "status",
+                              "component": "Text",
+                              "text": {
+                                "@path": "/status"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "version": "1.0",
+                        "updateDataModel": {
+                          "surfaceId": "upg2",
+                          "path": "/status",
+                          "value": "Ready to ship"
+                        }
+                      }
+                    ]
+                  },
+                  "replace": true
+                },
+                {
+                  "type": "RUN_FINISHED",
+                  "threadId": "a2ui-v1-thread",
+                  "runId": "a2ui-v1-render-run"
+                }
+              ]
+            },
+            "failedRun": {
+              "digest": "4f668ccd60aa41bd7bba95b47bd43b96fab584758678cdc00917c36119caea82",
+              "rounds": 1,
+              "events": [
+                {
+                  "type": "RUN_STARTED",
+                  "threadId": "a2ui-v1-thread",
+                  "runId": "a2ui-v1-failed-run"
+                },
+                {
+                  "type": "TOOL_CALL_START",
+                  "toolCallId": "upg2-generate",
+                  "toolCallName": "generate_a2ui",
+                  "parentMessageId": "upg2-assistant-generate"
+                },
+                {
+                  "type": "TOOL_CALL_ARGS",
+                  "toolCallId": "upg2-generate",
+                  "delta": "{}"
+                },
+                {
+                  "type": "TOOL_CALL_END",
+                  "toolCallId": "upg2-generate"
+                },
+                {
+                  "type": "TOOL_CALL_RESULT",
+                  "messageId": "upg2-generate-result",
+                  "toolCallId": "upg2-generate",
+                  "role": "tool",
+                  "content": "{\"code\":\"a2ui_recovery_exhausted\",\"error\":\"The interface could not be generated.\",\"attempts\":[]}"
+                },
+                {
+                  "type": "ACTIVITY_SNAPSHOT",
+                  "messageId": "a2ui-surface-upg2-generate",
+                  "activityType": "a2ui-surface",
+                  "content": {
+                    "status": "failed",
+                    "error": "The interface could not be generated.",
+                    "attempts": [],
+                    "maxAttempts": 3
+                  },
+                  "replace": true
+                },
+                {
+                  "type": "RUN_FINISHED",
+                  "threadId": "a2ui-v1-thread",
+                  "runId": "a2ui-v1-failed-run"
+                }
+              ]
+            }
+          },
+          "streamResults": [
+            {
+              "type": "RUN_STARTED",
+              "activityType": null,
+              "handled": false
+            },
+            {
+              "type": "ACTIVITY_SNAPSHOT",
+              "activityType": "a2ui-surface",
+              "handled": true
+            },
+            {
+              "type": "TOOL_CALL_START",
+              "activityType": null,
+              "handled": false
+            },
+            {
+              "type": "TOOL_CALL_ARGS",
+              "activityType": null,
+              "handled": false
+            },
+            {
+              "type": "TOOL_CALL_END",
+              "activityType": null,
+              "handled": false
+            },
+            {
+              "type": "TOOL_CALL_RESULT",
+              "activityType": null,
+              "handled": false
+            },
+            {
+              "type": "ACTIVITY_SNAPSHOT",
+              "activityType": "a2ui-surface",
+              "handled": true
+            },
+            {
+              "type": "RUN_FINISHED",
+              "activityType": null,
+              "handled": false
+            }
+          ],
+          "direct": {
+            "ok": true
+          },
+          "viaMiddleware": {
+            "surfaceId": "upg2",
+            "hasSurface": true,
+            "surfaceCount": 1,
+            "hostCount": 3,
+            "text": "Order 1042 Ready to ship",
+            "dataModel": {
+              "status": "Ready to ship"
+            },
+            "domDigest": "31391dce4408ef828a1c71fc77fa4381bd39f59b5920233a99ac6a1963c571ee",
+            "dataModelDigest": "27c7dafc9393cb19572d6d72e664d473a1614155fa329b62420924df02868e4b"
+          },
+          "viaRuntime": {
+            "surfaceId": "upg2",
+            "hasSurface": true,
+            "surfaceCount": 1,
+            "hostCount": 3,
+            "text": "Order 1042 Ready to ship",
+            "dataModel": {
+              "status": "Ready to ship"
+            },
+            "domDigest": "31391dce4408ef828a1c71fc77fa4381bd39f59b5920233a99ac6a1963c571ee",
+            "dataModelDigest": "27c7dafc9393cb19572d6d72e664d473a1614155fa329b62420924df02868e4b"
+          },
+          "streamResyncs": [],
+          "failedActivity": {
+            "type": "ACTIVITY_SNAPSHOT",
+            "messageId": "a2ui-surface-upg2-generate",
+            "activityType": "a2ui-surface",
+            "content": {
+              "status": "failed",
+              "error": "The interface could not be generated.",
+              "attempts": [],
+              "maxAttempts": 3
+            },
+            "replace": true
+          },
+          "failedResults": [
+            {
+              "type": "ACTIVITY_SNAPSHOT",
+              "activityType": "a2ui-surface",
+              "handled": true
+            },
+            {
+              "type": "ACTIVITY_SNAPSHOT",
+              "activityType": "a2ui-surface",
+              "handled": true
+            }
+          ],
+          "resyncRequests": [
+            {
+              "reason": "producer-failed",
+              "messageId": "a2ui-surface-upg2-generate",
+              "surfaces": [],
+              "held": {}
+            }
+          ],
+          "failedSurfaceCount": 0
+        }
+      },
+      "negativeControl": {
+        "status": "PASS",
+        "exercised": true,
+        "checks": [
+          {
+            "name": "middleware emitted a building lifecycle activity to replay",
+            "pass": true
+          },
+          {
+            "name": "unknown activity type is not handled",
+            "pass": true,
+            "detail": {
+              "type": "ACTIVITY_SNAPSHOT",
+              "activityType": "progress-card",
+              "handled": false
+            }
+          },
+          {
+            "name": "building lifecycle activity is accepted without error",
+            "pass": true,
+            "detail": {
+              "type": "ACTIVITY_SNAPSHOT",
+              "activityType": "a2ui-surface",
+              "handled": true
+            }
+          },
+          {
+            "name": "neither renders anything",
+            "pass": true,
+            "detail": {
+              "surfaceId": "upg2-unknown",
+              "hasSurface": false,
+              "surfaceCount": 0,
+              "hostCount": 0,
+              "text": "",
+              "dataModel": null,
+              "domDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "dataModelDigest": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+            }
+          },
+          {
+            "name": "neither requests a resync",
+            "pass": true,
+            "detail": []
+          }
+        ],
+        "observed": {
+          "events": [
+            {
+              "type": "ACTIVITY_SNAPSHOT",
+              "messageId": "upg2-unknown-activity",
+              "activityType": "progress-card",
+              "content": {
+                "a2ui_operations": [
+                  {
+                    "version": "1.0",
+                    "createSurface": {
+                      "surfaceId": "upg2-unknown",
+                      "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+                      "components": [
+                        {
+                          "id": "root",
+                          "component": "Text",
+                          "text": "must not render"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "replace": true
+            },
+            {
+              "type": "ACTIVITY_SNAPSHOT",
+              "messageId": "a2ui-surface-upg2-render",
+              "activityType": "a2ui-surface",
+              "content": {
+                "status": "building"
+              },
+              "replace": true
+            }
+          ],
+          "results": [
+            {
+              "type": "ACTIVITY_SNAPSHOT",
+              "activityType": "progress-card",
+              "handled": false
+            },
+            {
+              "type": "ACTIVITY_SNAPSHOT",
+              "activityType": "a2ui-surface",
+              "handled": true
+            }
+          ],
+          "after": {
+            "surfaceId": "upg2-unknown",
+            "hasSurface": false,
+            "surfaceCount": 0,
+            "hostCount": 0,
+            "text": "",
+            "dataModel": null,
+            "domDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "dataModelDigest": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+          },
+          "resyncRequests": []
+        }
+      }
+    },
+    {
+      "id": "UPG-4",
+      "lane": "browser",
+      "title": "catalog pairing by protocol version",
+      "status": "PASS",
+      "oracle": {
+        "status": "PASS",
+        "checks": [
+          {
+            "name": "1.0 surface with component and surface catalogIds accepted",
+            "pass": true,
+            "detail": {
+              "ok": true
+            }
+          },
+          {
+            "name": "components from both 1.0 catalogs render",
+            "pass": true,
+            "detail": "From the alternate 1.0 catalog From the surface catalog"
+          },
+          {
+            "name": "a component's own catalogId is resolved first (Button refused by the Text-only catalog it names)",
+            "pass": true,
+            "detail": {
+              "name": "PrometheusA2uiError",
+              "code": "component-not-allowed",
+              "message": "Component is not allowlisted by catalog urn:prometheus-ags:verify:a2ui-v1:alt: Button"
+            }
+          },
+          {
+            "name": "without catalogId the component resolves to the surface 1.0 catalog and renders",
+            "pass": true,
+            "detail": {
+              "surfaceProbe": {
+                "ok": true
+              },
+              "text": "From the alternate 1.0 catalog From the surface catalog Go"
+            }
+          }
+        ],
+        "observed": {
+          "created": {
+            "ok": true
+          },
+          "rendered": {
+            "surfaceId": "upg4",
+            "hasSurface": true,
+            "surfaceCount": 1,
+            "hostCount": 3,
+            "text": "From the alternate 1.0 catalog From the surface catalog",
+            "dataModel": {},
+            "domDigest": "5033f0639dff47c86466d053e2780ef18fee4ec33887477ea2a4a07384f1b90d",
+            "dataModelDigest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+          },
+          "componentProbe": {
+            "name": "PrometheusA2uiError",
+            "code": "component-not-allowed",
+            "message": "Component is not allowlisted by catalog urn:prometheus-ags:verify:a2ui-v1:alt: Button"
+          },
+          "surfaceProbe": {
+            "ok": true
+          },
+          "afterProbe": {
+            "surfaceId": "upg4",
+            "hasSurface": true,
+            "surfaceCount": 1,
+            "hostCount": 5,
+            "text": "From the alternate 1.0 catalog From the surface catalog Go",
+            "dataModel": {},
+            "domDigest": "65d81651d480536bbd49491c2cb9f1c6714200e0897cd832b773c8d083223876",
+            "dataModelDigest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+          }
+        }
+      },
+      "negativeControl": {
+        "status": "PASS",
+        "exercised": true,
+        "checks": [
+          {
+            "name": "1.0 createSurface naming the v0.9.1 catalog is refused with CATALOG_ERROR",
+            "pass": true,
+            "detail": {
+              "name": "PrometheusA2uiError",
+              "code": "protocol-error",
+              "protocolCode": "CATALOG_ERROR",
+              "message": "Surface 'upg4-mismatch' catalog 'urn:prometheus-ags:a2ui:catalog:v3' specification version (v0.9.1) does not match message protocol version (1.0).",
+              "causeName": "pf",
+              "causeMessage": "Surface 'upg4-mismatch' catalog 'urn:prometheus-ags:a2ui:catalog:v3' specification version (v0.9.1) does not match message protocol version (1.0)."
+            }
+          },
+          {
+            "name": "refused surface renders nothing",
+            "pass": true,
+            "detail": {
+              "surfaceId": "upg4-mismatch",
+              "hasSurface": false,
+              "surfaceCount": 0,
+              "hostCount": 0,
+              "text": "",
+              "dataModel": null,
+              "domDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "dataModelDigest": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+            }
+          }
+        ],
+        "observed": {
+          "refusal": {
+            "name": "PrometheusA2uiError",
+            "code": "protocol-error",
+            "protocolCode": "CATALOG_ERROR",
+            "message": "Surface 'upg4-mismatch' catalog 'urn:prometheus-ags:a2ui:catalog:v3' specification version (v0.9.1) does not match message protocol version (1.0).",
+            "causeName": "pf",
+            "causeMessage": "Surface 'upg4-mismatch' catalog 'urn:prometheus-ags:a2ui:catalog:v3' specification version (v0.9.1) does not match message protocol version (1.0)."
+          },
+          "after": {
+            "surfaceId": "upg4-mismatch",
+            "hasSurface": false,
+            "surfaceCount": 0,
+            "hostCount": 0,
+            "text": "",
+            "dataModel": null,
+            "domDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "dataModelDigest": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+          }
+        }
+      }
+    },
+    {
+      "id": "UPG-5",
+      "lane": "browser",
+      "title": "bare and @-prefixed envelope keys",
+      "status": "PASS",
+      "oracle": {
+        "status": "PASS",
+        "checks": [
+          {
+            "name": "@catalogId/@accessibility component accepted",
+            "pass": true,
+            "detail": {
+              "ok": true
+            }
+          },
+          {
+            "name": "bare catalogId/accessibility component accepted",
+            "pass": true,
+            "detail": {
+              "ok": true
+            }
+          },
+          {
+            "name": "both render",
+            "pass": true
+          },
+          {
+            "name": "accessibility is applied in both forms",
+            "pass": true
+          },
+          {
+            "name": "DOM digests are identical",
+            "pass": true,
+            "detail": {
+              "prefixed": "05d5e95a78f227e0464bb0c91467f6ca5eaee248e21916e715d4bcad69894075",
+              "bare": "05d5e95a78f227e0464bb0c91467f6ca5eaee248e21916e715d4bcad69894075"
+            }
+          }
+        ],
+        "observed": {
+          "prefixed": {
+            "ok": true
+          },
+          "bare": {
+            "ok": true
+          },
+          "prefixedSnapshot": {
+            "surfaceId": "upg5",
+            "hasSurface": true,
+            "surfaceCount": 1,
+            "hostCount": 2,
+            "text": "Hello",
+            "dataModel": {},
+            "domDigest": "05d5e95a78f227e0464bb0c91467f6ca5eaee248e21916e715d4bcad69894075",
+            "dataModelDigest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+          },
+          "bareSnapshot": {
+            "surfaceId": "upg5",
+            "hasSurface": true,
+            "surfaceCount": 1,
+            "hostCount": 2,
+            "text": "Hello",
+            "dataModel": {},
+            "domDigest": "05d5e95a78f227e0464bb0c91467f6ca5eaee248e21916e715d4bcad69894075",
+            "dataModelDigest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+          }
+        }
+      },
+      "negativeControl": {
+        "status": "PASS",
+        "exercised": true,
+        "checks": [
+          {
+            "name": "component carrying catalogId and @catalogId is rejected as invalid-message",
+            "pass": true,
+            "detail": {
+              "name": "PrometheusA2uiError",
+              "code": "invalid-message",
+              "message": "A2UI 1.0 component greeting carries both catalogId and @catalogId."
+            }
+          },
+          {
+            "name": "rejected surface renders nothing",
+            "pass": true,
+            "detail": {
+              "surfaceId": "upg5",
+              "hasSurface": false,
+              "surfaceCount": 0,
+              "hostCount": 0,
+              "text": "",
+              "dataModel": null,
+              "domDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "dataModelDigest": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+            }
+          }
+        ],
+        "observed": {
+          "refusal": {
+            "name": "PrometheusA2uiError",
+            "code": "invalid-message",
+            "message": "A2UI 1.0 component greeting carries both catalogId and @catalogId."
+          },
+          "after": {
+            "surfaceId": "upg5",
+            "hasSurface": false,
+            "surfaceCount": 0,
+            "hostCount": 0,
+            "text": "",
+            "dataModel": null,
+            "domDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "dataModelDigest": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+          }
+        }
+      }
+    },
+    {
+      "id": "UPG-6",
+      "lane": "browser",
+      "title": "agent-to-renderer function calls are restricted",
+      "status": "PASS",
+      "oracle": {
+        "status": "PASS",
+        "checks": [
+          {
+            "name": "callRendererFunction for the agent-callable function accepted",
+            "pass": true,
+            "detail": {
+              "ok": true
+            }
+          },
+          {
+            "name": "renderer answered with the function result",
+            "pass": true,
+            "detail": {
+              "version": "1.0",
+              "rendererFunctionResponse": {
+                "functionCallId": "upg6-agent-callable",
+                "value": "echo:ping"
+              }
+            }
+          },
+          {
+            "name": "the agent-callable function executed once",
+            "pass": true,
+            "detail": [
+              {
+                "fn": "agentEcho",
+                "phase": "upg6",
+                "args": {
+                  "text": "ping"
+                },
+                "userActivationActive": true
+              }
+            ]
+          }
+        ],
+        "observed": {
+          "note": "A2UI 1.0 answers callRendererFunction with rendererFunctionResponse (the contract text says agentFunctionResponse; see openspec/changes/a2ui-v1-functions-and-actions/design.md, 'Correction to the plan's wording').",
+          "request": [
+            {
+              "version": "1.0",
+              "callRendererFunction": {
+                "functionCallId": "upg6-agent-callable",
+                "callFunction": {
+                  "@call": "agentEcho",
+                  "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+                  "args": {
+                    "text": "ping"
+                  }
+                }
+              }
+            }
+          ],
+          "processMessages": {
+            "ok": true
+          },
+          "response": {
+            "version": "1.0",
+            "rendererFunctionResponse": {
+              "functionCallId": "upg6-agent-callable",
+              "value": "echo:ping"
+            }
+          },
+          "effects": [
+            {
+              "fn": "agentEcho",
+              "phase": "upg6",
+              "args": {
+                "text": "ping"
+              },
+              "userActivationActive": true
+            }
+          ]
+        }
+      },
+      "negativeControl": {
+        "status": "PASS",
+        "exercised": true,
+        "checks": [
+          {
+            "name": "renderer answered the renderer-only call",
+            "pass": true,
+            "detail": [
+              {
+                "version": "1.0",
+                "rendererFunctionResponse": {
+                  "functionCallId": "upg6-agent-callable",
+                  "value": "echo:ping"
+                }
+              },
+              {
+                "version": "1.0",
+                "rendererFunctionResponse": {
+                  "functionCallId": "upg6-renderer-only",
+                  "error": {
+                    "code": "INVALID_FUNCTION_CALL",
+                    "message": "Function 'rendererOnlySecret' cannot be called by agent (allowedCallers is rendererOnly)."
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "answer is error INVALID_FUNCTION_CALL with no value",
+            "pass": true,
+            "detail": {
+              "version": "1.0",
+              "rendererFunctionResponse": {
+                "functionCallId": "upg6-renderer-only",
+                "error": {
+                  "code": "INVALID_FUNCTION_CALL",
+                  "message": "Function 'rendererOnlySecret' cannot be called by agent (allowedCallers is rendererOnly)."
+                }
+              }
+            }
+          },
+          {
+            "name": "the renderer-only function did not execute",
+            "pass": true,
+            "detail": [
+              {
+                "fn": "agentEcho",
+                "phase": "upg6",
+                "args": {
+                  "text": "ping"
+                },
+                "userActivationActive": true
+              }
+            ]
+          }
+        ],
+        "observed": {
+          "request": [
+            {
+              "version": "1.0",
+              "callRendererFunction": {
+                "functionCallId": "upg6-renderer-only",
+                "callFunction": {
+                  "@call": "rendererOnlySecret",
+                  "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+                  "args": {
+                    "text": "ping"
+                  }
+                }
+              }
+            }
+          ],
+          "processMessages": {
+            "ok": true
+          },
+          "response": {
+            "version": "1.0",
+            "rendererFunctionResponse": {
+              "functionCallId": "upg6-renderer-only",
+              "error": {
+                "code": "INVALID_FUNCTION_CALL",
+                "message": "Function 'rendererOnlySecret' cannot be called by agent (allowedCallers is rendererOnly)."
+              }
+            }
+          },
+          "effects": [
+            {
+              "fn": "agentEcho",
+              "phase": "upg6",
+              "args": {
+                "text": "ping"
+              },
+              "userActivationActive": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "UPG-7",
+      "lane": "browser",
+      "title": "renderer-to-agent function responses under policy and limits",
+      "status": "PASS",
+      "oracle": {
+        "status": "PASS",
+        "checks": [
+          {
+            "name": "surface accepted",
+            "pass": true,
+            "detail": {
+              "ok": true
+            }
+          },
+          {
+            "name": "callAgentFunction went out as a 1.0 renderer message",
+            "pass": true,
+            "detail": [
+              {
+                "version": "1.0",
+                "callAgentFunction": {
+                  "surfaceId": "upg7",
+                  "functionCallId": "6f80c282-860a-460c-92c8-893cd8fccde9",
+                  "callFunction": {
+                    "@call": "lookupTotal",
+                    "args": {
+                      "orderId": "o-1"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "the call resolved with the agentFunctionResponse value",
+            "pass": true,
+            "detail": {
+              "ok": true,
+              "valueType": "string",
+              "valueLength": 9,
+              "value": "42.00 USD"
+            }
+          },
+          {
+            "name": "the answer was written at writeTo",
+            "pass": true,
+            "detail": {
+              "total": "42.00 USD",
+              "approvePatch": {
+                "status": "approved"
+              },
+              "forbiddenPatch": {
+                "total": 999
+              }
+            }
+          },
+          {
+            "name": "the surface updated",
+            "pass": true,
+            "detail": {
+              "before": "pending Approve Set total",
+              "after": "42.00 USD Approve Set total"
+            }
+          },
+          {
+            "name": "no producer fault",
+            "pass": true,
+            "detail": []
+          }
+        ],
+        "observed": {
+          "created": {
+            "ok": true
+          },
+          "outboundCalls": [
+            {
+              "version": "1.0",
+              "callAgentFunction": {
+                "surfaceId": "upg7",
+                "functionCallId": "6f80c282-860a-460c-92c8-893cd8fccde9",
+                "callFunction": {
+                  "@call": "lookupTotal",
+                  "args": {
+                    "orderId": "o-1"
+                  }
+                }
+              }
+            }
+          ],
+          "answered": {
+            "ok": true,
+            "valueType": "string",
+            "valueLength": 9,
+            "value": "42.00 USD"
+          },
+          "before": {
+            "surfaceId": "upg7",
+            "hasSurface": true,
+            "surfaceCount": 1,
+            "hostCount": 6,
+            "text": "pending Approve Set total",
+            "dataModel": {
+              "total": "pending",
+              "approvePatch": {
+                "status": "approved"
+              },
+              "forbiddenPatch": {
+                "total": 999
+              }
+            },
+            "domDigest": "4f79c183e1bd8e29a9d0aee40a80d3bf0f49e7018ced1928e770e2a3a063d6b6",
+            "dataModelDigest": "2c9e41e8469a1e9a831ac02715e8ae495d6e8a86a94a2860cb3183e6fa0ba2ec"
+          },
+          "after": {
+            "surfaceId": "upg7",
+            "hasSurface": true,
+            "surfaceCount": 1,
+            "hostCount": 6,
+            "text": "42.00 USD Approve Set total",
+            "dataModel": {
+              "total": "42.00 USD",
+              "approvePatch": {
+                "status": "approved"
+              },
+              "forbiddenPatch": {
+                "total": 999
+              }
+            },
+            "domDigest": "e5481ecffcd9c4027a4ebe9a17b361176f24c929bbb16d1a3f078f564dbd8aed",
+            "dataModelDigest": "5ed5db787cd46bb5352f35561fd64b18fb5c674f6a6a0b91da990d7d8dd152e5"
+          },
+          "faults": []
+        }
+      },
+      "negativeControl": {
+        "status": "PASS",
+        "exercised": true,
+        "checks": [
+          {
+            "name": "baseline: the allowed entity-graph action executed and wrote the graph",
+            "pass": true,
+            "detail": {
+              "approveClick": {
+                "selector": "[data-a2ui-v1-target=\"t0\"]",
+                "clicked": true
+              },
+              "decision": {
+                "status": "executed",
+                "name": "prometheus.entity.upsert",
+                "sourceComponentId": "approve"
+              },
+              "entityAfterApprove": {
+                "status": "approved"
+              }
+            }
+          },
+          {
+            "name": "the forbidden action was denied by the policy",
+            "pass": true,
+            "detail": {
+              "status": "denied",
+              "name": "prometheus.entity.upsert",
+              "sourceComponentId": "forbid",
+              "code": "unauthorized",
+              "reason": "Field is not allowlisted for Order: total"
+            }
+          },
+          {
+            "name": "the denied action changed nothing in the graph",
+            "pass": true,
+            "detail": {
+              "status": "approved"
+            }
+          },
+          {
+            "name": "the denied action sent nothing to the agent",
+            "pass": true,
+            "detail": {
+              "actionsBefore": 1,
+              "actionsAfter": 1
+            }
+          },
+          {
+            "name": "lowered limit applied",
+            "pass": true,
+            "detail": {
+              "ok": true
+            }
+          },
+          {
+            "name": "the oversized answer resolved the call but was not written",
+            "pass": true,
+            "detail": {
+              "oversized": {
+                "ok": true,
+                "valueType": "string",
+                "valueLength": 4096,
+                "value": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx…"
+              },
+              "dataModel": {
+                "total": "42.00 USD",
+                "approvePatch": {
+                  "status": "approved"
+                },
+                "forbiddenPatch": {
+                  "total": 999
+                }
+              }
+            }
+          },
+          {
+            "name": "data model unchanged by the refused write",
+            "pass": true
+          },
+          {
+            "name": "reported as a limit-exceeded producer fault on maxDataModelBytes",
+            "pass": true,
+            "detail": [
+              {
+                "kind": "limit-exceeded",
+                "limit": "maxDataModelBytes",
+                "max": 1024,
+                "attempted": 4195,
+                "surfaceId": "upg7",
+                "current": 89
+              }
+            ]
+          }
+        ],
+        "observed": {
+          "policy": {
+            "approveClick": {
+              "selector": "[data-a2ui-v1-target=\"t0\"]",
+              "clicked": true
+            },
+            "forbidClick": {
+              "selector": "[data-a2ui-v1-target=\"t1\"]",
+              "clicked": true
+            },
+            "decisions": [
+              {
+                "status": "executed",
+                "name": "prometheus.entity.upsert",
+                "sourceComponentId": "approve"
+              },
+              {
+                "status": "denied",
+                "name": "prometheus.entity.upsert",
+                "sourceComponentId": "forbid",
+                "code": "unauthorized",
+                "reason": "Field is not allowlisted for Order: total"
+              }
+            ],
+            "entityAfterApprove": {
+              "status": "approved"
+            },
+            "entityAfterForbid": {
+              "status": "approved"
+            },
+            "actionsBefore": 1,
+            "actionsAfter": 1,
+            "envelopesBefore": 1,
+            "envelopesAfter": 1
+          },
+          "limit": {
+            "lowered": {
+              "ok": true
+            },
+            "oversized": {
+              "ok": true,
+              "valueType": "string",
+              "valueLength": 4096,
+              "value": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx…"
+            },
+            "before": {
+              "surfaceId": "upg7",
+              "hasSurface": true,
+              "surfaceCount": 1,
+              "hostCount": 6,
+              "text": "42.00 USD Approve Set total",
+              "dataModel": {
+                "total": "42.00 USD",
+                "approvePatch": {
+                  "status": "approved"
+                },
+                "forbiddenPatch": {
+                  "total": 999
+                }
+              },
+              "domDigest": "e5481ecffcd9c4027a4ebe9a17b361176f24c929bbb16d1a3f078f564dbd8aed",
+              "dataModelDigest": "5ed5db787cd46bb5352f35561fd64b18fb5c674f6a6a0b91da990d7d8dd152e5"
+            },
+            "after": {
+              "surfaceId": "upg7",
+              "hasSurface": true,
+              "surfaceCount": 1,
+              "hostCount": 6,
+              "text": "42.00 USD Approve Set total",
+              "dataModel": {
+                "total": "42.00 USD",
+                "approvePatch": {
+                  "status": "approved"
+                },
+                "forbiddenPatch": {
+                  "total": 999
+                }
+              },
+              "domDigest": "e5481ecffcd9c4027a4ebe9a17b361176f24c929bbb16d1a3f078f564dbd8aed",
+              "dataModelDigest": "5ed5db787cd46bb5352f35561fd64b18fb5c674f6a6a0b91da990d7d8dd152e5"
+            },
+            "faults": [
+              {
+                "kind": "limit-exceeded",
+                "limit": "maxDataModelBytes",
+                "max": 1024,
+                "attempted": 4195,
+                "surfaceId": "upg7",
+                "current": 89
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "UPG-8",
+      "lane": "browser",
+      "title": "user-activation functions require a gesture",
+      "status": "PASS",
+      "oracle": {
+        "status": "PASS",
+        "checks": [
+          {
+            "name": "surface with an activation-gated action accepted",
+            "pass": true,
+            "detail": {
+              "ok": true
+            }
+          },
+          {
+            "name": "a real (trusted) Playwright click was delivered",
+            "pass": true,
+            "detail": {
+              "selector": "[data-a2ui-v1-target=\"t1\"]",
+              "clicked": true
+            }
+          },
+          {
+            "name": "the function ran exactly once after the real click",
+            "pass": true,
+            "detail": [
+              {
+                "fn": "gestureEffect",
+                "phase": "real-click",
+                "args": {
+                  "source": "button"
+                },
+                "userActivationActive": true
+              }
+            ]
+          }
+        ],
+        "observed": {
+          "created": {
+            "ok": true
+          },
+          "click": {
+            "selector": "[data-a2ui-v1-target=\"t1\"]",
+            "clicked": true
+          },
+          "effects": [
+            {
+              "fn": "gestureEffect",
+              "phase": "real-click",
+              "args": {
+                "source": "button"
+              },
+              "userActivationActive": true
+            }
+          ]
+        }
+      },
+      "negativeControl": {
+        "status": "PASS",
+        "exercised": true,
+        "checks": [
+          {
+            "name": "the action was invoked without a gesture",
+            "pass": true,
+            "detail": {
+              "invoked": true,
+              "threw": false
+            }
+          },
+          {
+            "name": "the invocation was refused for lack of user activation",
+            "pass": true,
+            "detail": {
+              "invoked": {
+                "invoked": true,
+                "threw": false
+              },
+              "refusalErrors": [
+                {
+                  "surfaceId": "upg8",
+                  "code": "EXPRESSION_ERROR",
+                  "message": "Function 'gestureEffect' requires user activation and cannot be evaluated without an active user gesture."
+                },
+                {
+                  "code": "EXPRESSION_ERROR",
+                  "message": "Function 'gestureEffect' requires user activation and cannot be evaluated without an active user gesture.",
+                  "surfaceId": "upg8"
+                }
+              ]
+            }
+          },
+          {
+            "name": "the function had no effect",
+            "pass": true,
+            "detail": []
+          }
+        ],
+        "observed": {
+          "invocation": "official dataContext.resolveAction(action, { userActivation: false }), as the upstream conformance harness's programmatic_invoke",
+          "invoked": {
+            "invoked": true,
+            "threw": false
+          },
+          "refusalErrors": [
+            {
+              "surfaceId": "upg8",
+              "code": "EXPRESSION_ERROR",
+              "message": "Function 'gestureEffect' requires user activation and cannot be evaluated without an active user gesture."
+            },
+            {
+              "code": "EXPRESSION_ERROR",
+              "message": "Function 'gestureEffect' requires user activation and cannot be evaluated without an active user gesture.",
+              "surfaceId": "upg8"
+            }
+          ],
+          "effects": [],
+          "informationalSyntheticClick": {
+            "note": "element.click() from page script (isTrusted false). The official binder resolves every bound action with userActivation: true, so this records what such a click does; it is not a gate.",
+            "synthetic": {
+              "clicked": true
+            },
+            "effects": [
+              {
+                "fn": "gestureEffect",
+                "phase": "synthetic-click",
+                "args": {
+                  "source": "button"
+                },
+                "userActivationActive": true
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "UPG-13",
+      "lane": "node",
+      "title": "headless export by protocol version",
+      "status": "PASS",
+      "oracle": {
+        "status": "PASS",
+        "checks": [
+          {
+            "name": "packed headless entry resolves inside the scratch consumer",
+            "pass": true,
+            "detail": "/private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/a2ui-v1-headless-vYYhW5/consumer/node_modules/.pnpm/@prometheus-ags+a2ui-react@file+..+..+..+..+..+..+..+..+var+folders+ln+0wnpd96j26z2qhvx_f89f7b3edb06ce8614b5efb28a85e0a9/node_modules/@prometheus-ags/a2ui-react/dist/headless.mjs"
+          },
+          {
+            "name": "package catalog ids match the fixtures",
+            "pass": true
+          },
+          {
+            "name": "export is one or more 1.0 messages",
+            "pass": true
+          },
+          {
+            "name": "export carries no theme",
+            "pass": true
+          },
+          {
+            "name": "export keeps every fixture component id",
+            "pass": true
+          },
+          {
+            "name": "export keeps the fixture data values",
+            "pass": true
+          },
+          {
+            "name": "rebuilt surface re-exports byte-identically",
+            "pass": true,
+            "detail": {
+              "exportDigest": "4a1c0fbd6f2f738f6f39f3f1a2f552fc6e9e53c639f9c46f9cb8fa808acced59",
+              "reExportDigest": "4a1c0fbd6f2f738f6f39f3f1a2f552fc6e9e53c639f9c46f9cb8fa808acced59"
+            }
+          }
+        ],
+        "observed": {
+          "exportDigest": "4a1c0fbd6f2f738f6f39f3f1a2f552fc6e9e53c639f9c46f9cb8fa808acced59",
+          "reExportDigest": "4a1c0fbd6f2f738f6f39f3f1a2f552fc6e9e53c639f9c46f9cb8fa808acced59",
+          "exported": {
+            "surfaceId": "upg13",
+            "orphans": [],
+            "messages": [
+              {
+                "version": "1.0",
+                "createSurface": {
+                  "surfaceId": "upg13",
+                  "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+                  "sendDataModel": true,
+                  "components": [
+                    {
+                      "children": [
+                        "title",
+                        "status"
+                      ],
+                      "id": "root",
+                      "component": "Column"
+                    },
+                    {
+                      "text": "Shipment",
+                      "id": "title",
+                      "component": "Text"
+                    },
+                    {
+                      "text": {
+                        "@path": "/status"
+                      },
+                      "id": "status",
+                      "component": "Text"
+                    }
+                  ],
+                  "dataModel": {
+                    "status": "in transit",
+                    "items": [
+                      {
+                        "sku": "A-1",
+                        "qty": 2
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "negativeControl": {
+        "status": "PASS",
+        "exercised": true,
+        "checks": [
+          {
+            "name": "v0.9.1 export keeps the theme",
+            "pass": true,
+            "detail": [
+              {
+                "primaryColor": "#3366ff"
+              }
+            ]
+          },
+          {
+            "name": "v0.9.1 round trip is byte-identical (theme survives the rebuild)",
+            "pass": true,
+            "detail": {
+              "exportDigest": "096bbf9a7237a9ddfe7bce65b2a925fa792e95b14ccbe863a4f0cb082cd3d88f",
+              "reExportDigest": "096bbf9a7237a9ddfe7bce65b2a925fa792e95b14ccbe863a4f0cb082cd3d88f"
+            }
+          }
+        ],
+        "observed": {
+          "exportDigest": "096bbf9a7237a9ddfe7bce65b2a925fa792e95b14ccbe863a4f0cb082cd3d88f",
+          "reExportDigest": "096bbf9a7237a9ddfe7bce65b2a925fa792e95b14ccbe863a4f0cb082cd3d88f",
+          "themes": [
+            {
+              "primaryColor": "#3366ff"
+            }
+          ],
+          "exported": {
+            "surfaceId": "upg13-legacy",
+            "orphans": [],
+            "messages": [
+              {
+                "version": "v0.9.1",
+                "createSurface": {
+                  "surfaceId": "upg13-legacy",
+                  "catalogId": "urn:prometheus-ags:a2ui:catalog:v3",
+                  "theme": {
+                    "primaryColor": "#3366ff"
+                  },
+                  "sendDataModel": false
+                }
+              },
+              {
+                "version": "v0.9.1",
+                "updateComponents": {
+                  "surfaceId": "upg13-legacy",
+                  "components": [
+                    {
+                      "text": "Legacy",
+                      "id": "root",
+                      "component": "Text"
+                    }
+                  ]
+                }
+              },
+              {
+                "version": "v0.9.1",
+                "updateDataModel": {
+                  "surfaceId": "upg13-legacy",
+                  "path": "/",
+                  "value": {
+                    "note": "kept"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "UPG-17",
+      "lane": "browser",
+      "title": "RC-input shim is opt-in and maps RC actions to 1.0 function calls",
+      "status": "PASS",
+      "oracle": {
+        "status": "PASS",
+        "checks": [
+          {
+            "name": "RC envelope accepted with acceptReleaseCandidateInput",
+            "pass": true,
+            "detail": {
+              "ok": true
+            }
+          },
+          {
+            "name": "1.0 equivalent accepted",
+            "pass": true,
+            "detail": {
+              "ok": true
+            }
+          },
+          {
+            "name": "RC and 1.0 render identical DOM",
+            "pass": true,
+            "detail": {
+              "rc": "3c141ee0ce5628e6ad75eb097f644b677d04ab5a285ff10bbc946eeb88a47357",
+              "final": "3c141ee0ce5628e6ad75eb097f644b677d04ab5a285ff10bbc946eeb88a47357"
+            }
+          },
+          {
+            "name": "RC bindings resolve",
+            "pass": true,
+            "detail": "Orders none Ask"
+          },
+          {
+            "name": "each RC wantResponse click went out as a 1.0 callAgentFunction, never as an action",
+            "pass": true,
+            "detail": [
+              {
+                "version": "1.0",
+                "callAgentFunction": {
+                  "surfaceId": "upg17",
+                  "functionCallId": "bd387bdb-e7af-421d-af83-c4f57046dbea",
+                  "callFunction": {
+                    "@call": "refresh",
+                    "args": {}
+                  }
+                }
+              },
+              {
+                "version": "1.0",
+                "callAgentFunction": {
+                  "surfaceId": "upg17",
+                  "functionCallId": "4745459b-f2ae-4b78-80c5-5b02fa79c845",
+                  "callFunction": {
+                    "@call": "refresh",
+                    "args": {}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "agentFunctionResponse written at the former responsePath",
+            "pass": true,
+            "detail": {
+              "title": "Orders",
+              "answer": "pong (agentFunctionResponse)"
+            }
+          },
+          {
+            "name": "RC actionResponse with the same id written at the former responsePath",
+            "pass": true,
+            "detail": {
+              "title": "Orders",
+              "answer": "pong (RC actionResponse)"
+            }
+          },
+          {
+            "name": "no reply was refused",
+            "pass": true,
+            "detail": []
+          }
+        ],
+        "observed": {
+          "rcAccepted": {
+            "ok": true
+          },
+          "finalAccepted": {
+            "ok": true
+          },
+          "rcSnapshot": {
+            "surfaceId": "upg17",
+            "hasSurface": true,
+            "surfaceCount": 1,
+            "hostCount": 5,
+            "text": "Orders none Ask",
+            "dataModel": {
+              "title": "Orders",
+              "answer": "none"
+            },
+            "domDigest": "3c141ee0ce5628e6ad75eb097f644b677d04ab5a285ff10bbc946eeb88a47357",
+            "dataModelDigest": "f3b310d79a1f93d797eb8af62d8af5e88f9acf22feeb5783ab9bb0987a99e900"
+          },
+          "finalSnapshot": {
+            "surfaceId": "upg17",
+            "hasSurface": true,
+            "surfaceCount": 1,
+            "hostCount": 5,
+            "text": "Orders none Ask",
+            "dataModel": {
+              "title": "Orders",
+              "answer": "none"
+            },
+            "domDigest": "3c141ee0ce5628e6ad75eb097f644b677d04ab5a285ff10bbc946eeb88a47357",
+            "dataModelDigest": "f3b310d79a1f93d797eb8af62d8af5e88f9acf22feeb5783ab9bb0987a99e900"
+          },
+          "clicks": [
+            {
+              "selector": "[data-a2ui-v1-target=\"t0\"]",
+              "clicked": true
+            },
+            {
+              "selector": "[data-a2ui-v1-target=\"t1\"]",
+              "clicked": true
+            }
+          ],
+          "outbound": [
+            {
+              "version": "1.0",
+              "callAgentFunction": {
+                "surfaceId": "upg17",
+                "functionCallId": "bd387bdb-e7af-421d-af83-c4f57046dbea",
+                "callFunction": {
+                  "@call": "refresh",
+                  "args": {}
+                }
+              }
+            },
+            {
+              "version": "1.0",
+              "callAgentFunction": {
+                "surfaceId": "upg17",
+                "functionCallId": "4745459b-f2ae-4b78-80c5-5b02fa79c845",
+                "callFunction": {
+                  "@call": "refresh",
+                  "args": {}
+                }
+              }
+            }
+          ],
+          "decisions": [
+            {
+              "status": "executed",
+              "name": "refresh",
+              "sourceComponentId": "ask"
+            },
+            {
+              "status": "executed",
+              "name": "refresh",
+              "sourceComponentId": "ask"
+            }
+          ],
+          "replyErrors": [],
+          "afterAgentFunctionResponse": {
+            "surfaceId": "upg17",
+            "hasSurface": true,
+            "surfaceCount": 1,
+            "hostCount": 5,
+            "text": "Orders pong (agentFunctionResponse) Ask",
+            "dataModel": {
+              "title": "Orders",
+              "answer": "pong (agentFunctionResponse)"
+            },
+            "domDigest": "3fad8661c56c2f38b8701e55a9c3bd641b2cb6757152ffd9c016c84dec86606b",
+            "dataModelDigest": "e8d87be77e02b5a2d004432ab70a921cfe973bb1ec17ad4f8e5382e47c483ecf"
+          },
+          "afterRcActionResponse": {
+            "surfaceId": "upg17",
+            "hasSurface": true,
+            "surfaceCount": 1,
+            "hostCount": 5,
+            "text": "Orders pong (RC actionResponse) Ask",
+            "dataModel": {
+              "title": "Orders",
+              "answer": "pong (RC actionResponse)"
+            },
+            "domDigest": "7554c246ac279e8295b9f85bdac6eccdb24d54cb49e32f5b199e814ed9f8033c",
+            "dataModelDigest": "f568a3b93c2a026ef79c7d3671b6421c877eb553e34aa2074d54b25218d2a2ba"
+          }
+        }
+      },
+      "negativeControl": {
+        "status": "PASS",
+        "exercised": true,
+        "checks": [
+          {
+            "name": "same RC envelope refused with the shim at its default (off)",
+            "pass": true,
+            "detail": {
+              "name": "PrometheusA2uiError",
+              "code": "unsupported-protocol-version",
+              "message": "A2UI 1.0 release-candidate input (\"v1.0\") is accepted only with acceptReleaseCandidateInput."
+            }
+          },
+          {
+            "name": "refused RC surface renders nothing",
+            "pass": true,
+            "detail": {
+              "surfaceId": "upg17",
+              "hasSurface": false,
+              "surfaceCount": 0,
+              "hostCount": 0,
+              "text": "",
+              "dataModel": null,
+              "domDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "dataModelDigest": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+            }
+          }
+        ],
+        "observed": {
+          "refusal": {
+            "name": "PrometheusA2uiError",
+            "code": "unsupported-protocol-version",
+            "message": "A2UI 1.0 release-candidate input (\"v1.0\") is accepted only with acceptReleaseCandidateInput."
+          },
+          "after": {
+            "surfaceId": "upg17",
+            "hasSurface": false,
+            "surfaceCount": 0,
+            "hostCount": 0,
+            "text": "",
+            "dataModel": null,
+            "domDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "dataModelDigest": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+          }
+        }
+      }
+    }
+  ],
+  "counts": {
+    "total": 9,
+    "PASS": 9,
+    "FAIL": 0
+  },
+  "problems": [],
+  "commands": [
+    {
+      "label": "build entity-graph-core",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@prometheus-ags/entity-graph-core",
+        "build"
+      ],
+      "cwd": ".",
+      "env": {},
+      "startedAt": "2026-11-13T08:11:20.719Z",
+      "exitCode": 0
+    },
+    {
+      "label": "build a2ui-react",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@prometheus-ags/a2ui-react",
+        "build"
+      ],
+      "cwd": ".",
+      "env": {},
+      "startedAt": "2026-11-13T08:11:23.103Z",
+      "exitCode": 0
+    },
+    {
+      "label": "browser lane: UPG-1,2,4,5,6,7,8,17 (Chromium)",
+      "argv": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "--config",
+        "tests/browser/a2ui-v1.playwright.config.ts"
+      ],
+      "cwd": ".",
+      "env": {
+        "A2UI_V1_RESULTS": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T020958-boundary/a2ui-v1-artifacts/browser/results.jsonl",
+        "A2UI_V1_FIXTURES": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T020958-boundary/a2ui-v1-artifacts/fixtures",
+        "A2UI_V1_OUT_DIR": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T020958-boundary/a2ui-v1-artifacts/browser",
+        "A2UI_V1_PORT": "62292"
+      },
+      "startedAt": "2026-11-13T08:11:26.989Z",
+      "exitCode": 0
+    },
+    {
+      "label": "pack @prometheus-ags/entity-graph-core",
+      "argv": [
+        "pnpm",
+        "--dir",
+        "/Volumes/T7/Projects/prometheus/prometheus-entity-management/packages/entity-graph-core",
+        "pack",
+        "--pack-destination",
+        "/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/a2ui-v1-headless-vYYhW5/tarballs",
+        "--json"
+      ],
+      "cwd": ".",
+      "env": {},
+      "startedAt": "2026-11-13T08:11:35.928Z",
+      "exitCode": 0
+    },
+    {
+      "label": "pack @prometheus-ags/a2ui-react",
+      "argv": [
+        "pnpm",
+        "--dir",
+        "/Volumes/T7/Projects/prometheus/prometheus-entity-management/packages/a2ui-react",
+        "pack",
+        "--pack-destination",
+        "/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/a2ui-v1-headless-vYYhW5/tarballs",
+        "--json"
+      ],
+      "cwd": ".",
+      "env": {},
+      "startedAt": "2026-11-13T08:11:36.250Z",
+      "exitCode": 0
+    },
+    {
+      "label": "install packed headless consumer",
+      "argv": [
+        "pnpm",
+        "install",
+        "--ignore-scripts",
+        "--strict-peer-dependencies=false"
+      ],
+      "cwd": "../../../../../var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/a2ui-v1-headless-vYYhW5/consumer",
+      "env": {},
+      "startedAt": "2026-11-13T08:11:36.598Z",
+      "exitCode": 0
+    },
+    {
+      "label": "node lane: UPG-13 (packed ./headless)",
+      "argv": [
+        "/Users/gqadonis/.local/share/fnm/node-versions/v26.5.0/installation/bin/node",
+        "headless-lane.mjs",
+        "--fixtures",
+        "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T020958-boundary/a2ui-v1-artifacts/fixtures",
+        "--out",
+        "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T020958-boundary/a2ui-v1-artifacts/node/headless-lane.json"
+      ],
+      "cwd": "../../../../../var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/a2ui-v1-headless-vYYhW5/consumer",
+      "env": {},
+      "startedAt": "2026-11-13T08:11:37.489Z",
+      "exitCode": 0
+    }
+  ],
+  "status": "PASS",
+  "exitCode": 0
+}

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "scenario": "UPG-9",
+  "name": "A2A on the official A2UI v1.0 extension",
+  "status": "PASS",
+  "steps": [
+    {
+      "step": 9,
+      "argv": "node scripts/verify-a2a-conformance.mjs --report \"$E/a2a-conformance.json\"",
+      "exitCode": 0,
+      "startedAt": "2026-11-13T08:24:10Z",
+      "completedAt": "2026-11-13T08:24:16Z"
+    }
+  ],
+  "contractDigest": "bfa43f3bad025a031ce5b3c6175e12453baefb3ef41ac25a9ab420a7001badb1",
+  "source": {
+    "gitHead": "a8f543dc915fccc7bbaf51dab10ec693db635971",
+    "workingTreeDiffSha256": "3028ea9704d458e452db81b282419ab633312b49eb9859e550608c3cf8d439c9",
+    "note": "uncommitted working tree on top of gitHead"
+  },
+  "evidence": [
+    {
+      "path": "a2a-conformance.json",
+      "sha256": "3c8ba382e2e25c01da710d44289326fa5f27bb7a05e4035111d72fa2bc09d12c"
+    },
+    {
+      "path": "logs/step-9.log",
+      "sha256": "05c230ab7ada9ef9ac10379647f30cf53885ee8fd3ba06cd2a990d4b190d2d43"
+    }
+  ]
+}

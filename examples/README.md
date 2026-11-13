@@ -68,7 +68,7 @@ The `release.flutter.source-provenance` gate is implemented for licensed source 
 The [`flutter-riverpod`](flutter-riverpod/README.md) application now composes
 the canonical Dart graph, generated Riverpod 3 controllers, local/remote/hybrid
 views, optimistic/offline CRUD, relationship and realtime invalidation,
-policy-controlled official GenUI rendering, responsive phone/tablet UI, and an
+policy-controlled native A2UI 1.0 rendering, responsive phone/tablet UI, and an
 optional FFI transport seam.
 
 Run the stable host boundary from the repository root:

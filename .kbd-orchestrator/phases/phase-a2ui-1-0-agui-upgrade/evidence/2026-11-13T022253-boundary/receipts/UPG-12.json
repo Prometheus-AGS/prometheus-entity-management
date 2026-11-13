@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "scenario": "UPG-12",
+  "name": "Interrupt approvals through the entity action policy",
+  "status": "PASS",
+  "steps": [
+    {
+      "step": 10,
+      "argv": "pnpm run verify:agui-run-stack -- --report \"$E/agui-run-stack.json\"",
+      "exitCode": 0,
+      "startedAt": "2026-11-13T08:24:16Z",
+      "completedAt": "2026-11-13T08:24:28Z"
+    }
+  ],
+  "contractDigest": "bfa43f3bad025a031ce5b3c6175e12453baefb3ef41ac25a9ab420a7001badb1",
+  "source": {
+    "gitHead": "a8f543dc915fccc7bbaf51dab10ec693db635971",
+    "workingTreeDiffSha256": "3028ea9704d458e452db81b282419ab633312b49eb9859e550608c3cf8d439c9",
+    "note": "uncommitted working tree on top of gitHead"
+  },
+  "evidence": [
+    {
+      "path": "agui-run-stack.json",
+      "sha256": "2abd87745b6b44280b828fd2c2a50e2095e1f5fc11a4d51ac39697530919b6a7"
+    },
+    {
+      "path": "logs/step-10.log",
+      "sha256": "9d54eb96a37a90c2b500446ae25cf748b3f90df134597456f4e5e1e8f503fc71"
+    }
+  ]
+}

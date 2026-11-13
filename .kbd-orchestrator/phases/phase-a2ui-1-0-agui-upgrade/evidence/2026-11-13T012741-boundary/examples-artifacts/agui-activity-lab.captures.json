@@ -1,0 +1,231 @@
+{
+  "exampleId": "agui-activity-lab",
+  "url": "http://127.0.0.1:4203",
+  "surface": {
+    "rendered": true,
+    "surfaceId": "upg14",
+    "producer": "http://127.0.0.1:54017",
+    "stream": "upg14"
+  },
+  "action": {
+    "name": "lab.ping",
+    "executedByPolicy": true,
+    "actionId": "01a1d3cf-f531-72bb-b79b-6ee13c64c425",
+    "duplicate": false,
+    "userAction": {
+      "name": "lab.ping",
+      "surfaceId": "upg14",
+      "sourceComponentId": "ping",
+      "timestamp": "2026-11-13T07:29:43.728Z",
+      "context": {}
+    }
+  },
+  "records": [
+    {
+      "source": "agui-activity-stream",
+      "payload": {
+        "type": "ACTIVITY_SNAPSHOT",
+        "messageId": "upg14-m1",
+        "activityType": "a2ui-surface",
+        "content": {
+          "a2ui_operations": [
+            {
+              "version": "1.0",
+              "createSurface": {
+                "surfaceId": "upg14",
+                "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0"
+              }
+            },
+            {
+              "version": "1.0",
+              "updateComponents": {
+                "surfaceId": "upg14",
+                "components": [
+                  {
+                    "id": "root",
+                    "component": "Column",
+                    "children": [
+                      "note",
+                      "ping"
+                    ]
+                  },
+                  {
+                    "id": "note",
+                    "component": "Text",
+                    "text": {
+                      "@path": "/note"
+                    }
+                  },
+                  {
+                    "id": "ping",
+                    "component": "Button",
+                    "child": "ping_label",
+                    "action": {
+                      "event": {
+                        "name": "lab.ping",
+                        "context": {}
+                      }
+                    }
+                  },
+                  {
+                    "id": "ping_label",
+                    "component": "Text",
+                    "text": "Ping"
+                  }
+                ]
+              }
+            },
+            {
+              "version": "1.0",
+              "updateDataModel": {
+                "surfaceId": "upg14",
+                "path": "/",
+                "value": {
+                  "note": "Producer note"
+                }
+              }
+            }
+          ],
+          "surfaceVersions": {
+            "upg14": {
+              "epoch": 1,
+              "version": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "source": "runtime-input",
+      "payload": [
+        {
+          "version": "1.0",
+          "createSurface": {
+            "surfaceId": "upg14",
+            "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0"
+          }
+        },
+        {
+          "version": "1.0",
+          "updateComponents": {
+            "surfaceId": "upg14",
+            "components": [
+              {
+                "id": "root",
+                "component": "Column",
+                "children": [
+                  "note",
+                  "ping"
+                ]
+              },
+              {
+                "id": "note",
+                "component": "Text",
+                "text": {
+                  "@path": "/note"
+                }
+              },
+              {
+                "id": "ping",
+                "component": "Button",
+                "child": "ping_label",
+                "action": {
+                  "event": {
+                    "name": "lab.ping",
+                    "context": {}
+                  }
+                }
+              },
+              {
+                "id": "ping_label",
+                "component": "Text",
+                "text": "Ping"
+              }
+            ]
+          }
+        },
+        {
+          "version": "1.0",
+          "updateDataModel": {
+            "surfaceId": "upg14",
+            "path": "/",
+            "value": {
+              "note": "Producer note"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "source": "runtime-input",
+      "payload": [
+        {
+          "version": "1.0",
+          "createSurface": {
+            "surfaceId": "upg14",
+            "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0"
+          }
+        },
+        {
+          "version": "1.0",
+          "updateComponents": {
+            "surfaceId": "upg14",
+            "components": [
+              {
+                "id": "root",
+                "component": "Column",
+                "children": [
+                  "note",
+                  "ping"
+                ]
+              },
+              {
+                "id": "note",
+                "component": "Text",
+                "text": {
+                  "@path": "/note"
+                }
+              },
+              {
+                "id": "ping",
+                "component": "Button",
+                "child": "ping_label",
+                "action": {
+                  "event": {
+                    "name": "lab.ping",
+                    "context": {}
+                  }
+                }
+              },
+              {
+                "id": "ping_label",
+                "component": "Text",
+                "text": "Ping"
+              }
+            ]
+          }
+        },
+        {
+          "version": "1.0",
+          "updateDataModel": {
+            "surfaceId": "upg14",
+            "path": "/",
+            "value": {
+              "note": "Producer note"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "tap": {
+    "installed": true,
+    "sseFrames": 0,
+    "errors": []
+  },
+  "screenshots": [
+    "agui-activity-lab-surface.png",
+    "agui-activity-lab-action.png"
+  ],
+  "error": null
+}

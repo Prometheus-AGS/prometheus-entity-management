@@ -30,7 +30,7 @@ at stable `4.1.1` on the `latest` tag (published 2026-10-08; the short-lived
 `3.0.0` manifests shipped an unresolved `workspace:` protocol and are
 deprecated, and `3.0.4` is deprecated because it contained stale build
 artifacts). Flutter is public as `entity_graph_flutter@3.1.0` on pub.dev; its
-A2UI 1.0-RC showcase uses GenUI 0.10.2. See
+A2UI 1.0 showcase renders natively through `a2ui_flutter` 0.3.0. See
 the [verified registry snapshot](../packages/index.md) before choosing an
 install command.
 

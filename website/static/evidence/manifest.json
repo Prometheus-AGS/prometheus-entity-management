@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "certificationReceipt": "website/evidence-certifications.json",
   "certificationReceiptSha256": "1b684b62977ecd177ebbb8f21099d5db28bc2006a0f2837a84a64f82342ca1f8",
-  "gallerySha256": "225cfdf1dbd6ef3a1077b288566e2117e8e5a7963c61e5b5ea7df89ce649d4ce",
+  "gallerySha256": "ff633a140a13af1260c467e73ac3bd4ebb14b4a016f1f5361be59766ac3c7fe7",
   "artifactFileCount": 44,
   "artifactAggregateSha256": "3f9d073544532a0605a1340012342730684b02989eb639f3b62b9dbc7db2a070",
   "assets": [
@@ -316,7 +316,7 @@
         "example.protocol.a2a-a2ui-policy",
         "example.platform.adapter-boundary"
       ],
-      "caption": "The Flutter phone surface renders the allowlisted GenUI catalog inside the same entity application.",
+      "caption": "The Flutter phone surface renders a policy-controlled A2UI surface inside the same entity application.",
       "alt": "Flutter phone golden displaying a policy-controlled A2UI surface",
       "sourcePath": "examples/flutter-riverpod/test/goldens/showcase-phone-a2ui.png",
       "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-riverpod-a2ui-example/final-verification.json",

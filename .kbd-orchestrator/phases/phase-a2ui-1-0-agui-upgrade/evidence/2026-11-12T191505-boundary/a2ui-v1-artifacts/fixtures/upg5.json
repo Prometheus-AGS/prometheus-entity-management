@@ -1,0 +1,84 @@
+{
+  "surfaceId": "upg5",
+  "prefixed": [
+    {
+      "version": "1.0",
+      "createSurface": {
+        "surfaceId": "upg5",
+        "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "greeting"
+            ]
+          },
+          {
+            "id": "greeting",
+            "component": "Text",
+            "@catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+            "@accessibility": {
+              "label": "Greeting",
+              "description": "Says hello"
+            },
+            "text": "Hello"
+          }
+        ]
+      }
+    }
+  ],
+  "bare": [
+    {
+      "version": "1.0",
+      "createSurface": {
+        "surfaceId": "upg5",
+        "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "greeting"
+            ]
+          },
+          {
+            "id": "greeting",
+            "component": "Text",
+            "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+            "accessibility": {
+              "label": "Greeting",
+              "description": "Says hello"
+            },
+            "text": "Hello"
+          }
+        ]
+      }
+    }
+  ],
+  "both": [
+    {
+      "version": "1.0",
+      "createSurface": {
+        "surfaceId": "upg5",
+        "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "greeting"
+            ]
+          },
+          {
+            "id": "greeting",
+            "component": "Text",
+            "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+            "@catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+            "text": "Hello"
+          }
+        ]
+      }
+    }
+  ]
+}

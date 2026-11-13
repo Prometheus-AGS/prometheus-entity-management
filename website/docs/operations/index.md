@@ -6,7 +6,7 @@ sidebar_position: 8
 
 # Adopt, verify, and operate 3.x
 
-The operations track covers 2.x-to-3.0 and alpha-to-stable migration, renamed
+The operations track covers 2.x-to-3.0 migration, [moving agent code to 5.0](migration-5.md) (A2UI 1.0, AG-UI 1.0), renamed
 and moved APIs, compatibility, security and tenant boundaries, performance,
 testing, deployment, troubleshooting, skills, release recovery, and partial
 publication. Stable promotion remains a human-reviewed operation over an

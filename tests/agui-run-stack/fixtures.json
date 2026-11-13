@@ -1,0 +1,68 @@
+{
+  "//": "Shared by the scripted AG-UI agent (agent-server.mjs), the page (src/) and the spec (tests/browser/agui-run-stack.spec.ts). UPG-10, UPG-11 and UPG-12 of phase-a2ui-1-0-agui-upgrade.",
+  "upg10": {
+    "conversationId": "upg10-main",
+    "otherConversationId": "upg10-other",
+    "userText": "What is the status of invoice inv-42?",
+    "midGate": "upg10-mid",
+    "reasoning": { "messageId": "r-1", "text": "Checking invoice inv-42 against the ledger." },
+    "text": { "messageId": "m-1", "beforeGate": "Invoice inv-42 ", "afterGate": "is overdue by 12 days." },
+    "toolCall": { "id": "tc-1", "name": "lookup_invoice", "argsChunks": ["{\"invoiceId\":", "\"inv-42\"}"] },
+    "toolResult": { "messageId": "t-1", "content": "{\"invoiceId\":\"inv-42\",\"status\":\"overdue\",\"daysLate\":12}" },
+    "probe": { "userText": "Control view probe", "messageId": "p-1", "text": "Probe reply for the other conversation." }
+  },
+  "upg11": {
+    "supersededConversationId": "upg11-x",
+    "controlConversationId": "upg11-y",
+    "gate": "upg11-late",
+    "lateDeltas": 5,
+    "first": { "userText": "First question", "messageId": "a-1", "beforeGate": "a-before ", "lateMessageId": "a-2" },
+    "second": { "userText": "Second question", "messageId": "b-1", "text": "b-reply to the second question." },
+    "control": { "userText": "Control question", "messageId": "c-1", "beforeGate": "c-before ", "lateMessageId": "c-2" }
+  },
+  "upg12": {
+    "userText": "Please go ahead.",
+    "seed": [
+      { "type": "Invoice", "id": "inv-approve", "data": { "status": "draft", "amount": 100 } },
+      { "type": "Invoice", "id": "inv-edit", "data": { "status": "draft", "amount": 100 } },
+      { "type": "Invoice", "id": "inv-deny", "data": { "status": "draft", "amount": 100 } },
+      { "type": "Ledger", "id": "led-1", "data": { "locked": true, "balance": 5000 } }
+    ],
+    "policy": { "Invoice": { "actions": ["prometheus.entity.patch"], "fields": ["status", "amount"] } },
+    "cases": {
+      "approve": {
+        "role": "oracle",
+        "interruptId": "int-approve",
+        "reason": "approval",
+        "message": "Mark invoice inv-approve as approved?",
+        "decision": "approve",
+        "action": { "name": "prometheus.entity.patch", "context": { "entityType": "Invoice", "entityId": "inv-approve", "data": { "status": "approved" } } }
+      },
+      "edit": {
+        "role": "oracle",
+        "interruptId": "int-edit",
+        "reason": "approval",
+        "message": "Set the amount of invoice inv-edit?",
+        "decision": "edit-then-approve",
+        "edited": { "entityType": "Invoice", "entityId": "inv-edit", "data": { "amount": 250 } },
+        "action": { "name": "prometheus.entity.patch", "context": { "entityType": "Invoice", "entityId": "inv-edit", "data": { "amount": 100 } } }
+      },
+      "deny": {
+        "role": "negativeControl",
+        "interruptId": "int-deny",
+        "reason": "approval",
+        "message": "Void invoice inv-deny?",
+        "decision": "deny",
+        "action": { "name": "prometheus.entity.patch", "context": { "entityType": "Invoice", "entityId": "inv-deny", "data": { "status": "void" } } }
+      },
+      "disallowed": {
+        "role": "negativeControl",
+        "interruptId": "int-disallowed",
+        "reason": "approval",
+        "message": "Unlock ledger led-1?",
+        "decision": "approve",
+        "action": { "name": "prometheus.entity.patch", "context": { "entityType": "Ledger", "entityId": "led-1", "data": { "locked": false } } }
+      }
+    }
+  }
+}

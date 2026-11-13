@@ -12,13 +12,38 @@ import type {
  * catalog both call `createAllowlistedCatalog`, so the two cannot drift apart.
  */
 
-/** The only stable A2UI wire protocol supported by the 3.0 package. */
+/** The A2UI v0.9 wire protocol version of the default catalog. */
 export const PROMETHEUS_A2UI_PROTOCOL_VERSION = "v0.9.1" as const;
 
-/** Prometheus-owned catalog identity; it never impersonates the full official catalog. */
+/** The A2UI 1.0 wire protocol version (no `v` prefix, as the 1.0 specification writes it). */
+export const PROMETHEUS_A2UI_V1_PROTOCOL_VERSION = "1.0" as const;
+
+/** A wire protocol version a Prometheus catalog can declare. */
+export type PrometheusA2uiProtocolVersion =
+  | typeof PROMETHEUS_A2UI_PROTOCOL_VERSION
+  | typeof PROMETHEUS_A2UI_V1_PROTOCOL_VERSION;
+
+/** Prometheus-owned v0.9.1 catalog identity; it never impersonates the full official catalog. */
 export const PROMETHEUS_A2UI_CATALOG_ID = "urn:prometheus-ags:a2ui:catalog:v3";
 
-/** Explicit default component allowlist derived from the official v0.9 catalog. */
+/**
+ * Prometheus-owned A2UI 1.0 catalog identity. The official processor pairs a
+ * 1.0 message only with a catalog declared for protocol 1.0, so the 1.0 catalog
+ * is a separate catalog with its own id, beside the v0.9.1 one.
+ */
+export const PROMETHEUS_A2UI_V1_CATALOG_ID = "urn:prometheus-ags:a2ui:catalog:a2ui-1.0";
+
+/** The default id of the Prometheus catalog for a protocol version. */
+export function defaultPrometheusA2uiCatalogId(protocolVersion: PrometheusA2uiProtocolVersion): string {
+  return protocolVersion === PROMETHEUS_A2UI_V1_PROTOCOL_VERSION
+    ? PROMETHEUS_A2UI_V1_CATALOG_ID
+    : PROMETHEUS_A2UI_CATALOG_ID;
+}
+
+/**
+ * Explicit default component allowlist. The official v0.9 and 1.0 basic
+ * catalogs name the same components.
+ */
 export const DEFAULT_PROMETHEUS_A2UI_COMPONENTS = [
   "Text",
   "Image",
@@ -78,8 +103,10 @@ export type CatalogSource<Implementation extends ComponentApi> = Pick<
 >;
 
 export interface AllowlistedCatalogOptions<Implementation extends ComponentApi> {
-  /** Stable catalog id advertised to agents. */
+  /** Stable catalog id advertised to agents; defaults to the id for `protocolVersion`. */
   id?: string;
+  /** Wire protocol version the catalog declares; defaults to `v0.9.1`. Must match the source. */
+  protocolVersion?: PrometheusA2uiProtocolVersion;
   /** Component names allowed from the source catalog. */
   components?: readonly string[];
   /** Function names allowed from the source catalog. */
@@ -127,9 +154,10 @@ export function createAllowlistedCatalog<Implementation extends ComponentApi>(
     return implementation;
   });
 
+  const protocolVersion = options.protocolVersion ?? PROMETHEUS_A2UI_PROTOCOL_VERSION;
   return new OfficialCatalog<Implementation>(
-    options.id ?? PROMETHEUS_A2UI_CATALOG_ID,
-    PROMETHEUS_A2UI_PROTOCOL_VERSION,
+    options.id ?? defaultPrometheusA2uiCatalogId(protocolVersion),
+    protocolVersion,
     components,
     functions,
     source.themeSchema,

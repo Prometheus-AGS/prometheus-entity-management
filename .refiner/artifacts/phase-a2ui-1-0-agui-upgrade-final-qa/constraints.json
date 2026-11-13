@@ -1,0 +1,75 @@
+{
+  "artifact_type": "content",
+  "constraints": [
+    {
+      "id": "scenario-receipts-complete",
+      "description": "Every adopted scenario has a PASS receipt in the passing boundary evidence folder.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "dist/validation.json via deterministic file, hash and openspec checks"
+      }
+    },
+    {
+      "id": "evidence-integrity",
+      "description": "Each receipt's evidence file exists and matches its recorded sha256; every step exited 0.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "dist/validation.json via deterministic file, hash and openspec checks"
+      }
+    },
+    {
+      "id": "changes-archived",
+      "description": "All 12 phase changes are archived with every task checked; none remain active.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "dist/validation.json via deterministic file, hash and openspec checks"
+      }
+    },
+    {
+      "id": "specs-valid",
+      "description": "Merged main specs validate; the six specs created by this phase pass strict validation.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "dist/validation.json via deterministic file, hash and openspec checks"
+      }
+    },
+    {
+      "id": "version-alignment",
+      "description": "The 13 npm packages, release contract, Rust crates and the Flutter package all read 5.0.0.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "dist/validation.json via deterministic file, hash and openspec checks"
+      }
+    },
+    {
+      "id": "docs-cover-changes",
+      "description": "The deployed Docusaurus site documents the 5.0 migration, chat/interrupts, conformance divergences and the visual exception.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "dist/validation.json via deterministic file, hash and openspec checks"
+      }
+    },
+    {
+      "id": "no-publication-overclaim",
+      "description": "Nothing claims 5.0.0 is published before the operator-confirmed publish.",
+      "severity": "blocking",
+      "type": "structural",
+      "validation": {
+        "requires_code_execution": true,
+        "validation_method": "dist/validation.json via deterministic file, hash and openspec checks"
+      }
+    }
+  ]
+}

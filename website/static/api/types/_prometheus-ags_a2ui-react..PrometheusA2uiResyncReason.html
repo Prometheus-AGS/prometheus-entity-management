@@ -12,7 +12,7 @@
 <li><a href="../modules/_prometheus-ags_a2ui-react..html"></a></li>
 <li><a href="" aria-current="page">PrometheusA2uiResyncReason</a></li></ul>
 <h1>Type Alias PrometheusA2uiResyncReason</h1></div>
-<div class="tsd-signature"><span class="tsd-kind-type-alias">PrometheusA2uiResyncReason</span><span class="tsd-signature-symbol">:</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;gap&quot;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;missing-surface&quot;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;buffer-overflow&quot;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;refused&quot;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;stale-action&quot;</span></div>
+<div class="tsd-signature"><span class="tsd-kind-type-alias">PrometheusA2uiResyncReason</span><span class="tsd-signature-symbol">:</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;gap&quot;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;missing-surface&quot;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;buffer-overflow&quot;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;refused&quot;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;stale-action&quot;</span><br/>    <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;producer-failed&quot;</span></div>
 <div class="tsd-type-declaration">
 <h4>Type Declaration</h4>
 <ul>
@@ -30,9 +30,14 @@
 </div></li>
 <li><span class="tsd-signature-type">&quot;stale-action&quot;</span>
 <div class="tsd-comment tsd-typography"><p>A server rejected an action as stale and returned nothing to catch the surface up with.</p>
+</div></li>
+<li><span class="tsd-signature-type">&quot;producer-failed&quot;</span>
+<div class="tsd-comment tsd-typography"><p>The producer reported that generating a surface failed (an AG-UI A2UI
+lifecycle activity with <code>status: &quot;failed&quot;</code>, as <code>@ag-ui/a2ui-middleware</code>
+sends when its recovery attempts are exhausted).</p>
 </div></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/runtime-core-DEyvpYKA.d.ts:62</li></ul></aside></div>
+<li>Defined in packages/a2ui-react/dist/types-8-kX7zD6.d.ts:5320</li></ul></aside></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

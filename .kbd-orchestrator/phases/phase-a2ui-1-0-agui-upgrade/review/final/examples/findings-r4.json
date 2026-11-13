@@ -1,0 +1,23 @@
+{
+  "mode": "diff",
+  "verdict": "PASS",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "WARNING",
+      "file": "examples/flutter-riverpod/lib/features/a2ui/application/a2ui_surface_store.dart",
+      "line": 137,
+      "claim": "The declared-action preflight rejects ordinary data-model content when it happens to contain an action.event structure.",
+      "evidence": "_undeclaredAction checks value['action'] on every map and recursively traverses all value.values, including updateDataModel.value. With declaredActions enabled by agent_surface_provider.dart, a valid data value such as {\"action\":{\"event\":{\"name\":\"business.operation\"}}} therefore causes UNDECLARED_ACTION even though it declares no renderer action.",
+      "suggested_fix": "Restrict the declared-action inspection to action properties of components in updateComponents messages rather than recursively interpreting arbitrary data-model values as component declarations."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

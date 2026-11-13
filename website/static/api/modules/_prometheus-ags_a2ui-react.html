@@ -11,13 +11,13 @@
 <li><a href="" aria-current="page">@prometheus-ags/a2ui-react</a></li></ul>
 <h1>Module @prometheus-ags/a2ui-react</h1></div>
 <section class="tsd-panel tsd-typography"><h1 id="prometheus-agsa2ui-react" class="tsd-anchor-link">@prometheus-ags/a2ui-react<a href="#prometheus-agsa2ui-react" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h1>
-<p>Strict A2UI v1.0 release-candidate compatibility for React over the maintained
-official v0.9.1 renderer, with a default-deny Prometheus entity-graph action
-bridge and an idempotent AG-UI A2UI activity transport (AG-UI 0.0.59 through
-1.x).</p>
+<p>A2UI 1.0 final (and v0.9.1) for React over the official <code>@a2ui/*</code> 0.15.0
+processor, with a default-deny Prometheus entity-graph action bridge, an
+idempotent AG-UI 1.0 A2UI activity transport and AG-UI chat components.</p>
 <blockquote>
-<p>This package carries a 1.0-RC compatibility boundary. It does not claim an
-unpublished native upstream v1 renderer.</p>
+<p>Upgrading from 4.x? The wire format, several public types and the AG-UI chat
+API changed in 5.0.0. See the migration guide on the documentation site
+(<strong>Migration &gt; Migrate to 5.0</strong>).</p>
 </blockquote>
 <p>Guided documentation, with diagrams of the flows below, is on the documentation
 site under <strong>A2UI and AG-UI</strong> (<code>website/docs/a2ui/</code>). This README is the
@@ -33,18 +33,18 @@ reference.</p>
 <tbody>
 <tr>
 <td><code>@prometheus-ags/a2ui-react</code></td>
-<td>A2UI v1.0-RC and v0.9.1 messages, catalogs, surfaces, React rendering, action policy, and AG-UI A2UI activities</td>
+<td>A2UI 1.0 and v0.9.1 messages, catalogs, surfaces, React rendering, action policy, and AG-UI A2UI activities</td>
 </tr>
 <tr>
 <td><code>@prometheus-ags/a2ui-react/ag-ui</code></td>
-<td>Compatibility APIs for the pre-3.0 AG-UI chat/state-event surface</td>
+<td>AG-UI 1.0 chat components and hooks: messages in the entity graph, cancellation, reasoning, interrupts</td>
 </tr>
 </tbody>
 </table>
 <p>A2UI and AG-UI solve different problems. A2UI describes and renders a
 catalog-constrained interface. AG-UI transports run, message, tool, and state
-events. The package root no longer labels the legacy AG-UI chat components as
-official A2UI.</p>
+events. The package root does not label the AG-UI chat components as official
+A2UI.</p>
 <h2 id="pinned-version-axes" class="tsd-anchor-link">Pinned version axes<a href="#pinned-version-axes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
 <p>These numbers are related but are not interchangeable:</p>
 <table>
@@ -57,19 +57,19 @@ official A2UI.</p>
 <tbody>
 <tr>
 <td>Public A2UI input</td>
-<td><code>v1.0</code> RC and <code>v0.9.1</code></td>
+<td><code>1.0</code> (final) and <code>v0.9.1</code>; the <code>v1.0</code> release candidate only with <code>acceptReleaseCandidateInput</code></td>
 </tr>
 <tr>
 <td>Official renderer engine</td>
-<td><code>v0.9.1</code> compatibility boundary</td>
+<td><code>@a2ui/web_core</code> / <code>@a2ui/react</code> <code>0.15.0</code>, native 1.0 and v0.9.1</td>
 </tr>
 <tr>
 <td><code>@a2ui/react</code> distribution</td>
-<td><code>0.12.0</code></td>
+<td><code>0.15.0</code> (bundled)</td>
 </tr>
 <tr>
 <td><code>@a2ui/web_core</code> distribution</td>
-<td><code>0.12.0</code></td>
+<td><code>0.15.0</code> (bundled; types inlined; a dev dependency of this package)</td>
 </tr>
 <tr>
 <td>Markdown renderer</td>
@@ -80,33 +80,40 @@ official A2UI.</p>
 <td><code>4.6.7</code> (upstream A2UI code runs on <code>zod/v3</code>)</td>
 </tr>
 <tr>
-<td>AG-UI activity transport</td>
-<td><code>@ag-ui/core</code> peer <code>&gt;=0.0.59 &lt;0.1.0 || ^1.0.0</code> (developed against <code>1.0.3</code>)</td>
+<td>AG-UI</td>
+<td><code>@ag-ui/core</code> peer <code>^1.0.0</code> (developed against <code>1.0.4</code>)</td>
 </tr>
 </tbody>
 </table>
-<p>The published A2UI packages do not expose the documented v1 renderer entry
-points yet. The bridge therefore validates the v1.0-RC envelope, decomposes its
-embedded surface into the official <code>/v0_9</code> processor, and retains v1-only
-action/function metadata at the runtime boundary. It does not implement a
-second renderer, data model, or surface store.</p>
-<h3 id="dependency-security-" class="tsd-anchor-link">Dependency security (<code>zod</code>, <code>dompurify</code>)<a href="#dependency-security-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<p>The official <code>@a2ui/*</code> code is bundled into <code>dist</code>. Its <code>@a2ui/web_core</code> copy is
-patched to import <code>zod/v3</code> from this package's <code>zod@4.6.7</code>, and markdown is
-sanitised with this package's <code>dompurify@3.4.17</code>, so the code that runs is on the
-patched releases. <code>@a2ui/web_core@0.12.0</code> is still installed for its types and
-brings its own <code>zod@3.25.76</code> (never executed by this package), which
-<code>pnpm audit</code>/<code>npm audit</code> report as GHSA-mrhx-c7xc-m3w5. For an audit-clean tree,
-override it in the consuming app:</p>
-<pre><code class="jsonc"><span class="hl-0">// pnpm (pnpm-workspace.yaml `overrides:` or package.json &quot;pnpm&quot;: { &quot;overrides&quot;: ... })</span><br/><span class="hl-1">{ </span><span class="hl-2">&quot;overrides&quot;</span><span class="hl-1">: { </span><span class="hl-2">&quot;zod&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;4.6.7&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;dompurify&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;3.4.17&quot;</span><span class="hl-1"> } }</span><br/><span class="hl-0">// npm (package.json)</span><br/><span class="hl-1">{ </span><span class="hl-2">&quot;overrides&quot;</span><span class="hl-1">: { </span><span class="hl-2">&quot;zod&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;4.6.7&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;dompurify&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;3.4.17&quot;</span><span class="hl-1"> } }</span>
+<p>Both runtimes hold two catalogs by default: v0.9.1 (<code>urn:prometheus-ags:a2ui:catalog:v3</code>)
+and 1.0 (<code>PROMETHEUS_A2UI_V1_CATALOG_ID</code>, built on the official
+<code>catalogs/basic/v1</code>). The official processor handles 1.0 natively, including
+function messages; this package adds the allowlist, resource limits, action
+policy, all-or-nothing batches and AG-UI reconciliation around it. 1.0
+envelopes go to the processor unchanged apart from translating the spec's
+<code>@catalogId</code>, <code>@metadata</code>, <code>@accessibility</code> and <code>@checks</code> keys to the
+processor's bare keys (a component carrying both forms is <code>invalid-message</code>).
+Passing <code>catalogs</code> replaces the defaults.</p>
+<pre><code class="ts"><span class="hl-0">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-2">PROMETHEUS_A2UI_V1_CATALOG_ID</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">PROMETHEUS_A2UI_V1_PROTOCOL_VERSION</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">createPrometheusA2uiCatalog</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&quot;@prometheus-ags/a2ui-react&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">catalog</span><span class="hl-1"> = </span><span class="hl-6">createPrometheusA2uiCatalog</span><span class="hl-1">({ </span><span class="hl-2">protocolVersion:</span><span class="hl-1"> </span><span class="hl-3">&quot;1.0&quot;</span><span class="hl-1"> }); </span><span class="hl-7">// default is &quot;v0.9.1&quot;</span>
 </code><button type="button">Copy</button></pre>
 
-<p>Only override <code>zod</code> if you do not also run unpatched <code>@a2ui/web_core</code> code
-yourself: upstream <code>web_core</code> uses Zod 3 internals and fails on the <code>zod</code> 4 root
-export.</p>
+<p><strong>Release-candidate input.</strong> Messages with <code>version: &quot;v1.0&quot;</code> (the release
+candidate: <code>path</code> / <code>call</code> bindings, <code>callFunction</code>, <code>actionResponse</code>,
+<code>wantResponse</code>) are refused with <code>unsupported-protocol-version</code> unless the runtime
+is created with <code>acceptReleaseCandidateInput: true</code>, which needs a 1.0 catalog
+and translates the input to 1.0. It is off by default and kept for one minor
+line after 5.0.0.</p>
+<h3 id="dependency-security-" class="tsd-anchor-link">Dependency security (<code>zod</code>, <code>dompurify</code>)<a href="#dependency-security-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>The official <code>@a2ui/*</code> code is bundled into <code>dist</code>, patched to import <code>zod/v3</code>
+from this package's <code>zod@4.6.7</code>, and markdown is sanitised with this package's
+<code>dompurify@3.4.17</code>, so the code that runs is on the patched releases. The
+official types are inlined into this package's declarations, so installing it
+does not install <code>@a2ui/web_core</code> or the <code>zod@3</code> it depends on. The bundle is
+larger than 4.x because the 0.15.0 basic catalog is Lit-based: all ESM outputs
+grew from about 709 KB to 1,051 KB raw (about 155 KB to 227 KB gzip).</p>
 <h2 id="install" class="tsd-anchor-link">Install<a href="#install" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
 <p>This monorepo is pnpm-only:</p>
-<pre><code class="bash"><span class="hl-4">pnpm</span><span class="hl-1"> </span><span class="hl-3">add</span><span class="hl-1"> </span><span class="hl-3">@prometheus-ags/a2ui-react</span><span class="hl-1"> </span><span class="hl-3">@prometheus-ags/entity-graph-core</span><span class="hl-1"> </span><span class="hl-3">react</span><span class="hl-1"> </span><span class="hl-3">react-dom</span>
+<pre><code class="bash"><span class="hl-6">pnpm</span><span class="hl-1"> </span><span class="hl-3">add</span><span class="hl-1"> </span><span class="hl-3">@prometheus-ags/a2ui-react</span><span class="hl-1"> </span><span class="hl-3">@prometheus-ags/entity-graph-core</span><span class="hl-1"> </span><span class="hl-3">react</span><span class="hl-1"> </span><span class="hl-3">react-dom</span>
 </code><button type="button">Copy</button></pre>
 
 <p>React 19 is the supported 3.0 line. The package provides ESM and CommonJS
@@ -114,16 +121,21 @@ runtimes plus declarations verified in strict NodeNext and Node16 consumers.</p>
 <h2 id="quick-start" class="tsd-anchor-link">Quick start<a href="#quick-start" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
 <p>Create application authority explicitly, then pass official messages to the
 runtime and render the resulting surface:</p>
-<pre><code class="tsx"><span class="hl-5">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-6">ENTITY_GRAPH_A2UI_ACTIONS</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-6">PrometheusA2uiProvider</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-6">PrometheusA2uiSurface</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-6">createEntityGraphA2uiActionPolicy</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-6">createPrometheusA2uiRuntime</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-5">from</span><span class="hl-1"> </span><span class="hl-3">&quot;@prometheus-ags/a2ui-react&quot;</span><span class="hl-1">;</span><br/><span class="hl-5">import</span><span class="hl-1"> { </span><span class="hl-6">graphStore</span><span class="hl-1"> } </span><span class="hl-5">from</span><span class="hl-1"> </span><span class="hl-3">&quot;@prometheus-ags/entity-graph-core&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-7">const</span><span class="hl-1"> </span><span class="hl-8">policy</span><span class="hl-1"> = </span><span class="hl-4">createEntityGraphA2uiActionPolicy</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-6">graphStore</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-6">entities:</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-6">Order:</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-6">actions:</span><span class="hl-1"> [</span><span class="hl-8">ENTITY_GRAPH_A2UI_ACTIONS</span><span class="hl-1">.</span><span class="hl-6">upsert</span><span class="hl-1">],</span><br/><span class="hl-1">      </span><span class="hl-6">fields:</span><span class="hl-1"> [</span><span class="hl-3">&quot;status&quot;</span><span class="hl-1">, </span><span class="hl-3">&quot;total&quot;</span><span class="hl-1">],</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">  </span><span class="hl-4">authorize</span><span class="hl-6">:</span><span class="hl-1"> ({ </span><span class="hl-6">tenantId</span><span class="hl-1">, </span><span class="hl-6">entityType</span><span class="hl-1"> }) </span><span class="hl-7">=&gt;</span><br/><span class="hl-1">    </span><span class="hl-6">tenantId</span><span class="hl-1"> === </span><span class="hl-3">&quot;tenant-acme&quot;</span><span class="hl-1"> &amp;&amp; </span><span class="hl-6">entityType</span><span class="hl-1"> === </span><span class="hl-3">&quot;Order&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">requestApproval</span><span class="hl-6">:</span><span class="hl-1"> </span><span class="hl-7">async</span><span class="hl-1"> ({ </span><span class="hl-6">action</span><span class="hl-1"> }) </span><span class="hl-7">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-0">// Replace/remove rules reach this callback after authorization.</span><br/><span class="hl-1">    </span><span class="hl-5">return</span><span class="hl-1"> </span><span class="hl-6">window</span><span class="hl-1">.</span><span class="hl-4">confirm</span><span class="hl-1">(</span><span class="hl-3">`Approve </span><span class="hl-7">${</span><span class="hl-6">action</span><span class="hl-9">.</span><span class="hl-6">name</span><span class="hl-7">}</span><span class="hl-3">?`</span><span class="hl-1">);</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-5">export</span><span class="hl-1"> </span><span class="hl-7">const</span><span class="hl-1"> </span><span class="hl-8">a2uiRuntime</span><span class="hl-1"> = </span><span class="hl-4">createPrometheusA2uiRuntime</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-6">actionPolicy:</span><span class="hl-1"> </span><span class="hl-6">policy</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">onActionDecision</span><span class="hl-6">:</span><span class="hl-1"> (</span><span class="hl-6">decision</span><span class="hl-1">) </span><span class="hl-7">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-0">// Persist this receipt in your application audit trail.</span><br/><span class="hl-1">    </span><span class="hl-6">console</span><span class="hl-1">.</span><span class="hl-4">info</span><span class="hl-1">(</span><span class="hl-3">&quot;A2UI decision&quot;</span><span class="hl-1">, </span><span class="hl-6">decision</span><span class="hl-1">);</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-6">a2uiRuntime</span><span class="hl-1">.</span><span class="hl-4">processMessages</span><span class="hl-1">([</span><br/><span class="hl-1">  {</span><br/><span class="hl-1">    </span><span class="hl-6">version:</span><span class="hl-1"> </span><span class="hl-3">&quot;v1.0&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-6">createSurface:</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-6">surfaceId:</span><span class="hl-1"> </span><span class="hl-3">&quot;order-review&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-6">catalogId:</span><span class="hl-1"> </span><span class="hl-3">&quot;urn:prometheus-ags:a2ui:catalog:v3&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-6">components:</span><span class="hl-1"> [</span><br/><span class="hl-1">        { </span><span class="hl-6">id:</span><span class="hl-1"> </span><span class="hl-3">&quot;root&quot;</span><span class="hl-1">, </span><span class="hl-6">component:</span><span class="hl-1"> </span><span class="hl-3">&quot;Column&quot;</span><span class="hl-1">, </span><span class="hl-6">children:</span><span class="hl-1"> [</span><span class="hl-3">&quot;title&quot;</span><span class="hl-1">] },</span><br/><span class="hl-1">        { </span><span class="hl-6">id:</span><span class="hl-1"> </span><span class="hl-3">&quot;title&quot;</span><span class="hl-1">, </span><span class="hl-6">component:</span><span class="hl-1"> </span><span class="hl-3">&quot;Text&quot;</span><span class="hl-1">, </span><span class="hl-6">text:</span><span class="hl-1"> </span><span class="hl-3">&quot;Review order&quot;</span><span class="hl-1"> },</span><br/><span class="hl-1">      ],</span><br/><span class="hl-1">      </span><span class="hl-6">dataModel:</span><span class="hl-1"> { </span><span class="hl-6">status:</span><span class="hl-1"> </span><span class="hl-3">&quot;ready&quot;</span><span class="hl-1"> },</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">]);</span><br/><br/><span class="hl-5">export</span><span class="hl-1"> </span><span class="hl-7">function</span><span class="hl-1"> </span><span class="hl-4">OrderAgentSurface</span><span class="hl-1">() {</span><br/><span class="hl-1">  </span><span class="hl-5">return</span><span class="hl-1"> (</span><br/><span class="hl-1">    </span><span class="hl-10">&lt;</span><span class="hl-11">PrometheusA2uiProvider</span><span class="hl-1"> </span><span class="hl-12">runtime</span><span class="hl-1">=</span><span class="hl-7">{</span><span class="hl-6">a2uiRuntime</span><span class="hl-7">}</span><span class="hl-10">&gt;</span><br/><span class="hl-1">      </span><span class="hl-10">&lt;</span><span class="hl-11">PrometheusA2uiSurface</span><br/><span class="hl-1">        </span><span class="hl-12">surfaceId</span><span class="hl-1">=</span><span class="hl-3">&quot;order-review&quot;</span><br/><span class="hl-1">        </span><span class="hl-12">fallback</span><span class="hl-1">=</span><span class="hl-7">{</span><span class="hl-10">&lt;</span><span class="hl-13">p</span><span class="hl-9"> </span><span class="hl-12">role</span><span class="hl-1">=</span><span class="hl-3">&quot;status&quot;</span><span class="hl-10">&gt;</span><span class="hl-9">Preparing agent surface…</span><span class="hl-10">&lt;/</span><span class="hl-13">p</span><span class="hl-10">&gt;</span><span class="hl-7">}</span><br/><span class="hl-1">      </span><span class="hl-10">/&gt;</span><br/><span class="hl-1">    </span><span class="hl-10">&lt;/</span><span class="hl-11">PrometheusA2uiProvider</span><span class="hl-10">&gt;</span><br/><span class="hl-1">  );</span><br/><span class="hl-1">}</span>
+<pre><code class="tsx"><span class="hl-0">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-2">ENTITY_GRAPH_A2UI_ACTIONS</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">PROMETHEUS_A2UI_V1_CATALOG_ID</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">PROMETHEUS_A2UI_V1_PROTOCOL_VERSION</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">PrometheusA2uiProvider</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">PrometheusA2uiSurface</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">createEntityGraphA2uiActionPolicy</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">createPrometheusA2uiRuntime</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&quot;@prometheus-ags/a2ui-react&quot;</span><span class="hl-1">;</span><br/><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">graphStore</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&quot;@prometheus-ags/entity-graph-core&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">policy</span><span class="hl-1"> = </span><span class="hl-6">createEntityGraphA2uiActionPolicy</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-2">graphStore</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">entities:</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-2">Order:</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-2">actions:</span><span class="hl-1"> [</span><span class="hl-5">ENTITY_GRAPH_A2UI_ACTIONS</span><span class="hl-1">.</span><span class="hl-2">upsert</span><span class="hl-1">],</span><br/><span class="hl-1">      </span><span class="hl-2">fields:</span><span class="hl-1"> [</span><span class="hl-3">&quot;status&quot;</span><span class="hl-1">, </span><span class="hl-3">&quot;total&quot;</span><span class="hl-1">],</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">  </span><span class="hl-6">authorize</span><span class="hl-2">:</span><span class="hl-1"> ({ </span><span class="hl-2">tenantId</span><span class="hl-1">, </span><span class="hl-2">entityType</span><span class="hl-1"> }) </span><span class="hl-4">=&gt;</span><br/><span class="hl-1">    </span><span class="hl-2">tenantId</span><span class="hl-1"> === </span><span class="hl-3">&quot;tenant-acme&quot;</span><span class="hl-1"> &amp;&amp; </span><span class="hl-2">entityType</span><span class="hl-1"> === </span><span class="hl-3">&quot;Order&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-6">requestApproval</span><span class="hl-2">:</span><span class="hl-1"> </span><span class="hl-4">async</span><span class="hl-1"> ({ </span><span class="hl-2">action</span><span class="hl-1"> }) </span><span class="hl-4">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-7">// Replace/remove rules reach this callback after authorization.</span><br/><span class="hl-1">    </span><span class="hl-0">return</span><span class="hl-1"> </span><span class="hl-2">window</span><span class="hl-1">.</span><span class="hl-6">confirm</span><span class="hl-1">(</span><span class="hl-3">`Approve </span><span class="hl-4">${</span><span class="hl-2">action</span><span class="hl-8">.</span><span class="hl-2">name</span><span class="hl-4">}</span><span class="hl-3">?`</span><span class="hl-1">);</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-0">export</span><span class="hl-1"> </span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">a2uiRuntime</span><span class="hl-1"> = </span><span class="hl-6">createPrometheusA2uiRuntime</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-2">actionPolicy:</span><span class="hl-1"> </span><span class="hl-2">policy</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-6">onActionDecision</span><span class="hl-2">:</span><span class="hl-1"> (</span><span class="hl-2">decision</span><span class="hl-1">) </span><span class="hl-4">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-7">// Persist this receipt in your application audit trail.</span><br/><span class="hl-1">    </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">info</span><span class="hl-1">(</span><span class="hl-3">&quot;A2UI decision&quot;</span><span class="hl-1">, </span><span class="hl-2">decision</span><span class="hl-1">);</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-2">a2uiRuntime</span><span class="hl-1">.</span><span class="hl-6">processMessages</span><span class="hl-1">([</span><br/><span class="hl-1">  {</span><br/><span class="hl-1">    </span><span class="hl-2">version:</span><span class="hl-1"> </span><span class="hl-5">PROMETHEUS_A2UI_V1_PROTOCOL_VERSION</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-2">createSurface:</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-2">surfaceId:</span><span class="hl-1"> </span><span class="hl-3">&quot;order-review&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-2">catalogId:</span><span class="hl-1"> </span><span class="hl-5">PROMETHEUS_A2UI_V1_CATALOG_ID</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-2">components:</span><span class="hl-1"> [</span><br/><span class="hl-1">        { </span><span class="hl-2">id:</span><span class="hl-1"> </span><span class="hl-3">&quot;root&quot;</span><span class="hl-1">, </span><span class="hl-2">component:</span><span class="hl-1"> </span><span class="hl-3">&quot;Column&quot;</span><span class="hl-1">, </span><span class="hl-2">children:</span><span class="hl-1"> [</span><span class="hl-3">&quot;title&quot;</span><span class="hl-1">] },</span><br/><span class="hl-1">        { </span><span class="hl-2">id:</span><span class="hl-1"> </span><span class="hl-3">&quot;title&quot;</span><span class="hl-1">, </span><span class="hl-2">component:</span><span class="hl-1"> </span><span class="hl-3">&quot;Text&quot;</span><span class="hl-1">, </span><span class="hl-2">text:</span><span class="hl-1"> </span><span class="hl-3">&quot;Review order&quot;</span><span class="hl-1"> },</span><br/><span class="hl-1">      ],</span><br/><span class="hl-1">      </span><span class="hl-2">dataModel:</span><span class="hl-1"> { </span><span class="hl-2">status:</span><span class="hl-1"> </span><span class="hl-3">&quot;ready&quot;</span><span class="hl-1"> },</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">]);</span><br/><br/><span class="hl-0">export</span><span class="hl-1"> </span><span class="hl-4">function</span><span class="hl-1"> </span><span class="hl-6">OrderAgentSurface</span><span class="hl-1">() {</span><br/><span class="hl-1">  </span><span class="hl-0">return</span><span class="hl-1"> (</span><br/><span class="hl-1">    </span><span class="hl-9">&lt;</span><span class="hl-10">PrometheusA2uiProvider</span><span class="hl-1"> </span><span class="hl-11">runtime</span><span class="hl-1">=</span><span class="hl-4">{</span><span class="hl-2">a2uiRuntime</span><span class="hl-4">}</span><span class="hl-9">&gt;</span><br/><span class="hl-1">      </span><span class="hl-9">&lt;</span><span class="hl-10">PrometheusA2uiSurface</span><br/><span class="hl-1">        </span><span class="hl-11">surfaceId</span><span class="hl-1">=</span><span class="hl-3">&quot;order-review&quot;</span><br/><span class="hl-1">        </span><span class="hl-11">fallback</span><span class="hl-1">=</span><span class="hl-4">{</span><span class="hl-9">&lt;</span><span class="hl-12">p</span><span class="hl-8"> </span><span class="hl-11">role</span><span class="hl-1">=</span><span class="hl-3">&quot;status&quot;</span><span class="hl-9">&gt;</span><span class="hl-8">Preparing agent surface…</span><span class="hl-9">&lt;/</span><span class="hl-12">p</span><span class="hl-9">&gt;</span><span class="hl-4">}</span><br/><span class="hl-1">      </span><span class="hl-9">/&gt;</span><br/><span class="hl-1">    </span><span class="hl-9">&lt;/</span><span class="hl-10">PrometheusA2uiProvider</span><span class="hl-9">&gt;</span><br/><span class="hl-1">  );</span><br/><span class="hl-1">}</span>
 </code><button type="button">Copy</button></pre>
 
 <p>Call <code>a2uiRuntime.dispose()</code> when the application-owned runtime is no longer
 needed.</p>
 <p><code>processAgUiEvent(event)</code> consumes the AG-UI A2UI activity convention
-(0.0.59 and 1.x): <code>ACTIVITY_SNAPSHOT</code> and <code>ACTIVITY_DELTA</code>, activity type
+(AG-UI 1.x): <code>ACTIVITY_SNAPSHOT</code> and <code>ACTIVITY_DELTA</code>, activity type
 <code>a2ui-surface</code>, and <code>content.a2ui_operations</code>. Transport acceptance never bypasses the same
 schema, catalog, action-policy, or approval gates used by direct messages. It
 also accepts <code>MESSAGES_SNAPSHOT</code> (see below).</p>
+<p><code>@ag-ui/a2ui-middleware</code> also sends <code>a2ui-surface</code> activities that carry progress
+instead of operations (<code>content.status</code> of <code>building</code>, <code>retrying</code> or <code>failed</code>, no
+<code>a2ui_operations</code>). They are accepted without changing any surface; a <code>failed</code>
+one is reported once per message id as a resync request with reason
+<code>producer-failed</code>.</p>
 <h3 id="redelivery-restatement-and-ordering" class="tsd-anchor-link">Redelivery, restatement and ordering<a href="#redelivery-restatement-and-ordering" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <p>AG-UI clients redeliver: on reconnect replay, when a <code>MESSAGES_SNAPSHOT</code>
 restates a thread, and when two streams carry the same activity. Delivery is
@@ -172,7 +184,7 @@ activity messages is not handled.</li>
 <h3 id="incremental-updates-" class="tsd-anchor-link">Incremental updates (<code>ACTIVITY_DELTA</code>)<a href="#incremental-updates-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <p>A producer can update a long-lived surface without resending it. A delta applies
 on top of the version it names and produces the next one:</p>
-<pre><code class="json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-2">&quot;type&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;ACTIVITY_DELTA&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">&quot;messageId&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;m1&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">&quot;activityType&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;a2ui-surface&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">&quot;patch&quot;</span><span class="hl-1">: [</span><br/><span class="hl-1">    { </span><span class="hl-2">&quot;op&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;test&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;path&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;/surfaceVersions/s1/version&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;value&quot;</span><span class="hl-1">: </span><span class="hl-14">3</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-2">&quot;op&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;add&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;path&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;/a2ui_operations/-&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;value&quot;</span><span class="hl-1">: { </span><span class="hl-2">&quot;version&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;v0.9.1&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;updateComponents&quot;</span><span class="hl-1">: { </span><span class="hl-2">&quot;surfaceId&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;s1&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;components&quot;</span><span class="hl-1">: [] } } }</span><br/><span class="hl-1">  ]</span><br/><span class="hl-1">}</span>
+<pre><code class="json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-13">&quot;type&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;ACTIVITY_DELTA&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-13">&quot;messageId&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;m1&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-13">&quot;activityType&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;a2ui-surface&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-13">&quot;patch&quot;</span><span class="hl-1">: [</span><br/><span class="hl-1">    { </span><span class="hl-13">&quot;op&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;test&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;path&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;/surfaceVersions/s1/version&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;value&quot;</span><span class="hl-1">: </span><span class="hl-14">3</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-13">&quot;op&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;add&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;path&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;/a2ui_operations/-&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;value&quot;</span><span class="hl-1">: { </span><span class="hl-13">&quot;version&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;1.0&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;updateComponents&quot;</span><span class="hl-1">: { </span><span class="hl-13">&quot;surfaceId&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;s1&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;components&quot;</span><span class="hl-1">: [] } } }</span><br/><span class="hl-1">  ]</span><br/><span class="hl-1">}</span>
 </code><button type="button">Copy</button></pre>
 
 <p>Only these two patch operations are accepted. A delta using any other operation,
@@ -196,7 +208,7 @@ producer had accepted (a disallowed component, a topology error, a limit): the
 surface would otherwise sit at its last version with no signal. The same event
 reports a <code>batch-refused</code> producer fault (limit rejections report their own).
 AG-UI has no resync event, so send the request upstream in <code>forwardedProps</code>:</p>
-<pre><code class="ts"><span class="hl-7">const</span><span class="hl-1"> </span><span class="hl-8">runtime</span><span class="hl-1"> = </span><span class="hl-4">createPrometheusA2uiRuntime</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-4">onResyncNeeded</span><span class="hl-6">:</span><span class="hl-1"> (</span><span class="hl-6">request</span><span class="hl-1">) </span><span class="hl-7">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-0">// request.reason: &quot;gap&quot; | &quot;missing-surface&quot; | &quot;buffer-overflow&quot; | &quot;refused&quot; | &quot;stale-action&quot;</span><br/><span class="hl-1">    </span><span class="hl-4">sendRunInput</span><span class="hl-1">({ </span><span class="hl-6">forwardedProps:</span><span class="hl-1"> </span><span class="hl-4">buildA2uiForwardedProps</span><span class="hl-1">({ </span><span class="hl-6">resync:</span><span class="hl-1"> { </span><span class="hl-6">held:</span><span class="hl-1"> </span><span class="hl-6">request</span><span class="hl-1">.</span><span class="hl-6">held</span><span class="hl-1"> } }) });</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-6">runtime</span><span class="hl-1">.</span><span class="hl-4">getHeldVersions</span><span class="hl-1">(); </span><span class="hl-0">// { s1: { epoch: 0, version: 3 } }</span><br/><span class="hl-6">runtime</span><span class="hl-1">.</span><span class="hl-4">getResyncForwardedProps</span><span class="hl-1">(); </span><span class="hl-0">// the same, shaped for forwardedProps</span>
+<pre><code class="ts"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">runtime</span><span class="hl-1"> = </span><span class="hl-6">createPrometheusA2uiRuntime</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-6">onResyncNeeded</span><span class="hl-2">:</span><span class="hl-1"> (</span><span class="hl-2">request</span><span class="hl-1">) </span><span class="hl-4">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-7">// request.reason: &quot;gap&quot; | &quot;missing-surface&quot; | &quot;buffer-overflow&quot; | &quot;refused&quot; | &quot;stale-action&quot; | &quot;producer-failed&quot;</span><br/><span class="hl-1">    </span><span class="hl-6">sendRunInput</span><span class="hl-1">({ </span><span class="hl-2">forwardedProps:</span><span class="hl-1"> </span><span class="hl-6">buildA2uiForwardedProps</span><span class="hl-1">({ </span><span class="hl-2">resync:</span><span class="hl-1"> { </span><span class="hl-2">held:</span><span class="hl-1"> </span><span class="hl-2">request</span><span class="hl-1">.</span><span class="hl-2">held</span><span class="hl-1"> } }) });</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-2">runtime</span><span class="hl-1">.</span><span class="hl-6">getHeldVersions</span><span class="hl-1">(); </span><span class="hl-7">// { s1: { epoch: 0, version: 3 } }</span><br/><span class="hl-2">runtime</span><span class="hl-1">.</span><span class="hl-6">getResyncForwardedProps</span><span class="hl-1">(); </span><span class="hl-7">// the same, shaped for forwardedProps</span>
 </code><button type="button">Copy</button></pre>
 
 <p><code>dispose()</code> clears the buffer and every pending timer.</p>
@@ -210,7 +222,7 @@ error therefore cannot partially commit an earlier message to the live runtime.<
 <p><code>onActionEnvelope(envelope)</code> is called for every action the action policy
 <strong>executed</strong>, on v0.9.1 and v1.0 surfaces alike. A denied action never leaves
 the runtime. Put <code>envelope.forwardedProps</code> into the next AG-UI run input:</p>
-<pre><code class="json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-2">&quot;a2uiAction&quot;</span><span class="hl-1">: {</span><br/><span class="hl-1">    </span><span class="hl-2">&quot;userAction&quot;</span><span class="hl-1">: { </span><span class="hl-2">&quot;name&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;save&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;surfaceId&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;s1&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;sourceComponentId&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;b1&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;timestamp&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;...&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;context&quot;</span><span class="hl-1">: {} },</span><br/><span class="hl-1">    </span><span class="hl-2">&quot;actionId&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;01a1828e-cdf8-7204-9517-4a7080fc09d9&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-2">&quot;heldVersion&quot;</span><span class="hl-1">: { </span><span class="hl-2">&quot;epoch&quot;</span><span class="hl-1">: </span><span class="hl-14">0</span><span class="hl-1">, </span><span class="hl-2">&quot;version&quot;</span><span class="hl-1">: </span><span class="hl-14">3</span><span class="hl-1"> },</span><br/><span class="hl-1">    </span><span class="hl-2">&quot;dataModel&quot;</span><span class="hl-1">: { </span><span class="hl-2">&quot;version&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;v0.9.1&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;surfaces&quot;</span><span class="hl-1">: { </span><span class="hl-2">&quot;s1&quot;</span><span class="hl-1">: {} } }</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span>
+<pre><code class="json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-13">&quot;a2uiAction&quot;</span><span class="hl-1">: {</span><br/><span class="hl-1">    </span><span class="hl-13">&quot;userAction&quot;</span><span class="hl-1">: { </span><span class="hl-13">&quot;name&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;save&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;surfaceId&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;s1&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;sourceComponentId&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;b1&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;timestamp&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;...&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;context&quot;</span><span class="hl-1">: {} },</span><br/><span class="hl-1">    </span><span class="hl-13">&quot;actionId&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;01a1828e-cdf8-7204-9517-4a7080fc09d9&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-13">&quot;heldVersion&quot;</span><span class="hl-1">: { </span><span class="hl-13">&quot;epoch&quot;</span><span class="hl-1">: </span><span class="hl-14">0</span><span class="hl-1">, </span><span class="hl-13">&quot;version&quot;</span><span class="hl-1">: </span><span class="hl-14">3</span><span class="hl-1"> },</span><br/><span class="hl-1">    </span><span class="hl-13">&quot;dataModel&quot;</span><span class="hl-1">: { </span><span class="hl-13">&quot;version&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;v0.9.1&quot;</span><span class="hl-1">, </span><span class="hl-13">&quot;surfaces&quot;</span><span class="hl-1">: { </span><span class="hl-13">&quot;s1&quot;</span><span class="hl-1">: {} } }</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span>
 </code><button type="button">Copy</button></pre>
 
 <ul>
@@ -225,12 +237,11 @@ server can tell a stale action from a current one. It is absent for a surface
 with no versioned state.</li>
 <li><code>dataModel</code> is present only when the surface sets <code>sendDataModel</code>.</li>
 </ul>
-<p><strong>Two different ids.</strong> The v1.0 <code>onRendererMessage</code> action message can also
-carry an <code>actionId</code>. That is a <em>correlation</em> id for <code>wantResponse</code> actions
-(<code>surface:component:n</code>, unique only within one runtime instance) that matches an
-<code>actionResponse</code> to its action. It is unchanged. The envelope's <code>actionId</code> is an
-<em>idempotency</em> id and is global. They do different jobs; do not use one for the
-other.</p>
+<p><strong>One idempotency id.</strong> The envelope's <code>actionId</code> is global and exists for
+idempotency. A 1.0 surface has no response-aware actions: <code>wantResponse</code>,
+<code>responsePath</code> and the correlation id that matched an <code>actionResponse</code> were
+release-candidate features. To get an answer from the agent, call
+<code>runtime.callAgentFunction(...)</code> (see below).</p>
 <p><code>runtime.retryAction(actionId)</code> resends the original envelope under the same id.
 The runtime owns the retry because a host that resent on its own would mint a
 new id and defeat idempotency. The resent envelope keeps the <code>heldVersion</code> and
@@ -238,7 +249,7 @@ data model from when the action fired. It returns <code>false</code> for an unkn
 last 100 envelopes are retained) or when no handler is installed.</p>
 <p>When a server rejects an action as stale, pass what it returns to
 <code>runtime.applyStaleActionRejection</code>:</p>
-<pre><code class="json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-2">&quot;actionId&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;01a1828e-cdf8-7204-9517-4a7080fc09d9&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">&quot;a2ui_operations&quot;</span><span class="hl-1">: [],</span><br/><span class="hl-1">  </span><span class="hl-2">&quot;surfaceVersions&quot;</span><span class="hl-1">: { </span><span class="hl-2">&quot;s1&quot;</span><span class="hl-1">: { </span><span class="hl-2">&quot;epoch&quot;</span><span class="hl-1">: </span><span class="hl-14">0</span><span class="hl-1">, </span><span class="hl-2">&quot;version&quot;</span><span class="hl-1">: </span><span class="hl-14">5</span><span class="hl-1"> } }</span><br/><span class="hl-1">}</span>
+<pre><code class="json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-13">&quot;actionId&quot;</span><span class="hl-1">: </span><span class="hl-3">&quot;01a1828e-cdf8-7204-9517-4a7080fc09d9&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-13">&quot;a2ui_operations&quot;</span><span class="hl-1">: [],</span><br/><span class="hl-1">  </span><span class="hl-13">&quot;surfaceVersions&quot;</span><span class="hl-1">: { </span><span class="hl-13">&quot;s1&quot;</span><span class="hl-1">: { </span><span class="hl-13">&quot;epoch&quot;</span><span class="hl-1">: </span><span class="hl-14">0</span><span class="hl-1">, </span><span class="hl-13">&quot;version&quot;</span><span class="hl-1">: </span><span class="hl-14">5</span><span class="hl-1"> } }</span><br/><span class="hl-1">}</span>
 </code><button type="button">Copy</button></pre>
 
 <p><code>a2ui_operations</code> are the operations since the version the client held, and
@@ -246,6 +257,24 @@ last 100 envelopes are retained) or when no handler is installed.</p>
 same ordering and limits as any activity, so a repeated rejection changes
 nothing. A rejection carrying no operations cannot repair the surface, so the
 runtime calls <code>onResyncNeeded</code> with reason <code>&quot;stale-action&quot;</code>.</p>
+<h3 id="functions-and-renderer-to-agent-messages-a2ui-10" class="tsd-anchor-link">Functions and renderer-to-agent messages (A2UI 1.0)<a href="#functions-and-renderer-to-agent-messages-a2ui-10" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>1.0 splits function calls into four messages. <code>callRendererFunction</code> (agent to
+renderer) is run by the official processor: the function must resolve in a
+registered catalog and pass its <code>allowedCallers</code> and user-activation checks,
+otherwise the answer is an <code>INVALID_FUNCTION_CALL</code> error; it is answered by
+<code>rendererFunctionResponse</code>. <code>callAgentFunction</code> (renderer to agent) is answered
+by <code>agentFunctionResponse</code>. <code>openUrl</code> stays out of the default allowlist.</p>
+<p>Replies and requests leave through <code>onRendererMessage</code>, which receives the
+official 1.0 renderer-to-agent messages (<code>action</code>, <code>callAgentFunction</code>,
+<code>rendererFunctionResponse</code>, <code>error</code>). An executed action on a 1.0 surface is sent
+there as a 1.0 <code>action</code> message after the action policy decided it; a refused 1.0
+call sends the agent a 1.0 <code>error</code>.</p>
+<pre><code class="ts"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">runtime</span><span class="hl-1"> = </span><span class="hl-6">createPrometheusA2uiRuntime</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-6">onRendererMessage</span><span class="hl-2">:</span><span class="hl-1"> (</span><span class="hl-2">message</span><span class="hl-1">) </span><span class="hl-4">=&gt;</span><span class="hl-1"> </span><span class="hl-6">sendToAgent</span><span class="hl-1">(</span><span class="hl-2">message</span><span class="hl-1">),</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-7">// Resolves with the agent&#39;s answer. `writeTo` also writes it into the surface&#39;s</span><br/><span class="hl-7">// data model through processMessages, so the resource limits apply.</span><br/><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">runtime</span><span class="hl-1">.</span><span class="hl-6">callAgentFunction</span><span class="hl-1">(</span><br/><span class="hl-1">  </span><span class="hl-3">&quot;order-review&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  { </span><span class="hl-2">call:</span><span class="hl-1"> </span><span class="hl-3">&quot;refreshOrders&quot;</span><span class="hl-1">, </span><span class="hl-2">args:</span><span class="hl-1"> { </span><span class="hl-2">status:</span><span class="hl-1"> </span><span class="hl-3">&quot;open&quot;</span><span class="hl-1"> } },</span><br/><span class="hl-1">  { </span><span class="hl-2">writeTo:</span><span class="hl-1"> </span><span class="hl-3">&quot;/orders&quot;</span><span class="hl-1">, </span><span class="hl-2">timeoutMs:</span><span class="hl-1"> </span><span class="hl-14">10_000</span><span class="hl-1"> },</span><br/><span class="hl-1">);</span>
+</code><button type="button">Copy</button></pre>
+
+<p><code>onFunctionCall</code> (4.x app-owned function calls) is removed; so are
+<code>wantResponse</code> and <code>responsePath</code> on actions. <code>dispose()</code> rejects pending
+<code>callAgentFunction</code> calls.</p>
 <h2 id="the-security-boundary" class="tsd-anchor-link">The security boundary<a href="#the-security-boundary" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
 <p><strong>Protocol validity never grants application authority.</strong></p>
 <p>Think of the catalog as an approved vocabulary, not a database credential. The
@@ -254,7 +283,7 @@ application can decide whether that action may affect a tenant, entity, or
 field.</p>
 <p>The entity-graph policy therefore fails closed:</p>
 <ol>
-<li>The action must match the official v0.9.1 schema.</li>
+<li>The action must match the official A2UI action schema for the surface's protocol version.</li>
 <li>The exact action name must be registered.</li>
 <li>Its context must match the application schema.</li>
 <li>The entity type, action, and every written field must be allowlisted.</li>
@@ -343,7 +372,7 @@ more room raises specific limits; nothing is silently truncated.</p>
 </table>
 <p>The defaults are provisional estimates, not measurements. They are exported as
 <code>DEFAULT_PROMETHEUS_A2UI_LIMITS</code>.</p>
-<pre><code class="ts"><span class="hl-7">const</span><span class="hl-1"> </span><span class="hl-8">runtime</span><span class="hl-1"> = </span><span class="hl-4">createPrometheusA2uiRuntime</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-6">limits:</span><span class="hl-1"> { </span><span class="hl-6">maxSurfaces:</span><span class="hl-1"> </span><span class="hl-14">200</span><span class="hl-1">, </span><span class="hl-6">maxComponentsPerSurface:</span><span class="hl-1"> </span><span class="hl-14">5_000</span><span class="hl-1"> },</span><br/><span class="hl-1">  </span><span class="hl-4">onProducerFault</span><span class="hl-6">:</span><span class="hl-1"> (</span><span class="hl-6">fault</span><span class="hl-1">) </span><span class="hl-7">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-0">// { kind: &quot;limit-exceeded&quot;, limit, max, attempted, current?, surfaceId? }</span><br/><span class="hl-1">    </span><span class="hl-4">reportToTelemetry</span><span class="hl-1">(</span><span class="hl-6">fault</span><span class="hl-1">);</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span>
+<pre><code class="ts"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">runtime</span><span class="hl-1"> = </span><span class="hl-6">createPrometheusA2uiRuntime</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-2">limits:</span><span class="hl-1"> { </span><span class="hl-2">maxSurfaces:</span><span class="hl-1"> </span><span class="hl-14">200</span><span class="hl-1">, </span><span class="hl-2">maxComponentsPerSurface:</span><span class="hl-1"> </span><span class="hl-14">5_000</span><span class="hl-1"> },</span><br/><span class="hl-1">  </span><span class="hl-6">onProducerFault</span><span class="hl-2">:</span><span class="hl-1"> (</span><span class="hl-2">fault</span><span class="hl-1">) </span><span class="hl-4">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-7">// { kind: &quot;limit-exceeded&quot;, limit, max, attempted, current?, surfaceId? }</span><br/><span class="hl-1">    </span><span class="hl-6">reportToTelemetry</span><span class="hl-1">(</span><span class="hl-2">fault</span><span class="hl-1">);</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">});</span>
 </code><button type="button">Copy</button></pre>
 
 <p>Every limit must be a positive safe integer, and an unknown limit name throws at
@@ -359,12 +388,12 @@ goes through <code>processMessages</code>, so it is covered too.</p>
 the raw input. The state limits are checked on the state the call <em>would</em>
 produce, measured on the same shadow processor that preflights the batch, so
 the numbers are exact.</p>
-<p><strong>Action responses.</strong> A v1.0 <code>actionResponse</code> value written to a surface's
-<code>responsePath</code> is producer input and goes through the same check. A rejection
+<p><strong>Agent function answers.</strong> A <code>callAgentFunction</code> answer written with <code>writeTo</code> is
+producer input and goes through the same check. A rejection
 there is reported through <code>onProducerFault</code>, leaves the surface unchanged, and
 does not undo the messages of the surrounding call that were already applied.</p>
 <p><strong>Changing limits at runtime.</strong></p>
-<pre><code class="ts"><span class="hl-6">runtime</span><span class="hl-1">.</span><span class="hl-4">setLimits</span><span class="hl-1">({ </span><span class="hl-6">maxSurfaces:</span><span class="hl-1"> </span><span class="hl-14">10</span><span class="hl-1"> }); </span><span class="hl-0">// for example on a constrained device</span><br/><span class="hl-6">runtime</span><span class="hl-1">.</span><span class="hl-4">getLimitUsage</span><span class="hl-1">(); </span><span class="hl-0">// { maxSurfaces: { current, max }, ... }</span>
+<pre><code class="ts"><span class="hl-2">runtime</span><span class="hl-1">.</span><span class="hl-6">setLimits</span><span class="hl-1">({ </span><span class="hl-2">maxSurfaces:</span><span class="hl-1"> </span><span class="hl-14">10</span><span class="hl-1"> }); </span><span class="hl-7">// for example on a constrained device</span><br/><span class="hl-2">runtime</span><span class="hl-1">.</span><span class="hl-6">getLimitUsage</span><span class="hl-1">(); </span><span class="hl-7">// { maxSurfaces: { current, max }, ... }</span>
 </code><button type="button">Copy</button></pre>
 
 <p><code>setLimits</code> applies to later calls only and never evicts a surface already
@@ -380,7 +409,7 @@ upgrading, or those calls will be rejected.</p>
 <p><code>@prometheus-ags/a2ui-react/headless</code> runs the same validation with no React, no
 DOM and no renderer, so a server or a tool can check agent output exactly as the
 browser will, and compact a long-lived surface.</p>
-<pre><code class="ts"><span class="hl-5">import</span><span class="hl-1"> { </span><span class="hl-6">createPrometheusA2uiHeadlessRuntime</span><span class="hl-1"> } </span><span class="hl-5">from</span><span class="hl-1"> </span><span class="hl-3">&quot;@prometheus-ags/a2ui-react/headless&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-7">const</span><span class="hl-1"> </span><span class="hl-8">runtime</span><span class="hl-1"> = </span><span class="hl-4">createPrometheusA2uiHeadlessRuntime</span><span class="hl-1">({ </span><span class="hl-6">limits:</span><span class="hl-1"> { </span><span class="hl-6">maxSurfaces:</span><span class="hl-1"> </span><span class="hl-14">16</span><span class="hl-1"> } });</span><br/><span class="hl-6">runtime</span><span class="hl-1">.</span><span class="hl-4">processMessages</span><span class="hl-1">(</span><span class="hl-6">messages</span><span class="hl-1">); </span><span class="hl-0">// throws the same PrometheusA2uiError the browser would</span>
+<pre><code class="ts"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">createPrometheusA2uiHeadlessRuntime</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&quot;@prometheus-ags/a2ui-react/headless&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">runtime</span><span class="hl-1"> = </span><span class="hl-6">createPrometheusA2uiHeadlessRuntime</span><span class="hl-1">({ </span><span class="hl-2">limits:</span><span class="hl-1"> { </span><span class="hl-2">maxSurfaces:</span><span class="hl-1"> </span><span class="hl-14">16</span><span class="hl-1"> } });</span><br/><span class="hl-2">runtime</span><span class="hl-1">.</span><span class="hl-6">processMessages</span><span class="hl-1">(</span><span class="hl-2">messages</span><span class="hl-1">); </span><span class="hl-7">// throws the same PrometheusA2uiError the browser would</span>
 </code><button type="button">Copy</button></pre>
 
 <p>The headless and React runtimes share one core and build their catalogs with the
@@ -398,11 +427,10 @@ same messages.</p>
 <li>A v0.9.1 surface exports as three official messages: <code>createSurface</code> (catalog,
 theme, <code>sendDataModel</code>), <code>updateComponents</code> (every component, with its own
 <code>catalogId</code> where it differs from the surface's) and <code>updateDataModel</code> at <code>/</code>.</li>
-<li>A v1.0 surface exports as <strong>one inline <code>createSurface</code></strong> carrying its
-components and data model, with each action's <code>wantResponse</code> and
-<code>responsePath</code> put back where the producer wrote them. The v1.0 schema cannot
-express a theme, so a v1.0 surface has none to lose. An explicit
-<code>wantResponse: false</code> comes back as an absent field, which means the same.</li>
+<li>A 1.0 surface exports as <strong>one inline <code>createSurface</code></strong> carrying its
+components and data model (plus an <code>updateDataModel</code> when the root value is not
+an object). 1.0 has no theme and no response-aware actions, so there is nothing
+else to carry.</li>
 <li>The root is the component with id <code>root</code> and is preserved by id.</li>
 <li><strong>Orphans.</strong> The official processor never removes a component a producer stops
 mentioning, so unreferenced components accumulate. Components no reachable
@@ -416,11 +444,15 @@ types, whose default names the React component type, so a type-checking consumer
 needs <code>@types/react</code> available even though no React code runs.</p>
 <h2 id="catalog-policy" class="tsd-anchor-link">Catalog policy<a href="#catalog-policy" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
 <p><code>createPrometheusA2uiCatalog()</code> derives implementations from the official
-React basic catalog and exposes only explicit component and function
-allowlists. The default catalog includes the standard presentation and input
+basic catalog and exposes only explicit component and function allowlists.
+<code>createPrometheusA2uiCatalog({ protocolVersion: &quot;1.0&quot; })</code> builds the 1.0 catalog
+(default <code>&quot;v0.9.1&quot;</code>; <code>createPrometheusA2uiHeadlessCatalog</code> and
+<code>getPrometheusA2uiOfficialComponent</code> take the same option).
+<code>PrometheusA2uiComponentImplementation</code> is the official <code>ReactCatalogComponent</code>:
+a React implementation or a Web Component implementation. The default catalog includes the standard presentation and input
 components but deliberately excludes <code>openUrl</code>. Applications may opt into
 that function explicitly; navigation is never silently granted.</p>
-<pre><code class="ts"><span class="hl-5">import</span><span class="hl-1"> { </span><span class="hl-6">createPrometheusA2uiCatalog</span><span class="hl-1"> } </span><span class="hl-5">from</span><span class="hl-1"> </span><span class="hl-3">&quot;@prometheus-ags/a2ui-react&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-7">const</span><span class="hl-1"> </span><span class="hl-8">catalog</span><span class="hl-1"> = </span><span class="hl-4">createPrometheusA2uiCatalog</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-6">id:</span><span class="hl-1"> </span><span class="hl-3">&quot;urn:acme:a2ui:catalog:v1&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-6">components:</span><span class="hl-1"> [</span><span class="hl-3">&quot;Text&quot;</span><span class="hl-1">, </span><span class="hl-3">&quot;Column&quot;</span><span class="hl-1">, </span><span class="hl-3">&quot;Button&quot;</span><span class="hl-1">],</span><br/><span class="hl-1">  </span><span class="hl-6">functions:</span><span class="hl-1"> [</span><span class="hl-3">&quot;formatString&quot;</span><span class="hl-1">],</span><br/><span class="hl-1">});</span>
+<pre><code class="ts"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">createPrometheusA2uiCatalog</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&quot;@prometheus-ags/a2ui-react&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">catalog</span><span class="hl-1"> = </span><span class="hl-6">createPrometheusA2uiCatalog</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-2">id:</span><span class="hl-1"> </span><span class="hl-3">&quot;urn:acme:a2ui:catalog:v1&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">components:</span><span class="hl-1"> [</span><span class="hl-3">&quot;Text&quot;</span><span class="hl-1">, </span><span class="hl-3">&quot;Column&quot;</span><span class="hl-1">, </span><span class="hl-3">&quot;Button&quot;</span><span class="hl-1">],</span><br/><span class="hl-1">  </span><span class="hl-2">functions:</span><span class="hl-1"> [</span><span class="hl-3">&quot;formatString&quot;</span><span class="hl-1">],</span><br/><span class="hl-1">});</span>
 </code><button type="button">Copy</button></pre>
 
 <h2 id="react-and-ssr" class="tsd-anchor-link">React and SSR<a href="#react-and-ssr" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
@@ -429,23 +461,75 @@ that function explicitly; navigation is never silently granted.</p>
 Markdown renderer.</li>
 <li><code>PrometheusA2uiSurface</code> renders one official surface.</li>
 <li><code>PrometheusA2uiSurfaces</code> renders the current surface collection.</li>
-<li><code>usePrometheusA2ui</code> processes messages and reads client capabilities/data.</li>
+<li><code>usePrometheusA2ui</code> processes messages and reads client capabilities/data.
+<code>getClientCapabilities()</code> returns <code>PrometheusA2uiRendererCapabilities</code>, the
+official record keyed by protocol version (both <code>v0.9.1</code> and <code>1.0</code> by default;
+the <code>1.0</code> entry has <code>supportedCatalogIds</code>), and <code>getClientDataModel(&quot;1.0&quot;)</code>
+returns the 1.0 <code>a2uiRendererDataModel</code>.</li>
 <li><code>usePrometheusA2uiRuntime</code> and <code>usePrometheusA2uiSurfaces</code> expose focused
 orchestration reads.</li>
 </ul>
-<p>The surface wrapper emits deterministic fallback markup during server
-rendering and lets the official renderer take over after hydration. This avoids
-claiming that the current official renderer itself is server-renderable.</p>
+<p>The official basic catalog renders as Custom Elements and is <strong>client only</strong>:
+there is no server rendering of basic-catalog components. The surface wrapper
+emits deterministic fallback markup during server rendering and lets the
+official renderer take over after hydration.</p>
+<p>Errors thrown by the official processor are rethrown as <code>PrometheusA2uiError</code>
+with <code>code: &quot;protocol-error&quot;</code> and the A2UI code in <code>protocolCode</code>
+(<code>VALIDATION_ERROR</code>, <code>CATALOG_ERROR</code>, <code>INVALID_FUNCTION_CALL</code>,
+<code>EXPRESSION_ERROR</code>, ...); the raw error is <code>cause</code>. This package's own codes are
+unchanged.</p>
 <p>The architectural boundary remains:</p>
 <pre><code class="text">Components → Prometheus A2UI hooks/provider → runtime policy → graph store
 </code><button type="button">Copy</button></pre>
 
 <p>Renderer components do not read or write the graph store directly.</p>
+<h2 id="ag-ui-chat-" class="tsd-anchor-link">AG-UI chat (<code>./ag-ui</code>)<a href="#ag-ui-chat-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>The chat components consume AG-UI 1.0 events (<code>AgUiEvent</code>, structurally typed so
+the optional <code>@ag-ui/core</code> peer is not required by the declarations).</p>
+<pre><code class="tsx"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">EntityChat</span><span class="hl-1">, </span><span class="hl-2">useChatSession</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&quot;@prometheus-ags/a2ui-react/ag-ui&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">session</span><span class="hl-1"> = </span><span class="hl-6">useChatSession</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-2">sessionId:</span><span class="hl-1"> </span><span class="hl-3">&quot;support&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">actionPolicy</span><span class="hl-1">, </span><span class="hl-7">// decides interrupt approvals; without one they are cancelled</span><br/><span class="hl-1">  </span><span class="hl-6">streamFactory</span><span class="hl-2">:</span><span class="hl-1"> (</span><span class="hl-2">messages</span><span class="hl-1">, { </span><span class="hl-2">signal</span><span class="hl-1">, </span><span class="hl-2">resume</span><span class="hl-1"> }) </span><span class="hl-4">=&gt;</span><span class="hl-1"> </span><span class="hl-6">myStream</span><span class="hl-1">(</span><span class="hl-2">messages</span><span class="hl-1">, </span><span class="hl-2">signal</span><span class="hl-1">, </span><span class="hl-2">resume</span><span class="hl-1">),</span><br/><span class="hl-1">  </span><span class="hl-6">onInterruptDecision</span><span class="hl-2">:</span><span class="hl-1"> (</span><span class="hl-2">interrupt</span><span class="hl-1">, </span><span class="hl-2">entry</span><span class="hl-1">, </span><span class="hl-2">decision</span><span class="hl-1">) </span><span class="hl-4">=&gt;</span><span class="hl-1"> </span><span class="hl-6">audit</span><span class="hl-1">(</span><span class="hl-2">interrupt</span><span class="hl-1">, </span><span class="hl-2">entry</span><span class="hl-1">, </span><span class="hl-2">decision</span><span class="hl-1">),</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<ul>
+<li><strong>Events handled:</strong> run lifecycle including <code>RUN_ERROR</code>, text and reasoning
+messages, tool calls and <code>TOOL_CALL_RESULT</code>, <code>STATE_SNAPSHOT</code> / <code>STATE_DELTA</code>,
+<code>MESSAGES_SNAPSHOT</code>. Other types are ignored; <code>SUBAGENT_*</code> events and
+multimodal parts are not handled. The pre-5.0 names (<code>MESSAGE_DELTA</code>,
+<code>TOOL_CALL_DELTA</code>, <code>ERROR</code>, <code>DONE</code>) are gone; <code>StreamEvent</code> is a deprecated
+alias of <code>AgUiEvent</code>.</li>
+<li><strong>Cancellation:</strong> <code>sendMessage</code>, <code>clearMessages</code> and unmount abort the previous
+run's <code>signal</code>, and events of a superseded run are dropped. Run ownership is
+shared by every view of one conversation on one graph: a send from any view
+supersedes the others, and unmounting a view that did not start the run does
+not cancel it.</li>
+<li><strong>Tool calls:</strong> <code>EntityChat</code> lists each assistant message's tool calls (name
+and arguments). With a <code>toolProvider</code>, a call the agent left unanswered runs at
+<code>RUN_FINISHED</code>; a call answered with <code>TOOL_CALL_RESULT</code> never runs in the
+browser, and a run that pauses on an interrupt runs no client tools.</li>
+<li><strong>Messages live in the graph:</strong> <code>ChatConversationStore</code> writes
+<code>A2uiChatMessage</code> entities, the ordered id list <code>a2ui-chat:&lt;conversationId&gt;</code> and
+an <code>A2uiChatConversation</code> record (<code>runStatus</code>, <code>runId</code>, error, loading). Sessions
+with the same <code>sessionId</code> share messages; pass <code>graphStore</code> to choose the graph.</li>
+<li><strong>Reasoning messages</strong> render collapsed in <code>EntityChat</code> (class slot
+<code>messageReasoning</code>).</li>
+<li><strong>Interrupts:</strong> a <code>RUN_FINISHED</code> with an interrupt outcome sets
+<code>runStatus: &quot;interrupted&quot;</code>. <code>resolveInterrupt(id, { approved, payload? })</code>
+decides each one; when all are decided the next run starts with <code>resume</code>
+passed to <code>streamFactory</code>. Denial resolves as <code>cancelled</code> without calling the
+policy. An approval is mapped to an action (<code>interruptToAction</code>, default reads
+<code>metadata[&quot;prometheus.action&quot;]</code>) and decided by the installed <code>actionPolicy</code>,
+so <code>executed</code> is <code>resolved</code> and <code>denied</code> is <code>cancelled</code>. It fails closed: no
+policy, an interrupt that maps to no action, or a mapping or policy that
+throws, is <code>cancelled</code>. Each interrupt is claimed before its policy runs, so
+its action executes at most once across callers and views. <code>EntityChat</code>
+renders <code>EntityInterruptApproval</code> for each pending interrupt. The interrupt
+outcome fields are Draft in AG-UI; <code>readInterruptOutcome</code> and <code>toResumeInput</code>
+are the only code that knows the wire shape.</li>
+</ul>
 <h2 id="migrating-alpha-chat-consumers" class="tsd-anchor-link">Migrating alpha chat consumers<a href="#migrating-alpha-chat-consumers" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
 <p>3.0 intentionally changes the package root. This is a deliberate breaking
 change that corrects the alpha naming mismatch. Move the pre-3.0 AG-UI APIs to
 the compatibility subpath:</p>
-<pre><code class="tsx"><span class="hl-0">// Before: 3.0 alpha package root</span><br/><span class="hl-5">import</span><span class="hl-1"> { </span><span class="hl-6">EntityChat</span><span class="hl-1">, </span><span class="hl-6">EntityApproval</span><span class="hl-1"> } </span><span class="hl-5">from</span><span class="hl-1"> </span><span class="hl-3">&quot;@prometheus-ags/a2ui-react&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-0">// After: explicit AG-UI compatibility boundary</span><br/><span class="hl-5">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-6">EntityChat</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-6">EntityApproval</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-5">from</span><span class="hl-1"> </span><span class="hl-3">&quot;@prometheus-ags/a2ui-react/ag-ui&quot;</span><span class="hl-1">;</span>
+<pre><code class="tsx"><span class="hl-7">// Before: 3.0 alpha package root</span><br/><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">EntityChat</span><span class="hl-1">, </span><span class="hl-2">EntityApproval</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&quot;@prometheus-ags/a2ui-react&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-7">// After: explicit AG-UI compatibility boundary</span><br/><span class="hl-0">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-2">EntityChat</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">EntityApproval</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&quot;@prometheus-ags/a2ui-react/ag-ui&quot;</span><span class="hl-1">;</span>
 </code><button type="button">Copy</button></pre>
 
 <p>The compatibility subpath retains <code>EntityChat</code>, <code>EntityCopilot</code>,
@@ -457,14 +541,14 @@ because it ships in the same package.</p>
 <p>The machine-readable root and <code>./ag-ui</code> runtime export sets live in
 <a href="../../prometheus-entity-skills/_shared/references/a2ui-library-exports.json"><code>a2ui-library-exports.json</code></a>.
 Build and verify them with:</p>
-<pre><code class="bash"><span class="hl-4">pnpm</span><span class="hl-1"> </span><span class="hl-7">--filter</span><span class="hl-1"> </span><span class="hl-3">@prometheus-ags/a2ui-react</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">refresh:exports</span><br/><span class="hl-4">pnpm</span><span class="hl-1"> </span><span class="hl-7">--filter</span><span class="hl-1"> </span><span class="hl-3">@prometheus-ags/a2ui-react</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">verify:skills</span>
+<pre><code class="bash"><span class="hl-6">pnpm</span><span class="hl-1"> </span><span class="hl-4">--filter</span><span class="hl-1"> </span><span class="hl-3">@prometheus-ags/a2ui-react</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">refresh:exports</span><br/><span class="hl-6">pnpm</span><span class="hl-1"> </span><span class="hl-4">--filter</span><span class="hl-1"> </span><span class="hl-3">@prometheus-ags/a2ui-react</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">verify:skills</span>
 </code><button type="button">Copy</button></pre>
 
 <p>Type-only exports include the official message, catalog, surface, capability,
 and data-model contracts plus Prometheus runtime, policy, graph authorization,
 provider, and hook option/result types.</p>
 <h2 id="verification" class="tsd-anchor-link">Verification<a href="#verification" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2>
-<pre><code class="bash"><span class="hl-4">pnpm</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">test:a2ui-bridge</span><br/><span class="hl-4">pnpm</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">verify:a2ui-bridge</span><br/><span class="hl-4">pnpm</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">bdd:a2ui-bridge</span>
+<pre><code class="bash"><span class="hl-6">pnpm</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">test:a2ui-bridge</span><br/><span class="hl-6">pnpm</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">verify:a2ui-bridge</span><br/><span class="hl-6">pnpm</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">bdd:a2ui-bridge</span>
 </code><button type="button">Copy</button></pre>
 
 <p>The AG-UI hardening (redelivery, versioned deltas, action ids, limits, headless
@@ -515,12 +599,14 @@ complete evidence boundary and upstream references.</p>
 <ul>
 <li><a href="#redelivery-restatement-and-ordering"><span>Redelivery, restatement and ordering</span></a></li>
 <li><a href="#incremental-updates-"><span>Incremental updates ()</span></a></li>
-<li><a href="#actions-ids-retry-and-stale-rejection"><span>Actions: ids, retry and stale rejection</span></a></li></ul></li>
+<li><a href="#actions-ids-retry-and-stale-rejection"><span>Actions: ids, retry and stale rejection</span></a></li>
+<li><a href="#functions-and-renderer-to-agent-messages-a2ui-10"><span>Functions and renderer-<wbr/>to-<wbr/>agent messages (<wbr/>A2<wbr/>UI 1.0)</span></a></li></ul></li>
 <li><a href="#the-security-boundary"><span>The security boundary</span></a></li>
 <li><a href="#resource-limits"><span>Resource limits</span></a></li>
 <li><a href="#headless-runtime-and-surface-export"><span>Headless runtime and surface export</span></a></li>
 <li><a href="#catalog-policy"><span>Catalog policy</span></a></li>
 <li><a href="#react-and-ssr"><span>React and <wbr/>SSR</span></a></li>
+<li><a href="#ag-ui-chat-"><span>AG-<wbr/>UI chat ()</span></a></li>
 <li><a href="#migrating-alpha-chat-consumers"><span>Migrating alpha chat consumers</span></a></li>
 <li><a href="#public-runtime-exports"><span>Public runtime exports</span></a></li>
 <li><a href="#verification"><span>Verification</span></a></li></ul>

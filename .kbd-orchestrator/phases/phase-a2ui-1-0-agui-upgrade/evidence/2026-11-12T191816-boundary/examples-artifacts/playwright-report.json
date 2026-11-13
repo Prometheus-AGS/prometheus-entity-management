@@ -1,0 +1,229 @@
+{
+  "config": {
+    "argv": [
+      "/Users/gqadonis/.local/share/fnm/node-versions/v26.5.0/installation/bin/node",
+      "/Volumes/T7/Projects/prometheus/prometheus-entity-management/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "tests/browser/a2ui-examples.playwright.config.ts"
+    ],
+    "configFile": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/a2ui-examples.playwright.config.ts",
+    "rootDir": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191816-boundary/examples-artifacts/playwright-output",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-desktop",
+        "name": "chromium-desktop",
+        "testDir": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "a2ui-examples.spec.ts"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191816-boundary/examples-artifacts/playwright-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "a2ui-examples.spec.ts",
+      "file": "a2ui-examples.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "agentic-a2ui-app: streams the task surface and executes Mark task done",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 20558,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByTestId('agent-lifecycle')\nExpected: \u001b[32m\"\u001b[7mcomplet\u001b[27med\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mvalidation-fail\u001b[27med\"\u001b[39m\nTimeout:  20000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 20000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('agent-lifecycle')\u001b[22m\n\u001b[2m    3 × locator resolved to <span data-testid=\"agent-lifecycle\">…</span>\u001b[22m\n\u001b[2m      - unexpected value \"working\"\u001b[22m\n\u001b[2m    40 × locator resolved to <span data-testid=\"agent-lifecycle\">…</span>\u001b[22m\n\u001b[2m       - unexpected value \"validation-failed\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByTestId('agent-lifecycle')\nExpected: \u001b[32m\"\u001b[7mcomplet\u001b[27med\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mvalidation-fail\u001b[27med\"\u001b[39m\nTimeout:  20000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 20000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('agent-lifecycle')\u001b[22m\n\u001b[2m    3 × locator resolved to <span data-testid=\"agent-lifecycle\">…</span>\u001b[22m\n\u001b[2m      - unexpected value \"working\"\u001b[22m\n\u001b[2m    40 × locator resolved to <span data-testid=\"agent-lifecycle\">…</span>\u001b[22m\n\u001b[2m       - unexpected value \"validation-failed\"\u001b[22m\n\n    at /Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/a2ui-examples.spec.ts:135:55\n    at withCapture (/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/a2ui-examples.spec.ts:102:5)\n    at /Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/a2ui-examples.spec.ts:127:3",
+                    "location": {
+                      "file": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/a2ui-examples.spec.ts",
+                      "column": 55,
+                      "line": 135
+                    },
+                    "snippet": "  133 |\n  134 |     await page.getByRole(\"button\", { name: \"Stream task surface\" }).click();\n> 135 |     await expect(page.getByTestId(\"agent-lifecycle\")).toHaveText(\"completed\");\n      |                                                       ^\n  136 |     await expect(page.getByTestId(\"artifact-count\")).toHaveText(\"1\");\n  137 |     const surface = page.getByTestId(\"a2ui-surface-stage\");\n  138 |     const markDone = surface.getByRole(\"button\", { name: \"Mark task done\" });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/a2ui-examples.spec.ts",
+                        "column": 55,
+                        "line": 135
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByTestId('agent-lifecycle')\nExpected: \u001b[32m\"\u001b[7mcomplet\u001b[27med\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mvalidation-fail\u001b[27med\"\u001b[39m\nTimeout:  20000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 20000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('agent-lifecycle')\u001b[22m\n\u001b[2m    3 × locator resolved to <span data-testid=\"agent-lifecycle\">…</span>\u001b[22m\n\u001b[2m      - unexpected value \"working\"\u001b[22m\n\u001b[2m    40 × locator resolved to <span data-testid=\"agent-lifecycle\">…</span>\u001b[22m\n\u001b[2m       - unexpected value \"validation-failed\"\u001b[22m\n\n\n  133 |\n  134 |     await page.getByRole(\"button\", { name: \"Stream task surface\" }).click();\n> 135 |     await expect(page.getByTestId(\"agent-lifecycle\")).toHaveText(\"completed\");\n      |                                                       ^\n  136 |     await expect(page.getByTestId(\"artifact-count\")).toHaveText(\"1\");\n  137 |     const surface = page.getByTestId(\"a2ui-surface-stage\");\n  138 |     const markDone = surface.getByRole(\"button\", { name: \"Mark task done\" });\n    at /Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/a2ui-examples.spec.ts:135:55\n    at withCapture (/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/a2ui-examples.spec.ts:102:5)\n    at /Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/a2ui-examples.spec.ts:127:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T01:20:15.028Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191816-boundary/examples-artifacts/playwright-output/a2ui-examples-agentic-a2ui-68584-and-executes-Mark-task-done-chromium-desktop/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191816-boundary/examples-artifacts/playwright-output/a2ui-examples-agentic-a2ui-68584-and-executes-Mark-task-done-chromium-desktop/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191816-boundary/examples-artifacts/playwright-output/a2ui-examples-agentic-a2ui-68584-and-executes-Mark-task-done-chromium-desktop/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/a2ui-examples.spec.ts",
+                    "column": 55,
+                    "line": 135
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "78eb93b35b8557150323-dedbdb1040399acbdd3b",
+          "file": "a2ui-examples.spec.ts",
+          "line": 125,
+          "column": 5
+        },
+        {
+          "title": "agentic-a2ui: renders the task board surface and executes Mark done",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": -1,
+                  "parallelIndex": -1,
+                  "status": "skipped",
+                  "duration": 0,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T01:20:35.975Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "78eb93b35b8557150323-512031a707ceb471ad94",
+          "file": "a2ui-examples.spec.ts",
+          "line": 151,
+          "column": 5
+        },
+        {
+          "title": "agui-activity-lab: renders the producer's activity surface and posts the Ping action",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": -1,
+                  "parallelIndex": -1,
+                  "status": "skipped",
+                  "duration": 0,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T01:20:35.975Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "78eb93b35b8557150323-45347b061cbb578e0099",
+          "file": "a2ui-examples.spec.ts",
+          "line": 250,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-13T01:20:11.900Z",
+    "duration": 24107.213,
+    "expected": 0,
+    "skipped": 2,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

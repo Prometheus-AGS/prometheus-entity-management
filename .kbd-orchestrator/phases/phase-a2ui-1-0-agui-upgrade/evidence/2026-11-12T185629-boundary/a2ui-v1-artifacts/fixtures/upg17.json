@@ -1,0 +1,115 @@
+{
+  "surfaceId": "upg17",
+  "componentId": "ask",
+  "responsePath": "/answer",
+  "callName": "refresh",
+  "rc": [
+    {
+      "version": "v1.0",
+      "createSurface": {
+        "surfaceId": "upg17",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "title",
+              "answer",
+              "ask"
+            ]
+          },
+          {
+            "id": "title",
+            "component": "Text",
+            "text": {
+              "path": "/title"
+            }
+          },
+          {
+            "id": "answer",
+            "component": "Text",
+            "text": {
+              "path": "/answer"
+            }
+          },
+          {
+            "id": "ask",
+            "component": "Button",
+            "child": "askLabel",
+            "action": {
+              "event": {
+                "name": "refresh",
+                "wantResponse": true,
+                "responsePath": "/answer"
+              }
+            }
+          },
+          {
+            "id": "askLabel",
+            "component": "Text",
+            "text": "Ask"
+          }
+        ],
+        "dataModel": {
+          "title": "Orders",
+          "answer": "none"
+        }
+      }
+    }
+  ],
+  "v1": [
+    {
+      "version": "1.0",
+      "createSurface": {
+        "surfaceId": "upg17",
+        "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "title",
+              "answer",
+              "ask"
+            ]
+          },
+          {
+            "id": "title",
+            "component": "Text",
+            "text": {
+              "@path": "/title"
+            }
+          },
+          {
+            "id": "answer",
+            "component": "Text",
+            "text": {
+              "@path": "/answer"
+            }
+          },
+          {
+            "id": "ask",
+            "component": "Button",
+            "child": "askLabel",
+            "action": {
+              "event": {
+                "name": "refresh"
+              }
+            }
+          },
+          {
+            "id": "askLabel",
+            "component": "Text",
+            "text": "Ask"
+          }
+        ],
+        "dataModel": {
+          "title": "Orders",
+          "answer": "none"
+        }
+      }
+    }
+  ],
+  "finalAnswer": "pong (agentFunctionResponse)",
+  "rcAnswer": "pong (RC actionResponse)"
+}

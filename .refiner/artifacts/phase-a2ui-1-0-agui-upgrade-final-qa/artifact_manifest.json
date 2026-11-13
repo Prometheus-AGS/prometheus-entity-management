@@ -1,0 +1,31 @@
+{
+  "artifact_type": "content",
+  "variants": [
+    {
+      "name": "final-qa-report",
+      "file": "dist/final-qa-report.md",
+      "format": "markdown",
+      "description": "Constraint-by-constraint phase QA disposition."
+    },
+    {
+      "name": "validation",
+      "file": "dist/validation.json",
+      "format": "json",
+      "description": "Machine-readable deterministic QA results."
+    }
+  ],
+  "preview": {
+    "required": false,
+    "runs": []
+  },
+  "validation": {
+    "preview_status": "pass",
+    "has_console_errors": false,
+    "has_request_failures": false,
+    "notes": [
+      "Content QA artifact; browser and device evidence is in the boundary folder."
+    ]
+  },
+  "sizes": [],
+  "generated_at": "2026-11-13T08:34:58.280Z"
+}

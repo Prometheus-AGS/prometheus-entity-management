@@ -178,7 +178,7 @@ export function AgentConsolePage() {
           <div>
             <h1>Agentic A2UI console</h1>
             <p>
-              Deterministic keyless A2A agent · official A2UI v0.9.1 surfaces · policy-gated graph
+              Deterministic keyless A2A agent · official A2UI 1.0 surfaces · policy-gated graph
               actions
             </p>
           </div>

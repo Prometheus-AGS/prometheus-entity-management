@@ -1,0 +1,134 @@
+{
+  "suite": "core/adapter_conformance.yaml",
+  "cases": [
+    {
+      "name": "tree_hierarchy_declared_order",
+      "features": [
+        "F-RND-02",
+        "F-RND-12",
+        "F-RND-14",
+        "F-BP-01",
+        "F-BP-02",
+        "F-BP-03",
+        "F-BP-04",
+        "F-BP-05",
+        "F-BP-13",
+        "F-BP-16"
+      ],
+      "description": "Verifies that nested Column, Row, Card, Text, and Button components render in declared hierarchy and order.",
+      "protocolVersion": "1.0",
+      "catalogPaths": [
+        "catalogs/basic/v1/catalog.json"
+      ],
+      "action": "render_surface",
+      "steps": [
+        {
+          "op": "process_messages",
+          "messages": [
+            {
+              "version": "1.0",
+              "createSurface": {
+                "surfaceId": "adapter_surface",
+                "catalogId": "https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json"
+              }
+            },
+            {
+              "version": "1.0",
+              "updateComponents": {
+                "surfaceId": "adapter_surface",
+                "components": [
+                  {
+                    "id": "root",
+                    "component": "Column",
+                    "children": [
+                      "header_card",
+                      "action_row"
+                    ]
+                  },
+                  {
+                    "id": "header_card",
+                    "component": "Card",
+                    "child": "title_text"
+                  },
+                  {
+                    "id": "title_text",
+                    "component": "Text",
+                    "text": "Welcome to A2UI"
+                  },
+                  {
+                    "id": "action_row",
+                    "component": "Row",
+                    "children": [
+                      "primary_btn",
+                      "secondary_text"
+                    ]
+                  },
+                  {
+                    "id": "primary_btn",
+                    "component": "Button",
+                    "child": "primary_btn_label",
+                    "action": {
+                      "event": {
+                        "name": "get_started"
+                      }
+                    }
+                  },
+                  {
+                    "id": "primary_btn_label",
+                    "component": "Text",
+                    "text": "Get Started"
+                  },
+                  {
+                    "id": "secondary_text",
+                    "component": "Text",
+                    "text": "Learn More"
+                  }
+                ]
+              }
+            }
+          ],
+          "expectViewTree": {
+            "id": "root",
+            "type": "Column",
+            "children": [
+              {
+                "id": "header_card",
+                "type": "Card",
+                "children": [
+                  {
+                    "id": "title_text",
+                    "type": "Text",
+                    "text": "Welcome to A2UI [mutated by negative control]"
+                  }
+                ]
+              },
+              {
+                "id": "action_row",
+                "type": "Row",
+                "children": [
+                  {
+                    "id": "primary_btn",
+                    "type": "Button",
+                    "children": [
+                      {
+                        "id": "primary_btn_label",
+                        "type": "Text",
+                        "text": "Get Started"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "secondary_text",
+                    "type": "Text",
+                    "text": "Learn More"
+                  }
+                ]
+              }
+            ]
+          },
+          "expectOutbound": []
+        }
+      ]
+    }
+  ]
+}

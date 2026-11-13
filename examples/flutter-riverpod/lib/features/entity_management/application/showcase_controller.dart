@@ -219,7 +219,7 @@ final class ShowcaseController extends _$ShowcaseController {
     state = state.copyWith(
       showHostileFixture: value,
       notice: value
-          ? 'The hostile component fixture is rejected before GenUI mutation.'
+          ? 'The hostile component fixture is refused by the A2UI processor.'
           : 'The shared task-review fixture is active.',
     );
   }

@@ -1,0 +1,74 @@
+{
+  "mode": "artifact",
+  "verdict": "BLOCK",
+  "judge_model": "claude-opus-5-5",
+  "isolation_mode": "harness-native",
+  "producer_model": "claude-opus-5-5",
+  "cross_model_check": "same-model-collision",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "assessment.md",
+      "line": 396,
+      "claim": "D2 and section 1 say the existing MessageProcessor 'can therefore take 1.0 messages directly' and that this 'is not a second processor path', but in web_core 0.15.0 a v1.0 surface requires a catalog whose protocolVersion is 1.0. The repository's only catalog is built as v0.9.1 from the v0.9 basic catalog, and the runtime forbids registering two catalogs with the same id. So D2 as written fails at createSurface, and the catalog layer and its public API must become per-version.",
+      "evidence": "web_core 0.15.0 src/processing/adapters/base.js DEFAULT_CATALOG_COMPATIBILITY maps '1.0' to new Set(['1.0']) only. message-processor.js processCreateSurfaceOp (lines 739-745) throws A2uiCatalogError 'catalog ... specification version ... does not match message protocol version' when isAtLeastVersion(msgVersion,'1.0'), and line 757 filters availableCatalogs by the same rule. Repository: packages/a2ui-react/src/official/catalog-core.ts:16 PROMETHEUS_A2UI_PROTOCOL_VERSION = \"v0.9.1\". catalog-core.ts:133-136 constructs every allowlisted catalog with that version. catalog.ts:95 derives it from the v0.9 basicCatalog. runtime-core.ts:119-121 throws 'A2UI catalog ids must be unique.', so PROMETHEUS_A2UI_CATALOG_ID ('urn:prometheus-ags:a2ui:catalog:v3') cannot be registered for both 0.9 and 1.0. web_core 0.15.0 ships a separate v1 basic catalog: export './catalogs/basic/v1', catalogs/basic/v1/catalog.js:31 `new Catalog('https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json', '1.0', ...)`, re-exported from src/v1_0/index.d.ts. The assessment never mentions this catalog. G13 names only the v0_9/basic_catalog move.",
+      "suggested_fix": "Add a gap for the catalog-version split: a 1.0 allowlisted catalog built from catalogs/basic/v1 with a distinct id (or ids negotiated per version), per-version DEFAULT component and function allowlists, createPrometheusA2uiComponent and getPrometheusA2uiOfficialComponent against the v1 ComponentApi, and how agents learn which catalog id to target. Restate D2 as one processor plus at least two version-scoped catalogs, and record this as the likely reason the RC bridge downgraded to v0.9.1."
+    },
+    {
+      "severity": "WARNING",
+      "file": "assessment.md",
+      "line": 271,
+      "claim": "G13 lists only headline items and defers the changelog-to-call-site mapping to planning, although goal 4 requires it during assess. Several @a2ui/react and web_core breaking changes after 0.12.0 that reach this repository are missing.",
+      "evidence": "@a2ui/react CHANGELOG, 0.15.0 section: 'createComponentImplementation ... keep the allowedParents and allowedChildren ... a payload that breaks them is rejected with UNALLOWED_PARENT or UNALLOWED_CHILD (previously accepted)'. That hits createPrometheusA2uiComponent (catalog.ts:78-86), which wraps createComponentImplementation. Also 0.15.0: 'A2uiSurface no longer renders debug placeholders', which changes what verify:a2ui-visual sees. 0.13.0: 'Every catalog component now renders inside a custom element (<a2ui-react-<name>>, display: contents)'. web_core 0.13.0-0.15.0: 'Every class the basic catalog elements render now carries the a2ui- prefix'. None of these is in G13. The assessment says 'Planning must start from a line-by-line read of both changelogs' (line 294) and marks goal 4 PARTIAL (line 366), while the goal reads 'Confirm exact target versions and breaking changes ... during /kbd-assess, before planning'.",
+      "suggested_fix": "Finish the 0.12.0 to 0.15.0 changelog mapping in the assessment, including the four items above and a2ui-provider.tsx (imports A2uiSurface and MarkdownContext from @a2ui/react/v0_9), instead of passing it to planning."
+    },
+    {
+      "severity": "WARNING",
+      "file": "assessment.md",
+      "line": 393,
+      "claim": "D1 contradicts D2. D1 says to accept @-prefixed envelope keys on web_core 0.15.0, which does not understand them, so a translation layer is needed. D2 says to pass 1.0 messages unmodified and delete the normalization in v1-compat.ts.",
+      "evidence": "D1: 'accept both bare and `@`-prefixed envelope keys as the spec's transition rules allow'. D2: 'passing 1.0 messages unmodified to the multi-version MessageProcessor ... deleting the RC downgrade in v1-compat.ts'. A grep of web_core 0.15.0 src/**/*.js for '@catalogId', '@metadata', '@accessibility' and '@checks' returns no matches. Section 1 itself says '0.15.0 still uses the bare keys'.",
+      "suggested_fix": "Pick one: either keep a thin pre-processor that rewrites @-keys to bare keys (with D2 restated to say so), or accept bare keys only until the #4044 release ships."
+    },
+    {
+      "severity": "WARNING",
+      "file": "assessment.md",
+      "line": 252,
+      "claim": "The spec-delta list in G12 is still incomplete. Two more published specs write RC-only or v1.0-RC behaviour as SHALL requirements.",
+      "evidence": "openspec/specs/a2ui-resource-limits/spec.md:47: 'A v1.0 `actionResponse` value written to a surface's `responsePath` SHALL be checked against the same limits'. 1.0 removes both actionResponse and responsePath (G1). openspec/specs/v3-flutter-riverpod-a2ui-example/spec.md:13: 'The Flutter showcase SHALL accept and validate A2UI 1.0 release-candidate'. That conflicts with D7's recommendation to leave Flutter out of scope while the repository moves off the RC. G12 lists only v3-a2ui-protocol-bridge, a2ui-action-envelope and a2ui-headless-runtime.",
+      "suggested_fix": "Add a2ui-resource-limits and v3-flutter-riverpod-a2ui-example to the spec-delta list, and state what happens to the Flutter spec if D7 keeps Flutter out of scope."
+    },
+    {
+      "severity": "WARNING",
+      "file": "assessment.md",
+      "line": 366,
+      "claim": "Goal 4 covers AG-UI and A2A too, but every AG-UI and A2A breaking-change claim is unverified [research]. The @a2a-js/sdk 1.0.1 to 1.3.0 breaking changes are not assessed at all, and the goal-progress row records only the A2UI library mapping as outstanding.",
+      "evidence": "Section 1, AG-UI and A2A bullets: every claim is tagged [research]. G2: '@a2a-js/sdk is pinned at 1.0.1; latest is 1.3.0 [research]'. It contains no list of changes, yet the SDK is pinned in packages/entity-graph-a2a/package.json:45 and two examples. The zod peer is marked UNKNOWN, although pnpm-lock.yaml:1120-1126 already shows '@ag-ui/core@1.0.3' with an optional zod peer. Goal row (line 366) explains PARTIAL only by 'The 0.12.0 → 0.15.0 library breaking changes ... not yet mapped'.",
+      "suggested_fix": "Check the AG-UI 1.0.x and @a2a-js/sdk 1.1 to 1.3 release notes against primary sources, map them to call sites (entity-graph-a2a, examples), and make the goal-4 row name those as outstanding too."
+    },
+    {
+      "severity": "WARNING",
+      "file": "assessment.md",
+      "line": 281,
+      "claim": "G13 says the basic catalog losing server rendering 'matters to the Next.js example', but the Next.js example does not use a2ui-react. That overstates D8.",
+      "evidence": "Only examples/agentic-a2ui, examples/agentic-a2ui-app and examples/agui-activity-lab depend on @prometheus-ags/a2ui-react (grep of examples/*/package.json). examples/nextjs-app has no a2ui-react dependency or import. The assessment's own G12 example inventory also omits nextjs-app.",
+      "suggested_fix": "Drop the Next.js claim, or name a concrete SSR consumer of a2ui-react. Otherwise D8 is a documentation note rather than a pre-planning decision."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "assessment.md",
+      "line": 178,
+      "claim": "G4 names only use-chat-session, EntityChat and EntityCopilot as consumers of the bespoke stream events. EntityStream consumes them too, so W3 will under-scope the change.",
+      "evidence": "packages/a2ui-react/src/entity-stream.tsx:93-110 switches on event.type over 'MESSAGE_DELTA', 'TOOL_CALL_DELTA' and 'STATE_SNAPSHOT' from the same non-AG-UI event set.",
+      "suggested_fix": "Add entity-stream.tsx to G4 and to the W3 scope."
+    },
+    {
+      "severity": "SUGGESTION",
+      "file": "assessment.md",
+      "line": 222,
+      "claim": "The [checked] figure '0.15.0 imports bare zod 161 times' cannot be reproduced, and it understates the declaration-file surface the zod/v3 patch must cover.",
+      "evidence": "In the web_core 0.15.0 tarball, `from 'zod'` appears 53 times in src/**/*.js and 41 times in src/**/*.d.ts, and `import(\"zod\")` type references appear 1092 times in .d.ts. The existing 0.12.0 patch rewrites 38 .d.ts files with 210 zod/v3 type references, so declarations are in scope for the packed-consumer typecheck.",
+      "suggested_fix": "Replace the count with the actual JS and d.ts split, and state that the new patch must cover type-only import(\"zod\") references for the packed-consumer typecheck."
+    }
+  ]
+}

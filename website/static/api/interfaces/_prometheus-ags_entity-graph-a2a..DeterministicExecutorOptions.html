@@ -12,9 +12,9 @@
 <li><a href="../modules/_prometheus-ags_entity-graph-a2a..html"></a></li>
 <li><a href="" aria-current="page">DeterministicExecutorOptions</a></li></ul>
 <h1>Interface DeterministicExecutorOptions</h1></div>
-<div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">DeterministicExecutorOptions</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#clock">clock</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-symbol">()</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#idfactory">idFactory</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-symbol">()</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#policy">policy</a><span class="tsd-signature-symbol">?:</span> <a href="_prometheus-ags_entity-graph-a2a..A2AApplicationPolicy.html" class="tsd-signature-type tsd-kind-interface">A2AApplicationPolicy</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#stepdelayms">stepDelayMs</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">DeterministicExecutorOptions</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#a2uiinbound">a2uiInbound</a><span class="tsd-signature-symbol">?:</span> <a href="_prometheus-ags_entity-graph-a2a..A2UIInboundHandler.html" class="tsd-signature-type tsd-kind-interface">A2UIInboundHandler</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#clock">clock</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-symbol">()</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#idfactory">idFactory</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-symbol">()</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#policy">policy</a><span class="tsd-signature-symbol">?:</span> <a href="_prometheus-ags_entity-graph-a2a..A2AApplicationPolicy.html" class="tsd-signature-type tsd-kind-interface">A2AApplicationPolicy</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#stepdelayms">stepDelayMs</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-a2a/dist/server-D_95A7Cy.d.ts:124</li></ul></aside>
+<li>Defined in packages/entity-graph-a2a/dist/server-DbD7P--d.d.ts:157</li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -22,7 +22,8 @@
 <div class="tsd-accordion-details">
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading tsd-anchor-link" id="properties">Properties<a href="#properties" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-index-list"><a href="#clock" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>clock?</span></a>
+<div class="tsd-index-list"><a href="#a2uiinbound" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>a2ui<wbr/>Inbound?</span></a>
+<a href="#clock" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>clock?</span></a>
 <a href="#idfactory" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>id<wbr/>Factory?</span></a>
 <a href="#policy" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>policy?</span></a>
 <a href="#stepdelayms" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>step<wbr/>Delay<wbr/>Ms?</span></a>
@@ -31,27 +32,34 @@
 <h2 class="tsd-anchor-link" id="properties-1">Properties<a href="#properties-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
 <section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="a2uiinbound"><code class="tsd-tag">Optional</code><span>a2ui<wbr/>Inbound</span><a href="#a2uiinbound" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">a2uiInbound</span><span class="tsd-signature-symbol">?:</span> <a href="_prometheus-ags_entity-graph-a2a..A2UIInboundHandler.html" class="tsd-signature-type tsd-kind-interface">A2UIInboundHandler</a></div>
+<div class="tsd-comment tsd-typography"><p>Inbound A2UI messages; absent means every inbound A2UI message is refused.</p>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in packages/entity-graph-a2a/dist/server-DbD7P--d.d.ts:160</li></ul></aside></section>
+<section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="clock"><code class="tsd-tag">Optional</code><span>clock</span><a href="#clock" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">clock</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-symbol">()</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-a2a/dist/server-D_95A7Cy.d.ts:126</li></ul></aside></section>
+<li>Defined in packages/entity-graph-a2a/dist/server-DbD7P--d.d.ts:161</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="idfactory"><code class="tsd-tag">Optional</code><span>id<wbr/>Factory</span><a href="#idfactory" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">idFactory</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-symbol">()</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-a2a/dist/server-D_95A7Cy.d.ts:127</li></ul></aside></section>
+<li>Defined in packages/entity-graph-a2a/dist/server-DbD7P--d.d.ts:162</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="policy"><code class="tsd-tag">Optional</code><span>policy</span><a href="#policy" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">policy</span><span class="tsd-signature-symbol">?:</span> <a href="_prometheus-ags_entity-graph-a2a..A2AApplicationPolicy.html" class="tsd-signature-type tsd-kind-interface">A2AApplicationPolicy</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-a2a/dist/server-D_95A7Cy.d.ts:125</li></ul></aside></section>
+<li>Defined in packages/entity-graph-a2a/dist/server-DbD7P--d.d.ts:158</li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="stepdelayms"><code class="tsd-tag">Optional</code><span>step<wbr/>Delay<wbr/>Ms</span><a href="#stepdelayms" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">stepDelayMs</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span></div>
 <div class="tsd-comment tsd-typography"><p>Async checkpoint between working and result; useful for cancellation tests.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/entity-graph-a2a/dist/server-D_95A7Cy.d.ts:129</li></ul></aside></section></section></details></div>
+<li>Defined in packages/entity-graph-a2a/dist/server-DbD7P--d.d.ts:164</li></ul></aside></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -68,7 +76,7 @@
 <h3>On This Page</h3></summary>
 <div class="tsd-accordion-details">
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Properties</summary>
-<div><a href="#clock"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>clock</span></a><a href="#idfactory"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>id<wbr/>Factory</span></a><a href="#policy"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>policy</span></a><a href="#stepdelayms"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>step<wbr/>Delay<wbr/>Ms</span></a></div></details></div></details></div>
+<div><a href="#a2uiinbound"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>a2ui<wbr/>Inbound</span></a><a href="#clock"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>clock</span></a><a href="#idfactory"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>id<wbr/>Factory</span></a><a href="#policy"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>policy</span></a><a href="#stepdelayms"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>step<wbr/>Delay<wbr/>Ms</span></a></div></details></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../index.html">Prometheus Entity Management API</a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container">

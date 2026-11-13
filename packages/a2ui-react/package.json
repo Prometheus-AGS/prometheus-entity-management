@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/a2ui-react",
-  "version": "4.4.0",
+  "version": "5.0.0",
   "description": "A2UI v1.0-RC compatibility for React over the official renderer, with policy-gated entity graph actions and AG-UI 0.0.59 activity support.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
@@ -39,14 +39,14 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && node scripts/bundle-declarations.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run",
     "refresh:exports": "pnpm run build && node ../../scripts/refresh-exports-ledger.mjs --a2ui",
     "verify:skills": "node ../../scripts/verify-skills-exports.mjs --a2ui"
   },
   "peerDependencies": {
-    "@ag-ui/core": ">=0.0.59 <0.1.0 || ^1.0.0",
+    "@ag-ui/core": "^1.0.0",
     "@prometheus-ags/entity-graph-core": "workspace:*",
     "react": ">=19.0.0 <20.0.0",
     "react-dom": ">=19.0.0 <20.0.0"
@@ -57,15 +57,15 @@
     }
   },
   "dependencies": {
-    "@a2ui/web_core": "0.12.0",
     "@prometheus-ags/entity-graph-core": "workspace:*",
     "dompurify": "3.4.17",
     "markdown-it": "14.3.3",
     "zod": "4.6.7"
   },
   "devDependencies": {
-    "@a2ui/react": "0.12.0",
-    "@ag-ui/core": "1.0.3",
+    "@a2ui/react": "0.15.0",
+    "@a2ui/web_core": "0.15.0",
+    "@ag-ui/core": "1.0.4",
     "@testing-library/react": "^16.3.2",
     "@types/markdown-it": "14.2.0",
     "@types/react": "19.2.18",
@@ -73,6 +73,8 @@
     "jsdom": "^30.0.1",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "rollup": "4.60.1",
+    "rollup-plugin-dts": "6.5.1",
     "tsup": "8.5.1",
     "typescript": "6.0.2",
     "vitest": "4.1.10"

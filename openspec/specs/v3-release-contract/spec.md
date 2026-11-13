@@ -2,7 +2,9 @@
 
 ## Purpose
 TBD - created by archiving change v3-release-contract. Update Purpose after archive.
+
 ## Requirements
+
 ### Requirement: Exact artifact and registry inventory
 
 The 3.0 release SHALL use `release/v3-release-contract.json` as its machine-readable inventory. It SHALL declare exactly twelve npm packages, one Dart package, and three Rust crates. Every artifact SHALL have one owner, registry decision, version policy, stability status, and support role. npm packages SHALL use one fixed 3.x version group. npm, GitHub Releases, and GitHub Pages SHALL be required stable channels; native registries and application stores SHALL remain deferred until their ownership/signing gates pass.
@@ -16,7 +18,7 @@ The 3.0 release SHALL use `release/v3-release-contract.json` as its machine-read
 
 ### Requirement: Stability and protocol maturity are explicit
 
-The contract SHALL distinguish stable, experimental, and internal surfaces. The official A2UI protocol baseline SHALL be v0.9.1. AG-UI event transport SHALL be distinct from official A2UI rendering and graph projection. Flutter `genui` SHALL remain experimental and SHALL NOT own the canonical Dart graph.
+The contract SHALL distinguish stable, experimental, and internal surfaces. The official A2UI protocol baseline SHALL be 1.0, with v0.9 and v0.9.1 input still supported. AG-UI event transport SHALL be distinct from official A2UI rendering and graph projection, and AG-UI peer ranges SHALL be `^1.0.0`. Flutter `genui` SHALL remain experimental and SHALL NOT own the canonical Dart graph.
 
 #### Scenario: Experimental integration cannot inherit stable status
 
@@ -66,4 +68,3 @@ The change SHALL archive only after its complete task surface and every release-
 - **THEN** every acceptance criterion in the plan's `v3-release-contract` section has reproducible evidence
 - **AND** no mandatory test or platform lane is silently skipped
 - **AND** public API, example coverage, skills, and documentation ledgers are synchronized when affected
-

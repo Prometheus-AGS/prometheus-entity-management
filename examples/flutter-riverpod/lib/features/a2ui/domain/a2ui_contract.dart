@@ -28,7 +28,8 @@ final class A2uiPolicyDecision {
   final A2uiActionIntent intent;
 }
 
-/// Application policy applied after GenUI emits user intent and before any
+/// Application policy applied after the A2UI renderer emits user intent and
+/// before any
 /// Riverpod controller can mutate the graph.
 final class A2uiActionPolicy {
   const A2uiActionPolicy();

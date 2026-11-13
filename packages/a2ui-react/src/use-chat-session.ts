@@ -1,327 +1,267 @@
 /**
- * use-chat-session.ts — Core React hook that manages a chat session.
+ * use-chat-session.ts — React hook for one AG-UI 1.0 chat conversation.
  *
- * Responsibilities:
- * - Maintains local message list (React state, not the entity graph)
- * - Processes incoming StreamEvents: appends / updates messages in place
- * - Ingests STATE_SNAPSHOT / STATE_DELTA events into entity-graph-core via
- *   applyAgUiSnapshot / applyAgUiDelta
- * - Invokes the optional EntityToolProvider when the agent emits tool calls
+ * The conversation lives in the entity graph, written by a
+ * `ChatConversationStore` (chat/conversation-store.ts) that consumes the AG-UI
+ * 1.0 event stream. This hook only orchestrates (CLAUDE.md layering): it owns
+ * the run's `AbortController`, hands the store the stream factory, and reads
+ * the conversation back from the graph, so every view of the same conversation
+ * shows the same messages.
  *
- * This hook is the shared foundation for EntityChat and EntityCopilot.
- *
- * Hook→Store layering: this hook calls applyAgUiSnapshot / applyAgUiDelta
- * (store writes). It never calls useGraphStore directly — that boundary is
- * maintained in the agent/ module of entity-graph-core.
+ * Cancellation is real: a new `sendMessage`, `clearMessages`, or unmounting
+ * aborts the previous run's signal (passed to `streamFactory`), and the store
+ * drops any event that arrives afterwards.
  */
 
-import { useCallback, useRef, useState } from "react";
-import {
-  applyAgUiSnapshot,
-  applyAgUiDelta,
-} from "@prometheus-ags/entity-graph-core";
+import { useCallback, useEffect, useRef, useSyncExternalStore } from "react";
+import { graphStore, resolveActiveGraphStore, type GraphStore } from "@prometheus-ags/entity-graph-core";
+import { ChatConversationStore, type ChatStreamFactory } from "./chat/conversation-store.js";
+import type { ChatInterrupt, ChatResumeEntry } from "./chat/interrupts.js";
+import type { A2uiActionDecision, A2uiActionPolicy } from "./policy/action-policy.js";
 import type {
+  AgUiStateMapping,
   ChatMessage,
   ChatSession,
   EntityToolProvider,
-  StreamEvent,
-  AgUiStateMapping,
 } from "./types.js";
 
 function generateId(): string {
-  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
-}
-
-function nowIso(): string {
-  return new Date().toISOString();
+  return globalThis.crypto?.randomUUID?.() ??
+    `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
 export interface UseChatSessionOptions {
-  /** Unique session id; defaults to a generated id. */
+  /** Conversation id; defaults to a generated id. Two sessions with the same id share messages. */
   sessionId?: string;
   /**
-   * Factory that returns an async-iterable (or ReadableStream) of StreamEvents
-   * given the current messages. The library calls this on every sendMessage().
+   * Returns the AG-UI 1.0 event stream for the next run, given the conversation
+   * so far. Honour `signal`: it is aborted when the run is superseded, cleared
+   * or the component unmounts.
    */
-  streamFactory: (messages: ChatMessage[]) => AsyncIterable<StreamEvent> | ReadableStream<StreamEvent>;
+  streamFactory: ChatStreamFactory;
   /** AG-UI state mappings: project agent state onto entity-graph entities. */
   mappings?: AgUiStateMapping[];
-  /** Optional tool provider for function-calling / MCP. */
+  /** Optional tool provider for client-side tools (function calling / MCP). */
   toolProvider?: EntityToolProvider;
   /** Called when a full assistant message has been received. */
   onMessage?: (message: ChatMessage) => void;
-  /** Called on stream error. */
+  /** Called on a stream or run error. */
   onError?: (error: Error) => void;
+  /** The graph to write to; defaults to the active graph. */
+  graphStore?: GraphStore;
+  /**
+   * Decides every approved interrupt (AG-UI 1.0 `RUN_FINISHED.outcome`
+   * interrupt), as for any A2UI action: allowlist, authorization, execution and
+   * audit. Without it, approving an interrupt resolves it as `cancelled`.
+   */
+  actionPolicy?: A2uiActionPolicy;
+  /**
+   * Maps an interrupt (and the user's edited payload, if any) to the action the
+   * policy decides. Defaults to `interrupt.metadata["prometheus.action"]`
+   * (`{ name, context }`), with an object payload replacing the context.
+   */
+  interruptToAction?: (
+    interrupt: ChatInterrupt,
+    payload: unknown,
+  ) => { name: string; context: Record<string, unknown> } | undefined;
+  /** Called with each interrupt decision and the policy decision behind it, if any. */
+  onInterruptDecision?: (
+    interrupt: ChatInterrupt,
+    entry: ChatResumeEntry,
+    decision?: A2uiActionDecision,
+  ) => void;
+}
+
+/** A user's decision on one interrupt. */
+export interface ChatInterruptDecision {
+  approved: boolean;
+  /** Edited values (edit-before-approve). Replaces the action context when it is an object. */
+  payload?: unknown;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+/** The default interrupt → action mapping: `metadata["prometheus.action"]`. */
+export function defaultInterruptToAction(
+  interrupt: ChatInterrupt,
+  payload: unknown,
+): { name: string; context: Record<string, unknown> } | undefined {
+  const declared = interrupt.metadata?.["prometheus.action"];
+  if (!isRecord(declared) || typeof declared.name !== "string") return undefined;
+  const context = isRecord(payload) ? payload : isRecord(declared.context) ? declared.context : {};
+  return { name: declared.name, context };
 }
 
 export interface UseChatSessionReturn {
   session: ChatSession;
   sendMessage: (content: string) => Promise<void>;
   clearMessages: () => void;
+  /** Interrupts of the paused run that still await a decision. */
+  interrupts: ChatInterrupt[];
+  /**
+   * Decide one interrupt. Once every interrupt of the paused run is decided,
+   * the run resumes with `resume[]` passed to `streamFactory`.
+   */
+  resolveInterrupt: (interruptId: string, decision: ChatInterruptDecision) => Promise<void>;
+}
+
+/** Map one interrupt decision to its resume entry, through the action policy when approved. */
+async function decideInterruptChoice(
+  interrupt: ChatInterrupt,
+  choice: ChatInterruptDecision,
+  options: Pick<UseChatSessionOptions, "actionPolicy" | "interruptToAction">,
+  conversationId: string,
+): Promise<{ entry: ChatResumeEntry; decision?: A2uiActionDecision }> {
+  const interruptId = interrupt.id;
+  if (!choice.approved) return { entry: { interruptId, status: "cancelled", payload: { reason: "denied-by-user" } } };
+  if (!options.actionPolicy) return { entry: { interruptId, status: "cancelled", payload: { reason: "no-action-policy" } } };
+  const action = (options.interruptToAction ?? defaultInterruptToAction)(interrupt, choice.payload);
+  if (!action) return { entry: { interruptId, status: "cancelled", payload: { reason: "unmapped-interrupt" } } };
+  const decision = await options.actionPolicy.handle({
+    name: action.name,
+    surfaceId: `agui-interrupt:${conversationId}`,
+    sourceComponentId: interruptId,
+    timestamp: new Date().toISOString(),
+    context: action.context,
+  });
+  const entry: ChatResumeEntry =
+    decision.status === "executed"
+      ? { interruptId, status: "resolved", payload: action.context }
+      : { interruptId, status: "cancelled", payload: { reason: decision.reason, code: decision.code } };
+  return { entry, decision };
 }
 
 export function useChatSession(opts: UseChatSessionOptions): UseChatSessionReturn {
   const { sessionId, streamFactory, mappings = [], toolProvider, onMessage, onError } = opts;
-
+  const streamFactoryRef = useRef(streamFactory);
+  streamFactoryRef.current = streamFactory;
   const idRef = useRef(sessionId ?? generateId());
   const abortRef = useRef<AbortController | null>(null);
+  // Callbacks are read through refs so the store is created once and never stale.
+  const callbacks = useRef({
+    toolProvider, onMessage, onError, mappings, graph: opts.graphStore,
+    actionPolicy: opts.actionPolicy, interruptToAction: opts.interruptToAction,
+    onInterruptDecision: opts.onInterruptDecision,
+  });
+  callbacks.current = {
+    toolProvider, onMessage, onError, mappings, graph: opts.graphStore,
+    actionPolicy: opts.actionPolicy, interruptToAction: opts.interruptToAction,
+    onInterruptDecision: opts.onInterruptDecision,
+  };
 
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  // One store per graph: a store reads and writes only the graph it was created for,
+  // so switching graphStore never carries a run, a claim or a decision across graphs.
+  const graph = opts.graphStore ?? resolveActiveGraphStore(graphStore);
+  const storeRef = useRef<{ store: ChatConversationStore; graph: GraphStore } | null>(null);
+  if (!storeRef.current || storeRef.current.graph !== graph) {
+    const boundGraph = graph;
+    storeRef.current = { graph: boundGraph, store: new ChatConversationStore({
+      conversationId: idRef.current,
+      graph: () => boundGraph,
+      get mappings() {
+        return callbacks.current.mappings;
+      },
+      get toolProvider() {
+        return callbacks.current.toolProvider;
+      },
+      onMessage: (message) => callbacks.current.onMessage?.(message),
+      onError: (error) => callbacks.current.onError?.(error),
+    }) };
+  }
+  const store = storeRef.current.store;
 
-  const appendOrUpdateMessage = useCallback((msg: ChatMessage) => {
-    setMessages((prev) => {
-      const idx = prev.findIndex((m) => m.id === msg.id);
-      if (idx === -1) return [...prev, msg];
-      const next = [...prev];
-      next[idx] = msg;
-      return next;
-    });
-  }, []);
-
-  const processStream = useCallback(
-    async (stream: AsyncIterable<StreamEvent>) => {
-      const agentState: Record<string, unknown> = {};
-      // Track accumulated tool calls by toolCallId during streaming so we don't
-      // need to read from potentially-stale React state at TOOL_CALL_END.
-      const pendingToolCalls = new Map<string, { name: string; arguments: string }>();
-
-      for await (const event of stream) {
-        switch (event.type) {
-          case "MESSAGE_START": {
-            if (!event.messageId) break;
-            appendOrUpdateMessage({
-              id: event.messageId,
-              role: "assistant",
-              content: "",
-              createdAt: nowIso(),
-              streaming: true,
-            });
-            break;
-          }
-
-          case "MESSAGE_DELTA": {
-            if (!event.messageId || !event.delta) break;
-            setMessages((prev) => {
-              const idx = prev.findIndex((m) => m.id === event.messageId);
-              if (idx === -1) return prev;
-              const next = [...prev];
-              next[idx] = { ...next[idx], content: next[idx].content + event.delta };
-              return next;
-            });
-            break;
-          }
-
-          case "MESSAGE_END": {
-            if (!event.messageId) break;
-            setMessages((prev) => {
-              const idx = prev.findIndex((m) => m.id === event.messageId);
-              if (idx === -1) return prev;
-              const next = [...prev];
-              const completed = { ...next[idx], streaming: false };
-              next[idx] = completed;
-              onMessage?.(completed);
-              return next;
-            });
-            break;
-          }
-
-          case "TOOL_CALL_START": {
-            if (!event.toolCallId) break;
-            // Register in our local map for quick lookup at TOOL_CALL_END
-            pendingToolCalls.set(event.toolCallId, {
-              name: event.toolName ?? "",
-              arguments: "",
-            });
-            if (event.messageId) {
-              setMessages((prev) => {
-                const idx = prev.findIndex((m) => m.id === event.messageId);
-                if (idx === -1) return prev;
-                const next = [...prev];
-                const existing = next[idx].toolCalls ?? [];
-                next[idx] = {
-                  ...next[idx],
-                  toolCalls: [
-                    ...existing,
-                    {
-                      id: event.toolCallId!,
-                      type: "function" as const,
-                      function: { name: event.toolName ?? "", arguments: "" },
-                    },
-                  ],
-                };
-                return next;
-              });
-            }
-            break;
-          }
-
-          case "TOOL_CALL_DELTA": {
-            if (!event.toolCallId || !event.toolArgsDelta) break;
-            // Accumulate in our local map
-            const tc = pendingToolCalls.get(event.toolCallId);
-            if (tc) {
-              tc.arguments += event.toolArgsDelta;
-            }
-            setMessages((prev) => {
-              const msgIdx = prev.findIndex((m) =>
-                m.toolCalls?.some((c) => c.id === event.toolCallId)
-              );
-              if (msgIdx === -1) return prev;
-              const next = [...prev];
-              const msg = next[msgIdx];
-              next[msgIdx] = {
-                ...msg,
-                toolCalls: (msg.toolCalls ?? []).map((c) =>
-                  c.id === event.toolCallId
-                    ? {
-                        ...c,
-                        function: {
-                          ...c.function,
-                          arguments: c.function.arguments + (event.toolArgsDelta ?? ""),
-                        },
-                      }
-                    : c
-                ),
-              };
-              return next;
-            });
-            break;
-          }
-
-          case "TOOL_CALL_END": {
-            if (!event.toolCallId || !toolProvider) break;
-            const callInfo = pendingToolCalls.get(event.toolCallId);
-            if (!callInfo) break;
-            pendingToolCalls.delete(event.toolCallId);
-
-            try {
-              const args = JSON.parse(callInfo.arguments || "{}") as Record<string, unknown>;
-              const result = await toolProvider.executeTool({
-                toolCallId: event.toolCallId,
-                name: callInfo.name,
-                arguments: args,
-              });
-              const toolMsg: ChatMessage = {
-                id: generateId(),
-                role: "tool",
-                content: JSON.stringify(result.result),
-                createdAt: nowIso(),
-                toolCallId: event.toolCallId,
-              };
-              appendOrUpdateMessage(toolMsg);
-            } catch (err) {
-              const toolErrMsg: ChatMessage = {
-                id: generateId(),
-                role: "tool",
-                content: JSON.stringify({ error: String(err) }),
-                createdAt: nowIso(),
-                toolCallId: event.toolCallId,
-              };
-              appendOrUpdateMessage(toolErrMsg);
-            }
-            break;
-          }
-
-          case "STATE_SNAPSHOT": {
-            if (!event.snapshot) break;
-            applyAgUiSnapshot(
-              { type: "STATE_SNAPSHOT", snapshot: event.snapshot },
-              { mappings }
-            );
-            Object.assign(agentState, event.snapshot);
-            break;
-          }
-
-          case "STATE_DELTA": {
-            if (!event.patch) break;
-            applyAgUiDelta(
-              {
-                type: "STATE_DELTA",
-                delta: event.patch as Parameters<typeof applyAgUiDelta>[0]["delta"],
-              },
-              { mappings },
-              Object.keys(agentState).length > 0 ? agentState : undefined
-            );
-            break;
-          }
-
-          case "ERROR": {
-            const msg = event.error ?? "Stream error";
-            setError(msg);
-            onError?.(new Error(msg));
-            break;
-          }
-
-          case "DONE":
-            break;
-
-          default:
-            break;
-        }
-      }
-    },
-    [appendOrUpdateMessage, mappings, toolProvider, onMessage, onError]
+  const subscribe = useCallback(
+    (listener: () => void) => graph.subscribe(listener),
+    // Resubscribe when the graph (and so the store) changes.
+    [graph],
   );
+  const snapshot = useSyncExternalStore(subscribe, () => store.snapshot(), () => store.snapshot());
+
+  // Unmounting, or replacing the store after a graph switch, aborts the run in flight and
+  // cancels it on its own graph; a decision that finishes later does not resume it.
+  const activeStoreRef = useRef<ChatConversationStore | null>(null);
+  useEffect(() => {
+    activeStoreRef.current = store;
+    return () => {
+      if (activeStoreRef.current === store) activeStoreRef.current = null;
+      abortRef.current?.abort();
+      store.cancel();
+    };
+  }, [store]);
+
+  // A pause whose interrupts are all decided but which never resumed (its deciding view
+  // unmounted first): any view of the conversation that sees it resumes it, once.
+  useEffect(() => {
+    const ready = store.pendingResume();
+    if (!ready) return;
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+    void store.resume(ready, streamFactoryRef.current, controller.signal, () => controller.abort());
+  }, [store, snapshot.runStatus, snapshot.interrupts.length]);
 
   const sendMessage = useCallback(
     async (content: string) => {
       abortRef.current?.abort();
-      abortRef.current = new AbortController();
-
-      const userMsg: ChatMessage = {
-        id: generateId(),
-        role: "user",
-        content,
-        createdAt: nowIso(),
-      };
-
-      // Capture the current message list before the state update
-      let currentMessages: ChatMessage[] = [];
-      setMessages((prev) => {
-        currentMessages = [...prev, userMsg];
-        return currentMessages;
-      });
-
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        // Use a small delay to let React batch the state update before reading
-        await Promise.resolve();
-        const raw = streamFactory(currentMessages);
-        const iterable: AsyncIterable<StreamEvent> =
-          raw instanceof ReadableStream
-            ? (raw as unknown as AsyncIterable<StreamEvent>)
-            : raw;
-
-        await processStream(iterable);
-      } catch (err) {
-        const msg = err instanceof Error ? err.message : String(err);
-        setError(msg);
-        onError?.(err instanceof Error ? err : new Error(msg));
-      } finally {
-        setIsLoading(false);
-      }
+      const controller = new AbortController();
+      abortRef.current = controller;
+      await store.send(content, streamFactory, controller.signal, () => controller.abort());
     },
-    [streamFactory, processStream, onError]
+    [store, streamFactory],
+  );
+
+  const resolveInterrupt = useCallback(
+    async (interruptId: string, choice: ChatInterruptDecision) => {
+      const interrupt = store.snapshot().interrupts.find((item) => item.id === interruptId);
+      if (!interrupt) return;
+      // Claim it first: a second caller or view cannot run the same action again.
+      // The epoch binds the decision to this pause, so it cannot decide a later run.
+      const epoch = store.claimInterrupt(interruptId);
+      if (epoch === undefined) return;
+      const reportError = (cause: unknown): void =>
+        callbacks.current.onError?.(cause instanceof Error ? cause : new Error(String(cause)));
+      let entry: ChatResumeEntry;
+      let decision: A2uiActionDecision | undefined;
+      try {
+        ({ entry, decision } = await decideInterruptChoice(interrupt, choice, callbacks.current, store.conversationId));
+      } catch (cause) {
+        // Fail closed: a mapping or policy that throws resolves the interrupt as cancelled.
+        entry = { interruptId, status: "cancelled", payload: { reason: "policy-error" } };
+        decision = undefined;
+        reportError(cause);
+      }
+      try {
+        callbacks.current.onInterruptDecision?.(interrupt, entry, decision);
+      } catch (cause) {
+        reportError(cause);
+      }
+      const all = store.decideInterrupt(entry, epoch);
+      if (!all || activeStoreRef.current !== store) return;
+      abortRef.current?.abort();
+      const controller = new AbortController();
+      abortRef.current = controller;
+      await store.resume(all, streamFactory, controller.signal, () => controller.abort());
+    },
+    [store, streamFactory],
   );
 
   const clearMessages = useCallback(() => {
     abortRef.current?.abort();
-    setMessages([]);
-    setError(null);
-    setIsLoading(false);
-  }, []);
+    abortRef.current = null;
+    store.clear();
+  }, [store]);
 
   const session: ChatSession = {
     id: idRef.current,
-    messages,
-    isLoading,
-    error,
+    messages: snapshot.messages,
+    isLoading: snapshot.isLoading,
+    error: snapshot.error,
     mappings,
+    runStatus: snapshot.runStatus,
+    ...(snapshot.runId === undefined ? {} : { runId: snapshot.runId }),
   };
 
-  return { session, sendMessage, clearMessages };
+  return { session, sendMessage, clearMessages, interrupts: snapshot.interrupts, resolveInterrupt };
 }

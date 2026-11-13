@@ -52,7 +52,7 @@ it through `/control/emit` and reads the result from `/control/envelopes`.
 ```bash
 curl -s -X POST http://127.0.0.1:5176/control/emit \
   -H 'content-type: application/json' \
-  -d '{"event":{"type":"ACTIVITY_SNAPSHOT","messageId":"m1","activityType":"a2ui-surface","replace":true,"content":{"surfaceVersions":{"s1":{"version":1}},"a2ui_operations":[{"version":"v0.9.1","createSurface":{"surfaceId":"s1","catalogId":"urn:prometheus-ags:a2ui:catalog:v3","theme":{}}}]}}}'
+  -d '{"event":{"type":"ACTIVITY_SNAPSHOT","messageId":"m1","activityType":"a2ui-surface","replace":true,"content":{"surfaceVersions":{"s1":{"version":1}},"a2ui_operations":[{"version":"1.0","createSurface":{"surfaceId":"s1","catalogId":"urn:prometheus-ags:a2ui:catalog:a2ui-1.0"}}]}}}'
 ```
 
 ## What the lab covers

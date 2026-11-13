@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/entity-management-docs",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "description": "Prometheus Entity Management documentation site",
   "scripts": {

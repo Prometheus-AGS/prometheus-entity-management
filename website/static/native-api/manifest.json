@@ -3,12 +3,12 @@
   "sourceFiles": [
     {
       "path": "packages/entity-graph-cli/Cargo.lock",
-      "sha256": "0490aa035f6742b8a3b30d850228827e2ef884ffbd3be3a025ae6839702ebc81",
+      "sha256": "4ced41a09c5f1bad336499a9fcabb646de726f0bc81c26932f57c45eb5d8bed0",
       "bytes": 30683
     },
     {
       "path": "packages/entity-graph-cli/Cargo.toml",
-      "sha256": "851ad94eb43c8d7f1940d156dd394a964d1f67519b20c195bbf3331e21ae953c",
+      "sha256": "dab9332826dfc602d84545961d17c37660210c7c70ab5161ada00d33f18f84b4",
       "bytes": 914
     },
     {
@@ -48,12 +48,12 @@
     },
     {
       "path": "packages/entity-graph-mcp/Cargo.lock",
-      "sha256": "07a33754380bc42c448e1200d1e5ae7fdbf9c34b40792e18e6417db1f4008061",
+      "sha256": "a186d85007e8fe3cb56f6e910e80a1c0331fd65cfa3400e55d2498bbe460f85b",
       "bytes": 35945
     },
     {
       "path": "packages/entity-graph-mcp/Cargo.toml",
-      "sha256": "8aed6b5146918bd45e660f60474ba00661adcc84f1b0faa4e2d577acddb1cead",
+      "sha256": "f05faaf5d405095aa86e36778da71e764372e8ea3a598d07d6d09dda47d5726c",
       "bytes": 1767
     },
     {
@@ -88,12 +88,12 @@
     },
     {
       "path": "packages/entity-graph-tauri/rust-plugin/Cargo.lock",
-      "sha256": "6914974c0cf646a3b804bf32b226c99ce8fcbba894e9d4b137b755f3b8d5deb4",
+      "sha256": "dbfc2addee371a763e265ba5354490dccf4c0a2393b255e12ff28fdd9d3791fc",
       "bytes": 96315
     },
     {
       "path": "packages/entity-graph-tauri/rust-plugin/Cargo.toml",
-      "sha256": "2f88570df0c9e53ef689c3ac0d58dffac07e2181309f7467b27007e7fc17ab1d",
+      "sha256": "0f1b9be86d7c5ea41879e88628d9731ef6519f8af0efe3e61bca3ece468b11e4",
       "bytes": 1354
     },
     {
@@ -238,7 +238,7 @@
     },
     {
       "path": "packages/entity_graph_flutter/pubspec.yaml",
-      "sha256": "a8aac64b8ac48c3c1965188e8f237fbfaeef84749f771e382d29a4474fba8077",
+      "sha256": "0745f579a83c2c0ec00627ed7dcd3e133f35500a15837024c9035b17ffb37472",
       "bytes": 1302
     },
     {
@@ -247,7 +247,7 @@
       "bytes": 11301
     }
   ],
-  "sourceAggregateSha256": "50c7ce5e90781263bf8d39fa992e35a717214ed6f91d47996791a750a684aada",
+  "sourceAggregateSha256": "e4d77e005f0bd4bea6e48e1617c06aac047c4055ee12a108bceb84e0e860753a",
   "artifactFileCount": 1545,
-  "artifactAggregateSha256": "1982791ef9937a216ed2aa40e266301ff36e71d88dafdde77f9ad80b2a446a19"
+  "artifactAggregateSha256": "f87a80ee04cec18bfb7f4316f8c5a02c16acafb54b699982cbd2c355603f89a1"
 }

@@ -122,7 +122,10 @@ export async function runSurfaceProjection(
   runtime: PrometheusA2uiRuntime,
   tenantId: string,
 ): Promise<void> {
-  const message = surfaceRequestMessage("Render the task board surface.");
+  const message = surfaceRequestMessage(
+    "Render the task board surface.",
+    runtime.getClientCapabilities(),
+  );
   await runStreamingTask(server, message, demoCaller(tenantId), (event) => {
     auditLog.recordTask({
       taskId: "surface",

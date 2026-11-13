@@ -365,9 +365,9 @@ every widget watching `Invoice` entities rebuilds in the same frame.
 - Flutter 3.44.8 generation, analysis, package/showcase tests, three goldens,
   Android emulator, and iOS simulator smoke lanes are recorded in
   `examples/coverage.json`.
-- The Flutter showcase accepts strict A2UI 1.0-RC surfaces and normalizes them
-  to the published GenUI 0.10.2 renderer only after catalog, component,
-  function, action, tenant, and entity validation.
+- The Flutter showcase renders A2UI 1.0 surfaces natively through
+  `a2ui_flutter` 0.3.0 and the `a2ui_core` 0.7.0 message processor, only after
+  catalog, component, action, tenant, and entity validation.
 - The optional DevTools controller passed its complete
   Flutter/Riverpod/VM-service acceptance flow with two isolated graphs and 28
   versioned events. Version `3.1.0` also includes the official, validated

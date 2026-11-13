@@ -1,0 +1,27 @@
+{
+  "kind": "kbd.execute-dispatch",
+  "phaseId": "phase-a2ui-1-0-agui-upgrade",
+  "dispatchedAt": "2026-11-12T11:08:37Z",
+  "backend": "openspec",
+  "driver": "claude-code session claude-opus-5-5 via kbd-apply",
+  "contractDigest": "a33d62a77ab524d0b149f56294e4ee72aba9937774afb25ca96acda16b2a54f5",
+  "readiness": "READY",
+  "method": "implementation-first",
+  "assignedChanges": [
+    "a2ui-0-15-library-baseline",
+    "a2ui-v1-native-surfaces",
+    "a2ui-v1-functions-and-actions",
+    "agui-1-0-floors-and-middleware-interop",
+    "a2a-official-a2ui-extension",
+    "agui-1-0-chat-run-stack",
+    "agui-interrupt-approvals",
+    "a2ui-governed-actions-graph-binding-design",
+    "examples-a2ui-1-0-migration",
+    "a2ui-v1-conformance-harness",
+    "a2ui-1-0-release-sync"
+  ],
+  "pendingWork": {
+    "changes": 11,
+    "tasks": 52
+  }
+}

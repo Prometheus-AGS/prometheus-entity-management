@@ -1,0 +1,9 @@
+{"step":1,"command":"export PATH=\"$(dirname \"$(command -v node)\"):$(printf %s \"$PATH\" | tr ':' '\\n' | grep -v modern-python | paste -sd: -)\" && node -e \"process.exit(/^v(22|24|26)\\./.test(process.version)?0:1)\" && pnpm --version","startedAt":"2026-11-13T01:05:36Z","completedAt":"2026-11-13T01:05:37Z","exitCode":0}
+{"step":2,"command":"pnpm install --frozen-lockfile","startedAt":"2026-11-13T01:05:37Z","completedAt":"2026-11-13T01:05:39Z","exitCode":0}
+{"step":3,"command":"export E=\".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/$(date +%Y-%m-%dT%H%M%S)-boundary\" && mkdir -p \"$(dirname \"$E\")\" && mkdir \"$E\"","startedAt":"2026-11-13T01:05:39Z","completedAt":"2026-11-13T01:05:39Z","exitCode":0}
+{"step":4,"command":"pnpm run build:packages","startedAt":"2026-11-13T01:05:39Z","completedAt":"2026-11-13T01:05:44Z","exitCode":0}
+{"step":5,"command":"pnpm run capture:a2ui-visual -- --out \"$E/visual\"","startedAt":"2026-11-13T01:05:44Z","completedAt":"2026-11-13T01:05:55Z","exitCode":0}
+{"step":6,"command":"A2UI_VISUAL_EVIDENCE=\"$E/visual\" pnpm run verify:a2ui-bridge","startedAt":"2026-11-13T01:05:55Z","completedAt":"2026-11-13T01:06:08Z","exitCode":0}
+{"step":7,"command":"pnpm run verify:package-contracts -- --report \"$E/package-contracts.json\"","startedAt":"2026-11-13T01:06:08Z","completedAt":"2026-11-13T01:06:42Z","exitCode":0}
+{"step":8,"command":"pnpm run verify:a2ui-v1 -- --report \"$E/a2ui-v1.json\"","startedAt":"2026-11-13T01:06:42Z","completedAt":"2026-11-13T01:06:59Z","exitCode":0}
+{"step":9,"command":"node scripts/verify-a2a-conformance.mjs --report \"$E/a2a-conformance.json\"","startedAt":"2026-11-13T01:06:59Z","completedAt":"2026-11-13T01:07:05Z","exitCode":1}

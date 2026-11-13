@@ -82,9 +82,10 @@ the immutable full-release SHA, documentation deployment, or stable promotion.
 [`flutter-riverpod-a2ui-example.md`](flutter-riverpod-a2ui-example.md)
 documents the complete application at `examples/flutter-riverpod`. It composes
 one canonical graph, generated Riverpod controllers, optimistic/offline-aware
-CRUD, relationship and realtime invalidation, policy-gated official GenUI,
-responsive phone/tablet UI, and an optional FFI transport. The current host
-boundary passes analyzer, 25 tests, and three hash-recorded goldens.
+CRUD, relationship and realtime invalidation, policy-gated native A2UI 1.0 rendering,
+responsive phone/tablet UI, and an optional FFI transport. Its A2UI 1.0 gate is
+`pnpm run verify:flutter-a2ui-v1`, an integration test on a booted iOS simulator;
+the earlier analyzer, test-count and golden receipts predate the migration.
 
 The coverage status is deliberately `partial`: those receipts do not establish
 frozen resolution under Flutter 3.44.8 stable or Android/iOS runtime and visual

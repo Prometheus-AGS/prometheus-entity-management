@@ -1,6 +1,6 @@
 ---
 title: "Tutorial: Flutter + Riverpod + A2UI"
-description: Mobile showcase — official A2UI surfaces through genui, a fail-closed app-owned action policy, and optimistic CRUD with offline convergence on the Dart graph.
+description: Mobile showcase — official A2UI 1.0 surfaces through a2ui_flutter, a fail-closed app-owned action policy, and optimistic CRUD with offline convergence on the Dart graph.
 ---
 
 # Tutorial: Flutter + Riverpod + A2UI
@@ -16,11 +16,17 @@ The app composes published surfaces only — no library changes:
 
 - `entity_graph_flutter` — the canonical Dart graph plus Riverpod provider
   families (`entityListProvider`, `entityCrudProvider`, …).
-- `genui@0.10.2` — published v0.9 renderer used behind a strict A2UI 1.0-RC
-  compatibility adapter.
-- An **app-owned, fail-closed action policy**: allowlisted `task.update`,
-  approval-gated `task.replace`, denied `task.delete`, a tenant guard, and
-  malformed-message rejection.
+- `a2ui_flutter@0.3.0` with the `a2ui_core@0.7.0` message processor — the
+  official renderer, consuming A2UI 1.0 (`version: "1.0"`) natively with no
+  translation layer. The showcase uses its own narrowed catalog
+  (`urn:prometheus-ags:a2ui:catalog:flutter-showcase-1.0`: Card, Column, Row,
+  Text, Button, Divider; no client functions).
+- An **app-owned, fail-closed action policy**: agent output is limited to
+  `createSurface`, `updateComponents`, `updateDataModel` and `deleteSurface`
+  for the registered surface, the main screen may only name the declared
+  actions `task.update`, `task.archive` and `task.delete`, and a refused batch
+  renders a refusal card without writing to the graph. Every user action still
+  passes the Riverpod action policy before any graph mutation.
 
 Mutations land once in the normalized graph and propagate to every joined
 view — the same invariant the TypeScript bindings certify.
@@ -47,7 +53,7 @@ flutter run                      # attach a device or emulator
 ## Test commands
 
 ```bash
-pnpm run verify:flutter-riverpod-a2ui   # full showcase gate
+pnpm run verify:flutter-a2ui-v1 -- --report <file>   # A2UI 1.0 gate on a booted iOS simulator
 pnpm run bdd:flutter-riverpod-a2ui      # scenario-level BDD evidence
 ```
 

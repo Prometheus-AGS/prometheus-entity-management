@@ -42,11 +42,11 @@ When a call would exceed a limit, the runtime SHALL reject it before applying an
 - **WHEN** `maxSurfaces` is lowered below the surfaces held
 - **THEN** creating another surface is rejected and deleting one succeeds
 
-### Requirement: v1 action responses are bounded
+### Requirement: Function responses are bounded
 
-A v1.0 `actionResponse` value written to a surface's `responsePath` SHALL be checked against the same limits, and a rejection SHALL be reported through `onProducerFault` without undoing messages already applied.
+An agent's answer to `callAgentFunction` that the runtime writes into a surface's data model (`writeTo`, and RC response-aware actions through the opt-in shim) SHALL be checked against the same limits, and a rejection SHALL be reported through `onProducerFault` without failing the call that produced it.
 
-#### Scenario: Oversized action response
+#### Scenario: Oversized function response
 
-- **WHEN** an action response would exceed `maxDataModelBytes`
+- **WHEN** a function response would exceed `maxDataModelBytes`
 - **THEN** the surface is unchanged and a producer fault is reported

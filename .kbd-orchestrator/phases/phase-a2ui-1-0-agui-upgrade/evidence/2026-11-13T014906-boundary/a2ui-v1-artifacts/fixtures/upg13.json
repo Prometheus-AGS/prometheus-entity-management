@@ -1,0 +1,83 @@
+{
+  "v1SurfaceId": "upg13",
+  "v1Surface": [
+    {
+      "version": "1.0",
+      "createSurface": {
+        "surfaceId": "upg13",
+        "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+        "sendDataModel": true,
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "title",
+              "status"
+            ]
+          },
+          {
+            "id": "title",
+            "component": "Text",
+            "text": "Shipment"
+          },
+          {
+            "id": "status",
+            "component": "Text",
+            "text": {
+              "@path": "/status"
+            }
+          }
+        ],
+        "dataModel": {
+          "status": "in transit",
+          "items": [
+            {
+              "sku": "A-1",
+              "qty": 2
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "legacySurfaceId": "upg13-legacy",
+  "legacyTheme": {
+    "primaryColor": "#3366ff"
+  },
+  "legacySurface": [
+    {
+      "version": "v0.9.1",
+      "createSurface": {
+        "surfaceId": "upg13-legacy",
+        "catalogId": "urn:prometheus-ags:a2ui:catalog:v3",
+        "theme": {
+          "primaryColor": "#3366ff"
+        }
+      }
+    },
+    {
+      "version": "v0.9.1",
+      "updateComponents": {
+        "surfaceId": "upg13-legacy",
+        "components": [
+          {
+            "id": "root",
+            "component": "Text",
+            "text": "Legacy"
+          }
+        ]
+      }
+    },
+    {
+      "version": "v0.9.1",
+      "updateDataModel": {
+        "surfaceId": "upg13-legacy",
+        "path": "/",
+        "value": {
+          "note": "kept"
+        }
+      }
+    }
+  ]
+}

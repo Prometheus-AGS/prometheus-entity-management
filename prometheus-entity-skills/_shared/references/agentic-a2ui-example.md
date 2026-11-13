@@ -9,7 +9,7 @@ Read the two protocol references with it:
 - [`a2a-conformance-agent.md`](a2a-conformance-agent.md) owns A2A v1 transport,
   task visibility, lifecycle, and TCK limits.
 - [`a2ui-protocol-bridge.md`](a2ui-protocol-bridge.md) owns official A2UI
-  v0.9.1 processing, rendering, catalog, and action-policy limits.
+  1.0 (and v0.9.1) processing, rendering, catalog, and action-policy limits.
 
 The runnable repository example is
 [`examples/agentic-a2ui-app`](../../../examples/agentic-a2ui-app/README.md), and

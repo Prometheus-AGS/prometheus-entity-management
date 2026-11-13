@@ -1,5 +1,14 @@
 # prometheus-entity-management-tauri
 
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies
+  - @prometheus-ags/entity-graph-core@5.0.0
+  - @prometheus-ags/entity-graph-react@5.0.0
+  - @prometheus-ags/entity-graph-tauri@5.0.0
+
 ## 0.1.3
 
 ### Patch Changes

@@ -11,7 +11,6 @@ import {
   PROMETHEUS_A2UI_CATALOG_ID,
   PROMETHEUS_A2UI_EXTENSION_URI,
   PROMETHEUS_A2UI_MEDIA_TYPE,
-  PROMETHEUS_A2UI_PROTOCOL_VERSION,
   PROMETHEUS_GRAPH_EXTENSION_URI,
 } from "./types.js";
 
@@ -61,13 +60,12 @@ export const DEFAULT_AGENT_EXTENSIONS: readonly AgentExtension[] = Object.freeze
   },
   {
     uri: PROMETHEUS_A2UI_EXTENSION_URI,
-    description:
-      "Prometheus-owned adapter for validated A2UI v0.9.1 messages; this does not impersonate the legacy upstream A2UI v0.8 A2A extension.",
+    description: "Ability to render A2UI 1.0 (official A2UI A2A extension v1.0).",
     required: false,
+    // `params` is the `1.0` object of the A2UI agent_capabilities schema.
     params: {
-      protocolVersion: PROMETHEUS_A2UI_PROTOCOL_VERSION,
       supportedCatalogIds: [PROMETHEUS_A2UI_CATALOG_ID],
-      mediaType: PROMETHEUS_A2UI_MEDIA_TYPE,
+      acceptsInlineCatalogs: false,
     },
   },
 ]);

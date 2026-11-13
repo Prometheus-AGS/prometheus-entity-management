@@ -1,0 +1,269 @@
+{
+  "config": {
+    "argv": [
+      "/Users/gqadonis/.local/share/fnm/node-versions/v26.5.0/installation/bin/node",
+      "/Volumes/T7/Projects/prometheus/prometheus-entity-management/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "tests/browser/agui-run-stack.playwright.config.ts"
+    ],
+    "configFile": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.playwright.config.ts",
+    "rootDir": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191139-boundary/agui-run-stack-artifacts/playwright-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-desktop",
+        "name": "chromium-desktop",
+        "testDir": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "agui-run-stack.spec.ts"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191139-boundary/agui-run-stack-artifacts/playwright-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "agui-run-stack.spec.ts",
+      "file": "agui-run-stack.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "UPG-10 AG-UI 1.0 run stream drives EntityChat through the graph",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1873,
+                  "error": {
+                    "message": "Error: [{\"name\":\"TEXT_MESSAGE_START/CONTENT/END render the complete assistant message, no longer streaming\",\"pass\":false,\"detail\":{\"dom\":{\"id\":\"m-1\",\"role\":\"assistant\",\"text\":\"Invoice inv-42 is overdue by 12 days.lookup_invoice{\\\"invoiceId\\\":\\\"inv-42\\\"}\"},\"graph\":{\"id\":\"m-1\",\"role\":\"assistant\",\"content\":\"Invoice inv-42 is overdue by 12 days.\",\"createdAt\":\"2026-11-13T01:13:17.247Z\",\"streaming\":false,\"conversationId\":\"upg10-main\",\"toolCalls\":[{\"id\":\"tc-1\",\"type\":\"function\",\"function\":{\"name\":\"lookup_invoice\",\"arguments\":\"{\\\"invoiceId\\\":\\\"inv-42\\\"}\"}}]}}}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"PASS\"\u001b[39m\nReceived: \u001b[31m\"FAIL\"\u001b[39m",
+                    "stack": "Error: [{\"name\":\"TEXT_MESSAGE_START/CONTENT/END render the complete assistant message, no longer streaming\",\"pass\":false,\"detail\":{\"dom\":{\"id\":\"m-1\",\"role\":\"assistant\",\"text\":\"Invoice inv-42 is overdue by 12 days.lookup_invoice{\\\"invoiceId\\\":\\\"inv-42\\\"}\"},\"graph\":{\"id\":\"m-1\",\"role\":\"assistant\",\"content\":\"Invoice inv-42 is overdue by 12 days.\",\"createdAt\":\"2026-11-13T01:13:17.247Z\",\"streaming\":false,\"conversationId\":\"upg10-main\",\"toolCalls\":[{\"id\":\"tc-1\",\"type\":\"function\",\"function\":{\"name\":\"lookup_invoice\",\"arguments\":\"{\\\"invoiceId\\\":\\\"inv-42\\\"}\"}}]}}}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"PASS\"\u001b[39m\nReceived: \u001b[31m\"FAIL\"\u001b[39m\n    at /Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.spec.ts:363:85",
+                    "location": {
+                      "file": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.spec.ts",
+                      "column": 85,
+                      "line": 363
+                    },
+                    "snippet": "  361 |   record(result);\n  362 |   expect(result.error, result.error).toBeUndefined();\n> 363 |   expect(oracle.status, JSON.stringify(oracle.checks.filter((item) => !item.pass))).toBe(\"PASS\");\n      |                                                                                     ^\n  364 |   expect(control.status, JSON.stringify(control.checks.filter((item) => !item.pass))).toBe(\"PASS\");\n  365 | });\n  366 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.spec.ts",
+                        "column": 85,
+                        "line": 363
+                      },
+                      "message": "Error: [{\"name\":\"TEXT_MESSAGE_START/CONTENT/END render the complete assistant message, no longer streaming\",\"pass\":false,\"detail\":{\"dom\":{\"id\":\"m-1\",\"role\":\"assistant\",\"text\":\"Invoice inv-42 is overdue by 12 days.lookup_invoice{\\\"invoiceId\\\":\\\"inv-42\\\"}\"},\"graph\":{\"id\":\"m-1\",\"role\":\"assistant\",\"content\":\"Invoice inv-42 is overdue by 12 days.\",\"createdAt\":\"2026-11-13T01:13:17.247Z\",\"streaming\":false,\"conversationId\":\"upg10-main\",\"toolCalls\":[{\"id\":\"tc-1\",\"type\":\"function\",\"function\":{\"name\":\"lookup_invoice\",\"arguments\":\"{\\\"invoiceId\\\":\\\"inv-42\\\"}\"}}]}}}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"PASS\"\u001b[39m\nReceived: \u001b[31m\"FAIL\"\u001b[39m\n\n  361 |   record(result);\n  362 |   expect(result.error, result.error).toBeUndefined();\n> 363 |   expect(oracle.status, JSON.stringify(oracle.checks.filter((item) => !item.pass))).toBe(\"PASS\");\n      |                                                                                     ^\n  364 |   expect(control.status, JSON.stringify(control.checks.filter((item) => !item.pass))).toBe(\"PASS\");\n  365 | });\n  366 |\n    at /Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.spec.ts:363:85"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T01:13:15.259Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191139-boundary/agui-run-stack-artifacts/playwright-artifacts/agui-run-stack-UPG-10-AG-U-69e40-ntityChat-through-the-graph-chromium-desktop/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191139-boundary/agui-run-stack-artifacts/playwright-artifacts/agui-run-stack-UPG-10-AG-U-69e40-ntityChat-through-the-graph-chromium-desktop/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191139-boundary/agui-run-stack-artifacts/playwright-artifacts/agui-run-stack-UPG-10-AG-U-69e40-ntityChat-through-the-graph-chromium-desktop/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.spec.ts",
+                    "column": 85,
+                    "line": 363
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "315ecd2bc85d44d2bcba-dc8a38e2d3def6f97fc2",
+          "file": "agui-run-stack.spec.ts",
+          "line": 232,
+          "column": 5
+        },
+        {
+          "title": "UPG-11 Cancellation stops superseded streams",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1701,
+                  "error": {
+                    "message": "Error: [{\"name\":\"the first stream's later events cause zero graph writes\",\"pass\":false,\"detail\":{\"first\":1}}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"PASS\"\u001b[39m\nReceived: \u001b[31m\"FAIL\"\u001b[39m",
+                    "stack": "Error: [{\"name\":\"the first stream's later events cause zero graph writes\",\"pass\":false,\"detail\":{\"first\":1}}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"PASS\"\u001b[39m\nReceived: \u001b[31m\"FAIL\"\u001b[39m\n    at /Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.spec.ts:484:85",
+                    "location": {
+                      "file": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.spec.ts",
+                      "column": 85,
+                      "line": 484
+                    },
+                    "snippet": "  482 |   record(result);\n  483 |   expect(result.error, result.error).toBeUndefined();\n> 484 |   expect(oracle.status, JSON.stringify(oracle.checks.filter((item) => !item.pass))).toBe(\"PASS\");\n      |                                                                                     ^\n  485 |   expect(control.status, JSON.stringify(control.checks.filter((item) => !item.pass))).toBe(\"PASS\");\n  486 | });\n  487 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.spec.ts",
+                        "column": 85,
+                        "line": 484
+                      },
+                      "message": "Error: [{\"name\":\"the first stream's later events cause zero graph writes\",\"pass\":false,\"detail\":{\"first\":1}}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"PASS\"\u001b[39m\nReceived: \u001b[31m\"FAIL\"\u001b[39m\n\n  482 |   record(result);\n  483 |   expect(result.error, result.error).toBeUndefined();\n> 484 |   expect(oracle.status, JSON.stringify(oracle.checks.filter((item) => !item.pass))).toBe(\"PASS\");\n      |                                                                                     ^\n  485 |   expect(control.status, JSON.stringify(control.checks.filter((item) => !item.pass))).toBe(\"PASS\");\n  486 | });\n  487 |\n    at /Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.spec.ts:484:85"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T01:13:17.802Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191139-boundary/agui-run-stack-artifacts/playwright-artifacts/agui-run-stack-UPG-11-Cancellation-stops-superseded-streams-chromium-desktop/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191139-boundary/agui-run-stack-artifacts/playwright-artifacts/agui-run-stack-UPG-11-Cancellation-stops-superseded-streams-chromium-desktop/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-12T191139-boundary/agui-run-stack-artifacts/playwright-artifacts/agui-run-stack-UPG-11-Cancellation-stops-superseded-streams-chromium-desktop/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/tests/browser/agui-run-stack.spec.ts",
+                    "column": 85,
+                    "line": 484
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "315ecd2bc85d44d2bcba-c62ec4e59371fe30989d",
+          "file": "agui-run-stack.spec.ts",
+          "line": 378,
+          "column": 5
+        },
+        {
+          "title": "UPG-12 Interrupt approvals through the entity action policy",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium-desktop",
+              "projectName": "chromium-desktop",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1927,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-13T01:13:20.104Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "315ecd2bc85d44d2bcba-e74c92d39ef2df3a760e",
+          "file": "agui-run-stack.spec.ts",
+          "line": 512,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-13T01:13:12.688Z",
+    "duration": 9669.564,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

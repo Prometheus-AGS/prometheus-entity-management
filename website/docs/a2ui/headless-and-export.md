@@ -27,6 +27,9 @@ entry uses the official `@a2ui/web_core` basic catalog, which has no renderers.
 Nothing it imports reaches `@a2ui/react` or React at run time. It holds and
 validates state; it does not render.
 
+The headless runtime also has `callAgentFunction`, the `onRendererMessage` outbound
+channel and the opt-in release-candidate shim, because they live in the shared core.
+
 The headless declaration files still reference shared option types whose default
 names the React component type, so a type-checking consumer needs `@types/react`
 available even though no React code runs.
@@ -47,10 +50,7 @@ mirror.processMessages(messages);
 | Surface | Exported as |
 | --- | --- |
 | v0.9.1 | Three official messages: `createSurface` (catalog, theme, `sendDataModel`), `updateComponents` (every component, with its own `catalogId` where it differs from the surface's) and `updateDataModel` at `/` |
-| v1.0 | One inline `createSurface` carrying its components and data model, with each action's `wantResponse` and `responsePath` put back where the producer wrote them. The v1.0 schema cannot express a theme, so a v1.0 surface has none to lose |
-
-An explicit `wantResponse: false` comes back as an absent field, which means the
-same thing.
+| 1.0 | One inline `createSurface` carrying its components and data model, plus an `updateDataModel` when the root value is not an object. A 1.0 surface has no theme and 1.0 has no response-aware actions, so there is nothing else to carry |
 
 ## Orphans
 

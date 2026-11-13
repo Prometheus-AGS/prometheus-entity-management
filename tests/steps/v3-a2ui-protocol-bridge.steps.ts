@@ -51,8 +51,11 @@ Given("the exact official A2UI v0.9.1 runtime dependencies are installed", funct
     readFileSync(join(root, "packages/a2ui-react/package.json"), "utf8"),
   );
   // @a2ui/react is bundled into dist (tsup noExternal), so it is a build-time pin.
-  assert.equal(manifest.devDependencies["@a2ui/react"], "0.12.0");
-  assert.equal(manifest.dependencies["@a2ui/web_core"], "0.12.0");
+  assert.equal(manifest.devDependencies["@a2ui/react"], "0.15.0");
+  // web_core is bundled too, and its types are inlined into dist (#75), so it is
+  // also a build-time pin.
+  assert.equal(manifest.devDependencies["@a2ui/web_core"], "0.15.0");
+  assert.equal(manifest.dependencies["@a2ui/web_core"], undefined);
   assert.equal(manifest.dependencies["@a2ui/markdown-it"], undefined);
   assert.equal(manifest.dependencies.dompurify, "3.4.17");
   assert.equal(manifest.dependencies["markdown-it"], "14.3.3");
@@ -253,8 +256,8 @@ Then(
       "prometheus-entity-skills/_shared/references/a2ui-protocol-bridge.md",
     ].map((path) => readFileSync(join(root, path), "utf8")).join("\n");
     assert.match(docs, /Protocol validity never grants application authority/);
-    assert.match(docs, /@a2ui\/react@0\.12\.0/);
-    assert.match(docs, /@a2ui\/web_core@0\.12\.0/);
+    assert.match(docs, /@a2ui\/react@0\.15\.0/);
+    assert.match(docs, /@a2ui\/web_core@0\.15\.0/);
     assert.match(docs, /openUrl.*excluded/is);
   },
 );

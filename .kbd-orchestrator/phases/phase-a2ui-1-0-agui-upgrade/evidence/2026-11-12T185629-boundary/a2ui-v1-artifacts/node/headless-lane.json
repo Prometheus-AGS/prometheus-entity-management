@@ -1,0 +1,17 @@
+{
+  "node": "v26.5.0",
+  "headlessEntry": "@prometheus-ags/a2ui-react/headless",
+  "resolvedEntry": "/private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/a2ui-v1-headless-duGwmA/consumer/node_modules/.pnpm/@prometheus-ags+a2ui-react@file+..+..+..+..+..+..+..+..+var+folders+ln+0wnpd96j26z2qhvx_57cc721878056837c91ba90d306d5fda/node_modules/@prometheus-ags/a2ui-react/dist/headless.mjs",
+  "resolvedEntryDigest": "6befacba549f94e9c086e324e18654b716ca7e86fb6c31e101c6fcc03eb446ec",
+  "packageConstants": {
+    "PROMETHEUS_A2UI_V1_CATALOG_ID": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+    "PROMETHEUS_A2UI_CATALOG_ID": "urn:prometheus-ags:a2ui:catalog:v3"
+  },
+  "status": "error",
+  "error": {
+    "name": "PrometheusA2uiError",
+    "code": "protocol-error",
+    "message": "Surface 'upg13' catalog 'urn:prometheus-ags:a2ui:catalog:a2ui-1.0' specification version (1.0) does not match message protocol version (v0.9.1).",
+    "stack": "PrometheusA2uiError: Surface 'upg13' catalog 'urn:prometheus-ags:a2ui:catalog:a2ui-1.0' specification version (1.0) does not match message protocol version (v0.9.1).\n    at toPrometheusA2uiError (file:///private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/a2ui-v1-headless-duGwmA/consumer/node_modules/.pnpm/@prometheus-ags+a2ui-react@file+..+..+..+..+..+..+..+..+var+folders+ln+0wnpd96j26z2qhvx_57cc721878056837c91ba90d306d5fda/node_modules/@prometheus-ags/a2ui-react/dist/chunk-CTOBZ3PP.mjs:23881:12)\n    at PrometheusA2uiHeadlessRuntime.processMessages (file:///private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/a2ui-v1-headless-duGwmA/consumer/node_modules/.pnpm/@prometheus-ags+a2ui-react@file+..+..+..+..+..+..+..+..+var+folders+ln+0wnpd96j26z2qhvx_57cc721878056837c91ba90d306d5fda/node_modules/@prometheus-ags/a2ui-react/dist/chunk-CTOBZ3PP.mjs:25727:21)\n    at roundTrip (file:///private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/a2ui-v1-headless-duGwmA/consumer/headless-lane.mjs:52:10)\n    at file:///private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/a2ui-v1-headless-duGwmA/consumer/headless-lane.mjs:77:14"
+  }
+}

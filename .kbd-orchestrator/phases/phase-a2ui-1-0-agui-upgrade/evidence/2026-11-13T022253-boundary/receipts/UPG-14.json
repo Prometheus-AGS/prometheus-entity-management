@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "scenario": "UPG-14",
+  "name": "Examples run A2UI 1.0 end to end",
+  "status": "PASS",
+  "steps": [
+    {
+      "step": 11,
+      "argv": "pnpm run verify:a2ui-examples -- --report \"$E/examples.json\"",
+      "exitCode": 0,
+      "startedAt": "2026-11-13T08:24:28Z",
+      "completedAt": "2026-11-13T08:24:48Z"
+    }
+  ],
+  "contractDigest": "bfa43f3bad025a031ce5b3c6175e12453baefb3ef41ac25a9ab420a7001badb1",
+  "source": {
+    "gitHead": "a8f543dc915fccc7bbaf51dab10ec693db635971",
+    "workingTreeDiffSha256": "3028ea9704d458e452db81b282419ab633312b49eb9859e550608c3cf8d439c9",
+    "note": "uncommitted working tree on top of gitHead"
+  },
+  "evidence": [
+    {
+      "path": "examples.json",
+      "sha256": "2404f27c2139aea2c6ead9050ae46cfd1539235beaa126a762594b6f0b135411"
+    },
+    {
+      "path": "logs/step-11.log",
+      "sha256": "ac1ae28e61108473dd52daf5682eb6baad123539301fe859a640464e65f547e1"
+    }
+  ]
+}

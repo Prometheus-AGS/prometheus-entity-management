@@ -199,7 +199,7 @@
         "example.protocol.a2a-a2ui-policy",
         "example.platform.adapter-boundary"
       ],
-      "caption": "The Flutter phone surface renders the allowlisted GenUI catalog inside the same entity application.",
+      "caption": "The Flutter phone surface renders a policy-controlled A2UI surface inside the same entity application.",
       "alt": "Flutter phone golden displaying a policy-controlled A2UI surface",
       "sourcePath": "examples/flutter-riverpod/test/goldens/showcase-phone-a2ui.png",
       "receipt": ".kbd-orchestrator/phases/full-3.0-release/evidence/v3-flutter-riverpod-a2ui-example/final-verification.json",

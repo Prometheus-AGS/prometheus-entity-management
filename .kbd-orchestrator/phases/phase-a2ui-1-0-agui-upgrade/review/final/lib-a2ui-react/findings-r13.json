@@ -1,0 +1,29 @@
+{
+  "mode": "diff",
+  "verdict": "BLOCK",
+  "judge_model": "gpt-6.1-sol",
+  "producer_model": "claude-opus-5-5",
+  "isolation_mode": "rest-gateway:http://localhost:4000/v1",
+  "cross_model_check": "unverified-producer-unknown",
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "file": "packages/a2ui-react/src/use-chat-session.ts",
+      "claim": "An interrupt decision completed after its deciding view unmounts strands the conversation when another view is already mounted.",
+      "evidence": "resolveInterrupt records the decision with store.decideInterrupt(entry, epoch), then returns when activeStoreRef.current !== store. The recovery call to store.pendingResume() exists only in the effect with dependency [store]. An already-mounted second view receives the graph update but does not rerun that effect, so no view resumes the conversation; snapshot() also filters the decided interrupts out of the approval UI. This leaves the UPG-12 interrupt/resume production path paused with no remaining decision controls.",
+      "suggested_fix": "Make ready-to-resume state observable by active views and react to its transition, with a graph-owned atomic resume claim so multiple mounted views cannot resume the same pause."
+    },
+    {
+      "severity": "WARNING",
+      "file": "packages/a2ui-react/src/chat/conversation-store.ts",
+      "claim": "Stream exhaustion and stream errors leave unfinished messages permanently marked as streaming.",
+      "evidence": "stream() explicitly marks an exhausted iterator as finished and handles thrown errors by setting runStatus to error, but neither path calls settleStreaming() or closes chunk state. closeChunks() only runs when another event arrives, and settleStreaming() is called only by beginRun() and cancel(). Consequently, a stream ending after TEXT_MESSAGE_CHUNK or TEXT_MESSAGE_START/CONTENT leaves streaming: true in the graph even though isLoading is false and the run has ended.",
+      "suggested_fix": "Settle open messages when the current stream terminates, including exhaustion, cancellation through its signal, and error paths, without settling messages belonging to a superseding run."
+    }
+  ],
+  "judge_identity": {
+    "providerConnectionId": "kimi-coding-plan",
+    "providerId": "moonshot",
+    "modelId": "k3.1-pro"
+  }
+}

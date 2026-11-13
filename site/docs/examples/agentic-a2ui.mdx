@@ -7,7 +7,8 @@ description: A keyless A2A agent streaming official A2UI surfaces, with every ag
 
 `examples/agentic-a2ui` proves the agentic slice end to end without any
 external credential: a deterministic A2A v1 agent runs in-page, streams
-A2UI v1.0-RC surfaces over the official v0.9.1 renderer, and every
+A2UI 1.0 surfaces (`version: "1.0"`, `@path` bindings) over the official
+`@a2ui/*` 0.15.0 processor, and every
 agent-initiated action crosses a
 fail-closed policy boundary.
 
@@ -23,7 +24,9 @@ The app composes two published surfaces with no library changes:
 
 The policy catalog (entity/action/field allowlists, tenant authorization,
 human approval for destructive operations) sits **between** the agent and the
-graph — the agent cannot bypass it. Mutations land once in the normalized
+graph — the agent cannot bypass it. The client attaches
+`a2uiRendererCapabilities` to every user message, and the agent publishes A2UI
+only for a turn that offers its catalog. Mutations land once in the normalized
 graph; every joined view updates from the single canonical copy.
 
 ## Setup

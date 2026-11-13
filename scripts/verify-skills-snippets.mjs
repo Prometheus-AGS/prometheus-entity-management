@@ -182,6 +182,8 @@ try {
       name: "skills-snippet-consumer",
       private: true,
       version: "0.0.0",
+      // Pinned to the repository's pnpm (corepack's out-of-project fallback may not be launchable).
+      packageManager: JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8")).packageManager,
       dependencies: { ...tarballs, ...CONSUMER_DEPS },
       pnpm: {
         // Packed tarballs declare internal deps as registry ranges (e.g.

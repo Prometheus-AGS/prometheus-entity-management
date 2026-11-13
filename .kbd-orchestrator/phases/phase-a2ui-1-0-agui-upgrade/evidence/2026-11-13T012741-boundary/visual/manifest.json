@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 2,
+  "capturedAt": "2026-11-13T07:27:52.918Z",
+  "capturedBy": "scripts/capture-a2ui-visual.mjs",
+  "argv": [
+    "/Users/gqadonis/.local/share/fnm/node-versions/v26.5.0/installation/bin/node",
+    "/Volumes/T7/Projects/prometheus/prometheus-entity-management/scripts/capture-a2ui-visual.mjs",
+    "--",
+    "--out",
+    ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T012741-boundary/visual"
+  ],
+  "protocol": "v0.9.1",
+  "page": {
+    "fixture": "tests/fixtures/a2ui-browser",
+    "protocolChip": "A2UI v0.9.1",
+    "observedEnvelopeVersions": [
+      "v0.9.1"
+    ]
+  },
+  "route": "http://127.0.0.1:4211/",
+  "browser": {
+    "name": "Chromium 151.0.7922.34",
+    "version": "151.0.7922.34",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36"
+  },
+  "artifact": {
+    "entry": "packages/a2ui-react/dist/index.mjs",
+    "sha256": "dc7a54268119b4d8bd23b20117bf9120e2074010ed87641e4f8603b726c93540"
+  },
+  "supportingArtifacts": [
+    {
+      "entry": "packages/entity-graph-core/dist/index.mjs",
+      "sha256": "d2cb3fa6a31d38d95818f612fae486d3efc8116a7ea9cf2004b43240ee450602"
+    }
+  ],
+  "screenshots": [
+    {
+      "id": "desktop-initial",
+      "path": "desktop-initial.png",
+      "width": 1440,
+      "height": 1286,
+      "sha256": "06aad899358ce21fe9e0cc730d0a4219028844f68d15be3f127dd65b6a501a81"
+    },
+    {
+      "id": "desktop-policy-outcomes",
+      "path": "desktop-policy-outcomes.png",
+      "width": 1280,
+      "height": 1265,
+      "sha256": "9fa829027a54d31e4fbf22bdb9d51c698a0c526b742b95673e755322df5bbf74"
+    },
+    {
+      "id": "mobile-policy-outcomes",
+      "path": "mobile-policy-outcomes.png",
+      "width": 390,
+      "height": 1960,
+      "sha256": "4e0ca75bfceee111bdc1e44800433e7e831b1e0379a8437ebaf263086eec4cd2"
+    }
+  ],
+  "keyboard": {
+    "keys": [
+      "Tab",
+      "Tab",
+      "Enter",
+      "Tab",
+      "Enter",
+      "Tab",
+      "Enter"
+    ],
+    "pointerClicks": 0,
+    "focusOrder": [
+      "Prometheus A2UI certification home",
+      "Save allowlisted order",
+      "Attempt restricted field",
+      "Request destructive delete"
+    ],
+    "outcomes": [
+      "executed",
+      "unauthorized-field",
+      "approval-denied"
+    ],
+    "finalFocus": {
+      "name": "Request destructive delete",
+      "outline": "rgb(255, 179, 159) solid 3px"
+    },
+    "mobile": {
+      "pointerClicks": 0,
+      "focusOrder": [
+        "Prometheus A2UI certification home",
+        "Save allowlisted order",
+        "Attempt restricted field",
+        "Request destructive delete"
+      ],
+      "outcomes": [
+        "executed",
+        "unauthorized-field",
+        "approval-denied"
+      ]
+    },
+    "trace": {
+      "path": "keyboard-policy-trace.zip",
+      "sha256": "3d7ba9956731a7936a923e856fa16963780dd8e8a7ff2e10372ed9c071818188"
+    },
+    "video": {
+      "path": "keyboard-policy.webm",
+      "sha256": "9181f49c30b6cc9a4ba0f6c98d10bb55b4867894f54dff2cc4db455b66eef025"
+    }
+  },
+  "accessibility": {
+    "axe": {
+      "critical": 0,
+      "serious": 0,
+      "incompleteCriticalOrSerious": 1,
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "description": "Ensure ARIA attributes are not prohibited for an element's role",
+          "targets": [
+            "a2ui-basic-button[aria-label=\"Save allowlisted order\"]",
+            "a2ui-basic-button[aria-label=\"Attempt restricted field\"]",
+            "a2ui-basic-button[aria-label=\"Request destructive delete\"]"
+          ]
+        }
+      ]
+    },
+    "consoleErrors": 0,
+    "consoleErrorMessages": [],
+    "horizontalOverflowAt390px": false,
+    "contrast": [
+      {
+        "pair": "body",
+        "ratio": 18.14
+      },
+      {
+        "pair": "lede",
+        "ratio": 12.84
+      },
+      {
+        "pair": "protocol-chip",
+        "ratio": 14.11
+      },
+      {
+        "pair": "primary-button",
+        "ratio": 10.04
+      },
+      {
+        "pair": "destructive-button",
+        "ratio": 10.04
+      },
+      {
+        "pair": "graph-status",
+        "ratio": 13.85
+      },
+      {
+        "pair": "assurance-note",
+        "ratio": 11.35
+      }
+    ],
+    "targets": [
+      {
+        "name": "Save allowlisted order",
+        "width": 601,
+        "height": 52
+      },
+      {
+        "name": "Attempt restricted field",
+        "width": 601,
+        "height": 52
+      },
+      {
+        "name": "Request destructive delete",
+        "width": 601,
+        "height": 52
+      }
+    ],
+    "checks": {
+      "reducedMotionRule": true,
+      "liveRegion": "polite",
+      "statusText": [
+        "Executed — allowlisted tenant and fields",
+        "Denied — field not allowlisted",
+        "Denied — destructive approval denied"
+      ]
+    }
+  },
+  "commands": [
+    {
+      "label": "build-a2ui-react-and-dependencies",
+      "command": "pnpm --filter @prometheus-ags/a2ui-react... build",
+      "startedAt": "2026-11-13T07:27:42.871Z",
+      "completedAt": "2026-11-13T07:27:49.422Z",
+      "exitCode": 0
+    },
+    {
+      "label": "bundle-certification-page",
+      "command": "vite.build (root tests/fixtures/a2ui-browser)",
+      "startedAt": "2026-11-13T07:27:49.544Z",
+      "completedAt": "2026-11-13T07:27:49.964Z",
+      "exitCode": 0
+    }
+  ],
+  "files": [
+    {
+      "path": "desktop-initial.png",
+      "bytes": 144433,
+      "sha256": "06aad899358ce21fe9e0cc730d0a4219028844f68d15be3f127dd65b6a501a81"
+    },
+    {
+      "path": "desktop-policy-outcomes.png",
+      "bytes": 150759,
+      "sha256": "9fa829027a54d31e4fbf22bdb9d51c698a0c526b742b95673e755322df5bbf74"
+    },
+    {
+      "path": "keyboard-policy-trace.zip",
+      "bytes": 695714,
+      "sha256": "3d7ba9956731a7936a923e856fa16963780dd8e8a7ff2e10372ed9c071818188"
+    },
+    {
+      "path": "keyboard-policy.webm",
+      "bytes": 135636,
+      "sha256": "9181f49c30b6cc9a4ba0f6c98d10bb55b4867894f54dff2cc4db455b66eef025"
+    },
+    {
+      "path": "mobile-policy-outcomes.png",
+      "bytes": 131067,
+      "sha256": "4e0ca75bfceee111bdc1e44800433e7e831b1e0379a8437ebaf263086eec4cd2"
+    }
+  ]
+}

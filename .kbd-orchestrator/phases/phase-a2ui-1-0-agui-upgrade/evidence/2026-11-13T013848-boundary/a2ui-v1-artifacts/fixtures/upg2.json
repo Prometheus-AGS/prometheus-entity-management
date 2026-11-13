@@ -1,0 +1,77 @@
+{
+  "surfaceId": "upg2",
+  "operations": [
+    {
+      "version": "1.0",
+      "createSurface": {
+        "surfaceId": "upg2",
+        "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0"
+      }
+    },
+    {
+      "version": "1.0",
+      "updateComponents": {
+        "surfaceId": "upg2",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "title",
+              "status"
+            ]
+          },
+          {
+            "id": "title",
+            "component": "Text",
+            "text": "Order 1042"
+          },
+          {
+            "id": "status",
+            "component": "Text",
+            "text": {
+              "@path": "/status"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "version": "1.0",
+      "updateDataModel": {
+        "surfaceId": "upg2",
+        "path": "/status",
+        "value": "Ready to ship"
+      }
+    }
+  ],
+  "failedResult": {
+    "code": "a2ui_recovery_exhausted",
+    "error": "The interface could not be generated.",
+    "attempts": []
+  },
+  "unknownActivity": {
+    "type": "ACTIVITY_SNAPSHOT",
+    "messageId": "upg2-unknown-activity",
+    "activityType": "progress-card",
+    "content": {
+      "a2ui_operations": [
+        {
+          "version": "1.0",
+          "createSurface": {
+            "surfaceId": "upg2-unknown",
+            "catalogId": "urn:prometheus-ags:a2ui:catalog:a2ui-1.0",
+            "components": [
+              {
+                "id": "root",
+                "component": "Text",
+                "text": "must not render"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "replace": true
+  }
+}

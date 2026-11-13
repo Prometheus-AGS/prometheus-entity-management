@@ -22,6 +22,7 @@
     {"path": "/docs/3.x/evidence/gallery/", "source": "docs/evidence/gallery.mdx"},
     {"path": "/docs/3.x/operations/", "source": "docs/operations/index.md"},
     {"path": "/docs/3.x/operations/migration-3/", "source": "docs/operations/migration-3.md"},
+    {"path": "/docs/3.x/operations/migration-5/", "source": "docs/operations/migration-5.md"},
     {"path": "/docs/3.x/operations/security/", "source": "docs/operations/security.md"},
     {"path": "/docs/3.x/operations/testing-troubleshooting/", "source": "docs/operations/testing-troubleshooting.md"},
     {"path": "/docs/3.x/operations/release/", "source": "docs/operations/release.md"},

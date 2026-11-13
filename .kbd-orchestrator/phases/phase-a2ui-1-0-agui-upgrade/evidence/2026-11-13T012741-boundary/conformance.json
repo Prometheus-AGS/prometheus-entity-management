@@ -1,0 +1,966 @@
+{
+  "schemaVersion": 1,
+  "scenario": "UPG-3",
+  "recordedAt": "2026-11-13T07:30:10.799Z",
+  "argv": [
+    "/Volumes/T7/Projects/prometheus/prometheus-entity-management/scripts/verify-a2ui-conformance.mjs",
+    "--",
+    "--report",
+    ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T012741-boundary/conformance.json"
+  ],
+  "repository": "https://github.com/a2ui-project/a2ui",
+  "commit": "0d2fcf3714a7a3725ed994b2861ffdd7d1f995bd",
+  "fileDigests": {
+    "conformance/core/adapter_conformance.yaml": {
+      "sha256": "bb5bef3871254621d268b7939848982718229bb03d6c7cf62a549f5af95ca2c4",
+      "source": "conformance/core/adapter_conformance.yaml"
+    },
+    "conformance/core/accessibility.yaml": {
+      "sha256": "186f58023152d816c3f93625b8b66009b158f1252a82a86d0d9417c6e4ea2d77",
+      "source": "conformance/core/accessibility.yaml"
+    },
+    "catalogs/basic/v1/catalog.json": {
+      "sha256": "d4ce11f8fff2da8d5fd0b2793db524f6aa7eef541eefb6fe2b71f0efc17cbfa9",
+      "source": "catalogs/basic/v1/catalog.json"
+    },
+    "specification/v1_0/json/renderer_to_agent.json": {
+      "sha256": "58ecde02101f0f37566b5e238dc6ef6af628c3ff312fce0e17ab7670b7215465",
+      "source": "specification/v1_0/json/renderer_to_agent.json"
+    },
+    "specification/v1_0/json/common_types.json": {
+      "sha256": "c4e78305be1de73eecb37f8179ba169730250611703683af291b18135a6430dc",
+      "source": "specification/v1_0/json/common_types.json"
+    },
+    "LICENSE": {
+      "sha256": "8c8b5b632d56c4c1658296963c693db5396772a33caaddb9a22593c4155c437a",
+      "source": "LICENSE"
+    }
+  },
+  "builtPackage": {
+    "name": "@prometheus-ags/a2ui-react",
+    "version": "5.0.0",
+    "entry": "packages/a2ui-react/dist/index.mjs",
+    "sha256": "dc7a54268119b4d8bd23b20117bf9120e2074010ed87641e4f8603b726c93540"
+  },
+  "browser": "chromium (Playwright devices['Desktop Chrome'])",
+  "divergences": {
+    "path": "tests/conformance/a2ui/divergences.json",
+    "sha256": "8338cac9f2475315788d71f0c511ac75cebc95009e4bdd4aab08c212a56f6011",
+    "entries": 7
+  },
+  "cases": [
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "tree_hierarchy_declared_order",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "single_message_v10_surface_render",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "progressive_arrival_placeholder_upgrade_in_place",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 1,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "dynamic_repeater_list_insert_delete_reorder_and_index",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 1,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 2,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "two_way_binding_control_write_updates_dependents",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 1,
+          "op": "user_input",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "action_execution_event_vs_local_function_call",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 1,
+          "op": "user_gesture",
+          "failures": [],
+          "outbound": [
+            {
+              "version": "1.0",
+              "action": {
+                "name": "buy_item",
+                "surfaceId": "adapter_surface",
+                "sourceComponentId": "event_btn",
+                "timestamp": "2026-11-13T07:29:56.656Z",
+                "context": {
+                  "sku": "sku-42"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "op": "user_gesture",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "user_activation_gated_function_gesture_vs_programmatic",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 1,
+          "op": "user_gesture",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 2,
+          "op": "programmatic_invoke",
+          "failures": [],
+          "outbound": [
+            {
+              "version": "1.0",
+              "error": {
+                "code": "EXPRESSION_ERROR",
+                "message": "Function 'openUrl' requires user activation and cannot be evaluated without an active user gesture.",
+                "surfaceId": "adapter_surface"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "multi_catalog_mixed_surface_rendering",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "validation_results_error_disables_warning_allows",
+      "status": "DIVERGED",
+      "reason": "steps[0] root/children/2.hints: rendered text \"\\n      Phone\\n      \\n      \\n    \" lacks \"Optional: add a phone number\"",
+      "failures": [
+        "steps[0] root/children/2.hints: rendered text \"\\n      Phone\\n      \\n      \\n    \" lacks \"Optional: add a phone number\""
+      ],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [
+            "root/children/2.hints: rendered text \"\\n      Phone\\n      \\n      \\n    \" lacks \"Optional: add a phone number\""
+          ],
+          "outbound": []
+        }
+      ],
+      "divergence": {
+        "reasonClass": "upstream-renderer-gap",
+        "allowedFailures": [
+          {
+            "step": 0,
+            "assertion": "expectViewTree"
+          }
+        ],
+        "outcome": "excused",
+        "observed": [
+          {
+            "step": 0,
+            "assertion": "expectViewTree",
+            "failure": "steps[0] root/children/2.hints: rendered text \"\\n      Phone\\n      \\n      \\n    \" lacks \"Optional: add a phone number\""
+          }
+        ]
+      }
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "accessibility_attributes_and_implicit_label_override",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "v10_theme_dropped_in_permissive_mode_renders_like_none",
+      "status": "DIVERGED",
+      "reason": "steps[0] expectViewTree: no node at root | steps[0] expectErrors length (actual [{\"code\":\"invalid-message\",\"prometheusCode\":\"invalid-message\",\"message\":\"Input does not match the official A2UI 1.0 message schema.\",\"surfaceId\":\"adapter_surface\",\"source\":\"runtime.processMessages threw\"}]): expected 0, got 1",
+      "notes": [
+        "case sets strictMode: false, which the package cannot apply (CreatePrometheusA2uiRuntimeOptions has no validation option); the case ran with the package defaults"
+      ],
+      "failures": [
+        "steps[0] expectViewTree: no node at root",
+        "steps[0] expectErrors length (actual [{\"code\":\"invalid-message\",\"prometheusCode\":\"invalid-message\",\"message\":\"Input does not match the official A2UI 1.0 message schema.\",\"surfaceId\":\"adapter_surface\",\"source\":\"runtime.processMessages threw\"}]): expected 0, got 1"
+      ],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [
+            "expectViewTree: no node at root",
+            "expectErrors length (actual [{\"code\":\"invalid-message\",\"prometheusCode\":\"invalid-message\",\"message\":\"Input does not match the official A2UI 1.0 message schema.\",\"surfaceId\":\"adapter_surface\",\"source\":\"runtime.processMessages threw\"}]): expected 0, got 1"
+          ],
+          "outbound": [
+            {
+              "version": "1.0",
+              "error": {
+                "code": "INTERNAL_ERROR",
+                "surfaceId": "adapter_surface",
+                "message": "[\n  {\n    \"code\": \"unrecognized_keys\",\n    \"keys\": [\n      \"theme\"\n    ],\n    \"path\": [\n      \"createSurface\"\n    ],\n    \"message\": \"Unrecognized key(s) in object: 'theme'\"\n  }\n]"
+              }
+            }
+          ]
+        }
+      ],
+      "divergence": {
+        "reasonClass": "upstream-renderer-gap",
+        "allowedFailures": [
+          {
+            "step": 0,
+            "assertion": "expectViewTree"
+          },
+          {
+            "step": 0,
+            "assertion": "expectErrors"
+          }
+        ],
+        "outcome": "excused",
+        "observed": [
+          {
+            "step": 0,
+            "assertion": "expectViewTree",
+            "failure": "steps[0] expectViewTree: no node at root"
+          },
+          {
+            "step": 0,
+            "assertion": "expectErrors",
+            "failure": "steps[0] expectErrors length (actual [{\"code\":\"invalid-message\",\"prometheusCode\":\"invalid-message\",\"message\":\"Input does not match the official A2UI 1.0 message schema.\",\"surfaceId\":\"adapter_surface\",\"source\":\"runtime.processMessages threw\"}]): expected 0, got 1"
+          }
+        ]
+      }
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "fallback_states_unknown_type_and_cyclic_diagnostics",
+      "status": "DIVERGED",
+      "reason": "steps[0] expectViewTree: no node at root | steps[0] expectErrors length (actual [{\"code\":\"component-not-allowed\",\"prometheusCode\":\"component-not-allowed\",\"message\":\"Component is not allowlisted by catalog https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json: UnregisteredFutureWidget\",\"surfaceId\":\"adapter_surface\",\"source\":\"runtime.processMessages threw\"}]): expected 2, got 1 | steps[0] expectOutbound length: expected 2, got 1 ([{\"version\":\"1.0\",\"error\":{\"code\":\"INTERNAL_ERROR\",\"surfaceId\":\"adapter_surface\",\"message\":\"Component is not allowlisted by catalog https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json: UnregisteredFutureWidget\"}}])",
+      "failures": [
+        "steps[0] expectViewTree: no node at root",
+        "steps[0] expectErrors length (actual [{\"code\":\"component-not-allowed\",\"prometheusCode\":\"component-not-allowed\",\"message\":\"Component is not allowlisted by catalog https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json: UnregisteredFutureWidget\",\"surfaceId\":\"adapter_surface\",\"source\":\"runtime.processMessages threw\"}]): expected 2, got 1",
+        "steps[0] expectOutbound length: expected 2, got 1 ([{\"version\":\"1.0\",\"error\":{\"code\":\"INTERNAL_ERROR\",\"surfaceId\":\"adapter_surface\",\"message\":\"Component is not allowlisted by catalog https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json: UnregisteredFutureWidget\"}}])"
+      ],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [
+            "expectViewTree: no node at root",
+            "expectErrors length (actual [{\"code\":\"component-not-allowed\",\"prometheusCode\":\"component-not-allowed\",\"message\":\"Component is not allowlisted by catalog https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json: UnregisteredFutureWidget\",\"surfaceId\":\"adapter_surface\",\"source\":\"runtime.processMessages threw\"}]): expected 2, got 1",
+            "expectOutbound length: expected 2, got 1 ([{\"version\":\"1.0\",\"error\":{\"code\":\"INTERNAL_ERROR\",\"surfaceId\":\"adapter_surface\",\"message\":\"Component is not allowlisted by catalog https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json: UnregisteredFutureWidget\"}}])"
+          ],
+          "outbound": [
+            {
+              "version": "1.0",
+              "error": {
+                "code": "INTERNAL_ERROR",
+                "surfaceId": "adapter_surface",
+                "message": "Component is not allowlisted by catalog https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json: UnregisteredFutureWidget"
+              }
+            }
+          ]
+        }
+      ],
+      "divergence": {
+        "reasonClass": "security-policy",
+        "allowedFailures": [
+          {
+            "step": 0,
+            "assertion": "expectViewTree"
+          },
+          {
+            "step": 0,
+            "assertion": "expectErrors"
+          },
+          {
+            "step": 0,
+            "assertion": "expectOutbound"
+          }
+        ],
+        "outcome": "excused",
+        "observed": [
+          {
+            "step": 0,
+            "assertion": "expectViewTree",
+            "failure": "steps[0] expectViewTree: no node at root"
+          },
+          {
+            "step": 0,
+            "assertion": "expectErrors",
+            "failure": "steps[0] expectErrors length (actual [{\"code\":\"component-not-allowed\",\"prometheusCode\":\"component-not-allowed\",\"message\":\"Component is not allowlisted by catalog https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json: UnregisteredFutureWidget\",\"surfaceId\":\"adapter_surface\",\"source\":\"runtime.processMessages threw\"}]): expected 2, got 1"
+          },
+          {
+            "step": 0,
+            "assertion": "expectOutbound",
+            "failure": "steps[0] expectOutbound length: expected 2, got 1 ([{\"version\":\"1.0\",\"error\":{\"code\":\"INTERNAL_ERROR\",\"surfaceId\":\"adapter_surface\",\"message\":\"Component is not allowlisted by catalog https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json: UnregisteredFutureWidget\"}}])"
+          }
+        ]
+      }
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "teardown_unmount_releases_subscriptions",
+      "status": "DIVERGED",
+      "reason": "steps[1] harness cannot observe expectActiveSubscriptions",
+      "failures": [
+        "steps[1] harness cannot observe expectActiveSubscriptions"
+      ],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 1,
+          "op": "unmount_surface",
+          "failures": [
+            "harness cannot observe expectActiveSubscriptions"
+          ],
+          "outbound": []
+        }
+      ],
+      "divergence": {
+        "reasonClass": "not-observable-through-public-API",
+        "allowedFailures": [
+          {
+            "step": 1,
+            "assertion": "expectActiveSubscriptions"
+          }
+        ],
+        "outcome": "excused",
+        "observed": [
+          {
+            "step": 1,
+            "assertion": "expectActiveSubscriptions",
+            "failure": "steps[1] harness cannot observe expectActiveSubscriptions"
+          }
+        ]
+      }
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "delete_surface_unmounts_view",
+      "status": "DIVERGED",
+      "reason": "steps[1] harness cannot observe expectActiveSubscriptions",
+      "failures": [
+        "steps[1] harness cannot observe expectActiveSubscriptions"
+      ],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 1,
+          "op": "process_messages",
+          "failures": [
+            "harness cannot observe expectActiveSubscriptions"
+          ],
+          "outbound": []
+        }
+      ],
+      "divergence": {
+        "reasonClass": "not-observable-through-public-API",
+        "allowedFailures": [
+          {
+            "step": 1,
+            "assertion": "expectActiveSubscriptions"
+          }
+        ],
+        "outcome": "excused",
+        "observed": [
+          {
+            "step": 1,
+            "assertion": "expectActiveSubscriptions",
+            "failure": "steps[1] harness cannot observe expectActiveSubscriptions"
+          }
+        ]
+      }
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "type_change_under_same_id_resets_view_state",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 1,
+          "op": "user_input",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 2,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "removed_components_release_subscriptions",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 1,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "two_way_binding_inputs_checkbox_choice_slider_datetime",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 1,
+          "op": "user_input",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 2,
+          "op": "user_input",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 3,
+          "op": "user_input",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 4,
+          "op": "user_input",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "media_components_bind_url_and_name",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 1,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "tabs_switch_content",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 1,
+          "op": "user_input",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "modal_open_shows_content",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 1,
+          "op": "user_gesture",
+          "failures": [],
+          "outbound": [
+            {
+              "version": "1.0",
+              "action": {
+                "name": "open_modal",
+                "surfaceId": "adapter_surface",
+                "sourceComponentId": "open_btn",
+                "timestamp": "2026-11-13T07:30:01.778Z",
+                "context": {}
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "divider_and_slider_datetime_render",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/adapter_conformance.yaml",
+      "name": "agent_function_action_failure_reports_expression_error",
+      "status": "FAIL",
+      "reason": "listed divergence failed outside its allowances: [2|expectDataModel] steps[2] expectDataModel: expected {\"counter\":10}, got {\"counter\":11}",
+      "failures": [
+        "steps[1] expectOutbound[0]: keys [\"error\",\"version\"] != expected [\"callAgentFunction\",\"version\"]",
+        "steps[1] expectOutbound[0].callAgentFunction: expected object, got undefined",
+        "steps[2] expectErrors length (actual []): expected 1, got 0",
+        "steps[2] expectDataModel: expected {\"counter\":10}, got {\"counter\":11}",
+        "steps[2] expectOutbound length: expected 1, got 0 ([])"
+      ],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 1,
+          "op": "user_gesture",
+          "failures": [
+            "expectOutbound[0]: keys [\"error\",\"version\"] != expected [\"callAgentFunction\",\"version\"]",
+            "expectOutbound[0].callAgentFunction: expected object, got undefined"
+          ],
+          "outbound": [
+            {
+              "version": "1.0",
+              "error": {
+                "code": "EXPRESSION_ERROR",
+                "message": "Function 'lookupAccount' in catalog 'https://example.com/catalogs/account/v1/catalog.json' is schema-only and has no implementation.",
+                "surfaceId": "adapter_surface"
+              }
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "op": "process_messages",
+          "failures": [
+            "expectErrors length (actual []): expected 1, got 0",
+            "expectDataModel: expected {\"counter\":10}, got {\"counter\":11}",
+            "expectOutbound length: expected 1, got 0 ([])"
+          ],
+          "outbound": []
+        }
+      ],
+      "divergence": {
+        "reasonClass": "upstream-renderer-gap",
+        "allowedFailures": [
+          {
+            "step": 1,
+            "assertion": "expectOutbound"
+          },
+          {
+            "step": 2,
+            "assertion": "expectErrors"
+          },
+          {
+            "step": 2,
+            "assertion": "expectOutbound"
+          }
+        ],
+        "outcome": "rejected",
+        "disallowed": [
+          {
+            "step": 2,
+            "assertion": "expectDataModel",
+            "failure": "steps[2] expectDataModel: expected {\"counter\":10}, got {\"counter\":11}"
+          }
+        ]
+      }
+    },
+    {
+      "suite": "core/accessibility.yaml",
+      "name": "test_accessibility_attributes_plumbing",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/accessibility.yaml",
+      "name": "test_accessibility_live_region_assertive",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/accessibility.yaml",
+      "name": "test_accessibility_hidden_subtree",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/accessibility.yaml",
+      "name": "test_accessibility_implicit_label_inference",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/accessibility.yaml",
+      "name": "test_accessibility_interactive_roles_and_states",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    },
+    {
+      "suite": "core/accessibility.yaml",
+      "name": "test_accessibility_dynamic_label_and_hidden_binding",
+      "status": "DIVERGED",
+      "reason": "steps[1] axeCore aria-hidden-focus: a2ui-basic-button",
+      "failures": [
+        "steps[1] axeCore aria-hidden-focus: a2ui-basic-button"
+      ],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        },
+        {
+          "index": 1,
+          "op": "process_messages",
+          "failures": [
+            "axeCore aria-hidden-focus: a2ui-basic-button"
+          ],
+          "outbound": []
+        }
+      ],
+      "divergence": {
+        "reasonClass": "upstream-renderer-gap",
+        "allowedFailures": [
+          {
+            "step": 1,
+            "assertion": "axeCore:aria-hidden-focus"
+          }
+        ],
+        "outcome": "excused",
+        "observed": [
+          {
+            "step": 1,
+            "assertion": "axeCore:aria-hidden-focus",
+            "failure": "steps[1] axeCore aria-hidden-focus: a2ui-basic-button"
+          }
+        ]
+      }
+    },
+    {
+      "suite": "core/accessibility.yaml",
+      "name": "test_accessibility_v1_0_legacy_bare_accessibility_dual_read",
+      "status": "PASS",
+      "failures": [],
+      "steps": [
+        {
+          "index": 0,
+          "op": "process_messages",
+          "failures": [],
+          "outbound": []
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "total": 29,
+    "PASS": 22,
+    "DIVERGED": 6,
+    "FAIL": 1
+  },
+  "allPassed": false,
+  "problems": [],
+  "negativeControl": {
+    "case": "tree_hierarchy_declared_order",
+    "mutation": {
+      "path": "steps[0].expectViewTree.children[0].children[0].text",
+      "from": "Welcome to A2UI",
+      "to": "Welcome to A2UI [mutated by negative control]"
+    },
+    "originalStatus": "PASS",
+    "status": "FAIL",
+    "failedOnMutation": true,
+    "reason": "steps[0] root/children/0/children/0.text: rendered text \"Welcome to A2UI\\n\" lacks \"Welcome to A2UI [mutated by negative control]\" | steps[0] root/children/0/children/0.text: expected \"Welcome to A2UI [mutated by negative control]\", got \"Welcome to A2UI\"",
+    "casesFile": ".kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T012741-boundary/conformance-artifacts/negative-control-case.json"
+  },
+  "divergenceControls": [
+    {
+      "control": "entry naming no loaded case",
+      "failedRun": true
+    },
+    {
+      "control": "diverged case failing outside its allowances",
+      "case": "validation_results_error_disables_warning_allows",
+      "removedAllowance": {
+        "step": 0,
+        "assertion": "expectViewTree"
+      },
+      "failedRun": true
+    }
+  ],
+  "playwright": {
+    "mainExitCode": 0
+  },
+  "commands": [
+    {
+      "label": "build entity-graph-core",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@prometheus-ags/entity-graph-core",
+        "build"
+      ],
+      "env": {},
+      "startedAt": "2026-11-13T07:29:44.318Z",
+      "exitCode": 0
+    },
+    {
+      "label": "build a2ui-react",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@prometheus-ags/a2ui-react",
+        "build"
+      ],
+      "env": {},
+      "startedAt": "2026-11-13T07:29:46.413Z",
+      "exitCode": 0
+    },
+    {
+      "label": "conformance suites (Chromium)",
+      "argv": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "--config",
+        "tests/browser/a2ui-conformance.playwright.config.ts"
+      ],
+      "env": {
+        "A2UI_CONFORMANCE_RESULTS": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T012741-boundary/conformance-artifacts/main/results.jsonl",
+        "A2UI_CONFORMANCE_OUT_DIR": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T012741-boundary/conformance-artifacts/main"
+      },
+      "startedAt": "2026-11-13T07:29:50.057Z",
+      "exitCode": 0
+    },
+    {
+      "label": "negative control (mutated case)",
+      "argv": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "--config",
+        "tests/browser/a2ui-conformance.playwright.config.ts"
+      ],
+      "env": {
+        "A2UI_CONFORMANCE_RESULTS": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T012741-boundary/conformance-artifacts/negative-control/results.jsonl",
+        "A2UI_CONFORMANCE_OUT_DIR": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T012741-boundary/conformance-artifacts/negative-control",
+        "A2UI_CONFORMANCE_CASES_FILE": "/Volumes/T7/Projects/prometheus/prometheus-entity-management/.kbd-orchestrator/phases/phase-a2ui-1-0-agui-upgrade/evidence/2026-11-13T012741-boundary/conformance-artifacts/negative-control-case.json"
+      },
+      "startedAt": "2026-11-13T07:30:06.169Z",
+      "exitCode": 0
+    }
+  ],
+  "status": "FAIL",
+  "exitCode": 1
+}

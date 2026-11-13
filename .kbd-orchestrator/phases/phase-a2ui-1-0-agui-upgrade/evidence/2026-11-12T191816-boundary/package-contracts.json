@@ -1,0 +1,398 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-13T01:18:42.184Z",
+  "packageCount": 13,
+  "packages": [
+    {
+      "name": "@prometheus-ags/a2ui-react",
+      "directory": "packages/a2ui-react",
+      "tarball": "prometheus-ags-a2ui-react-5.0.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/ag-ui.d.ts",
+        "dist/ag-ui.mjs",
+        "dist/ag-ui.mjs.map",
+        "dist/chunk-3QS3WKRC.mjs",
+        "dist/chunk-3QS3WKRC.mjs.map",
+        "dist/chunk-L5IIM5LV.mjs",
+        "dist/chunk-L5IIM5LV.mjs.map",
+        "dist/headless.d.ts",
+        "dist/headless.mjs",
+        "dist/headless.mjs.map",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "dist/types-8-kX7zD6.d.ts",
+        "dist/types-CHYyXrpk.d.ts",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-a2a",
+      "directory": "packages/entity-graph-a2a",
+      "tarball": "prometheus-ags-entity-graph-a2a-5.0.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/chunk-K35QQU46.mjs",
+        "dist/chunk-K35QQU46.mjs.map",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "dist/legacy.d.ts",
+        "dist/legacy.mjs",
+        "dist/legacy.mjs.map",
+        "dist/server-DbD7P--d.d.ts",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-alpine",
+      "directory": "packages/entity-graph-alpine",
+      "tarball": "prometheus-ags-entity-graph-alpine-5.0.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-core",
+      "directory": "packages/entity-graph-core",
+      "tarball": "prometheus-ags-entity-graph-core-5.0.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/chunk-T5WSFBXH.mjs",
+        "dist/chunk-T5WSFBXH.mjs.map",
+        "dist/devtools.d.ts",
+        "dist/devtools.mjs",
+        "dist/devtools.mjs.map",
+        "dist/graph-BNIJRUzI.d.ts",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "fixtures/devtools/README.md",
+        "fixtures/devtools/entity-inspection-v1.json",
+        "fixtures/devtools/time-travel-v1.json",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-htmx",
+      "directory": "packages/entity-graph-htmx",
+      "tarball": "prometheus-ags-entity-graph-htmx-5.0.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-react",
+      "directory": "packages/entity-graph-react",
+      "tarball": "prometheus-ags-entity-graph-react-5.0.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/chunk-3IZEACTG.mjs",
+        "dist/chunk-3IZEACTG.mjs.map",
+        "dist/chunk-7DOKLFAE.mjs",
+        "dist/chunk-7DOKLFAE.mjs.map",
+        "dist/chunk-IEY6AOGG.mjs",
+        "dist/chunk-IEY6AOGG.mjs.map",
+        "dist/chunk-JKXSJWRS.mjs",
+        "dist/chunk-JKXSJWRS.mjs.map",
+        "dist/devtools.d.ts",
+        "dist/devtools.mjs",
+        "dist/devtools.mjs.map",
+        "dist/devtools/auto.d.ts",
+        "dist/devtools/auto.mjs",
+        "dist/devtools/auto.mjs.map",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "dist/inspector-entry-TEI2KCYY.mjs",
+        "dist/inspector-entry-TEI2KCYY.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/prometheus-entity-management",
+      "directory": "packages/prometheus-entity-management",
+      "tarball": "prometheus-ags-prometheus-entity-management-5.0.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/devtools.d.ts",
+        "dist/devtools.mjs",
+        "dist/devtools.mjs.map",
+        "dist/devtools/auto.d.ts",
+        "dist/devtools/auto.mjs",
+        "dist/devtools/auto.mjs.map",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-sdl",
+      "directory": "packages/entity-graph-sdl",
+      "tarball": "prometheus-ags-entity-graph-sdl-5.0.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-solid",
+      "directory": "packages/entity-graph-solid",
+      "tarball": "prometheus-ags-entity-graph-solid-5.0.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-svelte",
+      "directory": "packages/entity-graph-svelte",
+      "tarball": "prometheus-ags-entity-graph-svelte-5.0.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-sync",
+      "directory": "packages/entity-graph-sync",
+      "tarball": "prometheus-ags-entity-graph-sync-5.0.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-tauri",
+      "directory": "packages/entity-graph-tauri",
+      "tarball": "prometheus-ags-entity-graph-tauri-5.0.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json",
+        "rust-plugin/Cargo.toml",
+        "rust-plugin/android/build.gradle.kts",
+        "rust-plugin/android/consumer-rules.pro",
+        "rust-plugin/android/proguard-rules.pro",
+        "rust-plugin/android/settings.gradle",
+        "rust-plugin/android/src/main/AndroidManifest.xml",
+        "rust-plugin/android/src/main/java/EntityGraphPlugin.kt",
+        "rust-plugin/build.rs",
+        "rust-plugin/ios/Package.resolved",
+        "rust-plugin/ios/Package.swift",
+        "rust-plugin/ios/Sources/EntityGraphPlugin.swift",
+        "rust-plugin/permissions/autogenerated/commands/graph_clear.toml",
+        "rust-plugin/permissions/autogenerated/commands/graph_get_entity.toml",
+        "rust-plugin/permissions/autogenerated/commands/graph_get_list.toml",
+        "rust-plugin/permissions/autogenerated/commands/graph_patch_entity.toml",
+        "rust-plugin/permissions/autogenerated/commands/graph_persist_snapshot.toml",
+        "rust-plugin/permissions/autogenerated/commands/graph_platform_ping.toml",
+        "rust-plugin/permissions/autogenerated/commands/graph_remove_entity.toml",
+        "rust-plugin/permissions/autogenerated/commands/graph_restore_snapshot.toml",
+        "rust-plugin/permissions/autogenerated/commands/graph_set_list.toml",
+        "rust-plugin/permissions/autogenerated/commands/graph_upsert_entity.toml",
+        "rust-plugin/permissions/autogenerated/reference.md",
+        "rust-plugin/permissions/default.toml",
+        "rust-plugin/permissions/schemas/schema.json",
+        "rust-plugin/src/bin/generate-bindings.rs",
+        "rust-plugin/src/commands.rs",
+        "rust-plugin/src/desktop.rs",
+        "rust-plugin/src/error.rs",
+        "rust-plugin/src/lib.rs",
+        "rust-plugin/src/mobile.rs",
+        "rust-plugin/src/state.rs",
+        "rust-plugin/src/types.rs"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    },
+    {
+      "name": "@prometheus-ags/entity-graph-web-components",
+      "directory": "packages/entity-graph-web-components",
+      "tarball": "prometheus-ags-entity-graph-web-components-5.0.0.tgz",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "dist/index.d.ts",
+        "dist/index.mjs",
+        "dist/index.mjs.map",
+        "package.json"
+      ],
+      "manifest": "pass",
+      "payload": "pass",
+      "publint": "pass",
+      "areTheTypesWrong": "pass"
+    }
+  ],
+  "consumers": {
+    "candidateSet": "tarballs-only",
+    "nodeEsm": "pass",
+    "nodeCommonJsDynamicImport": "pass",
+    "typescriptNodeNext": "pass",
+    "typescriptBundler": "pass",
+    "upstreamWebCoreControl": {
+      "package": "@a2ui/web_core@0.15.0",
+      "source": "registry",
+      "zodDependency": "^3.25.76",
+      "import": "@a2ui/web_core/v0_9",
+      "compilerOptions": {
+        "target": "ES2023",
+        "lib": [
+          "ES2023",
+          "DOM",
+          "DOM.Iterable"
+        ],
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "strict": true,
+        "noEmit": true,
+        "skipLibCheck": false,
+        "types": [
+          "node"
+        ]
+      },
+      "argv": [
+        "pnpm",
+        "exec",
+        "tsc",
+        "-p",
+        "tsconfig.json",
+        "--pretty",
+        "false"
+      ],
+      "exitCode": 2,
+      "expectedDiagnostic": "TS2835",
+      "diagnostics": [
+        {
+          "file": "node_modules/.pnpm/@a2ui+web_core@0.15.0/node_modules/@a2ui/web_core/src/v0_8/types/types.d.ts",
+          "line": 3,
+          "column": 170,
+          "code": "TS2835",
+          "message": "Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './components.js'?"
+        },
+        {
+          "file": "node_modules/.pnpm/@a2ui+web_core@0.15.0/node_modules/@a2ui/web_core/src/v0_8/types/types.d.ts",
+          "line": 7,
+          "column": 56,
+          "code": "TS2835",
+          "message": "Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './primitives.js'?"
+        }
+      ],
+      "result": "fails-as-required"
+    }
+  },
+  "zod": {
+    "package": "@prometheus-ags/a2ui-react",
+    "packedDependency": "4.6.7",
+    "specifiers": [
+      "zod",
+      "zod/v3"
+    ],
+    "specifiersByFile": {
+      "dist/chunk-L5IIM5LV.mjs": [
+        "zod",
+        "zod/v3"
+      ],
+      "dist/index.mjs": [
+        "zod"
+      ]
+    },
+    "resolved": {
+      "zod": {
+        "file": "/private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-package-contracts-blqUkD/consumer/node_modules/.pnpm/zod@4.6.7/node_modules/zod/index.cjs",
+        "packageRoot": "/private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-package-contracts-blqUkD/consumer/node_modules/.pnpm/zod@4.6.7/node_modules/zod",
+        "version": "4.6.7"
+      },
+      "zod/v3": {
+        "file": "/private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-package-contracts-blqUkD/consumer/node_modules/.pnpm/zod@4.6.7/node_modules/zod/v3/index.cjs",
+        "packageRoot": "/private/var/folders/ln/0wnpd96j26z2qhvx9m6hwt2r0000gn/T/prometheus-package-contracts-blqUkD/consumer/node_modules/.pnpm/zod@4.6.7/node_modules/zod",
+        "version": "4.6.7"
+      }
+    },
+    "resolvedVersion": "4.6.7",
+    "v3Api": "ZodFirstPartyTypeKind present",
+    "result": "pass"
+  }
+}

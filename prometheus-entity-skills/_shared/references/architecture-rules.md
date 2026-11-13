@@ -46,7 +46,7 @@ Sideways data flow between components (duplicated caches, prop-drilled copies) i
 - `EntityTransport` implementations own list/get/create/update/delete/change I/O and normalization.
 - `FfiEntityTransportAdapter` is optional and cannot introduce a second graph or mandatory native runtime.
 - Terminal provider failures do not retry; transient fetches receive at most two retries; mutation side effects are not automatically retried.
-- Complete Flutter/A2UI applications additionally validate an entire untrusted message batch before GenUI mutation, apply exact application authority after protocol validation, and route approved actions through generated controllers. Claim implemented showcase evidence only when stable-SDK host tests, goldens, and Android/iOS smoke receipts all pass.
+- Complete Flutter/A2UI applications render A2UI 1.0 through the official `a2ui_flutter` renderer, load each untrusted message batch atomically (refusing it whole when the processor rejects any message or it names an undeclared action), apply exact application authority after protocol validation, and route approved actions through generated controllers. Claim A2UI 1.0 evidence only from `pnpm run verify:flutter-a2ui-v1` on a booted simulator.
 
 ## Components NEVER interact directly with stores
 

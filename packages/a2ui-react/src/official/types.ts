@@ -1,20 +1,14 @@
-import type {
-  ComponentApi,
-  ComponentContext,
-} from "@a2ui/web_core/v0_9" with { "resolution-mode": "import" };
-import type { FC, ReactNode } from "react";
+import type { ReactCatalogComponent } from "@a2ui/react/v0_9" with { "resolution-mode": "import" };
 
 /**
- * Structural view of the official React catalog implementation.
+ * An entry of a Prometheus A2UI catalog: an official React component
+ * implementation or an official Web Component implementation.
  *
- * This keeps Prometheus declarations on the clean `web_core/v0_9` type path;
- * official `@a2ui/react@0.10.2` currently routes one public type through an
- * extensionless v0.8 declaration that breaks strict NodeNext consumers.
- * Runtime ownership remains entirely with the official implementation.
+ * From `@a2ui/react` 0.13 the official basic catalog renders as W3C Custom
+ * Elements, so a catalog holds both kinds. Custom components built with
+ * `createPrometheusA2uiComponent` are React implementations. The published
+ * declarations inline the official types (see `tsup.config.ts`), so this alias
+ * never sends consumers to the official packages' declarations. Runtime
+ * ownership remains entirely with the official implementation.
  */
-export interface PrometheusA2uiComponentImplementation extends ComponentApi {
-  render: FC<{
-    context: ComponentContext;
-    buildChild: (id: string, basePath?: string) => ReactNode;
-  }>;
-}
+export type PrometheusA2uiComponentImplementation = ReactCatalogComponent;

@@ -1,6 +1,6 @@
 {
   "name": "@prometheus-ags/entity-graph-react",
-  "version": "4.4.0",
+  "version": "5.0.0",
   "description": "Normalized, globally-reactive entity graph store for React — the React bindings over @prometheus-ags/entity-graph-core. Re-exports the full core surface plus React hooks, CRUD, UI, and devtools.",
   "author": "Travis James <travis@prometheus.dev>",
   "license": "MIT",
@@ -56,7 +56,7 @@
   },
   "peerDependencies": {
     "@prometheus-ags/entity-graph-core": "workspace:^",
-    "@ag-ui/core": ">=0.0.30",
+    "@ag-ui/core": "^1.0.0",
     "@tauri-apps/plugin-sql": ">=2.0.0",
     "loro-crdt": ">=1.0.0",
     "react": ">=19.0.0 <20.0.0",

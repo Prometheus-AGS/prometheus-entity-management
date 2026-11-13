@@ -8,7 +8,7 @@ only its declared evidence boundary; none authorizes publication by itself.
 | `examples/vite-app` | React 19 / Vite 8: graph lifecycle, realtime coalescing, Suspense, axe-clean browser lanes | `pnpm run verify:vite-react19` |
 | `examples/nextjs-app` | Next.js App Router: SSR/hydration handoff, route transitions, mutations + realtime | `pnpm run verify:nextjs-app-router` |
 | `examples/agentic-a2ui` | A2UI surfaces + A2A policy boundary: cross-view updates, tenant mismatch denial, approval-gated destructive actions | `pnpm run verify:agentic-a2ui` |
-| `examples/flutter-riverpod` | Flutter/Riverpod mobile with A2UI rendering over the Dart graph | `pnpm run verify:flutter-riverpod-a2ui` |
+| `examples/flutter-riverpod` | Flutter/Riverpod mobile with A2UI rendering over the Dart graph | `pnpm run verify:flutter-a2ui-v1 -- --report <file>` |
 | `examples/tauri-app` | Universal Tauri 2: one React/Vite frontend on desktop + Android + iOS, capabilities, offline restart, deep links | `pnpm run verify:tauri-universal` |
 | `examples/supabase` | Shared Supabase demo project (config only) used by the example apps | configuration notes; no certified gate |
 

@@ -135,6 +135,9 @@ async function writeConsumer(directory, tarballs) {
       },
     },
   };
+  // Pin the consumer to the repository's pnpm: outside a project corepack falls back to its
+  // last-known-good release, which may not be launchable on this machine.
+  manifest.packageManager = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8")).packageManager;
   await writeFile(join(directory, "package.json"), `${JSON.stringify(manifest, null, 2)}\n`);
 
   await writeFile(
@@ -199,7 +202,7 @@ assert.equal(typeof root.PrometheusA2uiSurface, "function");
 assert.equal("EntityChat" in root, false);
 assert.equal(typeof legacy.EntityChat, "function");
 const runtime = root.createPrometheusA2uiRuntime();
-// web_core 0.12.0 keeps the wire version in its constructor options, not on the processor.
+// web_core 0.15.0 keeps the wire version in its constructor options, not on the processor.
 assert.equal(root.PROMETHEUS_A2UI_PROTOCOL_VERSION, "v0.9.1");
 runtime.dispose();
 console.log("[a2ui-bridge] packed Node CommonJS root and subpath passed");
@@ -217,7 +220,7 @@ console.log("[a2ui-bridge] packed Node CommonJS root and subpath passed");
   type EntityGraphA2uiEntityPolicy,
   type PrometheusA2uiMessageInput,
 } from "@prometheus-ags/a2ui-react";
-import { EntityChat, type StreamEvent } from "@prometheus-ags/a2ui-react/ag-ui";
+import { EntityChat, type AgUiEvent } from "@prometheus-ags/a2ui-react/ag-ui";
 import { createGraphStore } from "@prometheus-ags/entity-graph-core";
 const entityPolicy: EntityGraphA2uiEntityPolicy = {
   actions: [ENTITY_GRAPH_A2UI_ACTIONS.upsert],
@@ -232,7 +235,7 @@ const policy = createEntityGraphA2uiActionPolicy({
 const runtime = createPrometheusA2uiRuntime({ actionPolicy: policy });
 const messages: PrometheusA2uiMessageInput = [];
 const decision: A2uiActionDecision | undefined = undefined;
-const event: StreamEvent = { type: "DONE" };
+const event: AgUiEvent = { type: "RUN_FINISHED", threadId: "t", runId: "r" };
 void EntityChat;
 void decision;
 void event;
@@ -244,16 +247,16 @@ runtime.dispose();
 
   await writeFile(
     join(directory, "consumer.cts"),
-    `import type { A2uiClientCapabilities } from "@prometheus-ags/a2ui-react" with { "resolution-mode": "import" };
-import type { StreamEvent } from "@prometheus-ags/a2ui-react/ag-ui" with { "resolution-mode": "import" };
+    `import type { PrometheusA2uiRendererCapabilities } from "@prometheus-ags/a2ui-react" with { "resolution-mode": "import" };
+import type { AgUiEvent } from "@prometheus-ags/a2ui-react/ag-ui" with { "resolution-mode": "import" };
 async function main(): Promise<void> {
   const { PROMETHEUS_A2UI_PROTOCOL_VERSION, createPrometheusA2uiRuntime } = await import(
     "@prometheus-ags/a2ui-react"
   );
   const { EntityChat } = await import("@prometheus-ags/a2ui-react/ag-ui");
   const runtime = createPrometheusA2uiRuntime();
-  const capabilities: A2uiClientCapabilities = runtime.getClientCapabilities();
-  const event: StreamEvent = { type: "DONE" };
+  const capabilities: PrometheusA2uiRendererCapabilities = runtime.getClientCapabilities();
+  const event: AgUiEvent = { type: "RUN_FINISHED", threadId: "t", runId: "r" };
   void EntityChat;
   void capabilities;
   void event;

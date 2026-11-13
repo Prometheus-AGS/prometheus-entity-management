@@ -212,7 +212,7 @@ function AgentSurface() {
     <section className="panel surface-panel" aria-labelledby="surface-heading">
       <div className="panel-heading">
         <div>
-          <p className="eyebrow">Official A2UI v0.9.1</p>
+          <p className="eyebrow">Official A2UI 1.0</p>
           <h2 id="surface-heading">Agent-rendered surface</h2>
         </div>
         <span className="protocol-badge">catalog-gated</span>
