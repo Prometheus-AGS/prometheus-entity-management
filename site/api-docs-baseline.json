@@ -62,7 +62,6 @@
       "ElectricSQLPresetAdapter",
       "EmptyState",
       "EntityDetailSheet",
-      "EntityExplorerFAB",
       "EntityExplorerPanel",
       "EntityExplorerProvider",
       "EntityFormSheet",
@@ -154,21 +153,10 @@
     ],
     "a2ui-react": [
       "ENTITY_GRAPH_A2UI_ACTIONS",
-      "EntityApproval",
-      "EntityCopilot",
-      "EntityDiff",
-      "EntityStream",
-      "EntityToolProviderContext",
       "PrometheusA2uiError",
       "PrometheusA2uiProvider",
-      "PrometheusA2uiSurface",
-      "PrometheusA2uiSurfaces",
       "createPrometheusA2uiRuntime",
-      "useChatSession",
-      "useEntityToolProvider",
-      "usePrometheusA2ui",
-      "usePrometheusA2uiRuntime",
-      "usePrometheusA2uiSurfaces"
+      "useChatSession"
     ],
     "entity-graph-a2a": [
       "A2AAccessDeniedError",

@@ -47,6 +47,7 @@ export class PrometheusA2uiHeadlessRuntime extends PrometheusA2uiRuntimeCore<Com
   }
 }
 
+/** Create a renderer-free runtime for validating and applying A2UI messages. */
 export function createPrometheusA2uiHeadlessRuntime(
   options: CreatePrometheusA2uiRuntimeOptions<ComponentApi> = {},
 ): PrometheusA2uiHeadlessRuntime {
