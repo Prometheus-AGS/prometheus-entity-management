@@ -57,9 +57,9 @@
   "devDependencies": {
     "@types/ws": "8.18.1",
     "loro-crdt": "1.13.9",
-    "tsup": "8.5.1",
+    "tsup": "9.0.0",
     "typescript": "6.0.2",
-    "vitest": "4.1.10",
+    "vitest": "4.1.12",
     "ws": "8.21.1"
   },
   "keywords": [

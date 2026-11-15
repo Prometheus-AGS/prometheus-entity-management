@@ -12,13 +12,14 @@
 //! - `entity_upsert`      — insert or merge-update an entity
 //! - `entity_delete`      — remove an entity from the graph
 
+use std::borrow::Cow;
+
 use rmcp::{
     handler::server::wrapper::Parameters,
     model::{
-        Implementation, InitializeRequestParams, InitializeResult, ListResourceTemplatesResult,
-        ListResourcesResult, PaginatedRequestParams, RawResource, RawResourceTemplate,
-        ReadResourceRequestParams, ReadResourceResult, Resource, ResourceContents,
-        ResourceTemplate, ServerCapabilities,
+        Implementation, ListResourceTemplatesResult, ListResourcesResult, PaginatedRequestParams,
+        ProtocolVersion, ReadResourceRequestParams, ReadResourceResult, Resource,
+        ResourceContents, ResourceTemplate, ServerCapabilities, ServerConfig,
     },
     schemars,
     serde_json::{self, json, Value},
@@ -188,12 +189,7 @@ impl EntityGraphServer {
         };
 
         Ok(ReadResourceResult::new(vec![
-            ResourceContents::TextResourceContents {
-                uri: uri.to_owned(),
-                mime_type: Some("application/json".to_owned()),
-                text,
-                meta: None,
-            },
+            ResourceContents::text(text, uri).with_mime_type("application/json"),
         ]))
     }
 }
@@ -202,21 +198,17 @@ impl EntityGraphServer {
 
 /// `#[tool_handler]` injects `call_tool` and `list_tools` from the generated
 /// `tool_router()`.  We override the remaining `ServerHandler` methods
-/// (`initialize`, `list_resources`, `list_resource_templates`, `read_resource`)
-/// as plain `async fn` per clippy's `manual_async_fn` lint.
+/// for server configuration and resource discovery and reads.
 #[tool_handler]
 impl ServerHandler for EntityGraphServer {
-    async fn initialize(
-        &self,
-        _request: InitializeRequestParams,
-        _context: RequestContext<RoleServer>,
-    ) -> Result<InitializeResult, McpError> {
-        Ok(InitializeResult::new(
+    fn get_info(&self) -> ServerConfig {
+        ServerConfig::new(
             ServerCapabilities::builder()
                 .enable_tools()
                 .enable_resources()
                 .build(),
         )
+        .with_protocol_version(ProtocolVersion::V_2025_11_25)
         .with_server_info(Implementation::new(
             env!("CARGO_PKG_NAME"),
             env!("CARGO_PKG_VERSION"),
@@ -226,7 +218,11 @@ impl ServerHandler for EntityGraphServer {
              Resources: entity://{entityType}/{entityId} (single entity) \
              and entity://{entityType} (all entities of a type). \
              Tools: entity_list_types, entity_query, entity_upsert, entity_delete.",
-        ))
+        )
+    }
+
+    fn supported_protocol_versions(&self) -> Cow<'static, [ProtocolVersion]> {
+        Cow::Borrowed(ProtocolVersion::known_up_to(&ProtocolVersion::V_2025_11_25))
     }
 
     async fn list_resource_templates(
@@ -234,38 +230,16 @@ impl ServerHandler for EntityGraphServer {
         _request: Option<PaginatedRequestParams>,
         _context: RequestContext<RoleServer>,
     ) -> Result<ListResourceTemplatesResult, McpError> {
-        Ok(ListResourceTemplatesResult {
-            meta: None,
-            resource_templates: vec![
-                ResourceTemplate {
-                    raw: RawResourceTemplate {
-                        uri_template: "entity://{entityType}/{entityId}".to_owned(),
-                        name: "Entity by type and id".to_owned(),
-                        title: Some("Single entity".to_owned()),
-                        description: Some(
-                            "Read a single entity. URI: entity://<type>/<id>".to_owned(),
-                        ),
-                        mime_type: Some("application/json".to_owned()),
-                        icons: None,
-                    },
-                    annotations: None,
-                },
-                ResourceTemplate {
-                    raw: RawResourceTemplate {
-                        uri_template: "entity://{entityType}".to_owned(),
-                        name: "Entities by type".to_owned(),
-                        title: Some("All entities of a type".to_owned()),
-                        description: Some(
-                            "List all entities of a type. URI: entity://<type>".to_owned(),
-                        ),
-                        mime_type: Some("application/json".to_owned()),
-                        icons: None,
-                    },
-                    annotations: None,
-                },
-            ],
-            next_cursor: None,
-        })
+        Ok(ListResourceTemplatesResult::with_all_items(vec![
+            ResourceTemplate::new("entity://{entityType}/{entityId}", "Entity by type and id")
+                .with_title("Single entity")
+                .with_description("Read a single entity. URI: entity://<type>/<id>.")
+                .with_mime_type("application/json"),
+            ResourceTemplate::new("entity://{entityType}", "Entities by type")
+                .with_title("All entities of a type")
+                .with_description("List all entities of a type. URI: entity://<type>.")
+                .with_mime_type("application/json"),
+        ]))
     }
 
     async fn list_resources(
@@ -277,26 +251,15 @@ impl ServerHandler for EntityGraphServer {
             .store
             .list_types()
             .into_iter()
-            .map(|entity_type| Resource {
-                raw: RawResource {
-                    uri: format!("entity://{entity_type}"),
-                    name: entity_type.clone(),
-                    title: Some(format!("{entity_type} entities")),
-                    description: Some(format!("All entities of type {entity_type} in the graph.")),
-                    mime_type: Some("application/json".to_owned()),
-                    size: None,
-                    icons: None,
-                    meta: None,
-                },
-                annotations: None,
+            .map(|entity_type| {
+                Resource::new(format!("entity://{entity_type}"), &entity_type)
+                    .with_title(format!("{entity_type} entities"))
+                    .with_description(format!("All entities of type {entity_type} in the graph."))
+                    .with_mime_type("application/json")
             })
             .collect();
 
-        Ok(ListResourcesResult {
-            meta: None,
-            resources,
-            next_cursor: None,
-        })
+        Ok(ListResourcesResult::with_all_items(resources))
     }
 
     async fn read_resource(

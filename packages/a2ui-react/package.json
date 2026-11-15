@@ -75,9 +75,9 @@
     "react-dom": "19.2.8",
     "rollup": "4.60.1",
     "rollup-plugin-dts": "6.5.1",
-    "tsup": "8.5.1",
+    "tsup": "9.0.0",
     "typescript": "6.0.2",
-    "vitest": "4.1.10"
+    "vitest": "4.1.12"
   },
   "keywords": [
     "a2ui",
