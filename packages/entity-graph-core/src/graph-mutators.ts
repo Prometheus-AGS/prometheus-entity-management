@@ -111,6 +111,25 @@ export function setEntitySyncMetadataDraft(
   s.syncMetadata[k] = { ...(s.syncMetadata[k] ?? defaultSyncMetadata()), ...metadata };
 }
 
+/** Record a completed server fetch: fresh fetch state and server-synced metadata. */
+export function setEntityFetchedDraft(s: GraphData, type: EntityType, id: EntityId): void {
+  const k = entityKey(type, id);
+  s.entityStates[k] = { isFetching: false, lastFetched: Date.now(), error: null, stale: false };
+  s.syncMetadata[k] = { ...(s.syncMetadata[k] ?? defaultSyncMetadata()), synced: true, origin: "server", updatedAt: Date.now() };
+}
+
+/** Mark one entity's fetch state stale, or every entity of `type` when `id` is omitted. */
+export function invalidateEntityDraft(s: GraphData, type: EntityType, id?: EntityId): void {
+  if (id) { const k = entityKey(type, id); if (s.entityStates[k]) s.entityStates[k].stale = true; }
+  else { for (const k of Object.keys(s.entityStates)) if (k.startsWith(`${type}:`)) s.entityStates[k].stale = true; }
+}
+
+/** Mark lists stale whose key starts with `matcher`, or satisfies it when it is a predicate. */
+export function invalidateListsDraft(s: GraphData, matcher: string | ((key: QueryKey) => boolean)): void {
+  const pred = typeof matcher === "string" ? (k: string) => k.startsWith(matcher) : matcher;
+  for (const key of Object.keys(s.lists)) if (pred(key)) s.lists[key].stale = true;
+}
+
 export function removeIdFromAllListsDraft(s: GraphData, type: EntityType, id: EntityId): void {
   for (const key of Object.keys(s.lists)) {
     const list = s.lists[key];

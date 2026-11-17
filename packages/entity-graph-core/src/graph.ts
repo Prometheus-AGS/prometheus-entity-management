@@ -10,10 +10,13 @@ import {
   defaultSyncMetadata,
   entityKey as ek,
   insertIdInListDraft,
+  invalidateEntityDraft,
+  invalidateListsDraft,
   patchEntityDraft,
   removeEntityDraft,
   removeIdFromAllListsDraft,
   replaceEntityDraft,
+  setEntityFetchedDraft,
   setEntitySyncMetadataDraft,
   unpatchEntityDraft,
   upsertEntitiesDraft,
@@ -509,14 +512,7 @@ export function createGraphStore() {
         if (!s.entityStates[k]) s.entityStates[k] = defaultEntityState();
         s.entityStates[k].error = error; s.entityStates[k].isFetching = false;
       }),
-      setEntityFetched: (type, id) => set((s) => {
-        const k = ek(type, id);
-        if (!s.entityStates[k]) s.entityStates[k] = defaultEntityState();
-        s.entityStates[k].lastFetched = Date.now();
-        s.entityStates[k].isFetching = false;
-        s.entityStates[k].error = null; s.entityStates[k].stale = false;
-        s.syncMetadata[k] = { ...(s.syncMetadata[k] ?? defaultSyncMetadata()), synced: true, origin: "server", updatedAt: Date.now() };
-      }),
+      setEntityFetched: (type, id) => set((s) => setEntityFetchedDraft(s, type, id)),
       setEntityStale: (type, id, stale) => set((s) => {
         const k = ek(type, id);
         if (!s.entityStates[k]) s.entityStates[k] = defaultEntityState();
@@ -570,14 +566,8 @@ export function createGraphStore() {
         if (!s.lists[key]) s.lists[key] = defaultListState();
         s.lists[key].stale = stale;
       }),
-      invalidateEntity: (type, id) => set((s) => {
-        if (id) { const k = ek(type, id); if (s.entityStates[k]) s.entityStates[k].stale = true; }
-        else { for (const k of Object.keys(s.entityStates)) if (k.startsWith(`${type}:`)) s.entityStates[k].stale = true; }
-      }),
-      invalidateLists: (matcher) => set((s) => {
-        const pred = typeof matcher === "string" ? (k: string) => k.startsWith(matcher) : matcher;
-        for (const key of Object.keys(s.lists)) if (pred(key)) s.lists[key].stale = true;
-      }),
+      invalidateEntity: (type, id) => set((s) => invalidateEntityDraft(s, type, id)),
+      invalidateLists: (matcher) => set((s) => invalidateListsDraft(s, matcher)),
       invalidateType: (type) => { get().invalidateEntity(type); get().invalidateLists(type); },
       readEntity: <T>(type: EntityType, id: EntityId): T | null => {
         const s = get(); const base = s.entities[type]?.[id];

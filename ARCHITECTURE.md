@@ -195,6 +195,9 @@ Coalesced: [upsert Post:123 {status:"archived", viewCount:42}]
 → One Zustand write, one React render cycle
 ```
 
+The whole flush is one Zustand write, across every entity and type it touches, so a
+large snapshot costs one publication rather than one per row.
+
 A `delete` operation always wins and cannot be overridden by a subsequent `upsert`
 in the same flush window.
 
