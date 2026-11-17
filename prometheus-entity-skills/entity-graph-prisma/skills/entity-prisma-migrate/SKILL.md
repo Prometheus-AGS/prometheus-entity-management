@@ -5,9 +5,9 @@ description: >
   to @prometheus-ags/prometheus-entity-management hooks driven by createPrismaEntityConfig, registerSchema, and
   useEntityView/useEntityCRUD while preserving API routes and auth.
 license: MIT
-version: '1.0.0'
 metadata:
-  tags: [react, typescript, entity-management]
+  version: '1.0.0'
+  tags: "react, typescript, entity-management"
 ---
 
 # /entity-prisma-migrate

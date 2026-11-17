@@ -6,9 +6,9 @@ description: >
   EntityDetailSheet / EntityFormSheet wiring, and registerSchema + cascade invalidation—all strictly following
   Components → Hooks → Stores → APIs data flow.
 license: MIT
-version: '1.0.0'
 metadata:
-  tags: [react, typescript, entity-management]
+  version: '1.0.0'
+  tags: "react, typescript, entity-management"
 ---
 
 # Entity Graph CRUD

@@ -5,9 +5,9 @@ description: >
   createPrismaEntityConfig modules, registerSchema bootstrap, and align REST list/detail shapes
   with @prometheus-ags/prometheus-entity-management adapters.
 license: MIT
-version: '1.0.0'
 metadata:
-  tags: [react, typescript, entity-management]
+  version: '1.0.0'
+  tags: "react, typescript, entity-management"
 ---
 
 # /entity-prisma-setup

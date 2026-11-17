@@ -5,9 +5,9 @@ description: >
   performance issues (Zustand selectors, subscription churn), missing cascade/schema registration, and memory growth.
   Sub-skills: full CLAUDE.md audit, render/subscriber analysis, and eviction/GC strategies using graph APIs.
 license: MIT
-version: '1.0.0'
 metadata:
-  tags: [react, typescript, entity-management]
+  version: '1.0.0'
+  tags: "react, typescript, entity-management"
 ---
 
 # Entity Graph — Optimize

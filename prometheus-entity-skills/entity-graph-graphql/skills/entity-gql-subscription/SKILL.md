@@ -5,9 +5,9 @@ description: >
   to either GQLClient.subscribe/useGQLSubscription with EntityDescriptors, or createGraphQLSubscriptionAdapter
   + RealtimeManager for coalesced ChangeSet delivery.
 license: MIT
-version: '1.0.0'
 metadata:
-  tags: [react, typescript, entity-management]
+  version: '1.0.0'
+  tags: "react, typescript, entity-management"
 ---
 
 # /entity-gql-subscription

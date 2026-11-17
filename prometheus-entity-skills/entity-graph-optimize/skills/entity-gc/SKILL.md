@@ -5,9 +5,9 @@ description: >
   removeEntity for stale entities, clearPatch for UI overlays, list refresh after bulk delete,
   route-based cleanup, and policies for long-lived sessions. Notes library has no automatic GC yet.
 license: MIT
-version: '1.0.0'
 metadata:
-  tags: [react, typescript, entity-management]
+  version: '1.0.0'
+  tags: "react, typescript, entity-management"
 ---
 
 # /entity-gc

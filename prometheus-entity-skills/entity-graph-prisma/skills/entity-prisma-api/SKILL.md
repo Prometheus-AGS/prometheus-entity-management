@@ -5,9 +5,9 @@ description: >
   for list/detail/create/update/delete, decoding where/orderBy JSON from createPrismaEntityConfig
   list fetchers with allowlisted filters.
 license: MIT
-version: '1.0.0'
 metadata:
-  tags: [react, typescript, entity-management]
+  version: '1.0.0'
+  tags: "react, typescript, entity-management"
 ---
 
 # /entity-prisma-api

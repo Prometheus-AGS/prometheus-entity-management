@@ -8,9 +8,9 @@ description: >
   path for peer convergence, and Supabase Realtime for Tier-C event push alongside the
   Electric read path. Replaces TanStack Query entirely.
 license: MIT
-version: '1.0.0'
 metadata:
-  tags: [react, typescript, entity-management]
+  version: '1.0.0'
+  tags: "react, typescript, entity-management"
 ---
 
 # `/entity-realtime-local-first` — Production PGlite Local-First Stack
