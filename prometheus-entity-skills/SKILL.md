@@ -9,6 +9,7 @@ description: >
   and native evidence boundaries. Use when building entity-driven applications
   or synchronizing agent guidance with JavaScript, Flutter, and Tauri contracts.
 metadata:
+  version: '1.0.0'
   tags: "react, typescript, dart, flutter, riverpod, tauri, entity-management"
 ---
 
