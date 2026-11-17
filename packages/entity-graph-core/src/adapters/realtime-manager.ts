@@ -3,10 +3,19 @@
  *
  * Routes all adapter ChangeSet events into the entity graph.
  * Coalesces rapid-fire updates within a 16ms flush window so that
- * e.g. 10 Supabase row updates for the same entity become one Zustand write.
+ * e.g. 10 Supabase row updates for the same entity become one Zustand write,
+ * and applies everything flushed in that window as a single Zustand write.
  */
 import { graphStore } from "../graph";
 import type { GraphStore } from "../graph";
+import {
+  invalidateEntityDraft,
+  invalidateListsDraft,
+  removeEntityDraft,
+  removeIdFromAllListsDraft,
+  setEntityFetchedDraft,
+  upsertEntityDraft,
+} from "../graph-mutators";
 import type { RealtimeAdapter, ChangeSet, EntityChange, AdapterStatus, UnsubscribeFn, ChannelConfig } from "./types";
 
 export interface ManagerOptions {
@@ -81,25 +90,29 @@ export class RealtimeManager {
     if (this.pendingChanges.length === 0 && this.pendingListKeys.size === 0) return;
     const changes = this.pendingChanges.splice(0);
     const listKeys = new Set(this.pendingListKeys); this.pendingListKeys.clear();
-    const store = this.store.getState();
-    for (const change of coalesceChanges(changes)) {
-      switch (change.op) {
-        case "insert": case "upsert":
-          if (change.data) { store.upsertEntity(change.type, change.id, change.data); store.setEntityFetched(change.type, change.id); }
-          break;
-        case "update":
-          if (change.patch) {
-            if (store.entities[change.type]?.[change.id]) store.upsertEntity(change.type, change.id, change.patch as Record<string, unknown>);
-            else store.invalidateEntity(change.type, change.id);
-          } else if (change.data) { store.upsertEntity(change.type, change.id, change.data); store.setEntityFetched(change.type, change.id); }
-          break;
-        case "delete":
-          store.removeEntity(change.type, change.id);
-          store.removeIdFromAllLists(change.type, change.id);
-          break;
+    // One draft and one publication for the whole flush. Calling a store action
+    // per change copied the touched maps and notified every subscriber each
+    // time, so an 8,180-row snapshot blocked the main thread for ~52s.
+    this.store.setState((s) => {
+      for (const change of coalesceChanges(changes)) {
+        switch (change.op) {
+          case "insert": case "upsert":
+            if (change.data) { upsertEntityDraft(s, change.type, change.id, change.data); setEntityFetchedDraft(s, change.type, change.id); }
+            break;
+          case "update":
+            if (change.patch) {
+              if (s.entities[change.type]?.[change.id]) upsertEntityDraft(s, change.type, change.id, change.patch as Record<string, unknown>);
+              else invalidateEntityDraft(s, change.type, change.id);
+            } else if (change.data) { upsertEntityDraft(s, change.type, change.id, change.data); setEntityFetchedDraft(s, change.type, change.id); }
+            break;
+          case "delete":
+            removeEntityDraft(s, change.type, change.id);
+            removeIdFromAllListsDraft(s, change.type, change.id);
+            break;
+        }
       }
-    }
-    for (const key of listKeys) store.invalidateLists(key);
+      for (const key of listKeys) invalidateListsDraft(s, key);
+    });
   }
 
   forceFlush() { if (this.flushTimer !== null) { clearTimeout(this.flushTimer); this.flushTimer = null; } this.flush(); }
