@@ -6,9 +6,9 @@ description: >
   normalize inbound traffic to ChangeSet/EntityChange, tune the 16ms coalescing window or flushInterval 0,
   and wire channel subscriptions with correct cleanup and list invalidation.
 license: MIT
-version: '1.0.0'
 metadata:
-  tags: [react, typescript, entity-management]
+  version: '1.0.0'
+  tags: "react, typescript, entity-management"
 ---
 
 # Entity Graph Realtime

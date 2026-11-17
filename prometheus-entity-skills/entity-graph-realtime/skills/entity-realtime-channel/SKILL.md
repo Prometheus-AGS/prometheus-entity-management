@@ -4,9 +4,9 @@ description: >
   Add or adjust RealtimeManager channel subscriptions: ChannelConfig per EntityType, optional normalize on
   register(), SubscriptionConfig label and replayOnConnect, and affectedListKeys in ChangeSet for list refresh.
 license: MIT
-version: '1.0.0'
 metadata:
-  tags: [react, typescript, entity-management]
+  version: '1.0.0'
+  tags: "react, typescript, entity-management"
 ---
 
 # `/entity-realtime-channel` — Channels and normalization

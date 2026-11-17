@@ -9,7 +9,7 @@ description: >
   and native evidence boundaries. Use when building entity-driven applications
   or synchronizing agent guidance with JavaScript, Flutter, and Tauri contracts.
 metadata:
-  tags: [react, typescript, dart, flutter, riverpod, tauri, entity-management]
+  tags: "react, typescript, dart, flutter, riverpod, tauri, entity-management"
 ---
 
 # Prometheus Entity Skills

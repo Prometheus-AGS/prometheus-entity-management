@@ -5,9 +5,9 @@ description: >
   instantiate the chosen adapter factory, register ChannelConfig entries, store UnsubscribeFn for cleanup,
   and document SSR/client-only boundaries.
 license: MIT
-version: '1.0.0'
 metadata:
-  tags: [react, typescript, entity-management]
+  version: '1.0.0'
+  tags: "react, typescript, entity-management"
 ---
 
 # `/entity-realtime-setup` — Manager and first adapter

@@ -5,9 +5,9 @@ description: >
   for concrete GraphQL documents; wire queryKey, getItems, getPagination, sideDescriptors, and
   invalidateLists for @prometheus-ags/prometheus-entity-management.
 license: MIT
-version: '1.0.0'
 metadata:
-  tags: [react, typescript, entity-management]
+  version: '1.0.0'
+  tags: "react, typescript, entity-management"
 ---
 
 # /entity-gql-hooks

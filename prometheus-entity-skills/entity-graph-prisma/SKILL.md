@@ -6,9 +6,9 @@ description: >
   toPrismaWhere/toPrismaOrderBy from FilterSpec, Next.js App Router CRUD routes, and migration from ad-hoc
   Prisma calls to the library’s adapter patterns. Optional prisma-entity-graph-generator for codegen.
 license: MIT
-version: '1.0.0'
 metadata:
-  tags: [react, typescript, entity-management]
+  version: '1.0.0'
+  tags: "react, typescript, entity-management"
 ---
 
 # Entity Graph — Prisma
