@@ -1,19 +1,11 @@
 {
   "schemaVersion": "1.0.0",
-  "assessedOn": "2026-11-18",
+  "assessedOn": "2026-11-11",
   "threshold": [
     "critical",
     "high"
   ],
-  "acceptedAdvisories": [
-    {
-      "id": 1247710,
-      "package": "picomatch",
-      "owner": "Travis James",
-      "expiresOn": "2027-01-18",
-      "rationale": "No patched release exists (4.0.7 is the latest; advisory lists patched <0.0.0), and GitHub withdrew the source advisory GHSA-fc5q-39xc-vjpf on 2026-11-18 after the maintainer rejected the report (micromatch/picomatch#235): exploitation requires an attacker to supply the glob pattern itself. Reached only through the documentation site (site > @docusaurus/core > @docusaurus/bundler > copy-webpack-plugin > fast-glob > micromatch > picomatch 2.3.2), which globs first-party build paths; not shipped in any published package runtime tree. Remove this entry once the npm advisory database drops the withdrawn advisory, which the stale-acceptance check will report."
-    }
-  ],
+  "acceptedAdvisories": [],
   "resolvedAdvisories": [
     {
       "ids": [
