@@ -32,7 +32,9 @@ import {
   type ChatResumeEntry,
 } from "./interrupts.js";
 
+/** Entity type under which chat messages are stored in the entity graph. */
 export const CHAT_MESSAGE_ENTITY = "A2uiChatMessage";
+/** Entity type under which a conversation (message order, run status, interrupts) is stored in the entity graph. */
 export const CHAT_CONVERSATION_ENTITY = "A2uiChatConversation";
 
 /** The graph list key holding a conversation's message ids, in order. */
@@ -128,6 +130,10 @@ interface RunOwner {
 /** Per graph and conversation id, the store run allowed to write. Views of one conversation share it. */
 const runOwners = new WeakMap<object, Map<string, RunOwner>>();
 
+/**
+ * Applies AG-UI 1.0 events for one conversation to the entity graph: messages, tool calls, run status and interrupts.
+ * Views of the same conversation on the same graph share run ownership, so a new run supersedes the previous one.
+ */
 export class ChatConversationStore {
   private runToken = 0;
   private ownedRun: RunOwner | undefined;

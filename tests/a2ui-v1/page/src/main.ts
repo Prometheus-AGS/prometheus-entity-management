@@ -242,7 +242,7 @@ async function createSlot(id: string, config: SlotConfig): Promise<void> {
   };
   const { policy, store } = buildPolicy(config, partial);
   const catalogs = buildCatalogs(config);
-  let runtimeRef: PrometheusA2uiRuntime | undefined;
+  const runtimeRef: { current?: PrometheusA2uiRuntime } = {};
   const runtime = createPrometheusA2uiRuntime({
     ...(catalogs ? { catalogs } : {}),
     actionPolicy: policy,
@@ -276,14 +276,14 @@ async function createSlot(id: string, config: SlotConfig): Promise<void> {
       const answer = replyMessage(call.functionCallId, reply);
       setTimeout(() => {
         try {
-          runtimeRef?.processMessages([answer]);
+          runtimeRef.current?.processMessages([answer]);
         } catch (cause) {
           partial.replyErrors.push({ call: name, ...serializeError(cause) });
         }
       }, 0);
     },
   });
-  runtimeRef = runtime;
+  runtimeRef.current = runtime;
   runtime.processor.model.onSurfaceCreated.subscribe((surface) => {
     surface.onError.subscribe((error) => {
       const record = error as unknown as Json;
