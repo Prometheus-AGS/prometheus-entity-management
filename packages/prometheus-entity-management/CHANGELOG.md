@@ -1,5 +1,11 @@
 # @prometheus-ags/prometheus-entity-management
 
+## 5.0.1
+
+### Patch Changes
+
+- @prometheus-ags/entity-graph-react@5.0.1
+
 ## 5.0.0
 
 ### Patch Changes

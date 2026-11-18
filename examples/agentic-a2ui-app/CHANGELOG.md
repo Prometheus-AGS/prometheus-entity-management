@@ -1,5 +1,15 @@
 # prometheus-agentic-a2ui-example
 
+## 0.1.6
+
+### Patch Changes
+
+- Updated dependencies [84d010b]
+  - @prometheus-ags/entity-graph-core@5.0.1
+  - @prometheus-ags/a2ui-react@5.0.1
+  - @prometheus-ags/entity-graph-a2a@5.0.1
+  - @prometheus-ags/entity-graph-react@5.0.1
+
 ## 0.1.5
 
 ### Patch Changes

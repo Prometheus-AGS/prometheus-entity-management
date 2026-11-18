@@ -1,5 +1,11 @@
 # @prometheus-ags/entity-graph-htmx
 
+## 5.0.1
+
+### Patch Changes
+
+- @prometheus-ags/entity-graph-sdl@5.0.1
+
 ## 5.0.0
 
 ### Patch Changes

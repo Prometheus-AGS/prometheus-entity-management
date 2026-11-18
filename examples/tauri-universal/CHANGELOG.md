@@ -1,5 +1,14 @@
 # prometheus-tauri-universal-example
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [84d010b]
+  - @prometheus-ags/entity-graph-core@5.0.1
+  - @prometheus-ags/entity-graph-react@5.0.1
+  - @prometheus-ags/entity-graph-tauri@5.0.1
+
 ## 0.0.5
 
 ### Patch Changes
