@@ -13,21 +13,10 @@
 <li><a href="" aria-current="page">CHAT_MESSAGE_ENTITY</a></li></ul>
 <h1>Variable CHAT_MESSAGE_ENTITY<code class="tsd-tag">Const</code></h1></div>
 <div class="tsd-signature"><span class="tsd-kind-variable">CHAT_MESSAGE_ENTITY</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;A2uiChatMessage&quot;</span></div>
-<div class="tsd-comment tsd-typography"><p>The store that owns a chat conversation: it consumes an AG-UI 1.0 event
-stream and writes the conversation into the entity graph. Hooks read the
-graph; they never touch the stream (<a href="http://CLAUDE.md">CLAUDE.md</a>: Components → Hooks → Stores).</p>
-<ul>
-<li>Messages are graph entities (<code>A2uiChatMessage</code>); the conversation's order
-is a graph list of their ids (<code>a2ui-chat:&lt;conversationId&gt;</code>), as every graph
-list is. Every view of a conversation therefore shows the same messages.</li>
-<li>Each run gets a token. Only the current run writes: a superseded,
-cleared or disposed run's late events change nothing.</li>
-<li>AG-UI state events are projected onto graph entities through the existing
-<code>applyAgUiSnapshot</code> / <code>applyAgUiDelta</code> bridge.</li>
-</ul>
+<div class="tsd-comment tsd-typography"><p>Entity type under which chat messages are stored in the entity graph.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:187</li></ul></aside></div>
+<li>Defined in packages/a2ui-react/dist/ag-ui.d.ts:188</li></ul></aside></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

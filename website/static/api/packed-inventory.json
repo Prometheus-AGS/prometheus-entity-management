@@ -1,19 +1,19 @@
 {
   "schemaVersion": "1.0.0",
-  "revision": "f5361081ec77270b84f0c6fae9254a768df52ea4",
-  "fingerprint": "d3eb40f06f61e92e2fdac28fc8b7249bcf3c88daa6befa16d6dc8290a357845f",
+  "revision": "b8397dab176bbbbfba22ff2ceba22a0be90dadf3",
+  "fingerprint": "d1fa62b873eb08ea335f2f224711aa2e4e5964480d9d4a7e8b868e6f5b9c4981",
   "apiInputFileCount": 55,
-  "apiInputAggregateSha256": "f6c0b5c0eac7f49a41b3df48ce62cccc05cc21009529c429d7c56441c05993ad",
+  "apiInputAggregateSha256": "fc5eb6e108bfb5ed32c06e27209c448e73de533e5de7c801cbf9288afad93db4",
   "artifactFileCount": 1760,
-  "artifactAggregateSha256": "289ebefcdaddad87829b404fdbb0ae6298fcc264de828b0d7babb8ba83012335",
+  "artifactAggregateSha256": "a4252cb85a4c41ac8c3c3178147faec9f6b80e85ee6d094c8e2573baacda06c0",
   "packages": [
     {
       "name": "@prometheus-ags/a2ui-react",
       "version": "5.0.0",
       "role": "A2UI v1.0-RC compatibility for React over the official renderer, with policy-gated entity graph actions and AG-UI 0.0.59 activity support.",
       "types": "./dist/index.d.ts",
-      "tarballSha256": "5c7d0a547c4d4b1d2e467cae4dcba1974753e33df63c88fcb21ed21c20e75355",
-      "tarballIntegrity": "sha512-cyDSXxOdbh0I588LcHz6zxItjfKC5dYFfkVRjE51DMzBk/Ie7heVX0OVDJ3JNpCOyyBusOfpSpz666nvo8mljg=="
+      "tarballSha256": "394a45b6a160a5035f16c99b95e5eda6baffb15a8f4e718c8215c4814c15f499",
+      "tarballIntegrity": "sha512-/cCrOV5eJj7Y8NtxPBwarptTLPG4Tvchkj0TBVPNQVdOFNtncTXbb3MOVYCoxzOrtJ8+rI1Q0LRnl2cfad8Ubg=="
     },
     {
       "name": "@prometheus-ags/entity-graph-a2a",
