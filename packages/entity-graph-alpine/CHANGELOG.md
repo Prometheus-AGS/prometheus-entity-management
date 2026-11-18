@@ -1,5 +1,7 @@
 # @prometheus-ags/entity-graph-alpine
 
+## 5.0.1
+
 ## 5.0.0
 
 ### Patch Changes

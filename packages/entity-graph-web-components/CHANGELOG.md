@@ -1,5 +1,7 @@
 # @prometheus-ags/entity-graph-web-components
 
+## 5.0.1
+
 ## 5.0.0
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @prometheus-ags/entity-graph-sync
 
+## 5.0.1
+
+### Patch Changes
+
+- Updated dependencies [84d010b]
+  - @prometheus-ags/entity-graph-core@5.0.1
+
 ## 5.0.0
 
 ### Patch Changes
